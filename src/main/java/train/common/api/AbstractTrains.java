@@ -1,7 +1,5 @@
 package train.common.api;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.carts.IRoutableCart;
@@ -20,6 +18,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import train.client.render.RenderEnum;
 import train.common.Traincraft;
 import train.common.adminbook.ItemAdminBook;
@@ -170,7 +169,6 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 					}
 				}
 				this.setSize(0.98f, 1.98f);
-				this.setMinecartName(trainSpec.name());
 
 				break;
 			}
@@ -242,14 +240,14 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 	public void manageChunkLoading(){
 		//if(this instanceof Locomotive)System.out.println("I'm alive. Remote: " + worldObj.isRemote);
 		if (!worldObj.isRemote && this.uniqueID == -1) {
-			if (FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
+			//if (FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
 				//TraincraftSaveHandler.createFile(FMLCommonHandler.instance().getMinecraftServerInstance());
 				//int readID = TraincraftSaveHandler.readInt(FMLCommonHandler.instance().getMinecraftServerInstance(), "numberOfTrains:");
 				//int newID = setNewUniqueID(readID);
 				setNewUniqueID(this.getEntityId());
 				//TraincraftSaveHandler.writeValue(FMLCommonHandler.instance().getMinecraftServerInstance(), "numberOfTrains:", new String("" + newID));
 				//System.out.println("Train is missing an ID, adding new one for "+this.trainName+" "+this.uniqueID);
-			}
+			//}
 		}
 		shouldChunkLoad = getFlag(7);
 		if (shouldChunkLoad){
@@ -602,15 +600,15 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 		if (this.getTrainLockedFromPacket()) {
 			if (damagesource.getEntity() instanceof EntityPlayer) {
 				if ((damagesource.getEntity() instanceof EntityPlayerMP) &&
-						((EntityPlayerMP)damagesource.getEntity()).canCommandSenderUseCommand(2, "") &&
+						(damagesource.getEntity()).canCommandSenderUseCommand(2, "") &&
 						((EntityPlayer) damagesource.getEntity()).inventory.getCurrentItem() != null &&
 						((EntityPlayer) damagesource.getEntity()).inventory.getCurrentItem().getItem() instanceof ItemWrench) {
 
-					((EntityPlayer) damagesource.getEntity()).addChatMessage(new ChatComponentText("Removing the train using OP permission"));
+					( damagesource.getEntity()).addChatMessage(new ChatComponentText("Removing the train using OP permission"));
 					return false;
 				}
-				else if (!((EntityPlayer) damagesource.getEntity()).getDisplayName().toLowerCase().equals(this.trainOwner.toLowerCase())) {
-					((EntityPlayer) damagesource.getEntity()).addChatMessage(new ChatComponentText("You are not the owner!"));
+				else if (!( damagesource.getEntity()).getName().toLowerCase().equals(this.trainOwner.toLowerCase())) {
+					( damagesource.getEntity()).addChatMessage(new ChatComponentText("You are not the owner!"));
 					return true;
 				}
 			}
@@ -653,7 +651,7 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 
 
 	@Override
-	public String getCommandSenderName(){
+	public String getName(){
 		String s = EntityList.getEntityString(this);
 		if (s == null) {
 			s = "generic";

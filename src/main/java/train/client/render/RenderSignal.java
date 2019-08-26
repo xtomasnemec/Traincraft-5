@@ -27,7 +27,7 @@ public class RenderSignal extends TileEntitySpecialRenderer {
 	}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-		renderAModelAt((TileSignal) tileentity, d, d1, d2, f);
+	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
+		renderAModelAt((TileSignal) te, x, y, z, partialTicks);
 	}
 }
