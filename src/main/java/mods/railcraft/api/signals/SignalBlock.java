@@ -8,6 +8,16 @@
  */
 package mods.railcraft.api.signals;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.message.MessageFormatMessage;
+
 import mods.railcraft.api.carts.CartTools;
 import mods.railcraft.api.core.WorldCoordinate;
 import mods.railcraft.api.tracks.RailTools;
@@ -19,11 +29,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.message.MessageFormatMessage;
-
-import java.util.*;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>

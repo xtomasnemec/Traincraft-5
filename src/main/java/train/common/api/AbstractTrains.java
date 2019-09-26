@@ -1,5 +1,9 @@
 package train.common.api;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.carts.IRoutableCart;
@@ -28,10 +32,6 @@ import train.common.items.ItemChunkLoaderActivator;
 import train.common.items.ItemRollingStock;
 import train.common.items.ItemWrench;
 import train.common.library.EnumTrains;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public abstract class AbstractTrains extends EntityMinecart implements IMinecart, IRoutableCart, IEntityAdditionalSpawnData {
 

@@ -1,21 +1,24 @@
 package train.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.api.LiquidManager;
 import train.common.api.LiquidManager.StandardTank;
 import train.common.blocks.BlockDistil;
 import train.common.library.BlockIDs;
 import train.common.recipes.DistilRecipes;
-
-import java.util.Random;
 
 public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 

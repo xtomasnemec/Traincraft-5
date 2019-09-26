@@ -1,8 +1,8 @@
 package tmt;
 
-import net.minecraft.util.MathHelper;
-
 import java.util.ArrayList;
+
+import net.minecraft.util.MathHelper;
 
 
 public class Shape2D {

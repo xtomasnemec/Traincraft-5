@@ -7,8 +7,7 @@
 
 package train.common.items;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import train.common.Traincraft;
 import train.common.adminbook.ItemAdminBook;
 import train.common.library.Info;

@@ -8,13 +8,13 @@
  */
 package mods.railcraft.api.signals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import mods.railcraft.api.core.WorldCoordinate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>

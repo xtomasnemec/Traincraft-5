@@ -1,5 +1,12 @@
 package train.common.mtc;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -9,8 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import train.common.api.Locomotive;
 import train.common.api.WirelessTransmitter;
-
-import java.util.*;
 
 public class TilePDMInstructionRadio extends TileEntity implements IPeripheral, WirelessTransmitter {
     public Boolean isActivated = false;

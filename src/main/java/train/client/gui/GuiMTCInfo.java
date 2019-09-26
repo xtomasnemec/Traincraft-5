@@ -1,12 +1,12 @@
 package train.client.gui;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.api.Locomotive;
 import train.common.core.network.PacketDestination;

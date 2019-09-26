@@ -1,10 +1,9 @@
 package train.client.core.handlers;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.api.EntityRollingStock;
 import train.common.api.Locomotive;
 import train.common.core.handlers.ConfigHandler;

@@ -7,13 +7,13 @@
 
 package train.common.slots;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class SlotTrainCrafting extends Slot {
 	/** The craft matrix inventory linked to this result slot. */

@@ -1,9 +1,10 @@
 package train.client.render.models;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import tmt.ModelBase;
 import train.client.core.ClientProxy;
 import train.client.render.CustomModelRenderer;

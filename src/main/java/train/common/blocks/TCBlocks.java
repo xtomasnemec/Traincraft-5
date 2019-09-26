@@ -7,15 +7,19 @@
 
 package train.common.blocks;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import train.common.Traincraft;
 import train.common.library.BlockIDs;
 import train.common.library.Info;
-import train.common.mtc.*;
+import train.common.mtc.BlockATOTransmitterStopPoint;
+import train.common.mtc.BlockInfoGrabberDestination;
+import train.common.mtc.BlockInfoGrabberMTC;
+import train.common.mtc.BlockInfoTransmitterMTC;
+import train.common.mtc.BlockInfoTransmitterSpeed;
+import train.common.mtc.BlockPDMInstructionRadio;
 
 public class TCBlocks {
 

@@ -6,18 +6,41 @@
  */
 package train.common.library;
 
-import mods.railcraft.api.tracks.TrackRegistry;
-import mods.railcraft.api.tracks.TrackSpec;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import train.common.blocks.tracks.*;
+import static train.common.core.plugins.PluginRailcraft.RailcraftParts.RAILBED_STONE;
+import static train.common.core.plugins.PluginRailcraft.RailcraftParts.RAILBED_WOOD;
+import static train.common.core.plugins.PluginRailcraft.RailcraftParts.RAIL_ADVANCED;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static train.common.core.plugins.PluginRailcraft.RailcraftParts.*;
+import mods.railcraft.api.tracks.TrackRegistry;
+import mods.railcraft.api.tracks.TrackSpec;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import train.common.blocks.tracks.BlockAnimalBoardingTrack;
+import train.common.blocks.tracks.BlockCopperTrack;
+import train.common.blocks.tracks.BlockCouplerTrack;
+import train.common.blocks.tracks.BlockDetectorAllLocomotiveTrack;
+import train.common.blocks.tracks.BlockDetectorDieselLocomotiveTrack;
+import train.common.blocks.tracks.BlockDetectorFreightTrack;
+import train.common.blocks.tracks.BlockDetectorHornAllLocomotiveTrack;
+import train.common.blocks.tracks.BlockDetectorPassengerTrack;
+import train.common.blocks.tracks.BlockDetectorSteamLocomotiveTrack;
+import train.common.blocks.tracks.BlockDetectorTankCartsTrack;
+import train.common.blocks.tracks.BlockDisembarkTrack;
+import train.common.blocks.tracks.BlockEnergyTrack;
+import train.common.blocks.tracks.BlockLocomotiveHoldingTrack;
+import train.common.blocks.tracks.BlockLocomotiveSpeedControllerTrack;
+import train.common.blocks.tracks.BlockMobBoardingTrack;
+import train.common.blocks.tracks.BlockSnowyCopperTrack;
+import train.common.blocks.tracks.BlockSnowySteelTrack;
+import train.common.blocks.tracks.BlockStationTrack;
+import train.common.blocks.tracks.BlockSteelTrack;
+import train.common.blocks.tracks.BlockVanillaSnowyTrack;
+import train.common.blocks.tracks.TrackTextureLoader;
+import train.common.core.plugins.PluginRailcraft;
 
 public enum Tracks{
 

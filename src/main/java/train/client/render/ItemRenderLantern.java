@@ -1,10 +1,11 @@
 package train.client.render;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import train.client.render.models.blocks.ModelLantern;
 import train.common.library.Info;
 

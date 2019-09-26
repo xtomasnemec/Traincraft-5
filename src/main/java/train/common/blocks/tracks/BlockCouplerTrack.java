@@ -4,6 +4,10 @@
  */
 package train.common.blocks.tracks;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import mods.railcraft.api.carts.CartTools;
 import mods.railcraft.api.carts.ILinkageManager;
 import mods.railcraft.api.tracks.ITrackPowered;
@@ -14,10 +18,6 @@ import train.common.api.AbstractTrains;
 import train.common.api.EntityRollingStock;
 import train.common.core.handlers.LinkHandler;
 import train.common.library.Tracks;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class BlockCouplerTrack extends TrackBaseTraincraft implements ITrackPowered {
 	private EntityMinecart taggedCart;

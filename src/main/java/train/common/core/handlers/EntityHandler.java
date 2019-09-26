@@ -7,10 +7,10 @@
 
 package train.common.core.handlers;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import train.common.Traincraft;
 import train.common.api.EntityBogie;
 import train.common.core.EntityIds;

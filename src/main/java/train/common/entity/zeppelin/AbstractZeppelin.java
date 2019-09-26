@@ -1,7 +1,7 @@
 package train.common.entity.zeppelin;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -22,13 +22,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.core.handlers.ConfigHandler;
 import train.common.core.handlers.FuelHandler;
 import train.common.core.network.PacketKeyPress;
 import train.common.library.GuiIDs;
-
-import java.util.List;
 
 public abstract class AbstractZeppelin extends Entity implements IInventory {
 	protected ItemStack zeppInvent[];

@@ -1,7 +1,8 @@
 package train.common.mtc;
 
 
-import cpw.mods.fml.common.network.NetworkRegistry;
+import java.util.List;
+
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -10,13 +11,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import train.common.Traincraft;
 import train.common.api.Locomotive;
 import train.common.mtc.packets.PacketMTC;
 import train.common.mtc.packets.PacketNextSpeed;
 import train.common.mtc.packets.PacketSetSpeed;
-
-import java.util.List;
 
 public class TileInfoTransmitterSpeed  extends TileEntity implements IPeripheral {
     public Boolean isActivated = false;
