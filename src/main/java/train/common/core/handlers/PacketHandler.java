@@ -7,15 +7,44 @@
 
 package train.common.core.handlers;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import train.common.Traincraft;
 import train.common.adminbook.ItemAdminBook;
-import train.common.core.network.*;
+import train.common.core.network.PacketDestination;
+import train.common.core.network.PacketKeyPress;
+import train.common.core.network.PacketLantern;
+import train.common.core.network.PacketParkingBrake;
+import train.common.core.network.PacketRollingStockRotation;
+import train.common.core.network.PacketSetJukeboxStreamingUrl;
+import train.common.core.network.PacketSetLocoTurnedOn;
+import train.common.core.network.PacketSetTrainLockedToClient;
+import train.common.core.network.PacketSlotsFilled;
+import train.common.core.network.PacketTrackBuilderFollow;
+import train.common.core.network.PacketTrackBuilderHeight;
+import train.common.core.network.PacketUpdateTrainID;
 import train.common.library.Info;
-import train.common.mtc.packets.*;
-import train.common.mtc.packets.handlers.*;
+import train.common.mtc.packets.PacketATO;
+import train.common.mtc.packets.PacketATODoSlowDown;
+import train.common.mtc.packets.PacketATOSetStopPoint;
+import train.common.mtc.packets.PacketDoAccel;
+import train.common.mtc.packets.PacketGetSomethingFromServer;
+import train.common.mtc.packets.PacketMTC;
+import train.common.mtc.packets.PacketMTCLevelUpdate;
+import train.common.mtc.packets.PacketNCSlowDown;
+import train.common.mtc.packets.PacketNextSpeed;
+import train.common.mtc.packets.PacketSetSpeed;
+import train.common.mtc.packets.PacketThingFromServer;
+import train.common.mtc.packets.handlers.PacketATODOSlowDownHandler;
+import train.common.mtc.packets.handlers.PacketATODoAccelHandler;
+import train.common.mtc.packets.handlers.PacketATOHandler;
+import train.common.mtc.packets.handlers.PacketATOSetStopPointHandler;
+import train.common.mtc.packets.handlers.PacketGetSomethingFromServerHandler;
+import train.common.mtc.packets.handlers.PacketMTCLevelUpdateHandler;
+import train.common.mtc.packets.handlers.PacketMTChandler;
+import train.common.mtc.packets.handlers.PacketNCSlowDownHandler;
+import train.common.mtc.packets.handlers.PacketNextSpeedHandler;
+import train.common.mtc.packets.handlers.PacketSetSpeedHandler;
+import train.common.mtc.packets.handlers.PacketThingFromServerHandler;
 
 public class PacketHandler {
 

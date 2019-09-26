@@ -1,14 +1,13 @@
 package train.client.core.handlers;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import train.client.core.helpers.CapesHelper;
 import train.common.Traincraft;
 import train.common.core.util.MP3Player;

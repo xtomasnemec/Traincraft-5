@@ -1,12 +1,12 @@
 package train.common.slots;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import train.common.inventory.TrainCraftingManager;
 import train.common.library.AchievementIDs;

@@ -1,7 +1,10 @@
 package train.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
@@ -12,7 +15,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.client.core.handlers.RecipeBookHandler;
 import train.common.core.managers.TierRecipe;
 import train.common.core.managers.TierRecipeManager;
@@ -24,9 +27,6 @@ import train.common.library.Info;
 import train.common.library.ItemIDs;
 import train.common.recipes.ShapedTrainRecipes;
 import train.common.recipes.ShapelessTrainRecipe;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiRecipeBook extends GuiScreen {

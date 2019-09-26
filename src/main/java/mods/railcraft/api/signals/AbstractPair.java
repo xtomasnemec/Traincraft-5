@@ -7,20 +7,27 @@
  */
 package mods.railcraft.api.signals;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+
 import com.google.common.collect.MapMaker;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import mods.railcraft.api.core.WorldCoordinate;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.*;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>

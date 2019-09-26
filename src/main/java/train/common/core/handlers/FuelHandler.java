@@ -1,9 +1,9 @@
 package train.common.core.handlers;
 
-import cpw.mods.fml.common.IFuelHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.fml.common.IFuelHandler;
 import train.common.library.BlockIDs;
 
 public class FuelHandler implements IFuelHandler {

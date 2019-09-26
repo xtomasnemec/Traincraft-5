@@ -1,8 +1,9 @@
 package train.common.items;
 
+import java.util.List;
+
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.core.items.IMinecartItem;
 import net.minecraft.block.BlockRailBase;
@@ -17,8 +18,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
-import train.common.api.*;
+import train.common.api.AbstractTrains;
+import train.common.api.DieselTrain;
+import train.common.api.ElectricTrain;
+import train.common.api.EntityRollingStock;
+import train.common.api.Locomotive;
+import train.common.api.SteamTrain;
+import train.common.api.Tender;
 import train.common.core.handlers.ConfigHandler;
 import train.common.core.util.TraincraftUtil;
 import train.common.entity.rollingStock.EntityTracksBuilder;
@@ -28,8 +36,6 @@ import train.common.library.EnumTrains;
 import train.common.library.Info;
 import train.common.tile.TileTCRail;
 import train.common.tile.TileTCRailGag;
-
-import java.util.List;
 
 public class ItemRollingStock extends ItemMinecart implements IMinecart, IMinecartItem {
 

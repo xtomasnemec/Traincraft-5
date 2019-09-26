@@ -3,6 +3,11 @@
  */
 package train.common.blocks.tracks;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 import mods.railcraft.api.tracks.ITrackEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,11 +19,6 @@ import net.minecraft.util.IIcon;
 import train.common.entity.rollingStock.EntityStockCar;
 import train.common.entity.rollingStock.EntityStockCarDRWG;
 import train.common.library.Tracks;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 public class BlockMobBoardingTrack extends TrackBaseTraincraft implements ITrackEmitter {
 	private byte delay = 0;

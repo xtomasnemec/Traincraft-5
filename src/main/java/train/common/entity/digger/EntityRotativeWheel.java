@@ -1,7 +1,7 @@
 package train.common.entity.digger;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockTorch;
@@ -12,9 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.core.FakePlayer;
-
-import java.util.List;
 
 public class EntityRotativeWheel extends Entity {
 

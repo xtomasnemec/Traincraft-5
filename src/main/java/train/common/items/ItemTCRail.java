@@ -1,7 +1,9 @@
 package train.common.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockMushroom;
@@ -12,13 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.library.BlockIDs;
 import train.common.library.ItemIDs;
 import train.common.tile.TileTCRail;
 import train.common.tile.TileTCRailGag;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class ItemTCRail extends ItemPart {
 	private TrackTypes type;

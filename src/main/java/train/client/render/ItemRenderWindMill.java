@@ -1,12 +1,12 @@
 package train.client.render;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
-import org.lwjgl.opengl.GL11;
 import train.client.render.models.blocks.ModelWindMill;
 import train.client.render.models.blocks.ModelWindMillWheel;
 import train.common.library.Info;

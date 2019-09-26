@@ -1,12 +1,11 @@
 package train.common.api;
 
+import java.util.List;
+import java.util.Random;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -18,8 +17,16 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import train.common.Traincraft;
 import train.common.adminbook.ServerLogger;
 import train.common.core.HandleMaxAttachedCarts;
@@ -27,16 +34,31 @@ import train.common.core.handlers.ConfigHandler;
 import train.common.core.network.PacketKeyPress;
 import train.common.core.network.PacketParkingBrake;
 import train.common.core.network.PacketSlotsFilled;
-import train.common.entity.rollingStock.*;
+import train.common.entity.rollingStock.EntityLocoDieselCD742;
+import train.common.entity.rollingStock.EntityLocoDieselClass66;
+import train.common.entity.rollingStock.EntityLocoDieselDD35A;
+import train.common.entity.rollingStock.EntityLocoDieselIC4_DSB_MG;
+import train.common.entity.rollingStock.EntityLocoDieselSD40;
+import train.common.entity.rollingStock.EntityLocoDieselSD70;
+import train.common.entity.rollingStock.EntityLocoDieselV60_DB;
+import train.common.entity.rollingStock.EntityLocoElectricBP4;
+import train.common.entity.rollingStock.EntityLocoElectricBR185;
+import train.common.entity.rollingStock.EntityLocoElectricCD151;
+import train.common.entity.rollingStock.EntityLocoElectricE103;
+import train.common.entity.rollingStock.EntityLocoElectricHighSpeedZeroED;
+import train.common.entity.rollingStock.EntityLocoElectricICE1;
+import train.common.entity.rollingStock.EntityLocoElectricTramNY;
+import train.common.entity.rollingStock.EntityLocoElectricVL10;
 import train.common.items.ItemWirelessTransmitter;
 import train.common.library.EnumSounds;
 import train.common.library.Info;
 import train.common.mtc.PDMMessage;
 import train.common.mtc.TilePDMInstructionRadio;
-import train.common.mtc.packets.*;
-
-import java.util.List;
-import java.util.Random;
+import train.common.mtc.packets.PacketATO;
+import train.common.mtc.packets.PacketATOSetStopPoint;
+import train.common.mtc.packets.PacketMTC;
+import train.common.mtc.packets.PacketNextSpeed;
+import train.common.mtc.packets.PacketSetSpeed;
 
 public abstract class Locomotive extends EntityRollingStock implements IInventory, WirelessTransmitter {
     public int inventorySize;

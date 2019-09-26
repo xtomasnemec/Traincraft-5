@@ -1,8 +1,8 @@
 package tmt;
 
-import org.lwjgl.opengl.GL11;
-
 import java.util.ArrayList;
+
+import org.lwjgl.opengl.GL11;
 
 
 public class TexturedPolygon {

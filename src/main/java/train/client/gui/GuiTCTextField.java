@@ -7,14 +7,14 @@
 
 package train.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ChatAllowedCharacters;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiTCTextField extends Gui {

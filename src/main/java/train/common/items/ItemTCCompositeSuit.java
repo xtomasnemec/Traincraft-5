@@ -7,9 +7,6 @@
 
 package train.common.items;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -20,6 +17,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.library.Info;
 import train.common.library.ItemIDs;

@@ -1,6 +1,8 @@
 package train.common.core.handlers;
 
-import cpw.mods.fml.common.registry.VillagerRegistry.IVillageCreationHandler;
+import java.util.List;
+import java.util.Random;
+
 import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
@@ -12,12 +14,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraftforge.fml.common.registry.VillagerRegistry.IVillageCreationHandler;
 import train.common.generation.ComponentVillageTrainstation;
 import train.common.items.ItemRollingStock;
 import train.common.library.ItemIDs;
-
-import java.util.List;
-import java.util.Random;
 
 public class VillagerTraincraftHandler implements IVillageCreationHandler,IVillageTradeHandler{
 	//private Random rand = new Random();

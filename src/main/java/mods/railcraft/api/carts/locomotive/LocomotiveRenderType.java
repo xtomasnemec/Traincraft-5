@@ -8,14 +8,15 @@
 
 package mods.railcraft.api.carts.locomotive;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * This class is used to register new Locomotive Skins with Railcraft.

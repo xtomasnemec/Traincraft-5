@@ -1,11 +1,18 @@
 package train.common.entity.rollingStock;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
+
 import mods.railcraft.api.core.items.ITrackItem;
 import mods.railcraft.api.tracks.RailTools;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockRail;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
@@ -26,6 +33,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import train.common.Traincraft;
 import train.common.adminbook.ServerLogger;
 import train.common.api.EntityRollingStock;
@@ -37,10 +46,6 @@ import train.common.core.handlers.FuelHandler;
 import train.common.core.plugins.PluginRailcraft;
 import train.common.items.ItemTCRail;
 import train.common.library.GuiIDs;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class EntityTracksBuilder extends EntityRollingStock implements IInventory {
 	public ItemStack item;

@@ -5,9 +5,12 @@
  */
 package train.common.blocks.tracks;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
-import cpw.mods.fml.common.FMLCommonHandler;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mods.railcraft.api.electricity.IElectricGrid;
 import mods.railcraft.api.tracks.ITrackPowered;
@@ -21,14 +24,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import train.common.api.ElectricTrain;
 import train.common.api.EntityRollingStock;
 import train.common.core.handlers.ConfigHandler;
 import train.common.library.Tracks;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class BlockEnergyTrack extends TrackBaseTraincraft implements ITrackPowered, IEnergyHandler, IElectricGrid {
 	public int maxEnergy = 2000;

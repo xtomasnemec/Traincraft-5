@@ -7,12 +7,14 @@
  */
 package mods.railcraft.api.carts;
 
-import com.mojang.authlib.GameProfile;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+
+import mods.railcraft.api.core.items.IMinecartItem;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -20,11 +22,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import mods.railcraft.api.core.items.IMinecartItem;
-import net.minecraft.block.BlockRailBase;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class CartTools {
     private static final GameProfile railcraftProfile = new GameProfile(UUID.nameUUIDFromBytes("[Railcraft]".getBytes()), "[Railcraft]");

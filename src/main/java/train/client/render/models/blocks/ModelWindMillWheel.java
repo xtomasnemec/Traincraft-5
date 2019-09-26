@@ -1,13 +1,13 @@
 package train.client.render.models.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import org.lwjgl.opengl.GL11;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.library.Info;
 import train.common.tile.TileWindMill;
 

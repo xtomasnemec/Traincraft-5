@@ -1,5 +1,9 @@
 package train.client.gui;
 
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -11,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import org.lwjgl.opengl.GL11;
 import train.client.core.helpers.FluidRenderHelper;
 import train.common.Traincraft;
 import train.common.api.AbstractTrains;
@@ -19,8 +22,6 @@ import train.common.api.LiquidTank;
 import train.common.core.network.PacketSetTrainLockedToClient;
 import train.common.inventory.InventoryLiquid;
 import train.common.library.Info;
-
-import java.util.List;
 
 public class GuiLiquid extends GuiContainer {
 

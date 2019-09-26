@@ -1,20 +1,19 @@
 package train.client.gui;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import static org.lwjgl.opengl.GL11.glColor3f;
+
+import java.awt.event.KeyEvent;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.mtc.TileInfoTransmitterSpeed;
 import train.common.mtc.packets.PacketNextSpeed;
 import train.common.mtc.packets.PacketSetSpeed;
-
-import java.awt.event.KeyEvent;
-
-import static org.lwjgl.opengl.GL11.glColor3f;
 
 public class GuiSpeedTransmitter extends GuiScreen {
     TileInfoTransmitterSpeed transmitterBlock;

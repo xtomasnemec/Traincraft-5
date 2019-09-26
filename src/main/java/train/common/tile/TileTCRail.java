@@ -1,7 +1,8 @@
 package train.common.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,10 +12,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.items.ItemTCRail;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileTCRail extends TileEntity {
 

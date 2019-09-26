@@ -7,14 +7,15 @@
  */
 package mods.railcraft.api.signals;
 
-import mods.railcraft.api.core.WorldCoordinate;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-
-import javax.annotation.Nonnull;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import javax.annotation.Nonnull;
+
+import mods.railcraft.api.core.WorldCoordinate;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>

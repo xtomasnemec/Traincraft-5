@@ -1,17 +1,17 @@
 package train.common.core.plugins;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.ArrayList;
+
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import train.common.core.util.TraincraftUtil;
 import train.common.library.ItemIDs;
 import train.common.library.Tracks;
-
-import java.util.ArrayList;
 
 public class PluginRailcraft {
 

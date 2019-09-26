@@ -8,11 +8,12 @@
 
 package mods.railcraft.api.tracks;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import mods.railcraft.api.core.items.ITrackItem;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
@@ -20,9 +21,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.items.ItemTCRail;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A number of utility functions related to rails.

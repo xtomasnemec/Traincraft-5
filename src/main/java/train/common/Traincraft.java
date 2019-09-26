@@ -1,40 +1,49 @@
 package train.common;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
+import java.io.File;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import train.common.api.LiquidManager;
 import train.common.blocks.TCBlocks;
 import train.common.core.CommonProxy;
 import train.common.core.CreativeTabTraincraft;
 import train.common.core.TrainModCore;
-import train.common.core.handlers.*;
+import train.common.core.handlers.AchievementHandler;
+import train.common.core.handlers.ConfigHandler;
+import train.common.core.handlers.CraftingHandler;
+import train.common.core.handlers.EntityHandler;
+import train.common.core.handlers.FuelHandler;
+import train.common.core.handlers.OreHandler;
+import train.common.core.handlers.PacketHandler;
+import train.common.core.handlers.RecipeHandler;
+import train.common.core.handlers.RetrogenHandler;
+import train.common.core.handlers.VillagerTraincraftHandler;
 import train.common.generation.ComponentVillageTrainstation;
 import train.common.generation.WorldGenWorld;
 import train.common.items.TCItems;
 import train.common.library.Info;
 import train.common.recipes.AssemblyTableRecipes;
-
-import java.io.File;
 
 @Mod(modid = Info.modID, name = Info.modName, version = Info.modVersion)
 public class Traincraft {

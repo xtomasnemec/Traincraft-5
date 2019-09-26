@@ -8,6 +8,12 @@
 
 package mods.railcraft.api.tracks;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import mods.railcraft.api.core.items.IToolCrowbar;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
@@ -22,12 +28,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * All ITrackInstances should extend this class. It contains a number of default
