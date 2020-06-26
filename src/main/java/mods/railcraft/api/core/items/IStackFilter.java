@@ -10,7 +10,6 @@ package mods.railcraft.api.core.items;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import net.minecraft.item.ItemStack;
 
 /**

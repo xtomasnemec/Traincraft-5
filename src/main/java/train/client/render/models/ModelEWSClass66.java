@@ -9,11 +9,10 @@
 
 package train.client.render.models;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import tmt.ModelBase;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
@@ -655,11 +654,11 @@ public class ModelEWSClass66 extends ModelBase
 		for(int i = 0; i < 141; i++)
 		{
 			if (i==53 || i==46 || i== 27 || i==34 || i==8 || i==7 || i==47 || i==49){
-				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+				Minecraft.getMinecraft().entityRenderer.disableLightmap();
 			}
 			ewsclass66Model[i].render(f5);
 			if (i==53 || i==46 || i== 27 || i==34 || i==8 || i==7 || i==47 || i==49){
-				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+				Minecraft.getMinecraft().entityRenderer.enableLightmap();
 			}
 		}
 

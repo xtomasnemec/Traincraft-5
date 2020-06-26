@@ -27,7 +27,6 @@ public class EntityFlatCar_DB extends EntityRollingStock implements IPassenger {
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
-		boundingBox.maxY-=1;
 	}
 
 	@Override

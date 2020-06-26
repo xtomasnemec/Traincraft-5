@@ -1,15 +1,17 @@
 package train.common.items;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.library.Info;
 import train.common.library.ItemIDs;
+
+import java.util.List;
 
 public class ItemStacked extends Item {
 
@@ -40,9 +42,15 @@ public class ItemStacked extends Item {
 		par3List.add("\u00a77" + " to set mode: 'Can pull/Can be pulled'");
 	}
 	
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":parts/" + ItemIDs.stake.iconName);
+	}*/
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining){
+		return new ModelResourceLocation(new ResourceLocation(Info.modID.toLowerCase(), "parts/" + ItemIDs.stake.iconName),"inventory");
 	}
 }

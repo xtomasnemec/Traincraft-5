@@ -1,25 +1,23 @@
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
+import tmt.Tessellator;
 import train.common.library.Info;
 import train.common.tile.TileTCRail;
 
 @SideOnly(Side.CLIENT)
 public class ModelLeftSwitchTCTrack extends ModelBase {
-	private static IModelCustom modelMediumLeftSwitchActive = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_switch_small_active_left_new.obj"));
-	private static IModelCustom modelMediumLeftSwitchInactive = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_switch_small_inactive_left_new.obj"));
-	private static IModelCustom modelMediumLeftParallelSwitchInactive = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_switch_parallel_inactive_left.obj"));
-	private static IModelCustom modelMediumLeftParallelSwitchActive = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_switch_parallel_active_left.obj"));
-	private static IModelCustom modelLargeLeftSwitchActive = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_switch_medium_active_left.obj"));
-	private static IModelCustom modelLargeLeftSwitchInactive = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_switch_medium_inactive_left.obj"));
+	private ModelRendererTurbo modelMediumLeftSwitchActive = new ModelRendererTurbo(this).addObj("track_switch_small_active_left_new.obj");
+	private ModelRendererTurbo modelMediumLeftSwitchInactive = new ModelRendererTurbo(this).addObj("track_switch_small_inactive_left_new.obj");
+	private ModelRendererTurbo modelMediumLeftParallelSwitchInactive = new ModelRendererTurbo(this).addObj("track_switch_parallel_inactive_left.obj");
+	private ModelRendererTurbo modelMediumLeftParallelSwitchActive = new ModelRendererTurbo(this).addObj("track_switch_parallel_active_left.obj");
+	private ModelRendererTurbo modelLargeLeftSwitchActive = new ModelRendererTurbo(this).addObj("track_switch_medium_active_left.obj");
+	private ModelRendererTurbo modelLargeLeftSwitchInactive = new ModelRendererTurbo(this).addObj("track_switch_medium_inactive_left.obj");
 
 
 	public ModelLeftSwitchTCTrack() {
@@ -27,33 +25,32 @@ public class ModelLeftSwitchTCTrack extends ModelBase {
 	}
 
 	public void renderMediumActive() {
-		modelMediumLeftSwitchActive.renderAll();
+		modelMediumLeftSwitchActive.render();
 	}
 	public void renderMediumInactive() {
-		modelMediumLeftSwitchInactive.renderAll();
+		modelMediumLeftSwitchInactive.render();
 	}
 	public void renderMediumParallelInactive() {
-		modelMediumLeftParallelSwitchInactive.renderAll();
+		modelMediumLeftParallelSwitchInactive.render();
 	}
 	public void renderMediumParallelActive() {
-		modelMediumLeftParallelSwitchActive.renderAll();
+		modelMediumLeftParallelSwitchActive.render();
 	}
 	public void renderLarge90Active() {
-		modelLargeLeftSwitchActive.renderAll();
+		modelLargeLeftSwitchActive.render();
 	}
 	public void renderLarge90Inactive() {
-		modelLargeLeftSwitchInactive.renderAll();
+		modelLargeLeftSwitchInactive.render();
 	}
 
 	public void render(String type, TileTCRail tcRail, double x, double y, double z) {
 
 		// Bind the texture, so that OpenGL properly textures our block.
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
+		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
 		GL11.glColor4f(1, 1, 1, 1);
 		//GL11.glScalef(0.5f, 0.5f, 0.5f);
-		int facing = tcRail.getWorldObj().getBlockMetadata(tcRail.xCoord, tcRail.yCoord, tcRail.zCoord);
 
-		if (facing == 3) {
+		if (tcRail.getFacing() == 3) {
 			if(type.equals("medium")){
 				GL11.glTranslatef(-1.0f, 0.0f, 1.0f);
 			}
@@ -65,7 +62,7 @@ public class ModelLeftSwitchTCTrack extends ModelBase {
 				GL11.glRotatef(-90, 0, 1, 0);
 			}
 		}
-		else if (facing == 1) {
+		else if (tcRail.getFacing() == 1) {
 			if(type.equals("medium")){
 				GL11.glRotatef(180, 0, 1, 0);
 				GL11.glTranslatef(-1.0f, 0.0f, 1.0f);
@@ -78,7 +75,7 @@ public class ModelLeftSwitchTCTrack extends ModelBase {
 				GL11.glRotatef(90, 0, 1, 0);
 			}
 		}
-		else if(facing == 2){
+		else if(tcRail.getFacing() == 2){
 			if(type.equals("medium")){
 				GL11.glRotatef(90, 0, 1, 0);
 				GL11.glTranslatef(-1.0f, 0.0f, 1.0f);
@@ -91,7 +88,7 @@ public class ModelLeftSwitchTCTrack extends ModelBase {
 				//do something if needed
 			//}
 		}
-		else if(facing == 0){
+		else if(tcRail.getFacing() == 0){
 			if(type.equals("medium")){
 				GL11.glRotatef(-90, 0, 1, 0);
 				GL11.glTranslatef(-1.0f, 0.0f, 1.0f);
@@ -104,13 +101,15 @@ public class ModelLeftSwitchTCTrack extends ModelBase {
 				GL11.glRotatef(180, 0, 1, 0);
 			}
 		}
-		if(type.equals("medium")&&!tcRail.getSwitchState()){this.renderMediumInactive();}
-		if(type.equals("medium")&&tcRail.getSwitchState()){this.renderMediumActive();}
-		if(type.equals("medium_parallel")&&!tcRail.getSwitchState()){this.renderMediumParallelInactive();}
-		if(type.equals("medium_parallel")&&tcRail.getSwitchState()){this.renderMediumParallelActive();}
-		if(type.equals("large_90")&&!tcRail.getSwitchState()){this.renderLarge90Inactive();}
-		if(type.equals("large_90")&&tcRail.getSwitchState()){this.renderLarge90Active();}
-		
+		if(tcRail.getSwitchState()){
+			if(type.equals("medium")){this.renderMediumActive();}
+			else if(type.equals("medium_parallel")){this.renderMediumParallelActive();}
+			else if(type.equals("large_90")){this.renderLarge90Active();}
+		} else {
+			if(type.equals("medium")){this.renderMediumInactive();}
+			else if(type.equals("medium_parallel")){this.renderMediumParallelInactive();}
+			else if(type.equals("large_90")){this.renderLarge90Inactive();}
+		}
 		//if(type.equals("large"))this.renderLarge();
 	}
 }

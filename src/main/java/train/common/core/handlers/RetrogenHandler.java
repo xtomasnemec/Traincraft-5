@@ -1,14 +1,14 @@
 package train.common.core.handlers;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import train.common.Traincraft;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class RetrogenHandler {
 	public static final byte VERSION = 1; // useful for world generation changes in future releases, to allow partial retrogen.
@@ -36,11 +36,11 @@ public class RetrogenHandler {
 			if (event.phase == TickEvent.Phase.END) {
 				for (Chunk chunk : (ArrayList<Chunk>) chunksToRetroGen.clone()) {
 					chunksToRetroGen.remove(chunk);
-					if (chunk.worldObj instanceof WorldServer) {
-						WorldServer world = (WorldServer) chunk.worldObj;
+					if (chunk.getWorld() instanceof WorldServer) {
+						WorldServer world = (WorldServer) chunk.getWorld();
 						rand.setSeed((long)chunk.xPosition * 341873128712L + (long)chunk.zPosition * 132897987541L);
-						Traincraft.tcLog.info("Retrogen chunk at " + chunk.xPosition + ", " + chunk.zPosition + " for dimension " + world.provider.dimensionId + ", Version " + VERSION);
-						Traincraft.worldGen.generate(rand, chunk.xPosition, chunk.zPosition, world, world.theChunkProviderServer.currentChunkProvider, world.theChunkProviderServer.currentChunkProvider);
+						Traincraft.tcLog.info("Retrogen chunk at " + chunk.xPosition + ", " + chunk.zPosition + " for dimension " + world.provider.getDimensionId() + ", Version " + VERSION);
+						Traincraft.worldGen.generate(rand, chunk.xPosition, chunk.zPosition, world, world.getChunkProvider(), world.getChunkProvider());
 						gennedChunks.remove(new ChunkData(chunk));
 					}
 				}
@@ -53,7 +53,7 @@ public class RetrogenHandler {
 		private ChunkData(Chunk chunk) {
 			this.chunkX = chunk.xPosition;
 			this.chunkZ = chunk.zPosition;
-			this.dimension = chunk.worldObj.provider.dimensionId;
+			this.dimension = chunk.getWorld().provider.getDimensionId();
 		}
 		public ChunkData(int chunkX, int chunkZ, int dimension) {
 			this.chunkX = chunkX;

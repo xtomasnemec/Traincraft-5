@@ -9,6 +9,7 @@
 package mods.railcraft.api.events;
 
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  *

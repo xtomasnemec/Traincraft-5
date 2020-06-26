@@ -1,12 +1,13 @@
 package train.common.core;
 
+import net.minecraftforge.fml.common.Loader;
+import train.common.Traincraft;
+import train.common.core.plugins.PluginRailcraft;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import train.common.Traincraft;
-import train.common.core.plugins.PluginRailcraft;
 
 public class TrainModCore {
 	

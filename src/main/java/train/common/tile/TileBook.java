@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import train.common.core.util.TraincraftUtil;
 
 public class TileBook extends TileEntity {
 	
@@ -18,7 +19,7 @@ public class TileBook extends TileEntity {
 	
 	public TileBook() {
 		
-		facingMeta = this.blockMetadata;
+		facingMeta = TraincraftUtil.getBlockMeta(worldObj,pos);//this.blockMetadata;
 	}
 	
 	public int getFacing() {
@@ -53,7 +54,7 @@ public class TileBook extends TileEntity {
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(this.pos, 1, nbt);
 	}
 	
 	/*

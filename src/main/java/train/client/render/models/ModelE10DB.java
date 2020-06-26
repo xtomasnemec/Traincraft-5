@@ -9,11 +9,10 @@
 
 package train.client.render.models;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
@@ -747,9 +746,9 @@ public class ModelE10DB extends ModelConverter
 	{
 		for (ModelRendererTurbo mrt : bodyModel) {
 			if (mrt.boxName.equals("lamp")) {
-				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+				Minecraft.getMinecraft().entityRenderer.disableLightmap();
 				mrt.render(f5, false);
-				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+				Minecraft.getMinecraft().entityRenderer.enableLightmap();
 			} else {
 				mrt.render(f5, false);
 			}

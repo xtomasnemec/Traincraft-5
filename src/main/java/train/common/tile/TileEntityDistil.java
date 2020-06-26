@@ -1,28 +1,28 @@
 package train.common.tile;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.api.LiquidManager;
 import train.common.api.LiquidManager.StandardTank;
 import train.common.blocks.BlockDistil;
 import train.common.library.BlockIDs;
+import train.common.library.ItemIDs;
 import train.common.recipes.DistilRecipes;
 
-public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
+import java.util.Random;
 
-	private ForgeDirection facing;
+public class TileEntityDistil extends TileTraincraft implements IFluidHandler, ITickable {
+
+	private EnumFacing facing;
 	public int distilBurnTime;
 	public int currentItemBurnTime;
 	public int distilCookTime;
@@ -70,7 +70,7 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTag, boolean forSyncing) {
 		super.readFromNBT(nbtTag, forSyncing);
-		facing = ForgeDirection.getOrientation(nbtTag.getInteger("Orientation"));
+		facing = EnumFacing.getHorizontal(nbtTag.getInteger("Orientation"));
 		distilBurnTime = nbtTag.getShort("BurnTime");
 		distilCookTime = nbtTag.getShort("CookTime");
 		currentItemBurnTime = nbtTag.getShort("CurrentItemBurn");
@@ -114,7 +114,7 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 		if(!worldObj.isRemote){
 			updateTicks++;
 			boolean flag = distilBurnTime > 0;
@@ -152,12 +152,12 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 
 			if (flag != (distilBurnTime > 0)) {
 				flag1 = true;
-				BlockDistil.updateDistilBlockState(distilBurnTime > 0, worldObj, xCoord, yCoord, zCoord);
+				BlockDistil.updateDistilBlockState(distilBurnTime > 0, worldObj, pos.getX(),pos.getY(),pos.getX());
 			}
 			else {
 				flag1 = false;
-				BlockDistil.updateDistilBlockState(distilBurnTime > 0, worldObj, xCoord, yCoord, zCoord);
-				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+				BlockDistil.updateDistilBlockState(distilBurnTime > 0, worldObj, pos.getX(),pos.getY(),pos.getX());
+				this.worldObj.markBlockForUpdate(this.pos);
 			}
 
 			if (slots[2] != null) {
@@ -181,7 +181,7 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 
 						if (theTank.getFluid() != null) {
 
-							liquidItemID = theTank.getFluid().getFluidID();
+							liquidItemID = theTank.getFluid().getFluid().getID();
 						}
 						else {
 
@@ -191,7 +191,7 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 						flag1 = true;
 
 						this.markDirty();
-						this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+						this.worldObj.markBlockForUpdate(this.pos);
 					}
 				}
 			}
@@ -203,14 +203,14 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 				amount = 0;
 			}
 			if (theTank.getFluid() != null) {
-				liquidItemID = theTank.getFluid().getFluidID();
+				liquidItemID = theTank.getFluid().getFluid().getID();
 			}
 			else {
 				liquidItemID = 0;
 			}
 			if (updateTicks % 8 == 0){
 				this.markDirty();
-				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+				this.worldObj.markBlockForUpdate(this.pos);
 			}
 			if (distilBurnTime > 0) {
 				distilBurnTime--;
@@ -280,16 +280,16 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 		{
 			getTank().fill(resultLiquid, true);
 			if (random.nextInt(plasticChance) == 0)
-				outputPlastic(plasticStack);
+				outputPlastic(plasticStack, slots[0].getItem() == ItemIDs.diesel.item);
 			if (theTank.getFluid() != null) {
 				amount = theTank.getFluid().amount;
 			}
 			if (theTank.getFluid() != null) {
-				liquidItemID = theTank.getFluid().getFluidID();
+				liquidItemID = theTank.getFluid().getFluid().getID();
 			}
 
 			this.markDirty();
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+			this.worldObj.markBlockForUpdate(this.pos);
 		}
 
 		if (slots[0].getItem().hasContainerItem(slots[0])) {
@@ -304,45 +304,54 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 		this.syncTileEntity();
 	}
 
-	private void outputPlastic(ItemStack plasticStack) {
+	private void outputPlastic(ItemStack plasticStack, boolean wasDeisel) {
 		if (slots[3] == null) {
-			slots[3] = plasticStack.copy();
-		}
-		else if (Item.getIdFromItem(slots[3].getItem()) == Item.getIdFromItem(plasticStack.getItem())) {
+			if(wasDeisel){
+				slots[3]= new ItemStack(ItemIDs.emptyCanister.item,1);
+			} else {
+				slots[3] = plasticStack.copy();
+			}
+		} else if(wasDeisel){
+			if(slots[3].getItem()==ItemIDs.emptyCanister.item){
+				slots[3].stackSize += plasticStack.stackSize;
+			} else {
+				slots[3].stackSize += plasticStack.stackSize;
+			}
+		} else if (Item.getIdFromItem(slots[3].getItem()) == Item.getIdFromItem(plasticStack.getItem())) {
 			slots[3].stackSize += plasticStack.stackSize;
 		}
 		this.markDirty();
 	}
 
-	public ForgeDirection getFacing() {
+	public EnumFacing getFacing() {
 		if(facing!=null){
 			return this.facing;
 		}
-		return ForgeDirection.NORTH;
+		return EnumFacing.NORTH;
 	}
 
-	public void setFacing(ForgeDirection face) {
+	public void setFacing(EnumFacing face) {
 		this.facing = face;
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer p) {}
 
 	public FluidStack getFluid() {
 		return theTank.getFluid();
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill)
 	{
 		return theTank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 		if (resource == null || !resource.isFluidEqual(theTank.getFluid())) {
 			return null;
 		}
@@ -350,7 +359,7 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 		return theTank.drain(maxDrain, doDrain);
 	}
 
@@ -358,17 +367,17 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 		return this.maxTank;
 	}
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from)
+	public FluidTankInfo[] getTankInfo(EnumFacing from)
 	{
 		return new FluidTankInfo[] { theTank.getInfo() };
 	}
@@ -380,15 +389,15 @@ public class TileEntityDistil extends TileTraincraft implements IFluidHandler {
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side){
-		if(side == 0) return false;          // bottom is extract only
-		else if(side == 1) return slot == 0; // insert input into top
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side){
+		if(side == EnumFacing.getHorizontal(0)) return false;          // bottom is extract only
+		else if(side == EnumFacing.getHorizontal(1)) return slot == 0; // insert input into top
 		else return slot == 1;               // insert fuel into sides
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side){
-		return side != 1 && slot == 3;
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side){
+		return side != EnumFacing.getHorizontal(1) && slot == 3;
 	}
 
 }

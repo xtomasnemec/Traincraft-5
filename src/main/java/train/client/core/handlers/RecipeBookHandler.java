@@ -1,10 +1,5 @@
 package train.client.core.handlers;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.minecraft.item.Item;
 import train.common.core.interfaces.ITCRecipe;
 import train.common.core.managers.TierRecipe;
@@ -12,6 +7,11 @@ import train.common.library.BlockIDs;
 import train.common.library.ItemIDs;
 import train.common.recipes.ShapedTrainRecipes;
 import train.common.recipes.ShapelessTrainRecipe;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class RecipeBookHandler {
 	/**
@@ -47,7 +47,7 @@ public class RecipeBookHandler {
 		for(Object r: recipeList) {
 			if (r instanceof ShapedTrainRecipes || r instanceof ShapelessTrainRecipe) {
 				ITCRecipe recipe = (ITCRecipe) r;
-				String output = Item.itemRegistry.getNameForObject(recipe.getRecipeOutput().getItem());
+				String output = Item.itemRegistry.getNameForObject(recipe.getRecipeOutput().getItem()).toString();
 				if (!outputs.contains(output)) {
 					cleaned.add(recipe);
 					outputs.add(output);
@@ -64,7 +64,7 @@ public class RecipeBookHandler {
 		for(Object r: recipeList) {
 			if(r instanceof TierRecipe) {
 				TierRecipe recipe = (TierRecipe) r;
-				String output = Item.itemRegistry.getNameForObject(recipe.getOutput().getItem());
+				String output = Item.itemRegistry.getNameForObject(recipe.getOutput().getItem()).toString();
 				if (!outputs.contains(output)) {
 					cleanedList.add(recipe);
 					outputs.add(output);

@@ -1,15 +1,16 @@
 package train.common.tile;
 
-import java.util.Random;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
-public class TileLantern extends TileEntity {
+import java.util.Random;
+
+public class TileLantern extends TileEntity implements ITickable {
 
 	/** Static instance used to access random number generation to create random colors. */
 	protected static final Random rand = new Random();
@@ -39,7 +40,7 @@ public class TileLantern extends TileEntity {
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(this.pos, 1, nbt);
 	}
 
 	public String getColor() {
@@ -57,11 +58,11 @@ public class TileLantern extends TileEntity {
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.func_148857_g());
+		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
-	public void updateEntity(){
+	public void update(){
 		if (oldColor != randomColor){
 			oldColor = randomColor;
 			this.markDirty();
@@ -73,7 +74,7 @@ public class TileLantern extends TileEntity {
 		for (Object o : this.worldObj.playerEntities) {
 			if (o instanceof EntityPlayerMP) {
 				EntityPlayerMP player = (EntityPlayerMP) o;
-				if (player.getDistance(xCoord, yCoord, zCoord) <= 64) {
+				if (player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 64) {
 					player.playerNetServerHandler.sendPacket(this.getDescriptionPacket());
 				}
 			}

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "burning=false":{"model": "tc:block_distil_off"},
+    "burning=true":{"model": "tc:block_distil_on"}
+  }
+}

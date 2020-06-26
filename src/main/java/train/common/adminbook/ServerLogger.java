@@ -1,15 +1,11 @@
 package train.common.adminbook;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -17,6 +13,11 @@ import net.minecraftforge.fml.common.registry.GameData;
 import train.common.Traincraft;
 import train.common.api.EntityRollingStock;
 import train.common.api.LiquidTank;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author EternalBlueFlame
@@ -77,7 +78,7 @@ public class ServerLogger {
                     }
                 }
                 if (wagon instanceof LiquidTank) {
-                    for (FluidTankInfo tank : ((LiquidTank)wagon).getTankInfo(ForgeDirection.UNKNOWN)) {
+                    for (FluidTankInfo tank : ((LiquidTank)wagon).getTankInfo(EnumFacing.DOWN)) {
                         addFluidXML(sb, tank.fluid);
                     }
                 }
@@ -159,7 +160,7 @@ public class ServerLogger {
     public static List<ItemStack> getItems(String doc){
         try {
             ArrayList<ItemStack> itemStacks = new ArrayList<ItemStack>();
-            itemStacks.add(new ItemStack(GameData.getItemRegistry().getObject(doc.substring(doc.indexOf("<delegate>")+10, doc.indexOf("</delegate>")))));
+            itemStacks.add(new ItemStack(GameData.getItemRegistry().getObject(new ResourceLocation(doc.substring(doc.indexOf("<delegate>")+10, doc.indexOf("</delegate>"))))));
 
             List<String> stacks = new ArrayList<String>();
             while (doc.contains("<ItemStack>")){
@@ -185,7 +186,7 @@ public class ServerLogger {
     public static ItemStack parseItemFromXML(String doc){
         try {
             ItemStack stack = new ItemStack(
-                    GameData.getItemRegistry().getObject(doc.substring(doc.indexOf("<delegate>")+10, doc.indexOf("</delegate>"))),//get item by delegate name since it's static
+                    GameData.getItemRegistry().getObject(new ResourceLocation(doc.substring(doc.indexOf("<delegate>")+10, doc.indexOf("</delegate>")))),//get item by delegate name since it's static
                     Integer.parseInt(doc.substring(doc.indexOf("<StackSize>")+11, doc.indexOf("</StackSize>")))//we always get strings so gotta parse.
             );
 

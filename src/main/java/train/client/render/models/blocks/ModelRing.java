@@ -7,24 +7,22 @@
 
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
 import train.common.library.Info;
 
-public class ModelRing extends ModelBase  {
-private IModelCustom ring;
+public class ModelRing extends ModelBase {
+private ModelRendererTurbo ring;
 	
 	public ModelRing() {
-		ring = new AdvancedModelLoader().loadModel(new ResourceLocation(Info.modelPrefix + "ring.obj"));
+		ring = new ModelRendererTurbo(this).addObj("ring.obj");
 	}
 	
 	public void render() {
-		ring.renderAll();
+		ring.render();
 	}
 	
 	public void render(int color) {

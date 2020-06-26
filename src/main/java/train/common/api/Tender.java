@@ -3,15 +3,10 @@ package train.common.api;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.*;
 import train.common.api.LiquidManager.StandardTank;
 import train.common.entity.rollingStock.EntityBUnitDD35;
 import train.common.entity.rollingStock.EntityBUnitEMDF3;
@@ -48,7 +43,7 @@ public abstract class Tender extends Freight implements IFluidHandler {
 		if (filter != null)
 			this.theTank = LiquidManager.getInstance().new FilteredTank(capacity, filter);
 		tankArray[0] = theTank;
-		dataWatcher.addObject(4, 0);
+		dataWatcher.addObject(28, 0);
 		this.dataWatcher.addObject(23, 0);
 	}
 	@Override
@@ -71,11 +66,11 @@ public abstract class Tender extends Freight implements IFluidHandler {
 			return;
 		if (theTank != null && theTank.getFluid() != null) {
 			this.dataWatcher.updateObject(23, theTank.getFluid().amount);
-			this.dataWatcher.updateObject(4, theTank.getFluid().getFluidID());
+			this.dataWatcher.updateObject(28, theTank.getFluid().getFluid().getID());
 		}
 		else if (theTank != null && theTank.getFluid() == null) {
 			this.dataWatcher.updateObject(23, 0);
-			this.dataWatcher.updateObject(4, 0);
+			this.dataWatcher.updateObject(28, 0);
 		}
 	}
 	/**
@@ -115,7 +110,7 @@ public abstract class Tender extends Freight implements IFluidHandler {
 	 * @return int
 	 */
 	public int getLiquidItemID() {
-		return (this.dataWatcher.getWatchableObjectInt(4));
+		return (this.dataWatcher.getWatchableObjectInt(28));
 	}
 
 	public int getCartTankCapacity() {
@@ -169,19 +164,19 @@ public abstract class Tender extends Freight implements IFluidHandler {
 			liquidInSlot(tenderInvent, loco);
 		}
 
-		if(ticksExisted%5==0 && fill(ForgeDirection.UNKNOWN, new FluidStack(FluidRegistry.WATER,100), false)==100) {
+		if(ticksExisted%5==0 && fill(EnumFacing.DOWN, new FluidStack(FluidRegistry.WATER,100), false)==100) {
 			FluidStack drain =null;
-			blocksToCheck = new TileEntity[]{worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 1), MathHelper.floor_double(posZ)),
-					worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 2), MathHelper.floor_double(posZ)),
-					worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 3), MathHelper.floor_double(posZ)),
-					worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 4), MathHelper.floor_double(posZ))
+			blocksToCheck = new TileEntity[]{worldObj.getTileEntity(new BlockPos(posX, posY -1, posZ)),
+					worldObj.getTileEntity(new BlockPos(posX, posY + 2, posZ)),
+					worldObj.getTileEntity(new BlockPos(posX, posY + 3, posZ)),
+					worldObj.getTileEntity(new BlockPos(posX, posY + 4, posZ))
 			};
 
 			for (TileEntity block : blocksToCheck) {
 				if (drain == null && block instanceof IFluidHandler) {
-					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+					for (EnumFacing direction : EnumFacing.values()) {
 						if(((IFluidHandler) block).drain(direction,100,false)!=null &&
-								((IFluidHandler) block).drain(direction, 100, false).fluid==FluidRegistry.WATER &&
+								((IFluidHandler) block).drain(direction, 100, false).getFluid()==FluidRegistry.WATER &&
 								((IFluidHandler) block).drain(direction, 100, false).amount ==100
 						) {
 							drain = ((IFluidHandler) block).drain(
@@ -193,20 +188,20 @@ public abstract class Tender extends Freight implements IFluidHandler {
 			if (drain ==null && cartLinked1 instanceof LiquidTank
 					&& !(cartLinked1 instanceof EntityBUnitEMDF7) && !(cartLinked1 instanceof EntityBUnitEMDF3) && !(cartLinked1 instanceof EntityBUnitDD35)) {
 				if (getFluid() == null) {
-					drain = ((LiquidTank) cartLinked1).drain(ForgeDirection.UNKNOWN, new FluidStack(FluidRegistry.WATER, 100), true);
+					drain = ((LiquidTank) cartLinked1).drain(EnumFacing.DOWN, new FluidStack(FluidRegistry.WATER, 100), true);
 				} else if (getFluid().getFluid() == FluidRegistry.WATER) {
-					drain = ((LiquidTank) cartLinked1).drain(ForgeDirection.UNKNOWN, new FluidStack(FluidRegistry.WATER, 100), true);
+					drain = ((LiquidTank) cartLinked1).drain(EnumFacing.DOWN, new FluidStack(FluidRegistry.WATER, 100), true);
 				}
 			} else if (drain ==null && cartLinked2 instanceof LiquidTank
 					&& !(cartLinked1 instanceof EntityBUnitEMDF7) && !(cartLinked1 instanceof EntityBUnitEMDF3) && !(cartLinked1 instanceof EntityBUnitDD35)) {
 				if (getFluid() == null) {
-					drain = ((LiquidTank) cartLinked2).drain(ForgeDirection.UNKNOWN, new FluidStack(FluidRegistry.WATER, 100), true);
+					drain = ((LiquidTank) cartLinked2).drain(EnumFacing.DOWN, new FluidStack(FluidRegistry.WATER, 100), true);
 				} else if (getFluid().getFluid() == FluidRegistry.WATER) {
-					drain = ((LiquidTank) cartLinked2).drain(ForgeDirection.UNKNOWN, new FluidStack(FluidRegistry.WATER, 100), true);
+					drain = ((LiquidTank) cartLinked2).drain(EnumFacing.DOWN, new FluidStack(FluidRegistry.WATER, 100), true);
 				}
 			}
 			if (drain != null) {
-				fill(ForgeDirection.UNKNOWN, drain, true);
+				fill(EnumFacing.DOWN, drain, true);
 			}
 		}
 	}
@@ -217,7 +212,7 @@ public abstract class Tender extends Freight implements IFluidHandler {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
+	public ItemStack removeStackFromSlot(int par1) {
 		if (this.tenderItems[par1] != null) {
 			ItemStack var2 = this.tenderItems[par1];
 			this.tenderItems[par1] = null;
@@ -266,13 +261,13 @@ public abstract class Tender extends Freight implements IFluidHandler {
 		return this.maxTank;
 	}
 	@Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         return theTank.fill(resource, doFill);
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         if (resource == null || !resource.isFluidEqual(theTank.getFluid()))
         {
@@ -282,25 +277,25 @@ public abstract class Tender extends Freight implements IFluidHandler {
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         return theTank.drain(maxDrain, doDrain);
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid)
+    public boolean canFill(EnumFacing from, Fluid fluid)
     {
         return true;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    public boolean canDrain(EnumFacing from, Fluid fluid)
     {
         return true;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         return new FluidTankInfo[] { theTank.getInfo() };
     }

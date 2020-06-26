@@ -9,10 +9,9 @@
 package mods.railcraft.api.crafting;
 
 import java.util.List;
-
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
 /**

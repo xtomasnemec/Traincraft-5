@@ -1,11 +1,10 @@
 package train.client.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.common.entity.zeppelin.AbstractZeppelin;
 import train.common.inventory.InventoryZepp;
 import train.common.library.Info;
@@ -21,7 +20,7 @@ public class GuiZepp extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
-		fontRendererObj.drawString(zepp.getCommandSenderName(), 60, 6, 0x404040);
+		fontRendererObj.drawString(zepp.getName(), 60, 6, 0x404040);
 		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 		if (zepp.numCargoSlots > 0) {
 			fontRendererObj.drawString("Cargo:", 36, 22, 0x404040);

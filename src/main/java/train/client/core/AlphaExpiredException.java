@@ -4,7 +4,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiErrorScreen;
 import net.minecraftforge.fml.client.CustomModLoadingErrorDisplayException;
 
-public class AlphaExpiredException extends CustomModLoadingErrorDisplayException  {
+public class AlphaExpiredException extends CustomModLoadingErrorDisplayException {
 
 	private static final long serialVersionUID = 4917296650073454368L;
 

@@ -1,81 +1,57 @@
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
+import tmt.Tessellator;
 import train.common.library.Info;
 import train.common.tile.TileTCRail;
 
 @SideOnly(Side.CLIENT)
 public class ModelRightTurnTCTrack extends ModelBase {
-	private static IModelCustom modelMediumRightTurn = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_curve_medium.obj"));
-	private static IModelCustom modelLargeRightTurn = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_curve_big.obj"));
-	private static IModelCustom modelVeryLargeRightTurn = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_curve_very_big.obj"));;
+	private ModelRendererTurbo modelMediumRightTurn = new ModelRendererTurbo(this).addObj("track_curve_medium.obj");
+	private ModelRendererTurbo modelLargeRightTurn = new ModelRendererTurbo(this).addObj("track_curve_big.obj");
+	private ModelRendererTurbo modelVeryLargeRightTurn = new ModelRendererTurbo(this).addObj("track_curve_very_big.obj");
+
+	private static int GLID=-1;
 
 	public ModelRightTurnTCTrack() {
 	}
 
 	public void renderMedium() {
-		modelMediumRightTurn.renderAll();
+		modelMediumRightTurn.render();
 	}
 
 	public void renderLarge() {
-		modelLargeRightTurn.renderAll();
+		modelLargeRightTurn.render();
 	}
 	public void renderVeryLarge() {
-		modelVeryLargeRightTurn.renderAll();
+		modelVeryLargeRightTurn.render();
 	}
 
 	public void render(String type, TileTCRail tcRail, double x, double y, double z) {
 
 		// Bind the texture, so that OpenGL properly textures our block.
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
+		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
 		GL11.glColor4f(1, 1, 1, 1);
 		//GL11.glScalef(0.5f, 0.5f, 0.5f);
-		int facing = tcRail.getWorldObj().getBlockMetadata(tcRail.xCoord, tcRail.yCoord, tcRail.zCoord);
 
-		if (facing == 3) {
-			if (type.equals("very_large"))
-				GL11.glTranslatef(8.5f, 0.0f, 9.54f);
-			else if (type.equals("large"))
-				GL11.glTranslatef(-1.0f, 0.0f, 5.0f);
-			else if (type.equals("medium"))
-				GL11.glTranslatef(-1.0f, 0.0f, 3.0f);
-		} else if (facing == 1) {
-			GL11.glRotatef(180, 0, 1, 0);
-			if (type.equals("very_large"))
-				GL11.glTranslatef(8.5f, 0.0f, 9.54f);
-			else if (type.equals("large"))
-				GL11.glTranslatef(-1.0f, 0.0f, 5.0f);
-			else if (type.equals("medium"))
-				GL11.glTranslatef(-1.0f, 0.0f, 3.0f);
-		} else if (facing == 2) {
-			GL11.glRotatef(90, 0, 1, 0);
-			if (type.equals("very_large"))
-				GL11.glTranslatef(8.5f, 0.0f, 9.54f);
-			else if (type.equals("large"))
-				GL11.glTranslatef(-1.0f, 0.0f, 5.0f);
-			else if (type.equals("medium"))
-				GL11.glTranslatef(-1.0f, 0.0f, 3.0f);
-		} else if (facing == 0) {
-			GL11.glRotatef(-90, 0, 1, 0);
-			if (type.equals("very_large"))
-				GL11.glTranslatef(8.5f, 0.0f, 9.54f);
-			else if (type.equals("large"))
-				GL11.glTranslatef(-1.0f, 0.0f, 5.0f);
-			else if (type.equals("medium"))
-				GL11.glTranslatef(-1.0f, 0.0f, 3.0f);
+		switch (tcRail.getFacing()){
+			case 0:{GL11.glRotatef(-90, 0, 1, 0);break;}
+			case 1:{GL11.glRotatef(180, 0, 1, 0);break;}
+			case 2:{GL11.glRotatef(90, 0, 1, 0);break;}
 		}
 		if (type.equals("medium")) {
+			GL11.glTranslatef(-1.0f, 0.0f, 3.0f);
 			this.renderMedium();
 		} else if (type.equals("large")) {
+			GL11.glTranslatef(-1.0f, 0.0f, 5.0f);
 			this.renderLarge();
 		} else if (type.equals("very_large")){
+			GL11.glTranslatef(8.5f, 0.0f, 9.54f);
 			this.renderVeryLarge();
 		}
 	}

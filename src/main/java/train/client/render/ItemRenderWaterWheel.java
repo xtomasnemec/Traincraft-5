@@ -1,37 +1,36 @@
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
 import train.client.render.models.blocks.ModelWaterWheel;
 import train.common.library.Info;
 
-public class ItemRenderWaterWheel implements IItemRenderer {
+public class ItemRenderWaterWheel implements ICustomModelLoader {
 	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "water_wheel_uv.png");
 	private static final ModelWaterWheel modelWaterWheel = new ModelWaterWheel();
 
 	public ItemRenderWaterWheel() {
 	}
 
+	private static ResourceLocation uri = new ResourceLocation("tc","ItemRenderWaterWheel");
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
+	public boolean accepts(ResourceLocation modelLocation) {
+		return modelLocation==uri;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		switch (type) {
-		case ENTITY: {
+	public IModel loadModel(ResourceLocation resource) {
+		if(resource!=uri){return null;}
+		//switch (type) {
+		//case ENTITY: {
 			renderWaterWheel(0f, 0f, 0f, 0.8f);
-			return;
+			//todo: theoretically if we just render it rather than returning a model,
+				// it will render and we dont need to return a model
+		/*	return;
 		}
 		case EQUIPPED: {
 			renderWaterWheel(0f, 0.5f, 0.5f, 0.8f);
@@ -47,7 +46,8 @@ public class ItemRenderWaterWheel implements IItemRenderer {
 		}
 		default:
 			break;
-		}
+		}*/
+		return null;
 	}
 
 	private void renderWaterWheel(float x, float y, float z, float scale) {
@@ -67,5 +67,10 @@ public class ItemRenderWaterWheel implements IItemRenderer {
 		modelWaterWheel.render();
 
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager) {
+
 	}
 }

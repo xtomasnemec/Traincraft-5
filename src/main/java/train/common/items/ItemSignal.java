@@ -2,9 +2,10 @@ package train.common.items;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import train.common.Traincraft;
 
@@ -21,9 +22,11 @@ public class ItemSignal extends Item { // implements IBoxable TODO when IC2
 		return true;
 	}
 
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
-		Block i1 = world.getBlock(i, j, k);
-		if (i1 == Blocks.snow) {
+	@Override
+	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+		Block i1 = world.getBlockState(pos).getBlock();
+		int i=pos.getX(), j=pos.getY(),k=pos.getZ();
+		/*if (i1 == Blocks.snow) {
 			l = 0;
 		}
 		else if (i1 != Blocks.vine) {
@@ -54,13 +57,13 @@ public class ItemSignal extends Item { // implements IBoxable TODO when IC2
 		}
 
 		Block block = spawnID;
-		if (world.setBlockMetadataWithNotify(i, j, k, Block.getIdFromBlock(spawnID), 0)) {
-			if (world.getBlock(i, j, k) == spawnID) {
-				spawnID.onBlockPlacedBy(world, i, j, k, entityplayer, new ItemStack(spawnID));
+		//if (world.setBlockMetadataWithNotify(i, j, k, Block.getIdFromBlock(spawnID), 0)) {
+			if (world.getBlockState(pos).getBlock() == spawnID) {
+				spawnID.onBlockPlacedBy(world, pos, spawnID.getDefaultState(), entityplayer, new ItemStack(spawnID));
 			}
-			world.playSoundEffect((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, block.stepSound.getStepResourcePath(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+			world.playSoundEffect((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, block.stepSound.soundName, (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getFrequency() * 0.8F);
 			itemstack.stackSize--;
-		}
+		//}
 		return true;
 	}
 }

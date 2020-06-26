@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "burning=false":{"model": "tc:block_hearth_furnace_off"},
+    "burning=true":{"model": "tc:block_hearth_furnace_on"}
+  }
+}

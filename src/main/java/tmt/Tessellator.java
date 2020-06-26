@@ -1,21 +1,21 @@
 package tmt;
 
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import train.common.core.handlers.ConfigHandler;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import train.common.core.handlers.ConfigHandler;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 /**
 * @Author Ferdinand (FEX___96)
@@ -112,6 +112,10 @@ public class Tessellator{
 	public void addVertexWithUV(float i, float j, float k, float l, float m){
 		this.setTextureUV(l, m); this.addVertex(i, j, k);
 	}
+
+	public void addVertexWithUV(double i, double j, double k, double l, double m){
+		this.setTextureUV((float) l,(float) m); this.addVertex((float)i,(float) j,(float) k);
+	}
 	
 	public void addVertexWithUVW(float i, float j, float k, float l, float m, float n){
 		this.setTextureUVW(l, m, n); this.addVertex(i, j, k);
@@ -153,7 +157,9 @@ public class Tessellator{
 				object = new SimpleTexture(textureURI);
 				Minecraft.getMinecraft().getTextureManager().loadTexture(textureURI, object);
 			}
-			GL11.glBindTexture(GL_TEXTURE_2D, object.getGlTextureId());
+			if(GL11.glGetInteger(GL11.GL_TEXTURE_2D) != object.getGlTextureId()) {
+				GL11.glBindTexture(GL_TEXTURE_2D, object.getGlTextureId());
+			}
 		}
 	}
 	

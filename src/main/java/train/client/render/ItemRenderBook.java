@@ -7,18 +7,17 @@
 
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
 import train.client.render.models.blocks.ModelTCBook;
 import train.common.library.Info;
 
-public class ItemRenderBook implements IItemRenderer {
+public class ItemRenderBook implements ICustomModelLoader {
 	
 	ModelTCBook book1;
 	ModelTCBook book2;
@@ -31,21 +30,18 @@ public class ItemRenderBook implements IItemRenderer {
 	}
 
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
+	public boolean accepts(ResourceLocation modelLocation) {
+		return false;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
-		switch (type) {
-		case ENTITY: {
+	public IModel loadModel(ResourceLocation resource) {
+		//switch (type) {
+		//case ENTITY: {
 			renderBook(0.0F, 1.0F, 0.0F, 0.0F, 0.0f, 0.0f, 0.0f, 1.5F);
-			break;
+		//todo: theoretically if we just render it rather than returning a model,
+		// it will render and we dont need to return a model
+		/*	break;
 		}
 		case EQUIPPED: {
 			renderBook(0.3F, 0.6F, 0.7F, 70.0F, 0.0f, 1.0f, 0.0f, 1.0F);
@@ -66,11 +62,12 @@ public class ItemRenderBook implements IItemRenderer {
 		}
 		default:
 			break;
-		}
+		}*/
+		return null;
 	}
 
 	private void renderBook(float left, float up, float right, float rotation, float x, float y, float z, float scale) {
-		Tessellator tesselator = Tessellator.instance;
+		Tessellator tesselator = Tessellator.getInstance();
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "book2.png"));
 		GL11.glPushMatrix();
 		GL11.glTranslatef(left, up, right);
@@ -107,4 +104,8 @@ public class ItemRenderBook implements IItemRenderer {
 		GL11.glPopMatrix();
 	}
 
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager) {
+
+	}
 }

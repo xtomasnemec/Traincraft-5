@@ -7,9 +7,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class ElectricTrain extends Locomotive {
 
@@ -76,22 +77,22 @@ public abstract class ElectricTrain extends Locomotive {
 		  * 
 		  * if (locoInvent[u] != null) { if (locoInvent[u].itemID == PluginIndustrialCraft.getItems().get(PluginIndustrialCraft.getNames()[21]).itemID) { reduceExplosionChance += 10000; if (rand.nextInt(10) == 0 && (!worldObj.isRemote)) { locoInvent[u].setItemDamage(1); } } } } } else if ((locoInvent[0].itemID == PluginIndustrialCraft.getItems().get(PluginIndustrialCraft.getNames()[23]).itemID)) { hasUranium = true; fuelTrain = 800 + 1000000; // locoInvent[0] = null; if (!worldObj.isRemote) { decrStackSize(0, 1); } reduceExplosionChance = 1000; for (int u = 1; u < locoInvent.length; u++) {// checks the inventory if (locoInvent[u] != null) { if (locoInvent[u].itemID == PluginIndustrialCraft.getItems().get(PluginIndustrialCraft.getNames()[21]).itemID) { reduceExplosionChance += 10000; if (rand.nextInt(10) == 0 && (!worldObj.isRemote)) { locoInvent[u].setItemDamage(1); } } } } } } } */
 
-		blocksToCheck = new TileEntity[]{worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY-2),MathHelper.floor_double(posZ)),
-				worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY+2),MathHelper.floor_double(posZ)),
-				worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY+3),MathHelper.floor_double(posZ)),
-				worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY+4),MathHelper.floor_double(posZ))
+		blocksToCheck = new TileEntity[]{worldObj.getTileEntity(new BlockPos(posX, posY -1, posZ)),
+				worldObj.getTileEntity(new BlockPos(posX, posY + 2, posZ)),
+				worldObj.getTileEntity(new BlockPos(posX, posY + 3, posZ)),
+				worldObj.getTileEntity(new BlockPos(posX, posY + 4, posZ))
 		};
 
 		int draw = 0;
 		for (TileEntity block : blocksToCheck) {
 			if (block instanceof IEnergyHandler) {
-				for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+				for (EnumFacing direction : EnumFacing.values()) {
 					if (draw != 0) {
 						break;
 					}
 					int max = ((IEnergyHandler) block).getEnergyStored(direction);
 					if (max > 0) {
-						draw = ((IEnergyHandler) block).receiveEnergy(direction, Math.max(-MathHelper.floor_double(Math.min(200, maxEnergy - getFuel()) * 0.1), -max), false);
+						draw = ((IEnergyHandler) block).receiveEnergy(direction, Math.max(-MathHelper.floor_double(Math.min(200, maxEnergy - getFuel()) * 0.2), -max), false);
 					}
 				}
 				fuelTrain += -draw;

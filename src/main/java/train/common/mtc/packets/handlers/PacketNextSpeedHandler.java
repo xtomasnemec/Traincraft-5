@@ -3,8 +3,10 @@ package train.common.mtc.packets.handlers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import train.common.api.Locomotive;
 import train.common.mtc.TileInfoTransmitterSpeed;
 import train.common.mtc.packets.PacketNextSpeed;
@@ -22,7 +24,7 @@ public  class PacketNextSpeedHandler implements IMessageHandler<PacketNextSpeed,
        //     return null;
       //  }
 
-        TileEntity its =  Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
+        TileEntity its =  Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(message.x, message.y, message.z));
 
 
         /* "instanceof" is null-safe, but we check to avoid four unnecessary instanceof checks for when the value is null anyways. */

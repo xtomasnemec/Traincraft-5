@@ -49,7 +49,7 @@ public class EntityMailWagen_DB extends AbstractWorkCart implements IInventory {
 	@Override
 	public void pressKey(int i) {
 		if (riddenByEntity instanceof EntityPlayer) {
-			if (locked && !((EntityPlayer) riddenByEntity).getDisplayName().toLowerCase().equals(this.trainOwner.toLowerCase())) {
+			if (locked && !((EntityPlayer) riddenByEntity).getDisplayName().getUnformattedText().toLowerCase().equals(this.trainOwner.toLowerCase())) {
 				return;
 			}
 			if (i == 7) {

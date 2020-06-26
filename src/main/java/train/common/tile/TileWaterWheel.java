@@ -8,17 +8,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import train.common.core.util.Energy;
 
-public class TileWaterWheel extends Energy implements IEnergyProvider {
+public class TileWaterWheel extends Energy implements IEnergyProvider, ITickable {
 	
 	public int facingMeta;
 
 	public TileWaterWheel() {
 		super(0, "WaterWheel", 80, 80);
-		super.setSides(new ForgeDirection[]{ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.SOUTH});
-		facingMeta = this.blockMetadata;
+		super.setSides(new EnumFacing[]{EnumFacing.EAST, EnumFacing.WEST, EnumFacing.NORTH, EnumFacing.SOUTH});
+		//facingMeta = this.blockMetadata;
 	}
 
 	@Override
@@ -39,57 +41,61 @@ public class TileWaterWheel extends Energy implements IEnergyProvider {
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(this.pos, 1, nbt);
 	}
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g());
+		this.readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
 
 		if(!worldObj.isRemote) {
 
-			Block blockXP = worldObj.getBlock(xCoord+1, yCoord, zCoord);
-			Block blockXN = worldObj.getBlock(xCoord-1, yCoord, zCoord);
-			Block blockZP = worldObj.getBlock(xCoord, yCoord, zCoord+1);
-			Block blockZN = worldObj.getBlock(xCoord, yCoord, zCoord-1);
-			Block blockTop = worldObj.getBlock(xCoord, yCoord+1, zCoord);
-			Block blockBottom = worldObj.getBlock(xCoord, yCoord-1, zCoord);
+			Block blockXP = worldObj.getBlockState(new BlockPos(pos.getX()+1, pos.getY(), pos.getZ())).getBlock();
+			Block blockXN = worldObj.getBlockState(new BlockPos(pos.getX()-1, pos.getY(), pos.getZ())).getBlock();
+			Block blockZP = worldObj.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ()+1)).getBlock();
+			Block blockZN = worldObj.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ()-1)).getBlock();
+			Block blockTop = worldObj.getBlockState(new BlockPos(pos.getX(), pos.getY()+1, pos.getZ())).getBlock();
+			Block blockBottom = worldObj.getBlockState(new BlockPos(pos.getX(), pos.getY()-1, pos.getZ())).getBlock();
 
 
+			//getMeta _should_ be unimportant
 			if (blockXP instanceof BlockLiquid && blockXP.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord + 1, yCoord, zCoord) != 0
+					//&& worldObj.getBlockMetadata(pos.getX() + 1, pos.getY(), pos.getZ()) != 0
 					&& blockXP.getMaterial() != Material.lava) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 2, 2);
+				facingMeta=2;
 			} else if (blockXN instanceof BlockLiquid && blockXN.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord - 1, yCoord, zCoord) != 0
+					//&& worldObj.getBlockMetadata(pos.getX() - 1, pos.getY(), pos.getZ()) != 0
 					&& blockXN.getMaterial() != Material.lava) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 2);
+				facingMeta=0;
 			} else if (blockZN instanceof BlockLiquid && blockZN.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 1) != 0
+					//&& worldObj.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ() - 1) != 0
 					&& blockZN.getMaterial() != Material.lava) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, 2);
+				facingMeta=1;
 			} else if (blockZP instanceof BlockLiquid && blockZP.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 1) != 0
+					//&& worldObj.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ() + 1) != 0
 					&& blockZP.getMaterial() != Material.lava) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 3, 2);
-			}else if(blockTop instanceof BlockLiquid && blockTop.getMaterial().isLiquid()&&worldObj.getBlockMetadata(xCoord, yCoord+1, zCoord)!= 0 && blockTop.getMaterial() != Material.lava){
+				facingMeta=3;
+			}else if(blockTop instanceof BlockLiquid && blockTop.getMaterial().isLiquid()
+					//&&worldObj.getBlockMetadata(pos.getX(), pos.getY()+1, pos.getZ())!= 0
+					&& blockTop.getMaterial() != Material.lava){
 				this.energy.receiveEnergy(5, false);
-			}else if(blockBottom instanceof BlockLiquid && blockBottom.getMaterial().isLiquid() &&worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord)!= 0 && blockBottom.getMaterial() != Material.lava){
+			}else if(blockBottom instanceof BlockLiquid && blockBottom.getMaterial().isLiquid()
+					//&&worldObj.getBlockMetadata(pos.getX(), pos.getY()-1, pos.getZ())!= 0
+					&& blockBottom.getMaterial() != Material.lava){
 				this.energy.receiveEnergy(5, false);
 			} else {
 				setWaterDir(-1);
 			}
 
 			if (this.energy.getEnergyStored() >0) {
-				pushEnergy(worldObj, this.xCoord, this.yCoord, this.zCoord, this.energy);
+				pushEnergy(worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.energy);
 			}
 
 			this.markDirty();
@@ -108,10 +114,10 @@ public class TileWaterWheel extends Energy implements IEnergyProvider {
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection direction){
-		if((this.getBlockMetadata()==1||this.getBlockMetadata()==3) && (direction == ForgeDirection.WEST||direction == ForgeDirection.EAST)) {
+	public boolean canConnectEnergy(EnumFacing direction){
+		if((this.getBlockMetadata()==1||this.getBlockMetadata()==3) && (direction == EnumFacing.WEST||direction == EnumFacing.EAST)) {
 			return true;
-		}else if((this.getBlockMetadata()==0||this.getBlockMetadata()==2) && (direction == ForgeDirection.NORTH||direction == ForgeDirection.SOUTH)){
+		}else if((this.getBlockMetadata()==0||this.getBlockMetadata()==2) && (direction == EnumFacing.NORTH||direction == EnumFacing.SOUTH)){
 			return true;
 		} else {return false;}
 	}

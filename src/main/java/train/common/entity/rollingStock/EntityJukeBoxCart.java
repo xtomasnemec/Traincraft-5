@@ -6,8 +6,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.adminbook.ServerLogger;
@@ -116,7 +118,7 @@ public class EntityJukeBoxCart extends EntityRollingStock {
 				}
 				if (this.isPlaying && rand.nextInt(5) == 0 && (this.player != null && this.player.isPlaying())) {
 					int random2 = rand.nextInt(24) + 1;
-					worldObj.spawnParticle("note", posX, posY + 1.2D, posZ, random2 / 24.0D, 0.0D, 0.0D);
+					worldObj.spawnParticle(EnumParticleTypes.NOTE, posX, posY + 1.2D, posZ, random2 / 24.0D, 0.0D, 0.0D);
 				}
 			}
 			
@@ -178,7 +180,7 @@ public class EntityJukeBoxCart extends EntityRollingStock {
 		if ((super.interactFirst(entityplayer))) {
 			return false;
 		}
-		if (locked && !entityplayer.getDisplayName().toLowerCase().equals(this.trainOwner.toLowerCase())) {
+		if (locked && !entityplayer.getDisplayName().getUnformattedText().toLowerCase().equals(this.trainOwner.toLowerCase())) {
 			if (!worldObj.isRemote)
 				entityplayer.addChatMessage(new ChatComponentText("this train is locked"));
 			return true;

@@ -1,77 +1,6 @@
 package train.common.library;
 
-import train.common.entity.rollingStock.EntityLocoDiesel44TonSwitcher;
-import train.common.entity.rollingStock.EntityLocoDieselBamboo;
-import train.common.entity.rollingStock.EntityLocoDieselCD742;
-import train.common.entity.rollingStock.EntityLocoDieselChME3;
-import train.common.entity.rollingStock.EntityLocoDieselClass66;
-import train.common.entity.rollingStock.EntityLocoDieselDD35A;
-import train.common.entity.rollingStock.EntityLocoDieselDeltic;
-import train.common.entity.rollingStock.EntityLocoDieselEMDF3;
-import train.common.entity.rollingStock.EntityLocoDieselEMDF7;
-import train.common.entity.rollingStock.EntityLocoDieselFOLM1;
-import train.common.entity.rollingStock.EntityLocoDieselGP7Red;
-import train.common.entity.rollingStock.EntityLocoDieselIC4_DSB_MG;
-import train.common.entity.rollingStock.EntityLocoDieselKof_DB;
-import train.common.entity.rollingStock.EntityLocoDieselMILW_H1044;
-import train.common.entity.rollingStock.EntityLocoDieselSD40;
-import train.common.entity.rollingStock.EntityLocoDieselSD70;
-import train.common.entity.rollingStock.EntityLocoDieselShunter;
-import train.common.entity.rollingStock.EntityLocoDieselV60_DB;
-import train.common.entity.rollingStock.EntityLocoDieselWLs40;
-import train.common.entity.rollingStock.EntityLocoElectricBP4;
-import train.common.entity.rollingStock.EntityLocoElectricBR185;
-import train.common.entity.rollingStock.EntityLocoElectricBR_E69;
-import train.common.entity.rollingStock.EntityLocoElectricCD151;
-import train.common.entity.rollingStock.EntityLocoElectricClass85;
-import train.common.entity.rollingStock.EntityLocoElectricE103;
-import train.common.entity.rollingStock.EntityLocoElectricE10_DB;
-import train.common.entity.rollingStock.EntityLocoElectricHighSpeedZeroED;
-import train.common.entity.rollingStock.EntityLocoElectricICE1;
-import train.common.entity.rollingStock.EntityLocoElectricMinetrain;
-import train.common.entity.rollingStock.EntityLocoElectricNewHighSpeed;
-import train.common.entity.rollingStock.EntityLocoElectricTramNY;
-import train.common.entity.rollingStock.EntityLocoElectricTramWood;
-import train.common.entity.rollingStock.EntityLocoElectricVL10;
-import train.common.entity.rollingStock.EntityLocoSteam040VB;
-import train.common.entity.rollingStock.EntityLocoSteam262T;
-import train.common.entity.rollingStock.EntityLocoSteam4_4_0;
-import train.common.entity.rollingStock.EntityLocoSteamAdler;
-import train.common.entity.rollingStock.EntityLocoSteamAlcoSC4;
-import train.common.entity.rollingStock.EntityLocoSteamAlice0_4_0;
-import train.common.entity.rollingStock.EntityLocoSteamBR01_DB;
-import train.common.entity.rollingStock.EntityLocoSteamBR80_DB;
-import train.common.entity.rollingStock.EntityLocoSteamBerk1225;
-import train.common.entity.rollingStock.EntityLocoSteamBerk765;
-import train.common.entity.rollingStock.EntityLocoSteamC41;
-import train.common.entity.rollingStock.EntityLocoSteamC41T;
-import train.common.entity.rollingStock.EntityLocoSteamC41_080;
-import train.common.entity.rollingStock.EntityLocoSteamC62Class;
-import train.common.entity.rollingStock.EntityLocoSteamCherepanov;
-import train.common.entity.rollingStock.EntityLocoSteamClimax;
-import train.common.entity.rollingStock.EntityLocoSteamCoranationClass;
-import train.common.entity.rollingStock.EntityLocoSteamD51;
-import train.common.entity.rollingStock.EntityLocoSteamD51Long;
-import train.common.entity.rollingStock.EntityLocoSteamEr_Ussr;
-import train.common.entity.rollingStock.EntityLocoSteamForneyRed;
-import train.common.entity.rollingStock.EntityLocoSteamFowler;
-import train.common.entity.rollingStock.EntityLocoSteamGLYN042T;
-import train.common.entity.rollingStock.EntityLocoSteamGS4;
-import train.common.entity.rollingStock.EntityLocoSteamHallClass;
-import train.common.entity.rollingStock.EntityLocoSteamHeavy;
-import train.common.entity.rollingStock.EntityLocoSteamKingClass;
-import train.common.entity.rollingStock.EntityLocoSteamLSSP7;
-import train.common.entity.rollingStock.EntityLocoSteamMILWClassA;
-import train.common.entity.rollingStock.EntityLocoSteamMallardA4;
-import train.common.entity.rollingStock.EntityLocoSteamMogulBlue;
-import train.common.entity.rollingStock.EntityLocoSteamPannier;
-import train.common.entity.rollingStock.EntityLocoSteamShay;
-import train.common.entity.rollingStock.EntityLocoSteamSmall;
-import train.common.entity.rollingStock.EntityLocoSteamSnowPlow;
-import train.common.entity.rollingStock.EntityLocoSteamSouthern1102;
-import train.common.entity.rollingStock.EntityLocoSteamUSATCUK;
-import train.common.entity.rollingStock.EntityLocoSteamUSATCUS;
-import train.common.entity.rollingStock.EntityLocoSteamVBShay;
+import train.common.entity.rollingStock.*;
 
 public enum EnumSounds {
 
@@ -137,7 +66,7 @@ public enum EnumSounds {
 	locoChME3(EntityLocoDieselChME3.class, "chme3_horn", 0.8F, "chme3_idle", 0.65F, 40, "chme3_idle", 0.65F, 40, false),
 	locoGP7Red(EntityLocoDieselGP7Red.class, "gp_horn", 0.8F, "chme3_idle", 0.65F, 40, "chme3_idle", 0.65F, 40, false),
 	locoBP4(EntityLocoElectricBP4.class, "gp_horn", 0.8F, "mg_run", 0.6F, 8, "mg_idle", 0.4F, 50, false),
-	locoFOLM1(EntityLocoDieselFOLM1.class, "gp_horn", 0.8F, "chme3_idle", 0.65F, 40, "chme3_idle", 0.65F, 40, false),
+	locoFOLM1(EntityLocoDieselFOLM1.class, "gp40-2_horn", 0.8F, "chme3_idle", 0.65F, 40, "chme3_idle", 0.65F, 40, false),
 	locoKof_DB(EntityLocoDieselKof_DB.class, "chme3_horn", 0.8F, "chme3_idle", 0.65F, 40, "chme3_idle", 0.65F, 40, false),
 	locoSD40(EntityLocoDieselSD40.class, "gp_horn", 0.8F, "chme3_idle", 0.65F, 40, "chme3_idle", 0.65F, 40, false),
 	locoWLs40(EntityLocoDieselWLs40.class, "vl10_horn", 0.8F, "chme3_idle", 0.65F, 40, "chme3_idle", 0.65F, 40, false),

@@ -8,10 +8,9 @@
 
 package mods.railcraft.api.tracks;
 
-import java.util.List;
-
 import mods.railcraft.api.core.INetworkedObject;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
@@ -19,7 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
+import java.util.List;
 
 /**
  * This interface defines a track.
@@ -77,7 +77,7 @@ public interface ITrackInstance extends INetworkedObject {
      *
      * @return
      */
-    public IIcon getIcon();
+    public ModelResourceLocation getIcon();
 
     public void writeToNBT(NBTTagCompound data);
 

@@ -15,13 +15,15 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileTrainWbench extends TileEntity implements IInventory {
 
 	private ItemStack[] workbenchItemStacks;
-	private ForgeDirection facing;
+	private EnumFacing facing;
 
 	public TileTrainWbench() {
 
@@ -29,22 +31,30 @@ public class TileTrainWbench extends TileEntity implements IInventory {
 	}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer p) {}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 
 		return "TrainWorkbench";
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 
 		return false;
 	}
 
+	/**
+	 * Get the formatted ChatComponent that will be used for the sender's username in chat
+	 */
 	@Override
-	public void openInventory() {}
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText(getName());
+	}
+
+	@Override
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
 	public int getSizeInventory() {
@@ -87,7 +97,7 @@ public class TileTrainWbench extends TileEntity implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
+	public ItemStack removeStackFromSlot(int i) {
 
 		if (this.workbenchItemStacks[i] != null) {
 
@@ -118,7 +128,7 @@ public class TileTrainWbench extends TileEntity implements IInventory {
 
 		super.readFromNBT(nbtTag);
 
-		facing = ForgeDirection.getOrientation(nbtTag.getByte("Orientation"));
+		facing = EnumFacing.getHorizontal(nbtTag.getByte("Orientation"));
 		NBTTagList tagList = nbtTag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 		workbenchItemStacks = new ItemStack[getSizeInventory()];
 
@@ -145,7 +155,7 @@ public class TileTrainWbench extends TileEntity implements IInventory {
 		}
 		else {
 
-			nbtTag.setByte("Orientation", (byte) ForgeDirection.NORTH.ordinal());
+			nbtTag.setByte("Orientation", (byte) EnumFacing.NORTH.ordinal());
 		}
 
 		NBTTagList tagList = new NBTTagList();
@@ -174,20 +184,20 @@ public class TileTrainWbench extends TileEntity implements IInventory {
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 
-		if (worldObj == null || worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if (worldObj == null || worldObj.getTileEntity(pos) != this) {
 
 			return false;
 		}
 
-		return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
+		return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
-	public ForgeDirection getFacing() {
+	public EnumFacing getFacing() {
 
-		return (facing != null ? this.facing : ForgeDirection.NORTH);
+		return (facing != null ? this.facing : EnumFacing.NORTH);
 	}
 
-	public void setFacing(ForgeDirection face) {
+	public void setFacing(EnumFacing face) {
 
 		this.facing = face;
 	}
@@ -198,12 +208,32 @@ public class TileTrainWbench extends TileEntity implements IInventory {
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(pos, 1, nbt);
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 
 		return true;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
 	}
 }

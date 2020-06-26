@@ -9,7 +9,6 @@
 package mods.railcraft.api.carts;
 
 import com.mojang.authlib.GameProfile;
-
 import net.minecraft.item.ItemStack;
 
 /**

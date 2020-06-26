@@ -17,6 +17,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.Constants;
 
 //TODO Does this class even have ANY purpose? If it's supposed to identify TileEntities of this certain mod, use an interface. PLEASE. NO!
@@ -33,7 +36,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side){
+    public int[] getSlotsForFace(EnumFacing side){
         if(this.slots.length > 0){
             int[] theInt = new int[slots.length];
             for(int i = 0; i < theInt.length; i++){
@@ -46,12 +49,12 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side){
+    public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side){
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side){
+    public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side){
         return false;
     }
 
@@ -64,6 +67,14 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     public ItemStack getStackInSlot(int slot){
         return this.slots.length >= slot ? this.slots[slot] : null;
     }
+
+    @Override
+    public ItemStack removeStackFromSlot(int slot){
+        ItemStack s = getStackInSlot(slot).copy();
+        setInventorySlotContents(slot,null);
+        return s;
+    }
+
 
     @Override
     public ItemStack decrStackSize(int i, int j){
@@ -84,7 +95,12 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
         }
     }
 
-    @Override
+
+    public void clear(){
+     slots= new ItemStack[slots.length];
+    }
+
+    //@Override
     public ItemStack getStackInSlotOnClosing(int slot){
         if (this.slots[slot] != null) {
             ItemStack var2 = this.slots[slot];
@@ -103,12 +119,17 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public String getInventoryName(){
+    public String getName(){
         return this.invName;
     }
 
     @Override
-    public boolean hasCustomInventoryName(){
+    public IChatComponent getDisplayName(){
+        return new ChatComponentText(this.invName);
+    }
+
+    @Override
+    public boolean hasCustomName(){
         return false;
     }
 
@@ -119,22 +140,33 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player){
-        return player.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
+        return player.getDistanceSq((double) this.getPos().getX() + 0.5D, (double) this.getPos().getY() + 0.5D, (double) this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void openInventory(){
-
-    }
+    public void openInventory(EntityPlayer p){}
 
     @Override
-    public void closeInventory(){
-
-    }
+    public void closeInventory(EntityPlayer p){}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack){
         return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
     }
 
     @Override
@@ -186,7 +218,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
         for(Object o : this.worldObj.playerEntities){
             if(o instanceof EntityPlayerMP){
                 EntityPlayerMP player = (EntityPlayerMP) o;
-                if(player.getDistance(xCoord, yCoord, zCoord) <= 64) {
+                if(player.getDistance(getPos().getX(), getPos().getY(),getPos().getZ()) <= 64) {
                     player.playerNetServerHandler.sendPacket(this.getDescriptionPacket());
                 }
             }
@@ -197,13 +229,13 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     public Packet getDescriptionPacket() {
         NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt, true);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+        return new S35PacketUpdateTileEntity(this.getPos(), 1, nbt);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
         if(pkt != null){
-            this.readFromNBT(pkt.func_148857_g(), true);
+            this.readFromNBT(pkt.getNbtCompound(), true);
         }
     }
 

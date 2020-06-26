@@ -1,23 +1,24 @@
 package train.common.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
-import train.common.library.Info;
+import train.common.core.util.TraincraftUtil;
 import train.common.tile.TileWindMill;
 
+import java.util.Random;
+
 public class BlockWindMill extends Block {
-	private IIcon texture;
+	//private IIcon texture;
 
 	public BlockWindMill() {
 		super(Material.wood);
@@ -27,12 +28,12 @@ public class BlockWindMill extends Block {
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) {
+	public boolean hasTileEntity(IBlockState metadata) {
 		return true;
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isFullBlock() {
 		return false;
 	}
 
@@ -42,7 +43,7 @@ public class BlockWindMill extends Block {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState metadata) {
 		return new TileWindMill();
 	}
 
@@ -53,11 +54,11 @@ public class BlockWindMill extends Block {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
+	public void randomDisplayTick(World par1World, BlockPos pos,IBlockState state, Random par5Random) {
+		TileEntity tile = par1World.getTileEntity(pos);
 		if (tile != null && tile instanceof TileWindMill && ((TileWindMill) tile).windClient > 0) {
 			if (par5Random.nextInt(20) == 0) {
-				par1World.playSound(par2, par3, par4, "minecart.inside", par5Random.nextFloat() * 0.25F + 0.1F, par5Random.nextFloat() * 1F - 0.6F, true);
+				par1World.playSound(pos.getX(),pos.getY(),pos.getZ(), "minecart.inside", par5Random.nextFloat() * 0.25F + 0.1F, par5Random.nextFloat() * 1F - 0.6F, true);
 			}
 		}
 	}
@@ -66,12 +67,14 @@ public class BlockWindMill extends Block {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
 		int l = MathHelper.floor_double((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		int i1 = par1World.getBlockMetadata(par2, par3, par4) >> 2;
+		int i1 = TraincraftUtil.getBlockMeta(par1World,pos);//par1World.getBlockMetadata(par2, par3, par4) >> 2;
 		++l;
 		l %= 4;
+		((TileWindMill)par1World.getTileEntity(pos)).setFacing(l);
 
+		/*this should be handled by tile entity.
 		if (l == 0) {
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | i1 << 2, 2);
 		}
@@ -86,29 +89,30 @@ public class BlockWindMill extends Block {
 
 		if (l == 3) {
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | i1 << 2, 2);
-		}
+		}*/
 	}
 
-	@Override
+
+	/*@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
+	public static void registerRender(Block iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":wind_mill");
 	}
 
 	@Override
 	public IIcon getIcon(int i, int j) {
 		return texture;
-	}
+	}*/
 
 	/**
 	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
 	 */
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
-		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof TileWindMill) {
+	public void breakBlock(World par1World, BlockPos pos, IBlockState par5) {
+		TileEntity tile = par1World.getTileEntity(pos);
+		if (tile instanceof TileWindMill) {
 			tile.onChunkUnload();
 		}
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+		super.breakBlock(par1World, pos,par5);
 	}
 }

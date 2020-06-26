@@ -50,13 +50,12 @@ public abstract class Freight extends EntityRollingStock implements IInventory {
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer p) {}
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
+	public ItemStack removeStackFromSlot(int par1) {
 		if (this.cargoItems[par1] != null) {
 			ItemStack var2 = this.cargoItems[par1];
 			this.cargoItems[par1] = null;
@@ -65,6 +64,21 @@ public abstract class Freight extends EntityRollingStock implements IInventory {
 		else {
 			return null;
 		}
+	}
+
+
+	@Override
+	public int getField(int id) {return 0;}
+
+	@Override
+	public void setField(int id, int value) {}
+
+	@Override
+	public int getFieldCount() { return 0;}
+
+	@Override
+	public void clear() {
+		cargoItems=new ItemStack[cargoItems.length];
 	}
 
 	@Override

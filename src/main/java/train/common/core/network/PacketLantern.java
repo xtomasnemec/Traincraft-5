@@ -2,8 +2,10 @@ package train.common.core.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import train.common.tile.TileLantern;
 
 public class PacketLantern implements IMessage {
@@ -46,7 +48,7 @@ public class PacketLantern implements IMessage {
         @Override
         public IMessage onMessage(PacketLantern message, MessageContext context) {
 
-            TileEntity lantern = context.getServerHandler().playerEntity.worldObj.getTileEntity(message.xPos, message.yPos, message.zPos);
+            TileEntity lantern = context.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(message.xPos, message.yPos, message.zPos));
 
 			/* "instanceof" is null-safe, but we check to avoid four unnecessary instanceof checks for when the value is null anyways. */
             if (lantern != null) {

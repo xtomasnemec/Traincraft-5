@@ -1,24 +1,19 @@
 package train.common.api;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import train.common.adminbook.ServerLogger;
 import train.common.entity.rollingStock.EntityTankLava;
+
+import javax.annotation.Nullable;
 
 public abstract class LiquidTank extends EntityRollingStock implements IFluidHandler, ISidedInventory {
 	private int capacity;
@@ -83,19 +78,19 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 		super.onUpdate();
 		if (worldObj.isRemote){ return;}
 
-		if(ticksExisted%5==0 && fill(ForgeDirection.UNKNOWN, new FluidStack(FluidRegistry.WATER,100), false)==100) {
+		if(ticksExisted%5==0 && fill(EnumFacing.DOWN, new FluidStack(FluidRegistry.WATER,100), false)==100) {
 			FluidStack drain = null;
-			blocksToCheck = new TileEntity[]{worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 1), MathHelper.floor_double(posZ)),
-					worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 2), MathHelper.floor_double(posZ)),
-					worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 3), MathHelper.floor_double(posZ)),
-					worldObj.getTileEntity(MathHelper.floor_double(posX), MathHelper.floor_double(posY + 4), MathHelper.floor_double(posZ))
+			blocksToCheck = new TileEntity[]{worldObj.getTileEntity(new BlockPos(posX, posY -1, posZ)),
+					worldObj.getTileEntity(new BlockPos(posX, posY + 2, posZ)),
+					worldObj.getTileEntity(new BlockPos(posX, posY + 3, posZ)),
+					worldObj.getTileEntity(new BlockPos(posX, posY + 4, posZ))
 			};
 
 			for (TileEntity block : blocksToCheck) {
 				if (drain == null && block instanceof IFluidHandler) {
-					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+					for (EnumFacing direction : EnumFacing.values()) {
 						if (((IFluidHandler) block).drain(direction, 100, false) != null &&
-								((IFluidHandler) block).drain(direction, 100, false).fluid == FluidRegistry.WATER &&
+								((IFluidHandler) block).drain(direction, 100, false).getFluid() == FluidRegistry.WATER &&
 								((IFluidHandler) block).drain(direction, 100, false).amount == 100
 						) {
 							drain = ((IFluidHandler) block).drain(
@@ -106,14 +101,14 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 			}
 
 			if (drain != null) {
-				fill(ForgeDirection.UNKNOWN, drain, true);
+				fill(EnumFacing.DOWN, drain, true);
 			}
 		}
 
 
 		if (theTank != null && theTank.getFluid() != null) {
 			this.dataWatcher.updateObject(18, theTank.getFluid().amount);
-			this.dataWatcher.updateObject(4, theTank.getFluid().getFluidID());
+			this.dataWatcher.updateObject(4, theTank.getFluid().getFluid().getID());
 			if (theTank.getFluid().getFluid() != null)
 				this.dataWatcher.updateObject(22, theTank.getFluid().getFluid().getUnlocalizedName());
 			handleMass();
@@ -241,7 +236,7 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 	 */
 	/*
 	@Override
-	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from) {
+	public int addItem(ItemStack stack, boolean doAdd, EnumFacing from) {
 		if (stack == null) {
 			return 0;
 		}
@@ -262,23 +257,23 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 	 */
 	/*
 	@Override
-	public ItemStack[] canExtractItem(boolean doRemove, ForgeDirection from, int maxItemCount) {
+	public ItemStack[] canExtractItem(boolean doRemove, EnumFacing from, int maxItemCount) {
 		return null;
 	}
 	*/
 
 	@Override
-	public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+	public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, EnumFacing p_102008_3_) {
 		return false;
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+	public int[] getSlotsForFace(EnumFacing p_94128_1_) {
 		return new int[0];
 	}
 
 	@Override
-	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
+	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, EnumFacing p_102007_3_) {
 		return false;
 	}
 
@@ -288,7 +283,7 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
+	public ItemStack removeStackFromSlot(int par1) {
 		if (this.cargoItems[par1] != null) {
 			ItemStack var2 = this.cargoItems[par1];
 			this.cargoItems[par1] = null;
@@ -337,10 +332,10 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer p) {}
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -391,12 +386,12 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 		return theTank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 		if (resource == null || !resource.isFluidEqual(theTank.getFluid())) {
 			return null;
 		}
@@ -404,22 +399,43 @@ public abstract class LiquidTank extends EntityRollingStock implements IFluidHan
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 		return theTank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 		return new FluidTankInfo[] { theTank.getInfo() };
 	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
+	}
+
 }

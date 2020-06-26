@@ -1,9 +1,8 @@
 package train.client.render.models;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 import tmt.ModelBase;
 import train.client.core.ClientProxy;
 import train.client.render.CustomModelRenderer;
@@ -546,10 +545,10 @@ public class ModelLocoC62Class extends ModelBase {
 		box98.render(f5);
 		box99.render(f5);
 		
-		Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 		box97.render(f5);
 		box46.render(f5);
-		Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+		Minecraft.getMinecraft().entityRenderer.enableLightmap();
 		
 		if (ClientProxy.isHoliday()) {
 			GL11.glPushMatrix();

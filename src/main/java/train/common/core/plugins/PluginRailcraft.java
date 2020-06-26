@@ -1,7 +1,5 @@
 package train.common.core.plugins;
 
-import java.util.ArrayList;
-
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -12,6 +10,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import train.common.core.util.TraincraftUtil;
 import train.common.library.ItemIDs;
 import train.common.library.Tracks;
+
+import java.util.List;
 
 public class PluginRailcraft {
 
@@ -28,13 +28,13 @@ public class PluginRailcraft {
 		GameRegistry.addShapelessRecipe(Tracks.SNOWY_STEEL_TRACK.getOutput(), Tracks.STEEL_TRACK.getTrackSpec().getItem(1), Items.snowball);
 		GameRegistry.addShapelessRecipe(Tracks.SNOWY_COPPER_TRACK.getOutput(), Tracks.COPPER_TRACK.getTrackSpec().getItem(1), Items.snowball);
 		GameRegistry.addShapelessRecipe(Tracks.VANILLA_SNOWY_TRACK.getOutput(), Blocks.rail, Items.snowball);
-		ArrayList<ItemStack> copper = OreDictionary.getOres("ingotCopper");
+		List<ItemStack> copper = OreDictionary.getOres("ingotCopper");
 		if (copper != null && copper.size() >= 0) {
 			for(ItemStack aCopper : copper){
 				RailcraftCraftingManager.rollingMachine.addRecipe(new ItemStack(ItemIDs.copperRail.item, 8), "XXX", "   ", "XXX", 'X', aCopper);
 			}
 		}
-		ArrayList<ItemStack> steel = OreDictionary.getOres("ingotSteel");
+		List<ItemStack> steel = OreDictionary.getOres("ingotSteel");
 		if (steel != null && steel.size() >= 0) {
 			for(ItemStack aSteel : steel){
 				RailcraftCraftingManager.rollingMachine.addRecipe(new ItemStack(ItemIDs.steelRail.item, 16), "XXX", "   ", "XXX", 'X', aSteel);

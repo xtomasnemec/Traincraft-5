@@ -1,9 +1,5 @@
 package train.common.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -13,26 +9,29 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 import train.common.core.interfaces.ITier;
 import train.common.core.managers.TierRecipe;
 import train.common.core.managers.TierRecipeManager;
 import train.common.library.Info;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
-	private Random rand;
 	private ItemStack[] crafterInventory;
 
-	private ForgeDirection facing;
+	private EnumFacing facing;
 	private final int Tier = 1;
-	private List<Item>			resultList;
+	private List<Item> resultList;
 	private static List<Item> knownRecipes = new ArrayList<Item>();
 	private static int[] slotSelected;
 
 	public TileCrafterTierI() {
 		crafterInventory = new ItemStack[26];
-		this.rand = new Random();
 		this.resultList = new ArrayList<Item>();
 		slotSelected = new int[8];
 	}
@@ -72,7 +71,7 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
+	public ItemStack removeStackFromSlot(int i) {
 		if (crafterInventory[i] != null) {
 			ItemStack stack = this.crafterInventory[i];
 			crafterInventory[i] = null;
@@ -92,8 +91,24 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "TierI";
+	}
+
+	/**
+	 * Returns true if this thing is named
+	 */
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	/**
+	 * Get the formatted ChatComponent that will be used for the sender's username in chat
+	 */
+	@Override
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText("Traincraft Table Tier 1");
 	}
 
 	@Override
@@ -101,7 +116,7 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 
 		super.readFromNBT(nbtTag);
 
-		facing = ForgeDirection.getOrientation(nbtTag.getByte("Orientation"));
+		facing = EnumFacing.getHorizontal(nbtTag.getByte("Orientation"));
 		slotSelected = nbtTag.getIntArray("Selected");
 		NBTTagList nbttaglist = nbtTag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 
@@ -146,7 +161,7 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 		}
 		else {
 
-			nbtTag.setByte("Orientation", (byte) ForgeDirection.NORTH.ordinal());
+			nbtTag.setByte("Orientation", (byte) EnumFacing.NORTH.ordinal());
 		}
 
 		nbtTag.setIntArray("Selected", slotSelected);
@@ -203,9 +218,9 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 			}
 		}
 
-		for (int i = 0; i < resultList.size(); i++) {
-			if (!listContainsItem(knownRecipes, resultList.get(i))) {
-				knownRecipes.add(resultList.get(i));
+		for (Item item : resultList) {
+			if (!listContainsItem(knownRecipes, item)) {
+				knownRecipes.add(item);
 			}
 		}
 	}
@@ -215,33 +230,33 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 		if (worldObj == null) {
 			return true;
 		}
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if (worldObj.getTileEntity(pos) != this) {
 			return false;
 		}
-		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+		return entityplayer.getDistanceSq(pos.add(0.5,0.5,0.5)) <= 64D;
 	}
 
-	public ForgeDirection getFacing() {
+	public EnumFacing getFacing() {
 
 		if (facing != null) {
 
 			return this.facing;
 		}
 
-		return ForgeDirection.NORTH;
+		return EnumFacing.NORTH;
 	}
 
-	public void setFacing(ForgeDirection face) {
+	public void setFacing(EnumFacing face) {
 
 		if (facing != face)
 			this.facing = face;
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer p) {}
 
 	@Override
 	public Packet getDescriptionPacket() {
@@ -249,12 +264,12 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(pos, 1, nbt);
 	}
 
 	private boolean listContainsItem(List<Item> list, Item stack) {
-		for (int i = 0; i < list.size(); i++) {
-			if (Item.getIdFromItem(list.get(i)) == Item.getIdFromItem(stack)) {
+		for (Item item : list) {
+			if (Item.getIdFromItem(item) == Item.getIdFromItem(stack)) {
 				return true;
 			}
 		}
@@ -291,15 +306,9 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 		return Info.TEX_TIER_I;
 	}
 
-	@Override
-	public boolean hasCustomInventoryName() {
-		return false;
-	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
-		if(i>17)
-			return true;
 		if(i>9)
 			return false;
 
@@ -312,6 +321,26 @@ public class TileCrafterTierI extends TileEntity implements IInventory, ITier {
 		}
 
 		return false;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
 	}
 
 	/*

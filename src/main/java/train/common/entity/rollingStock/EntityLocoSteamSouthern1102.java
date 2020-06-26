@@ -131,7 +131,7 @@ public class EntityLocoSteamSouthern1102 extends SteamTrain {
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "Southern 1102";
 	}
 

@@ -9,9 +9,9 @@
 package mods.railcraft.api.core.items;
 
 import com.mojang.authlib.GameProfile;
-
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -46,5 +46,5 @@ public interface IMinecartItem
      * @param k z-Coord
      * @return the cart placed or null if failed
      */
-    public EntityMinecart placeCart(GameProfile owner, ItemStack cart, World world, int i, int j, int k);
+    public EntityMinecart placeCart(GameProfile owner, ItemStack cart, World world, BlockPos pos);
 }

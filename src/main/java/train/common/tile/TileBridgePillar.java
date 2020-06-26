@@ -2,6 +2,7 @@ package train.common.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileBridgePillar extends TileEntity {

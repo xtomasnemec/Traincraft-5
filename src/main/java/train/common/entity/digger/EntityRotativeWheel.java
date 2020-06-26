@@ -1,19 +1,20 @@
 package train.common.entity.digger;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockTorch;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.core.FakePlayer;
+
+import java.util.List;
 
 public class EntityRotativeWheel extends Entity {
 
@@ -83,7 +84,7 @@ public class EntityRotativeWheel extends Entity {
 		if (fakePlayer == null && worldObj != null)
 			fakePlayer = new FakePlayer(worldObj);
 
-		List listLiving = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.4, 0.4, 0.4));
+		List listLiving = worldObj.getEntitiesWithinAABBExcludingEntity(this, getCollisionBoundingBox().expand(0.4, 0.4, 0.4));
 		if (listLiving != null && listLiving.size() > 0 && entity != null && entity instanceof EntityRotativeDigger && ((EntityRotativeDigger) entity).getFuel() > 0) {//&& ((EntityRotativeDigger) entity).start){
 
 			for (int j1 = 0; j1 < listLiving.size(); j1++) {
@@ -110,7 +111,7 @@ public class EntityRotativeWheel extends Entity {
 		if (entity != null && entity instanceof EntityRotativeDigger && ((EntityRotativeDigger) entity).getFuel() > 0) {//TODO should only dig when rotative digger has fuel and dig mode is on, doesn't work yet
 			Vec3 vec = null;
 
-			vec = Vec3.createVectorHelper(posX - 0.5, posY, posZ - 0.5);
+			vec = new Vec3(posX - 0.5, posY, posZ - 0.5);
 
 			this.harvestBlock_do(vec);
 			//TODO how many blocks should be harvested?
@@ -161,20 +162,20 @@ public class EntityRotativeWheel extends Entity {
 		if (pos == null)
 			return;
 
-		Block id = worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
-		int meta = worldObj.getBlockMetadata((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+		IBlockState id = worldObj.getBlockState(new BlockPos(pos));
+		//int meta = worldObj.getBlockMetadata((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
 		if (id != null) {
-			this.playMiningEffect(pos, id);
+			this.playMiningEffect(pos, id.getBlock());
 		}
 
-		if (!shouldIgnoreBlockForHarvesting(pos, id)) {
+		if (!shouldIgnoreBlockForHarvesting(pos, id.getBlock())) {
 
 			if (id != null) {
-				id.harvestBlock(worldObj, fakePlayer, (int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, meta);
-				worldObj.setBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, null);
+				id.getBlock().harvestBlock(worldObj, fakePlayer, new BlockPos(pos),id,null);
+				worldObj.setBlockToAir(new BlockPos(pos));
 
-				worldObj.playAuxSFX(2001, (int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, Block.getIdFromBlock(id) + (meta << 12));
-				this.playMiningEffect(pos, id);
+				//worldObj.playAuxSFX(2001, (int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, Block.getIdFromBlock(id.getBlock()) + (meta << 12));
+				this.playMiningEffect(pos, id.getBlock());
 			}
 		}
 
@@ -189,17 +190,19 @@ public class EntityRotativeWheel extends Entity {
 	 */
 	private boolean shouldIgnoreBlockForHarvesting(Vec3 pos, Block id) {
 
-		if (id == null || id instanceof BlockTorch || id == Block.getBlockFromName("bedrock") || id == Block.getBlockFromName("fire") || id == Block.getBlockFromName("portal") || id == Block.getBlockFromName("endPortal") || id instanceof BlockLiquid || Block.getIdFromBlock(id) == 55 || Block.getIdFromBlock(id) == 70 || Block.getIdFromBlock(id) == 72) {
+		return true;
+		//all the following cases return true
+		/*if (id == null || id instanceof BlockTorch || id == Block.getBlockFromName("bedrock") || id == Block.getBlockFromName("fire") || id == Block.getBlockFromName("portal") || id == Block.getBlockFromName("endPortal") || id instanceof BlockLiquid || Block.getIdFromBlock(id) == 55 || Block.getIdFromBlock(id) == 70 || Block.getIdFromBlock(id) == 72) {
 			return true;
 		}
 
 		boolean flag = false;
 
-		if (flag && id.getCollisionBoundingBoxFromPool(worldObj, (int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord) == null) {
+		if (flag && id.getCollisionBoundingBox(worldObj, new BlockPos(pos)int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord) == null) {
 			return true;
 		}
 
-		return false;
+		return false;*/
 
 	}
 
@@ -219,7 +222,7 @@ public class EntityRotativeWheel extends Entity {
 	private void playMiningEffect(Vec3 pos, Block block_index) {
 
 		miningTickCounter++;
-		Block id = worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+		Block id = worldObj.getBlockState(new BlockPos(pos)).getBlock();
 		Block block = id;
 	}
 
@@ -263,7 +266,7 @@ public class EntityRotativeWheel extends Entity {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i) {
+	public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i, boolean garbage) {
 		field_9393_e = d;
 		field_9392_f = d1;
 		field_9391_g = d2;

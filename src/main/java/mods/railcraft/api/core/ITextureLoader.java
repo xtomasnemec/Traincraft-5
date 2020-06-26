@@ -8,7 +8,7 @@
 
 package mods.railcraft.api.core;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
 
 /**
  *
@@ -16,5 +16,5 @@ import net.minecraft.client.renderer.texture.IIconRegister;
  */
 public interface ITextureLoader {
 
-    void registerIcons(IIconRegister iconRegister);
+    void registerIcons(TextureMap iconRegister);
 }

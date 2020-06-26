@@ -7,9 +7,9 @@
 
 package train.common.core.interfaces;
 
-import java.util.List;
-
 import net.minecraft.item.Item;
+
+import java.util.List;
 
 public abstract interface ITier {
 

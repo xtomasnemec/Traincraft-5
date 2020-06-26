@@ -9,11 +9,10 @@
 
 package train.client.render.models; //Path where the model is located
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
@@ -39,9 +38,9 @@ public class ModelLocoCD151 extends ModelConverter //Same as Filename
 	public void render(Entity entity, float f0, float f1, float f2, float f3, float f4, float scale){
 		for (ModelRendererTurbo mrt : bodyModel){
 			if(mrt.boxName.equals("lamp")){
-				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+				Minecraft.getMinecraft().entityRenderer.disableLightmap();
 				mrt.render(scale,false);
-				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+				Minecraft.getMinecraft().entityRenderer.enableLightmap();
 			} else {
 				mrt.render(scale,false);
 			}

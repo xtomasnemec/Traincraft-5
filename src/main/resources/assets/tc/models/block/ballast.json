@@ -1,0 +1,7 @@
+{
+  "parent": "block/stone",
+  "textures": {
+    "particle": "blocks/stone",
+    "all": "textures/ballast_test"
+  }
+}

@@ -1,12 +1,12 @@
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.common.entity.EntityLasersLines;
 
 public class RenderLasersLines extends Render {
@@ -14,7 +14,8 @@ public class RenderLasersLines extends Render {
 	private static final ModelBase model = new ModelBase() {};
 	private ModelRenderer box;
 
-	public RenderLasersLines() {
+	public RenderLasersLines(RenderManager manager) {
+		super(manager);
 		this.shadowSize = 0.5F;
 		box = new ModelRenderer(model, 0, 0);
 		box.addBox(0, -0.5F, -0.5F, 16, 1, 1);

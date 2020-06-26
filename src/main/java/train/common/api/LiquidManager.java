@@ -1,27 +1,21 @@
 package train.common.api;
 
-import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.blocks.BlockTraincraftFluid;
 import train.common.items.ItemBlockFluid;
 import train.common.library.BlockIDs;
+import train.common.library.Info;
 import train.common.library.ItemIDs;
 
 public class LiquidManager {
@@ -38,8 +32,8 @@ public class LiquidManager {
 	public static Fluid bioDiesel;
 	public static Fluid bioethanol;
 
-	public static final Fluid DIESEL = new Fluid("Diesel").setUnlocalizedName("diesel.name").setDensity(860);
-	public static final Fluid REFINED_FUEL = new Fluid("RefinedFuel").setDensity(820).setUnlocalizedName("refinedfuel.name");
+	public static final Fluid DIESEL = new Fluid("Diesel",new ResourceLocation(Info.modID, "/textures/blocks/liquid_diesel_flow.png"), new ResourceLocation(Info.modID, "/textures/blocks/liquid_diesel.png")).setUnlocalizedName("diesel.name").setDensity(860);
+	public static final Fluid REFINED_FUEL = new Fluid("RefinedFuel", new ResourceLocation(Info.modID, "/textures/blocks/liquid_refinedfuel_flow.png"), new ResourceLocation(Info.modID, "/textures/blocks/liquid_refinedfuel.png")).setDensity(820).setUnlocalizedName("refinedfuel.name");
 
 	public static LiquidManager getInstance() {
 		if (instance == null) {
@@ -65,35 +59,27 @@ public class LiquidManager {
 		if (Loader.isModLoaded("Railcraft")) {
 			addRCFluids();
 		}
-		if (Loader.isModLoaded("BuildCraft|Energy")) {
+		/*if (Loader.isModLoaded("BuildCraft|Energy")) {
 			addBCFluids();
-		}
+		}*/
 		MinecraftForge.EVENT_BUS.register(this);
 
 		registerFluidBlock((BlockTraincraftFluid) BlockIDs.diesel.block);
 		registerFluidBlock((BlockTraincraftFluid) BlockIDs.refinedFuel.block);
 	}
 
-	@Optional.Method(modid = "BuildCraft|Energy")
+	/*@Optional.Method(modid = "BuildCraft|Energy")
 	private void addBCFluids(){
 		BuildcraftFuelRegistry.fuel.addFuel(DIESEL, 30, 200000);
 		BuildcraftFuelRegistry.fuel.addFuel(REFINED_FUEL, 60, 100000);
-	}
+	}*/
 
 	@Optional.Method(modid = "Railcraft")
 	private void addRCFluids() {
 		FuelManager.addBoilerFuel(DIESEL, 60000);
 		FuelManager.addBoilerFuel(REFINED_FUEL, 96000);
 	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void textureHook(TextureStitchEvent.Post event) {
-		if (event.map.getTextureType() == 0) {
-			DIESEL.setIcons(BlockIDs.diesel.block.getBlockTextureFromSide(1), BlockIDs.diesel.block.getBlockTextureFromSide(2));
-			REFINED_FUEL.setIcons(BlockIDs.refinedFuel.block.getBlockTextureFromSide(1), BlockIDs.refinedFuel.block.getBlockTextureFromSide(2));
-		}
-	}
+
 
 	public static void getLiquidsFromDictionnary() {
 		oil = FluidRegistry.getFluid("oil");
@@ -199,9 +185,9 @@ public class LiquidManager {
 		FluidStack bucketLiquid = getFluidInContainer(itemstack);
 		ItemStack emptyItem = itemstack.getItem().getContainerItem(itemstack);
 		if ((bucketLiquid != null)) {
-			int used = tank.fill(ForgeDirection.UNKNOWN,bucketLiquid, false);
+			int used = tank.fill(EnumFacing.DOWN,bucketLiquid, false);
 			if (used >= bucketLiquid.amount) {
-				tank.fill(ForgeDirection.UNKNOWN,bucketLiquid, true);
+				tank.fill(EnumFacing.DOWN,bucketLiquid, true);
 				if (itemstack.getItem() == Items.potionitem){
 					return new ItemStack(Items.glass_bottle, 1);
 				}
@@ -210,12 +196,12 @@ public class LiquidManager {
 			}
 		}
 		else if ((getInstance().isEmptyContainer(itemstack))) {
-			ItemStack filled = getInstance().fillFluidContainer(tank.drain(ForgeDirection.UNKNOWN,1000,false), itemstack);
+			ItemStack filled = getInstance().fillFluidContainer(tank.drain(EnumFacing.DOWN,1000,false), itemstack);
 			if ((filled != null)) {
 				FluidStack liquid = getFluidInContainer(filled);
-				FluidStack drain = tank.drain(ForgeDirection.UNKNOWN,liquid.amount, false);
+				FluidStack drain = tank.drain(EnumFacing.DOWN,liquid.amount, false);
 				if ((drain != null) && (drain.amount > 0)) {
-					tank.drain(ForgeDirection.UNKNOWN,liquid.amount, true);
+					tank.drain(EnumFacing.DOWN,liquid.amount, true);
 					inventory.decrStackSize(inventoryIndex, 1);
 					return filled;
 				}
@@ -321,12 +307,12 @@ public class LiquidManager {
 		public int fill(FluidStack resource, boolean doFill) {
 			if (multiFilter != null) {
 				for (int i = 0; i < multiFilter.length; i++) {
-					if (multiFilter[i] != null && (resource.getFluidID() != multiFilter[i].getFluidID())) {
+					if (multiFilter[i] != null && (resource.getFluid().getID() != multiFilter[i].getFluid().getID())) {
 						return super.fill(resource, doFill);
 					}
 				}
 			}
-			else if (filter.getFluidID() != resource.getFluidID()) {
+			else if (filter.getFluid().getID() != resource.getFluid().getID()) {
 				return super.fill(resource, doFill);
 			}
 			return 0;

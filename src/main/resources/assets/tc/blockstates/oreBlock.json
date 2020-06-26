@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "type=1": [
+      { "model": "block/copper_ore" }
+    ],
+    "type=2": [
+      { "model": "block/petrol_ore" }
+    ],
+    "type=3": [
+      { "model": "block/oil_sand" }
+    ],
+    "type=4": [
+      { "model": "block/ballast" }
+    ]
+  }
+}

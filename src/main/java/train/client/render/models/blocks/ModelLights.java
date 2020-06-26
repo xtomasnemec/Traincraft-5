@@ -7,25 +7,23 @@
 
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
 import train.common.library.Info;
 
 public class ModelLights extends ModelBase {
-	private IModelCustom present;
+	private ModelRendererTurbo present;
 	
 	public ModelLights() {
-		present = new AdvancedModelLoader().loadModel(new ResourceLocation(Info.modelPrefix + "lights2.obj"));
+		present = new ModelRendererTurbo(this).addObj("lights2.obj");
 	}
 	
 	public void render(String partname) {
-		present.renderPart(partname);
+		present.render();
 	}
 	
 	public void render(int color) {
@@ -34,7 +32,7 @@ public class ModelLights extends ModelBase {
 		GL11.glRotatef(90f, 0, 1, 0);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "lights3.png"));
 		render("Branch_1");
-		Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 		GL11.glEnable(GL11.GL_BLEND);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "lights.png"));
 		render("Bulb_1");
@@ -42,7 +40,7 @@ public class ModelLights extends ModelBase {
 		render("Plane_1");
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+		Minecraft.getMinecraft().entityRenderer.enableLightmap();
 		GL11.glPopMatrix();
 	}
 }

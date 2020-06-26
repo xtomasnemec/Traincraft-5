@@ -1,15 +1,12 @@
 package train.client.gui;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.client.gui.sideTabs.SideTabInfo;
 import train.client.gui.sideTabs.SideTabRecipes;
 import train.client.gui.sideTabs.SideTabSlots;
@@ -21,6 +18,9 @@ import train.common.core.managers.TierRecipeManager;
 import train.common.library.EnumTrains;
 import train.common.library.Info;
 import train.common.library.ItemIDs;
+
+import java.io.IOException;
+import java.util.List;
 
 
 public class GuiCrafterTier extends GuiTraincraft {
@@ -126,7 +126,9 @@ public class GuiCrafterTier extends GuiTraincraft {
 				GL11.glRotatef(180, 0, 0, 1);
 				GL11.glRotatef(roll, 1, 0, 0);
 				GL11.glRotatef(yaw, 0, 1, 0);
-				if(renderEntity!=null)RenderManager.instance.renderEntityWithPosYaw(renderEntity, 0, 0, 0, 0, 0);
+				if(renderEntity!=null){
+					Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(renderEntity, 0, 0, 0, 0, 0);
+				}
 				RenderHelper.disableStandardItemLighting();
 				GL11.glPopMatrix();
 				yaw += 0.5F;
@@ -172,7 +174,7 @@ public class GuiCrafterTier extends GuiTraincraft {
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int button) {
+	protected void mouseClicked(int x, int y, int button) throws IOException {
 		super.mouseClicked(x, y, button);
 	}
 	@Override

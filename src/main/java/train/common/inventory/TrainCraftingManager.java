@@ -1,10 +1,5 @@
 package train.common.inventory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -14,6 +9,11 @@ import train.common.core.interfaces.ITCRecipe;
 import train.common.recipes.OpenHearthFurnaceRecipe;
 import train.common.recipes.ShapedTrainRecipes;
 import train.common.recipes.ShapelessTrainRecipe;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class TrainCraftingManager {
 	/** The static instance of this class */
@@ -139,8 +139,8 @@ public class TrainCraftingManager {
 
 		if (occupedSlot == 2 && var3.getItem() == var4.getItem() && var3.stackSize == 1 && var4.stackSize == 1 && var3.getItem().isRepairable()) {
 			Item var11 = var3.getItem();
-			int var10 = var11.getMaxDamage() - var3.getItemDamageForDisplay();
-			int var7 = var11.getMaxDamage() - var4.getItemDamageForDisplay();
+			int var10 = var11.getMaxDamage() - var3.getItemDamage();
+			int var7 = var11.getMaxDamage() - var4.getItemDamage();
 			int var8 = var10 + var7 + var11.getMaxDamage() * 10 / 100;
 			int var9 = var11.getMaxDamage() - var8;
 

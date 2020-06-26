@@ -7,44 +7,15 @@
 
 package train.common.core.handlers;
 
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import train.common.Traincraft;
 import train.common.adminbook.ItemAdminBook;
-import train.common.core.network.PacketDestination;
-import train.common.core.network.PacketKeyPress;
-import train.common.core.network.PacketLantern;
-import train.common.core.network.PacketParkingBrake;
-import train.common.core.network.PacketRollingStockRotation;
-import train.common.core.network.PacketSetJukeboxStreamingUrl;
-import train.common.core.network.PacketSetLocoTurnedOn;
-import train.common.core.network.PacketSetTrainLockedToClient;
-import train.common.core.network.PacketSlotsFilled;
-import train.common.core.network.PacketTrackBuilderFollow;
-import train.common.core.network.PacketTrackBuilderHeight;
-import train.common.core.network.PacketUpdateTrainID;
+import train.common.core.network.*;
 import train.common.library.Info;
-import train.common.mtc.packets.PacketATO;
-import train.common.mtc.packets.PacketATODoSlowDown;
-import train.common.mtc.packets.PacketATOSetStopPoint;
-import train.common.mtc.packets.PacketDoAccel;
-import train.common.mtc.packets.PacketGetSomethingFromServer;
-import train.common.mtc.packets.PacketMTC;
-import train.common.mtc.packets.PacketMTCLevelUpdate;
-import train.common.mtc.packets.PacketNCSlowDown;
-import train.common.mtc.packets.PacketNextSpeed;
-import train.common.mtc.packets.PacketSetSpeed;
-import train.common.mtc.packets.PacketThingFromServer;
-import train.common.mtc.packets.handlers.PacketATODOSlowDownHandler;
-import train.common.mtc.packets.handlers.PacketATODoAccelHandler;
-import train.common.mtc.packets.handlers.PacketATOHandler;
-import train.common.mtc.packets.handlers.PacketATOSetStopPointHandler;
-import train.common.mtc.packets.handlers.PacketGetSomethingFromServerHandler;
-import train.common.mtc.packets.handlers.PacketMTCLevelUpdateHandler;
-import train.common.mtc.packets.handlers.PacketMTChandler;
-import train.common.mtc.packets.handlers.PacketNCSlowDownHandler;
-import train.common.mtc.packets.handlers.PacketNextSpeedHandler;
-import train.common.mtc.packets.handlers.PacketSetSpeedHandler;
-import train.common.mtc.packets.handlers.PacketThingFromServerHandler;
+import train.common.mtc.packets.*;
+import train.common.mtc.packets.handlers.*;
 
 public class PacketHandler {
 
@@ -87,7 +58,7 @@ public class PacketHandler {
 		Traincraft.builderChannel.registerMessage(PacketTrackBuilderFollow.Handler.class,
 				PacketTrackBuilderFollow.class, 9, Side.SERVER);
 
-		if (Loader.isModLoaded("ComputerCraft")) {
+		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
 			Traincraft.itsChannel.registerMessage(PacketSetSpeedHandler.class, PacketSetSpeed.class, 200, Side.CLIENT);
 			Traincraft.itsChannel.registerMessage(PacketSetSpeedHandler.class, PacketSetSpeed.class, 212, Side.SERVER);
 			Traincraft.updateTrainIDChannel.registerMessage(PacketUpdateTrainID.Handler.class, PacketUpdateTrainID.class, 11, Side.SERVER);
@@ -97,13 +68,11 @@ public class PacketHandler {
 			Traincraft.msChannel.registerMessage(PacketMTChandler.class, PacketMTC.class, 202, Side.SERVER);
 			Traincraft.mscChannel.registerMessage(PacketMTChandler.class, PacketMTC.class, 203, Side.CLIENT);
 			Traincraft.atoChannel.registerMessage(PacketATOHandler.class, PacketATO.class, 205, Side.CLIENT);
-			Traincraft.atoDoSlowDownChannel.registerMessage(PacketATODOSlowDownHandler.class, PacketATODoSlowDown.class, 206, Side.SERVER);
-			Traincraft.atoDoAccelChannel.registerMessage(PacketATODoAccelHandler.class, PacketDoAccel.class, 207, Side.SERVER);
 			Traincraft.atoSetStopPoint.registerMessage(PacketATOSetStopPointHandler.class, PacketATOSetStopPoint.class, 208, Side.CLIENT);
-			Traincraft.NCSlowDownChannel.registerMessage(PacketNCSlowDownHandler.class, PacketNCSlowDown.class, 209, Side.SERVER);
 			//Traincraft.ctChannel.registerMessage(PacketWMTCChannelTransmitHandler.class, PacketWMTCChannelTransmit.class, 210, Side.CLIENT);
 			Traincraft.gsfsChannel.registerMessage(PacketGetSomethingFromServerHandler.class, PacketGetSomethingFromServer.class, 213, Side.SERVER);
 			Traincraft.gsfsrChannel.registerMessage(PacketThingFromServerHandler.class, PacketThingFromServer.class, 214, Side.CLIENT);
+			Traincraft.playSoundOnClientChannel.registerMessage(PacketPlaySoundOnClientHandler.class, PacketPlaySoundOnClient.class, 209, Side.CLIENT);
 		}
 	}
 }

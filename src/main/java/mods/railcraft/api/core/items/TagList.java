@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 /**
  * This is a collection of ItemStack tags than can be used with
  * GameRegistry.findItemStack().

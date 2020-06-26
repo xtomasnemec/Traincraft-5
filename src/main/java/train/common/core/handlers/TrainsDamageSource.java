@@ -1,13 +1,13 @@
 package train.common.core.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrainsDamageSource extends DamageSource {
 
@@ -41,13 +41,13 @@ public class TrainsDamageSource extends DamageSource {
 	 * Returns the message to be displayed on player death.
 	 */
 	@Override
-	public ChatComponentText func_151519_b(EntityLivingBase living) {
+	public ChatComponentText getDeathMessage(EntityLivingBase living) {
 		if(living instanceof EntityPlayer) {
-			return new ChatComponentText(((EntityPlayer) living).getDisplayName() + deathMessage);
-		} else if(living instanceof EntityLiving &&((EntityLiving)living).getCustomNameTag() !=null && ((EntityLiving)living).getCustomNameTag().length()>0) {
-			return new ChatComponentText( ((EntityLiving)living).getCustomNameTag() + deathMessage);
+			return new ChatComponentText(( living).getDisplayName() + deathMessage);
+		} else if(living instanceof EntityLiving &&(living).getCustomNameTag() !=null && (living).getCustomNameTag().length()>0) {
+			return new ChatComponentText( (living).getCustomNameTag() + deathMessage);
 		} else {
-			return new ChatComponentText(living.getCommandSenderName() +deathMessage);
+			return new ChatComponentText(living.getCommandSenderEntity().getName() +deathMessage);
 		}
 	}
 }

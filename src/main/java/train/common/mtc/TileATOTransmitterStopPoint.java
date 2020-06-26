@@ -1,24 +1,29 @@
 package train.common.mtc;
 
 
-import java.util.Iterator;
-import java.util.List;
-
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import train.common.Traincraft;
 import train.common.api.Locomotive;
 import train.common.mtc.packets.PacketATOSetStopPoint;
 
-public class TileATOTransmitterStopPoint extends TileEntity implements IPeripheral {
+import java.util.List;
+@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
+public class TileATOTransmitterStopPoint extends TileEntity implements IPeripheral, SimpleComponent {
 
-   public Boolean isActivated = Boolean.valueOf(false);
+   public Boolean isActivated = false;
    public double stopX = 0.0;
    public double stopY = 0.0D;
    public double stopZ = 0.0D;
@@ -28,23 +33,23 @@ public class TileATOTransmitterStopPoint extends TileEntity implements IPeripher
    public void updateEntity() {
       if(worldObj != null) {
          if(this.isActivated) {
-            List<Object> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, this.getRenderBoundingBox());
-            Iterator var2 = list.iterator();
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, this.getRenderBoundingBox());
 
-            while(var2.hasNext()) {
-               Object obj = var2.next();
-               if(obj instanceof Locomotive) {
-                  Locomotive daTrain = (Locomotive)obj;
-                   if (daTrain.mtcOverridePressed) { return;}
-                  if(daTrain.mtcStatus == 1 |daTrain.mtcStatus == 2  ) {
-                     if(this.stopX == 0) {
+            for (Object obj : list) {
+               if (obj instanceof Locomotive) {
+                  Locomotive daTrain = (Locomotive) obj;
+                  if (daTrain.mtcOverridePressed) {
+                     return;
+                  }
+                  if (daTrain.mtcStatus == 1 | daTrain.mtcStatus == 2) {
+                     if (this.stopX == 0) {
                         return;
                      }
 
                      daTrain.xFromStopPoint = this.stopX;
                      daTrain.yFromStopPoint = this.stopY;
                      daTrain.zFromStopPoint = this.stopZ;
-                     Traincraft.atoSetStopPoint.sendToAllAround(new PacketATOSetStopPoint(daTrain.getEntityId(), Double.valueOf(this.stopX), Double.valueOf(this.stopY), Double.valueOf(this.stopZ), daTrain.xStationStop, daTrain.yStationStop, daTrain.zStationStop) , new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, daTrain.posX, daTrain.posY, daTrain.posZ, 150.0D));
+                     Traincraft.atoSetStopPoint.sendToAllAround(new PacketATOSetStopPoint(daTrain.getEntityId(), Double.valueOf(this.stopX), Double.valueOf(this.stopY), Double.valueOf(this.stopZ), daTrain.xStationStop, daTrain.yStationStop, daTrain.zStationStop), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(), daTrain.posX, daTrain.posY, daTrain.posZ, 150.0D));
                   }
                }
             }
@@ -64,24 +69,25 @@ public class TileATOTransmitterStopPoint extends TileEntity implements IPeripher
    public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws LuaException, InterruptedException {
       switch(method) {
       case 0:
-         this.isActivated = Boolean.valueOf(true);
-         return new Object[]{Boolean.valueOf(true)};
+         this.isActivated = true;
+         return new Object[]{true};
       case 1:
-         this.isActivated = Boolean.valueOf(false);
-         return new Object[]{Boolean.valueOf(true)};
+         this.isActivated = false;
+         return new Object[]{false};
       case 2:
          if (arguments[0] instanceof Double) { this.stopX = Double.parseDouble(arguments[0].toString()); } else { return new Object[] {"nil"};}
-         return new Object[]{Boolean.TRUE};
+         return new Object[]{true};
       case 3:
          if (arguments[0] instanceof Double) { this.stopY = Double.parseDouble(arguments[0].toString()); } else { return new Object[] {"nil"};}
-         return new Object[]{Boolean.TRUE};
+         return new Object[]{true};
       case 4:
         if (arguments[0] instanceof Double) { this.stopZ = Double.parseDouble(arguments[0].toString()); } else { return new Object[] {"nil"};}
-         return new Object[]{Boolean.TRUE};
+         return new Object[]{true};
       default:
          return new Object[]{"nil"};
       }
    }
+
 
    public void attach(IComputerAccess computer) {}
 
@@ -91,10 +97,59 @@ public class TileATOTransmitterStopPoint extends TileEntity implements IPeripher
       return false;
    }
 
+   //Open Computers!
+   @Override
+   public String getComponentName() {
+      return "ato_transmitter";
+   }
+
+   @Callback
+   @Optional.Method(modid = "OpenComputers")
+   public Object[] activate(Context context, Arguments args) {
+      this.isActivated = true;
+      return new Object[]{true};
+   }
+   @Callback
+   @Optional.Method(modid = "OpenComputers")
+   public Object[] deactivate(Context context, Arguments args) {
+      this.isActivated = false;
+      return new Object[]{true};
+   }
+   @Callback
+   @Optional.Method(modid = "OpenComputers")
+   public Object[] setX(Context context, Arguments args) {
+      if (args.isDouble(0)) {
+         this.stopX = args.checkDouble(0);
+         return new Object[]{true};
+      } else {
+         return new Object[]{false};
+      }
+   }
+   @Callback
+   @Optional.Method(modid = "OpenComputers")
+   public Object[] setY(Context context, Arguments args) {
+      if (args.isDouble(0)) {
+         this.stopY = args.checkDouble(0);
+         return new Object[]{true};
+      } else {
+         return new Object[]{false};
+      }
+   }
+   @Callback
+   @Optional.Method(modid = "OpenComputers")
+   public Object[] setZ(Context context, Arguments args) {
+      if (args.isDouble(0)) {
+         this.stopZ = args.checkDouble(0);
+         return new Object[]{true};
+      } else {
+         return new Object[]{false};
+      }
+   }
+
    @Override
    public AxisAlignedBB getRenderBoundingBox() {
       if (boundingBox == null) {
-         boundingBox = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 2, zCoord + 2);
+         boundingBox = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 2, pos.getY() + 2, pos.getZ() + 2);
       }
       return boundingBox;
    }
@@ -116,5 +171,6 @@ public class TileATOTransmitterStopPoint extends TileEntity implements IPeripher
       nbttagcompound.setDouble("stopY", this.stopY);
       nbttagcompound.setDouble("stopZ", this.stopZ);
    }
+
 
 }

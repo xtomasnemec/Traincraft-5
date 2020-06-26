@@ -5,15 +5,16 @@
  */
 package train.common.blocks.tracks;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import mods.railcraft.api.tracks.ITrackEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+//import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import train.common.library.Tracks;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class BlockDetectorTrack extends TrackBaseTraincraft implements ITrackEmitter {
 	private byte delay = 0;
@@ -33,18 +34,18 @@ public class BlockDetectorTrack extends TrackBaseTraincraft implements ITrackEmi
 				notifyNeighbors();
 		}
 	}
-	@Override
+	/*@Override
 	public IIcon getIcon() {
 		if (this.delay > 0) {
 			return getIcon(1);
 		}
 		return getIcon(0);
-	}
+	}*/
 
 	protected void notifyNeighbors() {
-		Block block = getWorld().getBlock(getX(), getY(), getZ());
-		getWorld().notifyBlocksOfNeighborChange(getX(), getY(), getZ(), block);
-		getWorld().notifyBlocksOfNeighborChange(getX(), getY() - 1, getZ(), block);
+		Block block = getWorld().getBlockState(new BlockPos(getX(), getY(), getZ())).getBlock();
+		getWorld().notifyNeighborsOfStateChange(new BlockPos(getX(), getY(), getZ()), block);
+		getWorld().notifyNeighborsOfStateChange(new BlockPos(getX(), getY() - 1, getZ()), block);
 
 		markBlockNeedsUpdate();
 	}

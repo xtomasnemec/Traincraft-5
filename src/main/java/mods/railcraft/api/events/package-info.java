@@ -7,4 +7,5 @@
  */
 @API(apiVersion="1.0.0", owner="RailcraftAPI|core", provides="RailcraftAPI|events")
 package mods.railcraft.api.events;
+
 import net.minecraftforge.fml.common.API;

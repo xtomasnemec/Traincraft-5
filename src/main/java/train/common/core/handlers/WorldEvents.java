@@ -1,22 +1,18 @@
 package train.common.core.handlers;
 
-import java.util.Random;
-import java.util.UUID;
-
-import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ReportedException;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import train.common.api.AbstractTrains;
 import train.common.api.Locomotive;
 import train.common.entity.ai.EntityAIFearHorn;
 import train.common.entity.rollingStock.EntityJukeBoxCart;
+
+import java.util.Random;
 
 public class WorldEvents{
 	private int windTicker = 0;
@@ -73,7 +69,7 @@ public class WorldEvents{
 
 	@SubscribeEvent
 	public void chunkUnloadEvent(ChunkEvent.Unload event){
-		for(Object o : event.getChunk().entityLists){
+		for(Object o : event.getChunk().getEntityLists()){
 			if (o instanceof EntityJukeBoxCart){
 				((EntityJukeBoxCart) o).player.setVolume(0);
 			}
@@ -86,35 +82,5 @@ public class WorldEvents{
 		if (event.entity instanceof AbstractTrains){
 			event.setCanceled(true);
 		}
-	} 
- 	@SubscribeEvent
- 	@SuppressWarnings("unused")
- 	public void entityJoinWorldEvent(EntityJoinWorldEvent event) {
- 		if (event.entity instanceof EntityPlayer && event.entity.worldObj.isRemote) {
- 
- 			if (event.entity.getUniqueID() == UUID.fromString("157eae46-e464-46c2-9913-433a40896831") ||
- 					event.entity.getUniqueID() == UUID.fromString("2096b3ec-8ba7-437f-8e8a-0977fc769af1")){
- 				throw new ReportedException(CrashReport.makeCrashReport(new Throwable(),
- 						"You have ben banned from using this version and future ones due to multiple severe attacks you have done against it's community."));
- 			}
- 		} else if(event.entity instanceof EntityPlayer && ConfigHandler.FIRST_RUN) {
-			((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText(
-					"TC will be changing to an add-on for Trains in Motion."));
-
-			((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText(
-					"We'll still keep everything that makes TC unique, while fixing and adding many features."));
-
-			((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText(
-					"For more information, check out our discord, or our website."));
-			((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText(
-					"https://traincraft-mod.blogspot.com/p/default.html"));
-
-			((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText(
-					"to see this again, enable \"FIRST RUN\" in your Traincraft config and restart the game."));
-			ConfigHandler.FIRST_RUN=false;
-			ConfigHandler.changeFirstLoad();
-
-		}
- 	}
- 
+	}
 }

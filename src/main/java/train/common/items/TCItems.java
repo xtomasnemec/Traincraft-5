@@ -7,7 +7,11 @@
 
 package train.common.items;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import train.common.Traincraft;
 import train.common.adminbook.ItemAdminBook;
 import train.common.library.Info;
@@ -15,9 +19,9 @@ import train.common.library.ItemIDs;
 
 public class TCItems {
 
-	public static void init() {
+	public static void init(Side side) {
 		loadItems();
-		registerItems();
+		registerItems(side);
 	}
 
 	private static void loadItems() {
@@ -92,15 +96,26 @@ public class TCItems {
 
 		if (Loader.isModLoaded("ComputerCraft")) {
 			ItemIDs.wirelessTransmitter.item = new ItemWirelessTransmitter();
+			ItemIDs.atoCard.item = new ItemATOCard();
 		}
 	}
 	
-	private static void registerItems() {
+	private static void registerItems(Side side) {
 		for (ItemIDs items : ItemIDs.values()) {
 			if (items.item != null) {
-				items.item.setUnlocalizedName(Info.modID + ":" + items.name());
-				GameRegistry.registerItem(items.item, items.name());
+				String lowercased = items.name().toLowerCase();
+				items.item.setRegistryName(Info.modID, lowercased);
+				items.item.setUnlocalizedName(Info.modID + ":" + lowercased);
+				GameRegistry.registerItem(items.item, lowercased);
+				if(side.isClient()){
+					regModel(items.item, lowercased);
+				}
 			}
 		}
+	}
+
+	private static void regModel(Item item, String modelid){
+		//TODO unfinished, I ran out of time
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new net.minecraft.client.resources.model.ModelResourceLocation("tc:"+modelid, "inventory"));
 	}
 }

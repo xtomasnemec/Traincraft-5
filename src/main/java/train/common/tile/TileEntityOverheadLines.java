@@ -75,7 +75,7 @@ public class TileEntityOverheadLines extends TileEntity {
 
 		TODO This has been qouted out. Perhaps check and re-activate?
 		
-		List lis3 = this.worldObj.getEntitiesWithinAABB(ElectricTrain.class, AxisAlignedBB.getBoundingBoxFromPool((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(1.0D, 4.0D, 1.0D));
+		List lis3 = this.worldObj.getEntitiesWithinAABB(ElectricTrain.class, AxisAlignedBB.getBoundingBoxFromPool((double)this.getPos().getX(), (double)this.getPos().getY(), (double)this.zCoord, (double)(this.getPos().getX() + 1), (double)(this.getPos().getY() + 1), (double)(this.zCoord + 1)).expand(1.0D, 4.0D, 1.0D));
 
 		if (lis3 != null && lis3.size() > 0) {
 
@@ -83,15 +83,15 @@ public class TileEntityOverheadLines extends TileEntity {
 
 			if ((entity instanceof IElectricTrain)) { if ((this.energy > 0) && (((EntityRollingStock)entity).fuelTrain)<400 ) { double transfered = this.energy0.05; (((EntityRollingStock)entity).fuelTrain)+=transfered; this.energy-=transfered2; } } } }
 
-		List lis1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBoxFromPool((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 0.1), (double)(this.yCoord+0.1), (double)(this.zCoord + 0.1)).expand(1.2D, 1.2D, 1.2D));
+		List lis1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBoxFromPool((double)this.getPos().getX(), (double)this.getPos().getY(), (double)this.zCoord, (double)(this.getPos().getX() + 0.1), (double)(this.getPos().getY()+0.1), (double)(this.zCoord + 0.1)).expand(1.2D, 1.2D, 1.2D));
 */
 	}
 	public double getDistanceSq(double par1, double par3, double par5) {
-		double var7 = this.xCoord - par1;
-		double var9 = this.yCoord - par3;
+		double var7 = this.getPos().getX() - par1;
+		double var9 = this.getPos().getY() - par3;
 		if (Math.abs(var9) == 1)
 			var9 = 0;
-		double var11 = this.zCoord - par5;
+		double var11 = this.getPos().getZ() - par5;
 		return Math.sqrt(var7 * var7 + var11 * var11);
 	}
 	public int sendEnergy(double send) {
@@ -195,7 +195,7 @@ public class TileEntityOverheadLines extends TileEntity {
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(this.getPos(), 1, nbt);
 	}
 }
 

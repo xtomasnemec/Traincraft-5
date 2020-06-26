@@ -1,14 +1,12 @@
 package train.client.core.handlers;
 
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import train.client.core.helpers.CapesHelper;
+import net.minecraftforge.fml.relauncher.Side;
 import train.common.Traincraft;
 import train.common.core.util.MP3Player;
 import train.common.library.Info;
@@ -38,22 +36,23 @@ public class ClientTickHandler {
 			for (MP3Player player : Traincraft.proxy.playerList) if (player != null) player.stop();
 			Traincraft.proxy.playerList.clear();
 		}
-		if(mc.theWorld != null && mc.theWorld.playerEntities != null) {
+		//i think 1.8+ handles this itself?
+		/*if(mc.theWorld != null && mc.theWorld.playerEntities != null) {
 			for (Object p: mc.theWorld.playerEntities) {
 				AbstractClientPlayer player = (AbstractClientPlayer) p;
 				CapesHelper user = CapesHelper.users.get(player.getDisplayName());
 				if(user == null) {
-					user = new CapesHelper(player.getDisplayName());
-					CapesHelper.users.put(player.getDisplayName(), user);
+					user = new CapesHelper(player.getDisplayName().getUnformattedText());
+					CapesHelper.users.put(player.getDisplayName().getUnformattedText(), user);
 					user.setDaemon(true);
 					user.setName("Cape for " + player.getDisplayName());
 					user.start();
 				}else if(CapesHelper.isLoaded && user.MCCape) {
 					// NOTE: func_152121_a = switchTexture
-					player.func_152121_a(MinecraftProfileTexture.Type.CAPE, user.getCurrentRL());
+					//player.func_152121_a(MinecraftProfileTexture.Type.CAPE, user.getCurrentRL());
 				}
 			}
-		}
+		}*/
 		if(!isHidden && Loader.isModLoaded("NotEnoughItems")) {
 			if(mc.theWorld != null && mc.theWorld.playerEntities != null) {
 				Traincraft.proxy.doNEICheck(new ItemStack(Block.getBlockFromName(Info.modID + ":tcRail")));

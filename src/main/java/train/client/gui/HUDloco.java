@@ -1,12 +1,11 @@
 package train.client.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
 import train.common.api.DieselTrain;
 import train.common.api.Locomotive;
 import train.common.api.SteamTrain;
@@ -23,7 +22,7 @@ public class HUDloco extends GuiScreen {
 			renderSkillHUD(event, (Locomotive) game.thePlayer.ridingEntity);
 		} else {
 			this.game = this.mc = Minecraft.getMinecraft();
-			this.fontRendererObj = this.game.fontRenderer;
+			this.fontRendererObj = this.game.fontRendererObj;
 		}
 	}
 

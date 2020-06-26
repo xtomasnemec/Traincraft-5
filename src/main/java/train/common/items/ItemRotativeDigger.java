@@ -28,9 +28,9 @@ public class ItemRotativeDigger extends Item {
 		float f1 = entityplayer.prevRotationPitch + (entityplayer.rotationPitch - entityplayer.prevRotationPitch) * f;
 		float f2 = entityplayer.prevRotationYaw + (entityplayer.rotationYaw - entityplayer.prevRotationYaw) * f;
 		double d = entityplayer.prevPosX + (entityplayer.posX - entityplayer.prevPosX) * (double) f;
-		double d1 = (entityplayer.prevPosY + (entityplayer.posY - entityplayer.prevPosY) * (double) f + 1.6200000000000001D) - (double) entityplayer.yOffset;
+		double d1 = (entityplayer.prevPosY + (entityplayer.posY - entityplayer.prevPosY) * (double) f + 1.6200000000000001D) - entityplayer.getYOffset();
 		double d2 = entityplayer.prevPosZ + (entityplayer.posZ - entityplayer.prevPosZ) * (double) f;
-		Vec3 vec3d = Vec3.createVectorHelper(d, d1, d2);
+		Vec3 vec3d = new Vec3(d, d1, d2);
 		float f3 = MathHelper.cos(-f2 * 0.01745329F - 3.141593F);
 		float f4 = MathHelper.sin(-f2 * 0.01745329F - 3.141593F);
 		float f5 = -MathHelper.cos(-f1 * 0.01745329F);
@@ -44,9 +44,9 @@ public class ItemRotativeDigger extends Item {
 			return itemstack;
 		}
 		if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-			int i = movingobjectposition.blockX;
-			int j = movingobjectposition.blockY;
-			int k = movingobjectposition.blockZ;
+			int i = movingobjectposition.getBlockPos().getX();
+			int j = movingobjectposition.getBlockPos().getY();
+			int k = movingobjectposition.getBlockPos().getZ();
 			if (!world.isRemote) {
 				world.spawnEntityInWorld(new EntityRotativeDigger(world, (float) i + 0.5F, (float) j + 1.5F, (float) k + 0.5F));
 			}

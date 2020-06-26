@@ -8,14 +8,15 @@
 
 package mods.railcraft.api.tracks;
 
-import java.util.List;
-import java.util.Locale;
-
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+
+import java.util.List;
+import java.util.Locale;
+//import net.minecraft.util.IIcon;
 
 /**
  * Each type of Track has a single instance of TrackSpec that corresponds with
@@ -124,9 +125,10 @@ public final class TrackSpec {
         }
     }
 
-    public IIcon getItemIcon() {
-        if (iconProvider == null)
-            return Blocks.rail.getIcon(0, 0);
+    public ModelResourceLocation getItemIcon() {
+        if (iconProvider == null) {
+            return new ModelResourceLocation(Blocks.rail.delegate.getResourceName(), "inventory");//.Blocks.rail.getIcon(0, 0);
+        }
         return iconProvider.getTrackItemIcon(this);
     }
 

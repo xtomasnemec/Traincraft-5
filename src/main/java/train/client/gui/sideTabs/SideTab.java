@@ -7,13 +7,13 @@
 
 package train.client.gui.sideTabs;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import train.client.core.helpers.SessionHelper;
 import train.client.gui.GuiCrafterTier;
 import train.common.library.Info;
@@ -42,7 +42,7 @@ public abstract class SideTab {
 	protected int currentHeight = minHeight;
 
 	public GuiCrafterTier gui;
-	protected static FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
+	protected static FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRendererObj;
 	protected static SoundHandler soundManager = FMLClientHandler.instance().getClient().getSoundHandler();
 
 	public SideTab(GuiCrafterTier gui, boolean side, boolean x, boolean y) {

@@ -1,21 +1,20 @@
 package train.client.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import train.client.core.handlers.RecipeBookHandler;
 import train.common.core.managers.TierRecipe;
 import train.common.core.managers.TierRecipeManager;
@@ -27,6 +26,9 @@ import train.common.library.Info;
 import train.common.library.ItemIDs;
 import train.common.recipes.ShapedTrainRecipes;
 import train.common.recipes.ShapelessTrainRecipe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiRecipeBook extends GuiScreen {
@@ -53,7 +55,7 @@ public class GuiRecipeBook extends GuiScreen {
 	private GuiButtonNextPage buttonNextPage;
 	private GuiButtonNextPage buttonPreviousPage;
 	private GuiButtonNextPage buttonBack;
-	private RenderItem renderItem = new RenderItem();
+	private RenderItem renderItem = new RenderItem(Minecraft.getMinecraft().getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
 
 	public GuiRecipeBook(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
 		this.editingPlayer = par1EntityPlayer;
@@ -513,14 +515,14 @@ public class GuiRecipeBook extends GuiScreen {
 			if (this.leftPageItemStacks != null && this.leftPageItemStacks.get(this.currPage) != null && this.leftPageItemStacks.get(this.currPage).get(0) != null) {
 				for (int t = 0; t < this.leftPageItemStacks.get(this.currPage).size(); t++) {
 					if (this.leftPageItemStacks.get(this.currPage).get(t) != null) {
-						renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, ((StackToDraw) this.leftPageItemStacks.get(this.currPage).get(t)).getItemStack(), var5 + ((StackToDraw) this.leftPageItemStacks.get(this.currPage).get(t)).getX(), var6 + ((StackToDraw) this.leftPageItemStacks.get(this.currPage).get(t)).getY());
+						renderItem.renderItemIntoGUI( ((StackToDraw) this.leftPageItemStacks.get(this.currPage).get(t)).getItemStack(), var5 + ((StackToDraw) this.leftPageItemStacks.get(this.currPage).get(t)).getX(), var6 + ((StackToDraw) this.leftPageItemStacks.get(this.currPage).get(t)).getY());
 					}
 				}
 			}
 			if (this.rightPageItemStacks != null && this.rightPageItemStacks.get(this.currPage) != null && this.rightPageItemStacks.get(this.currPage).get(0) != null) {
 				for (int t = 0; t < this.rightPageItemStacks.get(this.currPage).size(); t++) {
 					if (this.rightPageItemStacks.get(this.currPage).get(t) != null) {
-						renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, ((StackToDraw) this.rightPageItemStacks.get(this.currPage).get(t)).getItemStack(), var5 + ((StackToDraw) this.rightPageItemStacks.get(this.currPage).get(t)).getX() + 210, var6 + ((StackToDraw) this.rightPageItemStacks.get(this.currPage).get(t)).getY());
+						renderItem.renderItemIntoGUI(((StackToDraw) this.rightPageItemStacks.get(this.currPage).get(t)).getItemStack(), var5 + ((StackToDraw) this.rightPageItemStacks.get(this.currPage).get(t)).getX() + 210, var6 + ((StackToDraw) this.rightPageItemStacks.get(this.currPage).get(t)).getY());
 					}
 				}
 			}
@@ -599,25 +601,25 @@ public class GuiRecipeBook extends GuiScreen {
 			offset = 194;
 		GL11.glEnable(32826);
 		if (itemList[0] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[0], var5 + 50 + offset, var6 + 67);
+			renderItem.renderItemIntoGUI(itemList[0], var5 + 50 + offset, var6 + 67);
 		if (itemList[1] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[1], var5 + 68 + offset, var6 + 67);
+			renderItem.renderItemIntoGUI(itemList[1], var5 + 68 + offset, var6 + 67);
 		if (itemList[2] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[2], var5 + 86 + offset, var6 + 67);
+			renderItem.renderItemIntoGUI(itemList[2], var5 + 86 + offset, var6 + 67);
 		if (itemList[3] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[3], var5 + 50 + offset, var6 + 85);
+			renderItem.renderItemIntoGUI(itemList[3], var5 + 50 + offset, var6 + 85);
 		if (itemList[4] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[4], var5 + 68 + offset, var6 + 85);
+			renderItem.renderItemIntoGUI(itemList[4], var5 + 68 + offset, var6 + 85);
 		if (itemList[5] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[5], var5 + 86 + offset, var6 + 85);
+			renderItem.renderItemIntoGUI(itemList[5], var5 + 86 + offset, var6 + 85);
 		if (itemList[6] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[6], var5 + 50 + offset, var6 + 103);
+			renderItem.renderItemIntoGUI(itemList[6], var5 + 50 + offset, var6 + 103);
 		if (itemList[7] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[7], var5 + 68 + offset, var6 + 103);
+			renderItem.renderItemIntoGUI(itemList[7], var5 + 68 + offset, var6 + 103);
 		if (itemList[8] != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList[8], var5 + 86 + offset, var6 + 103);
+			renderItem.renderItemIntoGUI(itemList[8], var5 + 86 + offset, var6 + 103);
 		if (itemOutput != null && itemOutput.getItem() !=null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemOutput, var5 + 145 + offset, var6 + 85);
+			renderItem.renderItemIntoGUI(itemOutput, var5 + 145 + offset, var6 + 85);
 		if (itemOutput != null && itemOutput.getItem() !=null)
 			this.fontRendererObj.drawString(itemOutput.getItem().getItemStackDisplayName(itemOutput), var5 + 20 + offset, var6 + 40, 0);
 		if (itemOutput != null)
@@ -644,50 +646,50 @@ public class GuiRecipeBook extends GuiScreen {
 			offset = 271;
 		GL11.glEnable(32826);
 		if (itemList.get(0) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(0), var5 + 94 + offset, var6 + 76);
+			renderItem.renderItemIntoGUI(itemList.get(0), var5 + 94 + offset, var6 + 76);
 		if (itemList.get(0) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(0), var5 + 94 + offset, var6 + 76);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(0), var5 + 94 + offset, var6 + 76,"");
 		if (itemList.get(1) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(1), var5 + 113 + offset, var6 + 143);
+			renderItem.renderItemIntoGUI(itemList.get(1), var5 + 113 + offset, var6 + 143);
 		if (itemList.get(1) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(1), var5 + 113 + offset, var6 + 143);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(1), var5 + 113 + offset, var6 + 143,"");
 		if (itemList.get(2) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(2), var5 + 148 + offset, var6 + 143);
+			renderItem.renderItemIntoGUI(itemList.get(2), var5 + 148 + offset, var6 + 143);
 		if (itemList.get(2) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(2), var5 + 148 + offset, var6 + 143);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(2), var5 + 148 + offset, var6 + 143,"");
 		if (itemList.get(3) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(3), var5 + 214 + offset, var6 + 143);
+			renderItem.renderItemIntoGUI(itemList.get(3), var5 + 214 + offset, var6 + 143);
 		if (itemList.get(3) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(3), var5 + 214 + offset, var6 + 143);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(3), var5 + 214 + offset, var6 + 143,"");
 		if (itemList.get(4) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(4), var5 + 148 + offset, var6 + 77);
+			renderItem.renderItemIntoGUI(itemList.get(4), var5 + 148 + offset, var6 + 77);
 		if (itemList.get(4) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(4), var5 + 148 + offset, var6 + 77);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(4), var5 + 148 + offset, var6 + 77,"");
 		if (itemList.get(5) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(5), var5 + 184 + offset, var6 + 77);
+			renderItem.renderItemIntoGUI(itemList.get(5), var5 + 184 + offset, var6 + 77);
 		if (itemList.get(5) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(5), var5 + 184 + offset, var6 + 77);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(5), var5 + 184 + offset, var6 + 77,"");
 		if (itemList.get(6) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(6), var5 + 149 + offset, var6 + 110);
+			renderItem.renderItemIntoGUI(itemList.get(6), var5 + 149 + offset, var6 + 110);
 		if (itemList.get(6) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(6), var5 + 149 + offset, var6 + 110);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(6), var5 + 149 + offset, var6 + 110,"");
 		if (itemList.get(7) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(7), var5 + 185 + offset, var6 + 110);
+			renderItem.renderItemIntoGUI(itemList.get(7), var5 + 185 + offset, var6 + 110);
 		if (itemList.get(7) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(7), var5 + 185 + offset, var6 + 110);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(7), var5 + 185 + offset, var6 + 110,"");
 		if (itemList.get(8) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(8), var5 + 94 + offset, var6 + 110);
+			renderItem.renderItemIntoGUI(itemList.get(8), var5 + 94 + offset, var6 + 110);
 		if (itemList.get(8) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(8), var5 + 94 + offset, var6 + 110);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(8), var5 + 94 + offset, var6 + 110,"");
 		if (itemList.get(9) != null)
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(9), var5 + 214 + offset, var6 + 77);
+			renderItem.renderItemIntoGUI(itemList.get(9), var5 + 214 + offset, var6 + 77);
 		if (itemList.get(9) != null)
-			renderItem.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, itemList.get(9), var5 + 214 + offset, var6 + 77);
+			renderItem.renderItemOverlayIntoGUI(fontRendererObj,itemList.get(9), var5 + 214 + offset, var6 + 77,"");
 		ItemStack output = recipeList.get(page).getOutput();
 		if (output != null && side.equals("left"))
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, output, var5 + 162, var6 + 177);
+			renderItem.renderItemIntoGUI(output, var5 + 162, var6 + 177);
 		if (output != null && side.equals("right"))
-			renderItem.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, output, var5 + 432, var6 + 177);
+			renderItem.renderItemIntoGUI(output, var5 + 432, var6 + 177);
 		String name = "";
 		if (output != null && output.getItem() instanceof ItemRollingStock)
 			name = output.getDisplayName();

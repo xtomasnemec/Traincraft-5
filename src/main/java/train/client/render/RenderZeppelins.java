@@ -1,12 +1,12 @@
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.client.render.models.ModelZeppelinOneBalloon;
 import train.client.render.models.ModelZeppelinTwoBalloons;
 import train.common.entity.zeppelin.AbstractZeppelin;
@@ -21,7 +21,8 @@ public class RenderZeppelins extends Render {
 	private static final ResourceLocation oneBalloon = new ResourceLocation(Info.resourceLocation, Info.zeppelinTexturePrefix + "zeppelin_one_balloon.png");
 	private static final ResourceLocation twoBalloon = new ResourceLocation(Info.resourceLocation, Info.zeppelinTexturePrefix + "zeppelin_two_balloons.png");
 
-	public RenderZeppelins() {
+	public RenderZeppelins(RenderManager renderManager) {
+		super(renderManager);
 		shadowSize = 0.5F;
 	}
 

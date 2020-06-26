@@ -1,30 +1,12 @@
 package train.common.core.handlers;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGiantZombie;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
@@ -34,6 +16,9 @@ import train.common.api.Locomotive;
 import train.common.entity.EntityLasersLines;
 import train.common.entity.rollingStock.EntityStockCar;
 import train.common.entity.rollingStock.EntityStockCarDRWG;
+
+import java.util.List;
+import java.util.Random;
 
 public class CollisionHandler {
 
@@ -250,8 +235,8 @@ public class CollisionHandler {
 					if (entity instanceof EntityMinecart) {
 						double var10 = entity.posX - entityOne.posX;
 						double var12 = entity.posZ - entityOne.posZ;
-						Vec3 var14 = Vec3.createVectorHelper(var10, 0.0D, var12).normalize();
-						Vec3 var15 = Vec3.createVectorHelper(MathHelper.cos(entityOne.rotationYaw * (float) Math.PI / 180.0F), 0.0D, MathHelper.sin(entityOne.rotationYaw * (float) Math.PI / 180.0F)).normalize();
+						Vec3 var14 = new Vec3(var10, 0.0D, var12).normalize();
+						Vec3 var15 = new Vec3(MathHelper.cos(entityOne.rotationYaw * (float) Math.PI / 180.0F), 0.0D, MathHelper.sin(entityOne.rotationYaw * (float) Math.PI / 180.0F)).normalize();
 						double var16 = Math.abs(var14.dotProduct(var15));
 
 						if (var16 < 0.800000011920929D) {
@@ -291,7 +276,7 @@ public class CollisionHandler {
 							entityOne.addVelocity(-var2, 0.0D, -var4);
 						if(entity instanceof EntityPlayer){
 
-							MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks(Vec3.createVectorHelper(entityOne.posX, entityOne.posY, entityOne.posZ), Vec3.createVectorHelper(entityOne.posX + entityOne.motionX, entityOne.posY + entityOne.motionY, entityOne.posZ + entityOne.motionZ), false);
+							MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks(new Vec3(entityOne.posX, entityOne.posY, entityOne.posZ), new Vec3(entityOne.posX + entityOne.motionX, entityOne.posY + entityOne.motionY, entityOne.posZ + entityOne.motionZ), false);
 							if (entity != null && entity instanceof EntityPlayer) {
 								movingobjectposition = new MovingObjectPosition(entity);
 							}
@@ -381,8 +366,8 @@ public class CollisionHandler {
 
 			if (entity.ridingEntity == null) {
 
-				Vec3 vec3d4 = Vec3.createVectorHelper(entityOne.posX, entityOne.posY, entityOne.posZ);
-				Vec3 vec3d5 = Vec3.createVectorHelper(entityOne.posX + entityOne.motionX, entityOne.posY + entityOne.motionY, entityOne.posZ + entityOne.motionZ);
+				Vec3 vec3d4 = new Vec3(entityOne.posX, entityOne.posY, entityOne.posZ);
+				Vec3 vec3d5 = new Vec3(entityOne.posX + entityOne.motionX, entityOne.posY + entityOne.motionY, entityOne.posZ + entityOne.motionZ);
 				MovingObjectPosition movingobjectposition = worldObj.rayTraceBlocks(vec3d4, vec3d5, false);
 
 				if (entity != null) {
@@ -429,7 +414,7 @@ public class CollisionHandler {
 							//worldObj.playSoundAtEntity(entityOne, "damage.fallsmall", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
 							entityOne.playSound("damage.fallsmall", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 							for (int var9 = 0; var9 < 4; ++var9) {
-								entity.worldObj.spawnParticle("crit", entity.posX + entity.motionX * var9 / 4.0D, entity.posY + entity.motionY * var9 / 4.0D, entity.posZ + entity.motionZ * var9 / 4.0D, -entity.motionX, -entity.motionY + 0.2D, -entity.motionZ);
+								entity.worldObj.spawnParticle(EnumParticleTypes.CRIT, entity.posX + entity.motionX * var9 / 4.0D, entity.posY + entity.motionY * var9 / 4.0D, entity.posZ + entity.motionZ * var9 / 4.0D, -entity.motionX, -entity.motionY + 0.2D, -entity.motionZ);
 							}
 
 						}
@@ -551,8 +536,8 @@ public class CollisionHandler {
 			if (entity instanceof EntityMinecart) {
 				double d4 = entity.posX - entityOne.posX;
 				double d5 = entity.posZ - entityOne.posZ;
-				Vec3 vec3d = Vec3.createVectorHelper(d4, 0.0D, d5).normalize();
-				Vec3 vec3d1 = Vec3.createVectorHelper(MathHelper.cos((entityOne.rotationYaw * 3.141593F) / 180F), 0.0D, MathHelper.sin((entityOne.rotationYaw * 3.141593F) / 180F)).normalize();
+				Vec3 vec3d = new Vec3(d4, 0.0D, d5).normalize();
+				Vec3 vec3d1 = new Vec3(MathHelper.cos((entityOne.rotationYaw * 3.141593F) / 180F), 0.0D, MathHelper.sin((entityOne.rotationYaw * 3.141593F) / 180F)).normalize();
 				double d6 = Math.abs(vec3d.dotProduct(vec3d1));
 
 				if (d6 < 0.80000001192092896D) {

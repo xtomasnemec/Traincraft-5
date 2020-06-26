@@ -8,15 +8,17 @@
 package train.client.render;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
+import tmt.Tessellator;
 
 public class RenderCoreTC {
+
 	public static void renderBlockFalling(Block block, int meta, World world, int i, int j, int k) {
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setBrightness(block.getMixedBrightnessForBlock(world, i, j, k));
-		tessellator.setColorOpaque_F(0.6F, 0.6F, 0.6F);
+		Tessellator tessellator = Tessellator.getInstance();
+		tessellator.startDrawing(GL11.GL_QUADS);
+		//tessellator.setBrightness(block.getMixedBrightnessForBlock(world, new BlockPos(i, j, k)));
+		//tessellator.setColorOpaque_F(0.6F, 0.6F, 0.6F);
 		tessellator.draw();
 	}
 
@@ -26,7 +28,7 @@ public class RenderCoreTC {
 		double blockMinY = block.getBlockBoundsMinY();
 		double blockMinZ = block.getBlockBoundsMinZ();
 		double blockMaxZ = block.getBlockBoundsMaxZ();
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 
 		int j = (i & 0xf) << 4;
 		int k = i & 0xf0;
@@ -55,7 +57,7 @@ public class RenderCoreTC {
 		double blockMaxY = block.getBlockBoundsMaxY();
 		double blockMinZ = block.getBlockBoundsMinZ();
 		double blockMaxZ = block.getBlockBoundsMaxZ();
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 
 		int j = (i & 0xf) << 4;
 		int k = i & 0xf0;
@@ -84,7 +86,7 @@ public class RenderCoreTC {
 		double blockMinY = block.getBlockBoundsMinY();
 		double blockMaxY = block.getBlockBoundsMaxY();
 		double blockMinZ = block.getBlockBoundsMinZ();
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 
 		int j = (i & 0xf) << 4;
 		int k = i & 0xf0;
@@ -114,7 +116,7 @@ public class RenderCoreTC {
 		double blockMinY = block.getBlockBoundsMinY();
 		double blockMaxY = block.getBlockBoundsMaxY();
 		double blockMaxZ = block.getBlockBoundsMaxZ();
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 
 		int j = (i & 0xf) << 4;
 		int k = i & 0xf0;
@@ -144,7 +146,7 @@ public class RenderCoreTC {
 		double blockMaxY = block.getBlockBoundsMaxY();
 		double blockMinZ = block.getBlockBoundsMinZ();
 		double blockMaxZ = block.getBlockBoundsMaxZ();
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 
 		int j = (i & 0xf) << 4;
 		int k = i & 0xf0;
@@ -174,7 +176,7 @@ public class RenderCoreTC {
 		double blockMaxY = block.getBlockBoundsMaxY();
 		double blockMinZ = block.getBlockBoundsMinZ();
 		double blockMaxZ = block.getBlockBoundsMaxZ();
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 
 		int j = (i & 0xf) << 4;
 		int k = i & 0xf0;

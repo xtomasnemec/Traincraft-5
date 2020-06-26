@@ -1,14 +1,14 @@
 package train.common.recipes;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import train.common.library.BlockIDs;
 import train.common.library.ItemIDs;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DistilRecipes {
 
@@ -32,7 +32,7 @@ public class DistilRecipes {
 				new ItemStack(ItemIDs.rawPlastic.item, 1));
 		addSmelting(Item.getItemFromBlock(Blocks.leaves), new ItemStack(ItemIDs.diesel.item), 0.2F, 6,
 				new ItemStack(ItemIDs.rawPlastic.item, 2));
-		addSmelting(ItemIDs.diesel.item, new ItemStack(ItemIDs.refinedFuel.item), 1F, 2, new ItemStack(ItemIDs.rawPlastic.item, 1));
+		addSmelting(ItemIDs.diesel.item, new ItemStack(ItemIDs.refinedFuel.item), 1F, 1, new ItemStack(ItemIDs.rawPlastic.item, 2));
 		addSmelting(Items.wheat, new ItemStack(ItemIDs.diesel.item), 0.2F, 4,
 				new ItemStack(ItemIDs.rawPlastic.item, 1));
 	}

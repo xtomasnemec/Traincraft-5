@@ -7,10 +7,6 @@
 
 package train.client.gui;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -18,12 +14,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.client.gui.sideTabs.SideTabManager;
 import train.common.containers.ContainerTraincraft;
 import train.common.core.interfaces.ITier;
 import train.common.core.managers.TierRecipe;
 import train.common.core.managers.TierRecipeManager;
 import train.common.library.Info;
+
+import java.io.IOException;
+import java.util.List;
 
 public abstract class GuiTraincraft extends GuiContainer {
 
@@ -65,7 +65,7 @@ public abstract class GuiTraincraft extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int par1, int par2, int mouseButton) {
+	protected void mouseClicked(int par1, int par2, int mouseButton) throws IOException {
 		super.mouseClicked(par1, par2, mouseButton);
 		// / Handle ledger clicks
 		sideTabManager.handleMouseClicked(par1, par2, mouseButton);
@@ -185,7 +185,7 @@ public abstract class GuiTraincraft extends GuiContainer {
 		}
 
 		if (item != null) {
-			itemRender.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, new ItemStack(item), x, y);
+			itemRender.renderItemIntoGUI(new ItemStack(item), x, y);
 		}
 		else {
 			String var4 = Info.guiPrefix + "Icons.png";
@@ -231,7 +231,7 @@ public abstract class GuiTraincraft extends GuiContainer {
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_ALPHA);
-			this.itemRender.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, item, j + x, k + y);
+			this.itemRender.renderItemIntoGUI(item, j + x, k + y);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);

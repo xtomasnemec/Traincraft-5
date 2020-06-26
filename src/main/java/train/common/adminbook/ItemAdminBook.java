@@ -1,15 +1,6 @@
 package train.common.adminbook;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,9 +11,18 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
-import train.common.library.Info;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * <h1>Key Item</h1>
@@ -53,7 +53,7 @@ public class ItemAdminBook extends Item {
         try {
             if (world.isRemote) {
                 return stack;
-            } else if (!player.canCommandSenderUseCommand(2, "")) {
+            } else if (!player.canCommandSenderUseCommand(2, "tc.admin")) {
                 return stack;
             }
 
@@ -92,11 +92,11 @@ public class ItemAdminBook extends Item {
 
 
 
-    @Override
+   /* @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":parts/item_book_blue");
-    }
+    }*/
 
 
 
@@ -190,7 +190,7 @@ public class ItemAdminBook extends Item {
                                             if (i.stackSize != 0 && i.getItem() != null)
                                             {
                                                 EntityItem entityitem = new EntityItem(world, p.posX, p.posY + 3, p.posZ, i);
-                                                entityitem.delayBeforeCanPickup = 120;
+                                                entityitem.setPickupDelay(120);
                                                 if (p.captureDrops) {
                                                     p.capturedDrops.add(entityitem);
                                                 } else{

@@ -70,7 +70,7 @@ public class TrackScanner {
                     yy++;
                     if (yy > maxY)
                         maxY = yy;
-                } else if (!world.blockExists(xx, yy, z1)) {
+                } else if (yy>0 && yy<255) {
                     return new ScanResult(ScanResult.Verdict.UNKNOWN, minY, maxY);
                 } else
                     return new ScanResult(ScanResult.Verdict.PATH_NOT_FOUND, minY, maxY);
@@ -99,7 +99,7 @@ public class TrackScanner {
                     yy++;
                     if (yy > maxY)
                         maxY = yy;
-                } else if (!world.blockExists(x1, yy, zz)) {
+                } else if (yy>0&&yy<255) {
                     return new ScanResult(ScanResult.Verdict.UNKNOWN, minY, maxY);
                 } else
                     return new ScanResult(ScanResult.Verdict.PATH_NOT_FOUND, minY, maxY);

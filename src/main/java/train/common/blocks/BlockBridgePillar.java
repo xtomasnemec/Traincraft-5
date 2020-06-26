@@ -9,22 +9,18 @@ package train.common.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
-import train.common.library.Info;
 import train.common.tile.TileBridgePillar;
 
 public class BlockBridgePillar extends BlockContainer {
 
-	private IIcon texture;
+	//private IIcon texture;
 
 	public BlockBridgePillar() {
 		super(Material.wood);
@@ -32,7 +28,7 @@ public class BlockBridgePillar extends BlockContainer {
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isFullBlock() {
 		return false;
 	}
 
@@ -43,13 +39,13 @@ public class BlockBridgePillar extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return RenderingRegistry.getNextAvailableRenderId();
+		return 2;
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(int i, int j) {
 		return texture;
-	}
+	}*/
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
@@ -60,9 +56,10 @@ public class BlockBridgePillar extends BlockContainer {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
-		int l = MathHelper.floor_double((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		int i1 = par1World.getBlockMetadata(par2, par3, par4) >> 2;
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
+		//this looks the same from all angles, why are we rotating it?
+		/*int l = MathHelper.floor_double((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		int i1 = TraincraftUtil.getBlockMeta(par1World,pos)>>2;//par1World.getBlockMetadata(par2, par3, par4) >> 2;
 		++l;
 		l %= 4;
 
@@ -80,11 +77,11 @@ public class BlockBridgePillar extends BlockContainer {
 
 		if (l == 3) {
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | i1 << 2, 2);
-		}
+		}*/
 	}
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_1_bottom");
-	}
+	}*/
 }

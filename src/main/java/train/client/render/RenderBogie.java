@@ -1,11 +1,11 @@
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.common.library.Info;
 
 public class RenderBogie extends Render {
@@ -13,7 +13,8 @@ public class RenderBogie extends Render {
 	protected ModelBase model = new ModelBase() {};
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "robot.png");
 	
-	public RenderBogie() {
+	public RenderBogie(RenderManager manager) {
+		super(manager);
 	}
 
 	

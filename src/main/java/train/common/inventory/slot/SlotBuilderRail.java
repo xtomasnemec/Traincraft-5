@@ -42,7 +42,7 @@ public class SlotBuilderRail extends Slot {
     	}
     	    	
     	if(item instanceof ItemBlock) {
-    		Block  block = ((ItemBlock) stack.getItem()).field_150939_a;
+    		Block  block = ((ItemBlock) stack.getItem()).block;
     		return block == Blocks.rail || block == Blocks.golden_rail || block == Blocks.detector_rail;
     	}
     	

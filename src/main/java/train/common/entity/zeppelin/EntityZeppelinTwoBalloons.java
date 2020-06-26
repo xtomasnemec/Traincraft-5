@@ -12,7 +12,7 @@ public class EntityZeppelinTwoBalloons extends AbstractZeppelin{
 	}
 	public EntityZeppelinTwoBalloons(World world, double d, double d1, double d2) {
 		this(world);
-		setPosition(d, d1 + yOffset, d2);
+		setPosition(d, d1, d2);
 		motionX = 0.0D;
 		motionY = 0.0D;
 		motionZ = 0.0D;
@@ -43,7 +43,27 @@ public class EntityZeppelinTwoBalloons extends AbstractZeppelin{
 		return true;
 	}
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "Zeppelin Two Balloons";
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
 	}
 }

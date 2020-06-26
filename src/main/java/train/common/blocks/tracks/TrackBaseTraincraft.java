@@ -7,8 +7,8 @@ package train.common.blocks.tracks;
 import mods.railcraft.api.tracks.TrackInstanceBase;
 import mods.railcraft.api.tracks.TrackRegistry;
 import mods.railcraft.api.tracks.TrackSpec;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.util.IIcon;
 import train.common.library.Tracks;
 
 public abstract class TrackBaseTraincraft extends TrackInstanceBase {
@@ -27,12 +27,13 @@ public abstract class TrackBaseTraincraft extends TrackInstanceBase {
 	public TrackSpec getTrackSpec() {
 		return TrackRegistry.getTrackSpec(getTrackType().ordinal() + 513);
 	}
+
 	@Override
-	public IIcon getIcon() {
+	public ModelResourceLocation getIcon() {
 		return getIcon(0);
 	}
 
-	public IIcon getIcon(int index) {
+	public ModelResourceLocation getIcon(int index) {
 		return TrackTextureLoader.INSTANCE.getTrackIcons(getTrackSpec())[index];
 	}
 

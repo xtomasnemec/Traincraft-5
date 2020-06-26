@@ -1,7 +1,5 @@
 package train.common.tile;
 
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,9 +7,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ITickable;
+
+import java.util.List;
 
 //client
-public class TileSignal extends TileEntity {
+public class TileSignal extends TileEntity implements ITickable {
 	public int state;// 0=red 1=green
 	public int rot;
 
@@ -25,7 +26,7 @@ public class TileSignal extends TileEntity {
 		tempSpeedX = 0;
 		tempSpeedZ = 0;
 		fu = 0;
-		facingMeta = this.blockMetadata;
+		facingMeta = 0;//this.blockMetadata;
 	}
 
 	public int getFacing() {
@@ -56,11 +57,11 @@ public class TileSignal extends TileEntity {
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(this.pos, 1, nbt);
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 		int x1 = 1;// x2
 		int x2 = 1;// y2
 		int x3 = 1;// z2
@@ -98,7 +99,7 @@ public class TileSignal extends TileEntity {
 			break;
 		}
 
-		List list = this.worldObj.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox( this.xCoord + x4, this.yCoord, this.zCoord + x5, (this.xCoord + x1), (this.yCoord + 1),  (this.zCoord + x3)).expand(1.0D, 1.0D, 1.0D));
+		List list = this.worldObj.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.fromBounds( this.pos.getZ() + x4, this.pos.getY(), this.pos.getZ() + x5, (this.pos.getX() + x1), (this.pos.getY() + 1),  (this.pos.getZ() + x3)).expand(1.0D, 1.0D, 1.0D));
 		Entity entity;
 
 		if (list != null && list.size() > 0) {

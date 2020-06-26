@@ -64,7 +64,7 @@ public class EntityPropagandaBritain extends EntityRollingStock {
 		if ((super.interactFirst(entityplayer))) {
 			return false;
 		}
-		if (locked && !entityplayer.getDisplayName().toLowerCase().equals(this.trainOwner.toLowerCase())) {
+		if (locked && !entityplayer.getDisplayName().getUnformattedText().toLowerCase().equals(this.trainOwner.toLowerCase())) {
 			if (!worldObj.isRemote)
 				entityplayer.addChatMessage(new ChatComponentText("this train is locked"));
 			return true;

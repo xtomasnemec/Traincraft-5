@@ -66,7 +66,7 @@ public class SlotTrainCrafting extends Slot {
 						MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thePlayer, var5));
 						var5 = null;
 					}
-					if (var5 != null && (!var4.getItem().doesContainerItemLeaveCraftingGrid(var4) || !this.thePlayer.inventory.addItemStackToInventory(var5))) {
+					if (var5 != null && !this.thePlayer.inventory.addItemStackToInventory(var5)) {
 						if (this.craftMatrix.getStackInSlot(var3) == null) {
 							this.craftMatrix.setInventorySlotContents(var3, var5);
 						}

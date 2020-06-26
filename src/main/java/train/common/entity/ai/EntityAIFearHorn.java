@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCache;
@@ -24,9 +25,9 @@ public class EntityAIFearHorn extends EntityAIBase{
 
 	@Override
 	public boolean shouldExecute() {
-		if(entity.getEntityToAttack() instanceof Locomotive) {
-			Entity loco = entity.getEntityToAttack(); 
-			Vec3 posLoco = Vec3.createVectorHelper(loco.posX, loco.posY, loco.posZ);
+		if(entity.getLastAttacker()!=null && entity.getLastAttacker().riddenByEntity instanceof Locomotive) {
+			Entity loco = entity.getAttackTarget();
+			Vec3 posLoco = new Vec3(loco.posX, loco.posY, loco.posZ);
 			entity.detachHome();
             Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(entity, 10, 8, posLoco);
 
@@ -39,7 +40,8 @@ public class EntityAIFearHorn extends EntityAIBase{
                 this.randPosX = vec3.xCoord;
                 this.randPosY = vec3.yCoord;
                 this.randPosZ = vec3.zCoord;
-    			entity.setTarget(null);
+    			entity.setAttackTarget(null);
+                entity.setRevengeTarget(null);
                 return true;
             }
 		}
@@ -68,7 +70,7 @@ public class EntityAIFearHorn extends EntityAIBase{
     private PathEntity getPathToXYZ(double x, double y, double z)
     {
         return getEntityPathToXYZ(MathHelper.floor_double(x), (int)y, MathHelper.floor_double(z), 
-        		entity.getNavigator().getPathSearchRange(), false, false, false);
+        		entity.getNavigator().getPathSearchRange());
     }
 
     /**
@@ -80,7 +82,7 @@ public class EntityAIFearHorn extends EntityAIBase{
         return entity.getNavigator().setPath(pathentity, speed);
     }
     
-    private PathEntity getEntityPathToXYZ(int targetX, int targetY, int targetZ, float range, boolean canPassOpenDoor, boolean canPassClosedDoor, boolean canSwim)
+    private PathEntity getEntityPathToXYZ(int targetX, int targetY, int targetZ, float range)
     {
         int x = MathHelper.floor_double(entity.posX);
         int y = MathHelper.floor_double(entity.posY);
@@ -92,8 +94,8 @@ public class EntityAIFearHorn extends EntityAIBase{
         int xmax = x + r;
         int ymax = y + r;
         int zmax = z + r;
-        ChunkCache chunkcache = new ChunkCache(entity.worldObj, xmin, ymin, zmin, xmax, ymax, zmax, 0);
-        PathEntity pathentity = (new TCPathFinder(chunkcache, canPassOpenDoor, canPassClosedDoor, false, canSwim)).createEntityPathTo(entity, targetX, targetY, targetZ, range);
+        ChunkCache chunkcache = new ChunkCache(entity.worldObj, new BlockPos(xmin, ymin, zmin), new BlockPos(xmax, ymax, zmax), 0);
+        PathEntity pathentity = (new TCPathFinder(chunkcache)).createEntityPathTo(entity.worldObj, entity, new BlockPos(targetX, targetY, targetZ), range);
         return pathentity;
     }
 }

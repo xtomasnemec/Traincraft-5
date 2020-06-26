@@ -17,23 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import train.common.api.DieselTrain;
-import train.common.api.ElectricTrain;
-import train.common.api.Freight;
-import train.common.api.SteamTrain;
-import train.common.api.Tender;
-import train.common.entity.rollingStock.EntityBulkheadFlatCart;
-import train.common.entity.rollingStock.EntityFlatCarLogs_DB;
-import train.common.entity.rollingStock.EntityFlatCarRails_DB;
-import train.common.entity.rollingStock.EntityFlatCartWoodUS;
-import train.common.entity.rollingStock.EntityFreightCenterbeam_Wood_1;
-import train.common.entity.rollingStock.EntityFreightCenterbeam_Wood_2;
-import train.common.entity.rollingStock.EntityFreightGrain;
-import train.common.entity.rollingStock.EntityFreightIceWagon;
-import train.common.entity.rollingStock.EntityFreightMinetrain;
-import train.common.entity.rollingStock.EntityFreightSlateWagon;
-import train.common.entity.rollingStock.EntityFreightWood;
-import train.common.entity.rollingStock.EntityFreightWood2;
+import train.common.api.*;
+import train.common.entity.rollingStock.*;
 import train.common.items.ItemTCRail;
 
 public class ItemHandler {
@@ -72,9 +57,9 @@ public class ItemHandler {
 		if (entity instanceof EntityFreightCenterbeam_Wood_1 || entity instanceof EntityFreightCenterbeam_Wood_2 ||
 				entity instanceof EntityFlatCartWoodUS || entity instanceof EntityBulkheadFlatCart || entity instanceof EntityFlatCarLogs_DB ||
 				entity instanceof EntityFreightWood || entity instanceof EntityFreightWood2) {
-            int isid = OreDictionary.getOreID(itemstack);
+            int isid = OreDictionary.getOreIDs(itemstack)[0];
 			return isid == plankWood || isid == logWood || isid == slabWood || isid == stairWood ||
-					itemstack.getItem() == Item.getItemFromBlock(Blocks.ladder) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence_gate);
+					itemstack.getItem() == Item.getItemFromBlock(Blocks.ladder) || itemstack.getItem() == Item.getItemFromBlock(Blocks.oak_fence) || itemstack.getItem() == Item.getItemFromBlock(Blocks.oak_fence_gate);
 		}
 		else if (entity instanceof EntityFlatCarRails_DB) {
 			return block instanceof BlockRailBase || itemstack.getItem() instanceof ItemTCRail;
@@ -104,7 +89,7 @@ public class ItemHandler {
 	private static boolean cropStuff(ItemStack itemstack) {
 		String[] names = new String[] { "cropCorn", "cropRice", "seedRice", "seedCorn", "listAllseed" };
 		for (String name: names) {
-			if (OreDictionary.getOreID(name) == OreDictionary.getOreID(itemstack)) {
+			if (OreDictionary.getOreID(name) == OreDictionary.getOreIDs(itemstack)[0]) {
 				return true;
 			}
 		}

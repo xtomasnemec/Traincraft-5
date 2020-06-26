@@ -7,12 +7,12 @@
 
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
 import train.client.render.models.blocks.ModelStopper;
 import train.common.library.Info;
 import train.common.tile.TileStopper;
@@ -38,7 +38,7 @@ public class RenderStopper extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
-		render(var1, var2, var4, var6);
+	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
+		render(te, x,y,z);
 	}
 }

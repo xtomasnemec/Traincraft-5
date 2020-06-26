@@ -50,10 +50,10 @@ public class WorldCoordinate implements Comparable<WorldCoordinate> {
     }
 
     public WorldCoordinate(TileEntity tile) {
-        this.dimension = tile.getWorldObj().provider.dimensionId;
-        this.x = tile.xCoord;
-        this.y = tile.yCoord;
-        this.z = tile.zCoord;
+        this.dimension = tile.getWorld().provider.getDimensionId();
+        this.x = tile.getPos().getX();
+        this.y = tile.getPos().getY();
+        this.z = tile.getPos().getY();
     }
 
     public static WorldCoordinate readFromNBT(NBTTagCompound data, String tag) {

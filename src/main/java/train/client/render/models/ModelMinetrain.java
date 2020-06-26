@@ -1,5 +1,6 @@
 package train.client.render.models;
 
+
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;

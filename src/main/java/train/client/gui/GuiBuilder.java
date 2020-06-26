@@ -1,9 +1,5 @@
 package train.client.gui;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -13,6 +9,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import org.lwjgl.opengl.GL11;
 import train.common.Traincraft;
 import train.common.core.network.PacketSetTrainLockedToClient;
 import train.common.core.network.PacketTrackBuilderFollow;
@@ -20,6 +17,8 @@ import train.common.core.network.PacketTrackBuilderHeight;
 import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.inventory.InventoryBuilder;
 import train.common.library.Info;
+
+import java.util.List;
 
 public class GuiBuilder extends GuiContainer {
 
@@ -95,9 +94,9 @@ public class GuiBuilder extends GuiContainer {
 		}
 
 		if (guibutton.id == 4) {
-			if (player != null && player.getCommandSenderName().toLowerCase().equals((builder).getTrainOwner().toLowerCase())) {
+			if (player != null && player.getName().toLowerCase().equals((builder).getTrainOwner().toLowerCase())) {
 				if ((!(builder).getTrainLockedFromPacket())) {
-					AxisAlignedBB box = (builder).boundingBox.expand(5, 5, 5);
+					AxisAlignedBB box = (builder).getCollisionBoundingBox().expand(5, 5, 5);
 					List<?> lis3 = (builder).worldObj.getEntitiesWithinAABBExcludingEntity(builder, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (Object entity : lis3) {
@@ -112,7 +111,7 @@ public class GuiBuilder extends GuiContainer {
 					this.initGui();
 				}
 				else {
-					AxisAlignedBB box = (builder).boundingBox.expand(5, 5, 5);
+					AxisAlignedBB box = (builder).getCollisionBoundingBox().expand(5, 5, 5);
 					List<?> lis3 = (builder).worldObj.getEntitiesWithinAABBExcludingEntity(builder, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (Object entity : lis3) {
@@ -165,7 +164,7 @@ public class GuiBuilder extends GuiContainer {
 	}
 
 	private void sendPacket(int packet, int packetID) {
-		AxisAlignedBB box = (builder).boundingBox.expand(5, 5, 5);
+		AxisAlignedBB box = (builder).getCollisionBoundingBox().expand(5, 5, 5);
 		List<?> lis3 = (builder).worldObj.getEntitiesWithinAABBExcludingEntity(builder, box);
 		if (lis3 != null && lis3.size() > 0) {
 			for (Object entity : lis3) {
@@ -177,7 +176,7 @@ public class GuiBuilder extends GuiContainer {
 	}
 	
 	private void sendFollow(int packet, int packetID) {
-		AxisAlignedBB box = (builder).boundingBox.expand(5, 5, 5);
+		AxisAlignedBB box = (builder).getCollisionBoundingBox().expand(5, 5, 5);
 		List<?> lis3 = (builder).worldObj.getEntitiesWithinAABBExcludingEntity(builder, box);
 		if (lis3 != null && lis3.size() > 0) {
 			for (Object entity : lis3) {

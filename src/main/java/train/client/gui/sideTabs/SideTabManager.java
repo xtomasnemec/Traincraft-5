@@ -7,15 +7,15 @@
 
 package train.client.gui.sideTabs;
 
-import java.util.ArrayList;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import train.client.core.helpers.SessionHelper;
 import train.client.gui.GuiTraincraft;
+
+import java.util.ArrayList;
 
 @SideOnly(Side.CLIENT)
 public class SideTabManager {
@@ -24,7 +24,7 @@ public class SideTabManager {
 	protected ArrayList<SideTab> sideTabLeft = new ArrayList<SideTab>();
 	protected ArrayList<SideTab> sideTabRight = new ArrayList<SideTab>();
 
-	protected static FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
+	protected static FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRendererObj;
 
 	public SideTabManager(GuiTraincraft gui) {
 		this.gui = gui;

@@ -1,11 +1,10 @@
 package train.client.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.common.library.Info;
 
 public class GuiCustomButton extends GuiButton {
@@ -44,7 +43,7 @@ public class GuiCustomButton extends GuiButton {
 	@Override
 	public void drawButton(Minecraft mc, int par2, int par3) {
 		if (this.visible) {
-			FontRenderer var4 = mc.fontRenderer;
+			FontRenderer var4 = mc.fontRendererObj;
 			mc.getTextureManager().bindTexture(new ResourceLocation(Info.resourceLocation,this.texture));
 			//GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureInt);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

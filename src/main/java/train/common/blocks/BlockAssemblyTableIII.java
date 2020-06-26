@@ -1,65 +1,67 @@
 package train.common.blocks;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.library.GuiIDs;
-import train.common.library.Info;
 import train.common.tile.TileCrafterTierIII;
-import train.common.tile.TileHelper;
+
+import java.util.Random;
+
+//import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.util.IIcon;
 
 public class BlockAssemblyTableIII extends BlockContainer {
 
-	private IIcon textureTop;
-	private IIcon textureBottom;
-	private IIcon textureFront;
-	private IIcon textureSide;
+	//private IIcon textureTop;
+	//private IIcon textureBottom;
+	//private IIcon textureFront;
+	//private IIcon textureSide;
 
 	public BlockAssemblyTableIII(Material material) {
 		super(material);
 		setCreativeTab(Traincraft.tcTab);
 	}
 
+	public int getRenderType()
+	{
+		return 3;
+	}
 	@Override
-	public int damageDropped(int i) {
-		return i;
+	public int damageDropped(IBlockState state) {
+		return state.getBlock().getMetaFromState(state);
 	}
 
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random) {
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
 		return 1;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(i, j, k);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing par6, float par7, float par8, float par9) {
+		TileEntity te = world.getTileEntity(pos);
 		if (player.isSneaking()) {
 			return false;
 		}
 		if (!world.isRemote) {
-			if (te != null && te instanceof TileCrafterTierIII) {
-				player.openGui(Traincraft.instance, GuiIDs.CRAFTER_TIER_III, world, i, j, k);
+			if (te instanceof TileCrafterTierIII) {
+				player.openGui(Traincraft.instance, GuiIDs.CRAFTER_TIER_III, world, pos.getX(), pos.getY(),pos.getZ());
 			}
 		}
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(int i, int j) {
 		if (i == 1) {
 			return textureTop;
@@ -84,11 +86,23 @@ public class BlockAssemblyTableIII extends BlockContainer {
 	}
 
 	@Override
-	public void breakBlock(World world, int i, int j, int k, Block par5, int par6) {
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister iconRegister) {
+		textureTop = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_top");
+		textureBottom = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_bottom");
+		textureFront = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_front");
+		textureSide = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_side");
+	}
+
+	*/
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		Random distilRand = new Random();
-		TileCrafterTierIII tileentitytierIII = (TileCrafterTierIII) world.getTileEntity(i, j, k);
+		TileCrafterTierIII tileentitytierIII = (TileCrafterTierIII) world.getTileEntity(pos);
 		if (tileentitytierIII != null) {
 			label0: for (int l = 0; l < tileentitytierIII.getSizeInventory(); l++) {
+				if((l>9 && l<18)){continue;}
 				ItemStack itemstack = tileentitytierIII.getStackInSlot(l);
 				if (itemstack == null) {
 					continue;
@@ -105,7 +119,7 @@ public class BlockAssemblyTableIII extends BlockContainer {
 						i1 = itemstack.stackSize;
 					}
 					itemstack.stackSize -= i1;
-					EntityItem entityitem = new EntityItem(world, (float) i + f, (float) j + f1, (float) k + f2, itemstack.splitStack(i1));
+					EntityItem entityitem = new EntityItem(world, (float) pos.getX() + f, (float) pos.getY() + f1, (float) pos.getZ() + f2, itemstack.splitStack(i1));
 					float f3 = 0.05F;
 					entityitem.motionX = (float) distilRand.nextGaussian() * f3;
 					entityitem.motionY = (float) distilRand.nextGaussian() * f3 + 0.2F;
@@ -114,22 +128,22 @@ public class BlockAssemblyTableIII extends BlockContainer {
 				} while (true);
 			}
 		}
-		super.breakBlock(world, i, j, k, par5, par6);
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
-		super.onBlockAdded(world, i, j, k);
-		world.markBlockForUpdate(i, j, k);
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(world, pos, state);
+		world.markBlockForUpdate(pos);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack stack) {
-		TileCrafterTierIII te = (TileCrafterTierIII) world.getTileEntity(i, j, k);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityliving, ItemStack stack) {
+		TileCrafterTierIII te = (TileCrafterTierIII) world.getTileEntity(pos);
 		if (te != null) {
 			int dir = MathHelper.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-			te.setFacing(ForgeDirection.getOrientation(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
-			world.markBlockForUpdate(i, j, k);
+			te.setFacing(EnumFacing.getHorizontal(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
+			world.markBlockForUpdate(pos);
 		}
 	}
 
@@ -138,12 +152,4 @@ public class BlockAssemblyTableIII extends BlockContainer {
 		return new TileCrafterTierIII();
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		textureTop = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_top");
-		textureBottom = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_bottom");
-		textureFront = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_front");
-		textureSide = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_3_side");
-	}
 }

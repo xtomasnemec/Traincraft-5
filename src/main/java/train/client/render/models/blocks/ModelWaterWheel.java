@@ -1,30 +1,29 @@
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
 import train.common.library.Info;
 import train.common.tile.TileWaterWheel;
 
 @SideOnly(Side.CLIENT)
 public class ModelWaterWheel extends ModelBase {
-	private IModelCustom modelWaterWheel;
+	private ModelRendererTurbo modelWaterWheel;
 	private long lastframe;
 	private float wheel;
 	private int l;
 	public float wheel1 = 0.4188790204786391F;
 
 	public ModelWaterWheel() {
-		modelWaterWheel = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "water_wheel.obj"));
+		modelWaterWheel = new ModelRendererTurbo(this).addObj("water_wheel.obj");
 	}
 
 	public void render() {
-		modelWaterWheel.renderAll();
+		modelWaterWheel.render();
 	}
 
 	public void render(TileWaterWheel waterWheel, double x, double y, double z) {
@@ -44,7 +43,7 @@ public class ModelWaterWheel extends ModelBase {
 		float f4 = (float) (j & 255) / 255.0F;
 		GL11.glColor4f(f1 * f2, f1 * f3, f1 * f4, 1);
 		// Render the object, using modelTutBox.renderAll();
-		int facing = waterWheel.getWorldObj().getBlockMetadata((int) waterWheel.xCoord, (int) waterWheel.yCoord, (int) waterWheel.zCoord);
+		int facing = waterWheel.facingMeta;
 		if (facing == 3) {
 			GL11.glScalef(0.7f, 0.5f, 0.5f);
 			GL11.glScalef(1f, 0.36f, 0.36f);

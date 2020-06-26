@@ -1,29 +1,30 @@
 package train.client.render;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import tmt.Tessellator;
 import train.common.api.EntityRollingStock;
 import train.common.api.Locomotive;
+import train.common.core.util.TraincraftUtil;
 import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.library.Info;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 @SideOnly(Side.CLIENT)
 public class RenderRollingStock extends Render {
 	private static Random random = new Random();
 
-	public RenderRollingStock() {
+	public RenderRollingStock(RenderManager manager) {
+		super(manager);
 		this.shadowSize = 0.5F;
 	}
 
@@ -63,7 +64,7 @@ public class RenderRollingStock extends Render {
 
 			if (var27.lengthVector() != 0.0D) {
 				var27 = var27.normalize();
-				yaw = (float) (Math.atan2(var27.zCoord, var27.xCoord) / Math.PI) * 180F;
+				yaw = TraincraftUtil.atan2degreesf(var27.zCoord, var27.xCoord);
 				pitch = (float) (Math.atan(var27.yCoord) * 73.0D);
 			}
 
@@ -108,32 +109,34 @@ public class RenderRollingStock extends Render {
 		int k = MathHelper.floor_double(cart.posZ);
 
 		// NOTE: func_150049_b_ = isRailBlockAt
-		if (cart.worldObj != null && (BlockRailBase.func_150049_b_(cart.worldObj, i, j, k)
-				|| BlockRailBase.func_150049_b_(cart.worldObj, i, j - 1, k))) {
+		if (cart.worldObj != null && (BlockRailBase.isRailBlock(cart.worldObj, new BlockPos(i, j, k))
+				|| BlockRailBase.isRailBlock(cart.worldObj, new BlockPos(i, j - 1, k)))) {
 			cart.setMountedYOffset(-0.55);
 		} else if (cart.posYFromServer != 0) {
 			cart.setMountedYOffset(-0.5);
 			GL11.glTranslatef(0f, -0.30f, 0f);
 		}
+		if(cart.worldObj != null && cart.worldObj.getBlockState(new BlockPos(i,j,k)).getBlock().getClass().getName().equals("ebf.tim.blocks.rails.BlockRailCore")){
+			GL11.glTranslatef(0f, 0.15f, 0f);
+		}
 		if (cart.bogieLoco != null) {// || cart.bogieUtility[0]!=null){
 			//GL11.glRotatef((float)(90-cart.rotationYawClientReal), 0.0F, 1.0F, 0.0F);
 			if (cart.oldClientYaw == 0) cart.oldClientYaw = cart.rotationYawClientReal;
 
-			float rotationYawBogie = cart.rotationYawClientReal;
 			float tempYaw = (cart.rotationYawClientReal - cart.oldClientYaw);
 			float newYaw = 0;
 			//System.out.println("rotationYawBogie "+rotationYawBogie+" oldYaw "+cart.oldClientYaw+" tempYaw "+(Math.abs(tempYaw)/10));
 			//System.out.println(Math.abs(cart.oldClientYaw-rotationYawBogie));
-			if(Math.abs(cart.oldClientYaw-rotationYawBogie)>170){
-				cart.oldClientYaw = rotationYawBogie;
+			if(Math.abs(cart.oldClientYaw-cart.rotationYawClientReal)>170){
+				cart.oldClientYaw = cart.rotationYawClientReal;
 			}
-			if (cart.oldClientYaw != rotationYawBogie && Math.abs(cart.oldClientYaw-rotationYawBogie)>(Math.abs(tempYaw)/10)) {
+			if (cart.oldClientYaw != cart.rotationYawClientReal && Math.abs(cart.oldClientYaw-cart.rotationYawClientReal)>(Math.abs(tempYaw)/10)) {
 				newYaw = cart.oldClientYaw + Math.copySign((Math.abs(tempYaw)/10), tempYaw);
 				cart.oldClientYaw += Math.copySign((Math.abs(tempYaw)/10), tempYaw);
 			}
 			else {
-				newYaw = rotationYawBogie;
-				cart.oldClientYaw = rotationYawBogie;
+				newYaw = cart.rotationYawClientReal;
+				cart.oldClientYaw = cart.rotationYawClientReal;
 			}
 			//System.out.println("newYaw "+newYaw);
 			//System.out.println(90 - cart.rotationYawClientReal);
@@ -143,7 +146,7 @@ public class RenderRollingStock extends Render {
 		}
 		else {
 			// NOTE: func_150049_b_ = isRailBlockAt
-			if (cart.worldObj!=null && (BlockRailBase.func_150049_b_(cart.worldObj, i, j, k) || BlockRailBase.func_150049_b_(cart.worldObj, i, j-1, k) )){
+			if (cart.worldObj!=null && (BlockRailBase.isRailBlock(cart.worldObj, new BlockPos(i, j, k)) || BlockRailBase.isRailBlock(cart.worldObj, new BlockPos(i, j-1, k)) )){
 				if(cart.isClientInReverse){
 					yaw+=180;
 					pitch = -pitch;
@@ -154,23 +157,22 @@ public class RenderRollingStock extends Render {
 			}else{
 				if (cart.oldClientYaw == 0) cart.oldClientYaw = cart.rotationYawClientReal;
 
-				float rotationYaw = cart.rotationYawClientReal;
 				float tempYaw = (cart.rotationYawClientReal - cart.oldClientYaw);
 				float newYaw = 0;
 				//System.out.println("rotationYawBogie "+rotationYawBogie+" oldYaw "+cart.oldClientYaw+" tempYaw "+(Math.abs(tempYaw)/10));
 				//System.out.println(Math.abs(cart.oldClientYaw-rotationYawBogie));
-				if(Math.abs(cart.oldClientYaw-rotationYaw)>170){
-					cart.oldClientYaw = rotationYaw;
+				if(Math.abs(cart.oldClientYaw-cart.rotationYawClientReal)>170){
+					cart.oldClientYaw = cart.rotationYawClientReal;
 				}
-				if (cart.oldClientYaw != rotationYaw && Math.abs(cart.oldClientYaw-rotationYaw)>(Math.abs(tempYaw)/10)) {
+				if (cart.oldClientYaw != cart.rotationYawClientReal && Math.abs(cart.oldClientYaw-cart.rotationYawClientReal)>(Math.abs(tempYaw)/10)) {
 					newYaw = cart.oldClientYaw + Math.copySign((Math.abs(tempYaw)/10), tempYaw);
 					cart.oldClientYaw += Math.copySign((Math.abs(tempYaw)/10), tempYaw);
 				}
 				else {
-					newYaw = rotationYaw;
-					cart.oldClientYaw = rotationYaw;
+					newYaw = cart.rotationYawClientReal;
+					cart.oldClientYaw = cart.rotationYawClientReal;
 				}
-				GL11.glRotatef((90.0f-(newYaw+90.0f)), 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(-newYaw, 0.0F, 1.0F, 0.0F);
 				cart.setRenderYaw(yaw);
 				cart.setRenderPitch(pitch);
 			}
@@ -180,11 +182,11 @@ public class RenderRollingStock extends Render {
 
 		//GL11.glRotatef(180.0F - yaw, 0.0F, 1.0F, 0.0F);
 		if (cart.bogieLoco != null) {// || cart.bogieUtility[0]!=null){
-			GL11.glRotatef((float) -cart.anglePitchClient, 0.0F, 0.0F, 1.0F);
+			GL11.glRotatef(-cart.anglePitchClient, 0.0F, 0.0F, 1.0F);
 		}
 		else {
 			if(renderYVect != null){
-				pitch = (float)cart.anglePitchClient/60;
+				pitch = cart.anglePitchClient/60f;
 				if(cart.rotationYawClientReal>-5 && cart.rotationYawClientReal<5){
 					pitch=-pitch;
 				}
@@ -230,7 +232,7 @@ public class RenderRollingStock extends Render {
 				Tessellator.bindTexture(getTexture(cart));
 
 				GL11.glEnable(GL11.GL_LIGHTING);
-				int skyLight = cart.worldObj.getLightBrightnessForSkyBlocks(i, j, k, 0);
+				int skyLight = cart.worldObj.getCombinedLight(new BlockPos(i, j, k), 0);
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,  skyLight % 65536,
 						skyLight / 65536f);
 
@@ -249,7 +251,7 @@ public class RenderRollingStock extends Render {
 				}
 				if (renders.hasExplosion()) {
 					if (cart.bogieLoco != null) {// || cart.bogieUtility[0]!=null){
-						renderExplosionFX(cart, 90 + cart.rotationYawClientReal, (float) cart.anglePitchClient, renders.getExplosionType(), renders.getExplosionFX(), renders.getExplosionFXIterations(), renders.hasSmokeOnSlopes());
+						renderExplosionFX(cart, 90 + cart.rotationYawClientReal, cart.anglePitchClient, renders.getExplosionType(), renders.getExplosionFX(), renders.getExplosionFXIterations(), renders.hasSmokeOnSlopes());
 					}
 					else {
 						renderExplosionFX(cart, yaw, pitch, renders.getExplosionType(), renders.getExplosionFX(), renders.getExplosionFXIterations(), renders.hasSmokeOnSlopes());
@@ -271,7 +273,7 @@ public class RenderRollingStock extends Render {
 		}
 	}
 
-	private static void renderSmokeFX(EntityRollingStock cart, float yaw, float pitch, String smokeType, ArrayList<double[]> smokeFX, int smokeIterations, float time, boolean hasSmokeOnSlopes) {
+	private static void renderSmokeFX(EntityRollingStock cart, float yaw, float pitch, EnumParticleTypes smokeType, ArrayList<double[]> smokeFX, int smokeIterations, float time, boolean hasSmokeOnSlopes) {
 		if(cart instanceof Locomotive && !((Locomotive)cart).isLocoTurnedOn()){return;}
 		if(Math.abs(pitch)>30)return;
 		//if (pitch != 0 && !hasSmokeOnSlopes) { return; }
@@ -320,15 +322,14 @@ public class RenderRollingStock extends Render {
 		return xyz;
 	}
 
-	private static void renderExplosionFX(EntityRollingStock cart, float yaw, float pitch, String explosionType, ArrayList<double[]> explosionFX, int explosionFXIterations, boolean hasSmokeOnSlopes) {
+	private static void renderExplosionFX(EntityRollingStock cart, float yaw, float pitch, EnumParticleTypes explosionType, ArrayList<double[]> explosionFX, int explosionFXIterations, boolean hasSmokeOnSlopes) {
 		if(cart instanceof Locomotive && !((Locomotive)cart).isLocoTurnedOn())return;
 		float yawMod = yaw % 360;
 		double pitchRads = Math.toDegrees(pitch);
 		//if (pitch != 0 && !hasSmokeOnSlopes) { return; }
 		if(Math.abs(pitch)>30)return;
 		if (cart instanceof Locomotive && ((Locomotive) cart).getFuel() > 0) {
-			int r = random.nextInt(300);
-			if (r < (explosionFXIterations * 10)) {
+			if (random.nextInt(300) < (explosionFXIterations * 10)) {
 				for (int j = 0; j < explosionFXIterations; j++) {
 					if (yawMod == 180) {
 						for (double[] explosion : explosionFX) {

@@ -8,19 +8,19 @@
 
 package mods.railcraft.api.tracks;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import mods.railcraft.api.core.items.ITrackItem;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.items.ItemTCRail;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A number of utility functions related to rails.
@@ -28,8 +28,8 @@ import train.common.items.ItemTCRail;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public abstract class RailTools {
-    public static boolean isRailBlockAt(IBlockAccess world, int x, int y, int z) {
-        return world.getBlock(x, y, z) instanceof BlockRailBase;
+    public static boolean isRailBlockAt(World world, int x, int y, int z) {
+        return BlockRailBase.isRailBlock(world, new BlockPos(x,y,z));
     }
 
     /**
@@ -79,10 +79,10 @@ public abstract class RailTools {
         int y = MathHelper.floor_double(cart.posY);
         int z = MathHelper.floor_double(cart.posZ);
 
-        if (BlockRailBase.func_150049_b_(cart.worldObj, x, y - 1, z))
+        if (BlockRailBase.isRailBlock(cart.worldObj, new BlockPos(x, y - 1, z)))
             y--;
 
-        TileEntity tile = cart.worldObj.getTileEntity(x, y, z);
+        TileEntity tile = cart.worldObj.getTileEntity(new BlockPos(x, y, z));
         if (tile instanceof ITrackTile) {
             ITrackInstance track = ((ITrackTile) tile).getTrackInstance();
             return track instanceof ITrackLockdown && ((ITrackLockdown) track).isCartLockedDown(cart);
@@ -110,7 +110,7 @@ public abstract class RailTools {
     }
 
     public static boolean isTrackFuzzyAt(World world, int x, int y, int z) {
-        return BlockRailBase.func_150049_b_(world, x, y, z) ? true : (BlockRailBase.func_150049_b_(world, x, y + 1, z) ? true : BlockRailBase.func_150049_b_(world, x, y - 1, z));
+        return BlockRailBase.isRailBlock(world, new BlockPos( x, y, z)) ? true : (BlockRailBase.isRailBlock(world, new BlockPos(x, y + 1, z)) ? true : BlockRailBase.isRailBlock(world, new BlockPos(x, y - 1, z)));
     }
 
     public static Set<ITrackTile> getAdjecentTrackTiles(World world, int x, int y, int z) {
@@ -136,13 +136,13 @@ public abstract class RailTools {
     }
 
     public static ITrackTile getTrackFuzzyAt(World world, int x, int y, int z) {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
         if (tile instanceof ITrackTile)
             return (ITrackTile) tile;
-        tile = world.getTileEntity(x, y + 1, z);
+        tile = world.getTileEntity(new BlockPos(x, y + 1, z));
         if (tile instanceof ITrackTile)
             return (ITrackTile) tile;
-        tile = world.getTileEntity(x, y - 1, z);
+        tile = world.getTileEntity(new BlockPos(x, y - 1, z));
         if (tile instanceof ITrackTile)
             return (ITrackTile) tile;
         return null;
@@ -184,7 +184,7 @@ public abstract class RailTools {
     }
 
     public static <T> T getTrackObjectAt(World world, int x, int y, int z, Class<T> type) {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
         if (tile == null)
             return null;
         if (type.isInstance(tile))

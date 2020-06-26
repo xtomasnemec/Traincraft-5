@@ -2,12 +2,7 @@ package train.common.containers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
@@ -61,7 +56,7 @@ public class ContainerWorkbenchCart extends Container {
 
 		if (!worldObj.isRemote) {
 			for (int var2 = 0; var2 < 9; ++var2) {
-				ItemStack var3 = craftMatrix.getStackInSlotOnClosing(var2);
+				ItemStack var3 = craftMatrix.removeStackFromSlot(var2);
 
 				if (var3 != null) {
 					par1EntityPlayer.dropItem(var3.getItem(), var3.stackSize);

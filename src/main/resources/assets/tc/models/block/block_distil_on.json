@@ -1,0 +1,10 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "particle": "blocks/bricks",
+    "bottom": "textures/blocks/distil_bottom",
+    "top": "textures/blocks/distil_top",
+    "side": "textures/blocks/distil_side",
+    "front": "textures/blocks/distil_on_front"
+  }
+}

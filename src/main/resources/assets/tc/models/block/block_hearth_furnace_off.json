@@ -1,0 +1,10 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "particle": "blocks/bricks",
+    "bottom": "textures/blocks/furnace_off_bottom",
+    "top": "textures/blocks/furnace_off_top",
+    "side": "textures/blocks/furnace_off_side",
+    "front": "textures/blocks/furnace_off_front"
+  }
+}

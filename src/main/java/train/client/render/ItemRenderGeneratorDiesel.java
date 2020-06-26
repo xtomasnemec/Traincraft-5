@@ -7,16 +7,16 @@
 
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
 import train.client.render.models.blocks.ModelGeneratorDiesel;
 import train.common.library.Info;
 
-public class ItemRenderGeneratorDiesel implements IItemRenderer {
+public class ItemRenderGeneratorDiesel implements ICustomModelLoader {
 
 	private static final ModelGeneratorDiesel generator = new ModelGeneratorDiesel(1F);
 	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "generator_diesel.png");
@@ -25,22 +25,21 @@ public class ItemRenderGeneratorDiesel implements IItemRenderer {
 
 	}
 
+	private static ResourceLocation uri = new ResourceLocation("tc","ItemRenderGeneratorDiesel");
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
+	public boolean accepts(ResourceLocation modelLocation) {
+		return modelLocation==uri;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		switch (type) {
-		case ENTITY: {
+	public IModel loadModel(ResourceLocation resource) {
+		if(resource!=uri){return null;}
+		//switch (type) {
+		//case ENTITY: {
 			renderGenerator(0.0F, 0F, 0.0F);
-			break;
+			//todo: theoretically if we just render it rather than returning a model,
+			// it will render and we dont need to return a model
+		/*	break;
 		}
 		case EQUIPPED: {
 			renderGenerator(0F, 0.1F, 0F);
@@ -57,6 +56,8 @@ public class ItemRenderGeneratorDiesel implements IItemRenderer {
 		default:
 			break;
 		}
+		*/
+		return null;
 	}
 
 	private void renderGenerator(float f, float g, float h) {
@@ -66,5 +67,10 @@ public class ItemRenderGeneratorDiesel implements IItemRenderer {
 		GL11.glScalef(0.7F, 0.7F, 0.7F);
 		generator.render2(0.0625F);
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager) {
+
 	}
 }

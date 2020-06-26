@@ -3,7 +3,7 @@
  */
 package train.common.blocks.tracks;
 
-import net.minecraft.util.IIcon;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import train.common.library.Tracks;
 
 public class BlockSteelTrack extends TrackBaseTraincraft {
@@ -16,7 +16,7 @@ public class BlockSteelTrack extends TrackBaseTraincraft {
 		return Tracks.STEEL_TRACK;
 	}
 	@Override
-	public IIcon getIcon() {
+	public ModelResourceLocation getIcon() {
 		int meta = this.tileEntity.getBlockMetadata();
 		if (meta >= 6) {
 			return getIcon(1);

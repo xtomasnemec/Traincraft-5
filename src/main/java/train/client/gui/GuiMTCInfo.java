@@ -1,17 +1,19 @@
 package train.client.gui;
 
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 import train.common.Traincraft;
 import train.common.api.Locomotive;
 import train.common.core.network.PacketDestination;
 import train.common.core.network.PacketUpdateTrainID;
 import train.common.mtc.packets.PacketMTCLevelUpdate;
+
+import java.io.IOException;
 
 public class GuiMTCInfo extends GuiScreen {
        Locomotive theLocomotive;
@@ -36,8 +38,9 @@ public class GuiMTCInfo extends GuiScreen {
         trainLevel.setMaxStringLength(1);
         trainLevel.setText(theLocomotive.trainLevel);
         trainID.setMaxStringLength(6);
-        trainID.setText(theLocomotive.trainID);
-        destination.setText(theLocomotive.getDestinationGUI());
+        trainID.setText(theLocomotive.getDataWatcher().getWatchableObjectString(5));
+
+        destination.setText(theLocomotive.getDataWatcher().getWatchableObjectString(3));
 
 
 
@@ -109,7 +112,7 @@ public class GuiMTCInfo extends GuiScreen {
     }
 
     @Override
-    protected void mouseClicked(int par1, int par2, int par3) {
+    protected void mouseClicked(int par1, int par2, int par3) throws IOException {
         trainLevel.mouseClicked(par1, par2, par3);
         trainID.mouseClicked(par1, par2, par3);
         destination.mouseClicked(par1, par2, par3);

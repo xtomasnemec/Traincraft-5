@@ -1,17 +1,20 @@
 package train.common.items;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.library.GuiIDs;
 import train.common.library.Info;
+
+import java.util.List;
 
 public class ItemRecipeBook extends Item {
 	
@@ -65,10 +68,17 @@ public class ItemRecipeBook extends Item {
 		return true;
 	}
 
+
 	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining){
+		return new ModelResourceLocation(new ResourceLocation(Info.modID.toLowerCase(), "parts/item_book_blue"),"inventory");
+	}
+
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":parts/item_book_blue");
-	}
+	}*/
 
 }

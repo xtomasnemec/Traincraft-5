@@ -1,19 +1,18 @@
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
 import train.common.library.Info;
 import train.common.tile.TileWindMill;
 
 @SideOnly(Side.CLIENT)
 public class ModelWindMill extends ModelBase {
-	private IModelCustom modelWindMill;
+	private ModelRendererTurbo modelWindMill;
 	//private IModelCustom modelWindMillWheel;
 	private long lastframe;
 	private float wheel;
@@ -21,11 +20,11 @@ public class ModelWindMill extends ModelBase {
 	public float wheel1 = 0.4188790204786391F;
 
 	public ModelWindMill() {
-		modelWindMill = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "wind_mill.obj"));
+		modelWindMill = new ModelRendererTurbo(this).addObj("wind_mill.obj");
 	}
 
 	public void render() {
-		modelWindMill.renderAll();
+		modelWindMill.render();
 	}
 
 	public void render(TileWindMill windMill, double x, double y, double z) {
@@ -45,7 +44,7 @@ public class ModelWindMill extends ModelBase {
 		float f4 = (float) (j & 255) / 255.0F;
 		GL11.glColor4f(f1 * f2, f1 * f3, f1 * f4, 1);
 		GL11.glScalef(0.5f, 0.5f, 0.5f);
-		int facing = windMill.getWorldObj().getBlockMetadata((int) windMill.xCoord, (int) windMill.yCoord, (int) windMill.zCoord);
+		int facing = windMill.getFacing();
 		if (facing == 3) {
 		}
 		if (facing == 1) {

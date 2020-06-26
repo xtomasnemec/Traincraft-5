@@ -1,9 +1,8 @@
 package train.client.render.models;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 import tmt.ModelBase;
 import train.client.render.CustomModelRenderer;
 import train.common.entity.rollingStock.EntityLocoSteamShay;
@@ -691,10 +690,10 @@ public class ModelLocoSteamShay extends ModelBase {
 			GL11.glPopMatrix();
 		}
 		
-		Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 		box74.render(f5);
 		box77.render(f5);
-		Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+		Minecraft.getMinecraft().entityRenderer.enableLightmap();
 	}
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {}

@@ -1,5 +1,6 @@
 package train.common.api;
 
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import train.common.library.BlockIDs;
 
@@ -18,7 +19,7 @@ public class TrainsSignal {
 
 		if ((motionX > 0) && motionZ == 0) {
 			for (int t = 0; t < 12; t++) {
-				if ((worldObj.getBlock(i + t, j, k + l) == BlockIDs.signal.block) || (worldObj.getBlock(i + t, j, k - l) == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
+				if ((worldObj.getBlockState(new BlockPos(i + t, j, k + l)).getBlock() == BlockIDs.signal.block) || (worldObj.getBlockState(new BlockPos(i + t, j, k - l)).getBlock() == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
 					action = 1;
 					if (t == 2) {
 						action = 2;
@@ -33,7 +34,7 @@ public class TrainsSignal {
 		}
 		else if ((motionX < 0) && motionZ == 0) {
 			for (int t = 0; t < 12; t++) {
-				if ((worldObj.getBlock(i - t, j, k + l) == BlockIDs.signal.block) || (worldObj.getBlock(i - t, j, k - l) == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
+				if ((worldObj.getBlockState(new BlockPos(i - t, j, k + l)).getBlock() == BlockIDs.signal.block) || (worldObj.getBlockState(new BlockPos(i - t, j, k - l)).getBlock() == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
 					action = 1;
 					if (t == 2) {
 						action = 2;
@@ -49,7 +50,7 @@ public class TrainsSignal {
 		else if ((motionZ > 0) && motionX == 0) {
 			// k - = front
 			for (int t = 0; t < 12; t++) {
-				if ((worldObj.getBlock(i + l, j, k + t) == BlockIDs.signal.block) || (worldObj.getBlock(i - l, j, k + t) == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
+				if ((worldObj.getBlockState(new BlockPos(i + l, j, k + t)).getBlock() == BlockIDs.signal.block) || (worldObj.getBlockState(new BlockPos(i - l, j, k + t)).getBlock() == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
 					action = 1;
 					if (t == 2) {
 						action = 2;
@@ -64,7 +65,7 @@ public class TrainsSignal {
 		}
 		else if ((motionZ < 0) && motionX == 0) {
 			for (int t = 0; t < 12; t++) {
-				if ((worldObj.getBlock(i + l, j, k - t) == BlockIDs.signal.block) || (worldObj.getBlock(i - l, j, k - t) == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
+				if ((worldObj.getBlockState(new BlockPos(i + l, j, k - t)).getBlock() == BlockIDs.signal.block) || (worldObj.getBlockState(new BlockPos(i - l, j, k - t)).getBlock() == BlockIDs.signal.block)) {// k = sides, j= heigh, i front
 					action = 1;
 					if (t == 2) {
 						action = 2;

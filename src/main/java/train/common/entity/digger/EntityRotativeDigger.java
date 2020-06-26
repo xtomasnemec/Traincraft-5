@@ -1,7 +1,5 @@
 package train.common.entity.digger;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -14,17 +12,18 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.core.handlers.ConfigHandler;
 import train.common.core.network.PacketKeyPress;
+import train.common.core.util.TraincraftUtil;
 import train.common.library.ItemIDs;
+
+import java.util.List;
 
 public class EntityRotativeDigger extends Entity implements IInventory {
 
@@ -60,6 +59,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 	private double field_9388_j;
 	private double field_9387_k;
 	private double field_9386_l;
+	float yOffset=0;
 
 	public float pitch = 0F;
 	public float roll = 0F;
@@ -109,13 +109,9 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entity) {
-		return entity.boundingBox;
+		return entity.getCollisionBoundingBox();
 	}
 
-	@Override
-	public AxisAlignedBB getBoundingBox() {
-		return boundingBox;
-	}
 
 	@Override
 	public boolean canBePushed() {
@@ -264,7 +260,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i) {
+	public void setPositionAndRotation2(double d, double d1, double d2, float f, float f1, int i, boolean garbage) {
 		field_9393_e = d;
 		field_9392_f = d1;
 		field_9391_g = d2;
@@ -305,7 +301,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 		double newY = -(((cosPitch - x) * -sinPitch));
 		double newZ = (y * sinRoll - x * cosRoll) * sinYaw + ((-x * sinRoll + y * cosRoll) * 0 + z * 0.01745) * cosYaw;
 
-		return Vec3.createVectorHelper(newX, newY, newZ);
+		return new Vec3(newX, newY, newZ);
 	}
 
 	public float getYaw() {
@@ -366,9 +362,9 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 		int i = 5;
 		double d = 0.0D;
 		for (int j = 0; j < i; j++) {
-			double d4 = (boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (j + 0)) / i) - 0.125D;
-			double d8 = (boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (j + 1)) / i) - 0.125D;
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(boundingBox.minX, d4, boundingBox.minZ, boundingBox.maxX, d8, boundingBox.maxZ);
+			double d4 = (getCollisionBoundingBox().minY + ((getCollisionBoundingBox().maxY - getCollisionBoundingBox().minY) * (j + 0)) / i) - 0.125D;
+			double d8 = (getCollisionBoundingBox().minY + ((getCollisionBoundingBox().maxY - getCollisionBoundingBox().minY) * (j + 1)) / i) - 0.125D;
+			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(getCollisionBoundingBox().minX, d4, getCollisionBoundingBox().minZ, getCollisionBoundingBox().maxX, d8, getCollisionBoundingBox().maxZ);
 			if (worldObj.isAABBInMaterial(axisalignedbb, Material.water)) {
 				d += 1.0D / i;
 			}
@@ -387,13 +383,13 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 				double d21 = (posX - d13 * d18 * 0.80000000000000004D) + d15 * d20;
 				double d23 = posZ - d15 * d18 * 0.80000000000000004D - d13 * d20;
 				// worldObj.spawnParticle("splash", d21, posY - 0.125D, d23, motionX, motionY, motionZ);
-				worldObj.spawnParticle("largesmoke", d21, posY - 0.125D, d23, motionX, motionY, motionZ);
+				worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d21, posY - 0.125D, d23, motionX, motionY, motionZ);
 			}
 			else {
 				double d22 = posX + d13 + d15 * d18 * 0.69999999999999996D;
 				double d24 = (posZ + d15) - d13 * d18 * 0.69999999999999996D;
 				// worldObj.spawnParticle("splash", d22, posY - 0.125D, d24, motionX, motionY, motionZ);
-				worldObj.spawnParticle("largesmoke", d22, posY - 0.125D, d24, motionX, motionY, motionZ);
+				worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d22, posY - 0.125D, d24, motionX, motionY, motionZ);
 			}
 		}
 		if (worldObj.isRemote) {
@@ -472,7 +468,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 			double db = 0 - vecLook.xCoord;
 			double dc = 0 - vecLook.zCoord;
 			if (db * db + dc * dc > 0.0000001D) {
-				da = (float) ((Math.atan2(dc, db) * 180D) / 3.1415926535897931D);
+				da = TraincraftUtil.atan2degreesf(dc,db);
 			}
 
 			double d19;
@@ -502,7 +498,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 		}
 
 		setRotation(rotationYaw, rotationPitch);
-		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, getCollisionBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 		if (list != null && list.size() > 0) {
 			for (int j1 = 0; j1 < list.size(); j1++) {
 				Entity entity = (Entity) list.get(j1);
@@ -517,8 +513,8 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 		}
 
 		if (Math.sqrt((motionX * motionX) + (motionZ * motionZ)) > 0.01) {
-			Vec3 pos = Vec3.createVectorHelper(posX, posY - 1, posZ);
-			Block id = worldObj.getBlock((int) posX, (int) posY - 1, (int) posZ);
+			Vec3 pos = new Vec3(posX, posY - 1, posZ);
+			Block id = worldObj.getBlockState(new BlockPos((int) posX, (int) posY - 1, (int) posZ)).getBlock();
 			if (id != null) {
 				this.playMiningEffect(pos, Block.getIdFromBlock(id));
 			}
@@ -533,10 +529,9 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 	 */
 
 	private void playMiningEffect(Vec3 pos, int block_index) {
-		Block id = worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
-		Block block = id;
-		if (block != null) {
-			Minecraft.getMinecraft().effectRenderer.addBlockHitEffects((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, block_index < 4 ? getSideFromYaw() : (block_index < 6 ? 1 : 0));
+		Block id = worldObj.getBlockState(new BlockPos((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord)).getBlock();
+		if (id != null) {
+			Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(new BlockPos(pos), EnumFacing.getHorizontal(block_index < 4 ? getSideFromYaw() : (block_index < 6 ? 1 : 0)));
 		}
 	}
 
@@ -616,11 +611,6 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 	}
 
 	@Override
-	public float getShadowSize() {
-		return 0.0F;
-	}
-
-	@Override
 	public int getSizeInventory() {
 		return inventorySize;
 	}
@@ -634,7 +624,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 	 * works exactly like getStackInSlot, is only used upon closing GUIs
 	 */
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
+	public ItemStack removeStackFromSlot(int par1) {
 		if (this.zeppInvent[par1] != null) {
 			ItemStack var2 = this.zeppInvent[par1];
 			this.zeppInvent[par1] = null;
@@ -680,7 +670,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "Rotative Digger";
 	}
 
@@ -741,10 +731,10 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer p) {}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
@@ -755,12 +745,32 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return true;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
 	}
 }

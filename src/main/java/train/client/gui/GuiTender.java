@@ -1,10 +1,5 @@
 package train.client.gui;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -13,12 +8,16 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.common.Traincraft;
 import train.common.api.LiquidManager;
 import train.common.api.Tender;
 import train.common.core.network.PacketSetTrainLockedToClient;
 import train.common.inventory.InventoryTender;
 import train.common.library.Info;
+
+import java.util.Collections;
+import java.util.List;
 
 public class GuiTender extends GuiContainer {
 
@@ -47,9 +46,9 @@ public class GuiTender extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		if (guibutton.id == 3) {
-			if(player!=null && player.getCommandSenderName().toLowerCase().equals(tender.getTrainOwner().toLowerCase())){
+			if(player!=null && player.getName().toLowerCase().equals(tender.getTrainOwner().toLowerCase())){
 				if ((!tender.getTrainLockedFromPacket())) {
-					AxisAlignedBB box = tender.boundingBox.expand(5, 5, 5);
+					AxisAlignedBB box = tender.getCollisionBoundingBox().expand(5, 5, 5);
 					List lis3 = tender.worldObj.getEntitiesWithinAABBExcludingEntity(tender, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (Object entity : lis3) {
@@ -63,7 +62,7 @@ public class GuiTender extends GuiContainer {
 					guibutton.displayString = "Locked";
 					this.initGui();
 				}else{
-					AxisAlignedBB box = tender.boundingBox.expand(5, 5, 5);
+					AxisAlignedBB box = tender.getCollisionBoundingBox().expand(5, 5, 5);
 					List lis3 = tender.worldObj.getEntitiesWithinAABBExcludingEntity(tender, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (Object entity : lis3) {
@@ -88,16 +87,16 @@ public class GuiTender extends GuiContainer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-		fontRendererObj.drawString(tender.getCommandSenderName(), 34, 1, 0x000000);
-		fontRendererObj.drawString(tender.getCommandSenderName(), 36, 3, 0x000000);
-		fontRendererObj.drawString(tender.getCommandSenderName(), 34, 3, 0x000000);
-		fontRendererObj.drawString(tender.getCommandSenderName(), 36, 1, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 34, 1, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 36, 3, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 34, 3, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 36, 1, 0x000000);
 
-		fontRendererObj.drawString(tender.getCommandSenderName(), 34, 2, 0x000000);
-		fontRendererObj.drawString(tender.getCommandSenderName(), 36, 2, 0x000000);
-		fontRendererObj.drawString(tender.getCommandSenderName(), 35, 3, 0x000000);
-		fontRendererObj.drawString(tender.getCommandSenderName(), 35, 1, 0x000000);
-		fontRendererObj.drawString(tender.getCommandSenderName(), 35, 2, 0xd3a900);
+		fontRendererObj.drawString(tender.getName(), 34, 2, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 36, 2, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 35, 3, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 35, 1, 0x000000);
+		fontRendererObj.drawString(tender.getName(), 35, 2, 0xd3a900);
 
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -152,9 +151,9 @@ public class GuiTender extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int t, int g) {
-		String i = Info.guiPrefix + "gui_tender.png";
+		fontRendererObj.drawStringWithShadow("UUID: " + tender.getPersistentUUID() + " - Entity UUID" + tender.getUniqueID().toString(),1,0,0xFFFFFF);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,i));
+		mc.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "gui_tender.png"));
 		int j = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
@@ -163,7 +162,7 @@ public class GuiTender extends GuiContainer {
 			int load = (tender.getWater());
 			int lo = Math.abs(((load * 50) / (tender.getCartTankCapacity())));
 
-			if (tender.getLiquidItemID() == LiquidManager.WATER_FILTER.getFluidID()) {
+			if (tender.getLiquidItemID() == LiquidManager.WATER_FILTER.getFluid().getID()) {
 
 				drawTexturedModalRect(j + 143, (k + 69) - lo, 190, 69 - lo, 18, lo);
 			}

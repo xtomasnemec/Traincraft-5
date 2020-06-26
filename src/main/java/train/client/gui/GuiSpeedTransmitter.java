@@ -1,19 +1,21 @@
 package train.client.gui;
 
 
-import static org.lwjgl.opengl.GL11.glColor3f;
-
-import java.awt.event.KeyEvent;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.mtc.TileInfoTransmitterSpeed;
 import train.common.mtc.packets.PacketNextSpeed;
 import train.common.mtc.packets.PacketSetSpeed;
+
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+import static org.lwjgl.opengl.GL11.glColor3f;
 
 public class GuiSpeedTransmitter extends GuiScreen {
     TileInfoTransmitterSpeed transmitterBlock;
@@ -28,8 +30,8 @@ public class GuiSpeedTransmitter extends GuiScreen {
 
         if (entity instanceof TileInfoTransmitterSpeed) {
             transmitterBlock = (TileInfoTransmitterSpeed)entity;
-            Block transmitterBlocc = entity.getWorldObj().getBlock(transmitterBlock.xCoord, transmitterBlock.yCoord, transmitterBlock.zCoord);
-            System.out.println(entity.getWorldObj().isBlockIndirectlyGettingPowered(transmitterBlock.xCoord, transmitterBlock.yCoord, transmitterBlock.zCoord));
+            Block transmitterBlocc = entity.getWorld().getBlockState(transmitterBlock.getPos()).getBlock();
+            System.out.println(entity.getWorld().isBlockPowered(transmitterBlock.getPos()));
         }
     }
 
@@ -89,11 +91,11 @@ public class GuiSpeedTransmitter extends GuiScreen {
     @SideOnly(Side.CLIENT)
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
-            TileInfoTransmitterSpeed its = (TileInfoTransmitterSpeed)transmitterBlock.getWorldObj().getTileEntity(transmitterBlock.xCoord,transmitterBlock.yCoord,transmitterBlock.zCoord);
+            TileInfoTransmitterSpeed its = (TileInfoTransmitterSpeed)transmitterBlock.getWorld().getTileEntity(transmitterBlock.getPos());
             its.setSpeed =Integer.parseInt(speedLimitTextField.getText());
-            Traincraft.itsChannel.sendToServer(new PacketSetSpeed(Integer.parseInt(speedLimitTextField.getText()), its.xCoord, its.yCoord, its.zCoord, 0));
+            Traincraft.itsChannel.sendToServer(new PacketSetSpeed(Integer.parseInt(speedLimitTextField.getText()), its.getPos().getX(), its.getPos().getY(), its.getPos().getZ(), 0));
             its.nextUpdateSpeed(Integer.parseInt(nextSpeedLimitTextField.getText()), Double.parseDouble(nextSpeedXTextField.getText()),   Double.parseDouble(nextSpeedYTextField.getText()),  Double.parseDouble(nextSpeedZTextField.getText()));
-            Traincraft.itnsChannel.sendToAll(new PacketNextSpeed( Integer.parseInt(nextSpeedLimitTextField.getText()), its.xCoord, its.yCoord, its.zCoord, Double.parseDouble(nextSpeedXTextField.getText()),   Double.parseDouble(nextSpeedYTextField.getText()),  Double.parseDouble(nextSpeedZTextField.getText()), 0));
+            Traincraft.itnsChannel.sendToAll(new PacketNextSpeed( Integer.parseInt(nextSpeedLimitTextField.getText()), its.getPos().getX(), its.getPos().getY(), its.getPos().getZ(), Double.parseDouble(nextSpeedXTextField.getText()),   Double.parseDouble(nextSpeedYTextField.getText()),  Double.parseDouble(nextSpeedZTextField.getText()), 0));
         }
         mc.thePlayer.closeScreen();
     }
@@ -132,7 +134,7 @@ public class GuiSpeedTransmitter extends GuiScreen {
 
 
     @Override
-    protected void mouseClicked(int par1, int par2, int par3) {
+    protected void mouseClicked(int par1, int par2, int par3) throws IOException {
         speedLimitTextField.mouseClicked(par1, par2, par3);
         nextSpeedLimitTextField.mouseClicked(par1, par2, par3);
         nextSpeedXTextField.mouseClicked(par1, par2, par3);

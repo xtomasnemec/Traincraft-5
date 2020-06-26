@@ -1,12 +1,12 @@
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.client.render.models.ModelRotaryExcavator;
 import train.common.entity.digger.EntityRotativeDigger;
 
@@ -14,7 +14,8 @@ public class RenderRotativeDigger extends Render {
 
 	private static final ModelBase modelRotaryExcavator = new ModelRotaryExcavator();
 
-	public RenderRotativeDigger() {
+	public RenderRotativeDigger(RenderManager renderManager) {
+		super(renderManager);
 		shadowSize = 0.5F;
 	}
 

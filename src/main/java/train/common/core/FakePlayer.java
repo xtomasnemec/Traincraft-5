@@ -1,9 +1,6 @@
 package train.common.core;
 
-import java.util.UUID;
-
 import com.mojang.authlib.GameProfile;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -15,11 +12,13 @@ import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatBase;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+
+import java.util.UUID;
 
 /**
  * Fake player entity, which is used in calls requiring player instance. All methods are modified to do nothing, to prevent modification of player stats.
@@ -28,6 +27,7 @@ import net.minecraft.world.World;
  * @copy 2012
  */
 public class FakePlayer extends EntityPlayer {
+	float yOffset;
 	/**
 	 * Create fake player in world
 	 * 
@@ -138,7 +138,7 @@ public class FakePlayer extends EntityPlayer {
 	}
 
 	@Override
-	public EnumStatus sleepInBedAt(int i, int j, int k) {
+	public EnumStatus trySleep(BlockPos pos) {
 		return EnumStatus.OK;
 	}
 
@@ -187,10 +187,7 @@ public class FakePlayer extends EntityPlayer {
 	public void addMovementStat(double d, double d1, double d2) {}
 
 	@Override
-	protected void fall(float f) {}
-
-	@Override
-	public void setInPortal() {}
+	public void fall(float f, float m) {}
 
 	@Override
 	public int xpBarCap() {
@@ -229,13 +226,13 @@ public class FakePlayer extends EntityPlayer {
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(int var1, String var2) {
+	public boolean isSpectator() {
 		return false;
 	}
 
 	@Override
-	public ChunkCoordinates getPlayerCoordinates() {
-		return null;
+	public boolean canCommandSenderUseCommand(int var1, String var2) {
+		return false;
 	}
 
 }

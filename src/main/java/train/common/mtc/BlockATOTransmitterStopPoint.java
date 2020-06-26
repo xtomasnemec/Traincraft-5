@@ -7,6 +7,7 @@ import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockATOTransmitterStopPoint extends BlockContainer implements IPeripheralProvider {
@@ -22,7 +23,7 @@ public class BlockATOTransmitterStopPoint extends BlockContainer implements IPer
    }
 
    public IPeripheral getPeripheral(World world, int x, int y, int z, int side) {
-      TileEntity tileEntity = world.getTileEntity(x, y, z);
+      TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
       return (IPeripheral)tileEntity;
    }
 

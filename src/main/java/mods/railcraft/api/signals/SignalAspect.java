@@ -8,9 +8,9 @@
 
 package mods.railcraft.api.signals;
 
-import java.util.Locale;
-
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.Locale;
 
 /**
  * Represents a Signal state.

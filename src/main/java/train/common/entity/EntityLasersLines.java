@@ -2,7 +2,9 @@ package train.common.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import train.common.core.util.TraincraftUtil;
 
 public class EntityLasersLines extends Entity {
 	public double x1, y1, z1, x2, y2, z2;
@@ -56,21 +58,23 @@ public class EntityLasersLines extends Entity {
 		posY = d1;
 		posZ = d2;
 
-		boundingBox.minX = x1 <= x2 ? x1 : x2;
-		boundingBox.minY = y1 <= y2 ? y1 : y2;
-		boundingBox.minZ = z1 <= z2 ? z1 : z2;
 
-		boundingBox.maxX = x1 <= x2 ? x2 : x1;
-		boundingBox.maxY = y1 <= y2 ? y2 : y1;
-		boundingBox.maxZ = z1 <= z2 ? z2 : z1;
+		double minX = x1 <= x2 ? x1 : x2;
+		double minY = y1 <= y2 ? y1 : y2;
+		double minZ = z1 <= z2 ? z1 : z2;
 
-		boundingBox.minX--;
-		boundingBox.minY--;
-		boundingBox.minZ--;
+		double maxX = x1 <= x2 ? x2 : x1;
+		double maxY = y1 <= y2 ? y2 : y1;
+		double maxZ = z1 <= z2 ? z2 : z1;
+		minX--;
+		minY--;
+		minZ--;
 
-		boundingBox.maxX++;
-		boundingBox.maxY++;
-		boundingBox.maxZ++;
+		maxX++;
+		maxY++;
+		maxZ++;
+
+		this.setEntityBoundingBox(new AxisAlignedBB(minX,minY,minZ,maxX,maxY,maxZ));
 
 		updateGraphicData();
 	}
@@ -86,11 +90,11 @@ public class EntityLasersLines extends Entity {
 
 		renderSize = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-		angleZ = 360 - (Math.atan2(dz, dx) * 180.0 / Math.PI + 180.0);
+		angleZ = 360 - TraincraftUtil.atan2degreesf(dz,dx)+180;
 
 		dx = Math.sqrt(renderSize * renderSize - dy * dy);
 
-		angleY = -Math.atan2(dy, dx) * 180 / Math.PI;
+		angleY = -TraincraftUtil.atan2degreesf(dy, dx);
 	}
 
 	@Override

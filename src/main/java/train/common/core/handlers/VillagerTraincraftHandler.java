@@ -1,29 +1,35 @@
 package train.common.core.handlers;
 
-import java.util.List;
-import java.util.Random;
-
-import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import net.minecraft.block.Block;
-import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.fml.common.registry.VillagerRegistry.IVillageCreationHandler;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import train.common.generation.ComponentVillageTrainstation;
 import train.common.items.ItemRollingStock;
 import train.common.library.ItemIDs;
 
-public class VillagerTraincraftHandler implements IVillageCreationHandler,IVillageTradeHandler{
+import java.util.List;
+import java.util.Random;
+
+public class VillagerTraincraftHandler implements VillagerRegistry.IVillageCreationHandler, IMerchant {
+	EntityPlayer customer=null;
+	MerchantRecipeList recipes;
 	//private Random rand = new Random();
 	@Override
-	public void manipulateTradesForVillager(EntityVillager villager,
-			MerchantRecipeList recipeList, Random random) {
+	public void setRecipes(MerchantRecipeList recipeList) {
+		Random random = new Random();
 		recipeList.add(new MerchantRecipe(getRandomSizedStack(Blocks.rail, random,20), Items.emerald));
 		recipeList.add(new MerchantRecipe(getRandomSizedItemStack(Items.emerald, random,20), new ItemStack(Blocks.rail)));
 		
@@ -60,13 +66,13 @@ public class VillagerTraincraftHandler implements IVillageCreationHandler,IVilla
 					recipeList.add(new MerchantRecipe(new ItemStack(item.item), new ItemStack(Items.emerald,item.amountForEmerald)));
 					recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald,item.amountForEmerald), item.item));
 				}else if(item.amountForEmerald>0){
-					if(!(item.item instanceof ItemRollingStock) && item.amountForEmerald>0){
-						recipeList.add(new MerchantRecipe(new ItemStack(item.item,item.amountForEmerald), Items.emerald));
-						recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(item.item,item.amountForEmerald)));
-					}
+					recipeList.add(new MerchantRecipe(new ItemStack(item.item,item.amountForEmerald), Items.emerald));
+					recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald), new ItemStack(item.item,item.amountForEmerald)));
 				}
 			}
 		}
+
+		recipes=recipeList;
 	}
 	private ItemStack getRandomSizedStack(Block par0, Random random, int amount)
     {
@@ -86,10 +92,52 @@ public class VillagerTraincraftHandler implements IVillageCreationHandler,IVilla
 	public Class<?> getComponentClass() {
 		return ComponentVillageTrainstation.class;
 	}
+
+
 	@Override
-	public Object buildComponent(StructureVillagePieces.PieceWeight villagePiece,
-								 StructureVillagePieces.Start startPiece, List pieces, Random random,
-			int p1, int p2, int p3, int p4, int p5) {
-		return ComponentVillageTrainstation.buildComponent(startPiece, pieces, random, p1, p2, p3, p4, p5);
+	public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1,
+														 int p2, int p3, EnumFacing facing, int p5){
+		return ComponentVillageTrainstation.buildComponent(startPiece, pieces, random, p1, p2, p3, facing, p5);
+
+	}
+
+	@Override
+	public void setCustomer(EntityPlayer p_70932_1_) {
+		customer=p_70932_1_;
+	}
+
+	@Override
+	public EntityPlayer getCustomer() {
+		return customer;
+	}
+
+	@Override
+	public MerchantRecipeList getRecipes(EntityPlayer p_70934_1_) {
+		return recipes;
+	}
+
+
+	@Override
+	public void useRecipe(MerchantRecipe recipe) {
+		//todo: i dont think this is necessary??
+	}
+
+	/**
+	 * Notifies the merchant of a possible merchantrecipe being fulfilled or not. Usually, this is just a sound byte
+	 * being played depending if the suggested itemstack is not null.
+	 *
+	 * @param stack
+	 */
+	@Override
+	public void verifySellingItem(ItemStack stack) {
+
+	}
+
+	/**
+	 * Get the formatted ChatComponent that will be used for the sender's username in chat
+	 */
+	@Override
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText("Traincraft Villager");
 	}
 }

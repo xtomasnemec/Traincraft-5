@@ -1,23 +1,20 @@
 package train.common.core;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import train.common.Traincraft;
@@ -25,12 +22,7 @@ import train.common.api.EntityRollingStock;
 import train.common.api.Freight;
 import train.common.api.LiquidTank;
 import train.common.api.Tender;
-import train.common.containers.ContainerDistil;
-import train.common.containers.ContainerGeneratorDiesel;
-import train.common.containers.ContainerOpenHearthFurnace;
-import train.common.containers.ContainerTier;
-import train.common.containers.ContainerTrainWorkbench;
-import train.common.containers.ContainerWorkbenchCart;
+import train.common.containers.*;
 import train.common.core.handlers.ChunkEvents;
 import train.common.core.handlers.WorldEvents;
 import train.common.core.util.MP3Player;
@@ -38,44 +30,15 @@ import train.common.entity.digger.EntityRotativeDigger;
 import train.common.entity.rollingStock.EntityJukeBoxCart;
 import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.entity.zeppelin.AbstractZeppelin;
-import train.common.inventory.InventoryBuilder;
-import train.common.inventory.InventoryForney;
-import train.common.inventory.InventoryFreight;
-import train.common.inventory.InventoryJukeBoxCart;
-import train.common.inventory.InventoryLiquid;
-import train.common.inventory.InventoryLoco;
-import train.common.inventory.InventoryRotativeDigger;
-import train.common.inventory.InventoryTender;
-import train.common.inventory.InventoryWorkCart;
-import train.common.inventory.InventoryZepp;
+import train.common.inventory.*;
 import train.common.library.GuiIDs;
-import train.common.mtc.BlockATOTransmitterStopPoint;
-import train.common.mtc.BlockInfoGrabberMTC;
-import train.common.mtc.BlockInfoTransmitterMTC;
-import train.common.mtc.BlockInfoTransmitterSpeed;
-import train.common.mtc.TileATOTransmitterStopPoint;
-import train.common.mtc.TileInfoGrabberDestination;
-import train.common.mtc.TileInfoGrabberMTC;
-import train.common.mtc.TileInfoTransmitterMTC;
-import train.common.mtc.TileInfoTransmitterSpeed;
-import train.common.mtc.TilePDMInstructionRadio;
-import train.common.tile.TileBook;
-import train.common.tile.TileBridgePillar;
-import train.common.tile.TileCrafterTierI;
-import train.common.tile.TileCrafterTierII;
-import train.common.tile.TileCrafterTierIII;
-import train.common.tile.TileEntityDistil;
-import train.common.tile.TileEntityOpenHearthFurnace;
-import train.common.tile.TileGeneratorDiesel;
-import train.common.tile.TileLantern;
-import train.common.tile.TileSignal;
-import train.common.tile.TileStopper;
-import train.common.tile.TileSwitchStand;
-import train.common.tile.TileTCRail;
-import train.common.tile.TileTCRailGag;
-import train.common.tile.TileTrainWbench;
-import train.common.tile.TileWaterWheel;
-import train.common.tile.TileWindMill;
+import train.common.mtc.*;
+import train.common.tile.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 	public static List<MP3Player> playerList = new ArrayList<MP3Player>();
@@ -89,7 +52,7 @@ public class CommonProxy implements IGuiHandler {
 
 	public void registerRenderInformation() {}
 
-	public void registerEvents(FMLPreInitializationEvent event){
+	public void registerEvents(FMLInitializationEvent event){
 		WorldEvents worldEvents = new WorldEvents();
 		ChunkEvents chunkEvents = new ChunkEvents();
 
@@ -123,7 +86,7 @@ public class CommonProxy implements IGuiHandler {
 		GameRegistry.registerTileEntity(TileTCRail.class, "tileTCRail");
 		GameRegistry.registerTileEntity(TileBridgePillar.class, "tileTCBridgePillar");
 
-		if (Loader.isModLoaded("ComputerCraft")) {
+		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
 			GameRegistry.registerTileEntity(TileInfoTransmitterSpeed.class, "tileInfoTransmitterSpeed");
 			GameRegistry.registerTileEntity(TileInfoTransmitterMTC.class, "tileInfoTransmitterMTC");
 			GameRegistry.registerTileEntity(TileInfoGrabberMTC.class, "tileInfoReceiverMTC");
@@ -156,7 +119,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		EntityPlayer riddenByEntity = null;
 		Entity entity = player.ridingEntity;
 

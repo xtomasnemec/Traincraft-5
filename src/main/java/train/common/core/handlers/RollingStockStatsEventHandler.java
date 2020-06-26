@@ -1,10 +1,10 @@
 package train.common.core.handlers;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import train.common.api.AbstractTrains;
+
+import java.util.ArrayList;
 
 public class RollingStockStatsEventHandler {
 
@@ -31,13 +31,13 @@ public class RollingStockStatsEventHandler {
 		//System.out.println(trainDistanceTraveled);
 		if (train.riddenByEntity != null && train.riddenByEntity instanceof EntityPlayer) {
 			for (playerDistance d : plDist) {
-				if (((EntityPlayer) train.riddenByEntity).getDisplayName().equals(d.getUsername())) {
+				if (((EntityPlayer) train.riddenByEntity).getDisplayName().getUnformattedText().equals(d.getUsername())) {
 					d.setDistance(d.getDistance() + (var7));
 					//System.out.println(d.getDistance()+" "+((EntityPlayer)riddenByEntity).username);
 					return;
 				}
 			}
-			plDist.add(new playerDistance(((EntityPlayer) train.riddenByEntity).getDisplayName(), (var7)));
+			plDist.add(new playerDistance(((EntityPlayer) train.riddenByEntity).getDisplayName().getUnformattedText(), (var7)));
 		}
 	}
 

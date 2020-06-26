@@ -7,24 +7,19 @@
 
 package train.client.gui.sideTabs;
 
-import static net.minecraft.client.gui.Gui.drawRect;
-import static train.client.gui.GuiCrafterTier.isClear;
-import static train.client.gui.GuiCrafterTier.isShow;
-import static train.client.gui.GuiCrafterTier.isTabRecipeOpen;
-import static train.client.gui.GuiCrafterTier.recipeSize;
-import static train.client.gui.GuiCrafterTier.recipes;
-import static train.client.gui.GuiCrafterTier.tier1;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import train.client.gui.GuiCrafterTier;
 import train.common.library.Info;
+
+import static net.minecraft.client.gui.Gui.drawRect;
+import static train.client.gui.GuiCrafterTier.*;
 
 @SideOnly(Side.CLIENT)
 public class SideTabRecipes extends SideTab {
@@ -114,23 +109,23 @@ public class SideTabRecipes extends SideTab {
 		}
 		else {
 			if ((x > -98 && x < -88) && (y < 49 && y > 33)) {
-				soundManager.playSound(PositionedSoundRecord.func_147673_a(new ResourceLocation("random.click")));
+				soundManager.playSound(PositionedSoundRecord.create(new ResourceLocation("random.click")));
 				recipeSize--;
 				return true;
 			}
 			else if ((x > -36 && x < -10) && (y < 49 && y > 33)) {
-				soundManager.playSound(PositionedSoundRecord.func_147673_a(new ResourceLocation("random.click")));
+				soundManager.playSound(PositionedSoundRecord.create(new ResourceLocation("random.click")));
 				recipeSize++;
 				return true;
 			}
 			else if ((x > -98 && x < -71) && (y < 71 && y > 61)) {
-				soundManager.playSound(PositionedSoundRecord.func_147673_a(new ResourceLocation("random.click")));
+				soundManager.playSound(PositionedSoundRecord.create(new ResourceLocation("random.click")));
 				isShow = true;
 				isClear = false;
 				return true;
 			}
 			else if ((x > -54 && x < -26) && (y < 71 && y > 61)) {
-				soundManager.playSound(PositionedSoundRecord.func_147673_a(new ResourceLocation("random.click")));
+				soundManager.playSound(PositionedSoundRecord.create(new ResourceLocation("random.click")));
 				isClear = true;
 				isShow = false;
 				return true;

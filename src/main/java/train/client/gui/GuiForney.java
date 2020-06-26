@@ -1,7 +1,5 @@
 package train.client.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -9,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.common.Traincraft;
 import train.common.api.LiquidManager;
 import train.common.api.Locomotive;
@@ -169,16 +168,16 @@ public class GuiForney extends GuiContainer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-		fontRendererObj.drawString(loco.getCommandSenderName(), 37, 3, 0x000000);
-		fontRendererObj.drawString(loco.getCommandSenderName(), 39, 1, 0x000000);
-		fontRendererObj.drawString(loco.getCommandSenderName(), 37, 1, 0x000000);
-		fontRendererObj.drawString(loco.getCommandSenderName(), 39, 3, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 37, 3, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 39, 1, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 37, 1, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 39, 3, 0x000000);
 
-		fontRendererObj.drawString(loco.getCommandSenderName(), 38, 3, 0x000000);
-		fontRendererObj.drawString(loco.getCommandSenderName(), 38, 1, 0x000000);
-		fontRendererObj.drawString(loco.getCommandSenderName(), 37, 2, 0x000000);
-		fontRendererObj.drawString(loco.getCommandSenderName(), 39, 2, 0x000000);
-		fontRendererObj.drawString(loco.getCommandSenderName(), 38, 2, 0xd3a900);
+		fontRendererObj.drawString(loco.getName(), 38, 3, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 38, 1, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 37, 2, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 39, 2, 0x000000);
+		fontRendererObj.drawString(loco.getName(), 38, 2, 0xd3a900);
 
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -205,7 +204,7 @@ public class GuiForney extends GuiContainer {
 			int load = (((SteamTrain) loco).getWater());
 			int lo = Math.abs(((load * 50) / (((SteamTrain) loco).getCartTankCapacity())));
 
-			if (((SteamTrain) loco).getLiquidItemID() == LiquidManager.WATER_FILTER.getFluidID()) {
+			if (((SteamTrain) loco).getLiquidItemID() == LiquidManager.WATER_FILTER.getFluid().getID()) {
 				drawTexturedModalRect(j + 143, (k + 68) - lo, 190, 69 - lo, 18, lo + 1);
 			}
 		}
@@ -220,5 +219,6 @@ public class GuiForney extends GuiContainer {
 		fontRendererObj.drawStringWithShadow("State: " + loco.getState(), 1, 90, 0xFFFFFF);
 		fontRendererObj.drawStringWithShadow("Heat level: " + loco.getOverheatLevel(), 1, 100, 0xFFFFFF);
 		fontRendererObj.drawStringWithShadow("Maximum Speed: " + (loco.getCustomSpeedGUI()), 1, 110, 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow("Persistent UUID: " + loco.getPersistentUUID() + " - Entity UUID" + loco.getUniqueID().toString(),1,0,0xFFFFFF);
 	}
 }

@@ -1,10 +1,10 @@
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import tmt.Tessellator;
 import train.client.render.models.ModelSwitchStandOff;
 import train.client.render.models.ModelSwitchStandOn;
@@ -18,7 +18,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 	private static final ResourceLocation texture2 = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");
 
 	@Override
-	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick) {
+	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick, int garbage) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x+0.5,y+0.6,z+0.5);
 		GL11.glRotated(180,0,1,0);
@@ -54,7 +54,9 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 		}
 
 		if (!skipRender) {
-			if (tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).isProvidingWeakPower(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0) > 0) {
+			if (tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock().getWeakPower(tileEntity.getWorld(),
+					new BlockPos(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()),
+					tileEntity.getWorld().getBlockState(tileEntity.getPos()),null) > 0) {
 				Tessellator.bindTexture(texture2);
 				modelSwitch2.render(null, 0, 0, 0, 0, 0, 0.0625f);
 			} else {

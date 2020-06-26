@@ -1,49 +1,50 @@
 package train.common.tile;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.library.BlockIDs;
 
-public class TileSwitchStand extends TileTraincraft {
+import java.util.Random;
+
+public class TileSwitchStand extends TileTraincraft implements ITickable {
 
     private int updateTicks = 0;
     private static Random rand = new Random();
-    private ForgeDirection facing;
+    private EnumFacing facing;
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTag, boolean forSyncing) {
         //super.readFromNBT(nbtTag, false);
-        facing = ForgeDirection.getOrientation(nbtTag.getByte("Orientation"));
+        facing = EnumFacing.getHorizontal(nbtTag.getByte("Orientation"));
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
         updateTicks++;
         /**
          * Remove any block on top of the wind mill
          */
         if (!worldObj.isRemote) {
             if (updateTicks % 20 == 0) {
-                if (!this.worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord)) {
-                    Block block = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+                if (!this.worldObj.isAirBlock(this.pos.add(0,1,0))) {
+                    Block block = this.worldObj.getBlockState(this.pos.add(0,1,0)).getBlock();
                     if (block != null) {
-                        EntityItem entityitem = new EntityItem(worldObj, this.xCoord, this.yCoord + 1, this.zCoord, new ItemStack(Item.getItemFromBlock(BlockIDs.switchStand.block), 1));
+                        EntityItem entityitem = new EntityItem(worldObj, this.pos.getX(), this.pos.getY() + 1, this.pos.getZ(), new ItemStack(Item.getItemFromBlock(BlockIDs.switchStand.block), 1));
                         float f3 = 0.05F;
                         entityitem.motionX = (float) rand.nextGaussian() * f3;
                         entityitem.motionY = (float) rand.nextGaussian() * f3 + 0.2F;
                         entityitem.motionZ = (float) rand.nextGaussian() * f3;
                         worldObj.spawnEntityInWorld(entityitem);
                     }
-                    this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+                    this.worldObj.setBlockToAir(this.pos);
                 }
             }
         }
@@ -58,20 +59,20 @@ public class TileSwitchStand extends TileTraincraft {
         }
         else {
 
-            nbtTag.setByte("Orientation", (byte) ForgeDirection.NORTH.ordinal());
+            nbtTag.setByte("Orientation", (byte) EnumFacing.NORTH.ordinal());
         }
         return nbtTag;
     }
 
-    public ForgeDirection getFacing() {
+    public EnumFacing getFacing() {
         if(facing!=null){
             return this.facing;
         }
-        return ForgeDirection.UNKNOWN;
+        return EnumFacing.NORTH;
     }
 
 
-    public void setFacing(ForgeDirection face) {
+    public void setFacing(EnumFacing face) {
 
         if (facing != face)
             this.facing = face;
@@ -81,7 +82,7 @@ public class TileSwitchStand extends TileTraincraft {
     @Override
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.getBoundingBox(xCoord-1, yCoord-1, zCoord-1, xCoord + 2, yCoord + 2, zCoord + 2);
+        return AxisAlignedBB.fromBounds(pos.getX()-1, pos.getY()-1, pos.getZ()-1, pos.getX() + 2, pos.getY() + 2, pos.getZ() + 2);
     }
 
 }

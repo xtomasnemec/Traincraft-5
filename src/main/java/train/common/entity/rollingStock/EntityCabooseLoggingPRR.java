@@ -48,7 +48,7 @@ public class EntityCabooseLoggingPRR extends AbstractWorkCart implements IInvent
 
 	@Override
 	public void pressKey(int i) {
-		if(locked && riddenByEntity != null && riddenByEntity instanceof EntityPlayer&& !((EntityPlayer)riddenByEntity).getDisplayName().toLowerCase().equals(this.trainOwner.toLowerCase())){
+		if(locked && riddenByEntity != null && riddenByEntity instanceof EntityPlayer&& !((EntityPlayer)riddenByEntity).getDisplayName().getUnformattedText().toLowerCase().equals(this.trainOwner.toLowerCase())){
 			return;
 		}
 		if (i == 7 && riddenByEntity != null && riddenByEntity instanceof EntityPlayer) {

@@ -1,13 +1,13 @@
 package tmt;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
 
 public class ModelPool {
 	
@@ -27,14 +27,11 @@ public class ModelPool {
 			return null;
 		}
 		File modelFile = null;
-		for(int i = 0; i < resourceDir.length && (modelFile == null || !modelFile.exists()); i++){
-			String absPath = new File(Loader.instance().getConfigDir().getParent(), resourceDir[i]).getAbsolutePath();
-			if(!absPath.endsWith("/") || !absPath.endsWith("\\"))
-				absPath+= "/";
-			modelFile = entry.checkValidPath(absPath + file);
-		}
+		//for(int i = 0; i < resourceDir.length && (modelFile == null || !modelFile.exists()); i++){
+			modelFile = entry.checkValidPath(ModelPool.class.getResource("/assets/tc/models/"+file).getPath());
+		//}
 		if(modelFile == null || !modelFile.exists()){
-			System.out.println("The model with the name " + file + " does not exist.");
+			System.out.println("The model with the name " + file + " does not exist in folder.");
 			return null;
 		}
 		entry.textures = new HashMap<String, TextureGroup>();

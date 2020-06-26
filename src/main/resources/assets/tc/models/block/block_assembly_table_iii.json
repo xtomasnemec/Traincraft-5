@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "tc:blocks/assembly_3_bottom",
+    "up": "tc:blocks/assembly_3_top",
+    "north": "tc:blocks/assembly_3_front",
+    "east": "tc:blocks/assembly_3_side",
+    "south": "tc:blocks/assembly_3_side",
+    "west": "tc:blocks/assembly_3_side",
+    "particle": "tc:blocks/assembly_3_bottom"
+  }
+}

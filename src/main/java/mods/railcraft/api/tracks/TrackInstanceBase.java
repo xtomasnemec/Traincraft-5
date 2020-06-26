@@ -8,15 +8,10 @@
 
 package mods.railcraft.api.tracks;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import mods.railcraft.api.core.items.IToolCrowbar;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
@@ -24,10 +19,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * All ITrackInstances should extend this class. It contains a number of default
@@ -46,7 +47,7 @@ public abstract class TrackInstanceBase implements ITrackInstance {
 
     private Block getBlock() {
         if (block == null)
-            block = getWorld().getBlock(getX(), getY(), getZ());
+            block = getWorld().getBlockState(tileEntity.getPos()).getBlock();
         return block;
     }
 
@@ -121,20 +122,20 @@ public abstract class TrackInstanceBase implements ITrackInstance {
     }
 
     public void markBlockNeedsUpdate() {
-        getWorld().markBlockForUpdate(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+        getWorld().markBlockForUpdate(tileEntity.getPos());
     }
 
     protected boolean isRailValid(World world, int x, int y, int z, int meta) {
         boolean valid = true;
-        if (!world.isSideSolid(x, y - 1, z, ForgeDirection.UP))
+        if (!world.isSideSolid(new BlockPos(x, y - 1, z), EnumFacing.UP))
             valid = false;
-        if (meta == 2 && !world.isSideSolid(x + 1, y, z, ForgeDirection.UP))
+        if (meta == 2 && !world.isSideSolid(new BlockPos(x + 1, y, z), EnumFacing.UP))
             valid = false;
-        else if (meta == 3 && !world.isSideSolid(x - 1, y, z, ForgeDirection.UP))
+        else if (meta == 3 && !world.isSideSolid(new BlockPos(x - 1, y, z), EnumFacing.UP))
             valid = false;
-        else if (meta == 4 && !world.isSideSolid(x, y, z - 1, ForgeDirection.UP))
+        else if (meta == 4 && !world.isSideSolid(new BlockPos(x, y, z - 1), EnumFacing.UP))
             valid = false;
-        else if (meta == 5 && !world.isSideSolid(x, y, z + 1, ForgeDirection.UP))
+        else if (meta == 5 && !world.isSideSolid(new BlockPos(x, y, z + 1), EnumFacing.UP))
             valid = false;
         return valid;
     }
@@ -142,44 +143,44 @@ public abstract class TrackInstanceBase implements ITrackInstance {
     @Override
     public void onNeighborBlockChange(Block blockChanged) {
         int meta = tileEntity.getBlockMetadata();
-        boolean valid = isRailValid(getWorld(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, meta);
+        boolean valid = isRailValid(getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), meta);
         if (!valid) {
             Block blockTrack = getBlock();
-            blockTrack.dropBlockAsItem(getWorld(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0, 0);
-            getWorld().setBlockToAir(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+            blockTrack.dropBlockAsItem(getWorld(), tileEntity.getPos(), getWorld().getBlockState(tileEntity.getPos()), 0);
+            getWorld().setBlockToAir(tileEntity.getPos());
             return;
         }
 
         if (blockChanged != null && blockChanged.canProvidePower()
-                && isFlexibleRail() && RailTools.countAdjecentTracks(getWorld(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) == 3)
+                && isFlexibleRail() && RailTools.countAdjecentTracks(getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()) == 3)
             switchTrack(false);
         testPower();
     }
 
     protected void switchTrack(boolean flag) {
-        int x = tileEntity.xCoord;
-        int y = tileEntity.yCoord;
-        int z = tileEntity.zCoord;
+        int x = tileEntity.getPos().getX();
+        int y = tileEntity.getPos().getY();
+        int z = tileEntity.getPos().getZ();
         BlockRailBase blockTrack = (BlockRailBase) getBlock();
-        blockTrack.new Rail(getWorld(), x, y, z).func_150655_a(getWorld().isBlockIndirectlyGettingPowered(x, y, z), flag);
+        blockTrack.new Rail(getWorld(), tileEntity.getPos(), getWorld().getBlockState(tileEntity.getPos())).func_180364_a(getWorld().isBlockPowered(tileEntity.getPos()), flag);
     }
 
     protected void testPower() {
         if (!(this instanceof ITrackPowered))
             return;
-        int i = tileEntity.xCoord;
-        int j = tileEntity.yCoord;
-        int k = tileEntity.zCoord;
+        int i = tileEntity.getPos().getX();
+        int j = tileEntity.getPos().getY();
+        int k = tileEntity.getPos().getZ();
         ITrackPowered r = (ITrackPowered) this;
         int meta = tileEntity.getBlockMetadata();
-        boolean powered = getWorld().isBlockIndirectlyGettingPowered(i, j, k) || testPowerPropagation(getWorld(), i, j, k, getTrackSpec(), meta, r.getPowerPropagation());
+        boolean powered = getWorld().isBlockPowered(tileEntity.getPos()) || testPowerPropagation(getWorld(), i, j, k, getTrackSpec(), meta, r.getPowerPropagation());
         if (powered != r.isPowered()) {
             r.setPowered(powered);
             Block blockTrack = getBlock();
-            getWorld().notifyBlocksOfNeighborChange(i, j, k, blockTrack);
-            getWorld().notifyBlocksOfNeighborChange(i, j - 1, k, blockTrack);
+            getWorld().notifyNeighborsOfStateChange(tileEntity.getPos(), blockTrack);
+            getWorld().notifyNeighborsOfStateChange(new BlockPos(i, j - 1, k), blockTrack);
             if (meta == 2 || meta == 3 || meta == 4 || meta == 5)
-                getWorld().notifyBlocksOfNeighborChange(i, j + 1, k, blockTrack);
+                getWorld().notifyNeighborsOfStateChange(new BlockPos(i, j + 1, k), blockTrack);
             sendUpdateToClient();
             // System.out.println("Setting power [" + i + ", " + j + ", " + k + "]");
         }
@@ -257,11 +258,11 @@ public abstract class TrackInstanceBase implements ITrackInstance {
 
     protected boolean testPowered(World world, int i, int j, int k, TrackSpec spec, boolean dir, int dist, int maxDist, int orientation) {
         // System.out.println("Testing Power at <" + i + ", " + j + ", " + k + ">");
-        Block blockToTest = world.getBlock(i, j, k);
+        Block blockToTest = world.getBlockState(new BlockPos(i, j, k)).getBlock();
         Block blockTrack = getBlock();
         if (blockToTest == blockTrack) {
-            int meta = world.getBlockMetadata(i, j, k);
-            TileEntity tile = world.getTileEntity(i, j, k);
+            int meta = block.getMetaFromState(world.getBlockState(new BlockPos(i, j, k)));
+            TileEntity tile = world.getTileEntity(new BlockPos(i, j, k));
             if (tile instanceof ITrackTile) {
                 ITrackInstance track = ((ITrackTile) tile).getTrackInstance();
                 if (!(track instanceof ITrackPowered) || track.getTrackSpec() != spec || !canPropagatePowerTo(track))
@@ -271,7 +272,7 @@ public abstract class TrackInstanceBase implements ITrackInstance {
                 if (orientation == 0 && (meta == 1 || meta == 2 || meta == 3))
                     return false;
                 if (((ITrackPowered) track).isPowered())
-                    if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k))
+                    if (world.isBlockPowered(new BlockPos(i, j, k)) || world.isBlockPowered(new BlockPos(i, j + 1, k)))
                         return true;
                     else
                         return isConnectedRailPowered(world, i, j, k, spec, meta, dir, dist + 1, maxDist);
@@ -286,7 +287,7 @@ public abstract class TrackInstanceBase implements ITrackInstance {
     }
 
     @Override
-    public IIcon getIcon() {
+    public ModelResourceLocation getIcon() {
         return getTrackSpec().getItemIcon();
     }
 
@@ -327,22 +328,22 @@ public abstract class TrackInstanceBase implements ITrackInstance {
 
     @Override
     public World getWorld() {
-        return tileEntity.getWorldObj();
+        return tileEntity.getWorld();
     }
 
     @Override
     public int getX() {
-        return tileEntity.xCoord;
+        return tileEntity.getPos().getX();
     }
 
     @Override
     public int getY() {
-        return tileEntity.yCoord;
+        return tileEntity.getPos().getX();
     }
 
     @Override
     public int getZ() {
-        return tileEntity.zCoord;
+        return tileEntity.getPos().getX();
     }
 
     /**

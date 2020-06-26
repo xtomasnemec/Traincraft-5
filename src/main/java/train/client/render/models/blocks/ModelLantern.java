@@ -1,10 +1,5 @@
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -12,30 +7,25 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
 import train.common.library.Info;
 import train.common.tile.TileLantern;
 
 @SideOnly(Side.CLIENT)
 public class ModelLantern extends ModelBase {
-	private IModelCustom modelLantern;
-	private final RenderItem renderItem;
+	private ModelRendererTurbo modelLantern;
+	//private final RenderItem renderItem;
 
 	public ModelLantern() {
-		modelLantern = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "lantern.obj"));
-		renderItem = new RenderItem() {
+		modelLantern = new ModelRendererTurbo(this).addObj("lantern.obj");
+		//renderItem = new RenderItem(Minecraft.getMinecraft().getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
 
-			@Override
-			public boolean shouldBob() {
-
-				return false;
-			};
-		};
-
-		renderItem.setRenderManager(RenderManager.instance);
 	}
 
 	public void render() {
-		modelLantern.renderAll();
+		modelLantern.render();
 	}
 
 	public void render(TileLantern lantern, double x, double y, double z) {
@@ -65,13 +55,13 @@ public class ModelLantern extends ModelBase {
 		// Pop this matrix from the stack.
 		GL11.glPopMatrix();
 		GL11.glPushMatrix();
-		EntityItem ghostEntityItem = new EntityItem(lantern.getWorldObj());
+		EntityItem ghostEntityItem = new EntityItem(lantern.getWorld());
 		ghostEntityItem.setEntityItemStack(new ItemStack(Blocks.torch, 1));
 		ghostEntityItem.hoverStart = 0.0F;
 
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 0.1F, (float) z + 0.5F);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
-		renderItem.doRender(ghostEntityItem, 0, 0, 0, 0, 0);
+		//renderItem.renderItemAndEffectIntoGUI(ghostEntityItem.getEntityItem(), 0, 0);_H_
 
 		GL11.glPopMatrix();
 	}

@@ -1,9 +1,5 @@
 package train.common.blocks.tracks;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import mods.railcraft.api.carts.CartTools;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mods.railcraft.api.tracks.ITrackLockdown;
@@ -13,10 +9,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import train.common.api.AbstractTrains;
 import train.common.api.Locomotive;
 import train.common.library.Tracks;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class BlockStationTrack extends BlockTrackLockingBase implements ITrackLockdown,ITrackPowered{
 	protected static float DIR_THRESHOLD = 0.01F;
@@ -28,14 +27,15 @@ public class BlockStationTrack extends BlockTrackLockingBase implements ITrackLo
 	private int activateRate=300;
 	private int mode = 0;
 	
-	@Override
+	/*@Override
 	public IIcon getIcon() {
 		//System.out.println(delay);
 		if ((this.delay > 0)) {
 			return getIcon(4+this.mode);
 		}
 		return getIcon(this.mode);
-	}
+	}*/
+
 	public Tracks getTrackType() {
 		return Tracks.STATION_TRACK;
 	}
@@ -164,9 +164,9 @@ public class BlockStationTrack extends BlockTrackLockingBase implements ITrackLo
 					cart.motionX = 0.0D;
 					cart.motionZ = 0.0D;
 					if ((meta == 0) || (meta == 4) || (meta == 5))
-						cart.setPosition(cart.posX, cart.posY, this.tileEntity.zCoord + 0.5D);
+						cart.setPosition(cart.posX, cart.posY, this.tileEntity.getPos().getZ() + 0.5D);
 					else
-						cart.setPosition(this.tileEntity.xCoord + 0.5D, cart.posY, cart.posZ);
+						cart.setPosition(this.tileEntity.getPos().getX() + 0.5D, cart.posY, cart.posZ);
 				}
 			}
 		}

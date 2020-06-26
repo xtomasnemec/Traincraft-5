@@ -7,16 +7,16 @@
 
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
 import train.client.render.models.blocks.ModelBlockSignal;
 import train.common.library.Info;
 
-public class ItemRenderSignal implements IItemRenderer {
+public class ItemRenderSignal implements ICustomModelLoader {
 
 	private static final ModelBlockSignal signal = new ModelBlockSignal(1F);
 	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.trainsPrefix + "signal_suisse_green.png");
@@ -24,22 +24,22 @@ public class ItemRenderSignal implements IItemRenderer {
 	public ItemRenderSignal() {
 	}
 
+	private static ResourceLocation uri = new ResourceLocation("tc","ItemRenderSignal");
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
+	public boolean accepts(ResourceLocation modelLocation) {
+		return modelLocation==uri;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		switch (type) {
-		case ENTITY: {
+	public IModel loadModel(ResourceLocation resource) {
+		if(resource!=uri){return null;}
+		//switch (type) {
+		//case ENTITY: {
 			renderSignal(0.0F, 0F, 0.0F, 0.0F, 1F);
-			break;
+
+			//todo: theoretically if we just render it rather than returning a model,
+			// it will render and we dont need to return a model
+		/*	break;
 		}
 		case EQUIPPED: {
 			renderSignal(0F, 0.05F, 0F, 180.0F, 0.7F);
@@ -55,7 +55,8 @@ public class ItemRenderSignal implements IItemRenderer {
 		}
 		default:
 			break;
-		}
+		}*/
+		return null;
 	}
 
 	private void renderSignal(float f, float g, float h, float rotation, float scale) {
@@ -66,5 +67,10 @@ public class ItemRenderSignal implements IItemRenderer {
 		GL11.glScalef(scale, scale, scale);
 		signal.render2(0.0625F);
 		GL11.glPopMatrix(); //end
+	}
+
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager) {
+
 	}
 }

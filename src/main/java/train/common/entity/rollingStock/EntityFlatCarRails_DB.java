@@ -15,7 +15,6 @@ import train.common.library.GuiIDs;
 public class EntityFlatCarRails_DB extends Freight implements IInventory {
 	public int freightInventorySize;
 	public int numFreightSlots;
-	private EntityPlayer playerEntity;
 
 	public EntityFlatCarRails_DB(World world) {
 		super(world);

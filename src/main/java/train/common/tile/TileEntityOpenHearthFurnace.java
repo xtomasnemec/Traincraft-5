@@ -1,7 +1,5 @@
 package train.common.tile;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -10,18 +8,23 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.blocks.BlockOpenHearthFurnace;
 import train.common.inventory.TrainCraftingManager;
 import train.common.library.BlockIDs;
 import train.common.library.ItemIDs;
 
-public class TileEntityOpenHearthFurnace extends TileTraincraft{
+import java.util.Random;
 
-	private ForgeDirection facing;
+public class TileEntityOpenHearthFurnace extends TileTraincraft implements ITickable {
+
+	private EnumFacing facing;
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
 	public int furnaceCookTime;
@@ -60,7 +63,7 @@ public class TileEntityOpenHearthFurnace extends TileTraincraft{
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 		boolean flag = furnaceBurnTime > 0;
 		boolean flag1 = false;
 		cookDuration = TrainCraftingManager.instance.getHearthFurnaceRecipeDuration(this.slots[0], this.slots[1]);
@@ -98,13 +101,13 @@ public class TileEntityOpenHearthFurnace extends TileTraincraft{
 			}
 			if (flag != (furnaceBurnTime > 0)) {
 				flag1 = true;
-				BlockOpenHearthFurnace.updateHearthFurnaceBlockState(furnaceBurnTime > 0, worldObj, xCoord, yCoord, zCoord, random);
+				BlockOpenHearthFurnace.updateHearthFurnaceBlockState(furnaceBurnTime > 0, worldObj, pos, random);
 			}
 			this.syncTileEntity();
 		}
 		if (this.worldObj.isRemote) {
 			if (furnaceBurnTime > 0) {
-				smoke(worldObj, xCoord, yCoord, zCoord, random);
+				smoke(worldObj, pos.getX(), pos.getY(),pos.getZ(), random);
 			}
 		}
 		if (flag1) {
@@ -119,13 +122,13 @@ public class TileEntityOpenHearthFurnace extends TileTraincraft{
 		float f3 = 0.009F;
 		double gaussian = random.nextGaussian() * f3;
 		for (int t = 0; t < 50; t++) {
-			world.spawnParticle("smoke", var7, (double) j + 1.2F, var9, gaussian, gaussian * 0.002F, gaussian);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, (double) j + 1.2F, var9, gaussian, gaussian * 0.002F, gaussian);
 		}
-		world.spawnParticle("flame", var7, (double) j + 1.03F, var9, 0, 0, 0);
-		world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
-		world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
-		world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
-		world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
+		world.spawnParticle(EnumParticleTypes.FLAME, var7, (double) j + 1.03F, var9, 0, 0, 0);
+		world.spawnParticle(EnumParticleTypes.FLAME, var7 + 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
+		world.spawnParticle(EnumParticleTypes.FLAME, var7 - 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
+		world.spawnParticle(EnumParticleTypes.FLAME, var7 + 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
+		world.spawnParticle(EnumParticleTypes.FLAME, var7 - 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
 	}
 
 	private boolean canSmelt(){
@@ -205,12 +208,12 @@ public class TileEntityOpenHearthFurnace extends TileTraincraft{
 		return GameRegistry.getFuelValue(it);
 	}
 
-	public ForgeDirection getFacing() {
+	public EnumFacing getFacing() {
 		if(facing!=null)return this.facing;
-		return ForgeDirection.NORTH;
+		return EnumFacing.NORTH;
 	}
 
-	public void setFacing(ForgeDirection face) {
+	public void setFacing(EnumFacing face) {
 		this.facing = face;
 	}
 
@@ -227,7 +230,7 @@ public class TileEntityOpenHearthFurnace extends TileTraincraft{
 	@Override
 	public void readFromNBT(NBTTagCompound nbt, boolean forSyncing){
 		super.readFromNBT(nbt, forSyncing);
-		facing = ForgeDirection.getOrientation(nbt.getByte("Orientation"));
+		facing = EnumFacing.getHorizontal(nbt.getByte("Orientation"));
 		furnaceBurnTime = nbt.getShort("BurnTime");
 		furnaceCookTime = nbt.getShort("CookTime");
 		currentItemBurnTime = nbt.getShort("ItemBurnTime");

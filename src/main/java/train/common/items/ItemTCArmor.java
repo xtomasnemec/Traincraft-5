@@ -7,12 +7,14 @@
 
 package train.common.items;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.library.Info;
@@ -20,7 +22,7 @@ import train.common.library.ItemIDs;
 
 public class ItemTCArmor extends ItemArmor {
 	public int color;
-	private IIcon iconOverlay;
+	//private IIcon iconOverlay;
 	public int updateTicks=0;
 	private String iconName = "";
 	
@@ -78,6 +80,7 @@ public class ItemTCArmor extends ItemArmor {
 		}
 	}
 
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean requiresMultipleRenderPasses() {
@@ -97,10 +100,15 @@ public class ItemTCArmor extends ItemArmor {
 		if(color!=0){
 			this.iconOverlay = iconRegister.registerIcon(Info.modID.toLowerCase() + ":armour/" + this.iconName + "_overlay");
 		}
+	}*/
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining){
+		return new ModelResourceLocation(new ResourceLocation(Info.modID.toLowerCase(), ":armour/" + this.iconName + "_overlay"),"inventory");
 	}
 
 	@Override
-	public void func_82813_b(ItemStack par1ItemStack, int par2)
+	public void setColor(ItemStack par1ItemStack, int par2)
 	{
 		if (color==0)
 		{

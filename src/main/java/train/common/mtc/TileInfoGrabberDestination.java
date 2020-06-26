@@ -1,24 +1,34 @@
 package train.common.mtc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+import li.cil.oc.api.Network;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.common.Optional;
 import train.common.api.Locomotive;
 
-public class TileInfoGrabberDestination extends TileEntity implements IPeripheral {
+import java.util.ArrayList;
+import java.util.List;
+@Optional.Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputers")
+
+public class TileInfoGrabberDestination extends TileEntity implements IPeripheral, Environment, ITickable {
     public Boolean isActivated = false;
     public String trainDestination = "";
     public Boolean trainThere = false;
     public AxisAlignedBB boundingBox = null;
     public ArrayList<IComputerAccess> computers = new ArrayList<IComputerAccess>();
-
+    protected boolean addedToNetwork = false;
+    public Node node = Network.newNode(this, Visibility.Network).withComponent(getComponentName()).withConnector(32).create();
     public TileInfoGrabberDestination() {
     }
 
@@ -26,16 +36,22 @@ public class TileInfoGrabberDestination extends TileEntity implements IPeriphera
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
 
-        this.isActivated = nbttagcompound.getBoolean("isActivated");
+        this.isActivated = nbttagcompound .getBoolean("isActivated");
         this.trainDestination = nbttagcompound.getString("trainDestination");
         //this.trainID = nbttagcompound.getString("trainID");
-
+        if (node != null && node.host() == this) {
+            // This restores the node's address, which is required for networks
+            // to continue working without interruption across loads. If the
+            // node is a power connector this is also required to restore the
+            // internal energy buffer of the node.
+            node.load(nbttagcompound.getCompoundTag("oc:node"));
+        }
     }
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         if (boundingBox == null) {
-            boundingBox = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 2, zCoord + 2);
+            boundingBox = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 2, pos.getY() + 2, pos.getZ() + 2);
         }
         return boundingBox;
     }
@@ -48,7 +64,11 @@ public class TileInfoGrabberDestination extends TileEntity implements IPeriphera
 
         nbttagcompound.setBoolean("isActivated", this.isActivated);
         nbttagcompound.setString("trainDestination", this.trainDestination);
-
+        if (node != null && node.host() == this) {
+            final NBTTagCompound nodeNbt = new NBTTagCompound();
+            node.save(nodeNbt);
+            nbttagcompound.setTag("oc:node", nodeNbt);
+        }
     }
 
     @Override
@@ -87,14 +107,19 @@ public class TileInfoGrabberDestination extends TileEntity implements IPeriphera
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (worldObj == null) {
             return;
         }
+        if (!addedToNetwork) {
+            addedToNetwork = true;
+            Network.joinOrCreateNetwork(this);
+        }
+
         if (isActivated) {
-            List<Object> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, this.getRenderBoundingBox());
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, this.getRenderBoundingBox());
             if (list != null && list.size() > 0) {
-                for (Object obj : list) {
+                for (Entity obj : list) {
 
                     if (obj instanceof Locomotive) {
 
@@ -110,11 +135,18 @@ public class TileInfoGrabberDestination extends TileEntity implements IPeriphera
                                     // System.out.println(message.message);
                                 }
                             }
+                            //Ooor, if it's OpenComputers..
+
+                            if (node != null) {
+                                node().sendToReachable("computer.signal","trainOverSensor");
+                            }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }
                 }
+            } else {
+                trainThere = false;
             }
         }
     }
@@ -133,4 +165,60 @@ public class TileInfoGrabberDestination extends TileEntity implements IPeriphera
     public boolean equals(IPeripheral other) {
         return false;
     }
+
+    //OpenComputers!
+    public String getComponentName() {
+        return "info_receiver_destination";
+    }
+    @Callback
+    @Optional.Method(modid = "OpenComputers")
+    public Object[] activate(Context context, Arguments args) {
+        this.isActivated = true;
+        return new Object[]{true};
+    }
+    @Callback
+    @Optional.Method(modid = "OpenComputers")
+    public Object[] deactivate(Context context, Arguments args) {
+        this.isActivated = false;
+        return new Object[]{true};
+    }
+    @Callback
+    @Optional.Method(modid = "OpenComputers")
+    public Object[] getDestination(Context context, Arguments args) {
+        return new Object[]{trainDestination};
+    }
+    @Callback
+    @Optional.Method(modid = "OpenComputers")
+    public Object[] isTrainOverSensor(Context context, Arguments args) {
+        return new Object[]{trainThere};
+    }
+    @Override
+    public Node node() {
+        return node;
+    }
+
+    @Override
+    public void onConnect(Node node) {
+    }
+
+    @Override
+    public void onDisconnect(Node node) {
+
+    }
+
+    @Override
+    public void onMessage(Message message) {}
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        if (node != null) node.remove();
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        if (node != null) node.remove();
+    }
+
 }

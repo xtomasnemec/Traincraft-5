@@ -1,18 +1,17 @@
 package train.common.adminbook;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 import tmt.Tessellator;
 import train.common.Traincraft;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>Transport GUI</h1>
@@ -78,6 +77,11 @@ public class GUIAdminBook extends GuiScreen {
                 initGui();
                 break;
             }
+            case 3:{
+                Traincraft.keyChannel.sendToServer(new ItemAdminBook.PacketAdminBookClient( "0:"+list[0].substring(1,list[0].length()), Minecraft.getMinecraft().thePlayer.getEntityId()));//tell server to drop items
+                Traincraft.keyChannel.sendToServer(new ItemAdminBook.PacketAdminBookClient( "1:"+list[0].substring(1), Minecraft.getMinecraft().thePlayer.getEntityId()));//tell server to drop items
+                break;
+            }
             default:{
                 Traincraft.keyChannel.sendToServer(new ItemAdminBook.PacketAdminBookClient( list[button.id-3], Minecraft.getMinecraft().thePlayer.getEntityId()));//tell server to send a new gui
                 break;
@@ -119,8 +123,9 @@ public class GUIAdminBook extends GuiScreen {
         } else {
             try {
                 //draw back
-                this.buttonList.add(new GuiButton(-1,guiLeft+80,guiTop+140,120,20,"clone inventory"));
-                this.buttonList.add(new GuiButton(0,guiLeft+10,guiTop+140,70,20,"delete entry"));
+                this.buttonList.add(new GuiButton(-1,guiLeft+85,guiTop+140,90,20,"clone inventory"));
+                this.buttonList.add(new GuiButton(0,guiLeft+5,guiTop+140,70,20,"delete entry"));
+                this.buttonList.add(new GuiButton(3,guiLeft+180,guiTop+140,80,20,"clone & delete"));
                 this.buttonList.add(new GuiButton(1, guiLeft-70, guiTop+140 , 70, 20, "back"));
                 items = ServerLogger.getItems(list[9]);
             } catch (Exception e){}
@@ -211,8 +216,8 @@ public class GUIAdminBook extends GuiScreen {
     private void func_146977_a(ItemStack p_146977_1_, int xDisplayPosition, int yDisplayPosition) {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), p_146977_1_, xDisplayPosition, yDisplayPosition);
-        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), p_146977_1_, xDisplayPosition, yDisplayPosition, null);
+        itemRender.renderItemAndEffectIntoGUI(p_146977_1_, xDisplayPosition, yDisplayPosition);
+        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, p_146977_1_, xDisplayPosition, yDisplayPosition, null);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }

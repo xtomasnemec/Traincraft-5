@@ -14,10 +14,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.library.Info;
@@ -65,7 +67,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 	@SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
-        return EnumRarity.epic;
+        return EnumRarity.EPIC;
     }
 	@Override
 	public void onArmorTick(World world, EntityPlayer player,
@@ -126,10 +128,10 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 					}
 				}
 				//System.out.println(world.getBlockLightValue((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ) +" "+world.isAirBlock((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ) +" "+world.isAnyLiquid(player.boundingBox));
-				if(!world.isRemote && world.getBlockLightValue((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ)<=4 && (world.isAirBlock((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ)||world.isAnyLiquid(player.boundingBox))){
+				if(!world.isRemote && world.getLight(new BlockPos((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ))<=4 && (world.isAirBlock(new BlockPos((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ))||world.isAnyLiquid(player.getCollisionBoundingBox()))){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>1) {
 						if (player.getActivePotionEffect(Potion.nightVision) ==null || player.getActivePotionEffect(Potion.nightVision).getDuration()<220) {
-							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 820, 0, true));
+							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 820, 0, true, false));
 							armorHelmet.damageItem(1, player);
 						}
 					} else {

@@ -1,6 +1,5 @@
 package train.common.recipes;
 
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,7 +8,7 @@ import train.common.core.interfaces.ITCRecipe;
 import train.common.items.ItemTCArmor;
 
 public class RecipesArmorDyes implements ITCRecipe {
-
+	public static final float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.85F, 0.5F, 0.2F}, {0.7F, 0.3F, 0.85F}, {0.4F, 0.6F, 0.85F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.5F, 0.65F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.5F, 0.6F}, {0.5F, 0.25F, 0.7F}, {0.2F, 0.3F, 0.7F}, {0.4F, 0.3F, 0.2F}, {0.4F, 0.5F, 0.2F}, {0.6F, 0.2F, 0.2F}, {0.1F, 0.1F, 0.1F}};
 	// Used to check if a recipe matches current crafting inventory
 	@Override
 	public boolean matches(IInventory par1InventoryCrafting, World par2World) {
@@ -87,7 +86,7 @@ public class RecipesArmorDyes implements ITCRecipe {
 						return null;
 					}
 
-					float[] afloat = EntitySheep.fleeceColorTable[itemstack1.getItemDamage()];
+					float[] afloat =fleeceColorTable[itemstack1.getItemDamage()];
 
 					int j1 = (int) (afloat[0] * 255.0F);
 					int k1 = (int) (afloat[1] * 255.0F);
@@ -115,7 +114,7 @@ public class RecipesArmorDyes implements ITCRecipe {
 			l = (int) ((float) l * f / f1);
 			i1 = (k << 8) + l1;
 			i1 = (i1 << 8) + l;
-			itemarmor.func_82813_b(itemstack, i1);
+			itemarmor.setColor(itemstack, i1);
 			return itemstack;
 		}
 	}

@@ -1,9 +1,5 @@
 package train.client.gui;
 
-import java.util.Collections;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -12,17 +8,16 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import org.lwjgl.opengl.GL11;
 import train.common.Traincraft;
-import train.common.api.DieselTrain;
-import train.common.api.ElectricTrain;
-import train.common.api.LiquidManager;
-import train.common.api.Locomotive;
-import train.common.api.SteamTrain;
+import train.common.api.*;
 import train.common.core.network.PacketParkingBrake;
 import train.common.core.network.PacketSetLocoTurnedOn;
 import train.common.core.network.PacketSetTrainLockedToClient;
 import train.common.inventory.InventoryLoco;
 import train.common.library.Info;
+
+import java.util.Collections;
 
 public class GuiLoco2 extends GuiContainer {
 
@@ -118,7 +113,7 @@ public class GuiLoco2 extends GuiContainer {
 			}
 		}
 		if (guibutton.id == 3) {
-			if (loco.riddenByEntity instanceof EntityPlayer && ((EntityPlayer) loco.riddenByEntity).getDisplayName().equals(loco.getTrainOwner())) {
+			if (loco.riddenByEntity instanceof EntityPlayer && ((EntityPlayer) loco.riddenByEntity).getDisplayName().getUnformattedText().equals(loco.getTrainOwner())) {
 				if ((!loco.getTrainLockedFromPacket())) {
 					Traincraft.lockChannel.sendToServer(new PacketSetTrainLockedToClient(true, loco.getEntityId()));
 					loco.locked = true;
@@ -273,7 +268,7 @@ public class GuiLoco2 extends GuiContainer {
 			int load = (((SteamTrain) loco).getWater());
 			int lo = Math.abs(((load * 50) / (((SteamTrain) loco).getCartTankCapacity())));
 
-			if (((SteamTrain) loco).getLiquidItemID() == LiquidManager.WATER_FILTER.getFluidID()) {
+			if (((SteamTrain) loco).getLiquidItemID() == LiquidManager.WATER_FILTER.getFluid().getID()) {
 				drawTexturedModalRect(j + 143, (k + 68) - lo, 190, 69 - lo, 18, lo + 1);
 			}
 			if (loco.getIsFuelled()) {
@@ -319,5 +314,6 @@ public class GuiLoco2 extends GuiContainer {
 		fontRendererObj.drawStringWithShadow("Heat level: " + loco.getOverheatLevel(), 1, 100, 0xFFFFFF);
 		fontRendererObj.drawStringWithShadow("Maximum Speed: " + (loco.getCustomSpeedGUI()) + " km/h" + " ("+(loco.getCustomSpeedGUI()+loco.getCurrentSpeedSlowDown())+")", 1, 110, 0xFFFFFF);
 		fontRendererObj.drawStringWithShadow("Destination: " + (loco.getDestinationGUI()), 1, 120, 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow("UUID: " + loco.getPersistentUUID() + " - Entity UUID" + loco.getUniqueID().toString(),1,0,0xFFFFFF);
 	}
 }

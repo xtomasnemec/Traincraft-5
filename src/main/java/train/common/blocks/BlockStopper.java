@@ -7,25 +7,26 @@
 
 package train.common.blocks;
 
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
-import train.common.library.Info;
 import train.common.tile.TileStopper;
+
+//import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.util.IIcon;
+
 
 public class BlockStopper extends BlockContainer {
 
-	private IIcon texture;
+	//private IIcon texture;
 
 	public BlockStopper() {
 		super(Material.iron);
@@ -33,7 +34,7 @@ public class BlockStopper extends BlockContainer {
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isBlockNormalCube() {
 		return false;
 	}
 
@@ -47,21 +48,21 @@ public class BlockStopper extends BlockContainer {
 		return -1; //RenderingRegistry.getNextAvailableRenderId();
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(int i, int j) {
 		return texture;
+	}*/
+
+	@Override
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		return (world.isSideSolid(new BlockPos(pos.getX(), pos.getY()-1, pos.getZ()), EnumFacing.UP));
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		return (world.isSideSolid(x, y-1, z, UP));
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, int par2, int par3, int par4, EntityLivingBase living, ItemStack stack) {
-		TileStopper te = (TileStopper) world.getTileEntity(par2, par3, par4);
+	public void onBlockPlacedBy(World world, BlockPos par2, IBlockState state, EntityLivingBase living, ItemStack stack) {
+		TileStopper te = (TileStopper) world.getTileEntity(par2);
 		int var6 = MathHelper.floor_double(living.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		int var7 = world.getBlockMetadata(par2, par3, par4) >> 2;
+		int var7 = state.getBlock().getMetaFromState(state)>>2;
 		++var6;
 		var6 %= 4;
 
@@ -95,9 +96,9 @@ public class BlockStopper extends BlockContainer {
 		return new TileStopper(meta);
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":stopper");
-	}
+	}*/
 }

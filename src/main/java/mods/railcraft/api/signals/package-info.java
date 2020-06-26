@@ -7,4 +7,5 @@
  */
 @API(apiVersion="2.3.0", owner="RailcraftAPI|core", provides="RailcraftAPI|signals")
 package mods.railcraft.api.signals;
+
 import net.minecraftforge.fml.common.API;

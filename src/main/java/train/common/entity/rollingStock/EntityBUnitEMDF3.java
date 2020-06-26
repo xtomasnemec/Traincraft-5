@@ -5,14 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import train.common.Traincraft;
 import train.common.api.LiquidManager;
 import train.common.api.LiquidTank;
@@ -42,6 +38,42 @@ public class EntityBUnitEMDF3 extends LiquidTank implements IFluidHandler {
 		prevPosZ = d2;
 	}
 
+
+	@Override
+	public void updateRiderPosition() {
+		if(riddenByEntity==null){return;}
+		double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
+		double distance = 2.3;
+		double yOffset = 0.65;
+		float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
+		float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
+		if(side.isServer()){
+			rotationCos1 = (float) Math.cos(Math.toRadians(this.serverRealRotation + 90));
+			rotationSin1 = (float) Math.sin(Math.toRadians((this.serverRealRotation + 90)));
+			anglePitchClient = serverRealPitch*60;
+		}
+		float pitch = (float) (posY + ((Math.tan(pitchRads) * distance) + getMountedYOffset())
+				+ riddenByEntity.getYOffset() + yOffset);
+		float pitch1 = (float) (posY + getMountedYOffset() + riddenByEntity.getYOffset() + yOffset);
+		double bogieX1 = (this.posX + (rotationCos1 * distance));
+		double bogieZ1 = (this.posZ + (rotationSin1* distance));
+		// System.out.println(rotationCos1+" "+rotationSin1);
+		if (anglePitchClient > 20 && rotationCos1 == 1) {
+			bogieX1-=pitchRads*2;
+			pitch -= pitchRads * 1.2;
+		}
+		if (anglePitchClient > 20 && rotationSin1 == 1) {
+			bogieZ1-=pitchRads*2;
+			pitch -= pitchRads * 1.2;
+		}
+		if (pitchRads == 0.0) {
+			riddenByEntity.setPosition(bogieX1, pitch1, bogieZ1);
+		}
+		if (pitchRads > -1.01 && pitchRads < 1.01) {
+			riddenByEntity.setPosition(bogieX1, pitch, bogieZ1);
+		}
+	}
+
 	@Override
 	public void setDead() {
 		super.setDead();
@@ -58,7 +90,7 @@ public class EntityBUnitEMDF3 extends LiquidTank implements IFluidHandler {
 
 		if (theTank != null && theTank.getFluid() != null) {
 			this.dataWatcher.updateObject(18, theTank.getFluidAmount());
-			this.dataWatcher.updateObject(4, theTank.getFluid().getFluidID());
+			this.dataWatcher.updateObject(4, theTank.getFluid().getFluid().getID());
 			if (theTank.getFluid().amount <= 1) {
 				motionX *= 0.94;
 				motionZ *= 0.94;
@@ -73,7 +105,7 @@ public class EntityBUnitEMDF3 extends LiquidTank implements IFluidHandler {
 			// setColor(getColorFromString("Full"));
 			setDefaultMass(-EnumTrains.BUnitEMDF3.getMass());
 			if ((motionX>0.01 || motionZ>0.01) && ticksExisted % 40 == 0) {
-				drain(ForgeDirection.UNKNOWN, 6,true);
+				drain(EnumFacing.DOWN, 6,true);
 			}
 
 		} else if (getAmount() <= 0) {
@@ -127,7 +159,7 @@ public class EntityBUnitEMDF3 extends LiquidTank implements IFluidHandler {
 			}
 		}
 		if (nbttagcompound.hasKey("FluidName")) {
-			fill(ForgeDirection.UNKNOWN, FluidStack.loadFluidStackFromNBT(nbttagcompound), true);
+			fill(EnumFacing.DOWN, FluidStack.loadFluidStackFromNBT(nbttagcompound), true);
 		}
 
 	}
@@ -221,12 +253,12 @@ public class EntityBUnitEMDF3 extends LiquidTank implements IFluidHandler {
 
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 		return theTank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 		if (resource == null || !resource.isFluidEqual(theTank.getFluid())) {
 			return null;
 		}
@@ -234,22 +266,22 @@ public class EntityBUnitEMDF3 extends LiquidTank implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 		return theTank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 		return new FluidTankInfo[] { theTank.getInfo() };
 	}
 

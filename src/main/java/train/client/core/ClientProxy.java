@@ -1,75 +1,32 @@
 package train.client.core;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Calendar;
-
-import org.apache.logging.log4j.Level;
-
 import javazoom.jl.decoder.JavaLayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import org.apache.logging.log4j.Level;
 import train.client.core.handlers.ClientTickHandler;
 import train.client.core.handlers.RecipeBookHandler;
 import train.client.core.handlers.TCKeyHandler;
 import train.client.core.helpers.JLayerHook;
-import train.client.gui.GuiBuilder;
-import train.client.gui.GuiCrafterTier;
-import train.client.gui.GuiCraftingCart;
-import train.client.gui.GuiDistil;
-import train.client.gui.GuiForney;
-import train.client.gui.GuiFreight;
-import train.client.gui.GuiFurnaceCart;
-import train.client.gui.GuiGeneratorDiesel;
-import train.client.gui.GuiJukebox;
-import train.client.gui.GuiLantern;
-import train.client.gui.GuiLiquid;
-import train.client.gui.GuiLoco2;
-import train.client.gui.GuiMTCInfo;
-import train.client.gui.GuiOpenHearthFurnace;
-import train.client.gui.GuiRecipeBook;
-import train.client.gui.GuiTender;
-import train.client.gui.GuiTrainCraftingBlock;
-import train.client.gui.GuiZepp;
-import train.client.gui.HUDMTC;
-import train.client.gui.HUDloco;
-import train.client.render.ItemRenderBridgePillar;
-import train.client.render.ItemRenderGeneratorDiesel;
-import train.client.render.ItemRenderLantern;
-import train.client.render.ItemRenderSignal;
-import train.client.render.ItemRenderStopper;
-import train.client.render.ItemRenderSwitchStand;
-import train.client.render.ItemRenderWaterWheel;
-import train.client.render.ItemRenderWindMill;
-import train.client.render.RenderBogie;
-import train.client.render.RenderBridgePillar;
-import train.client.render.RenderGeneratorDiesel;
-import train.client.render.RenderLantern;
-import train.client.render.RenderRollingStock;
-import train.client.render.RenderRotativeDigger;
-import train.client.render.RenderRotativeWheel;
-import train.client.render.RenderSignal;
-import train.client.render.RenderStopper;
-import train.client.render.RenderSwitchStand;
-import train.client.render.RenderTCRail;
-import train.client.render.RenderWaterWheel;
-import train.client.render.RenderWindMill;
-import train.client.render.RenderZeppelins;
+import train.client.gui.*;
+import train.client.render.*;
 import train.common.Traincraft;
 import train.common.adminbook.GUIAdminBook;
 import train.common.api.EntityBogie;
@@ -81,24 +38,13 @@ import train.common.entity.digger.EntityRotativeWheel;
 import train.common.entity.rollingStock.EntityJukeBoxCart;
 import train.common.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.common.entity.zeppelin.EntityZeppelinTwoBalloons;
-import train.common.library.BlockIDs;
 import train.common.library.GuiIDs;
 import train.common.library.Info;
-import train.common.tile.TileBridgePillar;
-import train.common.tile.TileCrafterTierI;
-import train.common.tile.TileCrafterTierII;
-import train.common.tile.TileCrafterTierIII;
-import train.common.tile.TileEntityDistil;
-import train.common.tile.TileEntityOpenHearthFurnace;
-import train.common.tile.TileGeneratorDiesel;
-import train.common.tile.TileLantern;
-import train.common.tile.TileSignal;
-import train.common.tile.TileStopper;
-import train.common.tile.TileSwitchStand;
-import train.common.tile.TileTCRail;
-import train.common.tile.TileTrainWbench;
-import train.common.tile.TileWaterWheel;
-import train.common.tile.TileWindMill;
+import train.common.tile.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Calendar;
 
 public class ClientProxy extends CommonProxy {
 
@@ -113,11 +59,11 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void registerEvents(FMLPreInitializationEvent event) {
+	public void registerEvents(FMLInitializationEvent event) {
 		super.registerEvents(event);
 		ClientTickHandler tickHandler = new ClientTickHandler();
 		HUDloco huDloco = new HUDloco();
-		if (Loader.isModLoaded("ComputerCraft")){
+		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")){
 			HUDMTC hudMTC = new HUDMTC();
 			registerEvent(hudMTC);
 		}
@@ -130,48 +76,48 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderInformation() {
 		FMLCommonHandler.instance().bus().register(new ClientTickHandler());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityRollingStock.class, new RenderRollingStock());
-		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinTwoBalloons.class, new RenderZeppelins());
-		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinOneBalloon.class, new RenderZeppelins());
-		RenderingRegistry.registerEntityRenderingHandler(EntityRotativeDigger.class, new RenderRotativeDigger());
-		RenderingRegistry.registerEntityRenderingHandler(EntityRotativeWheel.class, new RenderRotativeWheel());
+		RenderingRegistry.registerEntityRenderingHandler(EntityRollingStock.class, new RenderRollingStock(Minecraft.getMinecraft().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinTwoBalloons.class, new RenderZeppelins(Minecraft.getMinecraft().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinOneBalloon.class, new RenderZeppelins(Minecraft.getMinecraft().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRotativeDigger.class, new RenderRotativeDigger(Minecraft.getMinecraft().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRotativeWheel.class, new RenderRotativeWheel(Minecraft.getMinecraft().getRenderManager()));
 		//bogies
-		RenderingRegistry.registerEntityRenderingHandler(EntityBogie.class, new RenderBogie());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBogie.class, new RenderBogie(Minecraft.getMinecraft().getRenderManager()));
 
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStopper.class, new RenderStopper());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.stopper.block), new ItemRenderStopper());
+		ModelLoaderRegistry.registerLoader(new ItemRenderStopper());
 		
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileBook.class, new RenderTCBook());
-		//MinecraftForgeClient.registerItemRenderer(BlockIDs.book.blockID, new ItemRenderBook());
+		//ModelLoaderRegistry.registerLoader(BlockIDs.book.blockID, new ItemRenderBook());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSignal.class, new RenderSignal());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.signal.block), new ItemRenderSignal());
+		ModelLoaderRegistry.registerLoader(new ItemRenderSignal());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileLantern.class, new RenderLantern());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.lantern.block), new ItemRenderLantern());
+		ModelLoaderRegistry.registerLoader(new ItemRenderLantern());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSwitchStand.class, new RenderSwitchStand());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.switchStand.block), new ItemRenderSwitchStand());
+		ModelLoaderRegistry.registerLoader(new ItemRenderSwitchStand());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWaterWheel.class, new RenderWaterWheel());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.waterWheel.block), new ItemRenderWaterWheel());
+		ModelLoaderRegistry.registerLoader(new ItemRenderWaterWheel());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWindMill.class, new RenderWindMill());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.windMill.block), new ItemRenderWindMill());
+		ModelLoaderRegistry.registerLoader(new ItemRenderWindMill());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileGeneratorDiesel.class, new RenderGeneratorDiesel());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.generatorDiesel.block), new ItemRenderGeneratorDiesel());
+		ModelLoaderRegistry.registerLoader(new ItemRenderGeneratorDiesel());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTCRail.class, new RenderTCRail());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileBridgePillar.class, new RenderBridgePillar());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.bridgePillar.block), new ItemRenderBridgePillar());
+		ModelLoaderRegistry.registerLoader(new ItemRenderBridgePillar());
 	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		EntityPlayer riddenByEntity = null;
 		Entity entity = player.ridingEntity;
 		if (player.ridingEntity != null) {
@@ -213,7 +159,7 @@ public class ClientProxy extends CommonProxy {
 		case (GuiIDs.DIGGER):
 			return riddenByEntity != null ? new GuiBuilder(player, riddenByEntity.inventory, entity) : null;
 		case (GuiIDs.MTC_INFO):
-			return riddenByEntity != null && Loader.isModLoaded("ComputerCraft") ? new GuiMTCInfo(player) : null;
+			return riddenByEntity != null && Loader.isModLoaded("ComputerCraft")  || Loader.isModLoaded("OpenComputers") ? new GuiMTCInfo(player) : null;
 
 			//Stationary entities while player is not riding. 
 		case (GuiIDs.FREIGHT):
@@ -237,10 +183,10 @@ public class ClientProxy extends CommonProxy {
 		}
 	}
 
-	@Override
+	/*@Override
 	public int addArmor(String armor) {
 		return RenderingRegistry.addNewArmourRendererPrefix(armor);
-	}
+	}*/
 
 	@Override
 	public GuiScreen getCurrentScreen() {

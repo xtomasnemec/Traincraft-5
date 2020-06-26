@@ -1,8 +1,5 @@
 package train.common.recipes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -14,31 +11,34 @@ import train.common.api.crafting.ITierCraftingManager;
 import train.common.core.managers.TierRecipeManager;
 import train.common.library.ItemIDs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AssemblyTableRecipes {
 
 
 
 	public static void recipes() {
 		//initialize these in the function because this only ever gets called on startup, gives a lot of space for GC to do its job.
-		ArrayList<ItemStack> ingotIron	= OreDictionary.getOres("ingotIron");
-		ArrayList<ItemStack> s1 = OreDictionary.getOres("plankWood");
-		ArrayList<ItemStack> s2 = OreDictionary.getOres("logWood");
-		ArrayList<ItemStack> ingotSteel = OreDictionary.getOres("ingotSteel");
-		ArrayList<ItemStack> dyeRed = OreDictionary.getOres("dyeRed"); //1
-		ArrayList<ItemStack> dyeYellow = OreDictionary.getOres("dyeYellow"); //11
-		ArrayList<ItemStack> dyeOrange = OreDictionary.getOres("dyeOrange");//14
-		ArrayList<ItemStack> dyeGreen = OreDictionary.getOres("dyeGreen"); //2
-		ArrayList<ItemStack> dyeBlue = OreDictionary.getOres("dyeBlue"); //4
-		ArrayList<ItemStack> dyeBrown = OreDictionary.getOres("dyeBrown"); //3
-		ArrayList<ItemStack> dyeGray = OreDictionary.getOres("dyeGray"); //3
-		ArrayList<ItemStack> dyeLightGray = OreDictionary.getOres("dyeLightGray"); //7
-		ArrayList<ItemStack> dyeBlack = OreDictionary.getOres("dyeBlack");
-		ArrayList<ItemStack> dyeWhite = OreDictionary.getOres("dyeWhite");
+		List<ItemStack> ingotIron	= OreDictionary.getOres("ingotIron");
+		List<ItemStack> s1 = OreDictionary.getOres("plankWood");
+		List<ItemStack> s2 = OreDictionary.getOres("logWood");
+		List<ItemStack> ingotSteel = OreDictionary.getOres("ingotSteel");
+		List<ItemStack> dyeRed = OreDictionary.getOres("dyeRed"); //1
+		List<ItemStack> dyeYellow = OreDictionary.getOres("dyeYellow"); //11
+		List<ItemStack> dyeOrange = OreDictionary.getOres("dyeOrange");//14
+		List<ItemStack> dyeGreen = OreDictionary.getOres("dyeGreen"); //2
+		List<ItemStack> dyeBlue = OreDictionary.getOres("dyeBlue"); //4
+		List<ItemStack> dyeBrown = OreDictionary.getOres("dyeBrown"); //3
+		List<ItemStack> dyeGray = OreDictionary.getOres("dyeGray"); //3
+		List<ItemStack> dyeLightGray = OreDictionary.getOres("dyeLightGray"); //7
+		List<ItemStack> dyeBlack = OreDictionary.getOres("dyeBlack");
+		List<ItemStack> dyeWhite = OreDictionary.getOres("dyeWhite");
 		List<ItemStack> coal = new ArrayList<ItemStack>();
 		coal.add(new ItemStack(Items.coal));
 		coal.addAll(OreDictionary.getOres("coal"));
-		ArrayList<ItemStack> redstone = OreDictionary.getOres("dustRedstone");
-		ArrayList<ItemStack> waterbucket = waterContainers();
+		List<ItemStack> redstone = OreDictionary.getOres("dustRedstone");
+		List<ItemStack> waterbucket = waterContainers();
 
 
 		ITierCraftingManager cm = TierRecipeManager.getInstance();
@@ -268,6 +268,9 @@ public class AssemblyTableRecipes {
 			cm.addRecipe(2, new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.bogie.item, 5), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.steelchimney.item, 1), new ItemStack(ItemIDs.steelcab.item, 1), new ItemStack(ItemIDs.boiler.item, 3), new ItemStack(ItemIDs.firebox.item, 1), null, null, new ItemStack(ItemIDs.minecartLocoC62Class.item, 1), 1);
 			cm.addRecipe(2, new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.bogie.item, 5), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.steelchimney.item, 1), new ItemStack(ItemIDs.steelcab.item, 1), new ItemStack(ItemIDs.boiler.item, 2), new ItemStack(ItemIDs.firebox.item, 1), null, null, new ItemStack(ItemIDs.minecartLocoD51Short.item, 1), 1);
 			cm.addRecipe(2, new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.bogie.item, 5), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.steelchimney.item, 1), new ItemStack(ItemIDs.steelcab.item, 1), new ItemStack(ItemIDs.boiler.item, 2), new ItemStack(ItemIDs.firebox.item, 1), null, null, new ItemStack(ItemIDs.minecartLocoD51Long.item, 1), 1);
+			for (ItemStack c: coal) {
+				cm.addRecipe(2, new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.steelframe.item, 1), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(c.getItem(), 1), null, new ItemStack(ItemIDs.minecartTenderD51.item, 1), 1);
+			}
 			//cm.addRecipe(2, null, new ItemStack(ItemIDs.bogie.item, 3), new ItemStack(ItemIDs.steelframe.item, 4), new ItemStack(itemSteel, 2), new ItemStack(ItemIDs.steelchimney.item, 1), new ItemStack(ItemIDs.steelcab.item, 1), new ItemStack(ItemIDs.boiler.item, 4), new ItemStack(ItemIDs.firebox.item, 2), null, null, new ItemStack(ItemIDs.minecartLoco4.item, 1), 1);
 			//cm.addRecipe(2, null, new ItemStack(ItemIDs.bogie.item, 3), new ItemStack(ItemIDs.steelframe.item, 3), new ItemStack(itemSteel, 2), new ItemStack(ItemIDs.steelchimney.item, 1), new ItemStack(ItemIDs.steelcab.item, 1), new ItemStack(ItemIDs.boiler.item, 3), new ItemStack(ItemIDs.firebox.item, 2), null, null, new ItemStack(ItemIDs.minecartHeavySteam.item, 1), 1);//TODO put it back once Heavy Steam is back
 			cm.addRecipe(2, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.steelframe.item, 3), new ItemStack(itemSteel, 1, itemDamageSteel), new ItemStack(ItemIDs.steelchimney.item, 1), null, new ItemStack(ItemIDs.boiler.item, 1), new ItemStack(ItemIDs.firebox.item, 1), new ItemStack(Blocks.rail, 16), null, new ItemStack(ItemIDs.minecartBuilder.item, 1), 1);
@@ -483,10 +486,10 @@ public class AssemblyTableRecipes {
 		}
 	}
 
-	public static ArrayList<ItemStack> waterContainers(){
-		ArrayList<ItemStack> containers = new ArrayList<ItemStack>();
+	public static List<ItemStack> waterContainers(){
+		List<ItemStack> containers = new ArrayList<ItemStack>();
 		for (FluidContainerRegistry.FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()){
-			if(data.fluid.fluid == FluidRegistry.WATER){
+			if(data.fluid.getFluid() == FluidRegistry.WATER){
 				containers.add(data.filledContainer);
 			}
 		}

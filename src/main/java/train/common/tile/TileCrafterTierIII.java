@@ -1,9 +1,5 @@
 package train.common.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -13,18 +9,24 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 import train.common.core.interfaces.ITier;
 import train.common.core.managers.TierRecipe;
 import train.common.core.managers.TierRecipeManager;
 import train.common.library.Info;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class TileCrafterTierIII extends TileEntity implements IInventory, ITier {
 	private Random rand;
 	private ItemStack[] crafterInventory;
 
-	private ForgeDirection facing;
+	private EnumFacing facing;
 	private final int Tier = 3;
 	private List<Item>			resultList;
 	private static List<Item> knownRecipes = new ArrayList<Item>();
@@ -72,7 +74,7 @@ public class TileCrafterTierIII extends TileEntity implements IInventory, ITier 
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
+	public ItemStack removeStackFromSlot(int par1) {
 		if (crafterInventory[par1] != null) {
 			ItemStack var2 = crafterInventory[par1];
 			this.crafterInventory[par1] = null;
@@ -92,14 +94,19 @@ public class TileCrafterTierIII extends TileEntity implements IInventory, ITier 
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "TierIII";
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		return new ChatComponentText("Traincraft Table Tier 3");
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTag) {
 		super.readFromNBT(nbtTag);
-		facing = ForgeDirection.getOrientation(nbtTag.getByte("Orientation"));
+		facing = EnumFacing.getHorizontal(nbtTag.getByte("Orientation"));
 		slotSelected = nbtTag.getIntArray("Selected");
 		NBTTagList nbttaglist = nbtTag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 		this.crafterInventory = new ItemStack[this.getSizeInventory()];
@@ -129,7 +136,7 @@ public class TileCrafterTierIII extends TileEntity implements IInventory, ITier 
 		if(facing!=null){
 			nbtTag.setByte("Orientation", (byte) facing.ordinal());
 		}else{
-			nbtTag.setByte("Orientation", (byte) ForgeDirection.NORTH.ordinal());
+			nbtTag.setByte("Orientation", (byte) EnumFacing.NORTH.ordinal());
 		}
 		nbtTag.setIntArray("Selected", slotSelected);
 		NBTTagList nbttaglist = new NBTTagList();
@@ -190,26 +197,26 @@ public class TileCrafterTierIII extends TileEntity implements IInventory, ITier 
 		if (worldObj == null) {
 			return true;
 		}
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if (worldObj.getTileEntity(pos) != this) {
 			return false;
 		}
-		return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+		return player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64D;
 	}
 
-	public ForgeDirection getFacing() {
+	public EnumFacing getFacing() {
 		if(facing!=null)return this.facing;
-		return ForgeDirection.NORTH;
+		return EnumFacing.NORTH;
 	}
 
-	public void setFacing(ForgeDirection face) {
+	public void setFacing(EnumFacing face) {
 		this.facing = face;
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer player) {}
 
 	@Override
 	public Packet getDescriptionPacket() {
@@ -217,7 +224,7 @@ public class TileCrafterTierIII extends TileEntity implements IInventory, ITier 
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(this.pos, 1, nbt);
 	}
 
 	private boolean listContainsItem(List<Item> list, Item stack) {
@@ -260,7 +267,7 @@ public class TileCrafterTierIII extends TileEntity implements IInventory, ITier 
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {return false;}
+	public boolean hasCustomName() {return false;}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
@@ -279,8 +286,25 @@ public class TileCrafterTierIII extends TileEntity implements IInventory, ITier 
 		
 		return false;
 	}
-	
+
+
 	@Override
-	public void updateEntity() {
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
 	}
 }

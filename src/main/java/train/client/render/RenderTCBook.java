@@ -17,7 +17,7 @@ public class RenderTCBook extends TileEntitySpecialRenderer {
 	private ModelTCBook book = new ModelTCBook();
 	
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float tick) {
+	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float tick, int garbage) {
 		book.render((TileBook) tileentity, x, y, z);
 	}
 }

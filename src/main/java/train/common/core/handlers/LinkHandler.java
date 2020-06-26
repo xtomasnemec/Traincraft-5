@@ -1,7 +1,5 @@
 package train.common.core.handlers;
 
-import java.util.List;
-
 import mods.railcraft.api.tracks.RailTools;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
@@ -12,6 +10,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import train.common.api.AbstractTrains;
 import train.common.api.EntityRollingStock;
+
+import java.util.List;
 
 public class LinkHandler {
 
@@ -28,7 +28,7 @@ public class LinkHandler {
 		if (entityOne.isAttaching) {
 			List lis = worldObj.getEntitiesWithinAABBExcludingEntity(entityOne, customBoundingBox.expand(15, 5, 15));
 			if (entityOne.bogieLoco != null) {
-				lis.addAll(worldObj.getEntitiesWithinAABBExcludingEntity(entityOne, entityOne.bogieLoco.boundingBox.expand(7, 5, 7)));
+				lis.addAll(worldObj.getEntitiesWithinAABBExcludingEntity(entityOne, entityOne.bogieLoco.getCollisionBoundingBox().expand(7, 5, 7)));
 			}
 
 

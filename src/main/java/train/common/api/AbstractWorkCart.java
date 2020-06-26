@@ -6,11 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -18,6 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.adminbook.ServerLogger;
 
@@ -161,7 +158,7 @@ public abstract class AbstractWorkCart extends EntityRollingStock implements IIn
 			return false;
 		}
 		else {
-			ItemStack var1 = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
+			ItemStack var1 = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
 			if (var1 == null)
 				return false;
 			if (this.furnaceItemStacks[2] == null)
@@ -178,7 +175,7 @@ public abstract class AbstractWorkCart extends EntityRollingStock implements IIn
 	 */
 	public void smeltItem() {
 		if (this.canSmelt()) {
-			ItemStack var1 = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
+			ItemStack var1 = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
 
 			if (this.furnaceItemStacks[2] == null) {
 				this.furnaceItemStacks[2] = var1.copy();
@@ -256,7 +253,7 @@ public abstract class AbstractWorkCart extends EntityRollingStock implements IIn
 	 * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem - like when you close a workbench GUI.
 	 */
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
+	public ItemStack removeStackFromSlot(int par1) {
 		if (this.furnaceItemStacks[par1] != null) {
 			ItemStack var2 = this.furnaceItemStacks[par1];
 			this.furnaceItemStacks[par1] = null;
@@ -303,10 +300,10 @@ public abstract class AbstractWorkCart extends EntityRollingStock implements IIn
 		}
 	}
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer p) {}
 
 	@Override
 	public int getSizeInventory() {
@@ -347,5 +344,26 @@ public abstract class AbstractWorkCart extends EntityRollingStock implements IIn
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return true;
+	}
+
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
 	}
 }

@@ -1,13 +1,10 @@
 package train.common.items;
 
-import java.util.List;
-
 import com.mojang.authlib.GameProfile;
-
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.core.items.IMinecartItem;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -15,18 +12,12 @@ import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
-import train.common.api.AbstractTrains;
-import train.common.api.DieselTrain;
-import train.common.api.ElectricTrain;
-import train.common.api.EntityRollingStock;
-import train.common.api.Locomotive;
-import train.common.api.SteamTrain;
-import train.common.api.Tender;
+import train.common.api.*;
 import train.common.core.handlers.ConfigHandler;
 import train.common.core.util.TraincraftUtil;
 import train.common.entity.rollingStock.EntityTracksBuilder;
@@ -37,36 +28,60 @@ import train.common.library.Info;
 import train.common.tile.TileTCRail;
 import train.common.tile.TileTCRailGag;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class ItemRollingStock extends ItemMinecart implements IMinecart, IMinecartItem {
 
 	private String iconName = "";
 	private String trainName;
-	private String trainCreator;
-	private int trainColor = -1;
 
 	public ItemRollingStock(String iconName) {
-		super(1);
+		super(EntityMinecart.EnumMinecartType.RIDEABLE);
 		this.iconName = iconName;
 		maxStackSize = 1;
 		trainName = this.getUnlocalizedName();
 		setCreativeTab(Traincraft.tcTab);
 	}
 
-	public int setNewUniqueID(ItemStack stack, EntityPlayer player, int numberOfTrains) {
-		NBTTagCompound var3 = stack.getTagCompound();
-		if (numberOfTrains <= 0) {
-			numberOfTrains = AbstractTrains.uniqueIDs++;
+	public static ItemStack setPersistentData(@Nullable ItemStack oldStack, @Nullable AbstractTrains train, @Nullable Integer trainID, @Nullable EntityPlayer player) {
+
+		ItemStack stack = oldStack;
+
+		if (train != null){
+			for (EnumTrains trains : EnumTrains.values()) {
+				if (trains.getEntityClass().equals(train.getClass())) {
+					stack = (new ItemStack(trains.getItem()));
+					break;
+				}
+			}
 		}
-		else {
-			AbstractTrains.uniqueIDs = numberOfTrains++;
+		if(stack!=null) {
+			NBTTagCompound tag = stack.getTagCompound();
+			if(tag==null){
+				tag=new NBTTagCompound();
+			}
+			if(train!=null) {
+				tag.setString("puuid", train.getPersistentUUID());
+				tag.setString("trainCreator", player==null?train.getEntityData().getString("theCreator"):player.getDisplayName().getUnformattedText());
+				if(train.getEntityData().hasKey("theOwner")) {
+					tag.setString("theOwner", train.getEntityData().getString("theOwner"));
+				}
+				if(train.getEntityData().hasKey("color")) {
+					tag.setInteger("trainColor",train.getEntityData().getInteger("color"));
+				}
+			} else {
+				tag.setString("trainCreator", player!=null?player.getDisplayName().getUnformattedText():"Creative");
+			}
+			tag.setInteger("uniqueID", trainID==null?AbstractTrains.uniqueIDs++:trainID);
+
+
+			stack.setTagCompound(tag);
+		} else {
+			return null;//THIS SHOULD NEVER HAPPEN, but compensate anyway because java is stupid and forge is unreliable.
 		}
-		if (var3 == null) {
-			var3 = new NBTTagCompound();
-			stack.setTagCompound(var3);
-		}
-		stack.getTagCompound().setInteger("uniqueID", numberOfTrains);
-		stack.getTagCompound().setString("trainCreator", player.getDisplayName());
-		return numberOfTrains;
+		return stack;
+
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -74,15 +89,19 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		if (par1ItemStack.hasTagCompound()) {
 			NBTTagCompound var5 = par1ItemStack.getTagCompound();
-			trainCreator = var5.getString("trainCreator");
 			/*if (id > 0)
 				par3List.add("\u00a77" + "ID: " + id);*/
-			if (trainCreator.length() > 0) {
-				par3List.add("\u00a77" + "Creator: " + trainCreator);
+
+			if (var5.hasKey("trainCreator")) {
+				par3List.add("\u00a77" + "Creator: " + var5.getString("trainCreator"));
 			}
-			int color = var5.getInteger("trainColor");
-			if (var5.hasKey("trainColor") && color <= 16) {
-				par3List.add("\u00a77" + "Color: " + AbstractTrains.getColorAsString(color));
+
+			if (var5.hasKey("trainOwner")) {
+				par3List.add("\u00a77" + "Owner: " + var5.getString("trainOwner"));
+			}
+
+			if (var5.hasKey("treinColor")) {
+				par3List.add("\u00a77" + "Color: " + AbstractTrains.getColorAsString(var5.getInteger("trainColor")));
 			}
 
 		}
@@ -110,7 +129,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 	}
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.rare;
+		return EnumRarity.RARE;
 	}
 
 	public String getTrainType() {
@@ -166,38 +185,38 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
-		int meta = par3World.getBlockMetadata(par4, par5, par6);
-		TileEntity tileentity = par3World.getTileEntity(par4, par5, par6);
+	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing par7, float par8, float par9, float par10) {
+		int meta = TraincraftUtil.getBlockMeta(par3World, pos);
+		TileEntity tileentity = par3World.getTileEntity(pos);
 		//System.out.println(meta);
 		if (par3World.isRemote) {
 			return false;
 		}
-		if(tileentity!=null && tileentity instanceof TileTCRail){
+		if(tileentity instanceof TileTCRail){
 			TileTCRail tile = (TileTCRail) tileentity;
 			if (tile.getType().equals(TrackTypes.MEDIUM_STRAIGHT.getLabel())
 					|| tile.getType().equals(TrackTypes.SMALL_STRAIGHT.getLabel())
 					|| tile.getType().equals(TrackTypes.SMALL_ROAD_CROSSING.getLabel())
 					|| tile.getType().equals(TrackTypes.SMALL_ROAD_CROSSING_1.getLabel())
 					|| tile.getType().equals(TrackTypes.SMALL_ROAD_CROSSING_2.getLabel())) {
-				this.placeCart(par2EntityPlayer, par1ItemStack, par3World, par4, par5, par6);
+				this.placeCart(par2EntityPlayer.getGameProfile(), par1ItemStack, par3World, pos);
 				return true;
 			}
 			par2EntityPlayer.addChatMessage(new ChatComponentText("Place me on a straight piece of track !"));
 			return false;
 		}else
-		if(tileentity!=null && tileentity instanceof TileTCRailGag){
+		if(tileentity instanceof TileTCRailGag){
 			TileTCRailGag tileGag = (TileTCRailGag) tileentity;
-			TileTCRail tile = (TileTCRail) par3World.getTileEntity(tileGag.originX, tileGag.originY, tileGag.originZ);
+			TileTCRail tile = (TileTCRail) par3World.getTileEntity(new BlockPos(tileGag.originX, tileGag.originY, tileGag.originZ));
 			if(tile!=null && tile.getType().equals(TrackTypes.MEDIUM_STRAIGHT.getLabel())){
-				this.placeCart(par2EntityPlayer, par1ItemStack, par3World, par4, par5, par6);
+				this.placeCart(par2EntityPlayer.getGameProfile(), par1ItemStack, par3World,pos);
 				return true;
 			}
 			par2EntityPlayer.addChatMessage(new ChatComponentText("Place me on a straight piece of track !"));
 			return false;
 		}else
-		if (TraincraftUtil.isRailBlockAt(par3World, par4, par5, par6) && (meta < 2 || meta > 5)) {
-			this.placeCart(par2EntityPlayer, par1ItemStack, par3World, par4, par5, par6);
+		if (TraincraftUtil.isRailBlockAt(par3World, pos.getX(), pos.getY(),pos.getZ()) && (meta < 2 || meta > 5)) {
+			this.placeCart(par2EntityPlayer.getGameProfile(), par1ItemStack, par3World, pos);
 			return true;
 		}
 		else {
@@ -211,7 +230,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 			if(train.getItem() == itemstack.getItem()){
 				//System.out.println(train.getItem().getUnlocalizedName());
 				//System.out.println(world!=null);
-				rollingStock = (EntityRollingStock) train.getEntity(world, i + 0.5F, j + 0.5F, k + 0.5F);
+				rollingStock = (EntityRollingStock) train.getEntity(world, i + 0.5F, j + 1F, k + 0.5F);
 				if(train.getColors()!=null){
 					if(rollingStock != null){
 						rollingStock.setColor((train.getColors()[0]));
@@ -231,7 +250,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 				}
 
 				int dir = 0;
-				int meta = world.getBlockMetadata(i, j, k);
+				int meta = TraincraftUtil.getBlockMeta(world, new BlockPos(i,j,k));
 				if (player != null)
 					dir = MathHelper.floor_double((player.rotationYaw * 4F) / 360F + 0.5D) & 3;
 				//180 = 3 = EAST
@@ -246,7 +265,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 					}else{
 						rollingStock.serverRealRotation = 180;
 					}
-					if(world.getBlock(i, j, k)==BlockIDs.tcRail.block || world.getBlock(i, j, k)==BlockIDs.tcRailGag.block){
+					if(world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRailGag.block){
 						if(meta==0 || meta == 2){
 							rollingStock.rotationYaw = 90;
 						}else{
@@ -254,7 +273,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 						}
 					}
 					if(rollingStock instanceof Locomotive){
-						if((world.getBlock(i, j, k-1)==BlockIDs.tcRail.block || world.getBlock(i, j, k-1)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i, j, k-1)))&&(world.getBlock(i, j, k-2)==BlockIDs.tcRail.block || world.getBlock(i, j, k-2)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i, j, k-2)))){
+						if((world.getBlockState(new BlockPos(i, j, k-1)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k-1)).getBlock()==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world,new BlockPos(i, j, k-1)))&&(world.getBlockState(new BlockPos(i, j, k-2)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k-2)).getBlock()==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world,new BlockPos(i, j, k-2)))){
 							if(meta==0 || meta == 2){
 								rollingStock.serverRealRotation = -90;
 							}
@@ -272,7 +291,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 					}else{
 						rollingStock.serverRealRotation = -90;
 					}
-					if(world.getBlock(i, j, k)==BlockIDs.tcRail.block || world.getBlock(i, j, k)==BlockIDs.tcRailGag.block){
+					if(world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRailGag.block){
 						if(meta==1 || meta == 3){
 							rollingStock.rotationYaw = 0;
 						}else{
@@ -280,7 +299,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 						}
 					}
 					if(rollingStock instanceof Locomotive){
-						if((world.getBlock(i-1, j, k)==BlockIDs.tcRail.block || world.getBlock(i-1, j, k)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i-1, j, k)))&&(world.getBlock(i-2, j, k)==BlockIDs.tcRail.block || world.getBlock(i-2, j, k)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i-2, j, k)))){
+						if((world.getBlockState(new BlockPos(i-1, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i-1, j, k))==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world, new BlockPos(i-1, j, k)))&&(world.getBlockState(new BlockPos(i-2, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i-2, j, k)).getBlock()==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world, new BlockPos(i-2, j, k)))){
 							if(meta==1 || meta == 3){
 								rollingStock.serverRealRotation = 180;
 							}
@@ -298,7 +317,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 					}else{
 						rollingStock.serverRealRotation = 0;
 					}
-					if(world.getBlock(i, j, k)==BlockIDs.tcRail.block || world.getBlock(i, j, k)==BlockIDs.tcRailGag.block){
+					if(world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRailGag.block){
 						if(meta==0 || meta == 2){
 							rollingStock.rotationYaw = -90;
 						}else{
@@ -306,7 +325,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 						}
 					}
 					if(rollingStock instanceof Locomotive){
-						if((world.getBlock(i, j, k+1)==BlockIDs.tcRail.block || world.getBlock(i, j, k+1)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i, j, k+1)))&&(world.getBlock(i, j, k+2)==BlockIDs.tcRail.block || world.getBlock(i, j, k+2)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i, j, k+2)))){
+						if((world.getBlockState(new BlockPos(i, j, k+1)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k+1)).getBlock()==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world, new BlockPos(i, j, k+1)))&&(world.getBlockState(new BlockPos(i, j, k+2)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k+2)).getBlock()==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world, new BlockPos(i, j, k+2)))){
 							if(meta == 0 || meta == 2){
 								rollingStock.serverRealRotation = 90;
 							}
@@ -330,7 +349,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 					}else{
 						rollingStock.serverRealRotation = 90;
 					}
-					if(world.getBlock(i, j, k)==BlockIDs.tcRail.block || world.getBlock(i, j, k)==BlockIDs.tcRailGag.block){
+					if(world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i, j, k)).getBlock()==BlockIDs.tcRailGag.block){
 						if(meta==1 || meta == 3){
 							rollingStock.rotationYaw = 178.5F;
 						} else {
@@ -338,7 +357,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 						}
 					}
 					if(rollingStock instanceof Locomotive){
-						if((world.getBlock(i+1, j, k)==BlockIDs.tcRail.block || world.getBlock(i+1, j, k)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i+1, j, k)))&&(world.getBlock(i+2, j, k)==BlockIDs.tcRail.block || world.getBlock(i+2, j, k)==BlockIDs.tcRailGag.block || BlockRailBase.func_150051_a(world.getBlock(i+2, j, k)))){
+						if((world.getBlockState(new BlockPos(i+1, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i+1, j, k)).getBlock()==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world, new BlockPos(i+1, j, k)))&&(world.getBlockState(new BlockPos(i+2, j, k)).getBlock()==BlockIDs.tcRail.block || world.getBlockState(new BlockPos(i+2, j, k)).getBlock()==BlockIDs.tcRailGag.block || BlockRailBase.isRailBlock(world, new BlockPos(i+2, j, k)))){
 							if(meta == 1 || meta == 3){
 								rollingStock.serverRealRotation = 0;
 							}
@@ -357,7 +376,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 				rollingStock.trainType = ((ItemRollingStock) itemstack.getItem()).getTrainType();
 				rollingStock.trainName = (itemstack.getItem()).getItemStackDisplayName(itemstack);
 				if (player != null){
-					rollingStock.trainOwner = player.getDisplayName();
+					rollingStock.trainOwner = player.getDisplayName().getUnformattedText();
 				}
 				rollingStock.mass = getMass();
 
@@ -369,16 +388,30 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 						rollingStock.uniqueID = uniID;
 					if (uniID != -1)
 						rollingStock.getEntityData().setInteger("uniqueID", uniID);
-					trainCreator = var5.getString("trainCreator");
-					trainColor = var5.getInteger("trainColor");
-					if (var5.hasKey("trainColor"))
-						rollingStock.setColor(trainColor);
-					rollingStock.trainCreator = trainCreator;
+					if (var5.hasKey("trainColor")) {
+						rollingStock.setColor(var5.getInteger("trainColor"));
+					}
+					rollingStock.trainCreator = var5.getString("trainCreator");
 				}
-				if (player != null)
-					rollingStock.setInformation(((ItemRollingStock) itemstack.getItem()).getTrainType(), player.getDisplayName(), trainCreator, (itemstack.getItem()).getItemStackDisplayName(itemstack), uniID);
-				if (player == null)
-					rollingStock.setInformation(((ItemRollingStock) itemstack.getItem()).getTrainType(), "", trainCreator, (itemstack.getItem()).getItemStackDisplayName(itemstack), uniID);
+				if(itemstack.hasTagCompound()) {
+					if (itemstack.getTagCompound().hasKey("theOwner")) {
+						rollingStock.setInformation(((ItemRollingStock) itemstack.getItem()).getTrainType(), itemstack.getTagCompound().getString("theOwner"), itemstack.getTagCompound().getString("theCreator"), (itemstack.getItem()).getItemStackDisplayName(itemstack), uniID);
+					} else if (player != null) {
+						rollingStock.setInformation(((ItemRollingStock) itemstack.getItem()).getTrainType(), player.getDisplayName().getUnformattedText(), itemstack.getTagCompound().getString("theCreator"), (itemstack.getItem()).getItemStackDisplayName(itemstack), uniID);
+					} else {
+						rollingStock.setInformation(((ItemRollingStock) itemstack.getItem()).getTrainType(), "", itemstack.getTagCompound().getString("theCreator"), (itemstack.getItem()).getItemStackDisplayName(itemstack), uniID);
+					}
+					if (itemstack.getTagCompound().hasKey("color")) {
+						rollingStock.setColor(itemstack.getTagCompound().getInteger("color"));
+					}
+					if (itemstack.getTagCompound().hasKey("puuid")) {
+						rollingStock.getEntityData().setString("puuid", itemstack.getTagCompound().getString("puuid"));
+					}
+				} else if (player != null) {
+					rollingStock.setInformation(((ItemRollingStock) itemstack.getItem()).getTrainType(), player.getDisplayName().getUnformattedText(), "Creative", (itemstack.getItem()).getItemStackDisplayName(itemstack), uniID);
+				} else {
+					rollingStock.setInformation(((ItemRollingStock) itemstack.getItem()).getTrainType(), "", "Creative", (itemstack.getItem()).getItemStackDisplayName(itemstack), uniID);
+				}
 
 				if (ConfigHandler.SHOW_POSSIBLE_COLORS && rollingStock.acceptedColors != null && rollingStock.acceptedColors.size() > 0) {
 					String concatColors = ": ";
@@ -408,8 +441,8 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 	}
 
 	@Override
-	public EntityMinecart placeCart(GameProfile owner, ItemStack cart, World world, int i, int j, int k) {
-		return placeCart((EntityPlayer) null, cart, world, i, j, k);
+	public EntityMinecart placeCart(GameProfile owner, ItemStack cart, World world, BlockPos pos) {
+		return placeCart(null, cart, world, pos.getX(),pos.getY(),pos.getZ());
 	}
 
 	@Override
@@ -417,9 +450,15 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 		return false;
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":trains/" + this.iconName);
+	}*/
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining){
+		return new ModelResourceLocation(new ResourceLocation(Info.modID.toLowerCase(), "trains/" + iconName),"inventory");
 	}
 }

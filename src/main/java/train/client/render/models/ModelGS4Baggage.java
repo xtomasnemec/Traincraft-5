@@ -9,10 +9,9 @@
 
 package train.client.render.models;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import tmt.ModelBase;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
@@ -422,7 +421,7 @@ public class ModelGS4Baggage extends ModelBase
 		}
 
 		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==2){
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/gs4_bogie_Red.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/GS4_bogie_Red.png"));
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/GS4_bogie.png"));
 		}

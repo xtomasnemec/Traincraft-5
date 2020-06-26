@@ -1,20 +1,18 @@
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
+import tmt.Tessellator;
 import train.common.library.Info;
 import train.common.tile.TileTCRail;
 
 public class ModelVeryLargeSlopeTCTrack extends ModelBase {
 	
-	private static IModelCustom modeltrack = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_slope_verylong.obj"));
-	private static IModelCustom modelVeryLargeSlopeWood = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "supports_wood_verylong.obj"));
-	private static IModelCustom modelVeryLargeSlopeBallast = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "supports_ballast_verylong.obj"));
+	private ModelRendererTurbo modeltrack = new ModelRendererTurbo(this).addObj("track_slope_verylong.obj");
+	private ModelRendererTurbo modelVeryLargeSlopeWood = new ModelRendererTurbo(this).addObj("supports_wood_verylong.obj");
+	private ModelRendererTurbo modelVeryLargeSlopeBallast = new ModelRendererTurbo(this).addObj("supports_ballast_verylong.obj");
 	
 	public ModelVeryLargeSlopeTCTrack() {
 
@@ -22,28 +20,22 @@ public class ModelVeryLargeSlopeTCTrack extends ModelBase {
 	
 	public void render(String type) {
 		if (type.equals("wood")) {
-			FMLClientHandler.instance().getClient().renderEngine
-					.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_slope.png"));
-			modelVeryLargeSlopeWood.renderAll();
-			FMLClientHandler.instance().getClient().renderEngine
-					.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
-			modeltrack.renderAll();
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_slope.png"));
+			modelVeryLargeSlopeWood.render();
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
+			modeltrack.render();
 		}
 		if (type.equals("gravel")) {
-			FMLClientHandler.instance().getClient().renderEngine
-					.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/blocks/gravel.png"));
-			modelVeryLargeSlopeBallast.renderAll();
-			FMLClientHandler.instance().getClient().renderEngine
-					.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
-			modeltrack.renderAll();
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/blocks/gravel.png"));
+			modelVeryLargeSlopeBallast.render();
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
+			modeltrack.render();
 		}
 		if (type.equals("ballast")) {
-			FMLClientHandler.instance().getClient().renderEngine
-					.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/blocks/ballast_test.png"));
-			modelVeryLargeSlopeBallast.renderAll();
-			FMLClientHandler.instance().getClient().renderEngine
-					.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
-			modeltrack.renderAll();
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/blocks/ballast_test.png"));
+			modelVeryLargeSlopeBallast.render();
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
+			modeltrack.render();
 		}
 	}
 	
@@ -51,16 +43,10 @@ public class ModelVeryLargeSlopeTCTrack extends ModelBase {
 
 		GL11.glColor4f(1, 1, 1, 1);
 		// GL11.glScalef(0.5f, 0.5f, 0.5f);
-		int facing = tcRail.getWorldObj().getBlockMetadata(tcRail.xCoord, tcRail.yCoord, tcRail.zCoord);
-		
-		if (facing == 3) {
-			GL11.glRotatef(-90, 0, 1, 0);
-		}
-		else if (facing == 1) {
-			GL11.glRotatef(90, 0, 1, 0);
-		}
-		else if (facing == 0) {
-			GL11.glRotatef(180, 0, 1, 0);
+		switch (tcRail.getFacing()){
+			case 0:{GL11.glRotatef(180, 0, 1, 0);break;}
+			case 1:{GL11.glRotatef(90, 0, 1, 0);break;}
+			case 3:{GL11.glRotatef(-90, 0, 1, 0);break;}
 		}
 		// GL11.glTranslatef(0.0f, 0.0f, -1.0f);
 		render(type);

@@ -1,9 +1,5 @@
 package train.client.gui;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -12,11 +8,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 import train.common.Traincraft;
 import train.common.api.Freight;
 import train.common.core.network.PacketSetTrainLockedToClient;
 import train.common.inventory.InventoryFreight;
 import train.common.library.Info;
+
+import java.util.List;
 
 public class GuiFreight extends GuiContainer {
 
@@ -57,9 +56,9 @@ public class GuiFreight extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		if (guibutton.id == 3) {
-			if (player != null && player.getCommandSenderName().toLowerCase().equals(freight.getTrainOwner().toLowerCase())) {
+			if (player != null && player.getName().toLowerCase().equals(freight.getTrainOwner().toLowerCase())) {
 				if ((!freight.getTrainLockedFromPacket())) {
-					AxisAlignedBB box = freight.boundingBox.expand(5, 5, 5);
+					AxisAlignedBB box = freight.getCollisionBoundingBox().expand(5, 5, 5);
 					List lis3 = freight.worldObj.getEntitiesWithinAABBExcludingEntity(freight, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (Object entity : lis3) {
@@ -74,7 +73,7 @@ public class GuiFreight extends GuiContainer {
 					this.initGui();
 				}
 				else {
-					AxisAlignedBB box = freight.boundingBox.expand(5, 5, 5);
+					AxisAlignedBB box = freight.getCollisionBoundingBox().expand(5, 5, 5);
 					List lis3 = freight.worldObj.getEntitiesWithinAABBExcludingEntity(freight, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (Object entity : lis3) {
@@ -131,8 +130,7 @@ public class GuiFreight extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		
-		fontRendererObj.drawString(freight.getCommandSenderName(), 10, 6, 0x404040);
+		fontRendererObj.drawString(freight.getName(), 10, 6, 0x404040);
 		fontRendererObj.drawString("Inventory", 8, (ySize - 96) + 2, 0x404040);
 		
 		GL11.glEnable(GL11.GL_LIGHTING);
@@ -145,6 +143,7 @@ public class GuiFreight extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int t, int g) {
+		fontRendererObj.drawStringWithShadow("UUID: " + freight.getPersistentUUID() + " - Entity UUID" + freight.getUniqueID().toString(),1,0,0xFFFFFF);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.guiPrefix + "container.png"));
 		int j = (width - xSize) / 2;

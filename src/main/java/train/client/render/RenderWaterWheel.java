@@ -9,7 +9,7 @@ public class RenderWaterWheel extends TileEntitySpecialRenderer {
 	private static final ModelWaterWheel modelWaterWheel = new ModelWaterWheel();
 
 	@Override
-	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick) {
+	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick, int destroyStage) {
 		modelWaterWheel.render((TileWaterWheel) tileEntity, x, y, z);
 	}
 }

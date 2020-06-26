@@ -6,6 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.slots.SlotDistil;
 import train.common.tile.TileEntityDistil;
@@ -38,8 +39,8 @@ public class ContainerDistil extends Container {
 	}
 
 	@Override
-	public void addCraftingToCrafters(ICrafting par1ICrafting) {
-		super.addCraftingToCrafters(par1ICrafting);
+	public void onCraftGuiOpened(ICrafting par1ICrafting) {
+		super.onCraftGuiOpened(par1ICrafting);
 		par1ICrafting.sendProgressBarUpdate(this, 0, distil.distilCookTime);
 		par1ICrafting.sendProgressBarUpdate(this, 1, distil.distilBurnTime);
 		par1ICrafting.sendProgressBarUpdate(this, 2, distil.currentItemBurnTime);

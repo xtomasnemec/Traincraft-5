@@ -1,18 +1,5 @@
 package train.client.gui;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,13 +8,26 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 import train.common.Traincraft;
 import train.common.api.AbstractTrains;
 import train.common.core.network.PacketSetJukeboxStreamingUrl;
 import train.common.core.network.PacketSetTrainLockedToClient;
 import train.common.entity.rollingStock.EntityJukeBoxCart;
 import train.common.library.Info;
+
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
 
 public class GuiJukebox extends GuiScreen {
 
@@ -174,7 +174,7 @@ public class GuiJukebox extends GuiScreen {
 	}
 
 	@Override
-	protected void keyTyped(char par1, int par2) {
+	protected void keyTyped(char par1, int par2) throws IOException {
 		streamTextBox.textboxKeyTyped(par1, par2);
 		if (par1 == 28) {
 			actionPerformed((GuiButton) buttonList.get(1));
@@ -188,7 +188,7 @@ public class GuiJukebox extends GuiScreen {
 	}
 
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3) {
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
 		streamTextBox.mouseClicked(par1, par2, par3);
 		super.mouseClicked(par1, par2, par3);
 	}
@@ -253,9 +253,9 @@ public class GuiJukebox extends GuiScreen {
 		}
 
 		if (button.id == 3) {
-			if (player != null && player instanceof EntityPlayer && player.getDisplayName().equals(((AbstractTrains) jukebox).getTrainOwner())) {
-				if ((!((AbstractTrains) jukebox).locked)) {
-					AxisAlignedBB box = jukebox.boundingBox.expand(5, 5, 5);
+			if (player instanceof EntityPlayer && player.getDisplayName().equals(((AbstractTrains) jukebox).getTrainOwner())) {
+				if ((! jukebox.locked)) {
+					AxisAlignedBB box = jukebox.getCollisionBoundingBox().expand(5, 5, 5);
 					List lis3 = jukebox.worldObj.getEntitiesWithinAABBExcludingEntity(jukebox, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (int j1 = 0; j1 < lis3.size(); j1++) {
@@ -265,12 +265,12 @@ public class GuiJukebox extends GuiScreen {
 							}
 						}
 					}
-					((AbstractTrains) jukebox).locked = true;
+					 jukebox.locked = true;
 					button.displayString = "Locked";
 					this.initGui();
 				}
 				else {
-					AxisAlignedBB box = jukebox.boundingBox.expand(5, 5, 5);
+					AxisAlignedBB box = jukebox.getCollisionBoundingBox().expand(5, 5, 5);
 					List lis3 = jukebox.worldObj.getEntitiesWithinAABBExcludingEntity(jukebox, box);
 					if (lis3 != null && lis3.size() > 0) {
 						for (int j1 = 0; j1 < lis3.size(); j1++) {
@@ -280,12 +280,12 @@ public class GuiJukebox extends GuiScreen {
 							}
 						}
 					}
-					((AbstractTrains) jukebox).locked = false;
+					 jukebox.locked = false;
 					button.displayString = "UnLocked";
 					this.initGui();
 				}
 			}
-			else if (player != null && player instanceof EntityPlayer) {
+			else if ( player instanceof EntityPlayer) {
 				player.addChatMessage(new ChatComponentText("You are not the owner"));
 			}
 		}

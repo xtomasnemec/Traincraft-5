@@ -10,20 +10,18 @@ package train.common.tile;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import train.common.api.LiquidManager;
 import train.common.core.util.Energy;
+import train.common.core.util.TraincraftUtil;
 
-public class TileGeneratorDiesel extends Energy implements IFluidHandler{
+public class TileGeneratorDiesel extends Energy implements IFluidHandler, ITickable {
 
     public boolean powered;
-    private ForgeDirection direction;
+    private EnumFacing direction;
     public FluidTank theTank;
 
     public int currentBurnTime;
@@ -33,8 +31,8 @@ public class TileGeneratorDiesel extends Energy implements IFluidHandler{
 
     public TileGeneratorDiesel(){
         super(2, "Diesel Generator", 320, 80);
-        super.setSides(new ForgeDirection[]{ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.UP, ForgeDirection.DOWN});
-        direction = ForgeDirection.getOrientation(this.blockMetadata);
+        super.setSides(new EnumFacing[]{EnumFacing.EAST, EnumFacing.WEST, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.UP, EnumFacing.DOWN});
+        direction = EnumFacing.getHorizontal(TraincraftUtil.getBlockMeta(worldObj, pos));
         this.theTank = LiquidManager.getInstance().new FilteredTank(30000, LiquidManager.dieselFilter(), 1);
     }
 
@@ -43,11 +41,11 @@ public class TileGeneratorDiesel extends Energy implements IFluidHandler{
     }
 
     public void setFacing(int facing){
-        direction = ForgeDirection.getOrientation(facing);
+        direction = EnumFacing.getHorizontal(facing);
     }
 
     @Override
-    public void updateEntity(){
+    public void update(){
         if(!worldObj.isRemote){
             if(slots[0] != null){
                 ItemStack result = LiquidManager.getInstance().processContainer(this, 0, this, slots[0]);
@@ -72,7 +70,7 @@ public class TileGeneratorDiesel extends Energy implements IFluidHandler{
             }
 
             if(this.energy.getEnergyStored() > 0){
-                pushEnergy(worldObj, this.xCoord, this.yCoord, this.zCoord, this.energy);
+                pushEnergy(worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.energy);
             }
         }
 
@@ -90,7 +88,7 @@ public class TileGeneratorDiesel extends Energy implements IFluidHandler{
         if(!forSyncing){
             this.powered = nbtTag.getBoolean("Powered");
         }
-        this.direction = ForgeDirection.values()[nbtTag.getInteger("direction")];
+        this.direction = EnumFacing.values()[nbtTag.getInteger("direction")];
         this.currentBurnTime = nbtTag.getInteger("BurnTime");
         this.theTank.readFromNBT(nbtTag);
     }
@@ -141,17 +139,17 @@ public class TileGeneratorDiesel extends Energy implements IFluidHandler{
     }
 
     @Override
-    public World getWorldObj(){
+    public World getWorld(){
         return this.worldObj;
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill){
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill){
         return theTank.fill(resource, doFill);
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain){
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain){
         if(resource == null || !resource.isFluidEqual(theTank.getFluid())){
             return null;
         }
@@ -159,22 +157,22 @@ public class TileGeneratorDiesel extends Energy implements IFluidHandler{
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain){
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain){
         return theTank.drain(maxDrain, doDrain);
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid){
+    public boolean canFill(EnumFacing from, Fluid fluid){
         return true;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid){
+    public boolean canDrain(EnumFacing from, Fluid fluid){
         return false;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from){
+    public FluidTankInfo[] getTankInfo(EnumFacing from){
         return new FluidTankInfo[]{theTank.getInfo()};
     }
 

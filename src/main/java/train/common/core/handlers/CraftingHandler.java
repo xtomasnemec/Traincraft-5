@@ -10,6 +10,7 @@ package train.common.core.handlers;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import train.common.items.ItemRollingStock;
 import train.common.library.AchievementIDs;
 
@@ -27,11 +28,10 @@ public class CraftingHandler
 		if ((event.crafting.getItem() instanceof ItemRollingStock)) {
 			if (!event.player.worldObj.isRemote) {
         if (FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
-					ItemRollingStock stock = (ItemRollingStock) event.crafting.getItem();
           //TraincraftSaveHandler.createFile(FMLCommonHandler.instance().getMinecraftServerInstance());
           //int readID = TraincraftSaveHandler.readInt(FMLCommonHandler.instance().getMinecraftServerInstance(), "numberOfTrains:");
           //int newID = stock.setNewUniqueID(event.crafting, event.player, readID);
-            stock.setNewUniqueID(event.crafting, event.player, -1);
+            event.crafting.setTagCompound(ItemRollingStock.setPersistentData(event.crafting, null, null,event.player).getTagCompound());
           //TraincraftSaveHandler.writeValue(FMLCommonHandler.instance().getMinecraftServerInstance(), "numberOfTrains:", "" + newID);
         }
       }

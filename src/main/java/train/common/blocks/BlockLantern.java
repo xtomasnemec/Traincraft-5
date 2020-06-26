@@ -1,23 +1,25 @@
 package train.common.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.common.Traincraft;
 import train.common.items.ItemWrench;
 import train.common.library.GuiIDs;
-import train.common.library.Info;
 import train.common.tile.TileLantern;
 
+import java.util.Random;
+
 public class BlockLantern extends Block {
-	private IIcon texture;
+	//private IIcon texture;
 
 	public BlockLantern() {
 		super(Material.rock);
@@ -28,12 +30,12 @@ public class BlockLantern extends Block {
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) {
+	public boolean hasTileEntity(IBlockState metadata) {
 		return true;
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isFullBlock() {
 		return false;
 	}
 
@@ -43,7 +45,7 @@ public class BlockLantern extends Block {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState metadata) {
 		return new TileLantern();
 	}
 
@@ -57,28 +59,28 @@ public class BlockLantern extends Block {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		double d0 = (double) ((float) par2 + 0.5F);
-		double d2 = (double) ((float) par4 + 0.5F);
+	public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {
+		double d0 = (double) ((float) pos.getX() + 0.5F);
+		double d2 = (double) ((float) pos.getZ() + 0.5F);
 		double d3 = 0.2199999988079071D;
 
-		par1World.spawnParticle("smoke", d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
-		par1World.spawnParticle("flame", d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
+		par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, pos.getY() + d3, d2, 0.0D, 0.0D, 0.0D);
+		par1World.spawnParticle(EnumParticleTypes.FLAME, d0, pos.getY() + d3, d2, 0.0D, 0.0D, 0.0D);
 
 	}
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(i, j, k);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing par6, float par7, float par8, float par9) {
+		TileEntity te = world.getTileEntity(pos);
 		if (player.isSneaking()) {
 			return false;
 		}
 		if(player!=null && player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemWrench)
-		if (te != null && te instanceof TileLantern) {
-			player.openGui(Traincraft.instance, GuiIDs.LANTERN, world, i, j, k);
+		if (te instanceof TileLantern) {
+			player.openGui(Traincraft.instance, GuiIDs.LANTERN, world, pos.getX(),pos.getY(),pos.getZ());
 		}
 		return true;
 	}
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":lantern");
@@ -87,5 +89,5 @@ public class BlockLantern extends Block {
 	@Override
 	public IIcon getIcon(int i, int j) {
 		return texture;
-	}
+	}*/
 }

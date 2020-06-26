@@ -1,37 +1,36 @@
 package train.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
+import org.lwjgl.opengl.GL11;
 import tmt.Tessellator;
 import train.client.render.models.ModelSwitchStandOn;
 import train.common.library.Info;
 
-public class ItemRenderSwitchStand implements IItemRenderer {
+public class ItemRenderSwitchStand implements ICustomModelLoader {
 	private static final ModelSwitchStandOn modeSwitch = new ModelSwitchStandOn();
 	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
 
 	public ItemRenderSwitchStand() {
 	}
 
+	private static ResourceLocation uri = new ResourceLocation("tc","ItemRenderSwitchStand");
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
+	public boolean accepts(ResourceLocation modelLocation) {
+		return modelLocation==uri;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		switch (type) {
-		case ENTITY: {
+	public IModel loadModel(ResourceLocation resource) {
+		if(resource!=uri){return null;}
+		//switch (type) {
+		//case ENTITY: {
 			renderSwitch(0f, 0f, 0f, 1f);
-			return;
+		//todo: theoretically if we just render it rather than returning a model,
+		// it will render and we dont need to return a model
+		/*	return;
 		}
 		case EQUIPPED: {
 			renderSwitch(0.2f, 1f, 1f, 1f);
@@ -47,7 +46,8 @@ public class ItemRenderSwitchStand implements IItemRenderer {
 		}
 		default:
 			break;
-		}
+		}*/
+		return null;
 	}
 
 	private void renderSwitch(float x, float y, float z, float scale) {
@@ -65,5 +65,10 @@ public class ItemRenderSwitchStand implements IItemRenderer {
 
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager) {
+
 	}
 }

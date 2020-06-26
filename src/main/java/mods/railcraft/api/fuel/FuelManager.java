@@ -8,14 +8,14 @@
 
 package mods.railcraft.api.fuel;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.logging.log4j.Level;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import org.apache.logging.log4j.Level;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *

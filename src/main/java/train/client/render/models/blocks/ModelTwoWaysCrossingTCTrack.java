@@ -1,30 +1,29 @@
 package train.client.render.models.blocks;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import tmt.ModelBase;
+import tmt.ModelRendererTurbo;
+import tmt.Tessellator;
 import train.common.library.Info;
 
 @SideOnly(Side.CLIENT)
 public class ModelTwoWaysCrossingTCTrack extends ModelBase {
-	private static IModelCustom modelTwoWaysCrossing= AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "track_x.obj"));
+	private ModelRendererTurbo modelTwoWaysCrossing= new ModelRendererTurbo(this).addObj("track_x.obj");
 
 	public ModelTwoWaysCrossingTCTrack() {
 	}
 
 	public void render() {
-		modelTwoWaysCrossing.renderAll();
+		modelTwoWaysCrossing.render();
 	}
 
 	public void render(double x, double y, double z) {
 
 		// Bind the texture, so that OpenGL properly textures our block.
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
+		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
 		GL11.glColor4f(1, 1, 1, 1);
 		//GL11.glScalef(0.5f, 0.5f, 0.5f);
 
