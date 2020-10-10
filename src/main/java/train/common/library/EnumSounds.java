@@ -1,5 +1,6 @@
 package train.common.library;
 
+import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH120Commute;
 import train.common.entity.rollingStock.*;
 
 public enum EnumSounds {
@@ -85,7 +86,42 @@ public enum EnumSounds {
 			false),
 	locoCD151(EntityLocoElectricCD151.class,"mg_horn", 1F, "mg_run", 0.8F, 10, "mg_idle", 0.6F, 50, false),
 	locoLSSP7(EntityLocoSteamLSSP7.class, "american_steam_horn", 0.8F, "steam_run", 0.2F, 20, "steam_run", 0.2F, 20, true),
-	E103(EntityLocoElectricE103.class, "mg_horn", 1F, "mg_run", 0.6F, 8, "mg_idle", 0.4F, 50, false);
+	E103(EntityLocoElectricE103.class, "mg_horn", 1F, "mg_run", 0.6F, 8, "mg_idle", 0.4F, 50, false),
+	driverlessMetro(PCH120Commute.class, "nathan_p2", 1F, "mg_run", 0.6F, 8, "mg_idle", 0.4F, 50, false),
+	alcoS2(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselAlcoS2.class, "leslie_a200", 1F, "539t_notch8", 0.50F, 40, "539t_idle", 0.65F, 40, true),
+	SW1(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1.class, "leslie_a200", 0.9F, "567_notch8", 0.45F, 40, "567_idle", 0.75F, 40, false),
+	H1044(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselH1044.class, "wabco_e2", 10F, "38d_6_notch8", 0.65F, 40, "38d_6_idle", 0.65F, 40, false),
+	Thanos(com.jcirmodelsquad.tcjcir.vehicles.locomotives.Thanos.class, "thanos_horn", 5, "thanos_run", 0.65F, 60, "thanos_idle", 0.65F, 60, false),
+	HighrailTruck(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHighrailTruck.class, "truck_horn", 0.8F, "boxcab_notch8", 0.65F, 15, "boxcab_idle", 0.65F, 25, true),
+	U23B(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselU23B.class, "leslie_s3l", 2.5F, "7fdl-12_notch8", 0.65F, 40, "7fdl-12_idle", 0.65F, 50, true),
+	SW1500(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1500.class, "nathan_p3", 0.65F, "16-645e_notch8", 0.65F, 10, "16-645e_idle", 0.8F, 3, true),
+	SD45dash2(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2.class, "leslie_rs5t", 2.5F, "645e3_notch8", 0.65F, 10, "645e3_idle", 0.65F, 3, true),
+	SD40dash2(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40dash2.class, "leslie_rs3k", 2.5F, "16-645e_notch8", 0.65F, 10, "16-645e_idle", 0.8F, 5, true),
+	CF7(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7.class, "nathan_k3la", 0.65F, "567_notch8", 0.65F, 10, "567_idle", 0.8F, 3, true),
+	SD9(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD9.class, "nathan_k3la", 2.5F, "567_notch8", 0.45F, 10, "567_idle", 0.75F, 3, true),
+	SF30C(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSF30C.class, "leslie_s3", 2F, "fdl16_notch8", 0.5F, 10, "fdl16_idle", 0.5F, 3, true),
+	SDL39(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDL39.class, "nathan_p3", 2F, "645e3_notch8", 0.65F, 10, "645e3_idle", 0.65F, 3, true),
+	geGenesis(com.jcirmodelsquad.tcjcir.vehicles.locomotives.GeGenesis.class, "nathan_k5La", 2.5F, "7fdl-12_notch8", 0.65F, 40, "7fdl-12_idle", 0.65F, 50, true),
+	F7A(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF7A.class, "leslie_a200", 1F, "567_notch8", 0.45F, 15, "567_idle", 0.75F, 3, true),
+	F7B(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF7B.class, "leslie_a200", 1F, "567_notch8", 0.45F, 15, "567_idle", 0.75F, 3, true),
+	ES44(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselES44.class, "nathan_k5hll", 1F, "gevo12_notch8", 0.65F, 20, "gevo12_idle", 0.75F, 50, true),
+	Boxcab23Ton(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselBoxcab23Ton.class, "wabco_e2", 10F, "boxcab_notch8", 0.5F, 15, "boxcab_idle", 0.5F, 25, false),
+	testControlCar(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.TestControlCar.class, "nathan_p2", 1F, "mg_run", 0.6F, 8, "mg_idle", 0.4F, 50, false),
+	PCH100H(com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH100H.class, "nathan_p2", 1F, "pch100h_notch8", 0.6F, 8, "pch100h_idle", 0.4F, 50, false),
+	LU96Stock(com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricLUengine.class, "lu_whistle", 1F, "mg_run", 0.6F, 8, "mg_idle", 0.4F, 50, false),
+	GP13(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP13.class, "nathan_p6", 0.8F, "chme3_run", 0.65F, 35, "chme3_idle", 0.65F, 40, false),
+	FOLM1B(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselFOLM1B.class, "nathan_p01235", 0.0F,"38d_6_notch8", 0.65F, 40, "38d_6_idle", 0.65F, 40, false),
+	GP30(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP30.class, "nathan_p5", 0.8F, "567_notch8", 0.65F, 35, "567_idle", 0.65F, 40, false),
+	VBShay(com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamVBShay.class, "shay_horn", 0.8F, "steam_run", 0.2F, 20, "steam_run", 0.2F, 20, true),
+	Payload(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BombCart.class, "", 0.8F, "bombcart_run", 1F, 60, "", 0.2F, 20, false),
+	SD70M(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD70Mac.class, "nathan_k5la_4", 0.8F, "710G3B_notch8", 0.5F, 40, "710G3B_idle", 0.5F, 20, false),
+	C424(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC424.class, "leslie_s3", 1F, "251B16_notch8", 0.5F, 20, "251B16_idle", 0.5F, 20, false),
+	TGVmobile(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselTGVmobile.class, "mg_horn", 1F, "mg_run", 0.9F, 8, "mg_idle", 0.7F, 50, false),
+	Hustler(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, "wabco3bell", 1F, "ml8_notch8", 0.9F, 8, "ml8_idle", 0.7F, 50, false),
+	F40PH(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class, "nathan_k5la_5", 1F, "635E3B_notch8", 0.9F, 8, "635E3B_idle", 0.7F, 50, false),
+	GP7u(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class, "leslie_s3", 1F, "567_notch8", 0.9F, 8, "567_idle", 0.7F, 50, false),
+	Class345(com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricClass345.class, "br_horn", 1F, "mg_run", 0.9F, 8, "mg_idle", 0.7F, 50, false),
+	;
 
 	private Class entityClass;
 	private String horn;

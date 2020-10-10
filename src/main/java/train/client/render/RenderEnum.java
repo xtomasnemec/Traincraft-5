@@ -1,5 +1,9 @@
 package train.client.render;
 
+import com.jcirmodelsquad.tcjcir.models.trains.*;
+import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH120Commute;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PCH120Coach;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.TestControlCar;
 import tmt.ModelBase;
 import train.client.render.models.*;
 import train.common.api.AbstractTrains;
@@ -66,15 +70,15 @@ public enum RenderEnum {
 	}, "", null, 0, true),
 
 	/** Freight */
-	freightCartRed(EntityFreightCart2.class, new ModelFreightCart2(), "freightcart2", false, new float[] { 0.0F, -0.32F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
+	freightCartRed(EntityFreightCart2.class, new ModelFreightCart2(), "freightcart2_", true, new float[] { 0.0F, -0.32F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	freightCartYellow(EntityFreightCart.class, new ModelFreightCart2(), "freightcart", false, new float[] { 0.0F, -0.32F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	freightWood(EntityFreightWood.class, new ModelWood(), "wood_Full", false, new float[] { 0.0F, -0.42F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
-	freightHopper(EntityFreightGrain.class, new ModelGrain(), "hopper", false, new float[] { 0.0F, -0.42F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
-	freightOpenWagon(EntityFreightOpenWagon.class, new ModelOpenWagon(), "openwagon", false, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
+	freightHopper(EntityFreightGrain.class, new ModelGrain(), "hopper_", true, new float[] { 0.0F, -0.42F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
+	freightOpenWagon(EntityFreightOpenWagon.class, new ModelOpenWagon(), "openwagon_", true, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	//passenger4(EntityPassenger4.class, new ModelPassenger4(), "passenger4",false,new float[] {0.0F, -0.32F, 0.0F},null,null,"",0,null,"",null,0),//apparently has been removed
 	freightHopperUS(EntityFreightHopperUS.class, new ModelFreightHopper(), "freightHopperUS_", true,
 			new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
-	flatCartWoodUS(EntityFlatCartWoodUS.class, new ModelFlatCarWoodUS(), "flatCartWoodUS", false, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
+	flatCartWoodUS(EntityFlatCartWoodUS.class, new ModelFlatCarWoodUS(), "flatCartWoodUS_", true, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	freightCartUS(EntityFreightCartUS.class, new ModelFreightCartUS(), "freightCartUS_", true, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	freightBoxCartUS(EntityBoxCartUS.class, new ModelBoxCartUS(), "boxCartUS_", true, new float[] { 0.0F, -0.45F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	freightBoxCartPRR(EntityBoxCartPRR.class, new ModelPRRX31Wagon(), "PRR_X31a", false, new float[] { 0.0F, -0.38F, 0.0F }, new float[]{0,180,180}, null, "", 0, null, "", null, 0, false),
@@ -90,9 +94,9 @@ public enum RenderEnum {
 	flatCar_DB(EntityFlatCar_DB.class, new ModelFlatCar_DB(), "flatCar_DB_", true, new float[] { 0.0F, -0.44F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	flatCarLogs_DB(EntityFlatCarLogs_DB.class, new ModelFlatCarLogs_DB(), "flatCarLogs_DB_", true, new float[] { 0.0F, -0.44F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	freightGondola_DB(EntityFreightGondola_DB.class, new ModelFreightGondola_DB(), "freightGondola_DB_", true, new float[] { 0.0F, -0.44F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
-	freightCenterBeam_Empty(EntityFreightCenterbeam_Empty.class, new ModelFreightCenterBeam_Empty(), "freight_centerbeam_empty", false, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
-	freightCenterBeam_Wood1(EntityFreightCenterbeam_Wood_1.class, new ModelFreightCenterBeam_Wood_1(), "freight_centerbeam_wood_1", false, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
-	freightCenterBeam_Wood2(EntityFreightCenterbeam_Wood_2.class, new ModelFreightCenterBeam_Wood_2(), "freight_centerbeam_wood_2", false, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
+	freightCenterBeam_Empty(EntityFreightCenterbeam_Empty.class, new ModelFreightCenterBeam_Empty(), "freight_centerbeam_empty_", true, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
+	freightCenterBeam_Wood1(EntityFreightCenterbeam_Wood_1.class, new ModelFreightCenterBeam_Wood_1(), "freight_centerbeam_wood_1_", true, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
+	freightCenterBeam_Wood2(EntityFreightCenterbeam_Wood_2.class, new ModelFreightCenterBeam_Wood_2(), "freight_centerbeam_wood_2_", true, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
 	//freightWellcar(EntityFreightWellcar.class, new ModelFreightWellcar(), "freightWellcar_", true, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
 	freightWellcar(EntityFreightWellcar.class, new ModelWellcar(), "wellcar_", true, new float[] { 0.0F, 0.0F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	freightTrailer(EntityFreightTrailer.class, new ModelFreightTrailer(), "freightTrailer_", true, new float[] { 0.0F, -0.44F, 0.0F }, new float[] { 0F, 90F, 0F }, null, "", 0, null, "", null, 0, false),
@@ -108,7 +112,7 @@ public enum RenderEnum {
 	freightGermanPost(EntityFreightGermanPost.class, new ModelGermanPost(), "german_post_", true, new float[] { -1F, 0.15F, -0.075F }, new float[] { 0F, 180F, 180F }, new float[]{0.9f,1f,0.9f}, "", 0, null, "", null, 0, false),
 	freightDepressedFlatbed(EntityFreightDepressedFlatbed.class, new ModelDepressedFlatbed(), "depressed_flatbed_", true, new float[] { -0.1F, 0.15F, -0.075F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	freightCartL(EntityFreightCartL.class, new ModelFreightCarL(), "freightCarL_", true, new float[] { 0F, 0.2F, 0.825F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	freightKclassrailBox(EntityFreightKClassRailBox.class, new ModelKClassRailBox(), "KClassRailBox_", true, new float[] { -1.9F, -0.4F, 1.05F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	freightKclassrailBox(EntityFreightKClassRailBox.class, new ModelKClassRailBox(), "KClassRailBox_", true, new float[] { -1.5F, 0.1F, 0.125F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	freightShortCoveredHopper(EntityFreightShortCoveredHopper.class, new ModelShortCoveredHopper(), "ShortCoveredHopper_", true, new float[] { -2.2F, -0.25F, 0.7F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	freightLongCoveredHopper(EntityFreightLongCoveredHopper.class, new ModelLongCoveredHopper(), "LongCoveredHopper_", true, new float[] { -1F, -0.25F, 0.65F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	freightHeavyweightBoxcar(EntityFreightHeavyweightBaggage.class, new ModelHeavyweightBaggage(), "heavyweightBoxcar_", true, new float[] { 0F, 0.1F, -0.05F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
@@ -117,7 +121,7 @@ public enum RenderEnum {
 	/** Tanks **/
 	tankWagon_DB(EntityTankWagon_DB.class, new ModelTankWagon_DB(), "tankWagon_DB_", true, new float[] { 0.0F, -0.44F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	tankWagonUS(EntityTankWagonUS.class, new ModelTankWagonUS(), "tankWagonUS_", true, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
-	tankWagonGrey(EntityTankWagon2.class, new ModelTankWagon2(), "tankwagon2", false, new float[] { 0.0F, -0.32F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
+	tankWagonGrey(EntityTankWagon2.class, new ModelTankWagon2(), "tankwagon2_", true, new float[] { 0.0F, -0.32F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	tankCartLava(EntityTankLava.class, new ModelWatertransp(), "lavacar_", true, new float[] { 0.0F, -0.44F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	tankWagonYellow(EntityTankWagon.class, new ModelTankWagon(), "tankwagon", false, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	tankWagonThreeDome(EntityTankWagonThreeDome.class, new ModelTankWagonThreeDome(), "tanker_three_dome_", true, new float[] { 0.0F, 0.17F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
@@ -248,7 +252,7 @@ public enum RenderEnum {
 	locoIC4MG(EntityLocoDieselIC4_DSB_MG.class, new ModelLocoDieselIC4_DSB_MG(), "IC4_DSB_MG_", true, new float[] { -0.8F, -0.44F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
 	locoBR185(EntityLocoElectricBR185.class, new BR185_EngineModel(), "BR185_Engine_", true, new float[] { -2.0F, 0.1F, 0.0F },  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	locoClass85(EntityLocoElectricClass85.class, new ModelClass85(), "Class85", false, new float[] { -3.0F, 0.65F, 0.0F },  new float[] { 0F, 90F, 180F }, null, "", 0, null, "", null, 0, false),
-	locoBP4(EntityLocoElectricBP4.class, new ModelBP4(), "bp4", false, new float[] { -3.2F, 0F, 0.575F }, new float[] { 0F, 180F, 180F }, new float[]{1f,1.1f,0.9f}, "", 0, null, "", null, 0, false),
+	locoBP4(EntityLocoElectricBP4.class, new ModelBP4(), "bp4_", true, new float[] { -2.2F, 0.15F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	locoDeltic(EntityLocoDieselDeltic.class, new ModelDeltic(), "Deltic", false, new float[] { -2.25F, 0.8F, 0.0F },  new float[] { 0F, 90F, 180F }, null, "largesmoke", 1, new ArrayList<double[]>() {
 		{
 			add(new double[]{2.3D, 1.6D, 0D});
@@ -620,7 +624,187 @@ public enum RenderEnum {
 		{
 			add(new double[] { 3.15D, 1.6D, 0.0D });
 		}
-	}, "", null, 0, false);
+	}, "", null, 0, false),
+
+	/** JCIR-TC **/
+	alcoS2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselAlcoS2.class,  new ModelAlcoS2(), "alcos2_", true,new float[] {-1F, -0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.7D, 1.3D, -0.18D});
+		}
+	}, "", null, 0, false),
+	geometryCar(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.ExperimentalGeometryCar.class,new ModelGeometryCar(), "geometrycar_", true, new float[] {0F, 0F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	pch120(PCH120Commute.class, new ModelPCH120Commute(), "pch120commute_", true,new float[] {-1.3F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	pch120Coach(PCH120Coach.class, new ModelPCH120Car(), "pch120car_", true,new float[] {0F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	amfleet(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Amfleet.class, new ModelAmfleet(),"amfleet_", true, new float[]{0F, -0.4F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	ribbedHopper(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.RibbedHopper.class, new ModelRibbedHopper(),"ribbed_hopper_", true, new float[]{0F, -0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	SW1( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1.class,  new ModelSW1(), "sw1_", true,new float[] {-1.1F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 2,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.85D, 1.3D, 0.0D});
+		}
+	}, "", null, 0, false),
+	H1044( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselH1044.class,  new ModelH1044(), "h10-44_", true,new float[] {-1.1F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.9D, 1.45D, -0.16D});
+			add(new double[]{1.9D, 1.45D, 0.16D});
+		}
+	}, "", null, 0, false),
+	HighrailTruck( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHighrailTruck.class,  new ModelHighrailTruck(), "highrail_", true,new float[] {-1.5F, 0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 1,  new ArrayList<double[]>() {
+		{
+			add(new double[]{-0.3D, -0.4D, 0.2D});
+		}
+	}, "", null, 0, false),
+	Thanos(com.jcirmodelsquad.tcjcir.vehicles.locomotives.Thanos.class, new ModelLocoMinetrain(), "thanos", false,new float[] {-0.8F, -0.47F, 0.0F},  new float[] { 0F, 0F, 0F }, null, "", 0, null, "", null, 0, false),
+	U23B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselU23B.class,  new ModelU23b(), "u23b_", true,new float[] {-1.7F, -0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.85D, 1.5D, 0.0D});
+		}
+	}, "", null, 0, false),
+	SW1500( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1500.class,  new ModelSW1500(), "sw1500_", true,new float[] {-1.2F, -0.01F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 1,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.05D, 1.5D, 0.0D});
+
+			add(new double[]{1.8D, 1.5D, 0.0D});
+		}
+	}, "", null, 0, false),
+	SD45dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2.class,  new ModelSD45dash2(), "sd45dash2_", true,new float[] {-2.5F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{3.0D, 1.5D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	SD40dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40dash2.class,  new ModelSD40dash2(), "sd40dash2_", true,new float[] {-2.5F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.85D, 1.5D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	bawx40highcube(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.bawx40highcube.class, new Model40highcube(),"40highcube_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	FRED(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.FRED.class, new ModelFRED(),"fred", false, new float[]{0F, 0.05F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	CF7( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7.class,  new ModelCF7(), "cf7_", true,new float[] {-1.5F, -0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.6D, 1.4D, 0.0D});
+			add(new double[]{1.1D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	geGenesis(com.jcirmodelsquad.tcjcir.vehicles.locomotives.GeGenesis.class, new ModelGe_Genesis(), "genesis_", true, new float[] {-2.7F, -0.33F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke",  5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.8D, 1.3D, 0D});
+
+		}
+	}, "", null, 0, false),
+	SD9( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD9.class,  new ModelSD9(), "SD9_", true,new float[] {-1.6F, -0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.8D, 1.4D, 0.0D});
+			add(new double[]{1.6D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	WoodchipHopper(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.WoodchipHopper.class, new ModelWoodchipHopper(),"woodchiphopper_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	OreJenny(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.OreJenny.class, new ModelOreJenny(),"orejenny_", true, new float[]{0F, 0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	SF30C( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSF30C.class,  new ModelSF30C(), "SF30C", false,new float[] {-2.5F, -0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.75D, 1.5D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	SDL39( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDL39.class,  new ModelSDL39(), "SDL39_", true,new float[] {-1.6F, -0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.5D, 1.5D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	F7A( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF7A.class,  new ModelF7A(), "f7a_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F },  new float[] { 1F, 1.1F, 1F }, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.1D, 1.4D, 0.0D});
+			add(new double[]{0.6D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	F7B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF7B.class,  new ModelF7B(), "f7b_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F },  new float[] { 1F, 1.1F, 1F }, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.8D, 1.4D, 0.0D});
+			add(new double[]{0.9D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	ES44( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselES44.class,  new ModelES44(), "es44_", true,new float[] {-2.3F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.1D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	//HuskyStackWellcar(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.HuskyStackWellcar.class, new com.jcirmodelsquad.tcjcir.models.trainsModelHuskyStackWellcar(), "huskystack_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	BombCart(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BombCart.class, new ModelBombCart(), "payload_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	Boxcab23Ton( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselBoxcab23Ton.class,  new ModelBoxcab23Ton(), "boxcab_", true,new float[] {-0.75F, 0.2F, 0F},  new float[] { 0F, 0F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{ //note: use {-0.5F, 0.2F, 0F} and -1 for main hitbox and bogie position if the "fliparound" error is fixed, knowing eternal, not likely. sorry about extra thicc hitboxes -bid
+			add(new double[]{0.6D, 1.2D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	testControlCar(TestControlCar.class, new ModelPassengerHighSpeedCarZeroED(), "passengerHighSpeedCarZeroED_", true, new float[] { 0.0F, -0.47F, 0.0F }, null, null, "", 0, null, "", null, 0, false),
+	pch100(com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH100H.class, new ModelPCH100H(), "pch100h_", true, new float[]{-3.2F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	pch100coach(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PCH100HCoach.class, new ModelPCH100HCoach(), "pch100hcoach_", true, new float[]{-2F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	LUengine(com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricLUengine.class, new com.jcirmodelsquad.tcjcir.models.trains.ModelLUengine(), "lu_engine", false,new float[] {-1.0F, 0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	LUpassenger(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.LUpassenger.class, new com.jcirmodelsquad.tcjcir.models.trains.ModelLUpassenger(), "lu_passenger",false,new float[] {0F, 0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	GP13(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP13.class, new com.jcirmodelsquad.tcjcir.models.trains.ModelGP13(), "gp13_", true, new float[] { -0.8F, -0.47F, 0.0F }, new float[] { 0F, 180F, 0F }, null, "smoke", 4, new ArrayList<double[]>() {
+		{
+			add(new double[] { -0.2D, 1.2D, 0.0D });
+			add(new double[] { 0.45D, 1.2D, 0.0D });
+		}
+	}, "", null, 0, false),
+	FOLM1B(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselFOLM1B.class, new com.jcirmodelsquad.tcjcir.models.trains.ModelFOLM1B(), "FOL_M1b_", true, new float[] { -2.2F, 0.05F, 0.F },  new float[] { 0F, 180F, 180F }, null, "smoke", 3, new ArrayList<double[]>() {
+		{
+			add(new double[]{1.6D, 1.45D, 0.0D});
+		}
+	}, "", null, 0, false),
+	GP30( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP30.class,  new ModelGP30(), "gp30_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.9D, 1.4D, 0.0D});
+		}
+	}, "", null, 0, false),
+	VBShay(com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamVBShay.class, new com.jcirmodelsquad.tcjcir.models.trains.ModelVBShay2(), "vbshay2_", true, new float[] { -0.4F, -1.15F, -0.0F }, new float[] { 0F, 0F, 0F }, null, "largesmoke", 20, new ArrayList<double[]>() {
+		{
+			add(new double[] { 0.6D, 1.9D, -0.1D });
+		}
+	}, "explode", new ArrayList<double[]>() {
+		{
+			add(new double[] { 0.6D, -0.4D, 0.8D });
+			add(new double[] { 0.3D, 2.3D, 0.0D });
+		}
+	}, 2, true),
+	aipkitExplorer(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer.class, new ModelAipkitExplorer(), "aipkit_explorer", false, new float[]{0F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	MillGondola(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MillGondola.class, new ModelMillGondola(),"MillGondola_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	Class345(com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricClass345.class, new ModelClass345(), "class345", false,new float[] {-1.0F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	SD70Mac( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD70Mac.class,  new ModelSD70Mac(), "sd70mac_", true,new float[] {-2.3F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+
+		{
+			add(new double[]{2.35D, 1.5D, 0.0D});
+		}
+	}, "", null, 0, false),
+	Class345Coach( com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Class345Coach.class, new ModelClass345Coach(),"class345coach", false, new float[] {0F, 0F, 0F},  new float[] { 0F, 180F, 180F },null, "", 0, null, "", null, 0, false),
+	C424( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC424.class,  new ModelC424(), "c424_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "largesmoke", 5,  new ArrayList<double[]>() {
+
+		{
+			add(new double[]{1D, 1.7D, 0.0D});
+		}
+	}, "", null, 0, false),
+	amfleet2(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Amfleet2.class, new ModelAmfleet2(),"amfleet2_", true, new float[]{0F, -0.4F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	TGVmobile( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselTGVmobile.class,  new ModelTGVMobile(), "tgvmobile_Orange", false,new float[] {-1.5F, 0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	Hustler(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, new ModelHustler(), "hustler", false, new float[]{-1F, 0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	F40PH( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class,  new ModelF40PH(), "f40ph_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.9D, 1.4D, 0.0D});
+		}
+	}, "", null, 0, false),
+	GP7u( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class,  new ModelGP7u(), "gp7u_", true,new float[] {-1.5F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.45D, 1.45D, 0.0D});
+			add(new double[]{1.25D, 1.45D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	;
 
 	private Class<? extends AbstractTrains> entityClass;
 	private ModelBase model;
