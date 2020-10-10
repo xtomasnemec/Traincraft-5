@@ -83,11 +83,8 @@ public enum AchievementIDs {
 			ItemIDs.minecartLocoLSSP7.item}),
 	gevo(new Item[]{ItemIDs.minecartES44.item}),
 	switchin(new Item[]{ItemIDs.minecartSW1.item, ItemIDs.minecartSW1500.item, ItemIDs.minecartAlcoS2.item, ItemIDs.minecartBoxcab23Ton.item,
-	ItemIDs.minecartH1044.item});
+	ItemIDs.minecartH1044.item}), powerful(new Item[]{ItemIDs.minecartLocoDD35A.item});
 
-	/*remind me once some big thing like the U50 is added to add this:
-	* powerful(new Item[]{ItemIDs.minecartU50.item})
-	* */
 	public Achievement	achievement;
 	protected Item[]	items;
 	
