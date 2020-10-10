@@ -68,6 +68,12 @@ public class AchievementHandler {
 		AchievementIDs.electMotor.achievement = achievement("electMotor", -10, 8, ItemIDs.electmotor.item, AchievementIDs.electronicCircuit.achievement);
 		AchievementIDs.tram.achievement = achievement("tram", -12, 10, ItemIDs.minecartTramWood.item, AchievementIDs.electMotor.achievement);
 		AchievementIDs.fast.achievement = achievement("fast", -8, 10, ItemIDs.minecartVL10.item, AchievementIDs.electMotor.achievement);
+		AchievementIDs.cf7.achievement = achievement("cf7", -7, 5, ItemIDs.minecartCF7.item, AchievementIDs.dieselEngine.achievement).setSpecial();
+		AchievementIDs.thanos.achievement = achievement("thanos", 10, 1, ItemIDs.minecartThanos.item, AchievementIDs.assemblyTable.achievement).setSpecial();
+		AchievementIDs.sd9.achievement = achievement("sd9", -7, 6, ItemIDs.minecartSD9.item, AchievementIDs.dieselEngine.achievement);
+		AchievementIDs.powerful.achievement = achievement("powerful", -5, 7, ItemIDs.minecartLocoDD35A.item, AchievementIDs.dieselEngine.achievement);
+		AchievementIDs.gevo.achievement = achievement("gevo", -7, 7, ItemIDs.minecartES44.item, AchievementIDs.dieselEngine.achievement);
+		AchievementIDs.switchin.achievement = achievement("switchin", -5, 6, ItemIDs.minecartSW1.item, AchievementIDs.dieselEngine.achievement);
 
 		AchievementIDs.engineer.achievement = achievement("engineer", -2, -2, ItemIDs.overalls.item, null);
 		//new achivements by hariesh
@@ -111,7 +117,7 @@ public class AchievementHandler {
 				AchievementIDs.caboose.achievement, AchievementIDs.mtg.achievement,
 				AchievementIDs.crossrail.achievement, AchievementIDs.heavySteam.achievement,
 				AchievementIDs.jukebox.achievement, AchievementIDs.cf7.achievement, AchievementIDs.thanos.achievement,
-				AchievementIDs.sd9.achievement, AchievementIDs.geared.achievement, /*AchievementIDs.powerful.achievement,*/
+				AchievementIDs.sd9.achievement, AchievementIDs.geared.achievement, AchievementIDs.powerful.achievement,
 				AchievementIDs.gevo.achievement, AchievementIDs.switchin.achievement};
 
 		tmPage = new AchievementPage("TrainCraft", ach);
