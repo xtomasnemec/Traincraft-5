@@ -25,4 +25,6 @@ public class GuiIDs {
 	public static final int JUKEBOX = 102;
 	public static final int MTC_INFO = 103;
 	public static final int SPEED_TRANSMITTER = 104;
+	public static final int FORTY_FOOT_CONTAINER = 105;
+	public static final int CONTROL_CAR = 106;
 }

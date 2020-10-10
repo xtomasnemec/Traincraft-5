@@ -2,6 +2,9 @@ package train.common.api;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jcirmodelsquad.tcjcir.vehicles.locomotives.GeGenesis;
+import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH100H;
+import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH120Commute;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -30,6 +33,9 @@ import train.common.core.handlers.ConfigHandler;
 import train.common.core.network.PacketKeyPress;
 import train.common.core.network.PacketParkingBrake;
 import train.common.core.network.PacketSlotsFilled;
+import train.common.entity.rollingStock.*;
+import train.common.items.ItemATOCard;
+import train.common.items.ItemWirelessTransmitter;
 import train.common.library.EnumSounds;
 import train.common.library.Info;
 import train.common.mtc.LineWaypoint;
@@ -93,6 +99,10 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     public boolean isConnected = false;
     public TileEntity[] blocksToCheck;
     public boolean stationStop = false;
+    public String connectingUUID = "";
+    public boolean enforceSpeedLimits = true;
+    public boolean isConnecting = false;
+
     /**
      * state of the loco
      */
@@ -124,6 +134,11 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
      * TrainsOnClick
      */
     public boolean canBePulled = false;
+    //ETI Type Beat type beat.
+    public String operatorID = ""; //Example: PR for PeachRail, or TXCN for Texas Central
+    public String trainName = ""; //May not be used very often, but just in case, include it.
+    public String trainNumber = "";
+    public ArrayList<String> stations = new ArrayList<String>();
 
 
     public Locomotive(World world) {
@@ -1533,6 +1548,120 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         this.serverUUID = "";
         isConnected = false;
     }
+    public void remoteControlFromPacket(int key ) {
+        System.out.println("glrlr");
+        switch (key) {
+            case 1: {
+                double rotation = this.serverRealRotation;
+                if (rotation < 90.0 && rotation > 0  || rotation == 90.0) {
+
+                    this.motionX -= 0.0015 * this.accelerate;
 
 
+                } else if (rotation < -90.0 && rotation > -90.0 || rotation == -90.0) {
+
+                    this.motionX += 0.0015 * this.accelerate;
+
+                } else if (rotation < -90.00 && rotation > -180 || rotation == 0) {
+
+                    this.motionZ += 0.0015 * this.accelerate;
+
+                } else if (rotation < 180.0 && rotation > 90.0 || rotation == 180) {
+                    this.motionZ -= 0.0015 * this.accelerate;
+                } else if (rotation > -180 && rotation < -90 || rotation == -180) {
+                    this.motionZ -= 0.0015 * this.accelerate;
+                }
+
+
+                break;
+            }
+
+            case 2: {
+                double rotation = this.serverRealRotation;
+                if (rotation == 90.0) {
+
+                    this.motionX += 0.0020 * this.accelerate;
+
+
+                } else if (rotation == -90.0) {
+
+                    this.motionX -= 0.0020 * this.accelerate;
+
+                } else if (rotation == 0.0) {
+
+                    this.motionZ-= 0.0020 * this.accelerate;
+
+                } else if (rotation == -180.0) {
+
+                    this.motionZ += 0.0020 * this.accelerate;
+                }
+                break;
+            }
+
+            case 3: {
+                this.parkingBrake = !this.parkingBrake;
+                break;
+            }
+
+            case 4: {
+                soundHorn();
+                break;
+            }
+        }
+    }
+    public void stationStopComplete() {}
+    public void sendMTCStatusUpdate() {
+        JsonObject sendingObj = new JsonObject();
+        sendingObj.addProperty("funct", "update");
+        sendingObj.addProperty("signalBlock", this.currentSignalBlock);
+        sendingObj.addProperty("trainLevel", this.trainLevel);
+        sendingObj.addProperty("trainName", this.getTrainName());
+        sendingObj.addProperty("destination", this.getDestinationGUI());
+        sendingObj.addProperty("posX", this.posX);
+        sendingObj.addProperty("posY", this.posY);
+        sendingObj.addProperty("posZ", this.posZ);
+        sendingObj.addProperty("atoStatus", this.atoStatus);
+        if (this.ridingEntity != null && this.ridingEntity instanceof EntityPlayer) {
+            sendingObj.addProperty("driverName", ((EntityPlayer)ridingEntity).getDisplayName());
+        } else {
+            sendingObj.addProperty("driverName", "Nobody");
+        }
+        sendingObj.addProperty("currentSpeed", (int)Math.abs(this.getSpeed()));
+        sendingObj.addProperty("speedOverrideActivated", overspeedOveridePressed);
+        sendMessage(new PDMMessage(this.trainID, this.serverUUID, sendingObj.toString(), 1));
+    }
+    public Boolean trainIsWMTCSupported() {
+        boolean support = false;
+        int whichOneToCheck = 0;
+        if (this instanceof SteamTrain)  whichOneToCheck = 2;
+        if (!(this instanceof SteamTrain)) whichOneToCheck = 1;
+        if (this.getInventory()[whichOneToCheck] != null) {
+            // System.out.println(this.getInventory()[whichOneToCheck].getItem().getClass().getName());
+            if (this.getInventory()[whichOneToCheck].getItem() instanceof ItemWirelessTransmitter) {
+                support = true;
+            } else {
+                support = false;
+            }
+        }
+        return this instanceof EntityLocoDieselSD40 || this instanceof EntityLocoElectricBP4 || this instanceof EntityLocoDieselClass66 || this instanceof EntityLocoElectricBR185 || this instanceof EntityLocoElectricCD151 || this instanceof EntityLocoDieselDD35A || this instanceof EntityLocoElectricICE1 || this instanceof EntityLocoElectricHighSpeedZeroED || this instanceof EntityLocoElectricE103 || this instanceof EntityLocoDieselV60_DB || this instanceof EntityLocoDieselCD742 || this instanceof EntityLocoElectricVL10 || this instanceof EntityLocoElectricTramNY || this instanceof EntityLocoDieselIC4_DSB_MG || this instanceof EntityLocoDieselSD70 || this instanceof PCH120Commute || this instanceof GeGenesis ||support;
+
+
+    }
+
+    public Boolean trainIsATOSupported() {
+        boolean support = false;
+        int whichOneToCheck = 0;
+        if (this instanceof SteamTrain)  whichOneToCheck = 3;
+        if (!(this instanceof SteamTrain)) whichOneToCheck = 2;
+        if (this.getInventory()[whichOneToCheck] != null) {
+            // System.out.println(this.getInventory()[whichOneToCheck].getItem().getClass().getName());
+            if (this.getInventory()[whichOneToCheck].getItem() instanceof ItemATOCard) {
+                support = true;
+            } else {
+                support = false;
+            }
+        }
+        return this instanceof EntityLocoElectricHighSpeedZeroED || this instanceof EntityLocoElectricTramNY || this instanceof EntityLocoElectricICE1 || this instanceof EntityLocoDieselIC4_DSB_MG || this instanceof PCH120Commute || this instanceof PCH100H || support;
+
+    }
 }
