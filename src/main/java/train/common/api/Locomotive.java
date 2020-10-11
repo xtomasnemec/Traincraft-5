@@ -7,6 +7,7 @@ import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH100H;
 import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH120Commute;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -664,6 +665,10 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         // }
         // }
         if (!worldObj.isRemote) {
+            if (parkingBrake) {
+                motionX = 0.0;
+                motionZ = 0.0;
+            }
             if (this.riddenByEntity instanceof EntityLivingBase) {
                 //EntityLivingBase entity = (EntityLivingBase) this.riddenByEntity;
                 if (forwardPressed || backwardPressed) {
@@ -736,11 +741,6 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
             }
             fuelUpdateTicks++;
 
-            if (!this.isLocoTurnedOn()) {
-                motionX *= 0;
-                motionZ *= 0;
-            }
-
         }
         if (whistleDelay > 0) {
             whistleDelay--;
@@ -750,10 +750,10 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
             this.lastEntityRider = (this.riddenByEntity);
         }
 
-        if (!this.worldObj.isRemote && this.getParkingBrakeFromPacket() && !getState().equals("broken")) {
+       /* if (!this.worldObj.isRemote && this.getParkingBrakeFromPacket() && !getState().equals("broken")) {
             motionX *= 0.0;
             motionZ *= 0.0;
-        }
+        }*/
         if (ConfigHandler.SOUNDS) {
             for (EnumSounds sounds : EnumSounds.values()) {
                 if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")&& sounds.getEntityClass().equals(this.getClass()) && whistleDelay == 0) {
@@ -791,7 +791,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
                 }
             }
         }
-        if (getState().equals("cold")) {
+        if (getState().equals("cold") && !canBePulled) {
             this.extinguish();
             if (getCurrentMaxSpeed() >= (getMaxSpeed() * 0.6)) {
                 motionX *= 0.0;
@@ -1127,7 +1127,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
      * @param consumption
      */
     protected void updateFuelTrain(int consumption) {
-        if (fuelTrain < 0) {
+        if (fuelTrain < 0 && !canBePulled) {
             motionX *= 0.8;
             motionZ *= 0.8;
         }
@@ -1508,20 +1508,22 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     @Override
     public void sendMessage(PDMMessage message) {
         //	System.out.println("Sendmessage..");
-        AxisAlignedBB targetBox = AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 2000, this.posY + 2000, this.posZ + 2000);
-        List<TileEntity> allTEs = worldObj.loadedTileEntityList;
-        for (TileEntity te : allTEs) {
+        if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
+            AxisAlignedBB targetBox = AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 2000, this.posY + 2000, this.posZ + 2000);
+            List<TileEntity> allTEs = worldObj.loadedTileEntityList;
+            for (TileEntity te : allTEs) {
 
-            if (te instanceof TilePDMInstructionRadio) {
+                if (te instanceof TilePDMInstructionRadio) {
 
-                TilePDMInstructionRadio teP = (TilePDMInstructionRadio)te;
+                    TilePDMInstructionRadio teP = (TilePDMInstructionRadio) te;
 
-                if (teP.uniqueID.equals(message.UUIDTo)) {
+                    if (teP.uniqueID.equals(message.UUIDTo)) {
 
-                    //System.out.println(message.message);
-                    teP.receiveMessage(message);
+                        //System.out.println(message.message);
+                        teP.receiveMessage(message);
+                    }
+
                 }
-
             }
         }
 

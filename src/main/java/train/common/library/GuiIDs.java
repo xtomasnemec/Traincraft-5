@@ -20,7 +20,6 @@ public class GuiIDs {
 	public static final int RECIPE_BOOK = 98;
 	public static final int LANTERN = 99;
 	public static final int GENERATOR_DIESEL = 100;
-	
 	//public static final int RECIPE_BOOK2 = 101;
 	public static final int JUKEBOX = 102;
 	public static final int MTC_INFO = 103;

@@ -90,8 +90,7 @@ public enum ItemIDs {
 	minecartVL10("ItemRollingStock", "train_vl10", 10),
 	minecartTramWood("ItemRollingStock", "train_tram", 7),
 	minecartChmE3("ItemRollingStock", "train_chme3", 8),
-	//minecartHeavySteam("ItemRollingStock", "steam", HandleMaxAttachedCarts.HEAVY_STEAM_CARTS, 0D, (int) SpeedHandler.HEAVYSTEAM, "train_steam_heavy"),//TODO put it back once Heavy Steam is back
-	minecartHeavySteam("ItemRollingStock", "train_steam_heavy", 7), //HandleMaxAttachedCarts.HEAVY_STEAM_CARTS, 0D, (int) SpeedHandler.HEAVYSTEAM, "train_steam_heavy"),
+	minecartHeavySteam("ItemRollingStock", "train_steam_heavy", 7), //HandleMaxAttachedCarts.HEAVY_STEAM_CARTS, 0D, (int) SpeedHandler.HEAVYSTEAM, "train_steam_heavy"),TODO put it back once Heavy Steam is back
 	minecartTenderHeavy("ItemRollingStock", "train_tender_heavy", 5),
 	minecartFlatCart("ItemRollingStock", "train_flat", 1),
 	//minecartNewHighSpeedLoco("ItemRollingStock","train_speed",10),
@@ -157,7 +156,7 @@ public enum ItemIDs {
 	minecartLocoEMDF3("ItemRollingStock", "train_emdf3", 10),
 	minecartLocoEMDF7B("ItemRollingStock", "train_emdf7b", 10),
 	minecartLocoEMDF3B("ItemRollingStock", "train_emdf3b", 10),
-	minecartLocoDD35B("ItemRollingStock", "train_dd35b", 10),
+	minecartLocoDD35B("ItemRollingStock", "train_dd35b", 16),
 	minecartLocoWLs40("ItemRollingStock", "train_wls40", 10),
 	//minecartRotativeDigger("ItemRotativeDigger","train_",10),
 	minecartLocoEr("ItemRollingStock", "train_ussr", 10),
@@ -300,7 +299,7 @@ public enum ItemIDs {
 	tcRailMediumParallelSwitch("ItemTCRail", "item_rail_switch_parallel", 5),
 
 	tcRailTwoWaysCrossing("ItemTCRail","item_rail_two_ways_crossing",5),
-	tcRailSlopeWood("ItemTCRail", "item_rail_straight_slope_wood", 5),
+	tcRailSlopeWood("ItemTCRail", "item_rail_straight_slope_wood", 1),
 	tcRailSlopeGravel("ItemTCRail", "item_rail_straight_slope_gravel", 5),
 	tcRailSlopeBallast("ItemTCRail", "item_rail_straight_slope_ballast", 5),
 	tcRailLargeSlopeWood("ItemTCRail", "item_rail_straight_slope_wood", 3),
@@ -313,7 +312,7 @@ public enum ItemIDs {
 	//TC-JCIR
 	//remoteController("ItemRemoteController", "remote_controller", 20),
 	//remoteControllerModule("ItemRemoteControllerModule", "remote_controller_module", 15),
-	signalPairingDevice("ItemSignalPairingDevice", "signal_pairing_device", 14),
+	//signalPairingDevice("ItemSignalPairingDevice", "signal_pairing_device", 14),
 	minecartAlcoS2("ItemRollingStock", "alco_s2", 9),
 	minecartRibbedHopper("ItemRollingStock", "ribbed_hopper", 3),
 	minecartGeometryCar("ItemRollingStock", "geometry_car", 15),

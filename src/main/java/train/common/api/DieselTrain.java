@@ -6,7 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import train.common.api.LiquidManager.StandardTank;
 import train.common.entity.rollingStock.EntityBUnitDD35;
 import train.common.entity.rollingStock.EntityBUnitEMDF3;
@@ -15,7 +18,7 @@ import train.common.entity.rollingStock.EntityBUnitEMDF7;
 public abstract class DieselTrain extends Locomotive implements IFluidHandler {
 
 	public int fuelSlot = 1;
-	private int maxTank = 7 * 1000;
+	private int maxTank = 7000;
 	private int update = 8;
 	private StandardTank theTank;
 
@@ -46,33 +49,32 @@ public abstract class DieselTrain extends Locomotive implements IFluidHandler {
 		numCargoSlots1 = 3;
 		numCargoSlots2 = 3;
 		inventorySize = numCargoSlots + numCargoSlots2 + numCargoSlots1 + fuelSlot;
-		this.dataWatcher.addObject(23, 0);
-		this.dataWatcher.addObject(5, "");
+		this.dataWatcher.addObject(23, "null-_-"+0);
 	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
 		if (!worldObj.isRemote) {
-			if (theTank.getFluidAmount() != this.dataWatcher.getWatchableObjectInt(23)){
-				this.dataWatcher.updateObject(23, theTank.getFluidAmount());
+			if (theTank.getFluidAmount() != Integer.parseInt(this.dataWatcher.getWatchableObjectString(23).split("-_-")[1])){
+				this.dataWatcher.updateObject(23,(theTank.getFluid()!=null?theTank.getFluid().getUnlocalizedName():"null")+"-_-"+theTank.getFluidAmount());
 				fuelTrain = theTank.getFluidAmount();
 				this.dataWatcher.updateObject(4, theTank.getFluid()!=null?theTank.getFluid().getFluidID():0);
-				this.dataWatcher.updateObject(5, theTank.getFluid()!=null?theTank.getFluid().getUnlocalizedName():"");
 			}
-			if (isLocoTurnedOn() && theTank.getFluidAmount() >0) {
+			if (isLocoTurnedOn() && theTank.getFluidAmount() >0 && !canBePulled) {
 				if (theTank.getFluid().amount <= 1) {
 					motionX *= 0.94;
 					motionZ *= 0.94;
+					System.out.println(this.getTrainName());
 				}
 			}
 		}
 	}
 
 	public int getDiesel() {
-		return getFuel()==0?(this.dataWatcher.getWatchableObjectInt(23)):getFuel();
+		return getFuel()==0?Integer.parseInt(this.dataWatcher.getWatchableObjectString(23).split("-_-")[1]):getFuel();
 	}
-	public String getLiquidName(){ return  this.dataWatcher.getWatchableObjectString(5);}
+	public String getLiquidName(){ return  this.dataWatcher.getWatchableObjectString(23).split("-_-")[0];}
 
 	public int getLiquidItemID() {
 		return (this.dataWatcher.getWatchableObjectInt(4));
@@ -143,10 +145,10 @@ public abstract class DieselTrain extends Locomotive implements IFluidHandler {
 		if (getDiesel() > 0) {
 			fuelTrain = (getDiesel());
 		}
-		if (fuelTrain <= 0) {
+		/*if (fuelTrain <= 0 && !this.canBePulled) {
 			motionX *= 0.88;
 			motionZ *= 0.88;
-		}
+		}*/
 		if (locoInvent0 != null) {
 			liquidInSlot(locoInvent0);
 		}
@@ -155,7 +157,7 @@ public abstract class DieselTrain extends Locomotive implements IFluidHandler {
 
 	@Override
 	protected void updateFuelTrain(int amount) {
-		if (!this.isLocoTurnedOn()) {
+		if (!this.isLocoTurnedOn() && !this.canBePulled) {
 			motionX *= 0.8;
 			motionZ *= 0.8;
 		} else if (ticksExisted%5==0 &&getTank().getFluidAmount()+100 < maxTank) {

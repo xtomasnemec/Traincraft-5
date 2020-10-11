@@ -22,6 +22,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,11 +47,14 @@ import train.common.core.handlers.*;
 import train.common.core.network.PacketRollingStockRotation;
 import train.common.core.util.TraincraftUtil;
 import train.common.entity.rollingStock.EntityTracksBuilder;
+import train.common.items.ItemContainer;
+import train.common.items.ItemPaintbrushThing;
 import train.common.items.ItemTCRail;
 import train.common.items.ItemTCRail.TrackTypes;
 import train.common.items.ItemWrench;
 import train.common.library.BlockIDs;
 import train.common.library.EnumTrains;
+import train.common.library.ItemIDs;
 import train.common.tile.TileTCRail;
 import train.common.tile.TileTCRailGag;
 
@@ -151,6 +155,7 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 	private int clientTicks = 0;
 	
 	private double derailSpeed = 0.46;
+	private int scrollPosition;
 
 	public EntityRollingStock(World world) {
 		super(world);
@@ -1649,6 +1654,66 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 			}
 		}
 		else if ((trainsOnClick.onClickWithStake(this, itemstack, playerEntity, worldObj))) { return true; }
+
+		if (itemstack != null && itemstack.getItem() instanceof ItemPaintbrushThing && entityplayer.isSneaking()) {
+
+
+			if (this.acceptedColors != null && this.acceptedColors.size() > 0) {
+				if (scrollPosition > this.acceptedColors.size() - 1) {
+					this.setColor(acceptedColors.get(0));
+					scrollPosition = 0;
+				} else {
+					this.setColor(acceptedColors.get(scrollPosition));
+					scrollPosition++;
+				}
+			}
+
+			if (this.acceptedColors != null && this.acceptedColors.size() == 0) {
+				entityplayer.addChatMessage(new ChatComponentText("There are no other colors available."));
+			}
+
+			if (itemstack != null && itemstack.getItem() instanceof ItemContainer && this instanceof DieselTrain && entityplayer.isSneaking() && !worldObj.isRemote) {
+
+				Item theItem = itemstack.getItem();
+				DieselTrain thisAsDieselTrain = (DieselTrain) this;
+				if (theItem == ItemIDs.diesel.item || theItem == ItemIDs.refinedFuel.item) {
+					ItemStack result = LiquidManager.getInstance().processContainer(thisAsDieselTrain, 0, thisAsDieselTrain, itemstack);
+					//entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, new ItemStack(ItemIDs.diesel.item, itemstack.stackSize - 1));
+					itemstack.stackSize--;
+
+
+					for (int i = 0; i < entityplayer.inventory.getSizeInventory(); i++) {
+						if (entityplayer.inventory.getStackInSlot(i) != null && entityplayer.inventory.getStackInSlot(i).isItemEqual(itemstack)) {
+							if (itemstack.stackSize > 1) {
+								itemstack = new ItemStack(ItemIDs.diesel.item,itemstack.stackSize - 1);
+								entityplayer.inventory.addItemStackToInventory(new ItemStack(ItemIDs.emptyCanister.item, 1));
+								break;
+							} else {
+								entityplayer.inventory.setInventorySlotContents(i, new ItemStack(ItemIDs.emptyCanister.item,1));
+								break;
+							}
+
+						}
+					}
+
+				} else if (theItem == ItemIDs.emptyCanister.item) {
+					thisAsDieselTrain.getTank().drain(1000, true);
+					for (int i = 0; i < entityplayer.inventory.getSizeInventory(); i++) {
+						if (entityplayer.inventory.getStackInSlot(i) != null && entityplayer.inventory.getStackInSlot(i).isItemEqual(itemstack)) {
+							if (itemstack.stackSize > 1) {
+								entityplayer.inventory.setInventorySlotContents(i, new ItemStack(ItemIDs.emptyCanister.item, itemstack.stackSize - 1));
+							} else {
+								entityplayer.inventory.setInventorySlotContents(i, null);
+							}
+							entityplayer.inventory.addItemStackToInventory(new ItemStack(ItemIDs.diesel.item, 1));
+							break;
+						}
+					}
+				}
+				return true;
+			}
+			return true;
+		}
 
 		return worldObj.isRemote;
 	}
