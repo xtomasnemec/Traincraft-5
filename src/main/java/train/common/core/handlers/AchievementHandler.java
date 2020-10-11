@@ -70,7 +70,6 @@ public class AchievementHandler {
 		AchievementIDs.fast.achievement = achievement("fast", -8, 10, ItemIDs.minecartVL10.item, AchievementIDs.electMotor.achievement);
 
 		AchievementIDs.engineer.achievement = achievement("engineer", -2, -2, ItemIDs.overalls.item, null);
-		//new achivements by hariesh
 		AchievementIDs.mtg.achievement = achievement("mtg", -12,12 , ItemIDs.minecartLUengine.item, AchievementIDs.electMotor.achievement);
 		AchievementIDs.crossrail.achievement = achievement("crossrail",-12,14, ItemIDs.minecartClass345.item, AchievementIDs.mtg.achievement).setSpecial();
 
@@ -111,7 +110,7 @@ public class AchievementHandler {
 				AchievementIDs.caboose.achievement, AchievementIDs.mtg.achievement,
 				AchievementIDs.crossrail.achievement, AchievementIDs.heavySteam.achievement,
 				AchievementIDs.jukebox.achievement, AchievementIDs.cf7.achievement, AchievementIDs.thanos.achievement,
-				//AchievementIDs.sd9.achievement, AchievementIDs.geared.achievement, AchievementIDs.powerful.achievement,
+				AchievementIDs.sd9.achievement, AchievementIDs.geared.achievement, AchievementIDs.powerful.achievement,
 				AchievementIDs.gevo.achievement, AchievementIDs.switchin.achievement};
 
 		tmPage = new AchievementPage("TrainCraft", ach);
