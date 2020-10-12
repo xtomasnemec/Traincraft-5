@@ -163,7 +163,7 @@ public enum RenderEnum {
 			add(new double[] { 0.6D, 1.55D, 0.0D });
 		}
 	}, "", null, 0, false),
-	locoGP7Red(EntityLocoDieselGP7Red.class, new ModelGP7(), "gp7_", true, new float[] { -0.8F, -0.47F, 0.0F }, new float[] { 0F, 180F, 0F }, null, "smoke", 4, new ArrayList<double[]>() {
+	locoGP7Red(EntityLocoDieselGP7Red.class, new train.client.render.models.ModelGP7(), "gp7_", true, new float[] { -0.8F, -0.47F, 0.0F }, new float[] { 0F, 180F, 0F }, null, "smoke", 4, new ArrayList<double[]>() {
 		{
 			add(new double[] { -0.2D, 1.3D, 0.0D });
 			add(new double[] { 0.45D, 1.3D, 0.0D });
@@ -798,6 +798,13 @@ public enum RenderEnum {
 		}
 	}, "", null, 0, false),
 	GP7u( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class,  new ModelGP7u(), "gp7u_", true,new float[] {-1.5F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.45D, 1.45D, 0.0D});
+			add(new double[]{1.25D, 1.45D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	GP7( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class,  new com.jcirmodelsquad.tcjcir.models.trains.ModelGP7(), "bettergp7_", true,new float[] {-1.5F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{0.45D, 1.45D, 0.0D});
 			add(new double[]{1.25D, 1.45D, 0.0D});
