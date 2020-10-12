@@ -151,9 +151,7 @@ public enum EnumTrains {
 	 * Tenders
 	 */
 	tenderSmall("Tender Small Black", EntityTenderSmall.class, ItemIDs.minecartTender.item, "tender", 0, 0, 0.1, 0, 0, 0, 0, 0, 5000, new String[]{"Black", "Red", "Blue", "Green", "Yellow"}, 18, 0, new String[]{"Water capacity: 5000mb"}),
-	tenderHeavy("Tender Heavy", EntityTenderHeavy.class,
-			ItemIDs.minecartTenderHeavy.item, "tender", 0, 0, 2, 0, 0, 0, 0, 0, 14000, null, 18, 0, new
-			String[]{"Water capacity: 14000mb"}),
+	tenderHeavy("Tender Heavy", EntityTenderHeavy.class, ItemIDs.minecartTenderHeavy.item, "tender", 0, 0, 2, 0, 0, 0, 0, 0, 14000, null, 18, 0, new String[]{"Water capacity: 14000mb"}),
 	tenderGS4("Tender GS4", EntityTenderGS4.class, ItemIDs.minecartGS4_Tender.item, "tender", 0, 0, 2, 0, 0, 0, 0, 0, 18000, new String[]{"Orange", "White"}, 18, 0, new String[]{"Water capacity: 18000mb"}),
 	Model4000GallonTender("4000GallonTender",EntityTender4000.class, ItemIDs.minecart4000GallonTender.item,"tender",0,0,2,0,0,0,0,0,15000,new String[]{"Green", "Blue", "Red", "Lime"},18,0,new String[] {"Water capacity: 15000mb"}),
 	ModelFowler4FTender("Fowler 4F Tender",EntityTenderFowler4F.class, ItemIDs.minecartFowler4FTender.item,"tender",0,0,2,0,0,0,0,0,15000, null, 18,0,new String[] {"Water capacity: 15000mb"}),
