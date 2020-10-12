@@ -206,7 +206,7 @@ public enum ItemIDs {
 	minecartDenverRioGrandePassenger("ItemRollingStock", "denverriogrande_passenger", 10),
 	minecartDenverRioGrandeCombo("ItemRollingStock", "denverriogrande_combo", 10),
 	minecartDenverRioGrandeBaggage("ItemRollingStock", "denverriogrande_baggage", 10),
-	minecartMILW_H1044("ItemRollingStock", "MILW_H1044", 10),
+	//minecartMILW_H1044("ItemRollingStock", "MILW_H1044", 10),
 	minecartSlateWagon("ItemRollingStock", "slatewagon", 10),
 	minecartIceWagon("ItemRollingStock", "icewagon", 10),
 	minecartICE1_Loco("ItemRollingStock", "train_ice1", 10),

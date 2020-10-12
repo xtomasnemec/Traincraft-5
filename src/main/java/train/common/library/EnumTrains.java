@@ -185,7 +185,7 @@ public enum EnumTrains {
 	locoDieselShunter("Loco Diesel Shunter", EntityLocoDieselShunter.class,  ItemIDs.minecartShunter.item,"diesel", 354, 32, 0, 70, 0, 260, 0.6, 0.94, 8000,new String[] { "Blue", "Green", "Red", "Black" }, 14,  -2.58),
 	locoDieselV60_DB("Loco Diesel V60 DB",EntityLocoDieselV60_DB.class, ItemIDs.minecartV60_DB.item,"diesel",1058,60,0,60,0,170,0.66,0.96,8000,new String[] {"Red","Green","Yellow","Cyan"},15,-1.3),
 	locoDieselIC4_DSB_MG("Loco Diesel IC4 DSB MG",EntityLocoDieselIC4_DSB_MG.class, ItemIDs.minecartIC4_DSB_MG.item,"diesel",760,200,0,60,0,200,0.8,0.97,20000,new String[] {"White","Red"},10,-6, new String[]{"Unfinished, Creative Only"}),
-	locoDieselMILW_H1044("Loco Diesel MILW H10-44",EntityLocoDieselMILW_H1044.class,ItemIDs.minecartMILW_H1044.item,"diesel",1618,97,0,60,0,170,0.66,0.96,8000,new String[]{"Orange", "Yellow", "Black", "Red", "Blue", "Grey"},15,-4.4),
+	//locoDieselMILW_H1044("Loco Diesel MILW H10-44",EntityLocoDieselMILW_H1044.class,ItemIDs.minecartMILW_H1044.item,"diesel",1618,97,0,60,0,170,0.66,0.96,8000,new String[]{"Orange", "Yellow", "Black", "Red", "Blue", "Grey"},15,-4.4),
 	locoDieselEMDF7("Loco Diesel EMD F-7", EntityLocoDieselEMDF7.class, ItemIDs.minecartLocoEMDF7.item, "diesel",
 			1600, 150, 0, 50, 0, 200, 0.8, 0.97, 12000,new String[]{"Black", "Lime", "Red", "Brown", "Green", "Orange", "Yellow"}, 10, -2.4),
 	locoDieselEMDF3("Loco Diesel EMD F-3", EntityLocoDieselEMDF3.class, ItemIDs.minecartLocoEMDF3.item, "diesel",
@@ -322,7 +322,7 @@ public enum EnumTrains {
 	Hustler("Hustler", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, ItemIDs.minecartHustler.item, "diesel", 150, 30, 0, 50, 0, 170, 0.6, 0.7, 9000, null, 10, -2, new String[] {"Made by BigJ"}),
 	F40PH("F40PH", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class, ItemIDs.minecartF40PH.item, "diesel", 3000, 103, 0, 50, 0, 170, 0.75, 0.95, 11000, new String[] {"LightGrey", "Grey", "Red", "Yellow", "Cyan"}, 10, -3.5, new String[] {"Model by Bida & Mr Coomer"}),
 	GP7u("GP7u", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class, ItemIDs.minecartGP7u.item, "diesel", 1500, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Red", "Blue"}, 10, -3, new String[] {"Rebuilt by Bida"}),
-	GP7("GP7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, ItemIDs.minecartGP7.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Yellow", "Blue"}, 10, -3, new String[] {"Built by Bida"}),;
+	GP7("GP7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, ItemIDs.minecartGP7.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Yellow", "Blue", "White"}, 10, -3, new String[] {"Built by Bida"}),;
 
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,
