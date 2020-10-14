@@ -76,7 +76,7 @@ public class TCKeyHandler {
 			if (furnace.isPressed()) {
 				sendKeyControlsPacket(9);
 			}
-			if (Loader.isModLoaded("ComputerCraft")) {
+			if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
 				if (MTCScreen.isPressed() && !FMLClientHandler.instance().isGUIOpen(GuiMTCInfo.class)) {
 					if (Minecraft.getMinecraft().thePlayer.ridingEntity != null) {
 						Minecraft.getMinecraft().displayGuiScreen(new GuiMTCInfo(Minecraft.getMinecraft().thePlayer.ridingEntity));

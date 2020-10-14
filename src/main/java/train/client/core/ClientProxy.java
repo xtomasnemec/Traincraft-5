@@ -64,7 +64,7 @@ public class ClientProxy extends CommonProxy {
 		super.registerEvents(event);
 		ClientTickHandler tickHandler = new ClientTickHandler();
 		HUDloco huDloco = new HUDloco();
-		if (Loader.isModLoaded("ComputerCraft")){
+		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")){
 			HUDMTC hudMTC = new HUDMTC();
 			registerEvent(hudMTC);
 		}
