@@ -399,6 +399,7 @@ item.tc:minecartClass345coach.name=Class 345 Coach
 item.tc:minecartF40PH.name=EMD F40PH
 item.tc:minecartGP7u.name=EMD GP7u
 item.tc:minecartAipkitExplorer.name=Aipkit Explorer
+item.tc:minecartGP7.name=EMD GP7/GP9
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -749,6 +750,7 @@ entity.tc.Hustler.name=Hustler Switcher
 entity.tc.F40PH.name=EMD F40PH
 entity.tc.GP7u.name=EMD GP7u
 entity.tc.aipkitExplorer.name=Aipkit Explorer
+entity.tc.GP7.name=EMD GP7/GP9
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

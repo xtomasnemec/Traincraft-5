@@ -206,7 +206,7 @@ public enum ItemIDs {
 	minecartDenverRioGrandePassenger("ItemRollingStock", "denverriogrande_passenger", 10),
 	minecartDenverRioGrandeCombo("ItemRollingStock", "denverriogrande_combo", 10),
 	minecartDenverRioGrandeBaggage("ItemRollingStock", "denverriogrande_baggage", 10),
-	minecartMILW_H1044("ItemRollingStock", "MILW_H1044", 10),
+	//minecartMILW_H1044("ItemRollingStock", "MILW_H1044", 10),
 	minecartSlateWagon("ItemRollingStock", "slatewagon", 10),
 	minecartIceWagon("ItemRollingStock", "icewagon", 10),
 	minecartICE1_Loco("ItemRollingStock", "train_ice1", 10),
@@ -315,7 +315,7 @@ public enum ItemIDs {
 	//signalPairingDevice("ItemSignalPairingDevice", "signal_pairing_device", 14),
 	minecartAlcoS2("ItemRollingStock", "alco_s2", 9),
 	minecartRibbedHopper("ItemRollingStock", "ribbed_hopper", 3),
-	minecartGeometryCar("ItemRollingStock", "geometry_car", 15),
+	//minecartGeometryCar("ItemRollingStock", "geometry_car", 15),
 	minecartPCH120("ItemRollingStock", "driverless_metro", 20),
 	minecartPCH120Coach("ItemRollingStock", "driverless_metro_car", 15),
 	minecartAmfleet("ItemRollingStock", "Amfleet", 3),
@@ -363,6 +363,7 @@ public enum ItemIDs {
 	minecartHustler("ItemRollingStock", "hustler", 2),
 	minecartF40PH("ItemRollingStock", "f40ph", 10),
 	minecartGP7u("ItemRollingStock", "gp7u", 8),
+	minecartGP7("ItemRollingStock", "gp7", 8),
 	;
 
 	public Item item;

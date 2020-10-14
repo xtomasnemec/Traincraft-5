@@ -21,7 +21,7 @@ public enum EnumTrains {
 	passengerShortGreen("Passenger Short Green", EntityPassenger7.class, ItemIDs.minecartPassenger7.item, "passenger", 0, 0, 1, 0, 0, 0, 0, 0, 0, null, 18, 0),
 	passenger_1class_DB("Passenger 1Class DB", EntityPassenger_1class_DB.class, ItemIDs.minecartPassenger8_1class_DB.item, "passenger", 0, 0, 1.5, 0, 0, 0, 0, 0, 0, null, 18, 0),
 	passenger_2class_DB("Passenger 2Class DB", EntityPassenger_2class_DB.class, ItemIDs.minecartPassenger9_2class_DB.item, "passenger", 0, 0, 1.5, 0, 0, 0, 0, 0, 0, null, 18, 0),
-	passengerHighSpeedZeroED("Passenger High Speed Zero ED", EntityPassengerHighSpeedCarZeroED.class, ItemIDs.minecartPassengerHighSpeedCarZeroED.item, "passenger", 0, 0, 2, 0, 0, 0, 0, 0, 0, null, 18, 0),
+	passengerHighSpeedZeroED("Passenger High Speed Zero ED", EntityPassengerHighSpeedCarZeroED.class, ItemIDs.minecartPassengerHighSpeedCarZeroED.item, "passenger", 0, 0, 2, 0, 0, 0, 0, 0, 0, new String[]{"White", "LightGrey", "Grey"}, 18, 0),
 	passengerTramNY("Passenger Tram NY", EntityPassengerTramNY.class, ItemIDs.minecartPassengerTramNY.item, "passenger", 0, 0, 1, 0, 0, 0, 0, 0, 0, null, 18, 0),
 	passengerAdler("Passenger Adler", EntityPassengerAdler.class, ItemIDs.minecartPassengerAdler.item, "passenger", 0, 0, 0.5, 0, 0, 0, 0, 0, 0, null, 18, 0),
 	passengerDBOriental("Passenger DB oriental", EntityPassengerDBOriental.class, ItemIDs.minecartPassengerDBOriental.item, "passenger", 0, 0, 1, 0, 0, 0, 0, 0, 0, new String[]{"Yellow", "Blue", "White"}, 18, 0),
@@ -96,8 +96,8 @@ public enum EnumTrains {
 	freightWood("Freight Flat Cart Log", EntityFreightWood.class, ItemIDs.minecartWood.item, "freight", 3, null, 18, 27, new String[]{"Cargo: only Logs"}),
 	freightHopper("Freight Hopper Green", EntityFreightGrain.class, ItemIDs.minecartGrain.item, "freight", 4, (new String[]{"Green", "White"}), 18, 36, new String[]{"Cargo: wheat, seeds"}),
 	freightKClassRailBox("Freight K Class Rail Box", EntityFreightKClassRailBox.class, ItemIDs.minecartKClassRailBox.item, "freight", 4, (new String[]{"Yellow", "Orange"}), 18, 36,new String[]{"Fictional. Cargo: any"}),
-	freightShortCoveredHopper("Freight Short Covered Hopper", EntityFreightShortCoveredHopper.class, ItemIDs.minecartShortCoveredHopper.item, "freight", 4, (new String[]{"Grey", "Orange", "LightBlue", "Lime", "Yellow", "Blue"}), 18, 36,new String[]{"Cargo: any"}),
-	freightLongCoveredHopper("Freight Long Covered Hopper", EntityFreightLongCoveredHopper.class, ItemIDs.minecartLongCoveredHopper.item, "freight", 6, (new String[]{"LightGrey", "Grey","Pink", "White", "Green", "Orange", "Lime"}), 18, 54,new String[]{"Cargo: any"}),
+	freightShortCoveredHopper("Freight Short Covered Hopper", EntityFreightShortCoveredHopper.class, ItemIDs.minecartShortCoveredHopper.item, "freight", 4, (new String[]{"Grey", "Orange", "LightBlue", "Lime", "Yellow", "Blue", "Cyan"}), 18, 36,new String[]{"Cargo: any"}),
+	freightLongCoveredHopper("Freight Long Covered Hopper", EntityFreightLongCoveredHopper.class, ItemIDs.minecartLongCoveredHopper.item, "freight", 6, (new String[]{"LightGrey", "Grey","Pink", "White", "Green", "Orange", "Lime", "Cyan"}), 18, 54,new String[]{"Cargo: any"}),
 	freightOpenWagon("Freight Open Wagon", EntityFreightOpenWagon.class, ItemIDs.minecartOpenWagon.item, "freight", 2, (new String[]{"Red", "Brown"}), 18, 36, new String[]{"Cargo: blocks, vanilla items"}),//"train_hopper" for open wagon => weird
 	freightHopperUS("Freight Hopper US", EntityFreightHopperUS.class, ItemIDs.minecartFreightHopperUS.item, "freight", 4, (new String[]{"Brown", "Grey", "LightGrey", "Blue", "Red", "Yellow", "Black", "LightBlue", "Purple", "Green", "Magenta", "Orange"}), 18, 27, new String[]{"Cargo: blocks"}),
 	freight100TonHopper("Freight 100 Ton Hopper", EntityFreight100TonHopper.class, ItemIDs.minecartFreight100TonHopper.item, "freight", 4, (new String[]{"Red", "Black", "Blue", "Grey", "LightGrey", "Brown"}), 18, 54, new String[]{"Cargo: blocks"}),
@@ -151,9 +151,7 @@ public enum EnumTrains {
 	 * Tenders
 	 */
 	tenderSmall("Tender Small Black", EntityTenderSmall.class, ItemIDs.minecartTender.item, "tender", 0, 0, 0.1, 0, 0, 0, 0, 0, 5000, new String[]{"Black", "Red", "Blue", "Green", "Yellow"}, 18, 0, new String[]{"Water capacity: 5000mb"}),
-	tenderHeavy("Tender Heavy", EntityTenderHeavy.class,
-			ItemIDs.minecartTenderHeavy.item, "tender", 0, 0, 2, 0, 0, 0, 0, 0, 14000, null, 18, 0, new
-			String[]{"Water capacity: 14000mb"}),
+	tenderHeavy("Tender Heavy", EntityTenderHeavy.class, ItemIDs.minecartTenderHeavy.item, "tender", 0, 0, 2, 0, 0, 0, 0, 0, 14000, null, 18, 0, new String[]{"Water capacity: 14000mb"}),
 	tenderGS4("Tender GS4", EntityTenderGS4.class, ItemIDs.minecartGS4_Tender.item, "tender", 0, 0, 2, 0, 0, 0, 0, 0, 18000, new String[]{"Orange", "White"}, 18, 0, new String[]{"Water capacity: 18000mb"}),
 	Model4000GallonTender("4000GallonTender",EntityTender4000.class, ItemIDs.minecart4000GallonTender.item,"tender",0,0,2,0,0,0,0,0,15000,new String[]{"Green", "Blue", "Red", "Lime"},18,0,new String[] {"Water capacity: 15000mb"}),
 	ModelFowler4FTender("Fowler 4F Tender",EntityTenderFowler4F.class, ItemIDs.minecartFowler4FTender.item,"tender",0,0,2,0,0,0,0,0,15000, null, 18,0,new String[] {"Water capacity: 15000mb"}),
@@ -187,7 +185,7 @@ public enum EnumTrains {
 	locoDieselShunter("Loco Diesel Shunter", EntityLocoDieselShunter.class,  ItemIDs.minecartShunter.item,"diesel", 354, 32, 0, 70, 0, 260, 0.6, 0.94, 8000,new String[] { "Blue", "Green", "Red", "Black" }, 14,  -2.58),
 	locoDieselV60_DB("Loco Diesel V60 DB",EntityLocoDieselV60_DB.class, ItemIDs.minecartV60_DB.item,"diesel",1058,60,0,60,0,170,0.66,0.96,8000,new String[] {"Red","Green","Yellow","Cyan"},15,-1.3),
 	locoDieselIC4_DSB_MG("Loco Diesel IC4 DSB MG",EntityLocoDieselIC4_DSB_MG.class, ItemIDs.minecartIC4_DSB_MG.item,"diesel",760,200,0,60,0,200,0.8,0.97,20000,new String[] {"White","Red"},10,-6, new String[]{"Unfinished, Creative Only"}),
-	locoDieselMILW_H1044("Loco Diesel MILW H10-44",EntityLocoDieselMILW_H1044.class,ItemIDs.minecartMILW_H1044.item,"diesel",1618,97,0,60,0,170,0.66,0.96,8000,new String[]{"Orange", "Yellow", "Black", "Red", "Blue", "Grey"},15,-4.4),
+	//locoDieselMILW_H1044("Loco Diesel MILW H10-44",EntityLocoDieselMILW_H1044.class,ItemIDs.minecartMILW_H1044.item,"diesel",1618,97,0,60,0,170,0.66,0.96,8000,new String[]{"Orange", "Yellow", "Black", "Red", "Blue", "Grey"},15,-4.4),
 	locoDieselEMDF7("Loco Diesel EMD F-7", EntityLocoDieselEMDF7.class, ItemIDs.minecartLocoEMDF7.item, "diesel",
 			1600, 150, 0, 50, 0, 200, 0.8, 0.97, 12000,new String[]{"Black", "Lime", "Red", "Brown", "Green", "Orange", "Yellow"}, 10, -2.4),
 	locoDieselEMDF3("Loco Diesel EMD F-3", EntityLocoDieselEMDF3.class, ItemIDs.minecartLocoEMDF3.item, "diesel",
@@ -198,7 +196,7 @@ public enum EnumTrains {
 	locoDieselDeltic("Loco Diesel Deltic", EntityLocoDieselDeltic.class, ItemIDs.minecartLocoDeltic.item, "diesel",
 			1997, 161, 0, 10, 0, 170, 0.7, 0.965, 6400, null, 18, -5),
 	locoDieselDD35A("Loco Diesel DD35A", EntityLocoDieselDD35A.class, ItemIDs.minecartLocoDD35A.item, "diesel", 5000, 90, 0, 10, 0, 170, 0.7, 0.965, 6850, new String[]{"Orange", "Black"}, 18, -4.75),
-	locoDiesel44TonSwitcher("GE 44-ton Diesel switcher", EntityLocoDiesel44TonSwitcher.class, ItemIDs.minecartLoco44TonSwitcher.item, "diesel", 400, 56, 0, 10, 0, 170, 0.7, 0.965, 6850, null, 18, -2.75),
+	locoDiesel44TonSwitcher("GE 44-ton Diesel switcher", EntityLocoDiesel44TonSwitcher.class, ItemIDs.minecartLoco44TonSwitcher.item, "diesel", 400, 56, 0, 10, 0, 170, 0.7, 0.965, 6850, new String[]{"Black", "Cyan"}, 18, -2.75),
 	locoDieselBamboo("Bamboo Flatcar Engine", EntityLocoDieselBamboo.class, ItemIDs.minecartTrainBamboo.item, "diesel", 30, 20, 0, 10, 0, 170, 0.7, 0.965, 3000,  new String[] {"Red", "Blue", "Black", "Yellow", "Magenta", "Cyan", "Pink", "LightGrey", "Green", "White", "LightBlue", "Lime", "Brown", "Purple", "Orange", "Grey"}, 18, -2),
 	locoDieselWLs40("Loco WLs40", EntityLocoDieselWLs40.class, ItemIDs.minecartLocoWLs40.item, "diesel", 60, 17, 0, 10, 0, 170, 0.7, 0.965, 3000, null, 18, -3),
 	locoDieselFOL_M1("Loco FOL-M1", EntityLocoDieselFOLM1.class, ItemIDs.minecartLocoFOLM1.item, "diesel", 5000, 110, 0, 10, 0, 170, 0.7, 0.965, 15000, new String[]{"Grey", "Blue", "Black"}, 18, -3.9, new String[] {"Fictional loco from Factorio"}),
@@ -207,7 +205,7 @@ public enum EnumTrains {
 	locoElectricVL10("Loco Electric VL10", EntityLocoElectricVL10.class,  ItemIDs.minecartVL10.item, "electric", 6250, 100, 0, 8, 0, 400, 1.1, 0.956, 0, null, 14, -2.3),
 	locoElectricBR_E69("Loco Electric BR_E69",EntityLocoElectricBR_E69.class, ItemIDs.minecartBR_E69.item,"electric",400,50,0,5,0,400,0.9,0.946,0,new String[] {"Green","Red","Black","Grey"},18,0),
 	locoElectricMineTrain("Loco Electric Minetrain",EntityLocoElectricMinetrain.class,ItemIDs.minecartLocoMineTrain.item,"electric",500,40,0,80,0,160,0.5,0.97,0,null,18,-1),
-	locoElectricSpeedZeroED("Loco Electric High Speed ZeroED", EntityLocoElectricHighSpeedZeroED.class, ItemIDs.minecartLocoHighSpeedZeroED.item, "electric", 700, 237, 0, 3, 0,230, 1.4, 0.98, 0, null, 13,  -3.4),
+	locoElectricSpeedZeroED("Loco Electric High Speed ZeroED", EntityLocoElectricHighSpeedZeroED.class, ItemIDs.minecartLocoHighSpeedZeroED.item, "electric", 700, 237, 0, 3, 0,230, 1.4, 0.98, 0, new String[]{"White", "LightGrey", "Grey"}, 13,  -3.4),
 	locoElectricICE1("Loco Electric ICE 1", EntityLocoElectricICE1.class, ItemIDs.minecartICE1_Loco.item,
 			"electric", 12900, 280, 0, 4, 0, 250, 1.5, 0.98, 0, null, 13, -5),
 	//locoSpeedGrey("Loco High Speed",EntityLocoElectricNewHighSpeedLoco.class, null,null),
@@ -312,7 +310,7 @@ public enum EnumTrains {
 	GP13("GP13", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP13.class, ItemIDs.minecartGP13.item, "diesel", 2510,90,0,50,0,200,0.74,0.96,20000, new String[]{"Blue", "LightBlue", "Black", "Orange", "White", "Yellow"}, 10, 1.4, new String[] {"Fictional Rebuild of a GP7, Uses the original GP40 model"}),
 	GP30("GP30", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP30.class, ItemIDs.minecartGP30.item, "diesel", 2250, 114, 0, 50, 0, 180, 0.7, 0.91, 18000, new String[] {"LightGrey", "Black", "Yellow", "Blue", "Orange", "White", "Grey"}, 10, -3.5, new String[] {"Made by Bida"}),
 	VBShay("2TruckVerticalBoilerShay", com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamVBShay.class, ItemIDs.minecartVBShay2.item, "steam", 280,55,0,50,160,120,0.7,0.99,5000, new String[] {"Black", "Grey"},15,-1.3, new String[] {"Made with care by Bida"}),
-	MillGondola("52footMillGondola", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MillGondola.class, ItemIDs.minecartMillGondola.item, "freight", 5, new String[] {"Red", "Black"}, 30, 50, new String[] {"Made by Bida"}),
+	MillGondola("52footMillGondola", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MillGondola.class, ItemIDs.minecartMillGondola.item, "freight", 5, new String[] {"Red", "Black", "Orange"}, 30, 50, new String[] {"Made by Bida"}),
 	aipkitExplorer("Aipkit Explorer", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer.class, ItemIDs.minecartAipkitExplorer.item, "passenger",0, 0, 2, 0, 0, 0, 0, 0, 0, null, 0, 0,new String[] {"Built from scratch by PeachMaster"}),
 	FOLM1B("FOL-M1B", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselFOLM1B.class, ItemIDs.minecartFOLM1B.item, "diesel", 5000, 110, 0, 10, 0, 170, 0.7, 0.965, 15000, new String[]{"Grey", "Blue", "Black"}, 18, -3.8, new String[] {"Fictional B unit for the Fictional loco from Factorio"}),
 	Class345("Class 345", com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricClass345.class, ItemIDs.minecartClass345.item, "electric", 1500, 145, 0,6, 0, 100, 1.1, 0.95, 1000, null, 18, -3, new String[] {"Class 345 by hariesh"}),
@@ -323,7 +321,8 @@ public enum EnumTrains {
 	TGVmobile("TGVmobile", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselTGVmobile.class, ItemIDs.minecartTGVMobile.item, "diesel", 200, 350, 0, 10, 0, 140, 0.9, 0.9, 1000,null,18, 2.7, new String[] {"Yes, this is real, minus the highrail gear. Made by Bida at 3AM"}),
 	Hustler("Hustler", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, ItemIDs.minecartHustler.item, "diesel", 150, 30, 0, 50, 0, 170, 0.6, 0.7, 9000, null, 10, -2, new String[] {"Made by BigJ"}),
 	F40PH("F40PH", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class, ItemIDs.minecartF40PH.item, "diesel", 3000, 103, 0, 50, 0, 170, 0.75, 0.95, 11000, new String[] {"LightGrey", "Grey", "Red", "Yellow", "Cyan"}, 10, -3.5, new String[] {"Model by Bida & Mr Coomer"}),
-	GP7u("GP7u", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class, ItemIDs.minecartGP7u.item, "diesel", 2000, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Red", "Blue"}, 10, -3, new String[] {"Rebuilt by Bida"}),;
+	GP7u("GP7u", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class, ItemIDs.minecartGP7u.item, "diesel", 1500, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Red", "Blue"}, 10, -3, new String[] {"Rebuilt by Bida"}),
+	GP7("GP7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, ItemIDs.minecartGP7.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Yellow", "Blue", "White"}, 10, -3, new String[] {"Built by Bida"}),;
 
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,
