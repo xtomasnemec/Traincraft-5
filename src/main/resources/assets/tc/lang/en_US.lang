@@ -400,6 +400,7 @@ item.tc:minecartF40PH.name=EMD F40PH
 item.tc:minecartGP7u.name=EMD GP7u
 item.tc:minecartAipkitExplorer.name=Aipkit Explorer
 item.tc:minecartGP7.name=EMD GP7/GP9
+item.tc:minecartBoulderWagon.name=Boulder Wagon
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -751,6 +752,7 @@ entity.tc.F40PH.name=EMD F40PH
 entity.tc.GP7u.name=EMD GP7u
 entity.tc.aipkitExplorer.name=Aipkit Explorer
 entity.tc.GP7.name=EMD GP7/GP9
+entity.tc.BoulderWagon.name=Boulder Wagon
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

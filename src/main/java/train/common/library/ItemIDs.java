@@ -364,6 +364,7 @@ public enum ItemIDs {
 	minecartF40PH("ItemRollingStock", "f40ph", 10),
 	minecartGP7u("ItemRollingStock", "gp7u", 8),
 	minecartGP7("ItemRollingStock", "gp7", 8),
+	minecartBoulderWagon("ItemRollingStock","BoulderWagon",3),
 	;
 
 	public Item item;
