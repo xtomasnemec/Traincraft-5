@@ -122,7 +122,7 @@ public enum EnumSounds {
 	GP7u(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class, "leslie_s3", 1F, "567_notch8", 0.9F, 8, "567_idle", 0.7F, 50, false),
 	Class345(com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricClass345.class, "br_horn", 1F, "mg_run", 0.9F, 8, "mg_idle", 0.7F, 50, false),
 	GP7(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, "nathan_p3", 1F, "567_notch8", 0.9F, 8, "567_idle", 0.7F, 50, false),
-	;
+	SDP40F(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class, "leslie_rs3k", 2.5F, "16-645e_notch8", 0.65F, 10, "16-645e_idle", 0.8F, 5, false);
 
 	private Class entityClass;
 	private String horn;

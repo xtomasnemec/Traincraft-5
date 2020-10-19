@@ -323,7 +323,8 @@ public enum EnumTrains {
 	F40PH("F40PH", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class, ItemIDs.minecartF40PH.item, "diesel", 3000, 103, 0, 50, 0, 170, 0.75, 0.95, 11000, new String[] {"LightGrey", "Grey", "Red", "Yellow", "Cyan"}, 10, -3.5, new String[] {"Model by Bida & Mr Coomer"}),
 	GP7u("GP7u", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class, ItemIDs.minecartGP7u.item, "diesel", 1500, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Red", "Blue"}, 10, -3, new String[] {"Rebuilt by Bida"}),
 	GP7("GP7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, ItemIDs.minecartGP7.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Yellow", "Blue", "White"}, 10, -3, new String[] {"Built by Bida"}),
-	BoulderWagon("BoulderWagon", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, ItemIDs.minecartBoulderWagon.item, "freight", 5, new String[]{"Grey","Orange"}, 0, 9, new String[]{"Made by hariesh"}),
+	SDP40F("SDP40F",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class, ItemIDs.minecartSDP40F.item, "diesel", 3000, 160, 0, 55, 0, 170, 0.8, 0.9, 20000, new String[] {"LightBlue", "white", "LightGrey", "Grey", "Yellow"}, 10, -4.9, new String[] {"Model by Prof_Binky"}),
+	BoulderWagon("BoulderWagon", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, ItemIDs.minecartBoulderWagon.item, "freight", 5, null, 0, 9, new String[]{"Made by hariesh"}),
 	;
 
 
