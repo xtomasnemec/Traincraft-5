@@ -809,16 +809,18 @@ public enum RenderEnum {
 		{
 			add(new double[]{0.45D, 1.45D, 0.0D});
 			add(new double[]{1.25D, 1.45D, 0.0D});
-
 		}
 	}, "", null, 0, false),
 	SDP40F( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class,  new ModelSDP40F(), "sdp40f_", true,new float[] {-2.5F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{
 			add(new double[]{2.95D, 1.5D, 0.0D});
-
 		}
-	}, "", null, 0, false),
-	;
+	},"", null, 0, false),
+	gtavthing( com.jcirmodelsquad.tcjcir.vehicles.locomotives.Dieselgtavthing.class,  new Modelgtavthing(), "gtavthing_", true,new float[] {-1.5F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.8D, 1.2D, 0.0D});
+		}
+	}, "", null, 0, false),;
 
 	private Class<? extends AbstractTrains> entityClass;
 	private ModelBase model;

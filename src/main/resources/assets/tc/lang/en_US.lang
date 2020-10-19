@@ -401,6 +401,7 @@ item.tc:minecartGP7u.name=EMD GP7u
 item.tc:minecartAipkitExplorer.name=Aipkit Explorer
 item.tc:minecartGP7.name=EMD GP7/GP9
 item.tc:minecartBoulderWagon.name=Boulder Wagon
+item.tc:minecartgtavthing.name=GTAV locomotive
 item.tc:minecartSDP40F.name=EMD SDP40F
 
 <!-- ## Achievements ## -->
@@ -754,6 +755,7 @@ entity.tc.GP7u.name=EMD GP7u
 entity.tc.aipkitExplorer.name=Aipkit Explorer
 entity.tc.GP7.name=EMD GP7/GP9
 entity.tc.BoulderWagon.name=Boulder Wagon
+entity.tc:gtavthing.name=GTAV Locomotive
 entity.tc.SDP40F.name=EMD SDP40F
 
 description.villager.profession.tc.station_chief=Station Chief

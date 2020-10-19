@@ -325,6 +325,7 @@ public enum EnumTrains {
 	GP7("GP7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, ItemIDs.minecartGP7.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Yellow", "Blue", "White"}, 10, -3, new String[] {"Built by Bida"}),
 	SDP40F("SDP40F",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class, ItemIDs.minecartSDP40F.item, "diesel", 3000, 160, 0, 55, 0, 170, 0.8, 0.9, 20000, new String[] {"LightBlue", "white", "LightGrey", "Grey", "Yellow"}, 10, -4.9, new String[] {"Model by Prof_Binky"}),
 	BoulderWagon("BoulderWagon", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, ItemIDs.minecartBoulderWagon.item, "freight", 5, null, 0, 9, new String[]{"Made by hariesh"}),
+	gtavthing("gtavthing", com.jcirmodelsquad.tcjcir.vehicles.locomotives.Dieselgtavthing.class, ItemIDs.minecartgtavthing.item, "diesel", 1550, 110, 0, 45, 0, 160, 0.85, 0.9, 8000, new String[] {"Yellow"}, 10, -3.2, new String[] {"yet another Bida Rebuild"}),
 	;
 
 
