@@ -923,7 +923,7 @@ public class Modelgtavthing extends ModelConverter //Same as Filename
 		bodyModel[211].setRotationPoint(-38.02F, -13F, -7F);
 
 		bodyModel[212].addShapeBox(0F, 0F, 0F, 0, 13, 6, 0F,0F, 0F, 0F, 0F, 0F, 0F, 2F, -2F, 0F, -2F, -2F, 0F, 1F, 0F, 0F, -1F, 0F, 0F, 2F, 2F, 0F, -2F, 2F, 0F); // Box 393
-		bodyModel[212].setRotationPoint(-38.02F, -13F, 1F);
+		bodyModel[212].setRotationPoint(-38.03F, -13F, 1F);
 
 		bodyModel[213].addShapeBox(0F, 0F, 0F, 4, 0, 2, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F, 0F, 0F); // Box 394
 		bodyModel[213].setRotationPoint(35F, 7F, 9F);
