@@ -175,6 +175,8 @@ public class ClientProxy extends CommonProxy {
 			return new GuiRecipeBook(player, player.getCurrentEquippedItem());
 		/*case (GuiIDs.RECIPE_BOOK2):
 			return te != null && te instanceof TileBook ? new GuiRecipeBook2(player, player.getCurrentEquippedItem()) : new GuiRecipeBook2(player, player.getCurrentEquippedItem());*/
+			case (GuiIDs.CREDITS_BOOK):
+				return new GUICreditsBook(player, player.getCurrentEquippedItem());
 		case (GuiIDs.LANTERN):
 			return new GuiLantern(player, (TileLantern)te);
 		case (GuiIDs.JUKEBOX):

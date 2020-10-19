@@ -42,6 +42,7 @@ public class TCItems {
 		ItemIDs.chunkLoaderActivator.item = new ItemChunkLoaderActivator();
 		ItemIDs.recipeBook.item = new ItemRecipeBook();
 		ItemIDs.adminBook.item = new ItemAdminBook();
+		ItemIDs.creditsBook.item = new ItemCreditsBook();
 
 		ItemIDs.stake.item = new ItemStacked(200);
 		ItemIDs.airship.item = new ItemZeppelins(0);

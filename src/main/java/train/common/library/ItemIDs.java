@@ -63,6 +63,7 @@ public enum ItemIDs {
 	copperRail("ItemTrain", "item_rail_copper", 1),
 	steelRail("ItemTrain", "item_rail_steel", 1),
 	recipeBook("ItemRecipeBook", "item_book_blue", 1),
+	creditsBook("ItemRecipeBook", "item_book_brown", 1),
 	adminBook("ItemAdminBook", "item_book_blue", 0),
 	wirelessTransmitter("ItemWirelessTransmitter", "wireless_transmitter", 3),
 	atoCard("ItemATOCard", "ato_card", 5),
