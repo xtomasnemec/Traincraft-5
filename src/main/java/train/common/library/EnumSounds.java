@@ -124,6 +124,8 @@ public enum EnumSounds {
 	GP7(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, "nathan_p3", 1F, "567_notch8", 0.9F, 8, "567_idle", 0.7F, 50, false),
 	SDP40F(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class, "leslie_rs3k", 2.5F, "16-645e_notch8", 0.65F, 10, "16-645e_idle", 0.8F, 5, false),
 	gtavthing(com.jcirmodelsquad.tcjcir.vehicles.locomotives.Dieselgtavthing.class,"leslie_s3l", 1F, "567_notch8", 0.9F, 8, "567_idle", 0.7F, 50, false ),
+	HHGregg600(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHHgregg.class,"hhgregg600horn", 2.5F, "hhgregg600_run", 1F, 500, "hhgregg600_idle", 1F, 100, false ),
+	HH600(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHH660.class,"leslie_a200", 2.5F, "531_notch8", 1F, 8, "531_idle", 1F, 50, false ),
 	;
 
 	private Class entityClass;
