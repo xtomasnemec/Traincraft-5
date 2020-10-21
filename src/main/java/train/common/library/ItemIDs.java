@@ -368,6 +368,8 @@ public enum ItemIDs {
 	minecartBoulderWagon("ItemRollingStock","BoulderWagon",3),
 	minecartgtavthing("ItemRollingStock", "gtavthing", 7),
 	minecartSDP40F("ItemRollingStock","sdp40f",12),
+	minecartHH660("ItemRollingStock", "hh660", 6),
+	minecartHHgregg("ItemRollingStock", "hhgregg", 69),
 	;
 
 	public Item item;

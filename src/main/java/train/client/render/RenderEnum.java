@@ -820,6 +820,16 @@ public enum RenderEnum {
 		{
 			add(new double[]{1.8D, 1.2D, 0.0D});
 		}
+	}, "", null, 0, false),
+	HH660( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHH660.class,  new ModelHH660(), "hh660_", true,new float[] {-1F, -0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.0D, 1.35D, 0D});
+		}
+	}, "", null, 0, false),
+	HHgregg( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHHgregg.class,  new ModelHH660(), "hhgregg", false,new float[] {-1F, -0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.0D, 1.35D, 0D});
+		}
 	}, "", null, 0, false),;
 
 	private Class<? extends AbstractTrains> entityClass;

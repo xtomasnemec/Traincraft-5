@@ -403,6 +403,8 @@ item.tc:minecartGP7.name=EMD GP7/GP9
 item.tc:minecartBoulderWagon.name=Boulder Wagon
 item.tc:minecartgtavthing.name=GTAV locomotive
 item.tc:minecartSDP40F.name=EMD SDP40F
+item.tc:minecartHH660.name=ALCo HH660/HH600
+item.tc:minecartHHgregg.name=HHGregg600
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -757,6 +759,8 @@ entity.tc.GP7.name=EMD GP7/GP9
 entity.tc.BoulderWagon.name=Boulder Wagon
 entity.tc:gtavthing.name=GTAV Locomotive
 entity.tc.SDP40F.name=EMD SDP40F
+entity.tc.HH660.name=ALCo HH660/HH600
+entity.tc.HHgregg.name=HHGregg600
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
