@@ -101,4 +101,10 @@
   "635E3B_idle": {"category": "master", "sounds": [{"name": "635E3B_idle", "stream":  true}]},
   "635E3B_notch8": {"category": "master", "sounds": [{"name": "635E3B_notch8", "stream":  true}]},
   "br_horn": {"category": "master", "sounds": [{"name": "br_horn", "stream":  true}]},
+  "hhgregg600horn": {"category": "master", "sounds": [{"name": "hhgregg600horn", "stream":  true}]},
+  "hhgregg600_run": {"category": "master", "sounds": [{"name": "hhgregg600_run", "stream":  true}]},
+  "hhgregg600_idle": {"category": "master", "sounds": [{"name": "hhgregg600_idle", "stream":  true}]},
+  "531_idle": {"category": "master", "sounds": [{"name": "531_idle", "stream":  true}]},
+  "531_notch8": {"category": "master", "sounds": [{"name": "531_notch8", "stream":  true}]},
+  "leslie_sl4t": {"category": "master", "sounds": [{"name": "leslie_sl4t", "stream":  true}]},
   "765_whistle": {"category": "master", "sounds": [{"name": "765_whistle", "stream":  true}]}}

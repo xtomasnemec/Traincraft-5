@@ -790,6 +790,7 @@ public enum RenderEnum {
 		}
 	}, "", null, 0, false),
 	amfleet2(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Amfleet2.class, new ModelAmfleet2(),"amfleet2_", true, new float[]{0F, -0.4F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	BoulderWagon(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, new ModelBoulderWagon(),"BoulderWagon_",true, new float[]{0F,0.2F,0F}, new float[] { 0F, 180F, 180F },null, "",0,null,  "",null, 0,false),
 	TGVmobile( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselTGVmobile.class,  new ModelTGVMobile(), "tgvmobile_Orange", false,new float[] {-1.5F, 0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Hustler(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, new ModelHustler(), "hustler", false, new float[]{-1F, 0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	F40PH( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class,  new ModelF40PH(), "f40ph_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
@@ -808,10 +809,28 @@ public enum RenderEnum {
 		{
 			add(new double[]{0.45D, 1.45D, 0.0D});
 			add(new double[]{1.25D, 1.45D, 0.0D});
-
 		}
 	}, "", null, 0, false),
-	;
+	SDP40F( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class,  new ModelSDP40F(), "sdp40f_", true,new float[] {-2.5F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.95D, 1.5D, 0.0D});
+		}
+	},"", null, 0, false),
+	gtavthing( com.jcirmodelsquad.tcjcir.vehicles.locomotives.Dieselgtavthing.class,  new Modelgtavthing(), "gtavthing_", true,new float[] {-1.5F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.8D, 1.2D, 0.0D});
+		}
+	}, "", null, 0, false),
+	HH660( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHH660.class,  new ModelHH660(), "hh660_", true,new float[] {-1F, -0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.0D, 1.35D, 0D});
+		}
+	}, "", null, 0, false),
+	HHgregg( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHHgregg.class,  new ModelHH660(), "hhgregg", false,new float[] {-1F, -0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.0D, 1.35D, 0D});
+		}
+	}, "", null, 0, false),;
 
 	private Class<? extends AbstractTrains> entityClass;
 	private ModelBase model;

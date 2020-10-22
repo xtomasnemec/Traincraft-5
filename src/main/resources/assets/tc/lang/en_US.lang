@@ -347,7 +347,7 @@ item.tc:minecartLocoC41_080.name=C41 0-8-0
 item.tc:minecartLocoAlcoSC4.name=Alco SC4
 item.tc:minecartFreightL.name=Freight Car L
 
-
+item.tc:creditsBook.name=JCIRTC Credits Book
 item.tc:minecartAlcoS2.name=Alco S2
 item.tc:minecartRibbedHopper.name=Ribbed Covered Hopper
 item.tc:minecartSW1.name=EMD SW1
@@ -400,6 +400,11 @@ item.tc:minecartF40PH.name=EMD F40PH
 item.tc:minecartGP7u.name=EMD GP7u
 item.tc:minecartAipkitExplorer.name=Aipkit Explorer
 item.tc:minecartGP7.name=EMD GP7/GP9
+item.tc:minecartBoulderWagon.name=Boulder Wagon
+item.tc:minecartgtavthing.name=GTAV locomotive
+item.tc:minecartSDP40F.name=EMD SDP40F
+item.tc:minecartHH660.name=ALCo HH660/HH600
+item.tc:minecartHHgregg.name=HHGregg600
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -751,6 +756,11 @@ entity.tc.F40PH.name=EMD F40PH
 entity.tc.GP7u.name=EMD GP7u
 entity.tc.aipkitExplorer.name=Aipkit Explorer
 entity.tc.GP7.name=EMD GP7/GP9
+entity.tc.BoulderWagon.name=Boulder Wagon
+entity.tc:gtavthing.name=GTAV Locomotive
+entity.tc.SDP40F.name=EMD SDP40F
+entity.tc.HH660.name=ALCo HH660/HH600
+entity.tc.HHgregg.name=HHGregg600
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

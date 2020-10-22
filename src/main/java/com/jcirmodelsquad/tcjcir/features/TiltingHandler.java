@@ -49,7 +49,7 @@ public class TiltingHandler {
                         //     System.out.println(theRail.getType());
                     }
                 }
-                if (ItemTCRail.isTCTurnTrack(theRail)) {
+                if (theRail != null && ItemTCRail.isTCTurnTrack(theRail)) {
                     tiltingIn = true;
                     tiltingOut = false;
 
@@ -57,7 +57,7 @@ public class TiltingHandler {
                     tiltingToLeft = !theRail.getType().equals("VERY_LARGE_RIGHT_TURN");
 
 
-                } else if (isTCStraightTrack(theRail) && tiltingIn) {
+                } else if (theRail != null && isTCStraightTrack(theRail) && tiltingIn) {
                     //Tilt out.
                     tiltingIn = false;
                     tiltingOut = true;

@@ -63,6 +63,7 @@ public enum ItemIDs {
 	copperRail("ItemTrain", "item_rail_copper", 1),
 	steelRail("ItemTrain", "item_rail_steel", 1),
 	recipeBook("ItemRecipeBook", "item_book_blue", 1),
+	creditsBook("ItemRecipeBook", "item_book_brown", 1),
 	adminBook("ItemAdminBook", "item_book_blue", 0),
 	wirelessTransmitter("ItemWirelessTransmitter", "wireless_transmitter", 3),
 	atoCard("ItemATOCard", "ato_card", 5),
@@ -364,6 +365,11 @@ public enum ItemIDs {
 	minecartF40PH("ItemRollingStock", "f40ph", 10),
 	minecartGP7u("ItemRollingStock", "gp7u", 8),
 	minecartGP7("ItemRollingStock", "gp7", 8),
+	minecartBoulderWagon("ItemRollingStock","BoulderWagon",3),
+	minecartgtavthing("ItemRollingStock", "gtavthing", 7),
+	minecartSDP40F("ItemRollingStock","sdp40f",12),
+	minecartHH660("ItemRollingStock", "hh660", 6),
+	minecartHHgregg("ItemRollingStock", "hhgregg", 69),
 	;
 
 	public Item item;
