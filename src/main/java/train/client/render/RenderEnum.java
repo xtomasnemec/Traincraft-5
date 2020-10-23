@@ -830,7 +830,15 @@ public enum RenderEnum {
 		{
 			add(new double[]{2.0D, 1.35D, 0D});
 		}
-	}, "", null, 0, false),;
+	}, "", null, 0, false),
+	MP15DCW9( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselMP15DCW9.class,  new ModelMP15DCW9(), "mp15dcw-9_", true,new float[] {-1.2F, -0.01F, 0F},  new float[] { 180F, 180F, 0F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.05D, 1.5D, 0.0D});
+
+			add(new double[]{0.25D, 1.5D, 0.0D});
+		}
+	}, "", null, 0, false),
+	;
 
 	private Class<? extends AbstractTrains> entityClass;
 	private ModelBase model;
