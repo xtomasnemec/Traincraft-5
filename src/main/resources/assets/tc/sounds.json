@@ -107,4 +107,5 @@
   "531_idle": {"category": "master", "sounds": [{"name": "531_idle", "stream":  true}]},
   "531_notch8": {"category": "master", "sounds": [{"name": "531_notch8", "stream":  true}]},
   "leslie_sl4t": {"category": "master", "sounds": [{"name": "leslie_sl4t", "stream":  true}]},
+  "leslie_rs3j": {"category": "master", "sounds": [{"name": "leslie_rs3j", "stream":  true}]},
   "765_whistle": {"category": "master", "sounds": [{"name": "765_whistle", "stream":  true}]}}
