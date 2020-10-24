@@ -514,6 +514,8 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 			return "Orange";
 		case 15:
 			return "White";
+		case 160:
+			return "Teal";
 		case 100:
 			return "Empty";
 		case 101:
@@ -540,6 +542,7 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 		if (color.equals("Pink")) return 9;
 		if (color.equals("Orange")) return 14;
 		if (color.equals("White")) return 15;
+		if (color.equals("Teal")) return 160;
 		if (color.equals("Empty")) return 100;
 		if (color.equals("Full")) return 101;
 		return -1;
