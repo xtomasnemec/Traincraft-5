@@ -845,7 +845,7 @@ public enum RenderEnum {
 			add(new double[]{1.25D, 1.45D, 0.0D});
 		}
 	}, "", null, 0, false),
-	C425( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC425.class,  new ModelC425(), "c425_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "largesmoke", 5,  new ArrayList<double[]>() {
+	C425( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC425.class,  new ModelC424(), "c425_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "largesmoke", 5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1D, 1.7D, 0.0D});
 		}
