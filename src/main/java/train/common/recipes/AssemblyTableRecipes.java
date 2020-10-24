@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import train.common.api.crafting.ITierCraftingManager;
 import train.common.core.managers.TierRecipeManager;
+import train.common.items.ItemStacked;
 import train.common.library.BlockIDs;
 import train.common.library.ItemIDs;
 
@@ -250,6 +251,7 @@ public class AssemblyTableRecipes {
 						new ItemStack(ItemIDs.steelcab.item, 1), new ItemStack(ItemIDs.boiler.item, 2),
 						new ItemStack(ItemIDs.firebox.item, 2), null, dye,
 						new ItemStack (ItemIDs.minecartLocoHallClass.item, 1), 1);
+				cm.addRecipe(2, null, new ItemStack(ItemIDs.bogie.item, 4), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 1, itemDamageSteel), new ItemStack(ItemIDs.ironChimney.item, 1), new ItemStack(ItemIDs.steelcab.item, 1), new ItemStack(ItemIDs.electmotor.item, 4), new ItemStack(ItemIDs.dieselengine.item, 4), new ItemStack(ItemIDs.controls.item, 2), dye, new ItemStack(ItemIDs.minecartVO1000.item, 1), 1);
 			}
 			for (ItemStack dye : dyeBlack) {
 				cm.addRecipe(2, null, new ItemStack(ItemIDs.bogie.item, 4), new ItemStack(ItemIDs.steelframe.item, 4),
@@ -374,6 +376,9 @@ public class AssemblyTableRecipes {
 				cm.addRecipe(2, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Items.leather, 1), null, new ItemStack(ItemIDs.minecartStockCar.item, 1), 1);
 				cm.addRecipe(2, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Items.leather, 1), null, new ItemStack(ItemIDs.minecartDRWGStockCar.item, 1), 1);
 				cm.addRecipe(2, new ItemStack(i.getItem(), 3, OreDictionary.WILDCARD_VALUE), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, null, null, new ItemStack(ItemIDs.minecartFlatCartUS.item, 1), 1);
+			}
+			for (ItemStack dye : dyeOrange) {
+				cm.addRecipe(2, new ItemStack(Blocks.planks, 4), new ItemStack(ItemIDs.ironBogie.item, 4), new ItemStack(ItemIDs.ironFrame.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, new ItemStack(Blocks.iron_bars, 4), null, null, new ItemStack(Blocks.chest, 2), dye, new ItemStack(ItemIDs.minecartMILW40boxcar.item, 1), 1);
 			}
 
 
@@ -557,7 +562,7 @@ public class AssemblyTableRecipes {
 				}
 				for (ItemStack lightBlue : OreDictionary.getOres("dyeLightBlue")) {
 					betterAddRecipe(2, new ItemStack(ItemIDs.controls.item, 2), new ItemStack(ItemIDs.steelchimney.item, 2), new ItemStack(ItemIDs.steelcab.item, 2), lightBlue, new ItemStack(ItemIDs.generator.item, 3), new ItemStack(ItemIDs.electmotor.item, 4),  new ItemStack(ItemIDs.dieselengine.item, 4), new ItemStack(ItemIDs.bogie.item, 4), new ItemStack(ItemIDs.steelframe.item, 3), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.minecartSW1500.item, 1), 1);
-					betterAddRecipe(3, new ItemStack(ItemIDs.controls.item, 3), new ItemStack(ItemIDs.steelchimney.item, 3), new ItemStack(ItemIDs.steelcab.item, 2), lightBlue, new ItemStack(ItemIDs.generator.item, 4), new ItemStack(ItemIDs.electmotor.item, 6), new ItemStack(ItemIDs.dieselengine.item, 4), new ItemStack(ItemIDs.bogie.item, 5), new ItemStack(ItemIDs.steelframe.item, 3), new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(ItemIDs.minecartSDP40F.item), 1);
+					betterAddRecipe(3, new ItemStack(ItemIDs.controls.item, 3), new ItemStack(ItemIDs.steelchimney.item, 3), new ItemStack(ItemIDs.steelcab.item, 4), lightBlue, new ItemStack(ItemIDs.generator.item, 4), new ItemStack(ItemIDs.electmotor.item, 6), new ItemStack(ItemIDs.dieselengine.item, 4), new ItemStack(ItemIDs.bogie.item, 5), new ItemStack(ItemIDs.steelframe.item, 3), new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(ItemIDs.minecartSDP40F.item), 1);
 				}
 
 				for (ItemStack green : dyeGreen) {
