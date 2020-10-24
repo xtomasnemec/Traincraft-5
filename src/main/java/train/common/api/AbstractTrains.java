@@ -514,8 +514,19 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 			return "Orange";
 		case 15:
 			return "White";
-		case 160:
-			return "Teal";
+			//start of hariesh's model fix
+		case 16:
+			return "skin16";
+		case 17:
+			return "skin17";
+		case 18:
+			return "skin18";
+		case 19:
+			return "skin19";
+		case 20:
+			return "skin20";
+			// end of hariesh's texture fix.
+			//Do not touch the numbers below, they are needed for other code -hariesh
 		case 100:
 			return "Empty";
 		case 101:
@@ -542,7 +553,13 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 		if (color.equals("Pink")) return 9;
 		if (color.equals("Orange")) return 14;
 		if (color.equals("White")) return 15;
-		if (color.equals("Teal")) return 160;
+		// Start of hariesh's texture fix to expand textures
+		if (color.equals("skin16")) return 16;
+		if (color.equals("skin17")) return 17;
+		if (color.equals("skin18")) return 18;
+		if (color.equals("skin19")) return 19;
+		if (color.equals("skin20")) return 20;
+		// End of hariesh's texture fix to expand textures
 		if (color.equals("Empty")) return 100;
 		if (color.equals("Full")) return 101;
 		return -1;
