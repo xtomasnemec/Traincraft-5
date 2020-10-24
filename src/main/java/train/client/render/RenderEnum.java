@@ -838,6 +838,23 @@ public enum RenderEnum {
 			add(new double[]{0.25D, 1.5D, 0.0D});
 		}
 	}, "", null, 0, false),
+	MILW40boxcar(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MILW40boxcar.class, new ModelMILW40boxcar(),"milw40_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	GP9( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP9.class,  new com.jcirmodelsquad.tcjcir.models.trains.ModelGP9(), "gp9_", true,new float[] {-1.5F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.45D, 1.45D, 0.0D});
+			add(new double[]{1.25D, 1.45D, 0.0D});
+		}
+	}, "", null, 0, false),
+	C425( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC425.class,  new ModelC425(), "c425_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "largesmoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1D, 1.7D, 0.0D});
+		}
+	}, "", null, 0, false),
+	VO1000( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselVO1000.class,  new ModelVO1000(), "vo1000_", true,new float[] {-1.1F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.40D, 1.35D, 0D});
+		}
+	}, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;
