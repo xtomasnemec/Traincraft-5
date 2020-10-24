@@ -220,7 +220,7 @@ public enum EnumTrains {
 			ItemIDs.minecartLocoClass85.item, "electric", 1997, 160, 0, 10, 0, 170, 0.7, 0.965, 0, null, 18, -5),
 	locoElectricCD151("Loco Electric CD151", EntityLocoElectricCD151.class, ItemIDs.minecartLocoCD151.item,
 			"electric", 1133, 150, 0, 10, 0, 170, 0.7, 0.965, 6850, new String[]{"Blue", "Yellow", "Red"}, 18, -4),
-	locoElectricBP4("Loco Electric BP4",EntityLocoElectricBP4.class, ItemIDs.minecartLocoBP4.item,"electric",1520,105,0,60,0,200,0.8,0.97,8650,new String[]{"Green", "Purple", "Cyan"},10,-4.25),
+	locoElectricBP4("Loco Electric BP4",EntityLocoElectricBP4.class, ItemIDs.minecartLocoBP4.item,"electric",1520,105,0,60,0,200,0.8,0.97,8650,new String[]{"Green", "Purple", "Cyan"},10,-3),
 
 	/** Steam */
 	locoSteamA4("Loco Steam A4 Mallard", EntityLocoSteamMallardA4.class,  ItemIDs.minecartLocoA4Mallard.item, "steam", 1418, 203, 0, 60, 200, 160, 0.65, 0.97, 10000, new String[] { "Blue", "Lime", "Black", "Green", "White" }, 7, -5 ),
