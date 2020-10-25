@@ -53,7 +53,7 @@ public class ModelFP45 extends ModelConverter //Same as Filename
 		bodyModel[11] = new ModelRendererTurbo(this, 473, 1, textureX, textureY); // Box 265
 		bodyModel[12] = new ModelRendererTurbo(this, 489, 1, textureX, textureY); // Box 261
 		bodyModel[13] = new ModelRendererTurbo(this, 425, 1, textureX, textureY); // Box 61
-		bodyModel[14] = new ModelRendererTurbo(this, 1, 9, textureX, textureY); // Box 4
+		bodyModel[14] = new ModelRendererTurbo(this, 1, 11, textureX, textureY); // Box 4
 		bodyModel[15] = new ModelRendererTurbo(this, 273, 25, textureX, textureY); // Box 197
 		bodyModel[16] = new ModelRendererTurbo(this, 457, 9, textureX, textureY); // Box 4
 		bodyModel[17] = new ModelRendererTurbo(this, 481, 9, textureX, textureY); // Box 4
@@ -75,7 +75,7 @@ public class ModelFP45 extends ModelConverter //Same as Filename
 		bodyModel[33] = new ModelRendererTurbo(this, 1, 25, textureX, textureY); // Box 5
 		bodyModel[34] = new ModelRendererTurbo(this, 505, 1, textureX, textureY); // Box 61
 		bodyModel[35] = new ModelRendererTurbo(this, 457, 9, textureX, textureY); // Box 62
-		bodyModel[36] = new ModelRendererTurbo(this, 17, 9, textureX, textureY); // Box 63
+		bodyModel[36] = new ModelRendererTurbo(this, 17, 8, textureX, textureY); // Box 63
 		bodyModel[37] = new ModelRendererTurbo(this, 209, 49, textureX, textureY); // Box 234
 		bodyModel[38] = new ModelRendererTurbo(this, 233, 49, textureX, textureY); // Box 4
 		bodyModel[39] = new ModelRendererTurbo(this, 377, 25, textureX, textureY); // Box 4
@@ -164,7 +164,7 @@ public class ModelFP45 extends ModelConverter //Same as Filename
 		bodyModel[122] = new ModelRendererTurbo(this, 201, 57, textureX, textureY, "lamp"); // Box 241 lamp
 		bodyModel[123] = new ModelRendererTurbo(this, 1, 65, textureX, textureY); // Box 242
 		bodyModel[124] = new ModelRendererTurbo(this, 193, 25, textureX, textureY); // Box 409
-		bodyModel[125] = new ModelRendererTurbo(this, 17, 25, textureX, textureY, "lamp"); // Box 410 glow
+		bodyModel[125] = new ModelRendererTurbo(this, 17, 24, textureX, textureY, "lamp"); // Box 410 glow
 		bodyModel[126] = new ModelRendererTurbo(this, 25, 65, textureX, textureY); // Box 411
 		bodyModel[127] = new ModelRendererTurbo(this, 41, 65, textureX, textureY); // Box 412
 		bodyModel[128] = new ModelRendererTurbo(this, 65, 65, textureX, textureY); // Box 413
@@ -368,7 +368,7 @@ public class ModelFP45 extends ModelConverter //Same as Filename
 		bodyModel[13].addBox(0F, 0F, 0F, 0, 4, 1, 0F); // Box 61
 		bodyModel[13].setRotationPoint(-49.5F, -8F, 10F);
 
-		bodyModel[14].addBox(0F, 0F, 0F, 4, 2, 3, 0F); // Box 4
+		bodyModel[14].addBox(0F, 0F, 0F, 5, 2, 3, 0F); // Box 4
 		bodyModel[14].setRotationPoint(-53.5F, -2F, -1.5F);
 
 		bodyModel[15].addBox(0F, 0F, 0F, 3, 2, 14, 0F); // Box 197
@@ -425,7 +425,7 @@ public class ModelFP45 extends ModelConverter //Same as Filename
 		bodyModel[32].addShapeBox(0F, 0F, 0F, 5, 6, 6, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -4F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -4F, 0F, 0F); // Box 4
 		bodyModel[32].setRotationPoint(44.5F, -4F, -3F);
 
-		bodyModel[33].addBox(0F, 0F, 0F, 4, 2, 3, 0F); // Box 5
+		bodyModel[33].addBox(0F, 0F, 0F, 5, 2, 3, 0F); // Box 5
 		bodyModel[33].setRotationPoint(49.5F, -2F, -1.5F);
 
 		bodyModel[34].addBox(0F, 0F, 0F, 0, 4, 1, 0F); // Box 61
@@ -1246,5 +1246,5 @@ public class ModelFP45 extends ModelConverter //Same as Filename
 	{
 	}
 
-	public ModelRendererTurbo ModelFP40[];
+	public ModelRendererTurbo ModelFP45[];
 }
