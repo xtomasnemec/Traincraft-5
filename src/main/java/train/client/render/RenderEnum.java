@@ -855,6 +855,11 @@ public enum RenderEnum {
 			add(new double[]{0.40D, 1.35D, 0D});
 		}
 	}, "", null, 0, false),
+	FP45( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselFP45.class,  new ModelFP45(), "fp45_", true,new float[] {-2.5F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{3.05D, 1.5D, 0.0D});
+		}
+	},"", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;

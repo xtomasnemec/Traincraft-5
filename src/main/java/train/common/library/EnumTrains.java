@@ -331,6 +331,7 @@ public enum EnumTrains {
 	GP9("GP9", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP9.class, ItemIDs.minecartGP9.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Grey", "Red", "Orange", "Magenta", "Yellow"}, 10, -3, new String[] {"Built by Bida"}),
 	C425("C425", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC425.class, ItemIDs.minecartC425.item, "diesel", 2500, 113, 0, 60, 0, 190, 0.7, 0.8, 19000, new String[]{"Black", "Orange"}, 10, -3.6, new String[] {"Wait didn't Bida already do this model?"}),
 	VO1000("VO1000", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselVO1000.class, ItemIDs.minecartVO1000.item, "diesel", 1000, 67, 0, 55, 0, 180, 0.8, 0.9, 16000, new String[]{"Green", "Pink"}, 10, -2.2, new String[] {"Made by Prof_Binky"}),
+	FP45("FP45",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselFP45.class, ItemIDs.minecartFP45.item, "diesel", 3600, 137, 0, 55, 0, 170, 0.75, 0.85, 20000, new String[] {"Orange", "Yellow"}, 10, -5, new String[] {"Model by Prof_Binky"}),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,
