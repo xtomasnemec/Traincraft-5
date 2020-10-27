@@ -758,7 +758,7 @@ public enum RenderEnum {
 			add(new double[]{1.6D, 1.45D, 0.0D});
 		}
 	}, "", null, 0, false),
-	GP30( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP30.class,  new ModelGP30(), "gp30_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+	GP30( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP30.class,  new ModelGP30(), "gp30_", true,new float[] {-1.5F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1.9D, 1.4D, 0.0D});
 		}
@@ -776,7 +776,7 @@ public enum RenderEnum {
 	aipkitExplorer(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer.class, new ModelAipkitExplorer(), "aipkit_explorer", false, new float[]{0F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	MillGondola(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MillGondola.class, new ModelMillGondola(),"MillGondola_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Class345(com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricClass345.class, new ModelClass345(), "class345", false,new float[] {-1.0F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	SD70Mac( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD70Mac.class,  new ModelSD70Mac(), "sd70mac_", true,new float[] {-2.3F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+	SD70Mac( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD70Mac.class,  new ModelSD70Mac(), "sd70mac_", true,new float[] {-2.1F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 
 		{
 			add(new double[]{2.35D, 1.5D, 0.0D});
@@ -792,7 +792,7 @@ public enum RenderEnum {
 	amfleet2(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Amfleet2.class, new ModelAmfleet2(),"amfleet2_", true, new float[]{0F, -0.4F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	BoulderWagon(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, new ModelBoulderWagon(),"BoulderWagon_",true, new float[]{0F,0.2F,0F}, new float[] { 0F, 180F, 180F },null, "",0,null,  "",null, 0,false),
 	TGVmobile( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselTGVmobile.class,  new ModelTGVMobile(), "tgvmobile_Orange", false,new float[] {-1.5F, 0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	Hustler(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, new ModelHustler(), "hustler", false, new float[]{-1F, 0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	Hustler(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, new ModelHustler(), "hustler_", true, new float[]{-1F, 0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	F40PH( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class,  new ModelF40PH(), "f40ph_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1.9D, 1.4D, 0.0D});
@@ -864,6 +864,12 @@ public enum RenderEnum {
 		{
 			add(new double[]{2.25D, 1.5D, 0.0D});
 
+		}
+	}, "", null, 0, false),
+	GP7b( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7b.class,  new com.jcirmodelsquad.tcjcir.models.trains.ModelGP7b(), "bettergp7b_", true,new float[] {-1.5F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.45D, 1.45D, 0.0D});
+			add(new double[]{1.25D, 1.45D, 0.0D});
 		}
 	}, "", null, 0, false),
 	;

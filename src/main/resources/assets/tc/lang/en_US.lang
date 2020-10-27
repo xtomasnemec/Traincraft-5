@@ -412,6 +412,7 @@ item.tc:minecartC425.name=ALCo C425
 item.tc:minecartVO1000.name=Baldwin VO 1000
 item.tc:minecartFP45.name=EMD FP45
 item.tc:minecartF45.name=EMD F45
+item.tc:minecartGP7b.name=EMD GP7b
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -775,6 +776,7 @@ entity.tc.C425.name=ALCo C425
 entity.tc.VO1000.name=Baldwin VO 1000
 entity.tc.FP45.name=EMD FP45
 entity.tc.F45.name=EMD F45
+entity.tc.GP7b.name=EMD GP7b
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
