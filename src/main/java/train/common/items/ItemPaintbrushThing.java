@@ -16,12 +16,15 @@ public class ItemPaintbrushThing extends Item {
 
     public ItemPaintbrushThing() {
         setCreativeTab(Traincraft.tcTab);
+        setMaxDamage(300);
+        setMaxStackSize(1);
     }
+
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":paintbrushthing");
+        this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":paintbrushThing");
     }
     @SideOnly(Side.CLIENT)
     @Override

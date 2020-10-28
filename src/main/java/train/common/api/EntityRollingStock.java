@@ -58,6 +58,7 @@ import train.common.library.ItemIDs;
 import train.common.tile.TileTCRail;
 import train.common.tile.TileTCRailGag;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -437,6 +438,8 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 			this.isAttached = false;
 		}
 	}
+
+
 
 	@Override
 	public void setDead() {
@@ -1574,6 +1577,7 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 	public float getShadowSize() {
 		return 0.0F;
 	}
+
 
 	@Override
 	public boolean interactFirst(EntityPlayer entityplayer) {

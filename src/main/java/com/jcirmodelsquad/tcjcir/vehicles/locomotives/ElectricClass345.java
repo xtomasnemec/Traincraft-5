@@ -14,6 +14,7 @@ import train.common.library.GuiIDs;
 public class ElectricClass345 extends ElectricTrain {
     public ElectricClass345(World world) {
         super(world);
+
     }
 
     public ElectricClass345(World world, double d, double d1, double d2) {

@@ -16,6 +16,7 @@ import train.common.api.Locomotive;
 import train.common.core.util.TraincraftUtil;
 import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.library.Info;
+import net.minecraft.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,6 +32,9 @@ public class RenderRollingStock extends Render {
 	/**
 	 * Renders the Minecart.
 	 */
+
+
+
 	public static void renderTheMinecart(EntityRollingStock cart, double x, double y, double z, float yaw, float time) {
 		GL11.glPushMatrix();
 		long var10 = cart.getEntityId() * 493286711L;
@@ -321,6 +325,7 @@ public class RenderRollingStock extends Render {
 		return xyz;
 	}
 
+
 	private static void renderExplosionFX(EntityRollingStock cart, float yaw, float pitch, String explosionType, ArrayList<double[]> explosionFX, int explosionFXIterations, boolean hasSmokeOnSlopes) {
 		if(cart instanceof Locomotive && !((Locomotive)cart).isLocoTurnedOn())return;
 		float yawMod = yaw % 360;
@@ -364,6 +369,8 @@ public class RenderRollingStock extends Render {
 	public void doRender(Entity par1Entity, double x, double y, double d2, float yaw, float time) {
 		renderTheMinecart((EntityRollingStock) par1Entity, x, y, d2, yaw, time);
 	}
+
+
 
 	//@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
