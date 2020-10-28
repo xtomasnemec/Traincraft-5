@@ -15,7 +15,7 @@ public enum EnumTrains {
 	/**
 	 * Passengers
 	 */
-	passengerCartBlue("Passenger Blue", EntityPassengerBlue.class, ItemIDs.minecartPassengerBlue.item, "passenger", 0, 0, 1, 0, 0, 0, 0, 0, 0, new String[]{"Blue", "Red", "Green", "White", "Black", "Cyan", "Orange", "Grey", "LightGrey"}, 18, 0),
+	passengerCartBlue("Passenger Blue", EntityPassengerBlue.class, ItemIDs.minecartPassengerBlue.item, "passenger", 0, 0, 1, 0, 0, 0, 0, 0, 0, new String[]{"Blue", "Red", "Green", "White", "Black", "Cyan", "Orange", "Grey", "LightGrey", "Lime"}, 18, 0),
 	passengerCartBlackSmall("Passenger Small Black", EntityPassenger2.class, ItemIDs.minecartPassenger2.item, "passenger", 0, 0, 0.5, 0, 0, 0, 0, 0, 0, null, 18, 0),
 	passengerLongGreen("Passenger Green Long", EntityPassenger5.class, ItemIDs.minecartPassenger5.item, "passenger", 0, 0, 1, 0, 0, 0, 0, 0, 0, new String[]{"Green", "Yellow"}, 18, 0),
 	passengerShortGreen("Passenger Short Green", EntityPassenger7.class, ItemIDs.minecartPassenger7.item, "passenger", 0, 0, 1, 0, 0, 0, 0, 0, 0, null, 18, 0),
@@ -98,7 +98,7 @@ public enum EnumTrains {
 	freightKClassRailBox("Freight K Class Rail Box", EntityFreightKClassRailBox.class, ItemIDs.minecartKClassRailBox.item, "freight", 4, (new String[]{"Yellow", "Orange"}), 18, 36,new String[]{"Fictional. Cargo: any"}),
 	freightShortCoveredHopper("Freight Short Covered Hopper", EntityFreightShortCoveredHopper.class, ItemIDs.minecartShortCoveredHopper.item, "freight", 4, (new String[]{"Grey", "Orange", "LightBlue", "Lime", "Yellow", "Blue", "Cyan"}), 18, 36,new String[]{"Cargo: any"}),
 	freightLongCoveredHopper("Freight Long Covered Hopper", EntityFreightLongCoveredHopper.class, ItemIDs.minecartLongCoveredHopper.item, "freight", 6, (new String[]{"LightGrey", "Grey","Pink", "White", "Green", "Orange", "Lime", "Cyan"}), 18, 54,new String[]{"Cargo: any"}),
-	freightOpenWagon("Freight Open Wagon", EntityFreightOpenWagon.class, ItemIDs.minecartOpenWagon.item, "freight", 2, (new String[]{"Red", "Brown"}), 18, 36, new String[]{"Cargo: blocks, vanilla items"}),//"train_hopper" for open wagon => weird
+	freightOpenWagon("Freight Open Wagon", EntityFreightOpenWagon.class, ItemIDs.minecartOpenWagon.item, "freight", 2, (new String[]{"Red", "Brown", "Pink"}), 18, 36, new String[]{"Cargo: blocks, vanilla items"}),//"train_hopper" for open wagon => weird
 	freightHopperUS("Freight Hopper US", EntityFreightHopperUS.class, ItemIDs.minecartFreightHopperUS.item, "freight", 4, (new String[]{"Brown", "Grey", "LightGrey", "Blue", "Red", "Yellow", "Black", "LightBlue", "Purple", "Green", "Magenta", "Orange"}), 18, 27, new String[]{"Cargo: blocks"}),
 	freight100TonHopper("Freight 100 Ton Hopper", EntityFreight100TonHopper.class, ItemIDs.minecartFreight100TonHopper.item, "freight", 4, (new String[]{"Red", "Black", "Blue", "Grey", "LightGrey", "Brown"}), 18, 54, new String[]{"Cargo: blocks"}),
 	flatCartWoodUS("Freight Flat Cart Wood US", EntityFlatCartWoodUS.class, ItemIDs.minecartFlatCartWoodUS.item, "freight", 3, (new String[]{"Red", "White"}), 18, 27, new String[]{"Cargo: wood stuff"}),
@@ -212,9 +212,8 @@ public enum EnumTrains {
 	locoElectricTramYellow("Loco Electric Yellow Wood Tram",EntityLocoElectricTramWood.class, ItemIDs.minecartTramWood.item,"electric",300,55,0,10,0,140,0.5,0.965,0,null,14,-2),
 	locoElectricTramNY("Loco Electric Tram NY", EntityLocoElectricTramNY.class,  ItemIDs.minecartNYTram.item,
 			"electric", 1327, 89, 0, 10, 0, 170, 0.7, 0.965, 0, null, 18, -3),
-	locoElectricBR185("Loco Electric BR 185", EntityLocoElectricBR185.class, ItemIDs.minecartLocoBR185.item,
-			"electric", 2428, 160, 0, 6, 0, 170, 0.7, 0.965, 0, new String[]{"Red", "Blue", "Magenta", "Cyan", "Grey", "LightBlue", "LightGrey", "Orange", "Pink", "Purple", "White", "Yellow", "Black"}, 18, -5),
-	locoDieselE10lDB("Loco Electric E10 DB",EntityLocoElectricE10_DB.class, ItemIDs.minecartE10_DB.item,"electric",2473,150,0,8,0,170,0.66,0.96,8000,new String[] {"Blue","Red", "Grey", "Brown", "Green"},15,-3.8),
+	locoElectricBR185("Loco Electric BR 185", EntityLocoElectricBR185.class, ItemIDs.minecartLocoBR185.item, "electric", 2428, 160, 0, 6, 0, 170, 0.7, 0.965, 0, new String[]{"Red", "Blue", "Magenta", "Cyan", "Grey", "LightBlue", "LightGrey", "Orange", "Pink", "Purple", "White", "Yellow", "Black", "Brown"}, 18, -5),
+	locoDieselE10lDB("Loco Electric E10 DB",EntityLocoElectricE10_DB.class, ItemIDs.minecartE10_DB.item,"electric",2473,150,0,8,0,170,0.66,0.96,8000,new String[] {"Blue","Red", "Grey", "Brown", "Green", "LightGrey", "Lime", "Pink", "Purple", "White"},15,-3.8),
 	locoDieselE103("Loco Electric E103",EntityLocoElectricE103.class, ItemIDs.minecartE103.item,"electric",2806,200,0,8,0,170,0.66,0.96,8000,new String[] {"Red","Blue"},15,-3.6),
 	locoElectricClass85("Loco Electric Class 85", EntityLocoElectricClass85.class,
 			ItemIDs.minecartLocoClass85.item, "electric", 1997, 160, 0, 10, 0, 170, 0.7, 0.965, 0, null, 18, -5),
@@ -327,7 +326,7 @@ public enum EnumTrains {
 	HHgregg("HHgregg", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHHgregg.class, ItemIDs.minecartHHgregg.item, "awesome", 9932, 299, 0, 42, 0, 48, 0.9, 0.9, 7, null, 10, -2, new String[] {"hhhgregg, Panasonic Blu-ray nintey-nine dollars, thirty-two inch LCD TV two-nintey nine, LG fourty-two inch HD TV only four eighty-nine, everything on sale during chirstmas in"}),
 	MP15DCW9("MP15DCW9", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselMP15DCW9.class, ItemIDs.minecartMP15DCW9.item, "diesel", 1500, 97, 0, 50, 0, 100, 0.8, 0.9, 10000, new String[] {"Orange", "White"}, 10, -2.3),
 	BoulderWagon("BoulderWagon", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, ItemIDs.minecartBoulderWagon.item, "freight", 5, new String[]{"Grey","skin16"}, 0, 9, new String[]{"Made by hariesh"}),
-	MILW40boxcar("MILW40boxcar", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MILW40boxcar.class, ItemIDs.minecartMILW40boxcar.item, "freight", 4, new String[] {"Red", "Orange", "Yellow", "Green", "Blue", "Purple"}, 0, 27, new String[]{"Made by Prof_Binky"}),
+	MILW40boxcar("MILW40boxcar", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MILW40boxcar.class, ItemIDs.minecartMILW40boxcar.item, "freight", 4, new String[] {"Red", "Brown", "Yellow", "Green", "Blue", "Purple", "Orange"}, 0, 27, new String[]{"Made by Prof_Binky"}),
 	GP9("GP9", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP9.class, ItemIDs.minecartGP9.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Grey", "Red", "Orange", "Magenta", "Yellow"}, 10, -3, new String[] {"Built by Bida"}),
 	C425("C425", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC425.class, ItemIDs.minecartC425.item, "diesel", 2500, 113, 0, 60, 0, 190, 0.7, 0.8, 19000, new String[]{"Black", "Orange"}, 10, -3.6, new String[] {"Wait didn't Bida already do this model?"}),
 	VO1000("VO1000", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselVO1000.class, ItemIDs.minecartVO1000.item, "diesel", 1000, 67, 0, 55, 0, 180, 0.8, 0.9, 16000, new String[]{"Green", "Pink"}, 10, -2.2, new String[] {"Made by Prof_Binky"}),
