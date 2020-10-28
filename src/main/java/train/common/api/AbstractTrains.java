@@ -144,6 +144,15 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 	public ArrayList<Integer> acceptedColors;
 
 
+	@Override
+	public float getBrightness(float p_70013_1_) {
+		getBrightnessForRender(2);
+		getBrightness(2);
+		isBurning();
+		isImmuneToFire();
+		return super.getBrightness(p_70013_1_);
+	}
+
 	public AbstractTrains(World world) {
 		super(world);
 		renderDistanceWeight = 2.0D;
@@ -471,6 +480,19 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 			return "Orange";
 		case 15:
 			return "White";
+		//start of hariesh's model fix
+		case 16:
+			return "skin16";
+		case 17:
+			return "skin17";
+		case 18:
+			return "skin18";
+		case 19:
+			return "skin19";
+		case 20:
+			return "skin20";
+		// end of hariesh's texture fix.
+		//Do not touch the numbers below, they are needed for other code -hariesh
 		case 100:
 			return "Empty";
 		case 101:
