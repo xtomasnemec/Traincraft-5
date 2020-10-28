@@ -159,11 +159,58 @@ public class GUICreditsBook extends GuiScreen {
                         add(new StackToDraw(new ItemStack(Items.redstone), 170, 16));
                     }
                 });
+        addPage("Messicrew Model Contributions\n\nP42 [aka Genesis]\n F40PH \n Generic Highrail Truck\n",
+                "", "right", new ArrayList<StackToDraw>() {
+                    {
+                        add(new StackToDraw(new ItemStack(ItemIDs.minecartGeGenesis.item), 20, 16));
+                        add(new StackToDraw(new ItemStack(ItemIDs.refinedFuel.item), 170, 16));
+                    }
+                });
+        addPage("Other Model Contributions\n\n Eddie Dalton: ES44 and SD70MAC base models\n BigJ:VO1000\n",
+                "", "right", new ArrayList<StackToDraw>() {
+                    {
+                        add(new StackToDraw(new ItemStack(ItemIDs.minecartGeGenesis.item), 20, 16));
+                        add(new StackToDraw(new ItemStack(ItemIDs.refinedFuel.item), 170, 16));
+                    }
+                });
+        addPage("PeachMaster Code Contribution\n", "", "left", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH100HCoach.item), 170, 16));
+            }
+        });
 
         addPage("hariesh Code Contribution\n\n•Increase of Texture limit per Model\n•Recipes of Trains\n•Adding track recipe to crafting table\n•Train Imports\n•Texture Imports\n•Achievements Added\n•Bug Testing and Bug Fixes\n•Funny Quotes Added\n", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartLUengine.item), 170, 16));
+            }
+        });
+        addPage("Bida Code Contribution\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH100HCoach.item), 170, 16));
+            }
+        });
+        addPage("JCRail Code Contribution\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH100HCoach.item), 170, 16));
+            }
+        });
+        addPage("JCRail Texture Contibutions\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(Items.skull, 1, 1), 20, 16));
+            }
+        });
+        addPage("Binky Texture Contibutions\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(Items.skull, 1, 1), 20, 16));
+            }
+        });
+        addPage("Messicrew Texture Contibutions\n\nMT&S SD45-2\nMT&S SD40-2\nMT&S SW1500\nMT&S SW1\nMT&S SD70MAC\n MT&S U23B\n MT&S CF7\n JCTransit skins on several Passenger Locos and Cars  ,", "", "left", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(Items.skull, 1, 1), 20, 16));
             }
         });
         addPage("hariesh's Texture Contribution\n\n•LU 1996 Skin\n•Class345 Skin\n•PCH100H Overground Skin\n•PCH120 Underground Skin\n•Pumpkin Wagon Skin", "", "right", new ArrayList<StackToDraw>() {
@@ -179,7 +226,7 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartWatertransp.item), 160, 165));
             }
         });
-        addPage("Derailment:\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+        addPage("blank\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(Items.skull, 1, 1), 20, 16));
             }
