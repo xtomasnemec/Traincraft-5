@@ -152,7 +152,7 @@ public class GUICreditsBook extends GuiScreen {
             }
         });
 
-        addPage("\n\nHeat:\n\nvery fast.\n",
+        addPage("hariesh Model Contribution\n\n•LU 1996 Engine\n•LU 1996 Passenger\n•Class 345\n•Class 345 Coach\n•Boulder Wagon\n",
                 "", "right", new ArrayList<StackToDraw>() {
                     {
                         add(new StackToDraw(new ItemStack(ItemIDs.minecartBR_E69.item), 20, 16));
@@ -160,15 +160,16 @@ public class GUICreditsBook extends GuiScreen {
                     }
                 });
 
-        addPage("\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+        addPage("hariesh Code Contribution\n\n•Increase of Texture limit per Model\n•Recipes of Trains\n•Adding track recipe to crafting table\n•Train Imports\n•Texture Imports\n•Achievements Added\n•Bug Testing and Bug Fixes\n•Funny Quotes Added\n", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
-                add(new StackToDraw(new ItemStack(Blocks.tnt), 170, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartLUengine.item), 170, 16));
             }
         });
-        addPage("M\n\n\n\n\n", "", "right", new ArrayList<StackToDraw>() {
+        addPage("hariesh's Texture Contribution\n\n•LU 1996 Skin\n•Class345 Skin\n•PCH100H Overground Skin\n•PCH120 Underground Skin\n•Pumpkin Wagon Skin", "", "right", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.stake.item), 20, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartClass345.item), 170, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartLocoBR01_DB.item), 40, 165));
                 add(new StackToDraw(new ItemStack(ItemIDs.stake.item), 60, 165));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartFreightCart2.item), 80, 165));

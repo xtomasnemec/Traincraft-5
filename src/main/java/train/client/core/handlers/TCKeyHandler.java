@@ -35,22 +35,22 @@ public class TCKeyHandler {
 		ClientRegistry.registerKeyBinding(horn);
 		inventory = new KeyBinding("key.traincraft.inventory", Keyboard.KEY_R, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(inventory);
-		up = new KeyBinding("key.traincraft.up", Keyboard.KEY_Y, "key.categories.traincraft");
+		up = new KeyBinding("key.traincraft.up", Keyboard.KEY_NONE, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(up);
-		down = new KeyBinding("key.traincraft.down", Keyboard.KEY_X, "key.categories.traincraft");
+		down = new KeyBinding("key.traincraft.down", Keyboard.KEY_NONE, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(down);
 		idle = new KeyBinding("key.traincraft.idle", Keyboard.KEY_C, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(idle);
 		furnace = new KeyBinding("key.traincraft.furnace", Keyboard.KEY_F, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(furnace);
 		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
-			MTCScreen = new KeyBinding("key.traincraft.showMTCScreen", Keyboard.KEY_M, "key.categories.traincraft");
+			MTCScreen = new KeyBinding("key.traincraft.showMTCScreen", Keyboard.KEY_NONE, "key.categories.traincraft");
 			ClientRegistry.registerKeyBinding(MTCScreen);
-			toggleATO = new KeyBinding("key.traincraft.toggleATO", Keyboard.KEY_O, "key.categories.traincraft");
+			toggleATO = new KeyBinding("key.traincraft.toggleATO", Keyboard.KEY_NONE, "key.categories.traincraft");
 			ClientRegistry.registerKeyBinding(toggleATO);
-			mtcOverride = new KeyBinding("key.traincraft.mtcOverride", Keyboard.KEY_T, "key.categories.traincraft");
+			mtcOverride = new KeyBinding("key.traincraft.mtcOverride", Keyboard.KEY_NONE, "key.categories.traincraft");
 			ClientRegistry.registerKeyBinding(mtcOverride);
-			overspeedOverride = new KeyBinding("key.traincraft.overspeedOverride", Keyboard.KEY_L, "key.categories.traincraft");
+			overspeedOverride = new KeyBinding("key.traincraft.overspeedOverride", Keyboard.KEY_NONE, "key.categories.traincraft");
 			ClientRegistry.registerKeyBinding(overspeedOverride);
 		}
 	}

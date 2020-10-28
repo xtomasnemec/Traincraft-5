@@ -220,7 +220,7 @@ public enum EnumTrains {
 			ItemIDs.minecartLocoClass85.item, "electric", 1997, 160, 0, 10, 0, 170, 0.7, 0.965, 0, null, 18, -5),
 	locoElectricCD151("Loco Electric CD151", EntityLocoElectricCD151.class, ItemIDs.minecartLocoCD151.item,
 			"electric", 1133, 150, 0, 10, 0, 170, 0.7, 0.965, 6850, new String[]{"Blue", "Yellow", "Red"}, 18, -4),
-	locoElectricBP4("Loco Electric BP4",EntityLocoElectricBP4.class, ItemIDs.minecartLocoBP4.item,"electric",1520,105,0,60,0,200,0.8,0.97,8650,new String[]{"Green", "Purple", "Cyan"},10,-4.25),
+	locoElectricBP4("Loco Electric BP4",EntityLocoElectricBP4.class, ItemIDs.minecartLocoBP4.item,"electric",1520,105,0,60,0,200,0.8,0.97,8650,new String[]{"Green", "Purple", "Cyan"},10,-3),
 
 	/** Steam */
 	locoSteamA4("Loco Steam A4 Mallard", EntityLocoSteamMallardA4.class,  ItemIDs.minecartLocoA4Mallard.item, "steam", 1418, 203, 0, 60, 200, 160, 0.65, 0.97, 10000, new String[] { "Blue", "Lime", "Black", "Green", "White" }, 7, -5 ),
@@ -306,7 +306,7 @@ public enum EnumTrains {
 	PCH100H("PCH-100H", com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH100H.class, ItemIDs.minecartExperimentalHydrogenTrain.item, "hydrogen",900, 100, 0, 6, 0, 160, 0.8, 0.985, 7000, new String[]{"LightBlue", "Blue"}, 18,  -2.6, new String[] {"Powered by Mekanism Hydrogen, Original model by Bidahochi, modified by PeachMaster"}),
 	PCH100Coach("PCH-100H Coach", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PCH100HCoach.class, ItemIDs.minecartPCH100HCoach.item, "passenger",0, 0, 2, 0, 0, 0, 0, 0, 0, new String[]{"LightBlue", "Blue"}, 0, 0,new String[] {"Original model by Bidahochi, modified by PeachMaster"}),
 	GP13("GP13", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP13.class, ItemIDs.minecartGP13.item, "diesel", 2510,90,0,50,0,200,0.74,0.96,20000, new String[]{"Blue", "LightBlue", "Black", "Orange", "White", "Yellow"}, 10, 1.4, new String[] {"Fictional Rebuild of a GP7, Uses the original GP40 model"}),
-	GP30("GP30", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP30.class, ItemIDs.minecartGP30.item, "diesel", 2250, 114, 0, 50, 0, 180, 0.7, 0.91, 18000, new String[] {"LightGrey", "Black", "Yellow", "Blue", "Orange", "White", "Grey"}, 10, -3.5, new String[] {"Made by Bida"}),
+	GP30("GP30", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP30.class, ItemIDs.minecartGP30.item, "diesel", 2250, 114, 0, 50, 0, 180, 0.7, 0.91, 18000, new String[] {"LightGrey", "Black", "Yellow", "Blue", "Orange", "White", "Grey"}, 10, -3.1, new String[] {"Made by Bida"}),
 	VBShay("2TruckVerticalBoilerShay", com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamVBShay.class, ItemIDs.minecartVBShay2.item, "steam", 280,55,0,50,160,120,0.7,0.99,5000, new String[] {"Black", "Grey"},15,-1.3, new String[] {"Made with care by Bida"}),
 	MillGondola("52footMillGondola", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MillGondola.class, ItemIDs.minecartMillGondola.item, "freight", 5, new String[] {"Red", "Black", "Orange"}, 30, 50, new String[] {"Made by Bida"}),
 	aipkitExplorer("Aipkit Explorer", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer.class, ItemIDs.minecartAipkitExplorer.item, "passenger",0, 0, 2, 0, 0, 0, 0, 0, 0, null, 0, 0,new String[] {"Built from scratch by PeachMaster"}),
@@ -314,24 +314,27 @@ public enum EnumTrains {
 	Class345("Class 345", com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricClass345.class, ItemIDs.minecartClass345.item, "electric", 1500, 145, 0,6, 0, 100, 1.1, 0.95, 1000, null, 18, -3, new String[] {"Class 345 by hariesh"}),
 	SD70Mac("SD70Mac", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD70Mac.class, ItemIDs.minecartSD70Mac.item, "diesel", 4000, 112, 0, 15, 0, 150, 0.6, 0.8, 17000, new String[]{"Red", "Blue", "Grey", "LightGrey", "LightBlue", "Yellow", "Black","Green", "Orange", "Lime", "Pink"}, 18, -4, new String[] {"Original Model by Eddie, upgraded by Bida"}),
 	Class345Coach("Class345", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Class345Coach.class, ItemIDs.minecartClass345Coach.item, "passenger", 0, 0, 1.5,0 , 0, 0, 0,0,0,null,0,0,new String[] {"Class 345 Coach by hariesh"}),
-	C424("C424", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC424.class, ItemIDs.minecartC424.item, "diesel", 2400, 113, 0, 60, 0, 190, 0.7, 0.8, 19000, new String[]{"Black", "Yellow", "Orange", "White", "Cyan"}, 10, -3.6, new String[] {"Yet Another Bida Model kek"}),
+	C424("C424", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC424.class, ItemIDs.minecartC424.item, "diesel", 2400, 113, 0, 60, 0, 190, 0.7, 0.8, 19000, new String[]{"Black", "Yellow", "Orange", "Cyan"}, 10, -3.6, new String[] {"Yet Another Bida Model kek"}),
 	amfleet2("Amfleet2", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Amfleet2.class, ItemIDs.minecartAmfleet2.item, "passenger", 2, new String[] {"Blue", "LightGrey", "Grey"}, 0, 0, new String[] {"Amfleet1 by Valaktik, Updated by Bidahochi, Converted to Amfleet2 by Anonymous Sponser"}),
 	TGVmobile("TGVmobile", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselTGVmobile.class, ItemIDs.minecartTGVMobile.item, "diesel", 200, 350, 0, 10, 0, 140, 0.9, 0.9, 1000,null,18, 2.7, new String[] {"Yes, this is real, minus the highrail gear. Made by Bida at 3AM"}),
-	Hustler("Hustler", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, ItemIDs.minecartHustler.item, "diesel", 150, 30, 0, 50, 0, 170, 0.6, 0.7, 9000, null, 10, -2, new String[] {"Made by BigJ"}),
+	Hustler("Hustler", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, ItemIDs.minecartHustler.item, "diesel", 150, 30, 0, 50, 0, 170, 0.6, 0.7, 9000,  new String[] {"Yellow", "Black", "Blue"}, 10, -2, new String[] {"Made by BigJ"}),
 	F40PH("F40PH", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF40PH.class, ItemIDs.minecartF40PH.item, "diesel", 3000, 103, 0, 50, 0, 170, 0.75, 0.95, 11000, new String[] {"LightGrey", "Grey", "Red", "Yellow", "Cyan"}, 10, -3.5, new String[] {"Model by Bida & Mr Coomer"}),
 	GP7u("GP7u", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7u.class, ItemIDs.minecartGP7u.item, "diesel", 1500, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Red", "Blue"}, 10, -3, new String[] {"Rebuilt by Bida"}),
-	GP7("GP7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, ItemIDs.minecartGP7.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Yellow", "Blue", "White"}, 10, -3, new String[] {"Built by Bida"}),
-<<<<<<< Updated upstream
-	SDP40F("SDP40F",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class, ItemIDs.minecartSDP40F.item, "diesel", 3000, 160, 0, 55, 0, 170, 0.8, 0.9, 20000, new String[] {"LightBlue", "White", "LightGrey", "Grey", "Yellow"}, 10, -4.9, new String[] {"Model by Prof_Binky"}),
-=======
-	SDP40F("SDP40F",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class, ItemIDs.minecartSDP40F.item, "diesel", 3000, 160, 0, 55, 0, 170, 0.8, 0.9, 20000, new String[] {"LightBlue", "White", "Grey", "LightGrey", "Yellow"}, 10, -4.9, new String[] {"Model by Prof_Binky"}),
->>>>>>> Stashed changes
-	BoulderWagon("BoulderWagon", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, ItemIDs.minecartBoulderWagon.item, "freight", 5, null, 0, 9, new String[]{"Made by hariesh"}),
+	GP7("GP7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7.class, ItemIDs.minecartGP7.item, "diesel", 1500, 105, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Yellow", "Blue", "White", "Brown", "Black", "Red"}, 10, -3, new String[] {"Built by Bida"}),
+	SDP40F("SDP40F",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class, ItemIDs.minecartSDP40F.item, "diesel", 3000, 160, 0, 65, 0, 190, 0.8, 0.9, 20000, new String[] {"LightBlue", "White", "LightGrey", "Grey", "Yellow"}, 10, -3.95, new String[] {"Model by Prof_Binky"}),
 	gtavthing("gtavthing", com.jcirmodelsquad.tcjcir.vehicles.locomotives.Dieselgtavthing.class, ItemIDs.minecartgtavthing.item, "diesel", 1550, 110, 0, 45, 0, 160, 0.85, 0.9, 10000, new String[] {"Yellow"}, 10, -3.2, new String[] {"Fictional locomotive from GTAV"}),
 	HH660("HH660", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHH660.class, ItemIDs.minecartHH660.item, "diesel", 660, 50, 0, 40, 0, 165, 0.9, 0.95, 8000, new String[] {"Black", "Yellow"}, 10, -2),
 	HHgregg("HHgregg", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHHgregg.class, ItemIDs.minecartHHgregg.item, "awesome", 9932, 299, 0, 42, 0, 48, 0.9, 0.9, 7, null, 10, -2, new String[] {"hhhgregg, Panasonic Blu-ray nintey-nine dollars, thirty-two inch LCD TV two-nintey nine, LG fourty-two inch HD TV only four eighty-nine, everything on sale during chirstmas in"}),
+	MP15DCW9("MP15DCW9", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselMP15DCW9.class, ItemIDs.minecartMP15DCW9.item, "diesel", 1500, 97, 0, 50, 0, 100, 0.8, 0.9, 10000, new String[] {"Orange", "White"}, 10, -2.3),
+	BoulderWagon("BoulderWagon", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, ItemIDs.minecartBoulderWagon.item, "freight", 5, new String[]{"Grey","skin16"}, 0, 9, new String[]{"Made by hariesh"}),
+	MILW40boxcar("MILW40boxcar", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MILW40boxcar.class, ItemIDs.minecartMILW40boxcar.item, "freight", 4, new String[] {"Red", "Orange", "Yellow", "Green", "Blue", "Purple"}, 0, 27, new String[]{"Made by Prof_Binky"}),
+	GP9("GP9", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP9.class, ItemIDs.minecartGP9.item, "diesel", 1750, 100, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Grey", "Red", "Orange", "Magenta", "Yellow"}, 10, -3, new String[] {"Built by Bida"}),
+	C425("C425", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC425.class, ItemIDs.minecartC425.item, "diesel", 2500, 113, 0, 60, 0, 190, 0.7, 0.8, 19000, new String[]{"Black", "Orange"}, 10, -3.6, new String[] {"Wait didn't Bida already do this model?"}),
+	VO1000("VO1000", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselVO1000.class, ItemIDs.minecartVO1000.item, "diesel", 1000, 67, 0, 55, 0, 180, 0.8, 0.9, 16000, new String[]{"Green", "Pink"}, 10, -2.2, new String[] {"Made by Prof_Binky"}),
+	FP45("FP45",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselFP45.class, ItemIDs.minecartFP45.item, "diesel", 3600, 145, 0, 65, 0, 190, 0.75, 0.9, 20000, new String[] {"Orange", "Yellow", "LightGrey"}, 10, -3.95, new String[] {"Model by Prof_Binky"}),
+	F45("F45",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF45.class, ItemIDs.minecartF45.item, "diesel", 3600, 145, 0, 65, 0, 190, 0.75, 0.9, 20000, new String[] {"LightBlue", "Green", "Blue", "Yellow", "Red"}, 10, -3.65, new String[] {"Model by Prof_Binky"}),
+	GP7b("GP7b", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7b.class, ItemIDs.minecartGP7b.item, "diesel", 1500, 105, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Blue", "White"}, 10, -3, new String[] {""}),
 	;
-
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,
 	
