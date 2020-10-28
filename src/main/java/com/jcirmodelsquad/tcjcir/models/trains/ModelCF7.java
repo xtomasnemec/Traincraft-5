@@ -14,13 +14,17 @@ import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergB;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelFB2;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelFB2;
+import com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7;
+import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.common.Traincraft;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
@@ -1717,10 +1721,13 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 	ModelFB2 theTrucks1 = new ModelFB2();
 	ModelTypeB theTrucks3 = new ModelTypeB();
 
+
+
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 410; i++) {
-			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp")) {
+			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp") && entity.riddenByEntity != null) {
 				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 				bodyModel[i].render(f5);
 				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
@@ -1731,6 +1738,8 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 			} else {
 				bodyModel[i].render(f5);
 			}
+
+
 		}
 
 		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 15) {
@@ -1773,6 +1782,9 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 		}
 
 	}
+
+
+
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 	{

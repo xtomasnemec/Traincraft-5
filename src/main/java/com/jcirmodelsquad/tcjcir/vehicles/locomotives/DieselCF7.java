@@ -12,6 +12,7 @@ import train.common.api.DieselTrain;
 import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
+import com.jcirmodelsquad.tcjcir.models.trains.ModelCF7;
 
 
 public class DieselCF7 extends DieselTrain {
@@ -76,10 +77,12 @@ public class DieselCF7 extends DieselTrain {
         isDead = true;
     }
 
+
     @Override
     public void pressKey(int i) {
         if (i == 7 && riddenByEntity != null && riddenByEntity instanceof EntityPlayer) {
             ((EntityPlayer) riddenByEntity).openGui(Traincraft.instance, GuiIDs.LOCO, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
+
         }
     }
 
@@ -155,6 +158,7 @@ public class DieselCF7 extends DieselTrain {
         }
         return true;
     }
+
     @Override
     public boolean canBeAdjusted(EntityMinecart cart) {
         return canBeAdjusted;

@@ -66,6 +66,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     private int fuelUpdateTicks = 0;
     public boolean isLocoTurnedOn = false;
     public boolean forwardPressed = false;
+    public boolean frontlight = true;
     private boolean backwardPressed = false;
     public boolean brakePressed = false;
 
