@@ -1,5 +1,6 @@
 package train.common.api;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -269,5 +270,20 @@ public abstract class DieselTrain extends Locomotive implements IFluidHandler {
 
 	public int getFluidAmount() {
 		return theTank.getFluidAmount();
+	}
+
+	@Override
+	public boolean interactFirst(EntityPlayer entityplayer) {
+		playerEntity = entityplayer;
+		if ((super.interactFirst(entityplayer))) {
+			return false;
+		}
+		if (!worldObj.isRemote) {
+			if (riddenByEntity != null && (riddenByEntity instanceof EntityPlayer) && riddenByEntity != entityplayer) {
+				return true;
+			}
+			entityplayer.mountEntity(this);
+		}
+		return true;
 	}
 }
