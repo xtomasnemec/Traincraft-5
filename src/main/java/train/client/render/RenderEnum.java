@@ -666,15 +666,15 @@ public enum RenderEnum {
 			add(new double[]{1.8D, 1.5D, 0.0D});
 		}
 	}, "", null, 0, false),
-	SD45dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2.class,  new ModelSD45dash2(), "sd45dash2_", true,new float[] {-2.5F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+	SD45dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2.class,  new ModelSD45dash2(), "sd45dash2_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{
-			add(new double[]{3.0D, 1.5D, 0.0D});
+			add(new double[]{2.5D, 1.5D, 0.0D});
 
 		}
 	}, "", null, 0, false),
-	SD40dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40dash2.class,  new ModelSD40dash2(), "sd40dash2_", true,new float[] {-2.5F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+	SD40dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40dash2.class,  new ModelSD40dash2(), "sd40dash2_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{
-			add(new double[]{2.85D, 1.5D, 0.0D});
+			add(new double[]{2.3D, 1.5D, 0.0D});
 
 		}
 	}, "", null, 0, false),

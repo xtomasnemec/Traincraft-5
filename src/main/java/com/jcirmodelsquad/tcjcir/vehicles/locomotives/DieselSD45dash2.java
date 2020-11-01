@@ -40,7 +40,7 @@ public class DieselSD45dash2 extends DieselTrain {
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-        double distance = 4.2;
+        double distance = 3.6;
         double yOffset = 0.3;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
@@ -123,7 +123,7 @@ public class DieselSD45dash2 extends DieselTrain {
     }
 
     @Override
-    public float getOptimalDistance(EntityMinecart cart) { return 0.65F;
+    public float getOptimalDistance(EntityMinecart cart) { return 1.35F;
     }
 
     @Override
