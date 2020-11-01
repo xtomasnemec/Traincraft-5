@@ -98,7 +98,7 @@ public class RecipeHandler {
 
 		for (ItemStack ironingot : iron) {
 			addDictRecipe(new ItemStack(BlockIDs.switchStand.block, 1), " W ", " I ", " R ", Character.valueOf('W'), Blocks.lever, Character.valueOf('R'), Items.stick, Character.valueOf('I'), ironingot);
-
+			addDictRecipe(new ItemStack(BlockIDs.milwSwitchStand.block, 1),"XXX","XX ","X  ", Character.valueOf('X'), ironingot);
 			/*Buffer*/
 			addDictRecipe(new ItemStack(BlockIDs.stopper.block, 1), "WWW", "I I", "RRR", Character.valueOf('W'), "plankWood", Character.valueOf('R'), Blocks.rail, Character.valueOf('I'), ironingot);
 		}
