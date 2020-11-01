@@ -13,25 +13,28 @@ package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is locat
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergB;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelFB2;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
-import com.jcirmodelsquad.tcjcir.models.trucks.ModelFB2;
-import com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7;
-import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import scala.swing.event.KeyPressed;
+import scala.swing.event.KeyReleased;
+import scala.swing.event.KeyTyped;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
-import train.common.Traincraft;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
+
+
 public class ModelCF7 extends ModelConverter //Same as Filename
 {
+	boolean lampON = false;
+
 	int textureX = 512;
 	int textureY = 512;
+
 
 	public ModelCF7() //Same as Filename
 	{
@@ -1724,10 +1727,12 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 
 
 
+
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 410; i++) {
-			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp") && entity.riddenByEntity != null) {
+			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp") && entity.riddenByEntity != null ) {
 				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 				bodyModel[i].render(f5);
 				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
