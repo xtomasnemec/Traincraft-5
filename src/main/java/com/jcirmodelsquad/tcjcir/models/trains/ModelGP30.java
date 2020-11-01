@@ -22,7 +22,7 @@ public class ModelGP30 extends ModelConverter //Same as Filename
 
 	public ModelGP30() //Same as Filename
 	{
-		bodyModel = new ModelRendererTurbo[333];
+		bodyModel = new ModelRendererTurbo[337];
 
 		initbodyModel_1();
 
