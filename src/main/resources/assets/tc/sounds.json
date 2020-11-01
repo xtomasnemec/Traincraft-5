@@ -41,6 +41,7 @@
   "leslie_s3l": {"category": "master", "sounds": [{"name": "leslie_s3l","stream": true}]},
   "leslie_sl4t": {"category": "master", "sounds": [{"name": "leslie_sl4t", "stream":  true}]},
   "nathan_k3la": {"category": "master", "sounds": [{"name": "nathan_k3la","stream": true}]},
+  "nathan_k3la_2": {"category": "master", "sounds": [{"name": "nathan_k3la_2","stream": true}]},
   "nathan_k5La": {"category": "master", "sounds": [{"name": "nathan_k5La","stream": true}]},
   "nathan_k5La_2": {"category": "master", "sounds": [{"name": "nathan_k5La_2","stream": true}]},
   "nathan_k5La_3": {"category": "master", "sounds": [{"name": "nathan_k5La_3","stream": true}]},
