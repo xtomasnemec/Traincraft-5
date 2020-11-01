@@ -872,6 +872,12 @@ public enum RenderEnum {
 			add(new double[]{1.25D, 1.45D, 0.0D});
 		}
 	}, "", null, 0, false),
+	SD40T2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40T2.class,  new ModelSD40T2(), "sd40t2_", true,new float[] {-1.9F, 0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.3D, 1.5D, 0.0D});
+
+		}
+	}, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;
