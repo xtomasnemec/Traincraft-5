@@ -367,6 +367,10 @@ public class ModelGP30 extends ModelConverter //Same as Filename
 		bodyModel[330] = new ModelRendererTurbo(this, 249, 73, textureX, textureY, "cull"); // Box 479 cull
 		bodyModel[331] = new ModelRendererTurbo(this, 249, 73, textureX, textureY, "cull"); // Box 339 cull
 		bodyModel[332] = new ModelRendererTurbo(this, 353, 127, textureX, textureY); // Box 332 atsf gp30u window segment
+		bodyModel[333] = new ModelRendererTurbo(this, 47, 84, textureX, textureY); // Box 114
+		bodyModel[334] = new ModelRendererTurbo(this, 54, 84, textureX, textureY); // Box 74
+		bodyModel[335] = new ModelRendererTurbo(this, 62, 85, textureX, textureY); // Box 78
+		bodyModel[336] = new ModelRendererTurbo(this, 361, 107, textureX, textureY); // Box 245
 
 		bodyModel[0].addBox(0F, 0F, 0F, 70, 1, 4, 0F); // Box 1
 		bodyModel[0].setRotationPoint(-35F, 0F, -11F);
@@ -1376,13 +1380,25 @@ public class ModelGP30 extends ModelConverter //Same as Filename
 
 		bodyModel[332].addBox(0F, 0F, 0F, 1, 15, 14, 0F); // Box 332 atsf gp30u window segment
 		bodyModel[332].setRotationPoint(-28F, -17F, -7F);
+
+		bodyModel[333].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0.5F, 0F, 0.5F, 0.5F, 0F, 0.5F, 0.5F, 0F, 0.5F, 0.5F, 0F, 0.5F); // Box 114
+		bodyModel[333].setRotationPoint(-32.5F, -20.5F, -0.5F);
+
+		bodyModel[334].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,-0.2F, 0F, -0.2F, -0.2F, 0F, -0.2F, -0.2F, 0F, -0.2F, -0.2F, 0F, -0.2F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F); // Box 74
+		bodyModel[334].setRotationPoint(-32.5F, -21.5F, -0.5F);
+
+		bodyModel[335].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0F, -0.5F, 0F, -0.5F, -0.5F, 0F, -0.5F, -0.5F, -0.5F, 0F, -0.5F, -0.5F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, -0.5F, 0F, 0F, -0.5F); // Box 78
+		bodyModel[335].setRotationPoint(-32.25F, -20F, -0.25F);
+
+		bodyModel[336].addShapeBox(0F, 0F, 0F, 2, 1, 1, 0F,0F, -0.5F, 0F, -0.5F, -0.5F, 0F, -0.5F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F); // Box 245
+		bodyModel[336].setRotationPoint(-32.5F, -22.5F, -0.5F);
 	}
 	ModelBlombergB theTrucks2 = new ModelBlombergB();
 	ModelTypeB theTrucks3 = new ModelTypeB();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		for (int i = 0; i < 333; i++) {
+		for (int i = 0; i < 337; i++) {
 			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp")) {
 				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 				bodyModel[i].render(f5);
