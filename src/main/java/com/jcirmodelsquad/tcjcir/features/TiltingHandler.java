@@ -29,7 +29,7 @@ public class TiltingHandler {
     }
 
     public void handleTilting(EntityRollingStock rollingStock) {
-       // if (ConfigHandler.ENABLE_TILT_HANDLER) {
+       if (ConfigHandler.ENABLE_TILT_HANDLER) {
             if (!testTilting) {
                 int xFloor = MathHelper.floor_double(rollingStock.posX);
                 int yFloor = MathHelper.floor_double(rollingStock.posY);
@@ -130,7 +130,7 @@ public class TiltingHandler {
                 }
             }
         }
-   // }
+    }
 
     public void tiltToTheLeft() {
         if (tiltingToLeft) {

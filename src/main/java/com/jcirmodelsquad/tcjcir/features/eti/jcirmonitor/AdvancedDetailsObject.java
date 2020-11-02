@@ -1,6 +1,7 @@
 package com.jcirmodelsquad.tcjcir.features.eti.jcirmonitor;
 
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class AdvancedDetailsObject {
@@ -8,6 +9,7 @@ public class AdvancedDetailsObject {
         public String trainName = "";
         public String trainNumber = "";
         public ArrayList<Station> stations;
+        public LocalTime lastMills;
 
         public AdvancedDetailsObject() {
         }

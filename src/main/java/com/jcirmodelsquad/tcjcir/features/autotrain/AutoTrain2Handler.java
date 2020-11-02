@@ -24,6 +24,12 @@ import java.util.ArrayList;
  * - As in, stopping where it needs to, as well as adjusting the speed of the train.
  * - Train Integrity Detection: Detects if the consist has been broken up somehow and stops the train when it does.
  *
+ * Operation Modes:
+ * - Mainline Running: Running on the mainline, as normal, following speed limits and such.
+ * - Slowing Down for Stop
+ * - Blind
+ * - Station Stop
+ * - Integrity Fault:
  * Use Cases:
  * Intercity or Regional Passenger trains: The operation of the train with passengers, stopping at where it needs to go to and reversing at the ends.
  *

@@ -7,6 +7,17 @@ public class Station {
     public Position position = new Position();
     public int estimatedTimeTo;
     public boolean arrivedAt = false;
+
+    public int getLastMills() {
+        return lastMills;
+    }
+
+    public void setLastMills(int lastMills) {
+        this.lastMills = lastMills;
+    }
+
+    public int lastMills = 0;
+
     public Station() {
 
     }
