@@ -381,6 +381,9 @@ public enum ItemIDs {
 	minecartSD40T2("ItemRollingStock", "sd40t2", 13),
 	minecart60centerbeam("ItemRollingStock", "60centerbeam", 3),
 	minecart66centerbeam("ItemRollingStock", "66centerbeam", 3),
+	minecartPS140("ItemRollingStock", "ps140", 3),
+	minecartPS150("ItemRollingStock", "ps150", 4),
+	minecartWVcaboose("ItemRollingStock", "wvcaboose",6),
 	minecartEF1("ItemRollingStock", "ef1", 13),
 	minecartEP1A("ItemRollingStock", "ef1", 14),
 	;

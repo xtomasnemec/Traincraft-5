@@ -333,10 +333,13 @@ public enum EnumTrains {
 	F45("F45",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF45.class, ItemIDs.minecartF45.item, "diesel", 3600, 145, 0, 65, 0, 190, 0.75, 0.9, 20000, new String[] {"LightBlue", "Green", "Blue", "Yellow", "Red"}, 10, -3.65, new String[] {"Model by Prof_Binky"}),
 	GP7b("GP7b", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7b.class, ItemIDs.minecartGP7b.item, "diesel", 1500, 105, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Blue", "White"}, 10, -3, new String[] {""}),
 	SD40T2("SD40T-2", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40T2.class, ItemIDs.minecartSD40T2.item, "diesel", 3000, 105, 0, 60, 0, 190, 0.75, 0.89, 20000, new String[] {"LightGrey", "Grey", "Blue", "White"}, 10, -3.8),
-    EF1("EF1",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1.class, ItemIDs.minecartEF1.item, "electric", 1500, 64, 0, 55, 0, 150, 0.75, 0.85, 12500, new String[] {"Orange"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
-	EP1A("EP1A",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEP1A.class, ItemIDs.minecartEP1A.item, "electric", 2500, 120, 0, 55, 0, 150, 0.85, 0.95, 12500, new String[] {"Orange"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
 	Freight60centerbeam("60centerbeam", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight60centerbeam.class, ItemIDs.minecart60centerbeam.item, "freight", 4, new String[] {"Black", "Yellow", "Green", "LightGrey"}, 0, 54, new String[]{"Made by Prof_Binky"}),
 	Freight66centerbeam("66centerbeam", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight66centerbeam.class, ItemIDs.minecart66centerbeam.item, "freight", 4, new String[] {"Orange"}, 0, 54, new String[]{"Made by Prof_Binky"}),
+	PS140("PS140", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PS140.class, ItemIDs.minecartPS140.item, "freight", 4, new String[] {"Brown", "Red"}, 0, 27, new String[]{"Made by Prof_Binky"}),
+	PS150("PS150", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PS150.class, ItemIDs.minecartPS150.item, "freight", 4, new String[] {"White", "Lime"}, 0, 36, new String[]{"Made by Prof_Binky"}),
+	WVcaboose("WVcaboose", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.WVcaboose.class, ItemIDs.minecartWVcaboose.item, "caboose", 4, new String[] {"Red", "Green", "Lime"}, 0, 36, new String[]{"Made by Prof_Binky"}),
+    EF1("EF1",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1.class, ItemIDs.minecartEF1.item, "electric", 1500, 64, 0, 55, 0, 150, 0.75, 0.85, 12500, new String[] {"Orange"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
+	EP1A("EP1A",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEP1A.class, ItemIDs.minecartEP1A.item, "electric", 2500, 120, 0, 55, 0, 150, 0.85, 0.95, 12500, new String[] {"Orange"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

@@ -416,6 +416,9 @@ item.tc:minecartGP7b.name=EMD GP7b
 item.tc:minecartSD40T2.name=EMD SD40T-2
 item.tc:minecart60centerbeam.name=60' Center Beam
 item.tc:minecart66centerbeam.name=66' Center Beam
+item.tc:minecartPS140.name=Pullman Standard 40' Boxcar
+item.tc:minecartPS150.name=Pullman Standard 50' Boxcar
+item.tc:minecartWVcaboose.name=International Car Co. Wide Vision Caboose
 item.tc:minecartEF1.name=GE MILW EF-1
 item.tc:minecartEP1A.name=GE MILW EP-1A
 
@@ -785,6 +788,9 @@ entity.tc.GP7b.name=EMD GP7b
 entity.tc.SD40T-2.name=EMD SD40T-2
 entity.tc.60centerbeam.name=60' Center Beam
 entity.tc.66centerbeam.name=66' Center Beam
+entity.tc.PS140.name=Pullman Standard 40' Boxcar
+entity.tc.PS150.name=Pullman Standard 50' Boxcar
+enitiy.tc.WVcaboose.name=International Car Co. Wide Vision Caboose
 entity.tc.EF1.name=GE MILW EF-1
 entity.tc.EP1A.name=GE MILW EP-1A
 
