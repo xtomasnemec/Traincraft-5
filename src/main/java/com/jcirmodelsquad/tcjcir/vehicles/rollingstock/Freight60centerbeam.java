@@ -100,7 +100,7 @@ public class Freight60centerbeam  extends Freight implements IInventory {
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 2F;
+        return 3.3F;
     }
 
     @Override
