@@ -878,6 +878,7 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
+	Freight60centerbeam(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight60centerbeam.class, new Model60centerbeam(),"60ftcb_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;

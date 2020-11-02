@@ -333,6 +333,7 @@ public enum EnumTrains {
 	F45("F45",com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF45.class, ItemIDs.minecartF45.item, "diesel", 3600, 145, 0, 65, 0, 190, 0.75, 0.9, 20000, new String[] {"LightBlue", "Green", "Blue", "Yellow", "Red"}, 10, -3.65, new String[] {"Model by Prof_Binky"}),
 	GP7b("GP7b", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP7b.class, ItemIDs.minecartGP7b.item, "diesel", 1500, 105, 0, 55, 0, 170, 0.81, 0.93, 10000, new String[] {"Blue", "White"}, 10, -3, new String[] {""}),
 	SD40T2("SD40T-2", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40T2.class, ItemIDs.minecartSD40T2.item, "diesel", 3000, 105, 0, 60, 0, 190, 0.75, 0.89, 20000, new String[] {"LightGrey", "Grey", "Blue", "White"}, 10, -3.8),
+	Freight60centerbeam("60centerbeam", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight60centerbeam.class, ItemIDs.minecart60centerbeam.item, "freight", 4, new String[] {"Black", "Yellow", "Green", "LightGrey"}, 0, 54, new String[]{"Made by Prof_Binky"}),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

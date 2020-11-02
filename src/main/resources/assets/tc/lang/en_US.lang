@@ -406,7 +406,7 @@ item.tc:minecartSDP40F.name=EMD SDP40F
 item.tc:minecartHH660.name=ALCo HH660/HH600
 item.tc:minecartHHgregg.name=HHGregg600
 item.tc:minecartMP15DCW9.name=WFLW MP15DCW-9
-item.tc:minecartMILW40boxcar.name= MILW 40' Boxcar
+item.tc:minecartMILW40boxcar.name=MILW 40' Boxcar
 item.tc:minecartGP9.name=EMD GP9
 item.tc:minecartC425.name=ALCo C425
 item.tc:minecartVO1000.name=Baldwin VO 1000
@@ -414,6 +414,7 @@ item.tc:minecartFP45.name=EMD FP45
 item.tc:minecartF45.name=EMD F45
 item.tc:minecartGP7b.name=EMD GP7b
 item.tc:minecartSD40T2.name=EMD SD40T-2
+item.tc:minecart60centerbeam.name=60' Center Beam
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -779,6 +780,7 @@ entity.tc.FP45.name=EMD FP45
 entity.tc.F45.name=EMD F45
 entity.tc.GP7b.name=EMD GP7b
 entity.tc.SD40T-2.name=EMD SD40T-2
+entity.tc.60centerbeam.name=60' Center Beam
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
