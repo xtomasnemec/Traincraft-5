@@ -34,7 +34,7 @@ public class Freight73centerbeam  extends Freight implements IInventory {
     }
 
     public void initFreightCart() {
-        numFreightSlots = 7;
+        numFreightSlots = 6;
         freightInventorySize = trainSpec.getCargoCapacity();
         cargoItems = new ItemStack[freightInventorySize];
     }
