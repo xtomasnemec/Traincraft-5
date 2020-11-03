@@ -26,7 +26,7 @@ public class WVcaboose extends EntityRollingStock implements IPassenger {
     @Override
     public void updateRiderPosition() {
         if(riddenByEntity!=null) {
-            riddenByEntity.setPosition(posX + 0.25f, posY + getMountedYOffset() + riddenByEntity.getYOffset() + 0.3125, posZ + 0.25);
+            riddenByEntity.setPosition(posX + 0.25f, posY + getMountedYOffset() + riddenByEntity.getYOffset() + 0.3125, posZ + 0.0);
         }
     }
 

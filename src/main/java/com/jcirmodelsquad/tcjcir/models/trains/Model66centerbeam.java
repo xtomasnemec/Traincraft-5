@@ -9,6 +9,7 @@
 
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
+import com.jcirmodelsquad.tcjcir.models.loads.Modelwrappedwood;
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70Truck;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +17,8 @@ import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.common.api.AbstractTrains;
+import train.common.api.Freight;
 import train.common.library.Info;
 
 public class Model66centerbeam extends ModelConverter //Same as Filename
@@ -283,6 +286,8 @@ public class Model66centerbeam extends ModelConverter //Same as Filename
 		bodyModel[60].setRotationPoint(-36F, -24F, -1.5F);
 	}
 	Model70Truck bogie = new Model70Truck();
+	Modelwrappedwood load1 = new Modelwrappedwood();
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -290,7 +295,621 @@ public class Model66centerbeam extends ModelConverter //Same as Filename
 		{
 			bodyModel[i].render(f5);
 		}
+		int cargo = ((Freight) entity).getAmmountOfCargo();
+		if (cargo != 0) {
+			if(cargo<=9) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_thickthin.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==7345) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
+				}
+				GL11.glPushMatrix();//side a1
+				GL11.glTranslated(-2.65f,-0.1,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
 
+				GL11.glPushMatrix();//side b1
+				GL11.glTranslated(-2.65f,-0.1,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}
+			else if(cargo<=18 && cargo>9) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_thickthin.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==7345) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
+				}
+				GL11.glPushMatrix();//side a1
+				GL11.glTranslated(-2.65f,-0.1,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a2
+				GL11.glTranslated(-2.65f,-0.41,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b1
+				GL11.glTranslated(-2.65f,-0.1,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b2
+				GL11.glTranslated(-2.65f,-0.41,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}
+			else if(cargo<=27 && cargo>18) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_thickthin.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==7345) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
+				}
+				GL11.glPushMatrix();//side a1
+				GL11.glTranslated(-2.65f,-0.1,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a2
+				GL11.glTranslated(-2.65f,-0.41,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a3
+				GL11.glTranslated(-2.65f,-0.72,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b1
+				GL11.glTranslated(-2.65f,-0.1,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b2
+				GL11.glTranslated(-2.65f,-0.41,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b3
+				GL11.glTranslated(-2.65f,-0.72,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}
+			else if(cargo<=36 && cargo>27) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_thickthin.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==7345) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
+				}
+				GL11.glPushMatrix();//side a1
+				GL11.glTranslated(-2.65f,-0.1,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a2
+				GL11.glTranslated(-2.65f,-0.41,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a3
+				GL11.glTranslated(-2.65f,-0.72,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a4
+				GL11.glTranslated(-2.65f,-1.03,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b1
+				GL11.glTranslated(-2.65f,-0.1,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b2
+				GL11.glTranslated(-2.65f,-0.41,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b3
+				GL11.glTranslated(-2.65f,-0.72,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b4
+				GL11.glTranslated(-2.65f,-1.03,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}
+			else if(cargo<=45 && cargo>36) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_thickthin.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==7345) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
+				}
+				GL11.glPushMatrix();//side a1
+				GL11.glTranslated(-2.65f,-0.1,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a2
+				GL11.glTranslated(-2.65f,-0.41,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a3
+				GL11.glTranslated(-2.65f,-0.72,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a4
+				GL11.glTranslated(-2.65f,-1.03,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a5
+				GL11.glTranslated(-2.65f,-1.34,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b1
+				GL11.glTranslated(-2.65f,-0.1,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b2
+				GL11.glTranslated(-2.65f,-0.41,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b3
+				GL11.glTranslated(-2.65f,-0.72,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b4
+				GL11.glTranslated(-2.65f,-1.03,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b5
+				GL11.glTranslated(-2.65f,-1.34,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}
+			else {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_thickthin.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==7345) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
+				}
+				GL11.glPushMatrix();//side a1
+				GL11.glTranslated(-2.65f,-0.1,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a2
+				GL11.glTranslated(-2.65f,-0.41,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a3
+				GL11.glTranslated(-2.65f,-0.72,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a4
+				GL11.glTranslated(-2.65f,-1.03,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a5
+				GL11.glTranslated(-2.65f,-1.34,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b1
+				GL11.glTranslated(-2.65f,-0.1,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b2
+				GL11.glTranslated(-2.65f,-0.41,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,-0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b3
+				GL11.glTranslated(-2.65f,-0.72,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side b4
+				GL11.glTranslated(-2.65f,-1.03,0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();//side a5
+				GL11.glTranslated(-2.65f,-1.34,-0.4);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glTranslated(1.062f,-0.0,0.0);
+				load1.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}
+		}
 		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
 
 		GL11.glPushMatrix();
