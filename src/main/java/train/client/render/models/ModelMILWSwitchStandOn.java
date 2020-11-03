@@ -10,17 +10,29 @@
 package train.client.render.models; //Path where the model is located
 
 import net.minecraft.entity.Entity;
-import tmt.ModelBase;
+import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 
-public class ModelMILWSwitchStandOn extends ModelBase //Same as Filename
+public class ModelMILWSwitchStandOn extends ModelConverter //Same as Filename
 {
-	int textureX = 512;
-	int textureY = 512;
+	int textureX = 128;
+	int textureY = 64;
 
-	public ModelMILWSwitchStandOn()
+	public ModelMILWSwitchStandOn() //Same as Filename
 	{
 		bodyModel = new ModelRendererTurbo[36];
+
+		initbodyModel_1();
+
+		translateAll(0F, 0F, 0F);
+		rotateAll(0F,0F,0F);
+
+
+		flipAll();
+	}
+
+	public void initbodyModel_1()
+	{
 		bodyModel[0] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 0
 		bodyModel[1] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 0
 		bodyModel[2] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
@@ -167,7 +179,7 @@ public class ModelMILWSwitchStandOn extends ModelBase //Same as Filename
 		bodyModel[35].setRotationPoint(-11F, 9F, -0.5F);
 	}
 
-	@Override
+	/*@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		for(int i = 0; i < 36; i++)
@@ -181,4 +193,5 @@ public class ModelMILWSwitchStandOn extends ModelBase //Same as Filename
 	}
 
 	public ModelRendererTurbo bodyModel[];
+	*/
 }

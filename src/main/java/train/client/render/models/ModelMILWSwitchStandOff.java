@@ -10,53 +10,65 @@
 package train.client.render.models; //Path where the model is located
 
 import net.minecraft.entity.Entity;
-import tmt.ModelBase;
+import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 
-public class ModelMILWSwitchStandOff extends ModelBase //Same as Filename
+public class ModelMILWSwitchStandOff extends ModelConverter //Same as Filename
 {
-	int textureX = 512;
-	int textureY = 512;
+	int textureX = 128;
+	int textureY = 64;
 
-	public ModelMILWSwitchStandOff()
+	public ModelMILWSwitchStandOff() //Same as Filename
 	{
 		bodyModel = new ModelRendererTurbo[36];
-		bodyModel[0] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 0
-		bodyModel[1] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 0
-		bodyModel[2] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[3] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[4] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 4
-		bodyModel[5] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 4
-		bodyModel[6] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[7] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[8] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[9] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[10] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[11] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[12] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[13] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[14] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 14
-		bodyModel[15] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 15
-		bodyModel[16] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 3
-		bodyModel[17] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[18] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[19] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 0
-		bodyModel[20] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[21] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 21
-		bodyModel[22] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[23] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[24] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[25] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 21
-		bodyModel[26] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 26
-		bodyModel[27] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[28] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box Glow
-		bodyModel[29] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box Glow
-		bodyModel[30] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box Glow
-		bodyModel[31] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box Glow
-		bodyModel[32] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 32
-		bodyModel[33] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 2
-		bodyModel[34] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 34
-		bodyModel[35] = new ModelRendererTurbo(this, 0, 0, textureX, textureY); // Box 34
+
+		initbodyModel_1();
+
+		translateAll(0F, 0F, 0F);
+		rotateAll(0F,0F,0F);
+
+
+		//flipAll();
+	}
+
+	public void initbodyModel_1()
+	{
+		bodyModel[0] = new ModelRendererTurbo(this, 1, 1, textureX, textureY); // Box 0
+		bodyModel[1] = new ModelRendererTurbo(this, 1, 9, textureX, textureY); // Box 0
+		bodyModel[2] = new ModelRendererTurbo(this, 73, 1, textureX, textureY); // Box 2
+		bodyModel[3] = new ModelRendererTurbo(this, 81, 1, textureX, textureY); // Box 3
+		bodyModel[4] = new ModelRendererTurbo(this, 97, 1, textureX, textureY); // Box 4
+		bodyModel[5] = new ModelRendererTurbo(this, 113, 1, textureX, textureY); // Box 4
+		bodyModel[6] = new ModelRendererTurbo(this, 81, 9, textureX, textureY); // Box 3
+		bodyModel[7] = new ModelRendererTurbo(this, 89, 9, textureX, textureY); // Box 3
+		bodyModel[8] = new ModelRendererTurbo(this, 105, 9, textureX, textureY); // Box 3
+		bodyModel[9] = new ModelRendererTurbo(this, 1, 17, textureX, textureY); // Box 3
+		bodyModel[10] = new ModelRendererTurbo(this, 9, 17, textureX, textureY); // Box 3
+		bodyModel[11] = new ModelRendererTurbo(this, 121, 9, textureX, textureY); // Box 2
+		bodyModel[12] = new ModelRendererTurbo(this, 25, 17, textureX, textureY); // Box 3
+		bodyModel[13] = new ModelRendererTurbo(this, 41, 17, textureX, textureY); // Box 3
+		bodyModel[14] = new ModelRendererTurbo(this, 57, 17, textureX, textureY); // Box 14
+		bodyModel[15] = new ModelRendererTurbo(this, 65, 17, textureX, textureY); // Box 15
+		bodyModel[16] = new ModelRendererTurbo(this, 73, 17, textureX, textureY); // Box 3
+		bodyModel[17] = new ModelRendererTurbo(this, 1, 25, textureX, textureY); // Box 2
+		bodyModel[18] = new ModelRendererTurbo(this, 9, 25, textureX, textureY); // Box 2
+		bodyModel[19] = new ModelRendererTurbo(this, 17, 25, textureX, textureY); // Box 0
+		bodyModel[20] = new ModelRendererTurbo(this, 33, 25, textureX, textureY); // Box 2
+		bodyModel[21] = new ModelRendererTurbo(this, 41, 25, textureX, textureY); // Box 21
+		bodyModel[22] = new ModelRendererTurbo(this, 49, 25, textureX, textureY); // Box 2
+		bodyModel[23] = new ModelRendererTurbo(this, 57, 25, textureX, textureY); // Box 2
+		bodyModel[24] = new ModelRendererTurbo(this, 73, 25, textureX, textureY); // Box 2
+		bodyModel[25] = new ModelRendererTurbo(this, 81, 25, textureX, textureY); // Box 21
+		bodyModel[26] = new ModelRendererTurbo(this, 97, 25, textureX, textureY); // Box 26
+		bodyModel[27] = new ModelRendererTurbo(this, 97, 17, textureX, textureY); // Box 2
+		bodyModel[28] = new ModelRendererTurbo(this, 113, 17, textureX, textureY); // Box Glow
+		bodyModel[29] = new ModelRendererTurbo(this, 113, 25, textureX, textureY); // Box Glow
+		bodyModel[30] = new ModelRendererTurbo(this, 121, 25, textureX, textureY); // Box Glow
+		bodyModel[31] = new ModelRendererTurbo(this, 1, 33, textureX, textureY); // Box Glow
+		bodyModel[32] = new ModelRendererTurbo(this, 9, 33, textureX, textureY); // Box 32
+		bodyModel[33] = new ModelRendererTurbo(this, 17, 33, textureX, textureY); // Box 2
+		bodyModel[34] = new ModelRendererTurbo(this, 1, 41, textureX, textureY); // Box 34
+		bodyModel[35] = new ModelRendererTurbo(this, 33, 41, textureX, textureY); // Box 34
 
 		bodyModel[0].addBox(0F, 0F, 0F, 32, 1, 3, 0F); // Box 0
 		bodyModel[0].setRotationPoint(-27F, 9F, -5F);
@@ -167,6 +179,7 @@ public class ModelMILWSwitchStandOff extends ModelBase //Same as Filename
 		bodyModel[35].setRotationPoint(-9F, 9F, -0.5F);
 	}
 
+	/*
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -181,4 +194,6 @@ public class ModelMILWSwitchStandOff extends ModelBase //Same as Filename
 	}
 
 	public ModelRendererTurbo bodyModel[];
+
+	 */
 }
