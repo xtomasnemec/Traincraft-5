@@ -131,12 +131,12 @@ public class ModelEF1 extends ModelConverter //Same as Filename
 		bodyModel[87] = new ModelRendererTurbo(this, 296, 16, textureX, textureY); // Box 0
 		bodyModel[88] = new ModelRendererTurbo(this, 296, 35, textureX, textureY); // Box 0
 		bodyModel[89] = new ModelRendererTurbo(this, 8, 6, textureX, textureY); // Headlight body
-		bodyModel[90] = new ModelRendererTurbo(this, 40, 13, textureX, textureY); // Headlight top left
+		bodyModel[90] = new ModelRendererTurbo(this, 40, 13, textureX, textureY, "lamp"); // Headlight top left
 		bodyModel[91] = new ModelRendererTurbo(this, 2, 6, textureX, textureY); // Number board right
 		bodyModel[92] = new ModelRendererTurbo(this, 24, 6, textureX, textureY); // Number board left
-		bodyModel[93] = new ModelRendererTurbo(this, 34, 13, textureX, textureY); // Headlight top right
-		bodyModel[94] = new ModelRendererTurbo(this, 40, 17, textureX, textureY); // Headlight bottom left
-		bodyModel[95] = new ModelRendererTurbo(this, 34, 17, textureX, textureY); // Headlight bottom right
+		bodyModel[93] = new ModelRendererTurbo(this, 34, 13, textureX, textureY, "lamp"); // Headlight top right
+		bodyModel[94] = new ModelRendererTurbo(this, 40, 17, textureX, textureY, "lamp"); // Headlight bottom left
+		bodyModel[95] = new ModelRendererTurbo(this, 34, 17, textureX, textureY, "lamp"); // Headlight bottom right
 		bodyModel[96] = new ModelRendererTurbo(this, 42, 161, textureX, textureY); // Box 427
 		bodyModel[97] = new ModelRendererTurbo(this, 67, 161, textureX, textureY); // Box 427
 		bodyModel[98] = new ModelRendererTurbo(this, 67, 161, textureX, textureY); // Box 427
