@@ -7,6 +7,9 @@
 
 package train.common.core.handlers;
 
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight60centerbeam;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight66centerbeam;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.WoodchipHopper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.material.Material;
@@ -20,6 +23,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import train.common.api.*;
 import train.common.entity.rollingStock.*;
 import train.common.items.ItemTCRail;
+
+import java.util.ArrayList;
 
 public class ItemHandler {
 	
@@ -54,7 +59,7 @@ public class ItemHandler {
 		if (block == null) {
 			return false;
 		}
-		if (entity instanceof EntityFreightCenterbeam_Wood_1 || entity instanceof EntityFreightCenterbeam_Wood_2 ||
+		if (entity instanceof EntityFreightCenterbeam_Wood_1 || entity instanceof EntityFreightCenterbeam_Wood_2 || entity instanceof Freight66centerbeam || entity instanceof Freight60centerbeam ||
 				entity instanceof EntityFlatCartWoodUS || entity instanceof EntityBulkheadFlatCart || entity instanceof EntityFlatCarLogs_DB ||
 				entity instanceof EntityFreightWood || entity instanceof EntityFreightWood2) {
             int isid = OreDictionary.getOreID(itemstack);
@@ -75,6 +80,15 @@ public class ItemHandler {
 		else if (entity instanceof EntityFreightMinetrain) {
 				return block.isOpaqueCube();
 		}
+		/*else if (entity instanceof WoodchipHopper) {
+			ArrayList<ItemStack> dustWood = OreDictionary.getOres("dustWood");
+			for(ItemStack i: dustWood){
+				if(.getItem() == i.getItem()){
+					return true;
+				}
+			}
+			return false;//fallback for if loop finishes without finding the item
+		}*/
 		else if (entity instanceof EntityFreightSlateWagon){
 			return block.getMaterial() == Material.rock;
 		}

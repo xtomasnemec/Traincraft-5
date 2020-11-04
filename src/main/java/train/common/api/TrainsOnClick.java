@@ -16,7 +16,7 @@ public class TrainsOnClick {
 				if (!train.canBeAdjusted(train)) {
 					if (!world.isRemote) {
 						playerEntity.addChatMessage(new ChatComponentText(((EntityRollingStock) train).getTrainName() + " can be pulled, don't forget to fuel it!"));
-						playerEntity.addChatMessage(new ChatComponentText("Attach the BACK of this locomotive to the BACK of another locomotive. Otherwise you will encounter weird problems on turns"));
+						playerEntity.addChatMessage(new ChatComponentText("Attach the BACK of this locomotive to the BACK of another locomotive. Otherwise you will encounter weird problems in general."));
 					}
 					((Locomotive) train).setCanBeAdjusted(true);
 					((Locomotive) train).canBePulled = true;
