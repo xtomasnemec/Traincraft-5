@@ -2,33 +2,32 @@
 // Copyright (C) 2020 Minecraft-SMP.de
 // This file is for Flan's Flying Mod Version 4.0.x+
 
-// Model: 
-// Model Creator: 
+// Model: MILW Switch Stand On
+// Model Creator: Prof Binki
 // Created on: 18.10.2020 - 12:47:57
 // Last changed on: 18.10.2020 - 12:47:57
 
-package train.client.render.models; //Path where the model is located
+package com.jcirmodelsquad.tcjcir.render.models; //Path where the model is located
 
 import net.minecraft.entity.Entity;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 
-public class ModelMILWSwitchStandOff extends ModelConverter //Same as Filename
+public class ModelMILWSwitchStandOn extends ModelConverter //Same as Filename
 {
 	int textureX = 128;
 	int textureY = 64;
 
-	public ModelMILWSwitchStandOff() //Same as Filename
+	public ModelMILWSwitchStandOn() //Same as Filename
 	{
 		bodyModel = new ModelRendererTurbo[36];
 
 		initbodyModel_1();
 
 		translateAll(0F, 0F, 0F);
-		rotateAll(0F,0F,0F);
 
 
-		//flipAll();
+		flipAll();
 	}
 
 	public void initbodyModel_1()
@@ -69,6 +68,7 @@ public class ModelMILWSwitchStandOff extends ModelConverter //Same as Filename
 		bodyModel[33] = new ModelRendererTurbo(this, 17, 33, textureX, textureY); // Box 2
 		bodyModel[34] = new ModelRendererTurbo(this, 1, 41, textureX, textureY); // Box 34
 		bodyModel[35] = new ModelRendererTurbo(this, 33, 41, textureX, textureY); // Box 34
+
 
 		bodyModel[0].addBox(0F, 0F, 0F, 32, 1, 3, 0F); // Box 0
 		bodyModel[0].setRotationPoint(-27F, 9F, -5F);
@@ -113,43 +113,43 @@ public class ModelMILWSwitchStandOff extends ModelConverter //Same as Filename
 		bodyModel[13].setRotationPoint(0F, -5F, -4F);
 
 		bodyModel[14].addShapeBox(0F, 0F, 0F, 2, 2, 1, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F); // Box 14
-		bodyModel[14].setRotationPoint(0F, -6F, -0.5F);
+		bodyModel[14].setRotationPoint(3F, -6F, -0.5F);
 
 		bodyModel[15].addBox(0F, 0F, 0F, 1, 7, 1, 0F); // Box 15
-		bodyModel[15].setRotationPoint(0F, -4F, -0.5F);
+		bodyModel[15].setRotationPoint(4F, -4F, -0.5F);
 
 		bodyModel[16].addBox(0F, 0F, 0F, 3, 1, 2, 0F); // Box 3
 		bodyModel[16].setRotationPoint(0.5F, -4F, -4F);
 
-		bodyModel[17].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -1F, 0.5F, 0F, 1F, 0.5F, 0F, 1F, 0.5F, 0F, -1F, 0.5F, 0F); // Box 2
+		bodyModel[17].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F, 0.5F, 0F, -1F, 0.5F, 0F, -1F, 0.5F, 0F, 1F, 0.5F, 0F); // Box 2
 		bodyModel[17].setRotationPoint(2F, 6F, -0.5F);
 
-		bodyModel[18].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F, 0.5F, 0F, -1F, 0.5F, 0F, -1F, 0.5F, 0F, 1F, 0.5F, 0F); // Box 2
-		bodyModel[18].setRotationPoint(3F, 8.5F, -0.5F);
+		bodyModel[18].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -1F, 0.5F, 0F, 1F, 0.5F, 0F, 1F, 0.5F, 0F, -1F, 0.5F, 0F); // Box 2
+		bodyModel[18].setRotationPoint(1F, 8.5F, -0.5F);
 
 		bodyModel[19].addShapeBox(0F, 0F, 0F, 3, 1, 4, 0F,0F, -0.8F, 0F, 0F, -0.8F, 0F, 0F, -0.8F, 0F, 0F, -0.8F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F); // Box 0
 		bodyModel[19].setRotationPoint(1F, 9F, -2F);
 
 		bodyModel[20].addBox(0F, 0F, 0F, 1, 1, 1, 0F); // Box 2
-		bodyModel[20].setRotationPoint(3F, 7.5F, -0.5F);
+		bodyModel[20].setRotationPoint(1F, 7.5F, -0.5F);
 
-		bodyModel[21].addShapeBox(0F, 0F, 0F, 1, 10, 1, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F); // Box 21
-		bodyModel[21].setRotationPoint(1F, -17F, -3F);
+		bodyModel[21].addShapeBox(0F, 0F, 0F, 1, 10, 1, 0F,-0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F); // Box 21
+		bodyModel[21].setRotationPoint(0.5F, -17F, -3F);
 
 		bodyModel[22].addBox(0F, 0F, 0F, 1, 13, 1, 0F); // Box 2
 		bodyModel[22].setRotationPoint(1F, -7F, -3F);
 
-		bodyModel[23].addShapeBox(0F, 0F, 0F, 1, 10, 1, 0F,0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F, 0F); // Box 2
-		bodyModel[23].setRotationPoint(1F, -17F, -3F);
+		bodyModel[23].addShapeBox(0F, 0F, 0F, 1, 10, 1, 0F,0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F); // Box 2
+		bodyModel[23].setRotationPoint(1.5F, -17F, -3F);
 
 		bodyModel[24].addBox(0F, 0F, 0F, 1, 2, 1, 0F); // Box 2
 		bodyModel[24].setRotationPoint(1F, -19F, -3F);
 
-		bodyModel[25].addShapeBox(0F, 0F, 0F, 3, 10, 1, 0F,0F, 0F, 0F, 0F, 2F, 0F, 0F, 2F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, -2F, 0F, 0F, -2F, -0.5F, 0F, 0F, -0.5F); // Box 21
-		bodyModel[25].setRotationPoint(2F, -17F, -2.5F);
+		bodyModel[25].addShapeBox(0F, 0F, 0F, 1, 10, 3, 0F,-0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 2F, 0F, -0.5F, 2F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F, 0F, -2F, 0F, -0.5F, -2F, 0F); // Box 21
+		bodyModel[25].setRotationPoint(0.5F, -17F, -2F);
 
-		bodyModel[26].addShapeBox(0F, 0F, 0F, 3, 10, 1, 0F,0F, 2F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 2F, -0.5F, 0F, -2F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, -2F, -0.5F); // Box 26
-		bodyModel[26].setRotationPoint(-2F, -17F, -2.5F);
+		bodyModel[26].addShapeBox(0F, 0F, 0F, 1, 10, 3, 0F,-0.5F, 2F, 0F, 0F, 2F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, -2F, 0F, 0F, -2F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F); // Box 26
+		bodyModel[26].setRotationPoint(0.5F, -17F, -6F);
 
 		bodyModel[27].addBox(0F, 0F, 0F, 2, 3, 2, 0F); // Box 2
 		bodyModel[27].setRotationPoint(0.5F, -22F, -3.5F);
@@ -173,14 +173,13 @@ public class ModelMILWSwitchStandOff extends ModelConverter //Same as Filename
 		bodyModel[33].setRotationPoint(0.5F, -23F, -3.5F);
 
 		bodyModel[34].addBox(0F, 0F, 0F, 14, 1, 1, 0F); // Box 34
-		bodyModel[34].setRotationPoint(-23F, 9F, -0.5F);
+		bodyModel[34].setRotationPoint(-25F, 9F, -0.5F);
 
 		bodyModel[35].addShapeBox(0F, 0F, 0F, 12, 1, 1, 0F,0F, 0F, 0F, 0F, 1.5F, 0F, 0F, 1.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -1.5F, 0F, 0F, -1.5F, 0F, 0F, 0F, 0F); // Box 34
-		bodyModel[35].setRotationPoint(-9F, 9F, -0.5F);
+		bodyModel[35].setRotationPoint(-11F, 9F, -0.5F);
 	}
 
-	/*
-	@Override
+	/*@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		for(int i = 0; i < 36; i++)
@@ -194,6 +193,5 @@ public class ModelMILWSwitchStandOff extends ModelConverter //Same as Filename
 	}
 
 	public ModelRendererTurbo bodyModel[];
-
-	 */
+	*/
 }

@@ -7,6 +7,7 @@
 
 package train.common.blocks;
 
+import com.jcirmodelsquad.tcjcir.blocks.BlockMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.features.actualsignalblock.BlockActualSignalBlock;
 import com.jcirmodelsquad.tcjcir.features.betterdetector.BlockBetterDetector;
 import com.jcirmodelsquad.tcjcir.features.eti.BlockTrainMonitor;

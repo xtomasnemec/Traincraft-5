@@ -1,4 +1,4 @@
-package train.common.blocks;
+package com.jcirmodelsquad.tcjcir.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import train.common.Traincraft;
 import train.common.library.Info;
-import train.common.tile.TileMILWSwitchStand;
+import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
 
 import java.util.List;
 import java.util.Random;

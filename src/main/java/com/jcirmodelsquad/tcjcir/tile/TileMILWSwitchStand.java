@@ -1,4 +1,4 @@
-package train.common.tile;
+package com.jcirmodelsquad.tcjcir.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import train.common.library.BlockIDs;
+import train.common.tile.TileTraincraft;
 
 import java.util.Random;
 

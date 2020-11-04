@@ -1,14 +1,14 @@
-package train.client.render;
+package com.jcirmodelsquad.tcjcir.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import tmt.Tessellator;
-import train.client.render.models.ModelMILWSwitchStandOff;
-import train.client.render.models.ModelMILWSwitchStandOn;
+import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOff;
+import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOn;
 import train.common.library.Info;
-import train.common.tile.TileSwitchStand;
+import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
 
 public class RenderMILWSwitchStand extends TileEntitySpecialRenderer {
 	private static final ModelMILWSwitchStandOn modelSwitch = new ModelMILWSwitchStandOn();
@@ -23,7 +23,7 @@ public class RenderMILWSwitchStand extends TileEntitySpecialRenderer {
 		GL11.glRotated(180,0,1,0);
 		boolean skipRender = false;
 
-		switch (((TileSwitchStand)tileEntity).getFacing()){
+		switch (((TileMILWSwitchStand)tileEntity).getFacing()){
 			case NORTH:{
 				GL11.glRotated(180,0,0,1);
 				GL11.glRotated(90,0,1,0);
