@@ -12,6 +12,7 @@ package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is locat
 
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70Truck;
 import com.jcirmodelsquad.tcjcir.models.trucks.Modelcaboosetruck;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -661,9 +662,13 @@ public class ModelWVcaboose extends ModelConverter //Same as Filename
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		for(int i = 0; i < 154; i++)
-		{
-			bodyModel[i].render(f5);
-		}
+			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp")) {
+				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+				bodyModel[i].render(f5);
+				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+			} else {
+				bodyModel[i].render(f5);
+			}
 
 		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/cb_Black.png"));
 

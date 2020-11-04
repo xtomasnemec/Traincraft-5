@@ -341,6 +341,7 @@ public enum EnumTrains {
 	PS160("PS160", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PS160.class, ItemIDs.minecartPS160.item, "freight", 6, new String[] {"Blue", "Orange"}, 0, 45, new String[]{"Made by Prof_Binky"}),
 	WVcaboose("WVcaboose", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.WVcaboose.class, ItemIDs.minecartWVcaboose.item, "caboose", 4, new String[] {"Red", "Green", "Lime"}, 0, 36, new String[]{"Made by Prof_Binky"}),
     EF1("EF1",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1.class, ItemIDs.minecartEF1.item, "electric", 1500, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, new String[] {"Orange", "Yellow", "Red", "Green", "Black", "Grey"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
+	EF1B("EF1B",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1B.class, ItemIDs.minecartEF1B.item, "electric", 1500, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, new String[] {"Orange", "Red", "Black", "Pink"}, 10, -2.3125, new String[] {"Model by Prof_Binky"}),
 	EP1A("EP1A",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEP1A.class, ItemIDs.minecartEP1A.item, "electric", 2500, 120, 0, 55, 0, 150, 0.75, 0.85, 12500, new String[] {"Orange", "Red"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
 	;
 

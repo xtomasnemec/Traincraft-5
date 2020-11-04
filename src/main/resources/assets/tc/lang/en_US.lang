@@ -422,6 +422,7 @@ item.tc:minecartPS150.name=Pullman Standard 50' Boxcar
 item.tc:minecartPS160.name=Pullman Standard 60' Boxcar
 item.tc:minecartWVcaboose.name=International Car Co. Wide Vision Caboose
 item.tc:minecartEF1.name=GE MILW EF-1
+item.tc:minecartEF1B.name=GE MILW EF-1B
 item.tc:minecartEP1A.name=GE MILW EP-1A
 
 <!-- ## Achievements ## -->
@@ -796,6 +797,7 @@ entity.tc.PS150.name=Pullman Standard 50' Boxcar
 entity.tc.PS160.name=Pullman Standard 60' Boxcar
 enitiy.tc.WVcaboose.name=International Car Co. Wide Vision Caboose
 entity.tc.EF1.name=GE MILW EF-1
+entity.tc.EF1B.name=GE MILW EF-1B
 entity.tc.EP1A.name=GE MILW EP-1A
 
 description.villager.profession.tc.station_chief=Station Chief
