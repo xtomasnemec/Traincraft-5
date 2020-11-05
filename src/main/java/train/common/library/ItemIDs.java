@@ -389,6 +389,7 @@ public enum ItemIDs {
 	minecartEF1("ItemRollingStock", "ef1", 13),
 	minecartEF1B("ItemRollingStock", "ef1b", 13),
 	minecartEP1A("ItemRollingStock", "ep1a", 14),
+	minecartLogcarNP( "ItemRollingStock","logcarNP",3),
 	;
 
 	public Item item;

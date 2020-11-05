@@ -179,7 +179,9 @@ public class ModelOreJenny extends ModelConverter //Same as Filename
 		bodyModel[36].addShapeBox(0F, 0F, 0F, 28, 0, 20, 0F,0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F); // Box 0 load
 		bodyModel[36].setRotationPoint(-14F, -8.75F, -10F);
 	}
-ModelOreJennyTrucc trucc = new ModelOreJennyTrucc();
+
+
+	ModelOreJennyTrucc trucc = new ModelOreJennyTrucc();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{

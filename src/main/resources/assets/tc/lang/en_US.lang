@@ -425,6 +425,7 @@ item.tc:minecartWVcaboose.name=International Car Co. Wide Vision Caboose
 item.tc:minecartEF1.name=GE MILW EF-1
 item.tc:minecartEF1B.name=GE MILW EF-1B
 item.tc:minecartEP1A.name=GE MILW EP-1A
+item.tc:minecartLogcarNP.name=Log Car NP
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -800,6 +801,7 @@ enitiy.tc.WVcaboose.name=International Car Co. Wide Vision Caboose
 entity.tc.EF1.name=GE MILW EF-1
 entity.tc.EF1B.name=GE MILW EF-1B
 entity.tc.EP1A.name=GE MILW EP-1A
+entity.tc.LogcarNP.name=Log Car NP
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
