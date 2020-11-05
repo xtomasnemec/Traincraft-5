@@ -9,7 +9,7 @@ package train.common.library;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
-import train.client.render.ItemRenderMILWSwitchStand;
+import com.jcirmodelsquad.tcjcir.render.ItemRenderMILWSwitchStand;
 import train.common.items.*;
 
 public enum BlockIDs {
@@ -55,7 +55,7 @@ public enum BlockIDs {
 	tcRailGag(false,null),
 	tcRail(false,null),
 	bridgePillar(false,null),
-	milwSwitchStand(false, null);
+	MILWSwitchStand(false, null);
 
 
 	public Block block;

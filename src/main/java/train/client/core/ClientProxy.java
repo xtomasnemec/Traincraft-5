@@ -1,5 +1,6 @@
 package train.client.core;
 
+import com.jcirmodelsquad.tcjcir.render.ItemRenderMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.render.RenderMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -106,7 +107,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.switchStand.block), new ItemRenderSwitchStand());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMILWSwitchStand.class, new RenderMILWSwitchStand());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.milwSwitchStand.block), new ItemRenderMILWSwitchStand());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.MILWSwitchStand.block), new ItemRenderMILWSwitchStand());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWaterWheel.class, new RenderWaterWheel());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.waterWheel.block), new ItemRenderWaterWheel());

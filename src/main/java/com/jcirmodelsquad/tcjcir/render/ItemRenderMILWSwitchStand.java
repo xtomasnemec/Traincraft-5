@@ -1,5 +1,6 @@
-package train.client.render;
+package com.jcirmodelsquad.tcjcir.render;
 
+import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOff;
 import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOn;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -9,8 +10,8 @@ import tmt.Tessellator;
 import train.common.library.Info;
 
 public class ItemRenderMILWSwitchStand implements IItemRenderer {
-	private static final ModelMILWSwitchStandOn modeSwitch = new ModelMILWSwitchStandOn();
-	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchStand_uv_draw_1.png");
+	private static final ModelMILWSwitchStandOff modeSwitch = new ModelMILWSwitchStandOff();
+	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchoff.png");
 
 	public ItemRenderMILWSwitchStand() {
 	}
@@ -28,22 +29,22 @@ public class ItemRenderMILWSwitchStand implements IItemRenderer {
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		switch (type) {
-			case ENTITY: {
-				renderSwitch(0f, 0f, 0f, 1f);
-				return;
-			}
-			case EQUIPPED: {
-				renderSwitch(0.2f, 1f, 1f, 1f);
-				return;
-			}
-			case EQUIPPED_FIRST_PERSON: {
-				renderSwitch(0.2f, 1f, 1f, 1f);
-				return;
-			}
-			case INVENTORY: {
-				renderSwitch(0f, 0f, 0f, 0.7f);
-				return;
-			}
+		case ENTITY: {
+			renderSwitch(0f, 0f, 0f, 1f);
+			return;
+		}
+		case EQUIPPED: {
+			renderSwitch(0.2f, 1f, 1f, 1f);
+			return;
+		}
+		case EQUIPPED_FIRST_PERSON: {
+			renderSwitch(0.2f, 1f, 1f, 1f);
+			return;
+		}
+		case INVENTORY: {
+			renderSwitch(0f, 0f, 0f, 0.7f);
+			return;
+		}
 		default:
 			break;
 		}

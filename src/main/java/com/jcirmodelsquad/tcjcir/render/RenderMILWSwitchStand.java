@@ -11,10 +11,10 @@ import train.common.library.Info;
 import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
 
 public class RenderMILWSwitchStand extends TileEntitySpecialRenderer {
-	private static final ModelMILWSwitchStandOn modelSwitch = new ModelMILWSwitchStandOn();
-	private static final ModelMILWSwitchStandOff modelSwitch2 = new ModelMILWSwitchStandOff();
-	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchStand_uv_draw_1.png");
-	private static final ResourceLocation texture2 = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchStand_uv_draw_2.png");
+	private static final ModelMILWSwitchStandOn modelSwitch2 = new ModelMILWSwitchStandOn();
+	private static final ModelMILWSwitchStandOff modelSwitch = new ModelMILWSwitchStandOff();
+	private static final ResourceLocation texture2 = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchon.png");
+	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchoff.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick) {
@@ -26,25 +26,26 @@ public class RenderMILWSwitchStand extends TileEntitySpecialRenderer {
 		switch (((TileMILWSwitchStand)tileEntity).getFacing()){
 			case NORTH:{
 				GL11.glRotated(180,0,0,1);
-				GL11.glRotated(90,0,1,0);
-				GL11.glTranslated(0,0,0.125);
+				GL11.glRotated(270,0,1,0);
+				GL11.glTranslated(0.1875,0,0.125);
 				break;
 			}
 			case SOUTH:{
 				GL11.glRotated(180,0,0,1);
-				GL11.glRotated(270,0,1,0);
-				GL11.glTranslated(0,0,-0.125);
+				GL11.glRotated(90,0,1,0);
+				GL11.glTranslated(0.1875,0,0.125);
 				break;
 			}
 			case EAST:{
 				GL11.glRotated(180,0,0,1);
-				GL11.glRotated(180,0,1,0);
-				GL11.glTranslated(0.125,0,0);
+				GL11.glRotated(0,0,1,0);
+				GL11.glTranslated(0.1875,0,0.125);
 				break;
 			}
 			case WEST:{
 				GL11.glRotated(180,0,0,1);
-				GL11.glTranslated(-0.125,0,0);
+				GL11.glRotated(180,0,1,0);
+				GL11.glTranslated(0.1875,0,0.125);
 				break;
 			}
 			default:{
