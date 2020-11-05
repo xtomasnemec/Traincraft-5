@@ -9,6 +9,7 @@ package train.common.items;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.IRegistry;
 import train.common.Traincraft;
 import train.common.adminbook.ItemAdminBook;
 import train.common.library.Info;
@@ -43,6 +44,7 @@ public class TCItems {
 		ItemIDs.recipeBook.item = new ItemRecipeBook();
 		ItemIDs.adminBook.item = new ItemAdminBook();
 		ItemIDs.creditsBook.item = new ItemCreditsBook();
+		ItemIDs.paintbrushThing.item = new ItemPaintbrushThing();
 
 		ItemIDs.stake.item = new ItemStacked(200);
 		ItemIDs.airship.item = new ItemZeppelins(0);
@@ -93,11 +95,11 @@ public class TCItems {
 		ItemIDs.tcRailVeryLargeSlopeBallast.item = new ItemTCRail(ItemTCRail.TrackTypes.VERY_LARGE_SLOPE_BALLAST);
 
 
+
 		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
 			ItemIDs.wirelessTransmitter.item = new ItemWirelessTransmitter();
 			ItemIDs.atoCard.item = new ItemATOCard();
 		}
-		ItemIDs.paintbrushThing.item = new ItemPaintbrushThing();
 		//ItemIDs.signalPairingDevice.item = new ItemSignalPairingDevice();
 		//ItemIDs.remoteController.item = new ItemRemoteController();
 		//ItemIDs.remoteControllerModule.item = new ItemRemoteControllerModule();
@@ -111,4 +113,5 @@ public class TCItems {
 			}
 		}
 	}
+
 }

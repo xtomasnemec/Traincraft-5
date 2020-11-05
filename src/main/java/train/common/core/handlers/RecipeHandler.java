@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import train.common.inventory.TrainCraftingManager;
+import train.common.items.ItemPaintbrushThing;
+import train.common.items.TCItems;
 import train.common.library.BlockIDs;
 import train.common.library.ItemIDs;
 import train.common.recipes.RecipesArmorDyes;
