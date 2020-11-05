@@ -31,7 +31,7 @@ import train.client.core.handlers.TCKeyHandler;
 import train.client.core.helpers.JLayerHook;
 import train.client.gui.*;
 import train.client.render.*;
-import train.client.render.ItemRenderMILWSwitchStand;
+import com.jcirmodelsquad.tcjcir.render.ItemRenderMILWSwitchStand;
 import train.common.Traincraft;
 import train.common.adminbook.GUIAdminBook;
 import train.common.api.EntityBogie;
