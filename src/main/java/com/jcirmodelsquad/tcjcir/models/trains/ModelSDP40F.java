@@ -1045,9 +1045,11 @@ public class ModelSDP40F extends ModelConverter //Same as Filename
 			}
 		}
 		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 15) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/flexicoil_c2h_Blue.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/flexicoil_c2h_Black.png"));
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 4) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/flexicoil_c2h_Grey.png"));
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 12) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/flexicoil_c2h_BlueOTHER.png"));
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/flexicoil_c2h_Black.png"));
 		}
