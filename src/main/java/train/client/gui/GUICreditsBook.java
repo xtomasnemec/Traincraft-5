@@ -180,7 +180,7 @@ public class GUICreditsBook extends GuiScreen {
             }
         });
 
-        addPage("hariesh Code Contribution\n\n•Increase of Texture limit per Model\n•Recipes of Trains\n•Adding track recipe to crafting table\n•Train Imports\n•Texture Imports\n•Achievements Added\n•Bug Testing and Bug Fixes\n•Funny Quotes Added\n•Working Lights on Trains", "", "left", new ArrayList<StackToDraw>() {
+        addPage("hariesh Code Contribution\n\n•Increase of Texture limit per Model\n•Recipes of Trains\n•Adding track recipe to crafting table\n•Train Imports\n•Texture Imports\n•Achievements Added\n•Bug Testing and Bug Fixes\n•Funny Quotes Added\n•Working Lights on Trains\n•More Switches added and coded in", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartLUengine.item), 170, 16));
@@ -213,7 +213,7 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(Items.skull, 1, 1), 20, 16));
             }
         });
-        addPage("hariesh's Texture Contribution\n\n•LU 1996 Skin\n•Class345 Skin\n•PCH100H Overground Skin\n•PCH120 Underground Skin\n•Pumpkin Wagon Skin", "", "right", new ArrayList<StackToDraw>() {
+        addPage("hariesh's Texture Contribution\n\n•LU 1996 Skin\n•Class345 Skin\n•PCH100H Overground Skin\n•PCH120 Underground Skin\n•Pumpkin Wagon Skin\n•Tank Wagon Skin Chemtech & Britain", "", "right", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.stake.item), 20, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartClass345.item), 170, 16));
@@ -226,6 +226,7 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartWatertransp.item), 160, 165));
             }
         });
+        /*
         addPage("blank\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(Items.skull, 1, 1), 20, 16));
@@ -426,7 +427,7 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.jacket.item), 90, 155));
                 add(new StackToDraw(new ItemStack(ItemIDs.overalls.item), 140, 155));
             }
-        });
+        }); */
         addPage("this page was intentionally left blank, as a joke.","","right",null);
         if (rightPage != null && recipeList != null && recipeListWB != null)
             bookTotalPages = this.rightPage.size() + (recipeList.size() / 2) + (recipeListWB.size() / 2);
@@ -533,6 +534,7 @@ public class GUICreditsBook extends GuiScreen {
     /**
      * Draws the screen and all the components in it.
      */
+
     @Override
     public void drawScreen(int par1, int par2, float par3) {
         String pageIndic;
@@ -561,6 +563,7 @@ public class GUICreditsBook extends GuiScreen {
             this.fontRendererObj.drawString(pageIndic, var5 - var9 + this.bookImageWidth - 44, var6 + 7, 0);
         }
         super.drawScreen(par1, par2, par3);
+
 
         if (this.currPage < rightPage.size()) {
             this.fontRendererObj.drawSplitString(leftPage.get(this.currPage), var5 + 36, var6 + 16 + 16, 140, 0);
@@ -605,6 +608,7 @@ public class GUICreditsBook extends GuiScreen {
         }
         GL11.glDisable(GL11.GL_LIGHTING);
     }
+
 
     private void drawAssemblyBackground(List<TierRecipe> recipeList, int var5, int var6, int page, int var9, String side) {
         if (page < 0)
@@ -781,4 +785,6 @@ public class GUICreditsBook extends GuiScreen {
             this.mc.thePlayer.closeScreen();
         }
     }
+
+
 }
