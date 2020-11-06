@@ -858,7 +858,7 @@ public class ModelMP15DCW9 extends ModelConverter //Same as Filename
 			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/BlombergB_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Black.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.1, 0.0, 0);
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);

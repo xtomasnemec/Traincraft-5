@@ -346,7 +346,7 @@ public enum ItemIDs {
 	minecartBoxcab23Ton("ItemRollingStock", "boxcab", 4),
 	minecartExperimentalHydrogenTrain("ItemRollingStock", "pch100h", 21),
 	minecartPCH100HCoach("ItemRollingStock", "pch100h_coach", 15),
-	testControlCar("ItemRollingStock", "test_controlcar", 100000),
+	//testControlCar("ItemRollingStock", "test_controlcar", 100000),
 	minecartLUengine("ItemRollingStock", "luengine", 4),
 	minecartLUpassenger("ItemRollingStock", "lupassenger", 4),
 	minecartGP13("ItemRollingStock", "gp13", 9),
