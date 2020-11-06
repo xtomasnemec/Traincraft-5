@@ -91,7 +91,7 @@ public class ModelSDP40F extends ModelConverter //Same as Filename
 		bodyModel[48] = new ModelRendererTurbo(this, 361, 33, textureX, textureY); // Box 11
 		bodyModel[49] = new ModelRendererTurbo(this, 377, 33, textureX, textureY); // Box 210
 		bodyModel[50] = new ModelRendererTurbo(this, 425, 49, textureX, textureY); // Box 211
-		bodyModel[51] = new ModelRendererTurbo(this, 433, 1, textureX, textureY, "lamp"); // Box 48 lamp
+		bodyModel[51] = new ModelRendererTurbo(this, 433, 1, textureX, textureY); // Box 48 lamp but not really lol
 		bodyModel[52] = new ModelRendererTurbo(this, 273, 49, textureX, textureY); // Box 43
 		bodyModel[53] = new ModelRendererTurbo(this, 1, 57, textureX, textureY); // Box 44
 		bodyModel[54] = new ModelRendererTurbo(this, 281, 33, textureX, textureY, "lamp"); // Box 117 liveryimg 2 glow
