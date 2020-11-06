@@ -7,10 +7,7 @@
 
 package train.common.core.handlers;
 
-import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight60centerbeam;
-import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight66centerbeam;
-import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Freight73centerbeam;
-import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.WoodchipHopper;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.material.Material;
@@ -53,6 +50,7 @@ public class ItemHandler {
 		int plankWood = OreDictionary.getOreID("plankWood");
 		int slabWood =  OreDictionary.getOreID("slabWood");
 		int stairWood = OreDictionary.getOreID("stairWood");
+		int rubberWood = OreDictionary.getOreID("woodRubber");
 		if(itemstack == null) {
 			return false;
 		}
@@ -62,10 +60,10 @@ public class ItemHandler {
 		}
 		if (entity instanceof EntityFreightCenterbeam_Wood_1 || entity instanceof EntityFreightCenterbeam_Wood_2 || entity instanceof Freight66centerbeam || entity instanceof Freight60centerbeam ||
 				entity instanceof EntityFlatCartWoodUS || entity instanceof EntityBulkheadFlatCart || entity instanceof EntityFlatCarLogs_DB ||
-				entity instanceof EntityFreightWood || entity instanceof EntityFreightWood2 || entity instanceof Freight73centerbeam) {
+				entity instanceof EntityFreightWood || entity instanceof EntityFreightWood2 || entity instanceof Freight73centerbeam || entity instanceof LogcarNP) {
             int isid = OreDictionary.getOreID(itemstack);
 			return isid == plankWood || isid == logWood || isid == slabWood || isid == stairWood ||
-					itemstack.getItem() == Item.getItemFromBlock(Blocks.ladder) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence_gate);
+					itemstack.getItem() == Item.getItemFromBlock(Blocks.ladder) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence_gate) || isid == rubberWood;
 		}
 		else if (entity instanceof EntityFlatCarRails_DB) {
 			return block instanceof BlockRailBase || itemstack.getItem() instanceof ItemTCRail;
