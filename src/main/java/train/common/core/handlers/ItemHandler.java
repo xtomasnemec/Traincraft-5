@@ -51,6 +51,9 @@ public class ItemHandler {
 		int slabWood =  OreDictionary.getOreID("slabWood");
 		int stairWood = OreDictionary.getOreID("stairWood");
 		int rubberWood = OreDictionary.getOreID("woodRubber");
+		int pulpWood = OreDictionary.getOreID("pulpWood");
+		int dustWood = OreDictionary.getOreID("dustWood");
+
 		if(itemstack == null) {
 			return false;
 		}
@@ -68,6 +71,7 @@ public class ItemHandler {
 		else if (entity instanceof EntityFlatCarRails_DB) {
 			return block instanceof BlockRailBase || itemstack.getItem() instanceof ItemTCRail;
 		}
+
 		else if (entity instanceof EntityFreightGrain) {
 			Item item = itemstack.getItem();
 			if (item == Items.wheat || item == Items.wheat_seeds || item == Items.melon_seeds
@@ -79,15 +83,13 @@ public class ItemHandler {
 		else if (entity instanceof EntityFreightMinetrain) {
 				return block.isOpaqueCube();
 		}
-		/*else if (entity instanceof WoodchipHopper) {
-			ArrayList<ItemStack> dustWood = OreDictionary.getOres("dustWood");
-			for(ItemStack i: dustWood){
-				if(.getItem() == i.getItem()){
-					return true;
-				}
-			}
-			return false;//fallback for if loop finishes without finding the item
-		}*/
+
+
+		else if (entity instanceof WoodchipHopper) {
+			return powderWood(itemstack);
+		}
+
+
 		else if (entity instanceof EntityFreightSlateWagon){
 			return block.getMaterial() == Material.rock;
 		}
@@ -98,6 +100,17 @@ public class ItemHandler {
 			return true;
 		}
 	}
+
+	private static boolean powderWood(ItemStack itemstack){
+		String[] names = new String[] { "dustWood", "pulpWood"};
+		for (String name: names){
+			if (OreDictionary.getOreID(name) == OreDictionary.getOreID(itemstack)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	private static boolean cropStuff(ItemStack itemstack) {
 		String[] names = new String[] { "cropCorn", "cropRice", "seedRice", "seedCorn", "listAllseed" };
