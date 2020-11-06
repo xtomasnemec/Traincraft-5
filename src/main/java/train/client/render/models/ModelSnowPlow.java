@@ -9,6 +9,7 @@
 
 package train.client.render.models;
 
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeA;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -512,6 +513,7 @@ public class ModelSnowPlow extends ModelBase
 
 	private ModelMILW_H1044_Bogie fronttrucks = new ModelMILW_H1044_Bogie();
 	private ModelMILW_H1044_Bogie backtrucks = new ModelMILW_H1044_Bogie();
+	ModelTypeA bettertrucc = new ModelTypeA();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
@@ -520,7 +522,7 @@ public class ModelSnowPlow extends ModelBase
 		{
 			snowplowModel[i].render(f5);
 		}
-		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/MILW_H1044_bogie.png"));
+		/*Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/MILW_H1044_bogie.png"));
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(-1.5,0.6,0);
@@ -532,7 +534,18 @@ public class ModelSnowPlow extends ModelBase
 		GL11.glTranslated(1.5,0.6,0);
 		GL11.glScalef(0.8F, 1.3F, 0.8F);
 		backtrucks.render(entity,f,f1,f2,f3,f4,f5);
+		GL11.glPopMatrix();*/
+		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typea_Grey.png"));
+
+		GL11.glPushMatrix();
+		GL11.glTranslated(-1.4,0.25,0);
+		//GL11.glScalef(0.8F, 1.3F, 0.8F);
+		bettertrucc.render(entity,f,f1,f2,f3,f4,f5);
+		GL11.glTranslated(3.2,0.0,0);
+		//GL11.glScalef(0.8F, 1.3F, 0.8F);
+		bettertrucc.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
+
 	}
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
