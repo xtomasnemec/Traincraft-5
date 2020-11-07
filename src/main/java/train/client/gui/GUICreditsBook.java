@@ -88,8 +88,8 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120.item), 120, 175));
             }
         });
-        addPage("Table of Contents:\n1- Cover\n2- Thanks Page\n3- ToC\n4- Model Contributions (Bida)\n5- Model Contributions (PeachMaster)\n6- Model Contributions (Prof_Binky)\n7- Model Contributions (Hariesh)\n8- Model Contributions (Messicrew)\n9- Model Contributions (Others)\n\n\n\n", "", "left", null);
-        addPage("10- Code Contributions (PeachMaster)\n11- Code Contributions (Hariesh)\n12- Code Contributions (Bida)\n13- Code Contributions (JCRail)\n14- Texture Contributions (JCRail)\n15- Texture Contributions (Prof_Binky)\n16- Others", "", "right", new ArrayList<StackToDraw>() {
+        addPage("Table of Contents:\n1- Cover\n2- Thanks Page\n3- ToC\n4- Model Contributions (Bida)\n6- Model Contributions (PeachMaster)\n7- Model Contributions (Prof_Binky)\n8- Model Contributions (Hariesh)\n9- Model Contributions (Messicrew)\n10- Model Contributions (Others)\n\n\n\n", "", "left", null);
+        addPage("11- Code Contributions (PeachMaster)\n12- Code Contributions (Hariesh)\n13- Code Contributions (Bida)\n14- Code Contributions (JCRail)\n15- Texture Contributions (JCRail)\n16- Texture Contributions (Prof_Binky)\n17- Others", "", "right", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartF40PH.item), 20, 155));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartAmfleet.item), 40, 155));
@@ -116,10 +116,22 @@ public class GUICreditsBook extends GuiScreen {
             }
         });
 
-        addPage("Bida (continued):\nSD9\nSF30C\nBombcart\n23 Ton Boxcab\nGP30\n2 Truck VB Shay\n52' Mill Gondola\nFOL-M1B\nC424/425\nTGV Van\nGP7/GP9\nGP7U\nGTAV Locomotive",
+        addPage("Bida (continued):\nSD9\nSF30C\nBombcart\n23 Ton Boxcab\nGP30\n2 Truck VB Shay\n52' Mill Gondola\nFOL-M1B\nC424/425\nTGV Van\nGP7/GP9\nGP7U\nGTAV Locomotive\nHH660/HHGregg600",
                 "", "right", new ArrayList<StackToDraw>() {
                     {
                         add(new StackToDraw(new ItemStack(ItemIDs.diesel.item), 160, 160));
+                    }
+                });
+        addPage("Bida (continued):\nMP15DCW-9\nGP7B\nSD40T-2\n\n\n\n\n\n\n\n\n\nMore to Come!\nowo", "", "left", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartHHgregg.item), 170, 16));
+            }
+        });
+
+        addPage("Bida (continued):\n\n\n\n\n\n\n\n\n\n\n\n\nyes this page is blank, get over it lol\n",
+                "", "right", new ArrayList<StackToDraw>() {
+                    {
+                        add(new StackToDraw(new ItemStack(ItemIDs.minecartPower.item), 160, 160));
                     }
                 });
         addPage("Peachmaster:\nPCH100H Cab and Coach\nAipkit Explorer\n", "", "left", new ArrayList<StackToDraw>() {
@@ -186,10 +198,10 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartLUengine.item), 170, 16));
             }
         });
-        addPage("Bida Code Contribution\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+        addPage("Bida Code Contribution\n- Dynamic Freight Car Loads\n- Specific Wheels per Locomotive\n\n", "", "left", new ArrayList<StackToDraw>() {
             {
-                add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH100HCoach.item), 170, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.paintbrushThing.item), 20, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartMillGondola.item), 170, 16));
             }
         });
         addPage("JCRail Code Contribution\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
