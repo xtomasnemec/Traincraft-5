@@ -2,6 +2,7 @@ package train.common.api;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jcirmodelsquad.tcjcir.extras.packets.RemoteControlKeyPacket;
 import com.jcirmodelsquad.tcjcir.features.autotrain.AutoTrain2Handler;
 import com.jcirmodelsquad.tcjcir.vehicles.locomotives.GeGenesis;
 import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH100H;
@@ -22,6 +23,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -29,6 +31,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.lwjgl.input.Keyboard;
+import train.client.core.handlers.TCKeyHandler;
 import train.common.Traincraft;
 import train.common.adminbook.ServerLogger;
 import train.common.core.HandleMaxAttachedCarts;
@@ -38,6 +41,8 @@ import train.common.core.network.PacketParkingBrake;
 import train.common.core.network.PacketSlotsFilled;
 import train.common.entity.rollingStock.*;
 import train.common.items.ItemATOCard;
+import train.common.items.ItemRemoteController;
+import train.common.items.ItemRemoteControllerModule;
 import train.common.items.ItemWirelessTransmitter;
 import train.common.library.EnumSounds;
 import train.common.library.Info;
@@ -106,6 +111,8 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     public String connectingUUID = "";
     public boolean enforceSpeedLimits = true;
     public boolean isConnecting = false;
+    public int connectionAttempts = 0;
+    public boolean atoAllowed = true;
 
     /**
      * state of the loco
@@ -301,23 +308,25 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
 
     @Override
     public void limitSpeedOnTCRail() {
-        maxSpeed = SpeedHandler.handleSpeed(getMaxSpeed(), maxSpeed, this);
-        //System.out.println(maxSpeed);
-        if (this.speedLimiter != 0 && speedWasSet) {
-            //maxSpeed *= this.speedLimiter;
-            adjustSpeed(maxSpeed, speedLimiter);
-        }
-        if (motionX < -maxSpeed) {
-            motionX = -maxSpeed;
-        }
-        if (motionX > maxSpeed) {
-            motionX = maxSpeed;
-        }
-        if (motionZ < -maxSpeed) {
-            motionZ = -maxSpeed;
-        }
-        if (motionZ > maxSpeed) {
-            motionZ = maxSpeed;
+        if (!canBePulled) {
+            maxSpeed = SpeedHandler.handleSpeed(getMaxSpeed(), maxSpeed, this);
+            //System.out.println(maxSpeed);
+            if (this.speedLimiter != 0 && speedWasSet) {
+                //maxSpeed *= this.speedLimiter;
+                adjustSpeed(maxSpeed, speedLimiter);
+            }
+            if (motionX < -maxSpeed) {
+                motionX = -maxSpeed;
+            }
+            if (motionX > maxSpeed) {
+                motionX = maxSpeed;
+            }
+            if (motionZ < -maxSpeed) {
+                motionZ = -maxSpeed;
+            }
+            if (motionZ > maxSpeed) {
+                motionZ = maxSpeed;
+            }
         }
     }
 
@@ -662,6 +671,45 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
                     && brakePressed) {
                 Traincraft.keyChannel.sendToServer(new PacketKeyPress(15));
                 brakePressed = false;
+            }
+
+            Item currentItem = new Item();
+            if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() != null) {
+                currentItem = Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem();
+            }
+            boolean hasController = currentItem instanceof ItemRemoteController;
+            boolean isConnected = false;
+
+            if (currentItem != null  && hasController) {
+                isConnected = ((ItemRemoteController) currentItem).attachedLocomotive != null;
+            }
+            //1: Forward
+            //2: Backwards
+            //3: Toggle Brake
+            //4: Horn
+
+            if (Minecraft.getMinecraft().thePlayer != null && Vec3.createVectorHelper(Minecraft.getMinecraft().thePlayer.posX, Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ).distanceTo(Vec3.createVectorHelper(this.posX, posY, posZ)) < 200) {
+                if (TCKeyHandler.remoteControlForward.getIsKeyPressed() && hasController && isConnected && ((ItemRemoteController) currentItem).attachedLocomotive == this) {
+                    ItemRemoteController theController = (ItemRemoteController) currentItem;
+                    Traincraft.remoteControlKey.sendToServer(new RemoteControlKeyPacket(this.getEntityId(), 1));
+                }
+
+                if (TCKeyHandler.remoteControlBackwards.getIsKeyPressed() && hasController && isConnected && ((ItemRemoteController) currentItem).attachedLocomotive == this) {
+                    ItemRemoteController theController = (ItemRemoteController) currentItem;
+                    Traincraft.remoteControlKey.sendToServer(new RemoteControlKeyPacket(this.getEntityId(), 2));
+                }
+
+                if (TCKeyHandler.remoteControlBrake.getIsKeyPressed() && hasController && isConnected && ((ItemRemoteController) currentItem).attachedLocomotive == this) {
+                    ItemRemoteController theController = (ItemRemoteController) currentItem;
+
+                    Traincraft.remoteControlKey.sendToServer(new RemoteControlKeyPacket(this.getEntityId(), 3));
+                }
+
+                if (TCKeyHandler.remoteControlHorn.getIsKeyPressed() && hasController && isConnected && ((ItemRemoteController) currentItem).attachedLocomotive == this) {
+                    ItemRemoteController theController = (ItemRemoteController) currentItem;
+
+                    Traincraft.remoteControlKey.sendToServer(new RemoteControlKeyPacket(this.getEntityId(), 4));
+                }
             }
 
         }
@@ -1252,6 +1300,19 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     @Override
     public boolean attackEntityFrom(DamageSource damagesource, float i) {
         if (worldObj.isRemote) { return true; }
+        if (worldObj.isRemote) {
+
+            if (Minecraft.getMinecraft().thePlayer != null) {
+                for (int i2 = 0; i2 < Minecraft.getMinecraft().thePlayer.inventory.getSizeInventory(); i2++) {
+                    if (Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(i2) != null && Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(i2).getItem() instanceof ItemRemoteController && ((ItemRemoteController)Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(i2).getItem()).attachedLocomotive == this) {
+                        ((ItemRemoteController)Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(i2).getItem()).attachedLocomotive = null;
+                        break;
+                    }
+                }
+            }
+            return true;
+
+        }
         if (canBeDestroyedByPlayer(damagesource)) return true;
         super.attackEntityFrom(damagesource, i);
         setRollingDirection(-getRollingDirection());
@@ -1575,6 +1636,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     }
     public void remoteControlFromPacket(int key ) {
         System.out.println("glrlr");
+        System.out.println( this.serverRealRotation);
         switch (key) {
             case 1: {
                 double rotation = this.serverRealRotation;
@@ -1587,10 +1649,11 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
 
                     this.motionX += 0.0015 * this.accelerate;
 
-                } else if (rotation < -90.00 && rotation > -180 || rotation == 0) {
+                } else if (rotation < -90.00 && rotation > -180) {
 
+                    this.motionZ -= 0.0015 * this.accelerate;
+                } else if (rotation == 0) {
                     this.motionZ += 0.0015 * this.accelerate;
-
                 } else if (rotation < 180.0 && rotation > 90.0 || rotation == 180) {
                     this.motionZ -= 0.0015 * this.accelerate;
                 } else if (rotation > -180 && rotation < -90 || rotation == -180) {
@@ -1689,4 +1752,15 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         return this instanceof EntityLocoElectricHighSpeedZeroED || this instanceof EntityLocoElectricTramNY || this instanceof EntityLocoElectricICE1 || this instanceof EntityLocoDieselIC4_DSB_MG || this instanceof PCH120Commute || this instanceof PCH100H || support;
 
     }
+
+
+    public boolean trainIsRemoteControlSupported() {
+        for (ItemStack item : this.getInventory()) {
+            if (item != null && item.getItem() != null && item.getItem() instanceof ItemRemoteControllerModule) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.jcirmodelsquad.tcjcir.features.autotrain;
 
+import com.jcirmodelsquad.tcjcir.features.eti.jcirmonitor.Position;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.common.ForgeChunkManager;
 import train.common.api.Locomotive;
 
 import java.util.ArrayList;
@@ -47,6 +49,10 @@ public class AutoTrain2Handler {
     public TrackSection currentTrackSection;
     public TrackSection nextTrackSection;
 
+    public Position pathfindingEnd;
+    public BogiePathfinding thePathfinder;
+    public boolean pathfindingCompleted = true;
+
     public int initialCount;
     /**
      *  Could be a number of things! Such as!
@@ -54,8 +60,9 @@ public class AutoTrain2Handler {
      *  expectedstop: The train has stopped at a station, or is loading up with something.
      *  integrityfault: The consist broke apart. Stop stop stop!!!
      *  unexpectedstop: A number of things, such as the consist breaking apart. Must be manually resumed.
+     *  pathfinding: Usually before operation is started. Finding a way to get to the end.
      */
-    public String currentStatus;
+    public String currentStatus = "";
 
     public void operateAutoTrain(Locomotive locomotive) {
         if (autoTrainActivated) {
@@ -76,7 +83,7 @@ public class AutoTrain2Handler {
                     currentStatus = "unexpectedstop";
                 }
             }
-            System.out.println(Vec3.createVectorHelper(locomotive.posX, locomotive.posY, locomotive.posZ).distanceTo(Vec3.createVectorHelper(currentTrackSection.getEndPosition().x, currentTrackSection.getEndPosition().y, currentTrackSection.getEndPosition().z)));
+            /*System.out.println(Vec3.createVectorHelper(locomotive.posX, locomotive.posY, locomotive.posZ).distanceTo(Vec3.createVectorHelper(currentTrackSection.getEndPosition().x, currentTrackSection.getEndPosition().y, currentTrackSection.getEndPosition().z)));
             if (Vec3.createVectorHelper(locomotive.posX, locomotive.posY, locomotive.posZ).distanceTo(Vec3.createVectorHelper(currentTrackSection.getEndPosition().x, currentTrackSection.getEndPosition().y, currentTrackSection.getEndPosition().z)) < 5) {
                 if (loadedTrackDatabase.size() != 1) {
                     currentTrackSection = loadedTrackDatabase.get(1);
@@ -104,7 +111,7 @@ public class AutoTrain2Handler {
             for (TrackSection section : loadedTrackDatabase) {
                 System.out.println(section);
             }
-            System.out.println("=======================");
+            System.out.println("=======================");*/
             loadedModule.doThings(this, locomotive);
 
 
@@ -112,8 +119,49 @@ public class AutoTrain2Handler {
 
 
         }
+
+        if (currentStatus.equals("pathfinding")) {
+
+
+        }
     }
 
+    public String initialiseAutoTrain(Locomotive locomotive, Position endCoordinates) {
+        if (endCoordinates == null) {
+            return "No end coordinates were specified.";
+        }
+        if (locomotive == null) {
+            return "What? How are you even supposed to use this if you aren't in a train?";
+        }
+        currentStatus = "pathfinding";
+        double rotation = locomotive.rotation;
+
+        if (rotation == 0) {
+            thePathfinder = new BogiePathfinding(locomotive.worldObj, locomotive.posX, locomotive.posY, locomotive.posZ - 5, 44455, 0, 4, this);
+            thePathfinder.positionToGoTo = endCoordinates;
+            locomotive.worldObj.spawnEntityInWorld(thePathfinder);
+            thePathfinder.setVelocity(0,0, -1);
+
+        } else if (rotation == 180) {
+            thePathfinder = new BogiePathfinding(locomotive.worldObj, locomotive.posX + 5, locomotive.posY, locomotive.posZ, 44455, 0, 4, this);
+            thePathfinder.positionToGoTo = endCoordinates;
+            locomotive.worldObj.spawnEntityInWorld(thePathfinder);
+            thePathfinder.setVelocity(1,0,0);
+        } else if (rotation == 90) {
+            thePathfinder = new BogiePathfinding(locomotive.worldObj, locomotive.posX, locomotive.posY, locomotive.posZ - 5, 44455, 0, 4, this);
+            thePathfinder.positionToGoTo = endCoordinates;
+            locomotive.worldObj.spawnEntityInWorld(thePathfinder);
+            thePathfinder.setVelocity(0,0,-1);
+        } else {
+            thePathfinder = new BogiePathfinding(locomotive.worldObj, locomotive.posX, locomotive.posY, locomotive.posZ + 5, 44455, 0, 4, this);
+            thePathfinder.positionToGoTo = endCoordinates;
+            locomotive.worldObj.spawnEntityInWorld(thePathfinder);
+            thePathfinder.setVelocity(0,0,1);
+        }
+
+
+        return "Pathfinding started.";
+    }
     public String startAutoTrain(ArrayList<TrackSection> database, Locomotive locomotive) {
         //First, make sure everything is right.
         //Oh yeah, return an error if something goes wrong.
@@ -150,6 +198,18 @@ public class AutoTrain2Handler {
 
         }
         return null;
+    }
+
+    public void pathfindingCompleted() {
+        System.out.println("Pathfinding completed!");
+        currentStatus = "pathfinding|completed";
+        for (BogiePathfinding item : thePathfinder.globalList) {
+            item.setDead();
+            ForgeChunkManager.releaseTicket(item.chunkTicket);
+        }
+
+        ForgeChunkManager.releaseTicket(thePathfinder.chunkTicket);
+        thePathfinder.setDead();
     }
 
     public void informClient() {

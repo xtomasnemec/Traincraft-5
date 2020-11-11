@@ -6,9 +6,11 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.opengl.GL11;
+import train.common.api.ControlCar;
 import train.common.api.DieselTrain;
 import train.common.api.Locomotive;
 import train.common.api.SteamTrain;
+import train.common.items.ItemRemoteController;
 import train.common.library.Info;
 
 public class HUDloco extends GuiScreen {
@@ -17,9 +19,21 @@ public class HUDloco extends GuiScreen {
 	private int windowWidth, windowHeight;
 
 	@SubscribeEvent
-	public void onGameRender(RenderGameOverlayEvent.Text event){
-		if (game != null && game.thePlayer != null && game.thePlayer.ridingEntity != null && game.thePlayer.ridingEntity instanceof Locomotive && Minecraft.isGuiEnabled() && game.currentScreen == null) {
-			renderSkillHUD(event, (Locomotive) game.thePlayer.ridingEntity);
+	public void onGameRender(RenderGameOverlayEvent.Text event) {
+		if (game != null && game.thePlayer != null && Minecraft.isGuiEnabled() && game.currentScreen == null) {
+			if (game.thePlayer.ridingEntity != null && game.thePlayer.ridingEntity instanceof Locomotive) {
+				renderSkillHUD(event, (Locomotive) game.thePlayer.ridingEntity);
+			}
+			if (game.thePlayer.inventory.getCurrentItem() != null && game.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemRemoteController) {
+				ItemRemoteController currentItem = (ItemRemoteController) Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem();
+				if (currentItem.attachedLocomotive != null) {
+					renderSkillHUD(event, currentItem.attachedLocomotive);
+				}
+			}
+
+			if (game.thePlayer.ridingEntity instanceof ControlCar && game.theWorld.getEntityByID(game.thePlayer.ridingEntity.getDataWatcher().getWatchableObjectInt(29)) != null) {
+				renderSkillHUD(event, (Locomotive) game.theWorld.getEntityByID(game.thePlayer.ridingEntity.getDataWatcher().getWatchableObjectInt(29)));
+			}
 		} else {
 			this.game = this.mc = Minecraft.getMinecraft();
 			this.fontRendererObj = this.game.fontRenderer;

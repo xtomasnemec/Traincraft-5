@@ -29,7 +29,10 @@ public class TCKeyHandler {
 	public static KeyBinding toggleATO;
 	public static KeyBinding mtcOverride;
 	public static KeyBinding overspeedOverride;
-
+	public static KeyBinding remoteControlForward;
+	public static KeyBinding remoteControlBackwards;
+	public static KeyBinding remoteControlHorn;
+	public static KeyBinding remoteControlBrake;
 	public TCKeyHandler() {
 		horn = new KeyBinding("key.traincraft.horn", Keyboard.KEY_H, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(horn);
@@ -53,6 +56,14 @@ public class TCKeyHandler {
 			overspeedOverride = new KeyBinding("key.traincraft.overspeedOverride", Keyboard.KEY_NONE, "key.categories.traincraft");
 			ClientRegistry.registerKeyBinding(overspeedOverride);
 		}
+		remoteControlForward = new KeyBinding("Remote Control Forward", Keyboard.KEY_NUMPAD8, "key.categories.traincraft");
+        remoteControlBackwards = new KeyBinding("Remote Control Backwards", Keyboard.KEY_NUMPAD8, "key.categories.traincraft");
+        remoteControlBrake = new KeyBinding("Remote Control Brake", Keyboard.KEY_NUMPAD0, "key.categories.traincraft");
+        remoteControlHorn = new KeyBinding("Remote Control Horn", Keyboard.KEY_NUMPADENTER, "key.categories.traincraft");
+        ClientRegistry.registerKeyBinding(remoteControlForward);
+        ClientRegistry.registerKeyBinding(remoteControlBackwards);
+        ClientRegistry.registerKeyBinding(remoteControlBrake);
+        ClientRegistry.registerKeyBinding(remoteControlHorn);
 	}
 
 	@SubscribeEvent
@@ -140,6 +151,7 @@ public class TCKeyHandler {
 				}
 
 			}
+
 		}
 
 		if (FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.isPressed() && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
