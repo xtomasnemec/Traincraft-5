@@ -34,6 +34,8 @@ import train.common.core.handlers.*;
 import train.common.generation.ComponentVillageTrainstation;
 import train.common.generation.WorldGenWorld;
 import train.common.items.ItemPaintbrushThing;
+import train.common.items.ItemRemoteController;
+import train.common.items.ItemRemoteControllerModule;
 import train.common.items.TCItems;
 import train.common.library.Info;
 import train.common.library.ItemIDs;
@@ -133,9 +135,7 @@ public class Traincraft {
 		TCBlocks.init();
 		TCItems.init();
 		EntityHandler.init();
-		ItemIDs.paintbrushThing.item = new ItemPaintbrushThing();
-		/*ItemIDs.remoteController.item = new ItemRemoteController();
-		ItemIDs.remoteControllerModule.item = new ItemRemoteControllerModule();*/
+
 		proxy.registerTileEntities();
 		proxy.registerSounds();
 		proxy.setHook(); // Moved file needed to run JLayer, we need to set a hook in order to retrieve it
