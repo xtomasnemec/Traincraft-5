@@ -775,6 +775,7 @@ public enum RenderEnum {
 		}
 	}, 2, true),
 	aipkitExplorer(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer.class, new ModelAipkitExplorer(), "aipkit_explorer", false, new float[]{0F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	aipkitExplorer2(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer2.class, new ModelExplorer2(), "aipkit_explorerii", false, new float[]{0.6F, 0F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	MillGondola(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.MillGondola.class, new ModelMillGondola(),"MillGondola_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Class345(com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricClass345.class, new ModelClass345(), "class345", false,new float[] {-1.0F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	SD70Mac( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD70Mac.class,  new ModelSD70Mac(), "sd70mac_", true,new float[] {-2.1F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {

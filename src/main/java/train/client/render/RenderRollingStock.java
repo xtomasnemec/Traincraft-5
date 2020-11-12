@@ -18,6 +18,8 @@ import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.library.Info;
 import net.minecraft.entity.Entity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -221,17 +223,80 @@ public class RenderRollingStock extends Render {
 		for (RenderEnum renders : RenderEnum.values()) {
 			if (renders.getEntityClass() != null && renders.getEntityClass().equals(cart.getClass())) {
 				//loadTexture(getTextureFile(renders.getTexture(), renders.getIsMultiTextured(), cart));
-				if (renders.getTrans() != null) {
-					GL11.glTranslatef(renders.getTrans()[0], renders.getTrans()[1], renders.getTrans()[2]);
+
+				try {
+					if (renders.getModel().getClass().getDeclaredMethod("getTrans") != null) {
+						Method theTransMethod = renders.getModel().getClass().getDeclaredMethod("getTrans");
+						float[] theTrans = (float[]) theTransMethod.invoke(renders.getModel().getClass().newInstance());
+						if (theTrans != null) {
+							GL11.glTranslatef(theTrans[0], theTrans[1], theTrans[2]);
+						}
+
+					}
+				} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+					if (renders.getTrans() != null) {
+						GL11.glTranslatef(renders.getTrans()[0], renders.getTrans()[1], renders.getTrans()[2]);
+					}
+
+				} catch (InstantiationException e) {
+					e.printStackTrace();
 				}
-				if (renders.getRotate() != null) {
+
+
+				/*if (renders.getTrans() != null) {
+					GL11.glTranslatef(renders.getTrans()[0], renders.getTrans()[1], renders.getTrans()[2]);
+				}*/
+
+				try {
+					if (renders.getModel().getClass().getDeclaredMethod("getRotate") != null) {
+						Method theTransMethod = renders.getModel().getClass().getDeclaredMethod("getRotate");
+						float[] theRotate = (float[]) theTransMethod.invoke(renders.getModel().getClass().newInstance());
+						if (theRotate != null) {
+							GL11.glRotatef(theRotate[0], 1.0F, 0.0F, 0.0F);
+							GL11.glRotatef(theRotate[1], 0.0F, 1.0F, 0.0F);
+							GL11.glRotatef(theRotate[2], 0.0F, 0.0F, 1.0F);
+						}
+
+					}
+				} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+					if (renders.getRotate() != null) {
+						GL11.glRotatef(renders.getRotate()[0], 1.0F, 0.0F, 0.0F);
+						GL11.glRotatef(renders.getRotate()[1], 0.0F, 1.0F, 0.0F);
+						GL11.glRotatef(renders.getRotate()[2], 0.0F, 0.0F, 1.0F);
+					}
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				}
+
+				/*if (renders.getRotate() != null) {
 					GL11.glRotatef(renders.getRotate()[0], 1.0F, 0.0F, 0.0F);
 					GL11.glRotatef(renders.getRotate()[1], 0.0F, 1.0F, 0.0F);
 					GL11.glRotatef(renders.getRotate()[2], 0.0F, 0.0F, 1.0F);
+				}*/
+
+				try {
+					if (renders.getModel().getClass().getDeclaredMethod("getScale") != null) {
+						Method theScaleMethod = renders.getModel().getClass().getDeclaredMethod("getScale");
+						float[] theRotate = (float[]) theScaleMethod.invoke(renders.getModel().getClass().newInstance());
+						if (theRotate != null) {
+							GL11.glScalef(theRotate[0], theRotate[1], theRotate[2]);
+						}
+					}
+				} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+					if (renders.getScale() != null) {
+						GL11.glScalef(renders.getScale()[0], renders.getScale()[1], renders.getScale()[2]);
+					}
+
+				} catch (InstantiationException e) {
+					e.printStackTrace();
 				}
-				if (renders.getScale() != null) {
+
+
+				/*if (renders.getScale() != null) {
 					GL11.glScalef(renders.getScale()[0], renders.getScale()[1], renders.getScale()[2]);
-				}
+				}*/
+
+
 				Tessellator.bindTexture(getTexture(cart));
 
 				GL11.glEnable(GL11.GL_LIGHTING);

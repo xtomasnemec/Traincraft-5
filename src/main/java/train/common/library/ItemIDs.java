@@ -353,6 +353,7 @@ public enum ItemIDs {
 	minecartFOLM1B("ItemRollingStock", "folm1b", 9),
 	minecartGP30("ItemRollingStock", "gp30", 10),
 	minecartAipkitExplorer("ItemRollingStock", "explorer", 14),
+	minecartAipkitExplorer2("ItemRollingStock", "explorer2", 15),
 	minecartVBShay2("ItemRollingStock", "vbshay2", 7),
 	minecartMillGondola("ItemRollingStock", "millgondola", 4),
 	minecartClass345("ItemRollingStock", "class345", 13),
