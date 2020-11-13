@@ -374,7 +374,7 @@ public class Model73centerbeam extends ModelConverter //Same as Filename
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
 				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
-				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
 				} else {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
@@ -412,7 +412,7 @@ public class Model73centerbeam extends ModelConverter //Same as Filename
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
 				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
-				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
 				} else {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
@@ -476,7 +476,7 @@ public class Model73centerbeam extends ModelConverter //Same as Filename
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
 				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
-				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
 				} else {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
@@ -566,7 +566,7 @@ public class Model73centerbeam extends ModelConverter //Same as Filename
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
 				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
-				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
 				} else {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
@@ -682,7 +682,7 @@ public class Model73centerbeam extends ModelConverter //Same as Filename
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
 				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
-				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
 				} else {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));
@@ -824,7 +824,7 @@ public class Model73centerbeam extends ModelConverter //Same as Filename
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_canfor.png"));
 				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==13451) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_irving.png"));
-				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6) {
+				}else if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
 				} else {
 					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_portbec.png"));

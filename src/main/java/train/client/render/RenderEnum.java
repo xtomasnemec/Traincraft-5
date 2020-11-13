@@ -637,7 +637,7 @@ public enum RenderEnum {
 	pch120Coach(PCH120Coach.class, new ModelPCH120Car(), "pch120car_", true,new float[] {0F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	amfleet(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Amfleet.class, new ModelAmfleet(),"amfleet_", true, new float[]{0F, -0.4F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	ribbedHopper(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.RibbedHopper.class, new ModelRibbedHopper(),"ribbed_hopper_", true, new float[]{0F, -0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	SW1( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1.class,  new ModelSW1(), "sw1_", true,new float[] {-1.1F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 2,  new ArrayList<double[]>() {
+	SW1( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1.class,  new ModelSW1(), "sw1_", true,new float[] {-1.2F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 2,  new ArrayList<double[]>() {
 		{
 			add(new double[]{0.85D, 1.3D, 0.0D});
 		}
@@ -709,7 +709,7 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
-	SDL39( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDL39.class,  new ModelSDL39(), "SDL39_", true,new float[] {-1.6F, -0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+	SDL39( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDL39.class,  new ModelSDL39(), "SDL39_", true,new float[] {-1.5F, -0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1.5D, 1.5D, 0.0D});
 
