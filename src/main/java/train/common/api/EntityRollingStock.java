@@ -1670,6 +1670,7 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 			if (this.acceptedColors != null && this.acceptedColors.size() == 0) {
 				entityplayer.addChatMessage(new ChatComponentText("There are no other colors available."));
 			}
+			return true;
 		}
 
 		if (itemstack != null && itemstack.getItem() instanceof ItemContainer && this instanceof DieselTrain && entityplayer.isSneaking() && !worldObj.isRemote) {

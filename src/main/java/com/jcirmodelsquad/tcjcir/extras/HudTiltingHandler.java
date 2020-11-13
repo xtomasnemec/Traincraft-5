@@ -61,12 +61,9 @@ public class HudTiltingHandler extends GuiScreen {
 
         this.drawString(this.game.fontRenderer, new DecimalFormat("###.###").format(tiltingHandler.tiltingProgress) + "°", xPos + 23, yPos + 65, 14737632);
         this.drawString(this.game.fontRenderer, "JCIR-Traincraft TiltHandler", xPos + 70, yPos + 10, 14737632);
-        if (tiltingHandler.tiltingToLeft) {
-            this.drawString(this.game.fontRenderer, "Tilting to the left.", xPos + 70, yPos + 20, 14737632);
-        } else {
-            this.drawString(this.game.fontRenderer, "Tilting to the right.", xPos + 70, yPos + 20, 14737632);
-        }
-        if (tiltingHandler.tiltingIn) {
+
+        this.drawString(this.game.fontRenderer, "Tilting to the " + tiltingHandler.tiltingDirection, xPos + 70, yPos + 20, 14737632);
+        if ( tiltingHandler.tiltingStatus.equals("tiltin")) {
             this.drawString(this.game.fontRenderer, "Tilting in.", xPos + 70, yPos + 30, 14737632);
         } else {
             this.drawString(this.game.fontRenderer, "Tilting out.", xPos + 70, yPos + 30, 14737632);

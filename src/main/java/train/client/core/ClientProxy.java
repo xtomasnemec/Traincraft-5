@@ -1,5 +1,6 @@
 package train.client.core;
 
+import com.jcirmodelsquad.tcjcir.extras.HudTiltingHandler;
 import com.jcirmodelsquad.tcjcir.render.ItemRenderMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.render.RenderMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
@@ -71,9 +72,11 @@ public class ClientProxy extends CommonProxy {
 		HUDloco huDloco = new HUDloco();
 		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")){
 			HUDMTC hudMTC = new HUDMTC();
+
 			registerEvent(hudMTC);
 		}
-
+		HudTiltingHandler tiltingHandler = new HudTiltingHandler();
+		registerEvent(tiltingHandler);
 		registerEvent(tickHandler);
 		registerEvent(huDloco);
 	}

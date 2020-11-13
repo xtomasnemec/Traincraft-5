@@ -23,6 +23,7 @@ public class TileMILWSwitchStand extends TileTraincraft {
     @Override
     public void readFromNBT(NBTTagCompound nbtTag, boolean forSyncing) {
         //super.readFromNBT(nbtTag, false);
+
         facing = ForgeDirection.getOrientation(nbtTag.getByte("Orientation"));
     }
 
@@ -30,6 +31,7 @@ public class TileMILWSwitchStand extends TileTraincraft {
     public void updateEntity() {
         super.updateEntity();
         updateTicks++;
+
         /**
          * Remove any block on top of the wind mill
          */
@@ -47,6 +49,7 @@ public class TileMILWSwitchStand extends TileTraincraft {
                     }
                     this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
                 }
+                syncTileEntity();
             }
         }
     }

@@ -14,9 +14,8 @@ public class TiltingHandler {
 
     public int maxTilt;
     public float tiltingProgress = 0;
-    public boolean tiltingIn = false;
-    public boolean tiltingOut = false;
-    public boolean tiltingToLeft = false;
+    public String tiltingStatus = ""; // Either tiltin, tiltout, or nottilt
+    public String tiltingDirection = "";
     public boolean testTilting = false;
     public boolean tiltingDisabled = false;
     public String leftOrRight = "";
@@ -29,7 +28,7 @@ public class TiltingHandler {
     }
 
     public void handleTilting(EntityRollingStock rollingStock) {
-       if (ConfigHandler.ENABLE_TILT_HANDLER) {
+       if (false) {
             if (!testTilting) {
                 int xFloor = MathHelper.floor_double(rollingStock.posX);
                 int yFloor = MathHelper.floor_double(rollingStock.posY);
@@ -50,23 +49,26 @@ public class TiltingHandler {
                     }
                 }
                 if (theRail != null && ItemTCRail.isTCTurnTrack(theRail)) {
-                    tiltingIn = true;
-                    tiltingOut = false;
-
-
-                    tiltingToLeft = !theRail.getType().equals("VERY_LARGE_RIGHT_TURN");
-
-
-                } else if (theRail != null && isTCStraightTrack(theRail) && tiltingIn) {
+                    tiltingStatus = "tiltin";
+                    if (theRail.getType().equals("VERY_LARGE_LEFT_TURN")) {
+                        tiltingDirection = "left";
+                    }
+                    if (theRail.getType().equals("VERY_LARGE_RIGHT_TURN")) {
+                        tiltingDirection = "right";
+                    }
+                } else if (theRail != null && isTCStraightTrack(theRail)) {
                     //Tilt out.
-                    tiltingIn = false;
-                    tiltingOut = true;
+
+                    if (!tiltingStatus.equals("nottilt")) {
+                        tiltingStatus = "tiltout";
+                    }
+
                 }
             }
       /*  if (tiltingOut && tiltingIn) {
             tiltingProgress = 0;
         }*/
-            if (testTilting) {
+            /*if (testTilting) {
                 //Tilt to the left, then to the right.
                 if (rollingStock.ticksExisted % 100 == 0) {
                     //Left!
@@ -92,7 +94,7 @@ public class TiltingHandler {
 
 
                 }
-            }
+            }*/
             //   System.out.println(tiltingOut);
             //	System.out.println("tilting in: " + tiltingIn);
             //System.out.println("tilting out: " + tiltingOut);
@@ -109,8 +111,9 @@ public class TiltingHandler {
 
                 // System.out.println("Max tilt: " + maxTilt);
                 // System.out.println(tiltingProgress-1F <= 0);
-                if ((tiltingToLeft && tiltingProgress <= maxTilt) || (!tiltingToLeft && tiltingProgress >= -maxTilt) && tiltingIn) {
-                    if (tiltingToLeft) {
+
+                if (tiltingStatus.equals("tiltin") && tiltingProgress <= maxTilt) {
+                    if (tiltingDirection.equals("left")) {
                         tiltingProgress = (float) (tiltingProgress + 0.2);
                     } else {
                         tiltingProgress = (float) (tiltingProgress - 0.2);
@@ -118,10 +121,10 @@ public class TiltingHandler {
 
                     //System.out.println("Starting tilt.");
 
-                } else if (Math.round(tiltingProgress) <= 0 && tiltingOut) {
-                    if (tiltingToLeft) {
+                } else if ((Math.round(tiltingProgress) <= 0 || Math.round(tiltingProgress) >= 0) && tiltingStatus.equals("tiltout")) {
+                    if (tiltingDirection.equals("left")) {
                         tiltingProgress = (float) (tiltingProgress - 0.2);
-                        //   System.out.println("untilt?");
+
                     } else {
                         tiltingProgress = (float) (tiltingProgress + 0.2);
                     }
@@ -132,7 +135,7 @@ public class TiltingHandler {
         }
     }
 
-    public void tiltToTheLeft() {
+   /* public void tiltToTheLeft() {
         if (tiltingToLeft) {
             tiltingProgress = (float) (tiltingProgress + 0.2);
         } else {
@@ -147,7 +150,7 @@ public class TiltingHandler {
         } else {
             tiltingProgress = (float) (tiltingProgress + 0.2);
         }
-    }
+    }*/
 
 
 }

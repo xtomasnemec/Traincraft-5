@@ -11,6 +11,8 @@ package com.jcirmodelsquad.tcjcir.models.trains;
 
 
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelPCHBogie;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.AipkitExplorer2;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -483,10 +485,18 @@ public class ModelExplorer2 extends ModelBase
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
+		GL11.glPushMatrix();
+		AipkitExplorer2 theCoach = (AipkitExplorer2)entity;
+		if (theCoach.tiltingHandler != null) {
+			GL11.glRotatef(theCoach.tiltingHandler.tiltingProgress, 4F, 0, 0);
+		}
 		for(int i = 0; i < 110; i++)
 		{
 			explorer2Model[i].render(f5);
 		}
+		GL11.glPopMatrix();
+
+
 		Tessellator.bindTexture(new ResourceLocation("tc:textures/trains/pch120_bogie.png"));
 		GL11.glPushMatrix();
 		GL11.glTranslatef(1.5F ,0.1F,0F);
