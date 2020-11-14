@@ -2,6 +2,7 @@ package train.common.library;
 
 import com.jcirmodelsquad.tcjcir.vehicles.locomotives.PCH120Commute;
 import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PCH120Coach;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.SkookTender;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import train.common.api.AbstractTrains;
@@ -346,6 +347,8 @@ public enum EnumTrains {
 	EP1A("EP1A",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEP1A.class, ItemIDs.minecartEP1A.item, "electric", 2500, 120, 0, 55, 0, 150, 0.75, 0.85, 12500, new String[] {"Orange", "Red"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
 	LogcarNP("LogcarNP",com.jcirmodelsquad.tcjcir.vehicles.rollingstock.LogcarNP.class, ItemIDs.minecartLogcarNP.item,"freight",2, new String[]{"Brown","Black"}, 0, 18, new String[]{"Made by BigJ1359"}),
 	//CF7R("CF7R", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class, ItemIDs.minecartCF7R.item, "diesel", 2800, 105, 0, 45, 0, 185, 0.8, 0.9, 20000, new String[] {"Blue", "Yellow", "Black"}, 10, -3, new String[] {"CF7 Rebuild Rebuilt"}), //dont touch this plos
+	Skook("Skookum", com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamSkook.class, ItemIDs.minecartSkook.item, "steam", 1000, 75, 0, 75, 75, 190, 0.8, 0.91, 2000, null, 10, -2.4),
+	SkookTender("Skookum Tender", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.SkookTender.class, ItemIDs.minecartSkookTender.item,"tender",0,0,2,0,0,0,0,0,20000,null,18,0,new String[] {"Water capacity: 20000mb"}),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

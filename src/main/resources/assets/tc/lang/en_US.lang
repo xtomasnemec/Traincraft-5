@@ -330,8 +330,6 @@ item.tc:minecartLocoFOLM1.name=FOL-M1
 item.tc:minecartHeavyweightFreight.name=Heavyweight Baggage
 item.tc:minecartLocoBP4.name=BP4
 item.tc:minecartASTFAutorack.name=ASTF ft-41 Auto Rack
-
-
 item.tc:minecart4000GallonTender.name=4000 Gallon Tender
 item.tc:minecartLocoHallClass.name=Hall Class
 item.tc:minecartLocoKingClass.name=King Class
@@ -426,6 +424,8 @@ item.tc:minecartEF1.name=GE MILW EF-1
 item.tc:minecartEF1B.name=GE MILW EF-1B
 item.tc:minecartEP1A.name=GE MILW EP-1A
 item.tc:minecartLogcarNP.name=Log Car NP
+item.tc:minecartSkook.name=Deep River Logging No. 7 Skookum
+item.tc:minecartSkookTender.name=Skookum Tender
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -802,6 +802,8 @@ entity.tc.EF1.name=GE MILW EF-1
 entity.tc.EF1B.name=GE MILW EF-1B
 entity.tc.EP1A.name=GE MILW EP-1A
 entity.tc.LogcarNP.name=Log Car NP
+entity.tc.Skookum.name=Deep River Logging No. 7 Skookum
+entity.tc.Skookum Tender.name=Skookum Tender
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

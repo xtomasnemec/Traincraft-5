@@ -890,6 +890,18 @@ public enum RenderEnum {
 	EF1( com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1.class,  new ModelEF1(), "ef1_", true,new float[] {-1.60F, 0.1875F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	EF1B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1B.class,  new ModelEF1B(), "ef1b_", true,new float[] {-1.15635F, 0.1875F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	EP1A( com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEP1A.class,  new ModelEP1A(), "ep1a_", true,new float[] {-1.60F, 0.1875F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	Skook(com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamSkook.class, new ModelSkookum(), "skookum", false, new float[] { -0.0F, -0.0F, -0.0F }, new float[] { 0F, 180F, 180F }, null, "largesmoke", 20, new ArrayList<double[]>() {
+		{
+			add(new double[] { 2.4D, 1.5D, -0.0D });
+		}
+	}, "explode", new ArrayList<double[]>() {
+		{
+			add(new double[] { 0.9D, -0.4D, 0.8D });
+			add(new double[] { 2.5D, -0.4D, 0.8D });
+			add(new double[] { -0.5D, 1.5D, 0.0D });
+		}
+	}, 2, true),
+	SkookTender(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.SkookTender.class, new ModelSkookumTender(), "skookumtender", false, new float[] {-0.00F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;
