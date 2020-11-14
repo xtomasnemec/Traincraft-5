@@ -268,7 +268,7 @@ public enum EnumTrains {
 	locoSteamSnowPlow("Loco Steam Snow Plow", EntityLocoSteamSnowPlow.class, ItemIDs.minecartLocoSnowPlow.item, "steam, snow plow", 200, 20, 0, 10, 120, 170, 0.7, 0.965, 6850, null, 18, -4.75),
 
 	/** JCIR-TC*/
-	locoAlcoS2("Alco S2",  com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselAlcoS2.class, ItemIDs.minecartAlcoS2.item, "diesel", 1000, 96, 0, 45, 0, 170, 0.7, 0.965, 8000, new String[] {"Black", "Grey", "Green", "Orange", "Pink", "White", "Blue", "LightGrey", "Magenta", "Mayeeta", "Red"}, 18, -2, new String[] { "Created by Bidahochi" }),
+	locoAlcoS2("Alco S2",  com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselAlcoS2.class, ItemIDs.minecartAlcoS2.item, "diesel", 1000, 96, 0, 45, 0, 170, 0.7, 0.965, 9000, new String[] {"Black", "Grey", "Green", "Orange", "Pink", "White", "Blue", "LightGrey", "Magenta", "Red"}, 18, -2, new String[] { "Created by Bidahochi" }),
 	pch120("PCH-120 Commute", PCH120Commute.class, ItemIDs.minecartPCH120.item, "electric",1400, 120, 0, 5, 0, 160, 0.8, 0.985, 0, new String[] {"White", "Blue", "Red", "Green"}, 18, -2.7, new String[] {"Model by Bidahochi, train by PeachMaster"}),
 	pch120coach("PCH-120 Commute Car", PCH120Coach.class, ItemIDs.minecartPCH120Coach.item, "passenger",0, 0, 2, 0, 0, 0, 0, 0, 0,new String[] {"White", "Blue", "Red", "Green"}, 0, 0,new String[] {"Model by Bidahochi"}),
 	//geometryCar("NXTrack Geometry Car", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.ExperimentalGeometryCar.class, ItemIDs.minecartGeometryCar.item, "geometry car", 0, 0, 2, 0, 0, 0, 0, 0, 0, new String[] {"Grey", "LightGrey"}), 18, 0, "Model by Bidahochi, train by PeachMaster.\n It checks the railroad for things not up to standard."),
