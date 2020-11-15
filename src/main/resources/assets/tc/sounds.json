@@ -132,4 +132,7 @@
   "lu_whistle": {"category": "master", "sounds": [{"name": "lu_whistle", "stream":  true}]},
   "drgw_3chime_2": {"category": "master", "sounds": [{"name": "drgw_3chime_2", "stream":  true}]},
   "br_horn": {"category": "master", "sounds": [{"name": "br_horn", "stream":  true}]},
+  "skookum_whistle": {"category": "master", "sounds": [{"name": "skookum_whistle", "stream":  true}]},
+  "skookum_idle": {"category": "master", "sounds": [{"name": "skookum_idle", "stream":  true}]},
+  "skookum_notch8": {"category": "master", "sounds": [{"name": "skookum_notch8", "stream":  true}]},
   "765_whistle": {"category": "master", "sounds": [{"name": "765_whistle", "stream":  true}]}}
