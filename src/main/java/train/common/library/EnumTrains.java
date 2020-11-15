@@ -349,6 +349,8 @@ public enum EnumTrains {
 	//CF7R("CF7R", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class, ItemIDs.minecartCF7R.item, "diesel", 2800, 105, 0, 45, 0, 185, 0.8, 0.9, 20000, new String[] {"Blue", "Yellow", "Black"}, 10, -3, new String[] {"CF7 Rebuild Rebuilt"}), //dont touch this plos
 	Skook("Skookum", com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamSkook.class, ItemIDs.minecartSkook.item, "steam", 1000, 75, 0, 75, 75, 190, 0.8, 0.91, 2000, null, 10, -2.4),
 	SkookTender("Skookum Tender", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.SkookTender.class, ItemIDs.minecartSkookTender.item,"tender",0,0,2,0,0,0,0,0,20000,null,18,0,new String[] {"Water capacity: 20000mb"}),
+	OWO60Verticube("OWO 60 Verticube", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.OWO60Verticube.class, ItemIDs.minecartOWO60Verticube.item, "freight", 6, new String[] {"Cyan", "Lime", "Green", "LightGrey", "White", "Blue"}, 0, 54, new String[]{"Capacity: a lot lol"}),
+	SD45dash2B("SD45-2B", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2B.class, ItemIDs.minecartSD45dash2B.item, "diesel", 3600, 132, 0, 65, 0, 190, 0.75, 0.89, 20000, new String[] {"Blue", "Yellow", "Red", "White"}, 10, -3.8),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

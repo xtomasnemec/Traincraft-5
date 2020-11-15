@@ -902,6 +902,13 @@ public enum RenderEnum {
 		}
 	}, 2, true),
 	SkookTender(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.SkookTender.class, new ModelSkookumTender(), "skookumtender", false, new float[] {-0.00F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	OWO60Verticube(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.OWO60Verticube.class, new ModelOWO60Verticube(),"owo60verticube_", true, new float[]{0F, 0.1875F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	SD45dash2B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2B.class,  new ModelSD45dash2B(), "sd45dash2b_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.5D, 1.5D, 0.0D});
+
+		}
+	}, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;
