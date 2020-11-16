@@ -33,6 +33,7 @@
   "mg_idle": {"category": "master", "sounds": [{"name": "mg_idle","stream": false}]},
   "mtc_speedchange": {"category": "master", "sounds": [{"name": "speedchange","stream": false}]},
   "mtc_overspeed": {"category": "master", "sounds": [{"name": "overspeed","stream": false}]},
+  "leslie_a125": {"category": "master", "sounds": [{"name": "leslie_a125", "stream":  true}]},
   "leslie_a200": {"category": "master", "sounds": [{"name": "leslie_a200","stream": true}]},
   "leslie_rs3j": {"category": "master", "sounds": [{"name": "leslie_rs3j", "stream":  true}]},
   "leslie_rs3k": {"category": "master", "sounds": [{"name": "leslie_rs3k", "stream":  true}]},
