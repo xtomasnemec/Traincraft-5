@@ -1156,7 +1156,7 @@ public class ModelF45 extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 		}
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 15) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 15 ||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/flexicoil_c2h_Grey.png"));
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/flexicoil_c2h_Black.png"));
