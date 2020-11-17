@@ -33,6 +33,7 @@
   "mg_idle": {"category": "master", "sounds": [{"name": "mg_idle","stream": false}]},
   "mtc_speedchange": {"category": "master", "sounds": [{"name": "speedchange","stream": false}]},
   "mtc_overspeed": {"category": "master", "sounds": [{"name": "overspeed","stream": false}]},
+  "leslie_a125": {"category": "master", "sounds": [{"name": "leslie_a125", "stream":  true}]},
   "leslie_a200": {"category": "master", "sounds": [{"name": "leslie_a200","stream": true}]},
   "leslie_rs3j": {"category": "master", "sounds": [{"name": "leslie_rs3j", "stream":  true}]},
   "leslie_rs3k": {"category": "master", "sounds": [{"name": "leslie_rs3k", "stream":  true}]},
@@ -132,4 +133,7 @@
   "lu_whistle": {"category": "master", "sounds": [{"name": "lu_whistle", "stream":  true}]},
   "drgw_3chime_2": {"category": "master", "sounds": [{"name": "drgw_3chime_2", "stream":  true}]},
   "br_horn": {"category": "master", "sounds": [{"name": "br_horn", "stream":  true}]},
+  "skookum_whistle": {"category": "master", "sounds": [{"name": "skookum_whistle", "stream":  true}]},
+  "skookum_idle": {"category": "master", "sounds": [{"name": "skookum_idle", "stream":  true}]},
+  "skookum_notch8": {"category": "master", "sounds": [{"name": "skookum_notch8", "stream":  true}]},
   "765_whistle": {"category": "master", "sounds": [{"name": "765_whistle", "stream":  true}]}}

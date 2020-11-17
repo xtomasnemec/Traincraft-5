@@ -101,7 +101,7 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartAmfleet2.item), 160, 155));
             }
         });
-        addPage("Content Credits:\n\nBida:\nS2\nPCH120 Cab and Coach\nSW1\nH10-44\nRibbed Hopper\nThanos Cart\nU23B\nSW1500\nSD45-2\nSD40-2\nF.R.E.D\nCF7", "", "left", new ArrayList<StackToDraw>() {
+        addPage("Content Credits:\n\nBida:\nS2\nPCH120 Cab and Coach\nSW1\nH10-44\nRibbed Hopper\nThanos Cart\nU23B\nSW1500\nSD45-2 and 45B\nSD40-2\nF.R.E.D\nCF7", "", "left", new ArrayList<StackToDraw>() {
             {
                /* add(new StackToDraw(new ItemStack(ItemIDs.minecartAlcoS2.item), 18, 62));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120.item), 160, 72));
@@ -122,7 +122,7 @@ public class GUICreditsBook extends GuiScreen {
                         add(new StackToDraw(new ItemStack(ItemIDs.diesel.item), 160, 160));
                     }
                 });
-        addPage("Bida (continued):\nMP15DCW-9\nGP7B\nSD40T-2\n\n\n\n\n\n\n\n\n\nMore to Come!\nowo", "", "left", new ArrayList<StackToDraw>() {
+        addPage("Bida (continued):\nMP15DCW-9\nGP7B\nSD40T-2\nSkookum & Tender\nOWO 60' Verticube\n\n\n\n\n\n\n\nMore to Come!\nowo", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartHHgregg.item), 170, 16));
             }

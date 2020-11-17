@@ -637,7 +637,7 @@ public enum RenderEnum {
 	pch120Coach(PCH120Coach.class, new ModelPCH120Car(), "pch120car_", true,new float[] {0F, 0.03F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	amfleet(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Amfleet.class, new ModelAmfleet(),"amfleet_", true, new float[]{0F, -0.4F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	ribbedHopper(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.RibbedHopper.class, new ModelRibbedHopper(),"ribbed_hopper_", true, new float[]{0F, -0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	SW1( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1.class,  new ModelSW1(), "sw1_", true,new float[] {-1.1F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 2,  new ArrayList<double[]>() {
+	SW1( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSW1.class,  new ModelSW1(), "sw1_", true,new float[] {-1.2F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 2,  new ArrayList<double[]>() {
 		{
 			add(new double[]{0.85D, 1.3D, 0.0D});
 		}
@@ -709,7 +709,7 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
-	SDL39( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDL39.class,  new ModelSDL39(), "SDL39_", true,new float[] {-1.6F, -0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+	SDL39( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDL39.class,  new ModelSDL39(), "SDL39_", true,new float[] {-1.5F, -0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1.5D, 1.5D, 0.0D});
 
@@ -890,6 +890,25 @@ public enum RenderEnum {
 	EF1( com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1.class,  new ModelEF1(), "ef1_", true,new float[] {-1.60F, 0.1875F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	EF1B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1B.class,  new ModelEF1B(), "ef1b_", true,new float[] {-1.15635F, 0.1875F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	EP1A( com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEP1A.class,  new ModelEP1A(), "ep1a_", true,new float[] {-1.60F, 0.1875F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	Skook(com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamSkook.class, new ModelSkookum(), "skookum", false, new float[] { -0.0F, -0.0F, -0.0F }, new float[] { 0F, 180F, 180F }, null, "largesmoke", 20, new ArrayList<double[]>() {
+		{
+			add(new double[] { 2.4D, 1.5D, -0.0D });
+		}
+	}, "explode", new ArrayList<double[]>() {
+		{
+			add(new double[] { 0.9D, -0.4D, 0.8D });
+			add(new double[] { 2.5D, -0.4D, 0.8D });
+			add(new double[] { -0.5D, 1.5D, 0.0D });
+		}
+	}, 2, true),
+	SkookTender(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.SkookTender.class, new ModelSkookumTender(), "skookumtender", false, new float[] {-0.00F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	OWO60Verticube(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.OWO60Verticube.class, new ModelOWO60Verticube(),"owo60verticube_", true, new float[]{0F, 0.1875F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	SD45dash2B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2B.class,  new ModelSD45dash2B(), "sd45dash2b_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.5D, 1.5D, 0.0D});
+
+		}
+	}, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;
