@@ -524,6 +524,7 @@ public class ModelExplorer2 extends ModelBase
 
 	public float[] getScale() {
 		return null;
+		//return new float[] { 1, 0.95F, 1 };
 	}
 
 	public ModelRendererTurbo explorer2Model[];
