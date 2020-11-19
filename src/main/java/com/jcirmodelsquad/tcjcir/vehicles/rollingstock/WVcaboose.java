@@ -23,13 +23,13 @@ public class WVcaboose extends EntityRollingStock implements IPassenger {
         prevPosZ = d2;
     }
 
-    /*@Override
+    @Override
     public void updateRiderPosition() {
         if(riddenByEntity!=null) {
             riddenByEntity.setPosition(posX + 0.0f, posY + getMountedYOffset() + riddenByEntity.getYOffset() + 0.3125, posZ + 0.0);
         }
-    }*/
-    @Override
+    }
+   /* @Override
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
@@ -61,7 +61,7 @@ public class WVcaboose extends EntityRollingStock implements IPassenger {
         if (pitchRads > -1.01 && pitchRads < 1.01) {
             riddenByEntity.setPosition(bogieX1, pitch, bogieZ1);
         }
-    }
+    }*/
     @Override
     public void setDead() {
         super.setDead();

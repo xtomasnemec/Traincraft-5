@@ -122,7 +122,7 @@ public class GUICreditsBook extends GuiScreen {
                         add(new StackToDraw(new ItemStack(ItemIDs.diesel.item), 160, 160));
                     }
                 });
-        addPage("Bida (continued):\nMP15DCW-9\nGP7B\nSD40T-2\nSkookum & Tender\nOWO 60' Verticube\n\n\n\n\n\n\n\nMore to Come!\nowo", "", "left", new ArrayList<StackToDraw>() {
+        addPage("Bida (continued):\nMP15DCW-9\nGP7B\nSD40T-2\nSkookum & Tender\nOWO 60' Verticube\nGP38-2\n\n\n\n\n\n\nMore to Come!\nowo", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartHHgregg.item), 170, 16));
             }
