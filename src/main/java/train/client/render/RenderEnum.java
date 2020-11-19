@@ -909,6 +909,12 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
+	GP38dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash2.class,  new ModelGP38dash2(), "gp38dash2_", true,new float[] {-1.5F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.75D, 1.4D, 0.0D});
+			add(new double[]{1.55D, 1.4D, 0.0D});
+		}
+	}, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;

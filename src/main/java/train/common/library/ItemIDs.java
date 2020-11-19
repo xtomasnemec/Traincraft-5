@@ -396,6 +396,7 @@ public enum ItemIDs {
 	minecartSkookTender("ItemRollingStock", "skookum_tender", 4),
 	minecartOWO60Verticube("ItemRollingStock", "owocube", 6),
 	minecartSD45dash2B("ItemRollingStock", "sd45dash2b", 14),
+	minecartGP38dash2("ItemRollingStock", "gp38dash2", 12),
 	;
 
 	public Item item;

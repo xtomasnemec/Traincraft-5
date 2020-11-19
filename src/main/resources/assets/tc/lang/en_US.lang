@@ -428,6 +428,7 @@ item.tc:minecartSkook.name=Deep River Logging No. 7 Skookum
 item.tc:minecartSkookTender.name=Skookum Tender
 item.tc:minecartOWO60Verticube.name=OWO 60' Verticube Boxcar
 item.tc:minecartSD45dash2B.name=EMD SD45-2B
+item.tc:minecartGP38dash2.name=EMD GP38-2
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -808,6 +809,7 @@ entity.tc.Skookum.name=Deep River Logging No. 7 Skookum
 entity.tc.Skookum Tender.name=Skookum Tender
 entity.tc.OWO 60 Verticube.name=OWO 60' Verticube Boxcar
 entity.tc.SD45-2B.name=EMD SD45-2B
+entity.tc.GP38dash2.name=EMD GP38-2
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
