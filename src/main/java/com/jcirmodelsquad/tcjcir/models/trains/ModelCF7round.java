@@ -1501,7 +1501,7 @@ public class ModelCF7round extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 		}
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 12345) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 12345||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 4){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb2_Black.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.3, -0.01, 0);
