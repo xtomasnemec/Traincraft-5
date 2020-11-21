@@ -29,7 +29,7 @@ public class ModelCF7round extends ModelConverter //Same as Filename
 
 	public ModelCF7round() //Same as Filename
 	{
-		bodyModel = new ModelRendererTurbo[358];
+		bodyModel = new ModelRendererTurbo[361];
 
 		initbodyModel_1();
 
@@ -374,12 +374,12 @@ public class ModelCF7round extends ModelConverter //Same as Filename
 		bodyModel[330] = new ModelRendererTurbo(this, 13, 27, textureX, textureY); // Box 274
 		bodyModel[331] = new ModelRendererTurbo(this, 122, 117, textureX, textureY); // Box 283
 		bodyModel[332] = new ModelRendererTurbo(this, 109, 117, textureX, textureY); // Box 284
-		bodyModel[333] = new ModelRendererTurbo(this, 109, 117, textureX, textureY); // Box 291
-		bodyModel[334] = new ModelRendererTurbo(this, 122, 117, textureX, textureY); // Box 292
-		bodyModel[335] = new ModelRendererTurbo(this, 13, 27, textureX, textureY); // Box 293
-		bodyModel[336] = new ModelRendererTurbo(this, 1, 26, textureX, textureY); // Box 294
-		bodyModel[337] = new ModelRendererTurbo(this, 16, 29, textureX, textureY); // Box 295
-		bodyModel[338] = new ModelRendererTurbo(this, 13, 35, textureX, textureY); // Box 296
+		bodyModel[333] = new ModelRendererTurbo(this, 109, 128, textureX, textureY); // Box 291
+		bodyModel[334] = new ModelRendererTurbo(this, 122, 128, textureX, textureY); // Box 292
+		bodyModel[335] = new ModelRendererTurbo(this, 122, 141, textureX, textureY); // Box 293
+		bodyModel[336] = new ModelRendererTurbo(this, 109, 140, textureX, textureY); // Box 294
+		bodyModel[337] = new ModelRendererTurbo(this, 112, 147, textureX, textureY); // Box 295
+		bodyModel[338] = new ModelRendererTurbo(this, 121, 148, textureX, textureY); // Box 296
 		bodyModel[339] = new ModelRendererTurbo(this, 386, 138, textureX, textureY); // Box 307
 		bodyModel[340] = new ModelRendererTurbo(this, 388, 129, textureX, textureY); // Box 308
 		bodyModel[341] = new ModelRendererTurbo(this, 387, 135, textureX, textureY); // Box 309
@@ -399,6 +399,9 @@ public class ModelCF7round extends ModelConverter //Same as Filename
 		bodyModel[355] = new ModelRendererTurbo(this, 351, 138, textureX, textureY, "lamp"); // Box 487 PRIME 2-2
 		bodyModel[356] = new ModelRendererTurbo(this, 352, 150, textureX, textureY); // Box 488 prime base
 		bodyModel[357] = new ModelRendererTurbo(this, 345, 65, textureX, textureY); // Box 184 o2 generator
+		bodyModel[358] = new ModelRendererTurbo(this, 354, 156, textureX, textureY); // Box 364
+		bodyModel[359] = new ModelRendererTurbo(this, 371, 153, textureX, textureY); // Box 365
+		bodyModel[360] = new ModelRendererTurbo(this, 379, 156, textureX, textureY); // Box 366
 
 		bodyModel[0].addBox(0F, 0F, 0F, 22, 2, 22, 0F); // Box 7
 		bodyModel[0].setRotationPoint(-31F, -5F, -11F);
@@ -1483,12 +1486,21 @@ public class ModelCF7round extends ModelConverter //Same as Filename
 
 		bodyModel[357].addBox(0F, 0F, 0F, 5, 2, 6, 0F); // Box 184 o2 generator
 		bodyModel[357].setRotationPoint(-19.5F, -27.75F, -3F);
+
+		bodyModel[358].addBox(0F, 0F, 0F, 6, 2, 4, 0F); // Box 364
+		bodyModel[358].setRotationPoint(-18.5F, -28F, -1F);
+
+		bodyModel[359].addShapeBox(0F, 0F, 0F, 1, 1, 4, 0F,-1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F); // Box 365
+		bodyModel[359].setRotationPoint(-19.5F, -28F, -1F);
+
+		bodyModel[360].addBox(0F, 0F, 0F, 1, 1, 4, 0F); // Box 366
+		bodyModel[360].setRotationPoint(-19.5F, -27F, -1F);
 	}
 	ModelBlombergB theTrucks2 = new ModelBlombergB();
 	ModelTypeB theTrucks3 = new ModelTypeB();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		for (int i = 0; i < 358; i++) {
+		for (int i = 0; i < 361; i++) {
 			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp") ) {
 				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 				bodyModel[i].render(f5);
