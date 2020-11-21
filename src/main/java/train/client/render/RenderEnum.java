@@ -710,7 +710,7 @@ public enum RenderEnum {
 	WoodchipHopper(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.WoodchipHopper.class, new ModelWoodchipHopper(),"woodchiphopper_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	OreJenny(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.OreJenny.class, new ModelOreJenny(),"orejenny_", true, new float[]{0F, 0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	LogcarNP(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.LogcarNP.class, new ModelLogcarNP(), "logcarNP_", true,new float[]{0F,0,0F,}, new float[] {0F,0F,180F,}, null, "",0, null, "", null, 0, false),
-	SF30C( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSF30C.class,  new ModelSF30C(), "SF30C", false,new float[] {-2.5F, -0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+	SF30C( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSF30C.class,  new ModelSF30C(), "sf30c_", true,new float[] {-2.5F, -0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{0.75D, 1.5D, 0.0D});
 
