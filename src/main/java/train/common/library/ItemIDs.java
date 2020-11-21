@@ -333,6 +333,7 @@ public enum ItemIDs {
 	minecartFRED("ItemRollingStock", "fred", 5),
 	minecartGeGenesis("ItemRollingStock", "geGenesis", 14),
 	minecartCF7("ItemRollingStock", "cf7", 12),
+	minecartCF7round("ItemRollingStock", "cf7round", 12),
 	minecartSD9("ItemRollingStock", "sd9", 11),
 	minecartWoodchipHopper("ItemRollingStock", "woodchiphopper", 4),
 	minecartOreJenny("ItemRollingStock", "orejenny", 2),

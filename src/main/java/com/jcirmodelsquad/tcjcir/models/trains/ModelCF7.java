@@ -1719,16 +1719,9 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 		bodyModel[409].addBox(0F, 0F, 0F, 1, 2, 0, 0F); // Box 286
 		bodyModel[409].setRotationPoint(-13F, -29F, -6F);
 	}
-
 	ModelBlombergB theTrucks2 = new ModelBlombergB();
 	ModelFB2 theTrucks1 = new ModelFB2();
 	ModelTypeB theTrucks3 = new ModelTypeB();
-
-
-
-
-
-
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 410; i++) {
@@ -1743,10 +1736,7 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 			} else {
 				bodyModel[i].render(f5);
 			}
-
-
 		}
-
 		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 15) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb2_Black.png"));
 			GL11.glPushMatrix();
@@ -1787,14 +1777,8 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 		}
 
 	}
-
-
-
-
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 	{
 	}
-
 	public ModelRendererTurbo ModelCF7[];
-
 }

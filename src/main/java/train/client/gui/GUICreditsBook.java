@@ -101,7 +101,7 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartAmfleet2.item), 160, 155));
             }
         });
-        addPage("Content Credits:\n\nBida:\nS2\nPCH120 Cab and Coach\nSW1\nH10-44\nRibbed Hopper\nThanos Cart\nU23B\nSW1500\nSD45-2 and 45B\nSD40-2\nF.R.E.D\nCF7", "", "left", new ArrayList<StackToDraw>() {
+        addPage("Content Credits:\n\nBida:\nS2\nPCH120 Cab and Coach\nSW1\nH10-44\nRibbed Hopper\nThanos Cart\nU23B\nSW1500\nSD45-2 and 45B\nSD40-2\nF.R.E.D\nCF7s", "", "left", new ArrayList<StackToDraw>() {
             {
                /* add(new StackToDraw(new ItemStack(ItemIDs.minecartAlcoS2.item), 18, 62));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120.item), 160, 72));

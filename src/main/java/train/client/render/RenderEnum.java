@@ -687,6 +687,13 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
+	CF7round( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7round.class,  new ModelCF7round(), "cf7round_", true,new float[] {-1.5F, -0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.6D, 1.4D, 0.0D});
+			add(new double[]{1.1D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
 	geGenesis(com.jcirmodelsquad.tcjcir.vehicles.locomotives.GeGenesis.class, new ModelGe_Genesis(), "genesis_", true, new float[] {-2.7F, -0.33F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke",  5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1.8D, 1.3D, 0D});
