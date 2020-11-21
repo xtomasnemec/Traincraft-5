@@ -75,8 +75,8 @@ public class ClientProxy extends CommonProxy {
 
 			registerEvent(hudMTC);
 		}
-		HudTiltingHandler tiltingHandler = new HudTiltingHandler();
-		registerEvent(tiltingHandler);
+	/*	HudTiltingHandler tiltingHandler = new HudTiltingHandler();
+		registerEvent(tiltingHandler);*/
 		registerEvent(tickHandler);
 		registerEvent(huDloco);
 	}
