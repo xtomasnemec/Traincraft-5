@@ -316,7 +316,7 @@ public enum ItemIDs {
 	//signalPairingDevice("ItemSignalPairingDevice", "signal_pairing_device", 14),
 	minecartAlcoS2("ItemRollingStock", "alco_s2", 9),
 	minecartRibbedHopper("ItemRollingStock", "ribbed_hopper", 3),
-	//minecartGeometryCar("ItemRollingStock", "geometry_car", 15),
+	minecartGeometryCar("ItemRollingStock", "geometry_car", 15),
 	minecartPCH120("ItemRollingStock", "driverless_metro", 20),
 	minecartPCH120Coach("ItemRollingStock", "driverless_metro_car", 15),
 	minecartAmfleet("ItemRollingStock", "Amfleet", 3),

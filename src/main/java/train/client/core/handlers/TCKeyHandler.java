@@ -1,5 +1,7 @@
 package train.client.core.handlers;
 
+import com.jcirmodelsquad.tcjcir.features.geometry.GuiGeometryCar;
+import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.ExperimentalGeometryCar;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Loader;
@@ -80,6 +82,9 @@ public class TCKeyHandler {
 			}
 			if (inventory.isPressed()) {
 				sendKeyControlsPacket(7);
+				if (Minecraft.getMinecraft().thePlayer.ridingEntity != null && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof ExperimentalGeometryCar) {
+					Minecraft.getMinecraft().displayGuiScreen(new GuiGeometryCar(Minecraft.getMinecraft().thePlayer));
+				}
 			}
 			if (horn.isPressed()) {
 				sendKeyControlsPacket(8);

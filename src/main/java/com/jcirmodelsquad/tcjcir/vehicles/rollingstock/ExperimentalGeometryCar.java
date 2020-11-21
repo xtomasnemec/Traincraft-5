@@ -53,11 +53,7 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
     public boolean justLoaded = false;
     public ExperimentalGeometryCar(World world) {
         super(world);
-        /*dataWatcher.addObject(31, railroadLine);
-        dataWatcher.addObject(30, geometryCarName);
-        dataWatcher.addObject(29, lineType);
-        dataWatcher.addObject(28, standard);
-        dataWatcher.addObject(27, missionStarted + ":" + currentTrackReport);*/
+
     }
 
     public ExperimentalGeometryCar(World world, double d, double d1, double d2) {
@@ -69,12 +65,7 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
         prevPosX = d;
         prevPosY = d1;
         prevPosZ = d2;
-      dataWatcher.addObject(31, railroadLine);
-//        dataWatcher.addObject(30, geometryCarName);
-        dataWatcher.addObject(29, lineType);
-        dataWatcher.addObject(28, standard);
-       // dataWatcher.addObject(27, missionStarted + ":" + currentTrackReport);
-       // dataWatcher.addObject(32, currentTrackReport);
+
     }
 
     //Standard Cart Stuff
@@ -109,11 +100,11 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
         }
         if (pitchRads == 0.0) {
             riddenByEntity.setPosition(bogieX1, pitch1, bogieZ1 -0.0);
-            System.out.println("f");
+
         }
         if (pitchRads > -1.01 && pitchRads < 1.01) {
             riddenByEntity.setPosition(bogieX1, pitch, bogieZ1 +0.0);
-            System.out.println("i");
+
         }
     }
 
@@ -430,7 +421,7 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
     public void startMission() {
         missionStartLocation = new TrackPosition(new Double(posX).intValue(), new Double(posY).intValue(), new Double(posZ).intValue());
         missionStarted = true;
-        dataWatcher.updateObject(27, missionStarted + ":" + currentTrackReport);
+       // dataWatcher.updateObject(27, missionStarted + ":" + currentTrackReport);
         missionStartLocation = new TrackPosition(new Double(posX).intValue(), new Double(posY).intValue(), new Double(posZ).intValue());
         problematicTrackLocations.clear();
     }
@@ -440,12 +431,15 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
         TrackPosition lastPosition = null;
         Format f = new SimpleDateFormat("MM/dd");
         String strDate = f.format(new Date());
-
-        theReport = new StringBuilder(geometryCarName + "\n Track Report \n Date: " + strDate + "\n Operating Crew: " + operatingCrew + "\n Railroad: " + railroadLine + "(type " + lineType + ")" + "\n Distance from start: " + doubleToInt(getDistance(this.missionStartLocation.x, this.missionStartLocation.y, this.missionStartLocation.z)) + " blocks.");
+        if (missionStartLocation == null) {
+            theReport = new StringBuilder(geometryCarName + "\n Track Report \n Date: " + strDate + "\n Operating Crew: " + operatingCrew + "\n Railroad: " + railroadLine + "(type " + lineType + ")" + "\n Distance from start: " + doubleToInt(getDistance(this.missionStartLocation.x, this.missionStartLocation.y, this.missionStartLocation.z)) + " blocks.");
+        } else {
+            theReport = new StringBuilder(geometryCarName + "\n Track Report \n Date: " + strDate + "\n Operating Crew: " + operatingCrew + "\n Railroad: " + railroadLine + "(type " + lineType + ")" + "\n Distance from start: ??? blocks.");
+        }
         if (problematicTrackLocations.size() == 1) {
             theReport.append("\n 1 issue: ");
         } else {
-            theReport.append("\n" + problematicTrackLocations.size() + " issues: ");
+            theReport.append("\n").append(problematicTrackLocations.size()).append(" issues: ");
         }
 
         for (PotentialIssue issue : problematicTrackLocations) {
@@ -570,6 +564,18 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
         missionStarted = nbt.getBoolean("missionStarted");
         operatingCrew = nbt.getString("operatingCrew");
         justLoaded = true;
+    }
+
+    @Override
+    public void initRollingStock(World world) {
+        super.initRollingStock(world);
+        if (!world.isRemote) {
+            dataWatcher.addObject(31, "");
+            dataWatcher.addObject(30, "");
+            dataWatcher.addObject(29, "");
+            dataWatcher.addObject(28, "");
+            dataWatcher.addObject(27, "");
+        }
     }
    /* public String railroadLine = "Bruh Moment Mainline";
     public String geometryCarName = "NXTrack Geometry Car";
