@@ -236,18 +236,14 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
             }
 
             if (blockLeft != null) {
-                System.out.println(blockLeft.getLocalizedName());
+
             }
             if (blockRight != null) {
-                System.out.println(blockRight.getLocalizedName());
+
             }
 
             if (blockLeft != null && blockRight != null && blockAboveCar != null && blockOneAboveCar != null) {
-                System.out.println("Left: " + blockLeft.getLocalizedName());
-                System.out.println("Right: " + blockRight.getLocalizedName());
-                int light = worldObj.getBlockLightValue(doubleToInt(this.posX), doubleToInt(this.posY) + 2, doubleToInt(this.posZ));
-                System.out.println("Above: " + blockAboveCar.getLocalizedName() + ", light level: " + light);
-                System.out.println("One above: " + blockOneAboveCar.getLocalizedName());
+
             }
 
             //Detect if a block is above, to the right, or to the left of the geometry car, report if there is.
@@ -285,7 +281,7 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
 
 
             if (tileBottom != null) {
-                System.out.println(tileBottom.getClass().getName());
+
             }
             if (tileBottom instanceof TileTCRailGag) {
                 TileTCRailGag track = (TileTCRailGag) tileBottom;
@@ -404,7 +400,7 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
 
         if (!checkForSameIssueType(this.posX, this.posY, this.posZ, theIssue.issue) ) {
             if (lastIssue != null) {
-                System.out.println(Vec3.createVectorHelper(lastIssue.thePosition.x, lastIssue.thePosition.y, lastIssue.thePosition.z).distanceTo(Vec3.createVectorHelper(posX, posY, posZ)));
+
             }
             if (lastIssue != null && Vec3.createVectorHelper(lastIssue.thePosition.x,lastIssue.thePosition.y, lastIssue.thePosition.z).distanceTo(Vec3.createVectorHelper(posX, posY, posZ)) > 5 || problematicTrackLocations.size() == 0) {
                 if (this.ridingEntity != null && this.ridingEntity instanceof EntityPlayer) {
@@ -413,7 +409,7 @@ public class ExperimentalGeometryCar extends EntityRollingStock implements IPass
 
                 problematicTrackLocations.add(theIssue);
                 lastIssue = theIssue;
-                System.out.println("Adding!");
+
             }
         }
     }

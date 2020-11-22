@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 import train.client.gui.GuiTCTextField;
 import train.common.Traincraft;
 
@@ -98,7 +99,14 @@ public class GuiGeometryCar extends GuiScreen {
        /* fontRendererObj.drawString("Geometry Car Name:", guiLeft + 10, guiTop + 30, 000000);
         fontRendererObj.drawString("Railroad Type: ", guiLeft + 10, guiTop + 50, 000000);*/
         } else {
-            fontRendererObj.drawString(theCar.currentTrackReport, x - 80, y - 107, 0xFFFFFF);
+            String[] s = theCar.currentTrackReport.split("\n");
+            GL11.glPushMatrix();
+            for(String str: s){
+                fontRendererObj.drawStringWithShadow(str, x -70, y - 10, 0xFFFFFF);
+                // fontRendererObj.drawStringWithShadow("_", x + fontRendererObj.getStringWidth(str) + -68, y - 10, 0xFFFFFF);
+                GL11.glTranslatef(0,10,0);
+            }
+
         }
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
