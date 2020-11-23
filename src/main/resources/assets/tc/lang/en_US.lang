@@ -735,7 +735,7 @@ entity.tc.Freight Car L.name=Freight Car L
 entity.tc.Loco Steam C41 0-8-0.name=C41 0-8-0
 entity.tc.Loco Steam Alco SC4.name=Alco SC4
 
-entity.tc.ALCO S2.name=ALCo S2
+entity.tc.Alco S2.name=Alco S2
 entity.tc.Ribbed Hopper.name=Ribbed Covered Hopper
 entity.tc.SW1.name=EMD SW1
 entity.tc.H1044.name=FM H10-44
