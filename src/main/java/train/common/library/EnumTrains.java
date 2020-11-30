@@ -353,6 +353,7 @@ public enum EnumTrains {
 	OWO60Verticube("OWO 60 Verticube", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.OWO60Verticube.class, ItemIDs.minecartOWO60Verticube.item, "freight", 6, new String[] {"Cyan", "Lime", "Green", "LightGrey", "White", "Blue"}, 0, 54, new String[]{"Capacity: a lot lol"}),
 	SD45dash2B("SD45-2B", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2B.class, ItemIDs.minecartSD45dash2B.item, "diesel", 3600, 132, 0, 65, 0, 190, 0.75, 0.89, 20000, new String[] {"Blue", "Yellow", "Red", "White"}, 10, -3.8),
 	GP38dash2("GP38dash2", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash2.class, ItemIDs.minecartGP38dash2.item, "diesel", 2000, 105, 0, 60, 0, 180, 0.75, 0.9, 20000, new  String[] {"Cyan", "Green", "LightGrey", "Red", "Blue", "Yellow"}, 10, -3.1),
+	HighrailVan("Highrail Van", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHighrailVan.class, ItemIDs.minecartHighrailVan.item, "diesel", 90, 80, 0, 10, 0, 140, 0.7, 0.8, 1000,new String[] {"Yellow", "White", "Grey", "Orange", "Green"},18, 2.7),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,
