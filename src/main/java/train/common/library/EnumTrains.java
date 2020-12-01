@@ -354,6 +354,7 @@ public enum EnumTrains {
 	SD45dash2B("SD45-2B", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2B.class, ItemIDs.minecartSD45dash2B.item, "diesel", 3600, 132, 0, 65, 0, 190, 0.75, 0.89, 20000, new String[] {"Blue", "Yellow", "Red", "White"}, 10, -3.8),
 	GP38dash2("GP38dash2", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash2.class, ItemIDs.minecartGP38dash2.item, "diesel", 2000, 105, 0, 60, 0, 180, 0.75, 0.9, 20000, new  String[] {"Cyan", "Green", "LightGrey", "Red", "Blue", "Yellow"}, 10, -3.1),
 	HighrailVan("Highrail Van", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHighrailVan.class, ItemIDs.minecartHighrailVan.item, "diesel", 90, 80, 0, 10, 0, 140, 0.7, 0.8, 1000,new String[] {"Yellow", "White", "Grey", "Orange", "Green"},18, 2.7),
+	B23("B23-7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselB23.class, ItemIDs.minecartB23.item, "diesel", 2250, 90, 0, 65, 0, 190, 0.74, 0.91, 20000, new String[] {"Yellow", "Red", "Blue"}, 10, -3.3),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,
