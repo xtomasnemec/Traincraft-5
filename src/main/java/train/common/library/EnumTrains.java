@@ -355,6 +355,7 @@ public enum EnumTrains {
 	GP38dash2("GP38dash2", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash2.class, ItemIDs.minecartGP38dash2.item, "diesel", 2000, 105, 0, 60, 0, 180, 0.75, 0.9, 20000, new  String[] {"Cyan", "Green", "LightGrey", "Red", "Blue", "Yellow"}, 10, -3.1),
 	HighrailVan("Highrail Van", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHighrailVan.class, ItemIDs.minecartHighrailVan.item, "diesel", 90, 80, 0, 10, 0, 140, 0.7, 0.8, 1000,new String[] {"Yellow", "White", "Grey", "Orange", "Green"},18, 2.7),
 	B23("B23-7", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselB23.class, ItemIDs.minecartB23.item, "diesel", 2250, 90, 0, 65, 0, 190, 0.74, 0.91, 20000, new String[] {"Yellow", "Red", "Blue"}, 10, -3.3),
+	BigMeme("BigMeme", com.jcirmodelsquad.tcjcir.vehicles.locomotives.BigMeme.class, ItemIDs.minecartBigMeme.item, "awesome", 1, 200, 20, 50, 0, 0, 0.9, 0.9, 8000, new String[] {"LightGrey", "Grey"},10 , -1.1, new String[] {"Big Shack Yo"}),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

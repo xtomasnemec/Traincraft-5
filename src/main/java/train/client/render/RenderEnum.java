@@ -932,6 +932,7 @@ public enum RenderEnum {
 			add(new double[]{0.85D, 1.5D, 0.0D});
 		}
 	}, "", null, 0, false),
+	BigMeme(com.jcirmodelsquad.tcjcir.vehicles.locomotives.BigMeme.class, new ModelBigMeme(),"bigmeme_", true, new float[]{-1F, 0.1875F, 0F}, new float[] { 180F, 180F, 0F }, null, "", 0, null, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;

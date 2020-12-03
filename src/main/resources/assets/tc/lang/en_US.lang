@@ -433,6 +433,7 @@ item.tc:minecartSD45dash2B.name=EMD SD45-2B
 item.tc:minecartGP38dash2.name=EMD GP38-2
 item.tc:minecartHighrailVan.name=Generic Highrail Van
 item.tc:minecartB23.name=GE B23-7
+item.tc:minecartBigMeme.name=Leslie A425 Trailer
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -817,6 +818,7 @@ entity.tc.SD45-2B.name=EMD SD45-2B
 entity.tc.GP38dash2.name=EMD GP38-2
 entity.tc.HighrailVan.name=Generic Highrail Van
 entity.tc.B23.name=GE B23-7
+entity.tc.BigMeme.name=Leslie A425 Trailer
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
