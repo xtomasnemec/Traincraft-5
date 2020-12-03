@@ -101,6 +101,16 @@ public class ItemHandler {
 		}
 	}
 
+	private static boolean oreCoal(ItemStack itemstack){
+	    String[] names = new String[] { "cropPotato"};
+	    for (String name: names){
+	        if (OreDictionary.getOreID(name) == OreDictionary.getOreID(itemstack)) {
+	            return true;
+            }
+        }
+	    return false;
+    }
+
 	private static boolean powderWood(ItemStack itemstack){
 		String[] names = new String[] { "dustWood", "pulpWood"};
 		for (String name: names){
