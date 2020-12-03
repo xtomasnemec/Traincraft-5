@@ -1427,7 +1427,7 @@ public class ModelB23 extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 		}
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3247) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1324||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3247) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_Black.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.52, 0.33, 0);
@@ -1436,10 +1436,10 @@ public class ModelB23 extends ModelConverter //Same as Filename
 			GL11.glTranslated(3.05, 0, 0);
 			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
-		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1324){
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_LightGrey.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.52, 0, 0);
+			GL11.glTranslated(-1.52, 0.33, 0);
 			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(3.05, 0, 0);
@@ -1447,6 +1447,15 @@ public class ModelB23 extends ModelConverter //Same as Filename
 			GL11.glPopMatrix();
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb2_up.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslated(-1.52, 0.33, 0);
+			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
+
+			GL11.glTranslated(3.05, 0, 0);
+			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glPopMatrix();
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 4){
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb2_Grey.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.52, 0.33, 0);
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);

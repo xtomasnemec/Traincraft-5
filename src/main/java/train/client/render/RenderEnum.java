@@ -929,10 +929,15 @@ public enum RenderEnum {
 	}, "", null, 0, false),
 	B23( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselB23.class,  new ModelB23(), "b23_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{
-			add(new double[]{0.85D, 1.5D, 0.0D});
+			add(new double[]{0.87D, 1.5D, 0.0D});
 		}
 	}, "", null, 0, false),
 	BigMeme(com.jcirmodelsquad.tcjcir.vehicles.locomotives.BigMeme.class, new ModelBigMeme(),"bigmeme_", true, new float[]{-1F, 0.1875F, 0F}, new float[] { 180F, 180F, 0F }, null, "", 0, null, "", null, 0, false),
+	C415H( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC415H.class,  new ModelC415H(), "C415h_", true,new float[] {-1.2F, 0.105F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.85D, 1.55D, 0.0D});
+		}
+	}, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;

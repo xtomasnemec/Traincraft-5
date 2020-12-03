@@ -401,6 +401,9 @@ public enum ItemIDs {
 	minecartHighrailVan("ItemRollingStock", "highrailvan", 3),
 	minecartB23("ItemRollingStock", "b23", 13),
 	minecartBigMeme("ItemRollingStock", "lol", 69),
+	minecartC415H("ItemRollingStock", "c415h", 12),
+	//minecartC415S("ItemRollingStock", "c415s", 12),
+	//minecartC415L("ItemRollingStock", "c415l", 12),
 	;
 
 	public Item item;

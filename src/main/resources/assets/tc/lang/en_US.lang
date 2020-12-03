@@ -434,6 +434,9 @@ item.tc:minecartGP38dash2.name=EMD GP38-2
 item.tc:minecartHighrailVan.name=Generic Highrail Van
 item.tc:minecartB23.name=GE B23-7
 item.tc:minecartBigMeme.name=Leslie A425 Trailer
+item.tc:minecartC415H.name=Alco C415 High Visibility
+item.tc:minecartC415S.name=Alco C415
+item.tc:minecartC415L.name=Alco C415 Low Clearance
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -819,6 +822,9 @@ entity.tc.GP38dash2.name=EMD GP38-2
 entity.tc.HighrailVan.name=Generic Highrail Van
 entity.tc.B23.name=GE B23-7
 entity.tc.BigMeme.name=Leslie A425 Trailer
+entity.tc.C415H.name=Alco C415 High Visibility
+entity.tc.C415S.name=Alco C415
+entity.tc.C415L.name=Alco C415 Low Clearance
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
@@ -826,9 +832,9 @@ tile.tc:FortyFootContainer.name= Forty Foot Container
 key.categories.traincraft=JCIR-Traincraft
 key.traincraft.horn=Horn/Whistle
 key.traincraft.inventory=Inventory
-key.traincraft.up=Up
-key.traincraft.down=Down
-key.traincraft.idle=Idle
+key.traincraft.up=Up (Airship)
+key.traincraft.down=Down (Airship)
+key.traincraft.idle=Idle (Airship)
 key.traincraft.furnace=Furnace
 key.traincraft.showMTCScreen=Show MTC Screen
 key.traincraft.mtcOverride=Toggle MTC
