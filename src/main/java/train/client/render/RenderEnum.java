@@ -694,6 +694,13 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
+	CF7R( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class,  new ModelCF7R(), "cf7r_", true,new float[] {-1.5F, -0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.6D, 1.4D, 0.0D});
+			add(new double[]{1.1D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
 	geGenesis(com.jcirmodelsquad.tcjcir.vehicles.locomotives.GeGenesis.class, new ModelGe_Genesis(), "genesis_", true, new float[] {-2.7F, -0.33F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke",  5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1.8D, 1.3D, 0D});
@@ -938,6 +945,18 @@ public enum RenderEnum {
 			add(new double[]{1.85D, 1.55D, 0.0D});
 		}
 	}, "", null, 0, false),
+	/*C415S( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC415S.class,  new ModelC415S(), "C415s_", true,new float[] {-1.2F, 0.105F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.85D, 1.55D, 0.0D});
+		}
+	}, "", null, 0, false),
+	C415L( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC415L.class,  new ModelC415L(), "C415l_", true,new float[] {-1.2F, 0.105F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.85D, 1.55D, 0.0D});
+		}
+	}, "", null, 0, false),*/
+	PEcoach(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PEcoach.class, new ModelPEcoach(),"PECoach_", true, new float[]{0F,  0.105F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	PEobserve(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PEobserve.class, new ModelPEobserve(),"PEObserve_", true, new float[]{0F,  0.105F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;

@@ -366,6 +366,7 @@ item.tc:minecart40highcube.name=40 foot Highcube Boxcar
 item.tc:minecartFRED.name=F.R.E.D
 item.tc:minecartCF7.name=EMD CF7
 item.tc:minecartCF7round.name=EMD CF7 Roundcab
+item.tc:minecartCF7R.name=EMD CF7R Rebuild
 item.tc:minecartWoodchipHopper.name=Woodchip Hopper
 item.tc:minecartOreJenny.name=Ore Jenny
 item.tc:minecartSD9.name=EMD SD9
@@ -437,6 +438,8 @@ item.tc:minecartBigMeme.name=Leslie A425 Trailer
 item.tc:minecartC415H.name=Alco C415 High Visibility
 item.tc:minecartC415S.name=Alco C415
 item.tc:minecartC415L.name=Alco C415 Low Clearance
+item.tc:minecartPEcooch.name=Polar Express Coach
+item.tc:minecartPEobserve.name=Polar Express Observation
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -758,6 +761,7 @@ entity.tc.40highcube.name=40 foot Highcube Boxcar
 entity.tc.FRED.name=Flashing Rear End Device
 entity.tc.CF7.name= EMD CF7
 entity.tc.CF7round.name= EMD CF7 Roundcab
+entity.tc.CF7R.name= EMD CF7R
 entity.tc.Woodchip Hopper.name=Woodchip Hopper
 entity.tc.SD9.name= EMD SD9
 entity.tc.Ore Jenny.name= Ore Jenny
@@ -825,6 +829,8 @@ entity.tc.BigMeme.name=Leslie A425 Trailer
 entity.tc.C415H.name=Alco C415 High Visibility
 entity.tc.C415S.name=Alco C415
 entity.tc.C415L.name=Alco C415 Low Clearance
+entity.tc.PEcoach.name=Polar Express Coach
+entity.tc.PEobserve.name=Polar Express Observation
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

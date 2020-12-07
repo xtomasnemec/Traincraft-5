@@ -347,7 +347,7 @@ public enum EnumTrains {
 	EF1B("EF1B",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEF1B.class, ItemIDs.minecartEF1B.item, "electric", 1500, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, new String[] {"Orange", "Red", "Black", "Pink"}, 10, -2.3125, new String[] {"Model by Prof_Binky"}),
 	EP1A("EP1A",com.jcirmodelsquad.tcjcir.vehicles.locomotives.ElectricEP1A.class, ItemIDs.minecartEP1A.item, "electric", 2500, 120, 0, 55, 0, 150, 0.75, 0.85, 12500, new String[] {"Orange", "Red"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
 	LogcarNP("LogcarNP",com.jcirmodelsquad.tcjcir.vehicles.rollingstock.LogcarNP.class, ItemIDs.minecartLogcarNP.item,"freight",2, new String[]{"Brown","Black"}, 0, 18, new String[]{"Made by BigJ1359"}),
-	//CF7R("CF7R", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class, ItemIDs.minecartCF7R.item, "diesel", 2800, 105, 0, 45, 0, 185, 0.8, 0.9, 20000, new String[] {"Blue", "Yellow", "Black"}, 10, -3, new String[] {"CF7 Rebuild Rebuilt"}), //dont touch this plos
+	CF7R("CF7R", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class, ItemIDs.minecartCF7R.item, "diesel", 2350, 105, 0, 45, 0, 185, 0.8, 0.9, 20000, new String[] {"Blue", "Yellow", "Black"}, 10, -3, new String[] {"CF7 Rebuild Rebuilt"}),
 	Skook("Skookum", com.jcirmodelsquad.tcjcir.vehicles.locomotives.SteamSkook.class, ItemIDs.minecartSkook.item, "steam", 1000, 75, 0, 75, 75, 190, 0.8, 0.91, 2000, null, 10, -2.4),
 	SkookTender("Skookum Tender", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.SkookTender.class, ItemIDs.minecartSkookTender.item,"tender",0,0,2,0,0,0,0,0,20000,null,18,0,new String[] {"Water capacity: 20000mb"}),
 	OWO60Verticube("OWO 60 Verticube", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.OWO60Verticube.class, ItemIDs.minecartOWO60Verticube.item, "freight", 6, new String[] {"Cyan", "Lime", "Green", "LightGrey", "White", "Blue"}, 0, 54, new String[]{"Capacity: a lot lol"}),
@@ -359,6 +359,8 @@ public enum EnumTrains {
 	C415H("C415H", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC415H.class, ItemIDs.minecartC415H.item, "diesel", 1500, 106, 0, 45, 0, 170, 0.87, 0.93, 17000, new String[] {"Purple", "LightGrey"}, 10, -2.5),
 	//C415S("C415S", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC415S.class, ItemIDs.minecartC415S.item, "diesel", 1500, 106, 0, 45, 0, 170, 0.87, 0.93, 17000, new String[] {"Yellow", "Orange", "White"}, 10, -2.5),
 	//C415L("C415L", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselC415L.class, ItemIDs.minecartC415L.item, "diesel", 1500, 106, 0, 45, 0, 170, 0.87, 0.93, 17000, new String[] {"Yellow", "LightGrey"}, 10, -2.5),
+	PEcoach("PEcoach", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PEcoach.class, ItemIDs.minecartPEcooch.item, "festive passenger",  0, 0, 6, 0, 0, 0, 0, 0, 0, new String[]{"Blue", "Cyan"}, 10, 0),
+	PEobserve("PEobserve", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PEobserve.class, ItemIDs.minecartPEobserve.item, "festive passenger",  0, 0, 6, 0, 0, 0, 0, 0, 0, new String[]{"Blue", "Cyan"}, 10, 0),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

@@ -392,7 +392,7 @@ public enum ItemIDs {
 	minecartEF1B("ItemRollingStock", "ef1b", 13),
 	minecartEP1A("ItemRollingStock", "ep1a", 14),
 	minecartLogcarNP( "ItemRollingStock","logcarNP",3),
-	//minecarftCF7R("ItemRollingStock", "CF7R", 12),
+	minecartCF7R("ItemRollingStock", "cf7r", 12),
 	minecartSkook("ItemRollingStock", "skookum", 14),
 	minecartSkookTender("ItemRollingStock", "skookum_tender", 4),
 	minecartOWO60Verticube("ItemRollingStock", "owocube", 6),
@@ -404,6 +404,8 @@ public enum ItemIDs {
 	minecartC415H("ItemRollingStock", "c415h", 12),
 	//minecartC415S("ItemRollingStock", "c415s", 12),
 	//minecartC415L("ItemRollingStock", "c415l", 12),
+	minecartPEcooch("ItemRollingStock", "pecoach", 6),
+	minecartPEobserve("ItemRollingStock", "peobserve", 6),
 	;
 
 	public Item item;
