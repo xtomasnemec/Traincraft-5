@@ -56,6 +56,7 @@
   "nathan_m3h": {"category": "master", "sounds": [{"name": "nathan_m3h", "stream":  true}]},
   "nathan_m5": {"category": "master", "sounds": [{"name": "nathan_m5", "stream":  true}]},
   "nathan_p01235": {"category": "master", "sounds": [{"name": "nathan_p01235", "stream":  true}]},
+  "nathan_p012": {"category": "master", "sounds": [{"name": "nathan_p012", "stream":  true}]},
   "nathan_p14r2": {"category": "master", "sounds": [{"name": "nathan_p14r2", "stream":  true}]},
   "nathan_p2": {"category": "master", "sounds": [{"name": "nathan_p2", "stream":  true}]},
   "nathan_p3": {"category": "master", "sounds": [{"name": "nathan_p3","stream": true}]},

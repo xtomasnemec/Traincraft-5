@@ -1014,7 +1014,7 @@ public class ModelPEobserve extends ModelConverter//Same as Filename
 		bodyModel[225].setRotationPoint(-56F, -15F, 8F);
 
 		bodyModel[226].addBox(0F, 0F, 0F, 5, 4, 1, 0F); // Box 81 wall right
-		bodyModel[226].setRotationPoint(-56F, -15F, -8F);
+		bodyModel[226].setRotationPoint(-56F, -15F, -9F);
 
 		bodyModel[227].addBox(0F, 0F, 0F, 6, 4, 1, 0F); // Glow
 		bodyModel[227].setRotationPoint(-47F, -15F, -11F);
@@ -1212,7 +1212,7 @@ public class ModelPEobserve extends ModelConverter//Same as Filename
 		bodyModel[291].setRotationPoint(51F, -10F, -8F);
 
 		bodyModel[292].addBox(0F, 0F, 0F, 5, 4, 1, 0F); // Box 81 wall right
-		bodyModel[292].setRotationPoint(-56F, -10F, -8F);
+		bodyModel[292].setRotationPoint(-56F, -10F, -9F);
 
 		bodyModel[293].addBox(0F, 0F, 0F, 5, 4, 1, 0F); // Box 81 wall right
 		bodyModel[293].setRotationPoint(-56F, -10F, 8F);
