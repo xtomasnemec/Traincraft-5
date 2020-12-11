@@ -84,17 +84,18 @@ public class ItemHandler {
 				return block.isOpaqueCube();
 		}
 
-
 		else if (entity instanceof WoodchipHopper) {
 			return powderWood(itemstack);
 		}
-
 
 		else if (entity instanceof EntityFreightSlateWagon){
 			return block.getMaterial() == Material.rock;
 		}
 		else if (entity instanceof EntityFreightIceWagon){
 			return block.getMaterial() == Material.ice || block.getMaterial() == Material.packedIce;
+		}
+		else if (entity instanceof VersaLongi || entity instanceof VersaTrans){
+			return block.getMaterial() == Material.sand || block.getMaterial() == Material.clay || block.getMaterial() == Material.ground;
 		}
 		else {
 			return true;

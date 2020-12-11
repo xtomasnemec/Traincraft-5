@@ -91,7 +91,7 @@ public enum ItemIDs {
 	minecartVL10("ItemRollingStock", "train_vl10", 10),
 	minecartTramWood("ItemRollingStock", "train_tram", 7),
 	minecartChmE3("ItemRollingStock", "train_chme3", 8),
-	minecartHeavySteam("ItemRollingStock", "train_steam_heavy", 7), //HandleMaxAttachedCarts.HEAVY_STEAM_CARTS, 0D, (int) SpeedHandler.HEAVYSTEAM, "train_steam_heavy"),TODO put it back once Heavy Steam is back
+	minecartHeavySteam("ItemRollingStock", "train_steam_heavy", 7), //HandleMaxAttachedCarts.HEAVY_STEAM_CARTS, 0D, (int) SpeedHandler.HEAVYSTEAM, "train_steam_heavy"),
 	minecartTenderHeavy("ItemRollingStock", "train_tender_heavy", 5),
 	minecartFlatCart("ItemRollingStock", "train_flat", 1),
 	//minecartNewHighSpeedLoco("ItemRollingStock","train_speed",10),
@@ -406,6 +406,9 @@ public enum ItemIDs {
 	//minecartC415L("ItemRollingStock", "c415l", 12),
 	minecartPEcooch("ItemRollingStock", "pecoach", 6),
 	minecartPEobserve("ItemRollingStock", "peobserve", 6),
+	minecartBeep("ItemRollingStock", "BeepIcon", 10),
+	minecartVersaLongi("ItemRollingStock", "versalongi", 5),
+	minecartVersaTrans("ItemRollingStock", "versatrans", 5),
 	;
 
 	public Item item;

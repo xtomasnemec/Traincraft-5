@@ -440,6 +440,9 @@ item.tc:minecartC415S.name=Alco C415
 item.tc:minecartC415L.name=Alco C415 Low Clearance
 item.tc:minecartPEcooch.name=Polar Express Coach
 item.tc:minecartPEobserve.name=Polar Express Observation
+item.tc:minecartBeep.name=ATSF Beep
+item.tc:minecartVersaLongi.name=Versaflood Longitudinal Hopper
+item.tc:minecartVersaTrans.name=Versaflood Transverse Hopper
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -831,6 +834,9 @@ entity.tc.C415S.name=Alco C415
 entity.tc.C415L.name=Alco C415 Low Clearance
 entity.tc.PEcoach.name=Polar Express Coach
 entity.tc.PEobserve.name=Polar Express Observation
+entity.tc.Beep.name=ATSF Beep
+entity.tc.VersaLongi.name=Versaflood Longitudinal Hopper
+entity.tc.VersaTrans.name=Versaflood Transverse Hopper
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
