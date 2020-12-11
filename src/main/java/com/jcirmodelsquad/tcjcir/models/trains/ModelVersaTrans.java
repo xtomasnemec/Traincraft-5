@@ -350,7 +350,7 @@ public class ModelVersaTrans extends ModelConverter //Same as Filename
 			if (i == 66) {
 				int cargo = ((Freight) entity).getAmmountOfCargo();
 				if (cargo != 0) {
-					if (cargo <= 9) { //less than or equal to 9 (27, 36, 45, 54) //TODO fix dynamic loads so they dynamic right
+					if (cargo <= 9) { //less than or equal to 9 (27, 36, 45, 54) //fix this
 						GL11.glPushMatrix();
 						GL11.glTranslatef(0, 1f + ((Freight) entity).getAmmountOfCargo() * -0.018f, 0); // 1f is the "starting height", the *-0.whatever is the multiplier
 						GL11.glScalef(0.8F, 1, 1);// 0.8
