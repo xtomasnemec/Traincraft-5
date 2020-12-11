@@ -9,9 +9,7 @@
 
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
-
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70Truck;
-import com.sun.xml.internal.bind.v2.TODO;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
