@@ -959,8 +959,8 @@ public enum RenderEnum {
 	PEobserve(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.PEobserve.class, new ModelPEobserve(),"PEObserve_", true, new float[]{0F,  0.105F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Beep( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselBeep.class,  new ModelBeep(), "atsfbeep", false,new float[] {-1.1F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{
-			add(new double[]{2.45D, 1.45D, 0.0D});
-			add(new double[]{2.65D, 1.45D, 0.0D});
+			add(new double[]{1.45D, 1.45D, 0.0D});
+			add(new double[]{1.65D, 1.45D, 0.0D});
 			add(new double[]{1.05D, 1.45D, 0.0D});
 			add(new double[]{1.25D, 1.45D, 0.0D});
 		}
