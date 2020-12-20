@@ -443,6 +443,7 @@ item.tc:minecartPEobserve.name=Polar Express Observation
 item.tc:minecartBeep.name=ATSF Beep
 item.tc:minecartVersaLongi.name=Versaflood Longitudinal Hopper
 item.tc:minecartVersaTrans.name=Versaflood Transverse Hopper
+item.tc:minecartNRE3gs21b.name=NRE 3GS21B Genset
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -837,6 +838,7 @@ entity.tc.PEobserve.name=Polar Express Observation
 entity.tc.Beep.name=ATSF Beep
 entity.tc.VersaLongi.name=Versaflood Longitudinal Hopper
 entity.tc.VersaTrans.name=Versaflood Transverse Hopper
+entity.tc.NRE3gs21b.name=NRE 3GS21B Genset
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

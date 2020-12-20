@@ -409,6 +409,7 @@ public enum ItemIDs {
 	minecartBeep("ItemRollingStock", "BeepIcon", 10),
 	minecartVersaLongi("ItemRollingStock", "versalongi", 5),
 	minecartVersaTrans("ItemRollingStock", "versatrans", 5),
+	minecartNRE3gs21b("ItemRollingStock", "3gs21b", 11),
 	;
 
 	public Item item;
