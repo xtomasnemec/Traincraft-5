@@ -1,5 +1,6 @@
 package train.common.core;
 
+import com.jcirmodelsquad.tcjcir.tile.TileautoSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -79,6 +80,7 @@ public class CommonProxy implements IGuiHandler {
 		GameRegistry.registerTileEntity(TileLantern.class, "tileLantern");
 		GameRegistry.registerTileEntity(TileSwitchStand.class, "tileSwitchStand");
 		GameRegistry.registerTileEntity(TileMILWSwitchStand.class, "tileMILWSwitchStand");
+		GameRegistry.registerTileEntity(TileautoSwitchStand.class, "tileautoSwitchStand");
 		GameRegistry.registerTileEntity(TileWaterWheel.class, "tileWaterWheel");
 		GameRegistry.registerTileEntity(TileWindMill.class, "tileWindMill");
 		GameRegistry.registerTileEntity(TileGeneratorDiesel.class, "tileGeneratorDiesel");

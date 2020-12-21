@@ -14,24 +14,20 @@ import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergB;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelFB2;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import scala.swing.event.KeyPressed;
-import scala.swing.event.KeyReleased;
-import scala.swing.event.KeyTyped;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
-
+import com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7;
 
 
 public class ModelCF7 extends ModelConverter //Same as Filename
 {
-	boolean lampON = false;
-
 	int textureX = 512;
 	int textureY = 512;
 
@@ -1707,7 +1703,7 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 		bodyModel[405].addBox(0F, 0F, 0F, 5, 0, 6, 0F); // Box 282
 		bodyModel[405].setRotationPoint(-16F, -29F, -6F);
 
-		bodyModel[406].addBox(0F, 0F, 0F, 1, 2, 0, 0F); // Box 283
+		bodyModel[406].addBox(0F, 0F, 0F, 1, 2, 0, 0F); // Box 2
 		bodyModel[406].setRotationPoint(-13F, -29F, 0F);
 
 		bodyModel[407].addBox(0F, 0F, 0F, 0, 2, 1, 0F); // Box 284
@@ -1722,6 +1718,8 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 	ModelBlombergB theTrucks2 = new ModelBlombergB();
 	ModelFB2 theTrucks1 = new ModelFB2();
 	ModelTypeB theTrucks3 = new ModelTypeB();
+
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 410; i++) {

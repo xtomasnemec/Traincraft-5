@@ -73,11 +73,12 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     private int fuelUpdateTicks = 0;
     public boolean isLocoTurnedOn = false;
     public boolean forwardPressed = false;
-    public boolean frontlight = true;
     private boolean backwardPressed = false;
     public boolean brakePressed = false;
 
 
+    public boolean lampon = false;
+    public boolean isLampon = false;
     public int speedLimit = 0;
     public String trainLevel = "1";
     public int mtcStatus = 0;
@@ -427,6 +428,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         nbttagcompound.setString("currentSignalBlock", currentSignalBlock);
         nbttagcompound.setBoolean("isConnected", isConnected);
         nbttagcompound.setBoolean("stationStop", stationStop);
+        nbttagcompound.setBoolean("lampon", lampon);
     }
 
     @Override
@@ -463,7 +465,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         currentSignalBlock = ntc.getString("currentSignalBlock");
         isConnected = ntc.getBoolean("isConnected");
         stationStop = ntc.getBoolean("stationStop");
-
+        isLampon = ntc.getBoolean("lampon");
         dataWatcher.updateObject(5,trainID);
     }
 
@@ -548,19 +550,23 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
             }
 
 
-
         }
         if (i == 18) {
             if (mtcStatus != 0) {
-                if (overspeedOveridePressed ) {
+                if (overspeedOveridePressed) {
                     overspeedOveridePressed = false;
                 } else {
                     overspeedOveridePressed = true;
                 }
             }
         }
-    }
 
+        if (i == 19) {
+            lampon = true;
+        } else {
+            lampon = false;
+        }
+    }
     /**
      * All this is used in GUI only
      *

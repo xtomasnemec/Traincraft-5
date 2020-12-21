@@ -12,7 +12,6 @@ import train.common.api.DieselTrain;
 import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
-import com.jcirmodelsquad.tcjcir.models.trains.ModelCF7;
 
 
 public class DieselCF7 extends DieselTrain {
@@ -113,6 +112,7 @@ public class DieselCF7 extends DieselTrain {
     protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
         super.readEntityFromNBT(nbttagcompound);
 
+        lampon = nbttagcompound.getBoolean("lampon");
         fuelTrain = nbttagcompound.getShort("fuelTrain");
         NBTTagList nbttaglist = nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         locoInvent = new ItemStack[getSizeInventory()];
@@ -124,6 +124,7 @@ public class DieselCF7 extends DieselTrain {
             }
         }
     }
+
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) { return 0.95F;

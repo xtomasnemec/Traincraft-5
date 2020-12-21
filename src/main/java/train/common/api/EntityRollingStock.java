@@ -72,6 +72,8 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 	/** Axis aligned bounding box. */
 	private AxisAlignedBB boundingBoxSmall;
 
+	public boolean lampon = false;
+
 	public float maxSpeed;
 	public float railMaxSpeed;
 	public double speedLimiter = 1;
@@ -164,6 +166,7 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 	public GameProfile getOwner() {
 		return CartTools.getCartOwner(this);
 	}
+
 
 	public EntityRollingStock(World world, double d, double d1, double d2) {
 		super(world,d,d1,d2);

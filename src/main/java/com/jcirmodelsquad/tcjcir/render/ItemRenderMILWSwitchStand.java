@@ -11,7 +11,7 @@ import train.common.library.Info;
 
 public class ItemRenderMILWSwitchStand implements IItemRenderer {
 	private static final ModelMILWSwitchStandOff modeSwitch = new ModelMILWSwitchStandOff();
-	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchoff.png");
+	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "autoswtichoff.png");
 
 	public ItemRenderMILWSwitchStand() {
 	}

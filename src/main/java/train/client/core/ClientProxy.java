@@ -3,7 +3,10 @@ package train.client.core;
 import com.jcirmodelsquad.tcjcir.extras.HudTiltingHandler;
 import com.jcirmodelsquad.tcjcir.render.ItemRenderMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.render.RenderMILWSwitchStand;
+import com.jcirmodelsquad.tcjcir.render.models.ItemRenderautoSwitchStand;
+import com.jcirmodelsquad.tcjcir.render.models.RenderautoSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
+import com.jcirmodelsquad.tcjcir.tile.TileautoSwitchStand;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -12,6 +15,7 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import javazoom.jl.decoder.JavaLayerUtils;
+import li.cil.oc.api.event.FileSystemAccessEvent;
 import net.minecraft.block.BlockDaylightDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
@@ -96,6 +100,9 @@ public class ClientProxy extends CommonProxy {
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMILWSwitchStand.class, new RenderMILWSwitchStand());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.MILWSwitchStand.block), new ItemRenderMILWSwitchStand());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileautoSwitchStand.class, new RenderautoSwitchStand());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.autoSwtichStand.block), new ItemRenderautoSwitchStand());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStopper.class, new RenderStopper());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.stopper.block), new ItemRenderStopper());
