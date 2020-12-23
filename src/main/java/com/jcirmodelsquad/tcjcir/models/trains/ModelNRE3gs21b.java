@@ -1330,7 +1330,7 @@ public class ModelNRE3gs21b extends ModelConverter //Same as Filename
 		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2346||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2341||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 154325341||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3457||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3458||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3455) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Grey.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.5, 0.15, 0);
+			GL11.glTranslated(-1.55, 0.15, 0);
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(3, 0, 0);
@@ -1339,7 +1339,7 @@ public class ModelNRE3gs21b extends ModelConverter //Same as Filename
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_spooki_up_trash.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.5, 0.15, 0);
+			GL11.glTranslated(-1.55, 0.15, 0);
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(3, 0, 0);
@@ -1358,7 +1358,7 @@ public class ModelNRE3gs21b extends ModelConverter //Same as Filename
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Black.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.5, 0.15, 0);
+			GL11.glTranslated(-1.55, 0.15, 0);
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(3, 0, 0);

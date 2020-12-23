@@ -845,6 +845,7 @@ tile.tc:FortyFootContainer.name= Forty Foot Container
 tile.tc:owoSwitchStand.name=OWO Road Switch Stand
 tile.tc:autoSwtichStand.name=Auto Switch Stand
 tile.tc:circleSwitchStand.name= Circle Switch Stand
+tile.tc:owoYardswitchStand.name=OWO Yard Switch Stand
 
 key.categories.traincraft=JCIR-Traincraft
 key.traincraft.horn=Horn/Whistle
