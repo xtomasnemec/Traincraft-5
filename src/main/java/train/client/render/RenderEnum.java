@@ -969,9 +969,9 @@ public enum RenderEnum {
 	VersaTrans(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.VersaTrans.class, new ModelVersaTrans(),"versa_trans_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	NRE3gs21b( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselNRE3gs21b.class,  new ModelNRE3gs21b(), "3gs21b_", true,new float[] {-1.5F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
 		{
-			//add(new double[]{0.75D, 1.3D, 0.0D});
-			//add(new double[]{1.0D, 1.3D, 0.0D}); //fix when i have time
-			add(new double[]{1.95D, 1.3D, 0.0D});
+			add(new double[]{0.15D, 1.3D, 0.0D}); //farthest from cab
+			add(new double[]{1.05D, 1.3D, 0.0D}); //middle
+			add(new double[]{2.0D, 1.3D, 0.0D}); // closest to cab
 		}
 	}, "", null, 0, false),
 	;
