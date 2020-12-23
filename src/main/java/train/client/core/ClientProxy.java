@@ -1,16 +1,10 @@
 package train.client.core;
 
+import com.jcirmodelsquad.tcjcir.blocks.BlockcircleSwitchStand;
 import com.jcirmodelsquad.tcjcir.extras.HudTiltingHandler;
-import com.jcirmodelsquad.tcjcir.render.RenderowoSwitchStand;
-import com.jcirmodelsquad.tcjcir.render.ItemRenderowoSwitchStand;
-import com.jcirmodelsquad.tcjcir.render.ItemRenderMILWSwitchStand;
-import com.jcirmodelsquad.tcjcir.render.RenderMILWSwitchStand;
-import com.jcirmodelsquad.tcjcir.render.ItemRenderautoSwitchStand;
-import com.jcirmodelsquad.tcjcir.render.RenderautoSwitchStand;
+import com.jcirmodelsquad.tcjcir.render.*;
 
-import com.jcirmodelsquad.tcjcir.tile.TileowoSwitchStand;
-import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
-import com.jcirmodelsquad.tcjcir.tile.TileautoSwitchStand;
+import com.jcirmodelsquad.tcjcir.tile.*;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -102,9 +96,14 @@ public class ClientProxy extends CommonProxy {
 		//bogies
 		RenderingRegistry.registerEntityRenderingHandler(EntityBogie.class, new RenderBogie());
 
+		ClientRegistry.bindTileEntitySpecialRenderer(TileowoYardSwitchStand.class, new RenderowoYardSwitchStand());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.owoYardSwitchStand.block), new ItemRenderowoYardSwitchStand()));
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMILWSwitchStand.class, new RenderMILWSwitchStand());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.MILWSwitchStand.block), new ItemRenderMILWSwitchStand());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TilecircleSwitchStand.class, new RendercircleSwitchStand());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.circleSwitchStand.block), new ItemRendercircleSwitchStand());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileowoSwitchStand.class, new RenderowoSwitchStand());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.owoSwitchStand.block), new ItemRenderowoSwitchStand());

@@ -58,6 +58,8 @@ public enum BlockIDs {
 	MILWSwitchStand(false, null),
 	autoSwtichStand(false, null),
 	owoSwitchStand(false,null),
+	circleSwitchStand(false,null),
+	owoYardSwitchStand(false,null)
 	;
 
 	public Block block;

@@ -1,5 +1,6 @@
 package train.common.core;
 
+import com.jcirmodelsquad.tcjcir.tile.TilecircleSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileowoSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileautoSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
@@ -81,6 +82,7 @@ public class CommonProxy implements IGuiHandler {
 		GameRegistry.registerTileEntity(TileLantern.class, "tileLantern");
 		GameRegistry.registerTileEntity(TileSwitchStand.class, "tileSwitchStand");
 		GameRegistry.registerTileEntity(TileSwitchStand.class, "tileowoswitchstand");
+		GameRegistry.registerTileEntity(TileSwitchStand.class, "tilecircleswitchstand");
 		GameRegistry.registerTileEntity(TileMILWSwitchStand.class, "tileMILWSwitchStand");
 		GameRegistry.registerTileEntity(TileautoSwitchStand.class, "tileautoSwitchStand");
 		GameRegistry.registerTileEntity(TileWaterWheel.class, "tileWaterWheel");
