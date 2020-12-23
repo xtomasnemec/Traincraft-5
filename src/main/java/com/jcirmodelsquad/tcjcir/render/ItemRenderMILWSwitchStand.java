@@ -1,7 +1,6 @@
 package com.jcirmodelsquad.tcjcir.render;
 
 import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOff;
-import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOn;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -11,42 +10,42 @@ import train.common.library.Info;
 
 public class ItemRenderMILWSwitchStand implements IItemRenderer {
 	private static final ModelMILWSwitchStandOff modeSwitch = new ModelMILWSwitchStandOff();
-	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "autoswtichoff.png");
+	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "milwswitchoff.png");
 
 	public ItemRenderMILWSwitchStand() {
 	}
 
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+	public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
 		return true;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+	public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
 		return true;
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+	public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
 		switch (type) {
-		case ENTITY: {
-			renderSwitch(0f, 0f, 0f, 1f);
-			return;
-		}
-		case EQUIPPED: {
-			renderSwitch(0.2f, 1f, 1f, 1f);
-			return;
-		}
-		case EQUIPPED_FIRST_PERSON: {
-			renderSwitch(0.2f, 1f, 1f, 1f);
-			return;
-		}
-		case INVENTORY: {
-			renderSwitch(0f, 0f, 0f, 0.7f);
-			return;
-		}
-		default:
-			break;
+			case ENTITY: {
+				renderSwitch(0f, 0f, 0f, 1f);
+				return;
+			}
+			case EQUIPPED: {
+				renderSwitch(0.2f, 1f, 1f, 1f);
+				return;
+			}
+			case EQUIPPED_FIRST_PERSON: {
+				renderSwitch(0.2f, 1f, 1f, 1f);
+				return;
+			}
+			case INVENTORY: {
+				renderSwitch(0f, 0f, 0f, 0.7f);
+				return;
+			}
+			default:
+				break;
 		}
 	}
 

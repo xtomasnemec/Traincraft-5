@@ -87,7 +87,7 @@ public class ModelautoSwitchOff extends ModelConverter //Same as Filename
 		bodyModel[12].addShapeBox(0F, 0F, 0F, 11, 1, 1, 0F,0F, 0F, 0F, 0F, 1.5F, 0F, 0F, 1.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -1.5F, 0F, 0F, -1.5F, 0F, 0F, 0F, 0F); // Box 34
 		bodyModel[12].setRotationPoint(-11F, 9F, -1.75F);
 	}
-
+	/*
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 35; i++) {
@@ -103,4 +103,6 @@ public class ModelautoSwitchOff extends ModelConverter //Same as Filename
 		}
 
 	}
+
+	 */
 }

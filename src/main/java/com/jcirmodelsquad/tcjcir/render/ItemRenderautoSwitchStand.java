@@ -1,4 +1,4 @@
-package com.jcirmodelsquad.tcjcir.render.models;
+package com.jcirmodelsquad.tcjcir.render;
 
 import com.jcirmodelsquad.tcjcir.render.models.ModelautoSwitchOff;
 import com.jcirmodelsquad.tcjcir.render.models.ModelautoSwitchOn;
@@ -11,7 +11,7 @@ import train.common.library.Info;
 
 public class ItemRenderautoSwitchStand implements IItemRenderer {
     private static final ModelautoSwitchOff modeSwitch = new ModelautoSwitchOff();
-    private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "milwswitchoff.png");
+    private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "autoswitchoff.png");
 
     public ItemRenderautoSwitchStand() {
     }

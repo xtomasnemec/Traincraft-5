@@ -1,4 +1,4 @@
-package com.jcirmodelsquad.tcjcir.render.models;
+package com.jcirmodelsquad.tcjcir.render;
 
 import com.jcirmodelsquad.tcjcir.tile.TileautoSwitchStand;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -6,10 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import tmt.Tessellator;
-import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOff;
-import com.jcirmodelsquad.tcjcir.render.models.ModelMILWSwitchStandOn;
+import com.jcirmodelsquad.tcjcir.render.models.ModelautoSwitchOff;
+import com.jcirmodelsquad.tcjcir.render.models.ModelautoSwitchOn;
 import train.common.library.Info;
-import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
+import com.jcirmodelsquad.tcjcir.tile.TileautoSwitchStand;
 
 public class RenderautoSwitchStand extends TileEntitySpecialRenderer {
     private static final ModelautoSwitchOn modelSwitch2 = new ModelautoSwitchOn();
