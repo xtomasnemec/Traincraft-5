@@ -842,6 +842,9 @@ entity.tc.NRE3gs21b.name=NRE 3GS21B Genset
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
+tile.tc:owoSwitchStand.name=OWO Road Switch Stand
+tile.tc:autoSwtichStand.name=Auto Switch Stand
+tile.tc:circleSwitchStand.name= Circle Switch Stand
 
 key.categories.traincraft=JCIR-Traincraft
 key.traincraft.horn=Horn/Whistle

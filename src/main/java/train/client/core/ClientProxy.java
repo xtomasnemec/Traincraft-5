@@ -1,7 +1,5 @@
 package train.client.core;
 
-import com.jcirmodelsquad.tcjcir.blocks.BlockcircleSwitchStand;
-import com.jcirmodelsquad.tcjcir.extras.HudTiltingHandler;
 import com.jcirmodelsquad.tcjcir.render.*;
 
 import com.jcirmodelsquad.tcjcir.tile.*;
@@ -14,8 +12,6 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import javazoom.jl.decoder.JavaLayerUtils;
-import li.cil.oc.api.event.FileSystemAccessEvent;
-import net.minecraft.block.BlockDaylightDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.gui.GuiScreen;
@@ -96,8 +92,8 @@ public class ClientProxy extends CommonProxy {
 		//bogies
 		RenderingRegistry.registerEntityRenderingHandler(EntityBogie.class, new RenderBogie());
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileowoYardSwitchStand.class, new RenderowoYardSwitchStand());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.owoYardSwitchStand.block), new ItemRenderowoYardSwitchStand()));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileowoYardSwitchStand.class, new RenderowoYardSwtichStand());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.owoYardSwitchStand.block), new ItemRenderowoYardSwitchStand());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMILWSwitchStand.class, new RenderMILWSwitchStand());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.MILWSwitchStand.block), new ItemRenderMILWSwitchStand());

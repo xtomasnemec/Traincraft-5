@@ -1,5 +1,6 @@
 package com.jcirmodelsquad.tcjcir.render;
 
+import com.jcirmodelsquad.tcjcir.tile.TileowoSwitchStand;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -10,7 +11,7 @@ import com.jcirmodelsquad.tcjcir.render.models.ModelowoYardSwitchStandOn;
 import train.common.library.Info;
 import com.jcirmodelsquad.tcjcir.tile.TileowoYardSwitchStand;
 
-public class RenderowoYardSwitchStand extends TileEntitySpecialRenderer {
+public class RenderowoYardSwtichStand extends TileEntitySpecialRenderer {
     private static final ModelowoYardSwitchStandOn modelSwitch2 = new ModelowoYardSwitchStandOn();
     private static final ModelowoYardSwitchStandOff modelSwitch = new ModelowoYardSwitchStandOff();
     private static final ResourceLocation texture2 = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "owoyardswitchoff.png");
@@ -23,7 +24,7 @@ public class RenderowoYardSwitchStand extends TileEntitySpecialRenderer {
         GL11.glRotated(180,0,1,0);
         boolean skipRender = false;
 
-        switch (((TileowoYardSwitchStand)tileEntity).getFacing()){
+        switch (((TileowoSwitchStand)tileEntity).getFacing()){
             case NORTH:{
                 GL11.glRotated(180,0,0,1);
                 GL11.glRotated(270,0,1,0);
