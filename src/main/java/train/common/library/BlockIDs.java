@@ -56,8 +56,9 @@ public enum BlockIDs {
 	tcRail(false,null),
 	bridgePillar(false,null),
 	MILWSwitchStand(false, null),
-	autoSwtichStand(false, null);
-
+	autoSwtichStand(false, null),
+	owoSwitchStand(false,null),
+	;
 
 	public Block block;
 	public boolean hasItemBlock;

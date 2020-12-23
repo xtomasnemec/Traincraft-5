@@ -1,12 +1,17 @@
 package train.client.core;
 
 import com.jcirmodelsquad.tcjcir.extras.HudTiltingHandler;
+import com.jcirmodelsquad.tcjcir.render.RenderowoSwitchStand;
+import com.jcirmodelsquad.tcjcir.render.ItemRenderowoSwitchStand;
 import com.jcirmodelsquad.tcjcir.render.ItemRenderMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.render.RenderMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.render.ItemRenderautoSwitchStand;
 import com.jcirmodelsquad.tcjcir.render.RenderautoSwitchStand;
+
+import com.jcirmodelsquad.tcjcir.tile.TileowoSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.tile.TileautoSwitchStand;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -100,6 +105,9 @@ public class ClientProxy extends CommonProxy {
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileMILWSwitchStand.class, new RenderMILWSwitchStand());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.MILWSwitchStand.block), new ItemRenderMILWSwitchStand());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileowoSwitchStand.class, new RenderowoSwitchStand());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.owoSwitchStand.block), new ItemRenderowoSwitchStand());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileautoSwitchStand.class, new RenderautoSwitchStand());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.autoSwtichStand.block), new ItemRenderautoSwitchStand());

@@ -9,6 +9,7 @@ package train.common.blocks;
 
 import com.jcirmodelsquad.tcjcir.blocks.BlockMILWSwitchStand;
 import com.jcirmodelsquad.tcjcir.blocks.BlockautoSwitchStand;
+import com.jcirmodelsquad.tcjcir.blocks.BlockowoSwitchStand;
 import com.jcirmodelsquad.tcjcir.features.actualsignalblock.BlockActualSignalBlock;
 import com.jcirmodelsquad.tcjcir.features.betterdetector.BlockBetterDetector;
 import com.jcirmodelsquad.tcjcir.features.eti.BlockTrainMonitor;
@@ -40,6 +41,7 @@ public class TCBlocks {
 		BlockIDs.MILWSwitchStand.block = new BlockMILWSwitchStand().setHardness(1F).setStepSound(Block.soundTypeStone);
 		BlockIDs.switchStand.block = new BlockSwitchStand().setHardness(1F).setStepSound(Block.soundTypeStone);
 		BlockIDs.autoSwtichStand.block = new BlockautoSwitchStand().setHardness(1F).setStepSound(Block.soundTypeAnvil);
+		BlockIDs.owoSwitchStand.block = new BlockowoSwitchStand().setHardness(2F).setStepSound(Block.soundTypeMetal);
 
 		BlockIDs.trainWorkbench.block = new BlockTrainWorkbench(16).setHardness(1.7F).setStepSound(Block.soundTypeWood);
 		BlockIDs.stopper.block = new BlockStopper().setHardness(1.7F).setStepSound(Block.soundTypeWood);
