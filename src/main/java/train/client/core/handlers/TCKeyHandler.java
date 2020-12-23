@@ -67,6 +67,7 @@ public class TCKeyHandler {
         ClientRegistry.registerKeyBinding(remoteControlBackwards);
         ClientRegistry.registerKeyBinding(remoteControlBrake);
         ClientRegistry.registerKeyBinding(remoteControlHorn);
+
         lampControl = new KeyBinding("Train Lamp", Keyboard.KEY_L, "key.categories.traincraft");
         ClientRegistry.registerKeyBinding(lampControl);
 	}

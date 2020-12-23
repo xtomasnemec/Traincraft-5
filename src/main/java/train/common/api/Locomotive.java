@@ -77,8 +77,8 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     public boolean brakePressed = false;
 
 
-    public boolean lampon = false;
-    public boolean isLampon = false;
+    public boolean lampOn = false;
+    public boolean isLampOn = false;
     public int speedLimit = 0;
     public String trainLevel = "1";
     public int mtcStatus = 0;
@@ -428,7 +428,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         nbttagcompound.setString("currentSignalBlock", currentSignalBlock);
         nbttagcompound.setBoolean("isConnected", isConnected);
         nbttagcompound.setBoolean("stationStop", stationStop);
-        nbttagcompound.setBoolean("lampon", lampon);
+        nbttagcompound.setBoolean("lampOn", lampOn);
     }
 
     @Override
@@ -465,7 +465,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         currentSignalBlock = ntc.getString("currentSignalBlock");
         isConnected = ntc.getBoolean("isConnected");
         stationStop = ntc.getBoolean("stationStop");
-        isLampon = ntc.getBoolean("lampon");
+        isLampOn = ntc.getBoolean("lampOn");
         dataWatcher.updateObject(5,trainID);
     }
 
@@ -562,9 +562,9 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         }
 
         if (i == 19) {
-            lampon = true;
+            lampOn = true;
         } else {
-            lampon = false;
+            lampOn = false;
         }
     }
     /**

@@ -21,10 +21,9 @@ import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.common.api.Locomotive;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
-import com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7;
-
 
 public class ModelCF7 extends ModelConverter //Same as Filename
 {
@@ -1723,8 +1722,18 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 410; i++) {
-			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp") ) {
-				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+
+			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp")) {
+
+				if (entity instanceof Locomotive) {
+					Locomotive theLocomotive = ((Locomotive) entity);
+					if (theLocomotive.lampOn) {
+						Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+					} else {
+
+					}
+				}
+
 				bodyModel[i].render(f5);
 				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
 			}else if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("cull")) {
@@ -1744,6 +1753,7 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 			GL11.glTranslated(2.57, 0, 0);
 			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
+
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 7||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 5||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Grey.png"));
 			GL11.glPushMatrix();

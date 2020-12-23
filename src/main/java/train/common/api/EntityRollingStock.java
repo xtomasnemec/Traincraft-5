@@ -72,7 +72,6 @@ public class EntityRollingStock extends AbstractTrains implements ILinkableCart 
 	/** Axis aligned bounding box. */
 	private AxisAlignedBB boundingBoxSmall;
 
-	public boolean lampon = false;
 
 	public float maxSpeed;
 	public float railMaxSpeed;
