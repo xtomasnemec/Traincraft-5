@@ -561,9 +561,9 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
             }
         }
 
-        if (i == 19) {
+        if (i == 19 && !lampOn) {
             lampOn = true;
-        } else {
+        } else if (i == 19 && lampOn){
             lampOn = false;
         }
     }

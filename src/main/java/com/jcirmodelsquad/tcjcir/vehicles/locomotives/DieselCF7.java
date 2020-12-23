@@ -113,7 +113,7 @@ public class DieselCF7 extends DieselTrain {
     protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
         super.readEntityFromNBT(nbttagcompound);
 
-        lampon = nbttagcompound.getBoolean("lampon");
+        lampOn = nbttagcompound.getBoolean("lampOn");
         fuelTrain = nbttagcompound.getShort("fuelTrain");
         NBTTagList nbttaglist = nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         locoInvent = new ItemStack[getSizeInventory()];

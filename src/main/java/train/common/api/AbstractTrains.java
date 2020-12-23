@@ -143,7 +143,7 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 	 */
 	public ArrayList<Integer> acceptedColors;
 
-	public boolean islampon;
+	public boolean islampOn;
 
 	@Override
 	public float getBrightness(float p_70013_1_) {
@@ -250,7 +250,7 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 		return uniqueID;
 	}
 
-	public boolean lampon() {return islampon;}
+	public boolean lampOn() {return islampOn;}
 
 	public void manageChunkLoading(){
 		//if(this instanceof Locomotive)System.out.println("I'm alive. Remote: " + worldObj.isRemote);
@@ -416,7 +416,7 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 		//motionZ = nbttagcompound.getDouble("motionZ");
 		Link1 = nbttagcompound.getDouble("Link1");
 		Link2 = nbttagcompound.getDouble("Link2");
-		islampon = nbttagcompound.getBoolean("lampon");
+		islampOn = nbttagcompound.getBoolean("lampOn");
 		if(nbttagcompound.hasKey("Dim")){
 			this.dimension=nbttagcompound.getInteger("Dim");
 		}

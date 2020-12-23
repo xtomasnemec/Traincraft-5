@@ -24,7 +24,7 @@ public class RenderowoYardSwtichStand extends TileEntitySpecialRenderer {
         GL11.glRotated(180,0,1,0);
         boolean skipRender = false;
 
-        switch (((TileowoSwitchStand)tileEntity).getFacing()){
+        switch (((TileowoYardSwitchStand)tileEntity).getFacing()){
             case NORTH:{
                 GL11.glRotated(180,0,0,1);
                 GL11.glRotated(270,0,1,0);
