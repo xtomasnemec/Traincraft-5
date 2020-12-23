@@ -7,7 +7,9 @@ This is a fork of Traincraft, but with content specificly desigined for the Mine
 - Right click to fuel and unfuel (soon, in 2.0)
 - Paintbrushes
 - Driverless trains
-- More content!
+- New Trains
+- New skins
+- Signals
 
 Thank you to the original creators:
 
@@ -21,7 +23,7 @@ Also, thank you to our content contributers:
 
 - Bidahochi
 - BigJ
-- hariesh
+- hariesh (hi its me, writing at a later date)
 - imWastey
 - JCRail
 - Messicrew
@@ -30,6 +32,7 @@ Also, thank you to our content contributers:
 - ..and you! If you want to, of course. Make your changes with a pull request, and join the Discord server to stay up to date with things that are happening.
 
 ## **1.0 Release deadline: July 2nd**
+## We are currently in 1.6
 
 JCIR Discord Server: https://discord.gg/eF578D
 
