@@ -300,15 +300,18 @@ public enum ItemIDs {
 	tcRailMediumParallelSwitch("ItemTCRail", "item_rail_switch_parallel", 5),
 
 	tcRailTwoWaysCrossing("ItemTCRail","item_rail_two_ways_crossing",5),
-	tcRailSlopeWood("ItemTCRail", "item_rail_straight_slope_wood", 1),
-	tcRailSlopeGravel("ItemTCRail", "item_rail_straight_slope_gravel", 5),
-	tcRailSlopeBallast("ItemTCRail", "item_rail_straight_slope_ballast", 5),
+	tcRailSlopeWood("ItemTCRail", "item_rail_straight_slope_wood", 3),
+	tcRailSlopeGravel("ItemTCRail", "item_rail_straight_slope_gravel", 3),
+	tcRailSlopeBallast("ItemTCRail", "item_rail_straight_slope_ballast", 3),
 	tcRailLargeSlopeWood("ItemTCRail", "item_rail_straight_slope_wood", 3),
 	tcRailLargeSlopeGravel("ItemTCRail", "item_rail_straight_slope_gravel", 3),
 	tcRailLargeSlopeBallast("ItemTCRail", "item_rail_straight_slope_ballast", 3),
 	tcRailVeryLargeSlopeWood("ItemTCRail", "item_rail_straight_slope_wood", 3),
 	tcRailVeryLargeSlopeGravel("ItemTCRail", "item_rail_straight_slope_gravel", 3),
 	tcRailVeryLargeSlopeBallast("ItemTCRail", "item_rail_straight_slope_ballast", 3),
+	tcRailSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
+	tcRailLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
+	tcRailVeryLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
 
 	//TC-JCIR
 	remoteController("ItemRemoteController", "remote_controller", 20),
