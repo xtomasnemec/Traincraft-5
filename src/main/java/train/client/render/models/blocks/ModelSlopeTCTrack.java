@@ -49,7 +49,17 @@ public class ModelSlopeTCTrack extends ModelBase {
 			FMLClientHandler.instance().getClient().renderEngine
 					.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
 			modeltrack.renderAll();
+
 		}
+		if (type.equals("snow")) {
+			FMLClientHandler.instance().getClient().renderEngine
+					.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/blocks/snowgravel.png"));
+			modelSlopeBallast.renderAll();
+			FMLClientHandler.instance().getClient().renderEngine
+					.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
+			modeltrack.renderAll();
+		}
+
 	}
 	
 	public void render(String type, TileTCRail tcRail, double x, double y, double z) {
