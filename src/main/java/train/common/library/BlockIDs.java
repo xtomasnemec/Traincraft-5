@@ -59,7 +59,8 @@ public enum BlockIDs {
 	autoSwtichStand(false, null),
 	owoSwitchStand(false,null),
 	circleSwitchStand(false,null),
-	owoYardSwitchStand(false,null)
+	owoYardSwitchStand(false,null),
+	snowGravel(false,null),
 	;
 
 	public Block block;
