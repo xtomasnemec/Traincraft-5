@@ -10,11 +10,15 @@ import net.minecraft.util.EnumChatFormatting;
 import train.common.Traincraft;
 import train.common.library.Info;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemPaintbrushThing extends Item {
+    private ArrayList<String[]> info;
 
     public ItemPaintbrushThing() {
+        super();
+        maxStackSize = 64;
         setCreativeTab(Traincraft.tcTab);
     }
 
