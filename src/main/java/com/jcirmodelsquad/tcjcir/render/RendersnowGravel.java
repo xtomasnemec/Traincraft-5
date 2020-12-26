@@ -17,10 +17,11 @@ public class RendersnowGravel extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick) {
-        GL11.glPushMatrix();
+        GL11.glPopMatrix();
         GL11.glTranslated(x+0.5,y+0.6,z+0.5);
         GL11.glRotated(180,0,1,0);
         Tessellator.bindTexture(texture);
         modelsnowGravel.render(null, 0, 0, 0, 0, 0, 0.0625f);
+        GL11.glPushMatrix();
     }
 }
