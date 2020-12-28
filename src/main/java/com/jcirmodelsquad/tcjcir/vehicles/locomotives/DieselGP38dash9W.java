@@ -13,13 +13,13 @@ import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-public class DieselGP38dash2 extends DieselTrain {
-    public DieselGP38dash2(World world) {
-        super(world, EnumTrains.GP38dash2.getTankCapacity(), LiquidManager.dieselFilter());
+public class DieselGP38dash9W extends DieselTrain {
+    public DieselGP38dash9W(World world) {
+        super(world, EnumTrains.GP38dash9W.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
 
     }
-    public DieselGP38dash2(World world, double d, double d1, double d2){
+    public DieselGP38dash9W(World world, double d, double d1, double d2){
         this(world);
         setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;
@@ -39,7 +39,7 @@ public class DieselGP38dash2 extends DieselTrain {
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-        double distance = 2.95;
+        double distance = 2.75;
         double yOffset = 0.15;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
@@ -121,7 +121,7 @@ public class DieselGP38dash2 extends DieselTrain {
     }
 
     @Override
-    public float getOptimalDistance(EntityMinecart cart) { return 1.2F;
+    public float getOptimalDistance(EntityMinecart cart) { return 1.5F;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class DieselGP38dash2 extends DieselTrain {
 
     @Override
     public String getInventoryName() {
-        return "EMD GP38-2";
+        return "MT&S GP38-9W";
     }
 
     @Override

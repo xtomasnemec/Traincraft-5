@@ -364,7 +364,8 @@ public enum EnumTrains {
 	Beep("Beep", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselBeep.class, ItemIDs.minecartBeep.item, "diesel", 1500, 105, 0, 65, 0, 180, 0.89, 0.91, 8000, null, 10, -2.2),
 	VersaLongi("VersaLongi", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.VersaLongi.class, ItemIDs.minecartVersaLongi.item, "freight", 5, new String[] {"LightGrey", "Black", "Orange"}, 30, 36, new String[] {"Cargo: Aggregates"}),
 	VersaTrans("VersaTrans", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.VersaTrans.class, ItemIDs.minecartVersaTrans.item, "freight", 5, new String[] {"LightBlue", "Grey", "LightGrey"}, 30, 36, new String[] {"Cargo: Aggregates"}),
-	NRE3gs21b("NRE3gs21b", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselNRE3gs21b.class, ItemIDs.minecartNRE3gs21b.item, "diesel genset", 2100, 104, 0, 30,0,  160, 0.78, 0.9, 14000, new String[]{"Yellow", "LightGrey", "Orange"}, 10, -3.1),
+	NRE3gs21b("NRE3gs21b", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselNRE3gs21b.class, ItemIDs.minecartNRE3gs21b.item, "diesel genset", 2100, 104, 0, 30,0,  160, 0.78, 0.9, 14000, new String[]{"Yellow", "LightGrey", "Orange", "Grey"}, 10, -3.1),
+	GP38dash9W("GP38dash9W", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash9W.class, ItemIDs.minecartGP38dash9W.item, "diesel", 2000, 105, 0, 70, 0, 185, 0.75, 0.9, 20000, new  String[] {"Green", "Blue"}, 10, -3.1),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

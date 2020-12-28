@@ -974,6 +974,11 @@ public enum RenderEnum {
 			add(new double[]{2.0D, 1.3D, 0.0D}); // closest to cab
 		}
 	}, "", null, 0, false),
+	GP38dash9W( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash9W.class,  new ModelGP38dash9W(), "GP38dash9W_", true,new float[] {-1.5F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{
+
+		}
+	}, "", null, 0, false),
 	;
 
 	private Class<? extends AbstractTrains> entityClass;

@@ -413,6 +413,7 @@ public enum ItemIDs {
 	minecartVersaLongi("ItemRollingStock", "versalongi", 5),
 	minecartVersaTrans("ItemRollingStock", "versatrans", 5),
 	minecartNRE3gs21b("ItemRollingStock", "3gs21b", 11),
+	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 9),
 	;
 
 	public Item item;
