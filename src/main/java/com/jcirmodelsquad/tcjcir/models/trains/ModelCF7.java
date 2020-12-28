@@ -1726,8 +1726,8 @@ public class ModelCF7 extends ModelConverter //Same as Filename
 			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp")) {
 
 				if (entity instanceof Locomotive) {
-					Locomotive theLocomotive = ((Locomotive) entity);
-					if (theLocomotive.lampOn) {
+					//Locomotive theLocomotive = ((Locomotive) entity);
+					if (Locomotive.lampOn) {
 						Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 						bodyModel[i].render(f5);
 						Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
