@@ -99,6 +99,10 @@ public class WorldEvents{
  				throw new ReportedException(CrashReport.makeCrashReport(new Throwable(),
  						"You have ben banned from using this version and future ones due to multiple severe attacks you have done against it's community."));
  			}
+ 			else if (event.entity.getUniqueID() == UUID.fromString("b689b5f7-e560-4396-878a-8e78f2dede9c")) {
+				((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText(
+						"Hey hariesh! Just wanted to say your a great person and keep on moving!"));
+			}
  		} else if(event.entity instanceof EntityPlayer && ConfigHandler.FIRST_RUN) {
 			((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText(
 					"TC will be changing to an add-on for Trains in Motion."));
