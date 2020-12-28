@@ -9,17 +9,20 @@ package train.common.core.handlers;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import jdk.nashorn.internal.ir.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import scala.Char;
 import train.common.inventory.TrainCraftingManager;
 import train.common.items.ItemPaintbrushThing;
 import train.common.items.TCItems;
 import train.common.library.BlockIDs;
 import train.common.library.ItemIDs;
+import train.common.mtc.BlockInfoTransmitterSpeed;
 import train.common.recipes.RecipesArmorDyes;
 
 import java.util.ArrayList;
@@ -95,8 +98,8 @@ public class RecipeHandler {
 		GameRegistry.addRecipe(new ItemStack(ItemIDs.tcRailSlopeGravel.item, 1), " TG","TGG","GGG", Character.valueOf('T'), ItemIDs.tcRailMediumStraight.item, Character.valueOf('G'), Blocks.gravel);
 		GameRegistry.addRecipe(new ItemStack(ItemIDs.tcRailLargeSlopeGravel.item,1), "   ","  S"," S ", Character.valueOf('S'), ItemIDs.tcRailSlopeGravel.item);
 
-		// Track revipes -hariesh  Snow track -bida
-		GameRegistry.addRecipe(new ItemStack(ItemIDs.tcRailSlopeSnowGravel.item, 1), " TS","TSS","SSS", Character.valueOf('T'), ItemIDs.tcRailMediumStraight.item, Character.valueOf('S'), Blocks.snow);
+		// Track recipes -hariesh  Snow track -bida
+		GameRegistry.addRecipe(new ItemStack(ItemIDs.tcRailSlopeSnowGravel.item, 1), " TS","TSS","SSS", Character.valueOf('T'), ItemIDs.tcRailMediumStraight.item, Character.valueOf('S'), new ItemStack(BlockIDs.oreTC.block, 1,4));
 		GameRegistry.addRecipe(new ItemStack(ItemIDs.tcRailLargeSlopeSnowGravel.item, 1), "   ","  T"," T ", Character.valueOf('T'), ItemIDs.tcRailSlopeSnowGravel.item);
 		GameRegistry.addRecipe(new ItemStack(ItemIDs.tcRailVeryLargeSlopeSnowGravel.item, 1), "   ","  T"," T ", Character.valueOf('T'), ItemIDs.tcRailLargeSlopeSnowGravel.item);
 
@@ -115,8 +118,11 @@ public class RecipeHandler {
 			addDictRecipe(new ItemStack(BlockIDs.stopper.block, 1), "WWW", "I I", "RRR", Character.valueOf('W'), "plankWood", Character.valueOf('R'), Blocks.rail, Character.valueOf('I'), ironingot);
 		}
 		
-		GameRegistry.addRecipe(new ItemStack(BlockIDs.oreTC.block, 1,3),  "GXG", Character.valueOf('G'), Blocks.gravel, Character.valueOf('X'), Items.clay_ball);
-		
+		GameRegistry.addRecipe(new ItemStack(BlockIDs.oreTC.block, 2,3),  "GXG", Character.valueOf('G'), Blocks.gravel, Character.valueOf('X'), Items.clay_ball);
+		GameRegistry.addRecipe(new ItemStack(BlockIDs.oreTC.block, 2, 4), "GXG", Character.valueOf('G'), Blocks.gravel, Character.valueOf('X'), Items.snowball);
+		GameRegistry.addRecipe(new ItemStack(BlockIDs.oreTC.block, 8, 4), "XGG","GGG","GGG", Character.valueOf('G'), Blocks.gravel, Character.valueOf('X'), Blocks.snow);
+		GameRegistry.addRecipe(new ItemStack(BlockIDs.oreTC.block, 8, 3), "XGG","GGG","GGG", Character.valueOf('G'), Blocks.gravel, Character.valueOf('X'), Blocks.clay);
+
 	}
 
 	public static void initItemRecipes() {

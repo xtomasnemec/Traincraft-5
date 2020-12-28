@@ -23,6 +23,7 @@ public class BlockOreTC extends BlockFalling {
 	private static IIcon texture2;
 	private static IIcon texture3;
 	private static IIcon texture4;
+	private static IIcon texture5;
 
 	public BlockOreTC() {
 		super(Material.rock);
@@ -34,6 +35,7 @@ public class BlockOreTC extends BlockFalling {
 		if (metadata == 0) return texture1;
 		else if (metadata == 1) return texture2;
 		else if (metadata == 2) return texture3;
+		else if (metadata == 4) return texture5;
 		else return texture4;
 	}
 
@@ -60,7 +62,7 @@ public class BlockOreTC extends BlockFalling {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item par1, CreativeTabs tab, List subItems) {
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -72,6 +74,7 @@ public class BlockOreTC extends BlockFalling {
 		texture2 = iconRegister.registerIcon(Info.modID.toLowerCase() + ":ores/ore_oilsands");
 		texture3 = iconRegister.registerIcon(Info.modID.toLowerCase() + ":ores/ore_petroleum");
 		texture4 = iconRegister.registerIcon(Info.modID.toLowerCase() + ":ballast_test");
+		texture5 = iconRegister.registerIcon(Info.modID.toLowerCase() + ":snowgravel");
 	}
 
 	public static IIcon getTexture1() {

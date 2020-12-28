@@ -61,7 +61,6 @@ public class TCBlocks {
 		
 		BlockIDs.bridgePillar.block = new BlockBridgePillar().setHardness(3.5F).setStepSound(Block.soundTypeWood);
 
-		BlockIDs.snowGravel.block = new BlocksnowGravel().setHardness(1F).setStepSound(Block.soundTypeGravel);
 
 		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
 			BlockIDs.mtcTransmitterSpeed.block = new BlockInfoTransmitterSpeed(Material.rock).setHardness(3.5F).setStepSound(Block.soundTypeMetal).setBlockTextureName("tc:speedTransmitter").setBlockName("mtcspeedtransmitter").setCreativeTab(Traincraft.tcTab);

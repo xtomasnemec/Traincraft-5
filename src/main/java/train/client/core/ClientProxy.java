@@ -136,8 +136,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileBridgePillar.class, new RenderBridgePillar());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.bridgePillar.block), new ItemRenderBridgePillar());
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TilesnowGravel.class, new RendersnowGravel());
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.snowGravel.block), new ItemRendersnowGravel());
+
 	}
 
 	@Override

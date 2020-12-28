@@ -22,7 +22,7 @@ import train.common.api.EntityRollingStock;
 import train.common.api.Freight;
 import train.common.api.LiquidTank;
 import train.common.api.Tender;
-import train.common.containers.*;
+//import train.common.containers.*;
 import train.common.core.handlers.ChunkEvents;
 import train.common.core.handlers.WorldEvents;
 import train.common.core.util.MP3Player;
@@ -90,7 +90,6 @@ public class CommonProxy implements IGuiHandler {
 		GameRegistry.registerTileEntity(TileTCRailGag.class, "tileTCRailGag");
 		GameRegistry.registerTileEntity(TileTCRail.class, "tileTCRail");
 		GameRegistry.registerTileEntity(TileBridgePillar.class, "tileTCBridgePillar");
-		GameRegistry.registerTileEntity(TilesnowGravel.class, "tilesnowGravel");
 
 		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")) {
 			GameRegistry.registerTileEntity(TileInfoTransmitterSpeed.class, "tileInfoTransmitterSpeed");
@@ -139,6 +138,7 @@ public class CommonProxy implements IGuiHandler {
 		}
 
 		switch (ID) {
+		/*
 		case (GuiIDs.CRAFTER_TIER_I):
 			return te != null && te instanceof TileCrafterTierI ? new ContainerTier(player.inventory, (TileCrafterTierI) te) : null;
 		case (GuiIDs.CRAFTER_TIER_II):
@@ -165,7 +165,7 @@ public class CommonProxy implements IGuiHandler {
 			return riddenByEntity != null ? new InventoryZepp(player.inventory, (AbstractZeppelin) entity) : null;
 		case (GuiIDs.DIGGER):
 			return riddenByEntity != null  ? new InventoryRotativeDigger(player.inventory, (EntityRotativeDigger) entity) : null;
-
+		*/
 			/* Stationary entities while player is not riding. */
 		case (GuiIDs.FREIGHT):
 			//System.out.println("Freight: " + ID + " | " + entity1.getEntityName() + " | " + x + ":" + y + ":" + z);

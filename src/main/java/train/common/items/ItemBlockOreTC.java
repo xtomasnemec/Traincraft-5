@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockOreTC extends ItemBlock {
 
-	private final static String[] subNames = { "copperOre", "oilSands", "petroleum", "ballast" };
+	private final static String[] subNames = { "copperOre", "oilSands", "petroleum", "ballast", "snowgravel"};
 
 	public ItemBlockOreTC(Block id) {
 		super(id);
