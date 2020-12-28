@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import train.common.api.*;
 import train.common.entity.rollingStock.*;
+import train.common.items.ItemBlockOreTC;
 import train.common.items.ItemTCRail;
 
 public class ItemHandler {
@@ -93,7 +94,7 @@ public class ItemHandler {
 			return block.getMaterial() == Material.ice || block.getMaterial() == Material.packedIce;
 		}
 		else if (entity instanceof VersaLongi || entity instanceof VersaTrans){
-			return block.getMaterial() == Material.sand || block.getMaterial() == Material.clay || block.getMaterial() == Material.ground;
+			return block.getMaterial() == Material.sand || block.getMaterial() == Material.clay || block.getMaterial() == Material.ground || itemstack.getItem() instanceof ItemBlockOreTC;
 		}
 		else {
 			return true;
