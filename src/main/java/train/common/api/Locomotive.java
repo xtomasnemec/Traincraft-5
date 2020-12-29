@@ -57,6 +57,7 @@ import java.util.Random;
 
 public abstract class Locomotive extends EntityRollingStock implements IInventory, WirelessTransmitter {
     public static boolean lampOn;
+    public boolean bellPressed;
     public int inventorySize;
     protected ItemStack locoInvent[];
     private int soundPosition = 0;
@@ -567,6 +568,10 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
                 lampOn = false;
             }
         }
+
+        if (i == 48){
+            soundBell();
+        }
     }
     /**
      * All this is used in GUI only
@@ -619,6 +624,10 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         //speed *= 6;// applying ratio
         //speed *= 3.6;// convert in km/h
         return speed;
+    }
+
+    public void soundBell() {
+        worldObj.playSoundAtEntity(this, Info.resourceLocation + ":" + "sounds/bell/test.ogg", 1F, 1.0F);
     }
 
     public void soundHorn() {

@@ -35,7 +35,8 @@ public class TCKeyHandler {
 	public static KeyBinding remoteControlBackwards;
 	public static KeyBinding remoteControlHorn;
 	public static KeyBinding remoteControlBrake;
-	public static KeyBinding lampControl;
+	public static KeyBinding lampOn;
+	public static KeyBinding bell;
 	public TCKeyHandler() {
 		horn = new KeyBinding("key.traincraft.horn", Keyboard.KEY_H, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(horn);
@@ -68,8 +69,10 @@ public class TCKeyHandler {
         ClientRegistry.registerKeyBinding(remoteControlBrake);
         ClientRegistry.registerKeyBinding(remoteControlHorn);
 
-        lampControl = new KeyBinding("Train Lamp", Keyboard.KEY_L, "key.categories.traincraft");
-        ClientRegistry.registerKeyBinding(lampControl);
+        lampOn = new KeyBinding("key.traincraft.lampOn", Keyboard.KEY_L, "key.categories.traincraft");
+        ClientRegistry.registerKeyBinding(lampOn);
+        bell = new KeyBinding("key.traincraft.bell", Keyboard.KEY_B, "key.categories.traincraft");
+        ClientRegistry.registerKeyBinding(bell);
 	}
 
 	@SubscribeEvent
@@ -93,8 +96,12 @@ public class TCKeyHandler {
 			if (horn.isPressed()) {
 				sendKeyControlsPacket(8);
 			}
-			if (lampControl.isPressed()) {
+			if (lampOn.isPressed()) {
 				sendKeyControlsPacket(19);
+			}
+
+			if (bell.isPressed()) {
+				sendKeyControlsPacket(48);
 			}
 
 			if (furnace.isPressed()) {
