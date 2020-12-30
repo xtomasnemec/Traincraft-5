@@ -22,17 +22,17 @@ Thank you to the original creators:
 Also, thank you to our content contributers:
 
 - Bidahochi
-- BigJ
 - hariesh (hi its me, writing at a later date)
-- imWastey
+- PeachMaster (me :D)
 - JCRail
 - Messicrew
 - Professor Binky (TrainGoddess)
-- PeachMaster (me :D)
+- BigJ
+- imWastey  
 - ..and you! If you want to, of course. Make your changes with a pull request, and join the Discord server to stay up to date with things that are happening.
 
 ## **1.0 Release deadline: July 2nd**
-## We are currently in 1.6
+## We are currently in 1.9
 
 JCIR Discord Server: https://discord.gg/eF578D
 
