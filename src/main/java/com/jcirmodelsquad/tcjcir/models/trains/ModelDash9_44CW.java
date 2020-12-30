@@ -771,7 +771,7 @@ public class ModelDash9_44CW extends ModelConverter //Same as my ass
 			theTrucks.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/cab4Window_template.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/cab4Window_furrx.png"));
 			GL11.glPushMatrix();
 			theCabbo2.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
