@@ -850,6 +850,7 @@ tile.tc:owoYardSwitchStand.name=OWO Yard Switch Stand
 item.tc:tcRailSlopeSnowGravel.name=Slope Track (Snowy Gravel)
 item.tc:tcRailLargeSlopeSnowGravel.name=Large Slope Track (Snowy Gravel)
 item.tc:tcRailVeryLargeSlopeSnowGravel.name=Very Large Slope Track (Snowy Gravel)
+tile.tc:oreTC.snowgravel.name=Snowy Gravel
 
 key.categories.traincraft=JCIR-Traincraft
 key.traincraft.horn=Horn/Whistle

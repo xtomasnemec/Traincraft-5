@@ -314,8 +314,8 @@ public enum ItemIDs {
 	tcRailVeryLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
 
 	//TC-JCIR
-	remoteController("ItemRemoteController", "remote_controller", 20),
-	remoteControllerModule("ItemRemoteControllerModule", "remote_controller_module", 15),
+	remoteController("ItemRemoteController", "remote_controller", 4),
+	remoteControllerModule("ItemRemoteControllerModule", "remote_controller_module", 4),
 	//signalPairingDevice("ItemSignalPairingDevice", "signal_pairing_device", 14),
 	minecartAlcoS2("ItemRollingStock", "alco_s2", 9),
 	minecartRibbedHopper("ItemRollingStock", "ribbed_hopper", 3),
@@ -414,6 +414,7 @@ public enum ItemIDs {
 	minecartVersaTrans("ItemRollingStock", "versatrans", 5),
 	minecartNRE3gs21b("ItemRollingStock", "3gs21b", 11),
 	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 9),
+	minecartDash9_44CW("ItemRollingStock", "d944cw", 14),
 	;
 
 	public Item item;

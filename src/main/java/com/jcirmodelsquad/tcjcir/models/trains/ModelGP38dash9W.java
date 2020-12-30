@@ -1449,7 +1449,7 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 				bodyModel[i].render(f5);
 				Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
-			}else if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("cull")) {
+			} else if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("cull")) {
 				GL11.glDisable(GL11.GL_CULL_FACE);
 				bodyModel[i].render(f5);
 				GL11.glEnable(GL11.GL_CULL_FACE);
@@ -1458,7 +1458,7 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 			}
 		}
 
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3456||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3451||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13451||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3457||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3458||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3455) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3456 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3451 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13451 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3457 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3458 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3455) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Grey.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.5, 0.15, 0);

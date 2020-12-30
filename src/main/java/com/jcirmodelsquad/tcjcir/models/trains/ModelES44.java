@@ -10,7 +10,9 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 
+import com.jcirmodelsquad.tcjcir.models.cabs.ModelD9_CabSquareWindow;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelGevoTruck;
+import com.jcirmodelsquad.tcjcir.models.trucks.Modelnewgevotruck;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -980,6 +982,7 @@ public class ModelES44 extends ModelConverter //Same as Filename
 	}
 
 	ModelGevoTruck theTrucks = new ModelGevoTruck();
+	Modelnewgevotruck theTrucks2 = new Modelnewgevotruck();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -993,21 +996,40 @@ public class ModelES44 extends ModelConverter //Same as Filename
 			}
 		}
 
-		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14){
+		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==14345){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/gevotruck_Grey.png")); //i love the smell of pointless code in the morning
-		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/gevotruck_Black.png"));
-		}
-		GL11.glPushMatrix();
-		GL11.glTranslatef(-1.85F ,0.4F,0F);
-		//GL11.glScalef(0.9f,0.9f,0.8f);
-		theTrucks.render(entity,f,f1,f2,f3,f4,f5);
-		GL11.glPopMatrix();
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-1.85F ,0.4F,0F);
+			//GL11.glScalef(0.9f,0.9f,0.8f);
+			theTrucks.render(entity,f,f1,f2,f3,f4,f5);
+			GL11.glPopMatrix();
 
-		GL11.glPushMatrix();
-		GL11.glTranslated(1.9F,0.4F,0);
-		theTrucks.render(entity,f,f1,f2,f3,f4,f5);
-		GL11.glPopMatrix();
+			GL11.glPushMatrix();
+			GL11.glTranslated(1.9F,0.4F,0);
+			theTrucks.render(entity,f,f1,f2,f3,f4,f5);
+			GL11.glPopMatrix();
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14){
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/newgevotruck_LightGrey.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-1.8F ,-0.0F,0F);
+			theTrucks2.render(entity,f,f1,f2,f3,f4,f5);
+
+			GL11.glRotatef(180, 0, 1, 0);
+			GL11.glTranslated(-3.65F,0.0F,0);
+			theTrucks2.render(entity,f,f1,f2,f3,f4,f5);
+			GL11.glPopMatrix();
+		}else {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/newgevotruck_Black.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-1.8F ,-0.0F,0F);
+			theTrucks2.render(entity,f,f1,f2,f3,f4,f5);
+
+			GL11.glRotatef(180, 0, 1, 0);
+			GL11.glTranslated(-3.65F,0.0F,0);
+			theTrucks2.render(entity,f,f1,f2,f3,f4,f5);
+			GL11.glPopMatrix();
+		}
+
 	}
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)

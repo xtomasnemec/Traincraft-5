@@ -320,14 +320,10 @@ public class RenderRollingStock extends Render {
 							}
 						}
 					} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-						if (renders.hasSmoke() != null) {
-							smokePosition = renders.getSmokeFX();
-						}
 
+						smokePosition = renders.getSmokeFX();
 					} catch (InstantiationException e) {
-						if (renders.hasSmoke() != null) {
-							smokePosition = renders.getSmokeFX();
-						}
+						smokePosition = renders.getSmokeFX();
 					}
 
 					if (cart.bogieLoco != null) {// || cart.bogieUtility[0]!=null){
