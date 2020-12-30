@@ -981,7 +981,6 @@ public enum RenderEnum {
 	}, "", null, 0, false),
 	Dash9_44CW( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselDash9_44CW.class,  new ModelDash9_44CW(), "d9-44cw_", true,new float[] {-2.2F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
-			add(new double[]{1.1D, 1.4D, 0.0D});
 
 		}
 	}, "", null, 0, false),;

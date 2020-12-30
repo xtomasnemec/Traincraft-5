@@ -15,6 +15,8 @@ import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
+import java.util.ArrayList;
+
 public class ModelDash9_44CW extends ModelConverter //Same as my ass
 {
 	int textureX = 512;
@@ -792,6 +794,13 @@ public class ModelDash9_44CW extends ModelConverter //Same as my ass
 	}
 
 	public ModelRendererTurbo h1044Model[];
+	public ArrayList<double[]> getSmokePosition() {
+		return new ArrayList<double[]>() {
+			{
+				add(new double[]{1.03D, 1.4D, 0.0D});
+			}
+		};
+	}
 }
 //gewidecab_Red.png
 //d9-44cw_LightGrey.png
