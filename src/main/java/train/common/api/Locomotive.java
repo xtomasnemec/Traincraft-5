@@ -56,6 +56,8 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class Locomotive extends EntityRollingStock implements IInventory, WirelessTransmitter {
+    public static boolean lampOn;
+    public boolean bellPressed;
     public int inventorySize;
     protected ItemStack locoInvent[];
     private int soundPosition = 0;
@@ -77,8 +79,6 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     public boolean brakePressed = false;
 
 
-    public boolean lampOn = false;
-    public boolean isLampOn = false;
     public int speedLimit = 0;
     public String trainLevel = "1";
     public int mtcStatus = 0;
@@ -114,6 +114,8 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     public boolean isConnecting = false;
     public int connectionAttempts = 0;
     public boolean atoAllowed = true;
+
+
 
     /**
      * state of the loco
@@ -465,7 +467,6 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         currentSignalBlock = ntc.getString("currentSignalBlock");
         isConnected = ntc.getBoolean("isConnected");
         stationStop = ntc.getBoolean("stationStop");
-        isLampOn = ntc.getBoolean("lampOn");
         dataWatcher.updateObject(5,trainID);
     }
 
@@ -560,11 +561,16 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
                 }
             }
         }
+        if (i == 19) {
+            if (lampOn == false) {
+                lampOn = true;
+            } else if (lampOn == true) {
+                lampOn = false;
+            }
+        }
 
-        if (i == 19 && !lampOn) {
-            lampOn = true;
-        } else if (i == 19 && lampOn){
-            lampOn = false;
+        if (i == 48){
+            soundBell();
         }
     }
     /**
@@ -618,6 +624,10 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         //speed *= 6;// applying ratio
         //speed *= 3.6;// convert in km/h
         return speed;
+    }
+
+    public void soundBell() {
+        worldObj.playSoundAtEntity(this, Info.resourceLocation + ":" + "sounds/bell/test.ogg", 1F, 1.0F);
     }
 
     public void soundHorn() {

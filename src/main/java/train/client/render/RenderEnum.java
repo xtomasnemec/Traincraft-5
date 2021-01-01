@@ -743,9 +743,9 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
-	ES44( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselES44.class,  new ModelES44(), "es44_", true,new float[] {-2.3F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+	ES44( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselES44.class,  new ModelES44(), "es44_", true,new float[] {-2.2F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
-			add(new double[]{1.1D, 1.4D, 0.0D});
+			add(new double[]{1.0D, 1.4D, 0.0D});
 
 		}
 	}, "", null, 0, false),
@@ -972,6 +972,50 @@ public enum RenderEnum {
 			add(new double[]{0.15D, 1.3D, 0.0D}); //farthest from cab
 			add(new double[]{1.05D, 1.3D, 0.0D}); //middle
 			add(new double[]{2.0D, 1.3D, 0.0D}); // closest to cab
+		}
+	}, "", null, 0, false),
+	GP38dash9W( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash9W.class,  new ModelGP38dash9W(), "GP38dash9W_", true,new float[] {-1.5F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{
+
+		}
+	}, "", null, 0, false),
+	Dash9_44CW( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselDash9_44CW.class,  new ModelDash9_44CW(), "d9-44cw_", true,new float[] {-2.2F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{
+
+		}
+	}, "", null, 0, false),
+	GP15( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP15.class,  new com.jcirmodelsquad.tcjcir.models.trains.ModelGP15(), "gp15_", true,new float[] {-1.3F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
+	DOT11111000(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.DOT11111000.class, new Model11000DOT111(),"dot11K_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	DOT11120600(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.DOT11120600.class, new Model20600DOT111(),"dot206K_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	DOT11129080(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.DOT11129080.class, new Model29080DOT111(),"dot290K_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	E8A( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE8A.class,  new ModelE8A(), "e8a_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F },  new float[] { 1F, 1.1F, 1F }, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.1D, 1.4D, 0.0D});
+			add(new double[]{0.6D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	E9A( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE9A.class,  new ModelE9A(), "e9a_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F },  new float[] { 1F, 1.1F, 1F }, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.1D, 1.4D, 0.0D});
+			add(new double[]{0.6D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	U36C( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselU36C.class,  new ModelU36C(), "u36c_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F },  new float[] { 1F, 1.1F, 1F }, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.1D, 1.4D, 0.0D});
+			add(new double[]{0.6D, 1.4D, 0.0D});
+
+		}
+	}, "", null, 0, false),
+	F3A( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF3A.class,  new ModelF3A(), "f3a_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F },  new float[] { 1F, 1.1F, 1F }, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{1.1D, 1.4D, 0.0D});
+			add(new double[]{0.6D, 1.4D, 0.0D});
+
 		}
 	}, "", null, 0, false),
 	;

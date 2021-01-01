@@ -314,8 +314,8 @@ public enum ItemIDs {
 	tcRailVeryLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
 
 	//TC-JCIR
-	remoteController("ItemRemoteController", "remote_controller", 20),
-	remoteControllerModule("ItemRemoteControllerModule", "remote_controller_module", 15),
+	remoteController("ItemRemoteController", "remote_controller", 4),
+	remoteControllerModule("ItemRemoteControllerModule", "remote_controller_module", 4),
 	//signalPairingDevice("ItemSignalPairingDevice", "signal_pairing_device", 14),
 	minecartAlcoS2("ItemRollingStock", "alco_s2", 9),
 	minecartRibbedHopper("ItemRollingStock", "ribbed_hopper", 3),
@@ -413,7 +413,16 @@ public enum ItemIDs {
 	minecartVersaLongi("ItemRollingStock", "versalongi", 5),
 	minecartVersaTrans("ItemRollingStock", "versatrans", 5),
 	minecartNRE3gs21b("ItemRollingStock", "3gs21b", 11),
-	;
+	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 9),
+	minecartDash9_44CW("ItemRollingStock", "d944cw", 14),
+	minecartGP15("ItemRollingStock", "gp15", 11),
+	minecart11000DOT111("ItemRollingStock", "11000DOT", 4),
+	minecart20600DOT111("ItemRollingStock", "20600DOT", 5),
+	minecart29080DOT111("ItemRollingStock", "29080DOT", 6),
+	minecartE8A( "ItemRollingStock", "e8a", 13),
+	minecartE9A( "ItemRollingStock", "e9a", 13),
+	minecartF3A( "ItemRollingStock", "f3a", 10),
+	minecartU36C( "ItemRollingStock", "u36c", 15),;
 
 	public Item item;
 	public String className;
