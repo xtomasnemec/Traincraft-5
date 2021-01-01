@@ -368,6 +368,13 @@ public enum EnumTrains {
 	GP38dash9W("GP38dash9W", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP38dash9W.class, ItemIDs.minecartGP38dash9W.item, "diesel", 2000, 105, 0, 70, 0, 185, 0.75, 0.9, 20000, new  String[] {"Green", "Blue"}, 10, -3.1),
 	Dash9_44CW("Dash9_44CW", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselDash9_44CW.class, ItemIDs.minecartDash9_44CW.item, "diesel", 4400, 119, 0, 65, 0, 190, 0.7, 0.83, 25000, new String[] {"LightGrey", "Grey", "Green","Black"}, 10, -4.3),
 	GP15("GP15", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP15.class, ItemIDs.minecartGP15.item, "diesel", 1800, 105, 0, 50, 0, 160, 0.79, 0.93, 10000, new  String[] {"Yellow", "White", "LightGrey"}, 10, -2.6),
+	DOT11111000( "DOT11000", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.DOT11111000.class, ItemIDs.minecart11000DOT111.item, "freight", 3, new String[] {"Black"}, 0, 27, new String[]{"WoAh, some liquids"}),
+	DOT11120600( "DOT11000", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.DOT11120600.class, ItemIDs.minecart20600DOT111.item, "freight", 4, new String[] {"Grey"}, 0, 27, new String[]{"WoAh, hold liquids"}),
+	DOT11129080( "DOT11000", com.jcirmodelsquad.tcjcir.vehicles.rollingstock.DOT11129080.class, ItemIDs.minecart29080DOT111.item, "freight", 5, new String[] {"Black", "Orange", "LightGrey", "White"}, 0, 27, new String[]{"WoAh, hold lot liquids"}),
+	E8A("E8A", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE8A.class, ItemIDs.minecartE8A.item, "diesel", 2250, 133, 0, 65, 0, 180, 0.7, 0.79, 20000, new String[] {"Grey"}, 10, -3, new String[] {"Want a decent passenger engine?"}),
+	E9A("E9A", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE9A.class, ItemIDs.minecartE9A.item, "diesel", 2400, 133, 0, 65, 0, 180, 0.7, 0.79, 20000, new String[] {"White"}, 10, -3, new String[] {"Well since we sold so many of the last one no one really wants this one."}),
+	U36C("U36C", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselU36C.class, ItemIDs.minecartU36C.item, "diesel", 3600, 133, 0, 65, 0, 180, 0.7, 0.79, 20000, new String[] {"Grey", "Blue", "Red", "Yellow", "Orange"}, 10, -3, new String[] {"Since EMD has a large power engine why not us? -GE"}),
+	F3A("F3A", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF3A.class, ItemIDs.minecartF3A.item, "diesel", 1500, 133, 0, 50, 0, 180, 0.7, 0.79, 20000, new String[] {"Blue"}, 10, -3, new String[] {"So we heard you like the FTs how about this?"}),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

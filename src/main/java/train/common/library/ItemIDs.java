@@ -416,7 +416,13 @@ public enum ItemIDs {
 	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 9),
 	minecartDash9_44CW("ItemRollingStock", "d944cw", 14),
 	minecartGP15("ItemRollingStock", "gp15", 11),
-	;
+	minecart11000DOT111("ItemRollingStock", "11000DOT", 4),
+	minecart20600DOT111("ItemRollingStock", "20600DOT", 5),
+	minecart29080DOT111("ItemRollingStock", "29080DOT", 6),
+	minecartE8A( "ItemRollingStock", "e8a", 13),
+	minecartE9A( "ItemRollingStock", "e9a", 13),
+	minecartF3A( "ItemRollingStock", "f3a", 10),
+	minecartU36C( "ItemRollingStock", "u36c", 15),;
 
 	public Item item;
 	public String className;
