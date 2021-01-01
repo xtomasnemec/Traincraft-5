@@ -447,6 +447,14 @@ item.tc:minecartNRE3gs21b.name=NRE 3GS21B Genset
 item.tc:minecartGP38dash9W.name= MT&S GP38-9W
 item.tc:minecartDash9_44CW.name=GE Dash 9-44CW
 item.tc:minecartGP15.name=EMD GP15-1
+item.tc:minecart11000DOT111.name=11,000 Gallon Tank Car
+item.tc:minecart20600DOT111.name=20,600 Gallon Tank Car
+item.tc:minecart29080DOT111.name=29,080 Gallon Tank Car
+item.tc:minecartE8A.name=EMD E8A
+item.tc:minecartE9A.name=EMD E9A
+item.tc:minecartF3A.name=EMD F3A
+item.tc:minecartU36C.name=GE U36C
+
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -844,6 +852,13 @@ entity.tc.VersaTrans.name=Versaflood Transverse Hopper
 entity.tc.NRE3gs21b.name=NRE 3GS21B Genset
 entity.tc.GP15.name=EMD GP15
 entity.tc.Dash9_44CW.name=GE Dash 9-44CW
+entity.tc.11000DOT111.name=11,000 Gallon Tank Car
+entity.tc.20600DOT111.name=20,600 Gallon Tank Car
+entity.tc.29080DOT111.name=29,080 Gallon Tank Car
+entity.tc.minecartE8A.name=EMD E8A
+entity.tc.minecartE9A.name=EMD E9A
+entity.tc.minecartF3A.name=EMD F3A
+entity.tc.minecartU36C.name=GE U36C
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
