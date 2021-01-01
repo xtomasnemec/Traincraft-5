@@ -10,33 +10,34 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import train.common.Traincraft;
 import train.common.api.Freight;
+import train.common.api.LiquidTank;
+import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-public class DOT11111000  extends Freight implements IInventory {
+public class DOT11111000  extends LiquidTank {
     public int freightInventorySize;
-    public int numFreightSlots;
+
     public DOT11111000(World world) {
-        super(world);
-        initFreightCart();
+        super(world, EnumTrains.DOT11111000.getTankCapacity());
+        initFreightWater();
+    }
+
+    public void initFreightWater() {
+        freightInventorySize = 2;
+        cargoItems = new ItemStack[freightInventorySize];
     }
 
     public DOT11111000(World world, double d, double d1, double d2){
         this(world);
-        setPosition(d, d1 + yOffset, d2);
+        setPosition(d, d1 + (double) yOffset, d2);
         motionX = 0.0D;
         motionY = 0.0D;
         motionZ = 0.0D;
         prevPosX = d;
         prevPosY = d1;
         prevPosZ = d2;
-        initFreightCart();
     }
 
-    public void initFreightCart() {
-        numFreightSlots = 4;
-        freightInventorySize = trainSpec.getCargoCapacity();
-        cargoItems = new ItemStack[freightInventorySize];
-    }
     @Override
     public void setDead() {
         super.setDead();
@@ -44,8 +45,15 @@ public class DOT11111000  extends Freight implements IInventory {
     }
 
     @Override
+    public void onUpdate() {
+        super.onUpdate();
+        checkInvent(cargoItems[0]);
+    }
+
+    @Override
     protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
         super.writeEntityToNBT(nbttagcompound);
+
         NBTTagList nbttaglist = new NBTTagList();
         for (int i = 0; i < cargoItems.length; i++) {
             if (cargoItems[i] != null) {
@@ -55,8 +63,6 @@ public class DOT11111000  extends Freight implements IInventory {
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
-
-        nbttagcompound.setTag("Items", nbttaglist);
     }
 
     @Override
@@ -87,29 +93,25 @@ public class DOT11111000  extends Freight implements IInventory {
     @Override
     public boolean interactFirst(EntityPlayer entityplayer) {
         if ((super.interactFirst(entityplayer))) {
-            return true;
+            return false;
         }
-        entityplayer.openGui(Traincraft.instance, GuiIDs.FREIGHT, worldObj, this.getEntityId(), -1, (int) this.posZ);
+        if (!this.worldObj.isRemote) {
+            entityplayer.openGui(Traincraft.instance, GuiIDs.LIQUID, worldObj, this.getEntityId(), -1, (int) this.posZ);
+        }
         return true;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+        return !isDead && entityplayer.getDistanceSqToEntity(this) <= 64D;
     }
 
     @Override
     public boolean isStorageCart() {
         return true;
     }
-
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
         return 2F;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        return true;
     }
 }

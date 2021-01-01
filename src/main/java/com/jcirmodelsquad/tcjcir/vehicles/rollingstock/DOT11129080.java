@@ -10,14 +10,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import train.common.Traincraft;
 import train.common.api.Freight;
+import train.common.api.LiquidTank;
+import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-public class DOT11129080  extends Freight implements IInventory {
+public class DOT11129080  extends LiquidTank {
     public int freightInventorySize;
-    public int numFreightSlots;
+
     public DOT11129080(World world) {
-        super(world);
-        initFreightCart();
+        super(world, EnumTrains.DOT11129080.getTankCapacity());
+        initFreightWater();
     }
 
     public DOT11129080(World world, double d, double d1, double d2){
@@ -29,18 +31,23 @@ public class DOT11129080  extends Freight implements IInventory {
         prevPosX = d;
         prevPosY = d1;
         prevPosZ = d2;
-        initFreightCart();
     }
 
-    public void initFreightCart() {
-        numFreightSlots = 4;
-        freightInventorySize = trainSpec.getCargoCapacity();
+    public void initFreightWater() {
+        freightInventorySize = 2;
         cargoItems = new ItemStack[freightInventorySize];
     }
+
     @Override
     public void setDead() {
         super.setDead();
         isDead = true;
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        checkInvent(cargoItems[0]);
     }
 
     @Override
@@ -55,8 +62,6 @@ public class DOT11129080  extends Freight implements IInventory {
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
-
-        nbttagcompound.setTag("Items", nbttaglist);
     }
 
     @Override
@@ -87,10 +92,16 @@ public class DOT11129080  extends Freight implements IInventory {
     @Override
     public boolean interactFirst(EntityPlayer entityplayer) {
         if ((super.interactFirst(entityplayer))) {
-            return true;
+            return false;
         }
-        entityplayer.openGui(Traincraft.instance, GuiIDs.FREIGHT, worldObj, this.getEntityId(), -1, (int) this.posZ);
+        if (!this.worldObj.isRemote) {
+            entityplayer.openGui(Traincraft.instance, GuiIDs.LIQUID, worldObj, this.getEntityId(), -1, (int) this.posZ);
+        }
         return true;
+    }
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+        return !isDead && entityplayer.getDistanceSqToEntity(this) <= 64D;
     }
 
     @Override
@@ -103,13 +114,4 @@ public class DOT11129080  extends Freight implements IInventory {
         return 2F;
     }
 
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        return true;
-    }
 }
