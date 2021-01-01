@@ -775,6 +775,21 @@ public class ModelDash9_44CW extends ModelConverter //Same as my ass
 			GL11.glPushMatrix();
 			theCabbo2.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/newgevotruck_Black.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-1.8F, 0.0F, 0F);
+			theTrucks.render(entity, f, f1, f2, f3, f4, f5);
+
+			GL11.glRotatef(180, 0, 1, 0);
+			GL11.glTranslated(-3.65F, 0.0F, 0);
+			theTrucks.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glPopMatrix();
+
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/gewidecab_Green.png"));
+			GL11.glPushMatrix();
+			theCabbo1.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glPopMatrix();
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/newgevotruck_Black.png"));
 			GL11.glPushMatrix();

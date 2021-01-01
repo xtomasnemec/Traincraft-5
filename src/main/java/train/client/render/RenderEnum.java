@@ -983,7 +983,11 @@ public enum RenderEnum {
 		{
 
 		}
-	}, "", null, 0, false),;
+	}, "", null, 0, false),
+	GP15( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselGP15.class,  new com.jcirmodelsquad.tcjcir.models.trains.ModelGP15(), "gp15_", true,new float[] {-1.3F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
+	;
 
 	private Class<? extends AbstractTrains> entityClass;
 	private ModelBase model;

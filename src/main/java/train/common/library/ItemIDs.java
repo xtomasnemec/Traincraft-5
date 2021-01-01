@@ -415,6 +415,7 @@ public enum ItemIDs {
 	minecartNRE3gs21b("ItemRollingStock", "3gs21b", 11),
 	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 9),
 	minecartDash9_44CW("ItemRollingStock", "d944cw", 14),
+	minecartGP15("ItemRollingStock", "gp15", 11),
 	;
 
 	public Item item;
