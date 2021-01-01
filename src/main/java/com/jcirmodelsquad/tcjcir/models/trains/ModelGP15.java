@@ -1668,10 +1668,10 @@ public class ModelGP15 extends ModelConverter //Same as Filename
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Black.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.4, 0.15, 0);
+			GL11.glTranslated(-1.0, 0.15, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 
-			GL11.glTranslated(2.8, 0, 0);
+			GL11.glTranslated(3, 0, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		}
@@ -1683,8 +1683,8 @@ public class ModelGP15 extends ModelConverter //Same as Filename
 	public ArrayList<double[]> getSmokePosition() {
 		return new ArrayList<double[]>() {
 			{
-				add(new double[]{1.15D, 1.45D, 0.0D});
-				add(new double[]{0.9D, 1.45D, 0.0D});
+				add(new double[]{1.33D, 1.45D, 0.0D});
+				add(new double[]{0.75D, 1.45D, 0.0D});
 			}
 		};
 	}
