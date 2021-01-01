@@ -95,7 +95,7 @@ public class PCH100H extends HydrogenTrain{
         checkInvent(locoInvent[0]);
         super.onUpdate();
 
-        autoTrainHandler.operateAutoTrain(this);
+      //  autoTrainHandler.operateAutoTrain(this);
     }
 
     @Override
@@ -116,7 +116,8 @@ public class PCH100H extends HydrogenTrain{
                 (posX - Math.cos(this.serverRealRotation * TraincraftUtil.radian) * this.bogieShift),
                 posY + ((Math.tan(this.renderPitch * TraincraftUtil.radian) * -this.bogieShift) + getMountedYOffset()),
                 (posZ - Math.sin(this.serverRealRotation * TraincraftUtil.radian) * this.bogieShift), this, this.uniqueID, 0, this.bogieShift);*/
-        //System.out.println(autoTrainHandler.initialiseAutoTrain(this, new Position(280, 4, 430)));
+       /*System.out.println(autoTrainHandler.initialise
+               AutoTrain(this, new Position(280, 4, 430)));*/
 
 
     }
