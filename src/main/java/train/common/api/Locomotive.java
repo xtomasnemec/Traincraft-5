@@ -114,9 +114,7 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
     public boolean isConnecting = false;
     public int connectionAttempts = 0;
     public boolean atoAllowed = true;
-
-
-
+    public int blinkMode = 0; // 0 = Off | 1 = Commander | 2 = Amazon Prime
     /**
      * state of the loco
      */
@@ -571,6 +569,10 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
 
         if (i == 48){
             soundBell();
+        }
+
+        if (i == 20) {
+            cycleThroughBeacons();
         }
     }
     /**
@@ -1779,4 +1781,34 @@ public abstract class Locomotive extends EntityRollingStock implements IInventor
         return false;
     }
 
+    public int supportedBlinkModes() {
+        return 0;
+        //0 = None at all | 1 = Commander | 2 = Prime | 3 = All
+    }
+
+    public void cycleThroughBeacons() {
+        switch (blinkMode) {
+            case 0: {
+                if (supportedBlinkModes() == 0) {
+                    blinkMode = 0;
+                } else {
+                    blinkMode = 1;
+                }
+                break;
+            }
+            case 1: {
+                if (supportedBlinkModes() == 1) {
+                    blinkMode = 0;
+                } else {
+                    blinkMode = 2;
+                }
+                break;
+            }
+            case 2: {
+                blinkMode = 0;
+            }
+        }
+    }
+
+   // public int blinkMode = 0; // 0 = Off | 1 = Commander | 2 = Amazon Prime
 }

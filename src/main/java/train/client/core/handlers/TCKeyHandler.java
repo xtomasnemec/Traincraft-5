@@ -35,8 +35,9 @@ public class TCKeyHandler {
 	public static KeyBinding remoteControlBackwards;
 	public static KeyBinding remoteControlHorn;
 	public static KeyBinding remoteControlBrake;
-	public static KeyBinding lampOn;
-	public static KeyBinding bell;
+	public static KeyBinding lampControl;
+	public static KeyBinding beaconToggle;
+
 	public TCKeyHandler() {
 		horn = new KeyBinding("key.traincraft.horn", Keyboard.KEY_H, "key.categories.traincraft");
 		ClientRegistry.registerKeyBinding(horn);
@@ -64,15 +65,16 @@ public class TCKeyHandler {
         remoteControlBackwards = new KeyBinding("Remote Control Backwards", Keyboard.KEY_NUMPAD8, "key.categories.traincraft");
         remoteControlBrake = new KeyBinding("Remote Control Brake", Keyboard.KEY_NUMPAD0, "key.categories.traincraft");
         remoteControlHorn = new KeyBinding("Remote Control Horn", Keyboard.KEY_NUMPADENTER, "key.categories.traincraft");
+		lampControl = new KeyBinding("Train Lamp", Keyboard.KEY_L, "key.categories.traincraft");
+		beaconToggle = new KeyBinding("Toggle Beacons", Keyboard.KEY_NONE, "key.categories.traincraft");
+
         ClientRegistry.registerKeyBinding(remoteControlForward);
         ClientRegistry.registerKeyBinding(remoteControlBackwards);
         ClientRegistry.registerKeyBinding(remoteControlBrake);
         ClientRegistry.registerKeyBinding(remoteControlHorn);
+		ClientRegistry.registerKeyBinding(lampControl);
+		ClientRegistry.registerKeyBinding(beaconToggle);
 
-        lampOn = new KeyBinding("key.traincraft.lampOn", Keyboard.KEY_L, "key.categories.traincraft");
-        ClientRegistry.registerKeyBinding(lampOn);
-        bell = new KeyBinding("key.traincraft.bell", Keyboard.KEY_B, "key.categories.traincraft");
-        ClientRegistry.registerKeyBinding(bell);
 	}
 
 	@SubscribeEvent
@@ -96,7 +98,13 @@ public class TCKeyHandler {
 			if (horn.isPressed()) {
 				sendKeyControlsPacket(8);
 			}
-			if (lampOn.isPressed()) {
+			if (lampControl.isPressed()) {
+				if (Minecraft.getMinecraft().thePlayer.ridingEntity != null && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof Locomotive) {
+					Locomotive train = (Locomotive) Minecraft.getMinecraft().thePlayer.ridingEntity;
+					train.lampOn = !train.lampOn;
+					System.out.println(train.lampOn);
+				}
+
 				sendKeyControlsPacket(19);
 			}
 
@@ -176,6 +184,12 @@ public class TCKeyHandler {
 
 		if (FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.isPressed() && Keyboard.isKeyDown(Keyboard.KEY_F3)) {
 			sendKeyControlsPacket(404);
+		}
+
+		if (beaconToggle.isPressed() && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof Locomotive) {
+			Locomotive train = (Locomotive) Minecraft.getMinecraft().thePlayer.ridingEntity;
+			sendKeyControlsPacket(20);
+			train.cycleThroughBeacons();
 		}
 	}
 
