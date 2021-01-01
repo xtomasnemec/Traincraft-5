@@ -108,9 +108,9 @@ public class TCKeyHandler {
 				sendKeyControlsPacket(19);
 			}
 
-			if (bell.isPressed()) {
+			/*if (bell.isPressed()) {
 				sendKeyControlsPacket(48);
-			}
+			}*/
 
 			if (furnace.isPressed()) {
 				sendKeyControlsPacket(9);

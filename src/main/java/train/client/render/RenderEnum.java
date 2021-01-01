@@ -1006,7 +1006,7 @@ public enum RenderEnum {
 	}, "", null, 0, false),
 	U36C( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselU36C.class,  new ModelU36C(), "u36c_", true,new float[] {-1.6F, 0.1F, 0F},  new float[] { 0F, 180F, 180F },  new float[] { 1F, 1.1F, 1F }, "smoke", 3,  new ArrayList<double[]>() {
 		{
-			add(new double[]{1.1D, 1.4D, 0.0D});
+			add(new double[]{1.1D, 1.4D, 0.0D}); //reminder you can put smoke in model code now and you dont need to reboot the game to change it, see the GP15, GP38dash9W, or Dash9_44CW
 			add(new double[]{0.6D, 1.4D, 0.0D});
 
 		}
