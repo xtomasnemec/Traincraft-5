@@ -1,5 +1,6 @@
 package com.jcirmodelsquad.tcjcir.vehicles.locomotives;
 
+import com.jcirmodelsquad.tcjcir.features.TiltingHandler;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,8 @@ import train.common.api.ElectricTrain;
 import train.common.library.GuiIDs;
 
 public class ElectricClass345 extends ElectricTrain {
+    public TiltingHandler tiltingHandler = new TiltingHandler(7);
+
     public ElectricClass345(World world) {
         super(world);
 

@@ -1,5 +1,6 @@
 package com.jcirmodelsquad.tcjcir.vehicles.rollingstock;
 
+import com.jcirmodelsquad.tcjcir.features.TiltingHandler;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -8,6 +9,7 @@ import train.common.api.EntityRollingStock;
 import train.common.api.IPassenger;
 
 public class Class345Coach extends EntityRollingStock implements IPassenger {
+    public TiltingHandler tiltingHandler = new TiltingHandler(7);
 
     public Class345Coach(World world) {
         super(world);
