@@ -1389,33 +1389,23 @@ public class ModelE9A extends ModelConverter //Same as Filename
 			}
 		}
 
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 15||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/a1a_black.png"));
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 4328||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2341) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/a1a_Grey.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-0.9, 0.05, 0);
+			GL11.glTranslated(-1.35, -0.13, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 
-			GL11.glTranslated(2.15, 0, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
-			GL11.glPopMatrix();
-		/*} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 5||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Grey.png"));
-			GL11.glPushMatrix();
-			GL11.glTranslated(-1.28, -0.15, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
-
-			GL11.glTranslated(2.55, 0, 0);
+			GL11.glTranslated(3.33, 0, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 
-		 */
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/a1a_Black.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-0.9, 0.05, 0);
+			GL11.glTranslated(-1.35, -0.13, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 
-			GL11.glTranslated(2.15, 0, 0);
+			GL11.glTranslated(3.33, 0, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		}
