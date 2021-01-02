@@ -422,7 +422,8 @@ public enum ItemIDs {
 	minecartE8A( "ItemRollingStock", "e8a", 13),
 	minecartE9A( "ItemRollingStock", "e9a", 13),
 	minecartF3A( "ItemRollingStock", "f3a", 10),
-	minecartU36C( "ItemRollingStock", "u36c", 15),;
+	minecartU36C( "ItemRollingStock", "u36c", 15),
+	;
 
 	public Item item;
 	public String className;
