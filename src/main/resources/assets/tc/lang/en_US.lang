@@ -454,6 +454,8 @@ item.tc:minecartE8A.name=EMD E8A
 item.tc:minecartE9A.name=EMD E9A
 item.tc:minecartF3A.name=EMD F3A
 item.tc:minecartU36C.name=GE U36C
+item.tc:minecartE8B.name=EMD E8B
+item.tc:minecartE9B.name=EMD E9B
 
 
 <!-- ## Achievements ## -->
@@ -859,6 +861,8 @@ entity.tc.minecartE8A.name=EMD E8A
 entity.tc.minecartE9A.name=EMD E9A
 entity.tc.minecartF3A.name=EMD F3A
 entity.tc.minecartU36C.name=GE U36C
+entity.tc.minecartE8B.name=EMD E8B
+entity.tc.minecartE9B.name=EMD E9B
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

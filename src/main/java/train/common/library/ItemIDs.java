@@ -423,6 +423,8 @@ public enum ItemIDs {
 	minecartE9A( "ItemRollingStock", "e9a", 13),
 	minecartF3A( "ItemRollingStock", "f3a", 10),
 	minecartU36C( "ItemRollingStock", "u36c", 15),
+	minecartE8B( "ItemRollingStock", "e8b", 13),
+	minecartE9B( "ItemRollingStock", "e9b", 13),
 	;
 
 	public Item item;

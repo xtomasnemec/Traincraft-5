@@ -375,6 +375,8 @@ public enum EnumTrains {
 	U36C("U36C", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselU36C.class, ItemIDs.minecartU36C.item, "diesel", 3600, 113, 0, 65, 0, 180, 0.75, 0.84, 11000, new String[] {"Grey", "Blue", "Red", "Yellow", "Orange"}, 10, -3.75, new String[] {"Since EMD has a large power engine why not us? -GE"}),
 	E9A("E9A", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE9A.class, ItemIDs.minecartE9A.item, "diesel", 2400, 188, 0, 65, 0, 180, 0.6, 0.69, 4500, new String[] {"LightGrey", "Grey"}, 10, -3.75, new String[] {"Well since we sold so many of the last one no one really wants this one."}),
 	E8A("E8A", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE8A.class, ItemIDs.minecartE8A.item, "diesel", 2250, 188, 0, 65, 0, 180, 0.6, 0.69, 4500, new String[] {"Grey", "Blue"}, 10, -3.75, new String[] {"Want a decent passenger engine?"}),
+	E9B("E9B", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE9B.class, ItemIDs.minecartE9B.item, "diesel", 2400, 188, 0, 65, 0, 180, 0.6, 0.69, 4500, new String[] {"LightGrey", "Grey"}, 10, -3.6875, new String[] {"Well since we sold so many of the last one no one really wants a B unit. Welp"}),
+	E8B("E8B", com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselE8B.class, ItemIDs.minecartE8B.item, "diesel", 2250, 188, 0, 65, 0, 180, 0.6, 0.69, 4500, new String[] {"Grey"}, 10, -3.6875, new String[] {"Want a decent passenger engine? It has B unit too"}),
 	;
 
 //String trainType,int MHP,int maxSpeed, double mass, int fuelConsumption, int waterConsumption, int heatingTime, double accelerationRate, double brakeRate, int tankCapacity, String[] colors,

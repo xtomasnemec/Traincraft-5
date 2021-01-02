@@ -1183,7 +1183,7 @@ public class ModelU36C extends ModelConverter //Same as Filename
 	public ArrayList<double[]> getSmokePosition() {
 		return new ArrayList<double[]>() {
 			{
-				add(new double[]{0.75D, 1.5D, 0.0D});
+				add(new double[]{0.75D, 1.75D, 0.0D});
 			}
 		};
 	}
