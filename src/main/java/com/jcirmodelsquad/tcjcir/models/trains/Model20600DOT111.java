@@ -396,10 +396,10 @@ public class Model20600DOT111 extends ModelConverter //Same as Filename
 
 		GL11.glPushMatrix();
 		GL11.glScalef(1,1,0.9f);
-		GL11.glTranslated(-1.125,0.55,-0.4);
+		GL11.glTranslated(-1.25,0.6,-0.4);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 
-		GL11.glTranslated(2.055,0,0.03);
+		GL11.glTranslated(2.25,0,0.03);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}
