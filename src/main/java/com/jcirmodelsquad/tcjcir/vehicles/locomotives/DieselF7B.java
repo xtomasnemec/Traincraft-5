@@ -40,8 +40,8 @@ public class DieselF7B extends DieselTrain {
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-        double distance = 3;
-        double yOffset = 0.25;
+        double distance = 2.625;
+        double yOffset = 0.1875;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
         if(side.isServer()){
@@ -123,7 +123,7 @@ public class DieselF7B extends DieselTrain {
     }
 
     @Override
-    public float getOptimalDistance(EntityMinecart cart) { return 0.7F;
+    public float getOptimalDistance(EntityMinecart cart) { return 0.9375F;
     }
 
     @Override
@@ -133,7 +133,7 @@ public class DieselF7B extends DieselTrain {
 
     @Override
     public String getInventoryName() {
-        return "EMD F7b";
+        return "EMD F7B";
     }
 
     @Override

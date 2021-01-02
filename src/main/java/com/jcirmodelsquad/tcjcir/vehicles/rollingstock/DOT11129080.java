@@ -111,7 +111,7 @@ public class DOT11129080  extends LiquidTank {
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 2F;
+        return 2.75F;
     }
 
 }

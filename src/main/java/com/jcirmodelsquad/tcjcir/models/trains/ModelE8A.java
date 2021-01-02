@@ -22,6 +22,8 @@ import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
+import java.util.ArrayList;
+
 public class ModelE8A extends ModelConverter //Same as Filename
 {
 	int textureX = 512;
@@ -1416,6 +1418,13 @@ public class ModelE8A extends ModelConverter //Same as Filename
 	{
 	}
 
-	public ModelRendererTurbo ModelF7A[];
-
+	public ModelRendererTurbo ModelE8A[];
+	public ArrayList<double[]> getSmokePosition() {
+		return new ArrayList<double[]>() {
+			{
+				add(new double[]{1.9375D, 1.3215D, 0.0D});
+				add(new double[]{1.125D, 1.3125D, 0.0D});
+			}
+		};
+	}
 }
