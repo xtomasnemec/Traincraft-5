@@ -1402,7 +1402,7 @@ public class ModelE9A extends ModelConverter //Same as Filename
 			GL11.glPopMatrix();
 
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/a1a_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/a1a_black.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.35, -0.13, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
