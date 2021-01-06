@@ -122,7 +122,7 @@ public class GUICreditsBook extends GuiScreen {
                         add(new StackToDraw(new ItemStack(ItemIDs.diesel.item), 160, 160));
                     }
                 });
-        addPage("Bida (continued):\nMP15DCW-9\nGP7B\nSD40T-2\nSkookum & Tender\nOWO 60' Verticube\nGP38-2\nB23-7\nLeslie Trailer\nC415's\n\n\n\nMore to Come!\nowo", "", "left", new ArrayList<StackToDraw>() {
+        addPage("Bida (continued):\nMP15DCW-9\nGP7B\nSD40T-2\nSkookum & Tender\nOWO 60' Verticube\nGP38-2\nB23-7\nLeslie Trailer\nC415's\nPolar Express Coaches\nVersaflood Hoppers\n3GS21B\nDash 9-44CW\nGP15", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartHHgregg.item), 170, 16));
             }
@@ -134,7 +134,7 @@ public class GUICreditsBook extends GuiScreen {
                         add(new StackToDraw(new ItemStack(ItemIDs.minecartPower.item), 160, 160));
                     }
                 });
-        addPage("Peachmaster:\nPCH100H Cab and Coach\nAipkit Explorer\n", "", "left", new ArrayList<StackToDraw>() {
+        addPage("Peachmaster:\nPCH100H Cab and Coach\nAipkit Explorer\nApikit Explorer II", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartExperimentalHydrogenTrain.item), 40, 145));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH100HCoach.item), 60, 145));
@@ -150,8 +150,8 @@ public class GUICreditsBook extends GuiScreen {
                     {
                         add(new StackToDraw(new ItemStack(Items.stick), 140, 135));
                     }
-                });
-        addPage("Prof_Binky:\n40' Highcuble Boxcar\nWoodchip Hopper\nOre Jenny\n\n", "", "left", new ArrayList<StackToDraw>() {
+                });//13 lines average
+        addPage("Prof_Binky:\n40' Highcuble Boxcar\nWoodchip Hopper\nOre Jenny\nSDL39\nF7s (with bida)\nSDP40F\nF45 & FP45\n60, 66, & 73 foot Centerbeams\n40,50, & 60 foot PS1 Boxcars\nWide Vision Caboose\nEF1 & EP1\nall 3 DOT111 Tankers\n", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartTender.item), 20, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartLocomogulBlue.item), 170, 16));
@@ -161,6 +161,11 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(Items.blaze_rod), 100, 155));
                 add(new StackToDraw(new ItemStack(ItemIDs.diesel.item), 120, 155));
                 add(new StackToDraw(new ItemStack(ItemIDs.refinedFuel.item), 140, 155));
+            }
+        });
+        addPage("Prof_Binky:\nU36C\nE8s\nE9s\nSDL39\nF3\n\n\n\n\n\n\n\n", "", "right", new ArrayList<StackToDraw>() {
+            {
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartU36C.item), 20, 16));
             }
         });
 
@@ -178,14 +183,14 @@ public class GUICreditsBook extends GuiScreen {
                         add(new StackToDraw(new ItemStack(ItemIDs.refinedFuel.item), 170, 16));
                     }
                 });
-        addPage("Other Model Contributions\n\n Eddie Dalton: ES44 and SD70MAC base models\n BigJ:VO1000\n",
+        addPage("Other Model Contributions\n\n Eddie Dalton: ES44, Dash9, and SD70MAC base models\n BigJ:NP logcar, Hustler\n",
                 "", "right", new ArrayList<StackToDraw>() {
                     {
                         add(new StackToDraw(new ItemStack(ItemIDs.minecartGeGenesis.item), 20, 16));
                         add(new StackToDraw(new ItemStack(ItemIDs.refinedFuel.item), 170, 16));
                     }
                 });
-        addPage("PeachMaster Code Contribution\n", "", "left", new ArrayList<StackToDraw>() {
+        addPage("PeachMaster Code Contribution\ntilting trains\npaintbrush item\ndead in tow pulling", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH100HCoach.item), 170, 16));
@@ -210,7 +215,7 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH100HCoach.item), 170, 16));
             }
         });
-        addPage("JCRail Texture Contibutions\n\n\n\n", "", "left", new ArrayList<StackToDraw>() {
+        addPage("JCRail Texture Contibutions\nliterally like every atsf texture besides the CF7\n\n\n", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(Items.skull, 1, 1), 20, 16));
             }
