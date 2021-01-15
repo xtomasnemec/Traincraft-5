@@ -1,10 +1,10 @@
 package fexcraft.tmt.slim;
 
-import net.minecraft.util.MathHelper;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import net.minecraft.util.math.MathHelper;
 
 
 public class Shape2D {

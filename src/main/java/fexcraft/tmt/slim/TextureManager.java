@@ -1,5 +1,26 @@
 package fexcraft.tmt.slim;
 
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_HEIGHT;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WIDTH;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glGetTexLevelParameteri;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.imageio.ImageIO;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.DebugUtil;
@@ -8,35 +29,16 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.texture.*;
-import net.minecraft.init.Items;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import sun.awt.image.InputStreamImageSource;
-import sun.awt.image.PNGImageDecoder;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.util.*;
-import java.util.List;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class TextureManager {
 
@@ -104,8 +106,8 @@ public class TextureManager {
 
     /**Lighting fix*/
     public static void adjustLightFixture(World world, int i, int j, int k) {
-        skyLight = world.getSkyBlockTypeBrightness(EnumSkyBlock.Block, i, j, k);
-        skyLight=world.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, i, j, k) << 20 | (skyLight<0?0:skyLight) << 4;
+        skyLight = world.getSkyBlockTypeBrightness(EnumSkyBlock.BLOCK, i, j, k);
+        skyLight=world.getSkyBlockTypeBrightness(EnumSkyBlock.SKY, i, j, k) << 20 | (skyLight<0?0:skyLight) << 4;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,  skyLight % 65536,  skyLight * 0.00001525878f);
         GL11.glColor4f(1, 1, 1, 1);//fixes alpha layering bugs with other mods that don't clear their GL cache
     }
@@ -402,9 +404,9 @@ public class TextureManager {
     }
 
     private static String resourceLocation(ResourceLocation res){
-        return (res.getResourceDomain() + "/"
-                +res.getResourcePath().
-                substring(0, res.getResourcePath().lastIndexOf(".")));
+        return (res.getNamespace() + "/"
+                +res.getPath().
+                substring(0, res.getPath().lastIndexOf(".")));
     }
 
 }

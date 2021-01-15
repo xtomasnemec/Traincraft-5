@@ -1,10 +1,10 @@
 package ebf.tim.networking;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 /**
  * <h1>Mount packet</h1>
@@ -22,7 +22,7 @@ public class PacketPaint implements IMessage {
     public PacketPaint(String skin, int entityId) {
         this.key=skin;
         this.entityId = entityId;
-        this.dimensionID= Minecraft.getMinecraft().thePlayer.worldObj.provider.dimensionId;
+        this.dimensionID= Minecraft.getMinecraft().player.world.provider.getDimension();
     }
     /**reads the packet on server to get the variables from the Byte Buffer*/
     @Override

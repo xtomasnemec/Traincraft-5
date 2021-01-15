@@ -1,18 +1,16 @@
 package fexcraft.tmt.slim;
 
-import ebf.tim.utility.DebugUtil;
-import fexcraft.fvtm.TurboList;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.MathHelper;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import fexcraft.fvtm.TurboList;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.MathHelper;
 /**
  * An extension to the ModelRenderer class. It basically is a copy to ModelRenderer,
  * however, it contains various new methods to make your models.
@@ -1311,7 +1309,7 @@ public class ModelRendererTurbo {
             return;
         }
         if (ignoresLighting){
-            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+            Minecraft.getMinecraft().entityRenderer.disableLightmap();
         }
         if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
@@ -1334,7 +1332,7 @@ public class ModelRendererTurbo {
             GL11.glTranslatef(-rotationPointX * scale, -rotationPointY * scale, -rotationPointZ * scale);
         }
         if (ignoresLighting){
-            Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+            Minecraft.getMinecraft().entityRenderer.enableLightmap();
         }
     }
 

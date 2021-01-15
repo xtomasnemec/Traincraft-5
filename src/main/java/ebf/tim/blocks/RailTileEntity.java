@@ -1,5 +1,9 @@
 package ebf.tim.blocks;
 
+import javax.annotation.Nullable;
+
+import org.lwjgl.opengl.GL11;
+
 import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.rails.RailShapeCore;
@@ -16,13 +20,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
 
 
 public class RailTileEntity extends TileEntity {
@@ -42,8 +43,9 @@ public class RailTileEntity extends TileEntity {
     }
     public void setMeta(int i){
         meta=i;
-        if(worldObj!=null) {
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, 2);
+        if(world!=null) {
+        	world.setBlockMetadataWithNotify(pos, meta, 2);
+        	//TODO >> world.setBlockState(pos, state, 2); ?
         }
         markDirty();
     }
@@ -57,14 +59,15 @@ public class RailTileEntity extends TileEntity {
         return data;
     }
 
-    public void func_145828_a(@Nullable CrashReportCategory report)  {
+    @Override
+    public void addInfoToCrashReport(@Nullable CrashReportCategory report)  {
         if (report == null) {
-            if (!worldObj.isRemote) {
+            if (!world.isRemote) {
                 return;
             }
 
-            Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
-            TextureManager.adjustLightFixture(worldObj,xCoord,yCoord,zCoord);
+            Minecraft.getMinecraft().entityRenderer.enableLightmap();//1);
+            TextureManager.adjustLightFixture(world,pos.getX(),pos.getY(),pos.getZ());
             if(railGLID!=null){
                 if(!org.lwjgl.opengl.GL11.glIsList(railGLID)){
                     railGLID=null;
@@ -82,12 +85,12 @@ public class RailTileEntity extends TileEntity {
                     railGLID = net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
                     org.lwjgl.opengl.GL11.glNewList(railGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
 
-                    Model1x1Rail.Model3DRail(worldObj, xCoord, yCoord, zCoord, route);
+                    Model1x1Rail.Model3DRail(world, pos.getX(), pos.getY(), pos.getZ(), route);
 
                     org.lwjgl.opengl.GL11.glEndList();
                 } // else {DebugUtil.println("NO DATA");}*/
             }
-        } else {super.func_145828_a(report);}
+        } else {super.addInfoToCrashReport(report);}
     }
 
     @Override
@@ -116,17 +119,17 @@ public class RailTileEntity extends TileEntity {
                 new ItemStack(TiMItems.railItem, 1), data.getItemStack("rail"),
                 data.getItemStack("ballast"), data.getItemStack("ties"), data.getItemStack("wires"));
         if(drop!=null) {
-            worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord, yCoord + 0.5f, zCoord, drop));
+            world.spawnEntity(new EntityItem(world, xCoord, yCoord + 0.5f, zCoord, drop));
         }
     }
 
 
     public void markDirty() {
         super.markDirty();
-        if (this.worldObj != null) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, TiMBlocks.railBlock);
-            if(worldObj.isRemote && railGLID!=null) {
+        if (this.world != null) {
+            world.markBlockForUpdate(xCoord, yCoord, zCoord);
+            this.world.func_147453_f(this.xCoord, this.yCoord, this.zCoord, TiMBlocks.railBlock);
+            if(world.isRemote && railGLID!=null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
                 railGLID = null;
             }
@@ -143,17 +146,17 @@ public class RailTileEntity extends TileEntity {
     }
 
     @Override
-    public S35PacketUpdateTileEntity getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeToNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbttagcompound);
+        return new SPacketUpdateTileEntity(pos, 0, nbttagcompound);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         if(pkt ==null){return;}
-        readFromNBT(pkt.func_148857_g());
+        readFromNBT(pkt.getNbtCompound());
         markDirty();
     }
 

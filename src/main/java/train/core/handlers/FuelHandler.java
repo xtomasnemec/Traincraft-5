@@ -1,8 +1,8 @@
 package train.core.handlers;
 
-import cpw.mods.fml.common.IFuelHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.IFuelHandler;
 import train.blocks.TCBlocks;
 
 public class FuelHandler implements IFuelHandler {

@@ -1,17 +1,16 @@
 package fexcraft.tmt.slim;
 
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.Entity;
-import org.lwjgl.opengl.GL11;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.lwjgl.opengl.GL11;
+
+import ebf.tim.utility.CommonUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.entity.Entity;
 
 /**
 * Similar to 'FlansMod'-type Models, for a fast convert.
@@ -61,7 +60,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 				}
 				GL11.glPushMatrix();
 				if (part.ignoresLighting){
-					Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+					Minecraft.getMinecraft().entityRenderer.disableLightmap();
 				}
 				GL11.glTranslatef(part.rotationPointX * 0.0625F, part.rotationPointY * 0.0625F, part.rotationPointZ * 0.0625F);
 				GL11.glRotatef(part.rotateAngleY, 0.0F, 1.0F, 0.0F);
@@ -72,7 +71,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 
 				GL11.glTranslatef(-part.rotationPointX * 0.0625F, -part.rotationPointY * 0.0625F, -part.rotationPointZ * 0.0625F);
 				if (part.ignoresLighting){
-					Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+					Minecraft.getMinecraft().entityRenderer.enableLightmap();
 				}
 				GL11.glPopMatrix();
 

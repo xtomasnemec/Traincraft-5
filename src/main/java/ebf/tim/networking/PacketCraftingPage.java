@@ -1,11 +1,12 @@
 package ebf.tim.networking;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.DebugUtil;
+import fexcraft.fcl.common.Static;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 /**
  * <h1>Mount packet</h1>
@@ -34,7 +35,7 @@ public class PacketCraftingPage implements IMessage {
         y= bbuf.readInt();
         z= bbuf.readInt();
 
-        TileEntity te =MinecraftServer.getServer().worldServers[dim].getTileEntity(x,y,z);
+        TileEntity te = Static.getServer().worlds[dim].getTileEntity(new BlockPos(x,y,z));
 
         DebugUtil.println(dim,x,y,z);
         if(te instanceof TileEntityStorage){

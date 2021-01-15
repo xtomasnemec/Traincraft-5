@@ -1,11 +1,11 @@
 package ebf.tim.networking;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import ebf.tim.entities.GenericRailTransport;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 /**
  * <h1>Mount packet</h1>
@@ -22,8 +22,8 @@ public class PacketInteract implements IMessage {
     public PacketInteract(int key, int entityId) {
         this.key=key;
         this.entityId = entityId;
-        this.dimensionId= Minecraft.getMinecraft().thePlayer.worldObj.provider.dimensionId;
-        this.playerId=Minecraft.getMinecraft().thePlayer.getEntityId();
+        this.dimensionId= Minecraft.getMinecraft().player.world.provider.getDimension();
+        this.playerId=Minecraft.getMinecraft().player.getEntityId();
 
     }
     /**reads the packet on server to get the variables from the Byte Buffer*/

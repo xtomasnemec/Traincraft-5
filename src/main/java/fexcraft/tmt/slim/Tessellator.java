@@ -1,14 +1,13 @@
 package fexcraft.tmt.slim;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ebf.tim.utility.DebugUtil;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
-import org.lwjgl.opengl.GL11;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
 * @Author EternalBlueFlame

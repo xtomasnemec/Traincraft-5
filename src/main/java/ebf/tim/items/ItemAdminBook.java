@@ -1,9 +1,12 @@
 package ebf.tim.items;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonProxy;
 import ebf.tim.utility.CommonUtil;
@@ -18,13 +21,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * <h1>Key Item</h1>
@@ -52,7 +52,7 @@ public class ItemAdminBook extends Item{
         try {
             if (worldObj.isRemote) {
                 return itemStack;
-            } else if (!player.canCommandSenderUseCommand(2, "")) {
+            } else if (!player.canUseCommand(2, "")) {
                 return itemStack;
             }
 
@@ -114,7 +114,7 @@ public class ItemAdminBook extends Item{
         @Override
         public void toBytes(ByteBuf bbuf) {
             ByteBufUtils.writeUTF8String(bbuf, data);
-            bbuf.writeInt(Minecraft.getMinecraft().thePlayer.getEntityId());
+            bbuf.writeInt(Minecraft.getMinecraft().player.getEntityId());
         }
 
 
@@ -168,14 +168,14 @@ public class ItemAdminBook extends Item{
                                     EntityPlayerMP p = (EntityPlayerMP) world.getEntityByID(player);
                                     List<ItemStack> items = ServerLogger.getItems(new String(Files.readAllBytes(Paths.get(DimensionManager.getCurrentSaveRootDirectory().getAbsolutePath() + "/traincraft/" + data)), "UTF-8"));
                                     for (ItemStack i : items){
-                                        if (i.stackSize != 0 && i.getItem() != null)
+                                        if (i.getCount() != 0 && i.getItem() != null)
                                         {
                                             EntityItem entityitem = new EntityItem(world, p.posX, p.posY + 3, p.posZ, i);
-                                            entityitem.delayBeforeCanPickup = 120;
+                                            entityitem.setPickupDelay(120);
                                             if (p.captureDrops) {
                                                 p.capturedDrops.add(entityitem);
                                             } else{
-                                                world.spawnEntityInWorld(entityitem);
+                                                world.spawnEntity(entityitem);
                                             }
                                         }
                                     }
@@ -220,7 +220,7 @@ public class ItemAdminBook extends Item{
 
 
 
-    public static class PacketAdminBook implements IMessage{
+    public static class PacketAdminBook implements IMessage {
         private String datacsv;
         public PacketAdminBook(){}
 

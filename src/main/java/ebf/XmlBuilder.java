@@ -1,15 +1,12 @@
 package ebf;
 
-import cpw.mods.fml.common.registry.GameData;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.HashMap;
 
 //Cant cover Object. it's raw data isn't safe over networking due to runtime compiling differences on client and server.
 public class XmlBuilder {
@@ -42,8 +39,8 @@ public class XmlBuilder {
         itemMap.put(id,
                 stack==null?new String[]{"null"}:
                         new String[]{
-                                stack.getItem().delegate.name(),
-                        stack.stackSize+"",stack.getItemDamage()+""});
+                                stack.getItem().delegate.name().toString(),
+                        stack.getCount()+"",stack.getItemDamage()+""});
         return this;
     }
     public XmlBuilder putFluidStack(String id, FluidStack stack){
@@ -147,10 +144,10 @@ public class XmlBuilder {
 
     public ItemStack getItemStack(String id){
         if(itemMap.get(id) == null || itemMap.get(id)[0].equals("null")){return null;}
-        Item i = GameData.getItemRegistry().get(itemMap.get(id)[0]);
+        Item i = Item.getByNameOrId(itemMap.get(id)[0]);
         ItemStack s;
         if (i==null){
-            Block b = GameData.getBlockRegistry().get(itemMap.get(id)[0]);
+            Block b = Block.getBlockFromName(itemMap.get(id)[0]);
             if(b!=null) {
                 s = new ItemStack(b, Integer.parseInt(itemMap.get(id)[1]));
             } else{

@@ -1,16 +1,19 @@
 package train.core;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 import train.blocks.bench.ContainerTrainWorkbench;
 import train.blocks.bench.TileTrainWbench;
 import train.blocks.distil.ContainerDistil;
@@ -19,8 +22,6 @@ import train.blocks.generator.ContainerGeneratorDiesel;
 import train.blocks.generator.TileGeneratorDiesel;
 import train.blocks.hearth.ContainerOpenHearthFurnace;
 import train.blocks.hearth.TileEntityOpenHearthFurnace;
-import train.blocks.lantern.TileLantern;
-import train.blocks.signal.TileSignal;
 import train.core.handlers.WorldEvents;
 import train.core.util.MP3Player;
 import train.entity.inventory.InventoryJukeBoxCart;
@@ -28,9 +29,6 @@ import train.entity.inventory.InventoryZepp;
 import train.entity.rollingStock.EntityJukeBoxCart;
 import train.entity.zeppelin.AbstractZeppelin;
 import train.library.GuiIDs;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 	public static List<MP3Player> playerList = new ArrayList<MP3Player>();
@@ -51,12 +49,12 @@ public class CommonProxy implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 		EntityPlayer riddenByEntity = null;
-		Entity entity = player.ridingEntity;
+		Entity entity = player.getRidingEntity();
 
-		if (player.ridingEntity != null) {
-			riddenByEntity = (EntityPlayer) entity.riddenByEntity;
+		if (player.getRidingEntity() != null) {
+			riddenByEntity = (EntityPlayer) entity.getPassengers().get(0);
 		}
 
 		Entity entity1 = null;
