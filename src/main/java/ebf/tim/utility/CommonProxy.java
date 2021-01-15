@@ -1,8 +1,13 @@
 package ebf.tim.utility;
 
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.GenericRailTransport;
@@ -10,17 +15,14 @@ import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMFluids;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
+import fexcraft.fcl.common.Static;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
-
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 
 /**
@@ -51,11 +53,11 @@ public class CommonProxy implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         //Trains
         if (player != null && y!=0) {
-            if (player.worldObj.getEntityByID(ID) instanceof GenericRailTransport && !((GenericRailTransport) player.worldObj.getEntityByID(ID)).hasCustomGUI()) {
-                return new TransportSlotManager(player.inventory, (GenericRailTransport) player.worldObj.getEntityByID(ID));
+            if (player.world.getEntityByID(ID) instanceof GenericRailTransport && !((GenericRailTransport) player.world.getEntityByID(ID)).hasCustomGUI()) {
+                return new TransportSlotManager(player.inventory, (GenericRailTransport) player.world.getEntityByID(ID));
                 //tile entities
-            } else if (world.getTileEntity(x,y,z) instanceof TileEntityStorage){
-                return new TransportSlotManager(player.inventory, (TileEntityStorage) world.getTileEntity(x,y,z));
+            } else if (world.getTileEntity(new BlockPos(x,y,z)) instanceof TileEntityStorage){
+                return new TransportSlotManager(player.inventory, (TileEntityStorage) world.getTileEntity(new BlockPos(x,y,z)));
             }
         }
         return null;
@@ -108,14 +110,14 @@ public class CommonProxy implements IGuiHandler {
     @Nullable
     public static Entity getEntityFromUuid(UUID uuid) {
         //loop for dimensions, even ones from mods.
-        for (int w=0; w < MinecraftServer.getServer().worldServers.length; w++) {
-            if (MinecraftServer.getServer().worldServers[w] != null) {
+        for (int w=0; w < Static.getServer().worlds.length; w++) {
+            if (Static.getServer().worlds[w] != null) {
                 //if the server isn't null, loop for the entities loaded in that server
-                for (int i=0; i< MinecraftServer.getServer().worldServers[w].loadedEntityList.size();i++) {
+                for (int i=0; i< Static.getServer().worlds[w].loadedEntityList.size();i++) {
                     //if it's an entity, not null, and has a matching UUID, then return it.
-                    if (MinecraftServer.getServer().worldServers[w].loadedEntityList.get(i) instanceof Entity &&
-                            ((Entity) MinecraftServer.getServer().worldServers[w].loadedEntityList.get(i)).getUniqueID().equals(uuid)) {
-                        return (Entity) MinecraftServer.getServer().worldServers[w].loadedEntityList.get(i);
+                    if (Static.getServer().worlds[w].loadedEntityList.get(i) instanceof Entity &&
+                            ((Entity) Static.getServer().worlds[w].loadedEntityList.get(i)).getUniqueID().equals(uuid)) {
+                        return (Entity) Static.getServer().worlds[w].loadedEntityList.get(i);
                     }
                 }
             }

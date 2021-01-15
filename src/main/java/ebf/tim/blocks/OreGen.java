@@ -1,23 +1,24 @@
 package ebf.tim.blocks;
 
-import cpw.mods.fml.common.IWorldGenerator;
-import ebf.tim.registry.TiMFluids;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.feature.WorldGenMinable;
-
 import java.util.Arrays;
 import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 /**
  * <h1>Ore generation</h1>
  * spawns liquids and ores in the world.
  * @author Eternal Blue Flame
  */
-public class OreGen implements IWorldGenerator{
-	private Block ore, notOre = Blocks.stone;
+public class OreGen implements IWorldGenerator{ 
+	private Block ore, notOre = Blocks.STONE;
 	private int minY, maxY,veinSize, minOres, maxVeinsPerChunk;
 	private Integer[] dimensions = new Integer[]{0};
 	private String[] biomes;
@@ -57,13 +58,14 @@ public class OreGen implements IWorldGenerator{
 	}
 
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 		//be sure it's the correct dimension
-		if ((dimensions==null || Arrays.asList(dimensions).contains(world.provider.dimensionId))
+		if ((dimensions==null || Arrays.asList(dimensions).contains(world.provider.getDimension()))
 				//be sure it's the correct biome
 				&& (biomes==null || Arrays.asList(biomes).contains(world.getBiomeGenForCoords(chunkX,chunkZ).biomeName))) {
 			//define the vein data
-			WorldGenMinable vein = new WorldGenMinable(ore, Math.max(minOres,random.nextInt(veinSize)), notOre);
+			WorldGenMinable vein = new WorldGenMinable(ore.getDefaultState(), Math.max(minOres,random.nextInt(veinSize)), pre -> pre.getBlock() != ore);
+			//TODO see if default state is correct/good, else convert this class into using blockstates
 
 			//calculate the max ore veins per chunk
 			int maxVeins=random.nextInt(maxVeinsPerChunk);
@@ -71,14 +73,15 @@ public class OreGen implements IWorldGenerator{
 			if(heightOffset==1){
 				spawnHeightOffset=63;//defined in ChunkProvider around the use of BlockWater, seems hardcoded to 63
 			} else if (heightOffset==2){
-				spawnHeightOffset= world.getChunkFromChunkCoords(chunkX,chunkZ).heightMapMinimum;
+				spawnHeightOffset= world.getChunk(chunkX,chunkZ).getLowestHeight();
 			}
 			for(int i=0; i<maxVeins;i++) {
 				//actually generate the vein
-				vein.generate(world, random,
+				vein.generate(world, random, new BlockPos(
 						(chunkX * 16) + random.nextInt(16),
 						minY+spawnHeightOffset+random.nextInt(maxY-minY),
-						chunkZ * 16 + random.nextInt(16));
+						chunkZ * 16 + random.nextInt(16))
+					);
 			}
 		}
 	}

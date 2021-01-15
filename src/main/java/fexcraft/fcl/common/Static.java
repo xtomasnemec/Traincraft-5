@@ -3,6 +3,9 @@ package fexcraft.fcl.common;
 import java.io.InputStream;
 import java.util.Random;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  *
@@ -93,6 +96,10 @@ public class Static {
 
 	public static float toRadians(float deg){
 		return (float)Math.toRadians(deg);
+	}
+	
+	public static MinecraftServer getServer(){
+		return FMLCommonHandler.instance().getMinecraftServerInstance();
 	}
 	
 }

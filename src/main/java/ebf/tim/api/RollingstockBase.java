@@ -1,7 +1,8 @@
 package ebf.tim.api;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+import java.util.UUID;
+
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityRollingStockCore;
 import ebf.tim.entities.EntityTrainCore;
@@ -10,9 +11,8 @@ import ebf.tim.models.Bogie;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-
-import java.util.List;
-import java.util.UUID;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by Eternal Blue Flame

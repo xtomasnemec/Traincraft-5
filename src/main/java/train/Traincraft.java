@@ -1,26 +1,33 @@
 package train;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
+import java.io.File;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.registry.TiMGenericRegistry;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.util.EnumHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import train.blocks.TCBlocks;
 import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
@@ -35,8 +42,6 @@ import train.generation.ComponentVillageTrainstation;
 import train.items.TCItems;
 import train.library.Info;
 import train.library.TrainRegistry;
-
-import java.io.File;
 
 @Mod(modid = Info.modID, name = Info.modName, version = Info.modVersion)
 public class Traincraft {
@@ -178,9 +183,9 @@ public class Traincraft {
 
 		if(ConfigHandler.ENABLE_ZEPPELIN) {
 			//TiM doesn't have a generic entity registration yet, so these will likely have to remain as-is for now.
-			EntityRegistry.registerModEntity(EntityZeppelinTwoBalloons.class, "zeppelin", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin
+			EntityRegistry.registerModEntity(new ResourceLocation(Info.modID, "zeppelin"), EntityZeppelinTwoBalloons.class, "zeppelin", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin
 			TiMGenericRegistry.registryPosition++;
-			EntityRegistry.registerModEntity(EntityZeppelinOneBalloon.class, "zeppelin big", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin big
+			EntityRegistry.registerModEntity(new ResourceLocation(Info.modID, "zeppelin_big"), EntityZeppelinOneBalloon.class, "zeppelin big", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin big
 			TiMGenericRegistry.registryPosition++;
 		}
 
@@ -190,7 +195,7 @@ public class Traincraft {
 		GameRegistry.registerFuelHandler(new FuelHandler());
 
 
-		MapGenStructureIO.func_143031_a(ComponentVillageTrainstation.class, "Trainstation");
+		MapGenStructureIO.registerStructure(ComponentVillageTrainstation.class, "Trainstation");
 
 		/* GUI handler initiation */
 		tcLog.info("Initialize Gui");

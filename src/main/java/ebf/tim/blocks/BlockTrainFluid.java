@@ -1,20 +1,20 @@
 package ebf.tim.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Random;
+
 import ebf.tim.TrainsInMotion;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
-
-import java.util.Random;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * <h2>Fluid Block</h2>
@@ -76,36 +76,36 @@ public class BlockTrainFluid extends BlockFluidClassic {
     }
 
     @Override
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {return flammable ? 300 : 0;}
+    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {return flammable ? 300 : 0;}
 
     @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {return flammability;}
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {return flammability;}
 
     @Override
-    public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face) {
         return flammable;
     }
 
     @Override
-    public boolean isFireSource(World world, int x, int y, int z, ForgeDirection side) {return flammable && flammability == 0;}
+    public boolean isFireSource(World world, BlockPos pos, EnumFacing side) {return flammable && flammability == 0;}
 
     /**
      * disable host tick system
      */
     @Override
-    public void updateTick(World world, int x, int y, int z, Random rand) {
-        int fluidHeight = quantaPerBlock - world.getBlockMetadata(x, y, z);
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        int fluidHeight = quantaPerBlock - this.getMetaFromState(state);
         int newHeight = -101;
 
         // check adjacent block levels if non-source
         if (fluidHeight < quantaPerBlock) {
-            int y2 = y - densityDir;
+            int y2 = /*pos.getY() -*/ densityDir;
 
-            if (world.getBlock(x,y2,z) == this ||
-                    world.getBlock(x - 1, y2, z) == this ||
-                    world.getBlock(x + 1, y2, z) == this ||
-                    world.getBlock(x,y2, z - 1) == this ||
-                    world.getBlock(x, y2, z + 1) == this)
+            if (world.getBlockState(pos.down(y2)).getBlock() == this ||
+                    world.getBlockState(pos.add(-1, y2, 0)).getBlock() == this ||
+                    world.getBlockState(pos.add(+1, y2, 0)).getBlock() == this ||
+                    world.getBlockState(pos.add(0, y2, -1)).getBlock() == this ||
+                    world.getBlockState(pos.add(0, y2, +1)).getBlock() == this)
             {
                 newHeight = quantaPerBlock - 1;
             } else {

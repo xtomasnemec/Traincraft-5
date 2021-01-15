@@ -5,12 +5,17 @@ import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 /**
@@ -22,6 +27,7 @@ import net.minecraft.world.World;
  */
 public class BlockDynamic extends BlockContainer {
 
+	public boolean isBlockContainer;//where did 1.7 inherit this from?
     public boolean rotates=true;
     public ModelBase model=null;
     public Object tesr=null;
@@ -34,7 +40,6 @@ public class BlockDynamic extends BlockContainer {
         super(material);
         rotates=isDirectional;
         this.isBlockContainer=isStorage;
-        this.opaque=true;
         this.assemblyTableTier = tier;
     }
 
@@ -42,7 +47,6 @@ public class BlockDynamic extends BlockContainer {
         super(material);
         rotates=isDirectional;
         this.isBlockContainer=isStorage;
-        this.opaque=true;
     }
 
     public Block setModel(ModelBase modelBase){
@@ -57,9 +61,9 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
-    public void breakBlock(World w, int x, int y, int z, Block b, int meta) {
-        super.breakBlock(w, x, y, z, b, meta);
-        w.removeTileEntity(x,y,z);
+    public void breakBlock(World w, BlockPos pos, IBlockState state){
+        super.breakBlock(w, pos, state);
+        w.removeTileEntity(pos);
     }
 
     public ResourceLocation getTexture(int x, int y, int z){
@@ -67,12 +71,12 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
-    public int getRenderType(){
-        return -1;
+    public EnumBlockRenderType getRenderType(IBlockState state){
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public boolean isOpaqueCube(){
+    public boolean isOpaqueCube(IBlockState state){
         return false;
     }
 
@@ -82,8 +86,7 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
-    {
+    public boolean hasTileEntity(IBlockState state){
         return true;
     }
 
@@ -93,28 +96,28 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
-        super.onBlockPlacedBy(world, x, y, z, entity, stack);
-        if(world.getTileEntity(x,y,z)==null){
-            world.setTileEntity(x,y,z,createNewTileEntity(world,0));
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+        super.onBlockPlacedBy(world, pos, state, entity, stack);
+        if(world.getTileEntity(pos)==null){
+            world.setTileEntity(pos,createNewTileEntity(world,0));
         }
-        if(world.getTileEntity(x,y,z) instanceof TileRenderFacing){
-            ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(
-                    MathHelper.floor_double((entity.rotationYaw / 90.0F) + 2.5D) & 3);
+        if(world.getTileEntity(pos) instanceof TileRenderFacing){
+            ((TileRenderFacing) world.getTileEntity(pos)).setFacing(
+                    MathHelper.floor((entity.rotationYaw / 90.0F) + 2.5D) & 3);
         }
     }
 
 
     @Override
-    public boolean onBlockActivated(World worldOBJ, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+    public boolean onBlockActivated(World worldOBJ, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (player.isSneaking() || !isBlockContainer) {
             return false;
         } else if (worldOBJ.isRemote) {
             return true;
         }
 
-        if (worldOBJ.getTileEntity(x, y, z) instanceof TileEntityStorage) {
-            player.openGui(TrainsInMotion.instance, 0, worldOBJ, x, y, z);
+        if (worldOBJ.getTileEntity(pos) instanceof TileEntityStorage) {
+            player.openGui(TrainsInMotion.instance, 0, worldOBJ, pos.getX(), pos.getY(), pos.getZ());
             return true;
         } else {
             return false;

@@ -1,6 +1,5 @@
 package ebf.tim.networking;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.ServerLogger;
 import io.netty.buffer.ByteBuf;
@@ -9,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 /**
  * <h1>Remove entity packet</h1>
@@ -23,7 +23,7 @@ public class PacketRemove implements IMessage {
     public PacketRemove() {}
     public PacketRemove(int entityId, boolean shouldDropItem) {
         this.entityId = entityId;
-        this.dimensionId= Minecraft.getMinecraft().thePlayer.worldObj.provider.dimensionId;
+        this.dimensionId= Minecraft.getMinecraft().player.world.provider.getDimension();
         this.shouldDropItem = shouldDropItem;
     }
     /**reads the packet on server to get the variables from the Byte Buffer*/
@@ -37,7 +37,7 @@ public class PacketRemove implements IMessage {
         //if the entity was an instance of Generic Rail Transport, then spawn it's item and remove it from world.
         if (entity instanceof GenericRailTransport) {
             if (shouldDropItem) {
-                entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, new ItemStack(((GenericRailTransport) entity).getItem(), 1)));
+                entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, new ItemStack(((GenericRailTransport) entity).getItem(), 1)));
                 //since it was a player be sure we remove the entity from the logging.
                 ServerLogger.deleteWagon((GenericRailTransport) entity);
             }
