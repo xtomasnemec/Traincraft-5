@@ -21,8 +21,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 
 		if(tileEntity.getWorldObj()==null){
-			GL11.glTranslated( x-0.2,  y+0.1,  z);
-			GL11.glRotatef(180,0,0,1);
+			GL11.glTranslated( x+0.2,  y,  z);
 			GL11.glScalef(0.65f,0.65f,0.65f);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+0.7f,  z + 0.5);

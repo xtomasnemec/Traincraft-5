@@ -32,6 +32,7 @@ public class RenderGeneratorDiesel extends TileEntitySpecialRenderer {
 
 		if(var1.getWorldObj()==null){
 			GL11.glTranslatef(0, -0.5F, 0);
+			GL11.glScalef(0.85f,0.85f,0.85f);
 		} else {
 			GL11.glTranslatef(0.5F, 0.0F, 0.5F);
 		}
