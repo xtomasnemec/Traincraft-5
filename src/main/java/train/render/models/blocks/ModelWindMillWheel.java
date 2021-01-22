@@ -35,11 +35,10 @@ public class ModelWindMillWheel extends ModelBase {
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
 		if(windMill.getWorldObj()==null){
-			GL11.glTranslated( x,  y-0.5,  z);
-			GL11.glRotatef(180,0,0,1);
+			GL11.glTranslated( x,  y+0.5,  z);
 			GL11.glScalef(0.8f,0.8f,0.8f);
 		} else {
-			GL11.glTranslated( x + 0.5,  y,  z + 0.5);
+			GL11.glTranslated( x + 0.5,  y+1.5,  z + 0.5);
 		}
 
 		// Bind the texture, so that OpenGL properly textures our block.

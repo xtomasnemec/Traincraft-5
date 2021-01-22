@@ -7,6 +7,7 @@ import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -75,21 +76,12 @@ public class TileRenderFacing extends TileEntity {
             } else {
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
             }
-            if(worldObj!=null){
-                DebugUtil.printStackTrace();
-            }
 
 
             if(blockGLID ==null){
-                //blockGLID=org.lwjgl.opengl.GL11.glGenLists(1);
-                //org.lwjgl.opengl.GL11.glNewList(blockGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
-                GL11.glEnable(GL11.GL_LIGHTING);
-                if(worldObj!=null) {
-                    Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
-                    //TextureManager.fixEntityLighting();
-                    //TextureManager.adjustLightFixture(worldObj, xCoord, yCoord, zCoord);
-                    DebugUtil.println("rendering tile");
-                } else {
+                blockGLID=org.lwjgl.opengl.GL11.glGenLists(1);
+                org.lwjgl.opengl.GL11.glNewList(blockGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
+                if(worldObj==null) {
                     Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
                 }
                 GL11.glTranslatef(0.5f,0.5f,0.5f);
@@ -112,7 +104,7 @@ public class TileRenderFacing extends TileEntity {
                         Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625f);
                     }
                 }
-                //org.lwjgl.opengl.GL11.glEndList();
+                org.lwjgl.opengl.GL11.glEndList();
 
             } else {
 

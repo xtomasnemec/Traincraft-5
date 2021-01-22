@@ -144,7 +144,6 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 				flag1 = true;
 			}
 			else {
-				flag1 = false;
 				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 			}
 
