@@ -2,7 +2,11 @@ package ebf.tim.registry;
 
 import ebf.tim.TrainsInMotion;
 import ebf.tim.items.*;
+import ebf.tim.utility.RecipeManager;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class TiMItems {
 
@@ -37,6 +41,7 @@ public class TiMItems {
     public static Item generator;
 
     public static Item itemStake = new ItemStake();
+    public static Item recipeBook = new ItemCraftGuide();
 
 
     public static void registerItems(){
@@ -44,7 +49,7 @@ public class TiMItems {
         TiMGenericRegistry.RegisterItem(itemStake, TrainsInMotion.MODID, "stake",TrainsInMotion.creativeTab);
 
         TiMGenericRegistry.RegisterItem(new ItemAdminBook(),TrainsInMotion.MODID, "adminbook", TrainsInMotion.creativeTab);
-        TiMGenericRegistry.RegisterItem(new ItemCraftGuide(),TrainsInMotion.MODID, "craftbook", TrainsInMotion.creativeTab);
+        TiMGenericRegistry.RegisterItem(recipeBook,TrainsInMotion.MODID, "craftbook", TrainsInMotion.creativeTab);
 
         TiMGenericRegistry.RegisterItem(new ItemPaintBucket(),TrainsInMotion.MODID, "paintbucket", TrainsInMotion.creativeTab);
         TiMGenericRegistry.RegisterItem(new ItemKey(),TrainsInMotion.MODID,  "transportkey", TrainsInMotion.creativeTab);
@@ -156,6 +161,7 @@ public class TiMItems {
         //connectingRod = createItem("connecting.rod");
         generator = createItem("generator");
 
+        registerItemRecipes();
     }
 
     private static Item createItem(String unlocalizedName) {
@@ -165,13 +171,29 @@ public class TiMItems {
         return item;
     }
 
-    //variables are not truly passed by reference, so this does not work.
-//    private static void craftItmShorthand(Item i, String unlocalizedName) {
-//        if (i == null) {
-//            i=new Item();
-//        }
-//        TiMGenericRegistry.RegisterItem(i =new Item(),TrainsInMotion.MODID,unlocalizedName,TrainsInMotion.creativeTabCrafting);
-//        i.setTextureName(TrainsInMotion.MODID+ ":" + "crafting/" + i.getUnlocalizedName().replace("item.", ""));
-//    }
+    public static void registerItemRecipes(){
+        RecipeManager.registerRecipe(
+                new Object[]{Blocks.rail,Blocks.rail,Blocks.rail,Blocks.rail, Items.book,Blocks.rail,Blocks.rail,Blocks.rail,Blocks.rail},
+                recipeBook);
+
+        RecipeManager.registerRecipe(
+                new Object[]{copperWire,copperWire,copperWire,Items.redstone,TiMOres.dustPlastic,Items.redstone,copperWire,copperWire,copperWire},
+                steelPinCircuit);
+
+        //wire
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.dustPlastic,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper},
+                new ItemStack(copperWire,8));
+        RecipeManager.registerRecipe(
+                new Object[]{Items.gold_ingot,Items.gold_ingot,Items.gold_ingot,Items.gold_ingot,TiMOres.dustPlastic,Items.gold_ingot,Items.gold_ingot,Items.gold_ingot,Items.gold_ingot},
+                new ItemStack(goldWire,8));
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.dustPlastic,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum},
+                new ItemStack(aluminiumWire,8));
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.dustPlastic,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
+                new ItemStack(steelWire,8));
+
+    }
 
 }

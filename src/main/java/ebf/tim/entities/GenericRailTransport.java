@@ -2027,12 +2027,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         Bogie[] ret = new Bogie[bogieModelOffsets().length];
         for(int i=0; i<bogieModelOffsets().length;i++){
             if(i>=bogieModels().length){
-                ret[i] = new Bogie(bogieModels()[0], bogieModelOffsets()[i]);
+                ret[i] = new Bogie(bogieModels()[0], -bogieModelOffsets()[i][0],bogieModelOffsets()[i][1],bogieModelOffsets()[i][2]);
             } else {
-                ret[i] = new Bogie(bogieModels()[i], bogieModelOffsets()[i]);
+                ret[i] = new Bogie(bogieModels()[i], -bogieModelOffsets()[i][0],bogieModelOffsets()[i][1],bogieModelOffsets()[i][2]);
             }
         }
-        CommonUtil.reverseArray(ret);
         return ret;
     }
 

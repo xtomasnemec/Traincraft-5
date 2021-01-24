@@ -28,6 +28,9 @@ public class RecipeManager {
     public static void registerRecipe(Object[] recipe, ItemStack output){
         registerRecipe(getRecipe(recipe, output));
     }
+    public static void registerRecipe(Object[] recipe, Item output){
+        registerRecipe(getRecipe(recipe, new ItemStack(output)));
+    }
 
     public static void registerRecipe(Recipe recipe){
 /*        DebugUtil.println("REGISTERING RECIPE"

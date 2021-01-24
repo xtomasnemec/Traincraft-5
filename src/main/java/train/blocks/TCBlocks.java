@@ -9,6 +9,9 @@ package train.blocks;
 
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
+import ebf.tim.registry.TiMItems;
+import ebf.tim.registry.TiMOres;
+import ebf.tim.utility.RecipeManager;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -81,6 +84,7 @@ public class TCBlocks {
 				"GPG", "O O", "OPO", 'O', Blocks.obsidian, 'G', Items.gold_ingot, 'P', Blocks.piston); //tier 2
 		addRecipe(new ItemStack(registerBlock(trainTableTier3, Traincraft.tcTab, Info.modID,"block.traintabletier3", null, null),1),
 				"GPG", "DLD", "OPO", 'O', Blocks.obsidian, 'G', Items.gold_ingot, 'P', Blocks.piston, 'D', Items.diamond, 'L', Blocks.glowstone); //tier 3
+		addRecipe(new ItemStack(partTable), "IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Blocks.planks, 'P', Blocks.piston); //part builder
 
 		registerBlock(blockDistil, Traincraft.tcTab, Info.modID,"block.distil", null, null);
 
@@ -125,5 +129,33 @@ public class TCBlocks {
 		Blocks.rail.setHarvestLevel("ItemStacked", 0);
 		Blocks.detector_rail.setHarvestLevel("ItemStacked", 0);
 		Blocks.golden_rail.setHarvestLevel("ItemStacked", 0);
+	}
+
+	public static void registerRecipes(){
+
+		RecipeManager.registerRecipe(
+				new Object[]{Blocks.nether_brick,Items.lava_bucket,Blocks.nether_brick,Blocks.nether_brick,Items.bucket,Blocks.nether_brick,Blocks.nether_brick,Blocks.iron_block,Blocks.nether_brick},
+				new ItemStack(blockHearthFurnace));
+
+		RecipeManager.registerRecipe(
+				new Object[]{Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,Blocks.glass_pane,Blocks.torch,Blocks.glass_pane,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+				new ItemStack(lantern));
+
+		RecipeManager.registerRecipe(
+				new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel, TiMItems.fireboxSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
+				new ItemStack(blockDistil));
+
+		RecipeManager.registerRecipe(
+				new Object[]{TiMItems.chimneySteel,null,null,TiMItems.mediumDieselEngine,TiMItems.steelPinCircuit,null,null,null,null},
+				new ItemStack(dieselGenerator));
+
+		RecipeManager.registerRecipe(
+				new Object[]{null, ItemIDs.propeller.item, null, null, TiMItems.generator, null, Items.iron_ingot,null, Items.iron_ingot},
+				new ItemStack(windmill));
+
+		RecipeManager.registerRecipe(
+				new Object[]{null, Blocks.log,null,Blocks.log,TiMItems.generator,Blocks.log,null,Blocks.log,null},
+				new ItemStack(waterWheel));
+
 	}
 }

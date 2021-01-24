@@ -1,7 +1,6 @@
 <!-- ## Blocks ## -->
 tile.block.oilsand.name=Oil Sands
 tile.block.petroleum.name=Petroleum
-tile.traincraft:oreTC.ballast.name=Ballast
 tile.block.dieselGenerator.name=Diesel Generator
 tile.block.windmill.name=Windmill
 tile.block.waterwheel.name=Water Wheel
@@ -10,9 +9,9 @@ tile.block.hearthfurnace.name=Hearth Furnace
 tile.traincraft:stopper.name=Train Buffer
 tile.block.parttable.name=Train Workbench
 tile.block.distil.name=Distill
-tile.traincraft:assemblyTableI.name=Assembly Table I
-tile.traincraft:assemblyTableII.name=Assembly Table II
-tile.traincraft:assemblyTableIII.name=Assembly Table III
+tile.block.traintabletier1.name=Assembly Table I
+tile.block.traintabletier2.name=Assembly Table II
+tile.block.traintabletier3.name=Assembly Table III
 tile.traincraft:tcRail.name=Traincraft Rail
 tile.traincraft:tcRailGag.name=Traincraft Rail
 fluid.traincraft:fluid.diesel.name=Diesel Fuel

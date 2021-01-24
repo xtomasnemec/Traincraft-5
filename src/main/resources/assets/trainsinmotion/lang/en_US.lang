@@ -230,9 +230,7 @@ fluid.diesel=Diesel Fluid
 tile.block.oil=Oil Fluid
 fluid.oil.name=Oil Fluid
 fluid.redstone=RF
-tile.block.traintabletier1.name=Assembly Table I
-tile.block.traintabletier2.name=Assembly Table II
-tile.block.traintabletier3.name=Assembly Table III
+tile.ore.steel.name=Steel Ore
 
 <!-- ## Item Lore ## -->
 menu.item.stake.lore1=Use on a transport to toggle linking.
