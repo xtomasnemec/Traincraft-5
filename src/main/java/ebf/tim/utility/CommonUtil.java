@@ -370,7 +370,6 @@ public class CommonUtil {
             //define the direction
             int railMeta=((BlockRailBase)worldObj.getBlock(posX,posY,posZ)).getBasicRailMetadata(worldObj, null,posX,posY,posZ);
             int playerMeta=MathHelper.floor_double((playerEntity.rotationYaw / 90.0F) + 2.5D) & 3;
-
             if(railMeta==0){
                 //this direction is a bit more complicated due to how the numbers line up when coming from the other side
                 //also we have to %360 because some moron thought it a cool idea to have the character rotate from -360 to 360
@@ -380,7 +379,7 @@ public class CommonUtil {
                     playerMeta=2;
                 }
             } else if (railMeta==1){
-                if(playerEntity.rotationYaw%360>180){
+                if(playerEntity.rotationYaw%360>-180){
                     playerMeta=1;
                 } else {
                     playerMeta=3;
