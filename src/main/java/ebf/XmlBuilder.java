@@ -1,8 +1,6 @@
 package ebf;
 
 import cpw.mods.fml.common.registry.GameData;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

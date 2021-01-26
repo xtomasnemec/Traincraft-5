@@ -35,15 +35,16 @@ public class BlockDynamic extends BlockContainer {
     public BlockDynamic(Material material, boolean isStorage, int tier) {
         super(material);
         this.isBlockContainer=isStorage;
-        this.opaque=true;
         this.assemblyTableTier = tier;
     }
 
     public BlockDynamic(Material material, boolean isStorage) {
         super(material);
         this.isBlockContainer=isStorage;
-        this.opaque=true;
     }
+
+    @Override//1.7 version of getting if block is opaque, used for server side checks like if creatures can spawn on it
+    public boolean func_149730_j(){return true;}
 
     public Block setModel(ModelBase modelBase){
         model=modelBase;

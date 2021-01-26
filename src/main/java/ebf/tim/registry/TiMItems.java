@@ -194,6 +194,47 @@ public class TiMItems {
                 new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.dustPlastic,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
                 new ItemStack(steelWire,8));
 
+        //cabins
+        RecipeManager.registerRecipe(
+                new Object[]{Blocks.planks,Blocks.planks,Blocks.planks,Blocks.planks,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+                new ItemStack(cabinWood,1));
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+                new ItemStack(cabinAluminium,1));
+        RecipeManager.registerRecipe(
+                new Object[]{Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+                new ItemStack(cabinIron,1));
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+                new ItemStack(cabinSteel,1));
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+                new ItemStack(cabinCopper,1));
+        RecipeManager.registerRecipe(
+                new Object[]{Blocks.glass_pane,Blocks.glass_pane,Blocks.glass_pane,Blocks.glass_pane,null,null,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
+                new ItemStack(cabinFiberglass,1));
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,null,null,TiMOres.dustPlastic,Items.iron_ingot,TiMOres.dustPlastic},
+                new ItemStack(cabinPlastic,1));
+
+        //wheels
+        RecipeManager.registerRecipe(
+                new Object[]{null,Blocks.planks,null,Blocks.planks,Items.iron_ingot,Blocks.planks,null,Blocks.planks,null},
+                new ItemStack(wheelWood,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,TiMOres.ingotAluminum,null,TiMOres.ingotAluminum,Items.iron_ingot,TiMOres.ingotAluminum,null,TiMOres.ingotAluminum,null},
+                new ItemStack(wheelAluminium,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,Items.iron_ingot,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,null,Items.iron_ingot,null},
+                new ItemStack(wheelIron,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,TiMOres.ingotSteel,null,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,null,TiMOres.ingotSteel,null},
+                new ItemStack(wheelSteel,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,TiMOres.dustPlastic,null,TiMOres.dustPlastic,Items.iron_ingot,TiMOres.dustPlastic,null,TiMOres.dustPlastic,null},
+                new ItemStack(wheelPlastic,1));
+
     }
+
 
 }
