@@ -304,7 +304,7 @@ public class ItemStackSlot extends Slot {
                 case 1: { //train crafting
                     List<ItemStack> slots = RecipeManager.getResult(RecipeManager.getTransportRecipe(hostInventory), this.tierIn);
 
-                    if (ClientProxy.isTraincraft && tierIn > 0) {
+                    if (CommonProxy.isTraincraft && tierIn > 0) {
                         putResultsInOutputSlots(hostInventory, hostSlots, slots, page, 8);
                     } else {
                         putResultsInOutputSlots(hostInventory, hostSlots, slots, page, 9);

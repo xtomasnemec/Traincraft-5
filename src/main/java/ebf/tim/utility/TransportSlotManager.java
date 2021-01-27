@@ -62,7 +62,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         //tile entity reference
         hostInventory = block;
 
-        if (block.assemblyTableTier > 0 && ClientProxy.isTraincraft) { //it is an assembly table, move slots lower. (but only for the traincraft asm tables)
+        if (block.assemblyTableTier > 0 && CommonProxy.isTraincraft) { //it is an assembly table, move slots lower. (but only for the traincraft asm tables)
             //player hotbar
             for (int iT = 0; iT < 9; iT++) {
                 addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 232));

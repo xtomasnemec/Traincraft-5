@@ -3,10 +3,7 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.registry.TiMFluids;
-import ebf.tim.utility.ClientProxy;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
-import ebf.tim.utility.ItemStackSlot;
+import ebf.tim.utility.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,7 +53,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 this.assemblyTableTier = 0;
             }
 
-            if (!ClientProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
+            if (!CommonProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
                 //inventory grid (left grid)
                 for (int l = 0; l < 3; ++l) {
                     for (int i1 = 0; i1 < 3; ++i1) {
