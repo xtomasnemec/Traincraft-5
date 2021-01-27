@@ -155,6 +155,7 @@ public class Traincraft {
 		trainCloth = proxy.addArmor("Paintable");
 		trainCompositeSuit = proxy.addArmor("CompositeSuit");
 		TCBlocks.init();
+		TCBlocks.registerRecipes();
 		TCItems.init();
 
 		if(ConfigHandler.ENABLE_STEAM) {

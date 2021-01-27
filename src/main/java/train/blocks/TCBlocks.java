@@ -41,6 +41,8 @@ public class TCBlocks {
 	public static BlockDynamic oilSand = new BlockDynamic(new Material(MapColor.mapColorArray[2]), false);
 	public static BlockDynamic orePetroleum = new BlockDynamic(new Material(MapColor.mapColorArray[11]), false);
 
+	public static BlockDynamic blockBallast = new BlockDynamic(new Material(MapColor.mapColorArray[29]), false);
+
 	public static BlockDistil blockDistil = new BlockDistil();
 	public static BlockOpenHearthFurnace blockHearthFurnace = new BlockOpenHearthFurnace();
 
@@ -65,6 +67,8 @@ public class TCBlocks {
 		trainTableTier2.setTextureName(Info.modID+ ":textures/blocks/assembly_2.png");
 		trainTableTier3.setTextureName(Info.modID+ ":textures/blocks/assembly_3.png");
 
+		blockBallast.setTextureName(Info.modID+ ":textures/blocks/ballast.png");
+
 		blockDistil.setTextureName(Info.modID+ ":textures/blocks/distil_off.png");
 
 		blockHearthFurnace.setTextureName(Info.modID+ ":textures/blocks/furnace_off.png");
@@ -77,6 +81,8 @@ public class TCBlocks {
 
 		registerBlock(oilSand, Traincraft.tcTab, Info.modID,"block.oilsand", null, null);
 		registerBlock(orePetroleum, Traincraft.tcTab, Info.modID,"block.petroleum", "petroleum", null);
+
+		registerBlock(blockBallast,Traincraft.tcTab,Info.modID,"block.ballast",null,null);
 
 		addRecipe(new ItemStack(registerBlock(trainTableTier1, Traincraft.tcTab, Info.modID,"block.traintabletier1", null, null),1),
 				"IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Items.iron_ingot, 'P', Blocks.piston); //tier 1
@@ -156,6 +162,9 @@ public class TCBlocks {
 		RecipeManager.registerRecipe(
 				new Object[]{null, Blocks.log,null,Blocks.log,TiMItems.generator,Blocks.log,null,Blocks.log,null},
 				new ItemStack(waterWheel));
+
+		RecipeManager.registerRecipe(new Object[]{Blocks.gravel,Items.clay_ball,Blocks.gravel,null,null,null,null,null,null},
+                new ItemStack(blockBallast));
 
 	}
 }

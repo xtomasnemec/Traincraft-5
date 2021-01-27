@@ -312,7 +312,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**
      * <h2>Entity first placed initialization</h2>
      * this is only ever called once, from the entity's item instance when the entity is first placed.
-     * this is good for add-ons to dynamically set the default texture or other values.
      */
     public void entityFirstInit(ItemStack item){}
 
@@ -592,8 +591,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float p_70097_2_){
-
-
         if (damageSource.getEntity() instanceof GenericRailTransport){
             return false;
         }
@@ -1051,7 +1048,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     seats.add(seat);
                 }
             }
-            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
 
         /*
@@ -1134,7 +1130,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //be sure the owner entityID is currently loaded, this variable is dynamic so we don't save it to NBT.
-        if (!worldObj.isRemote &&ticksExisted %10==0){
+        if (!worldObj.isRemote &&ticksExisted %20==0){
 
             manageFuel();
 
