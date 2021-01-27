@@ -187,7 +187,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             //update on normal rails
             if (block instanceof BlockRailBase) {
                 lastKnownRailX=(int)posX;
-                lastKnownRailX=(int)posX;
+                lastKnownRailZ=(int)posZ;
                 lastKnownRailY=posY;
                 this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
