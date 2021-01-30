@@ -193,10 +193,14 @@ public class FuelHandler{
 				train.dropItem(train.getItem(), 1);
 				train.setDead();
 			}
-			train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+			if(!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
+				train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+				train.updateConsist();
+			}
 		} else {
 			train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
 			train.accelerator=0;
+			train.updateConsist();
 		}
 
 		if (train.getTankInfo(null)[1] !=null && train.getTankInfo(null)[1].fluid.amount >0) {
@@ -233,12 +237,14 @@ public class FuelHandler{
 					train.drain(null, 0, (int) (1f * train.getEfficiency()), true);
 				} else {
 					train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+					train.updateConsist();
 				}
 			} else {//moving
 				if (train.drain(null, 0, MathHelper.floor_double((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), false)==0) {
 					train.drain(null, 0,  MathHelper.floor_double((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), true);
 				} else {
 					train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+					train.updateConsist();
 				}
 			}
         }
@@ -291,12 +297,13 @@ public class FuelHandler{
 			}
 		}
 
-		//fill from overhead wires/3rd rail
+		//fill from overhead wires/3rd rail/under rail
 		if (train.fill(null, new FluidStack(TiMFluids.fluidRedstone, 100), false) == 0) {
 			int draw = 0;
 			TileEntity te;
 			Block b;
-			for (int i=-1; i<5;i++) {
+			for (int i=-2; i<5;i++) {
+				if(i==1){continue;}
 				te=train.worldObj.getTileEntity(MathHelper.floor_double(train.posX), MathHelper.floor_double(train.posY + i), MathHelper.floor_double(train.posZ));
 				if (te instanceof IEnergyHandler) {
 					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
@@ -328,6 +335,7 @@ public class FuelHandler{
 				train.drain(null, 0, MathHelper.floor_double((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), true);
 			} else {
 				train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+				train.updateConsist();
 			}
 		}
 	}

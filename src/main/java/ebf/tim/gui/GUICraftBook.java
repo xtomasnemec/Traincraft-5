@@ -93,8 +93,9 @@ public class GUICraftBook extends GuiScreen {
 
         GL11.glEnable(GL11.GL_LIGHTING);
 
-        //change the item displayed every 2 seconds
-        if(System.currentTimeMillis()-frame>2000){
+        //change the item displayed every second
+        if(System.currentTimeMillis()-frame>1000){
+            frame=System.currentTimeMillis();
             if(getPage(page) instanceof Recipe) {
                 ((Recipe)getPage(page)).nextDisplayItem();
             }

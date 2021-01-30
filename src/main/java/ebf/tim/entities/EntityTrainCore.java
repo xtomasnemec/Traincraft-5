@@ -136,7 +136,9 @@ public class EntityTrainCore extends GenericRailTransport {
         super.setValuesOnLinkUpdate(consist);
         maxPowerMicroblocks =0;
         for(GenericRailTransport t : consist) {
-            maxPowerMicroblocks +=t.getPower();
+            if(t.getBoolean(boolValues.RUNNING)) {
+                maxPowerMicroblocks += t.getPower();
+            }
         }
     }
 
@@ -340,6 +342,7 @@ public class EntityTrainCore extends GenericRailTransport {
             switch (key){
                 case 8:{ //toggle ignition
                     setBoolean(boolValues.RUNNING, !getBoolean(boolValues.RUNNING));
+                    updateConsist();
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
                     //the second to last value is volume, and idk what the last one is.
@@ -350,6 +353,11 @@ public class EntityTrainCore extends GenericRailTransport {
                     return true;
                 }case 2:{ //decrease speed
                     if (accelerator >-6 && getBoolean(boolValues.RUNNING)) {
+                        for(GenericRailTransport consist : getConsist()){
+                            if(consist.getAccelerator()!=0){
+                                return true;
+                            }
+                        }
                         if(accelerator>6){
                             accelerator=6;
                         } else {
@@ -360,6 +368,11 @@ public class EntityTrainCore extends GenericRailTransport {
                     return true;
                 }case 3:{ //increase speed
                     if (accelerator <6 && getBoolean(boolValues.RUNNING)) {
+                        for(GenericRailTransport consist : getConsist()){
+                            if(consist.getAccelerator()!=0){
+                                return true;
+                            }
+                        }
                         if(accelerator<-6){
                             accelerator=-6;
                         } else {

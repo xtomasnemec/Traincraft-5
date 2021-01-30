@@ -135,6 +135,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public int forceBackupTimer =0;
     public float pullingWeight=0;
 
+    private List<GenericRailTransport> consist = new ArrayList<>();
+
     //@SideOnly(Side.CLIENT)
     public TransportRenderData renderData = new TransportRenderData();
 
@@ -1299,6 +1301,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     /**
      * iterates all the links to check if the stock has a train
+     * called on linking changes and when a train changes running states
      */
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
@@ -1317,6 +1320,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             link = link.backLinkedID==null?null:(GenericRailTransport) worldObj.getEntityByID(link.backLinkedID);
         }
 
+        consist=transports;
+
         //now tell everything in the list, including this, that there's a new list, and provide said list.
         for(GenericRailTransport t : transports){
             t.setValuesOnLinkUpdate(transports);
@@ -1324,12 +1329,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
 
-    //todo: update needed info like weight and combined tractive effort based on values in this array
+    /**
+     * called on linking changes and when a train changes running states
+     * @see #updateConsist() 
+     * @param consist the list of entities in the consist
+     */
     public void setValuesOnLinkUpdate(List<GenericRailTransport> consist){
         pullingWeight=0;
         for(GenericRailTransport t : consist) {
             pullingWeight +=t.weightKg();
         }
+    }
+
+    public List<GenericRailTransport> getConsist(){
+        return consist;
     }
 
     //used for trains and B-units
