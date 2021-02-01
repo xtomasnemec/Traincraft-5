@@ -53,7 +53,7 @@ public class EntityLocoDieselBamboo extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelBambooTrainEngine()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, 0.14f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, worldObj==null?-0.44f:0.14f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{180.0f, 0.0f, -180.0f}};}
     @Override
@@ -122,7 +122,7 @@ public class EntityLocoDieselBamboo extends EntityTrainCore {
     public float transportTopSpeed(){return 20;}
     @Override
     public ItemStackSlot fuelSlot(){
-        return super.fuelSlot().setOverlay(Items.coal);
+        return super.fuelSlot();
     }
     @Override
     public int[] getTankCapacity(){return new int[]{3000};}

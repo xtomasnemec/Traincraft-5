@@ -3,9 +3,9 @@ package train.blocks.hearth;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
+import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.registry.TiMItems;
-import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import train.blocks.TCBlocks;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,8 +27,8 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 	private Random random;
 	private boolean wasBurning = false;
 
-	public TileEntityOpenHearthFurnace() {
-		super(TCBlocks.blockHearthFurnace);
+	public TileEntityOpenHearthFurnace(BlockDynamic host) {
+		super(host);
 		furnaceBurnTime = 0;
 		currentItemBurnTime = 0;
 		furnaceCookTime = 0;
@@ -105,35 +104,14 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 			}
 			if (flag != (furnaceBurnTime > 0)) {
 				flag1 = true;
-				BlockOpenHearthFurnace.updateHearthFurnaceBlockState(furnaceBurnTime > 0, worldObj, xCoord, yCoord, zCoord);
-			}
-			this.syncTileEntity();
-		}
-		if (this.worldObj.isRemote) {
-			if (furnaceBurnTime > 0) {
-				smoke(worldObj, xCoord, yCoord, zCoord, random);
 			}
 		}
 		if (flag1) {
+			this.syncTileEntity();
 			markDirty();
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
-	private void smoke(World world, int i, int j, int k, Random random) {
-		float var7 = (float) i + 0.5F;
-		float var9 = (float) k + 0.5F;
-		float f3 = 0.009F;
-		double gaussian = random.nextGaussian() * f3;
-		for (int t = 0; t < 50; t++) {
-			world.spawnParticle("smoke", var7, (double) j + 1.2F, var9, gaussian, gaussian * 0.002F, gaussian);
-		}
-		world.spawnParticle("flame", var7, (double) j + 1.03F, var9, 0, 0, 0);
-		world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
-		world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
-		world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
-		world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
-	}
 
 	private boolean canSmelt(){
 		//be sure slot 1 is some form of iron
@@ -179,26 +157,6 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 		cookDuration = 1000;
 	}
 
-
-	@Override
-	public S35PacketUpdateTileEntity getDescriptionPacket() {
-		NBTTagCompound nbt = new NBTTagCompound();
-
-		XmlBuilder data = new XmlBuilder();
-		for(int i=0; i<getTankInfo(null).length;i++){
-			if(getTankInfo(i)!=null && getTankInfo(i).fluid!=null) {
-				data.putFluidStack("tanks." + i, getTankInfo(i).fluid);
-			} else if(getTankInfo(i)!=null){
-				data.putFluidStack("tanks." + i, null);
-			}
-		}
-		nbt.setString("xmlData",data.toXMLString());
-
-		nbt.setShort("BurnTime", (short) furnaceBurnTime);
-		nbt.setShort("CookTime", (short) furnaceCookTime);
-		nbt.setShort("ItemBurnTime", (short) currentItemBurnTime);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
-	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt){

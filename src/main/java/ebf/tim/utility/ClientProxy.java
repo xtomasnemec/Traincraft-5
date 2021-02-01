@@ -70,7 +70,7 @@ public class ClientProxy extends CommonProxy {
     /**the keybind for the horn/whistle*/
     public static KeyBinding KeyHorn = new KeyBinding("Use Horn/Whistle", Keyboard.KEY_H, "Trains in Motion");
     /**the keybind for opening the inventory*/
-    public static KeyBinding KeyInventory = new KeyBinding("Open Train/rollingstock GUI",  Keyboard.KEY_I, "Trains in Motion");
+    public static KeyBinding KeyInventory = new KeyBinding("Open Train/rollingstock GUI",  Keyboard.KEY_R, "Trains in Motion");
     /**the model to use for the rail*/
     public static int railSkin = 3;
     /**toggles whether to show speed in km/h or mph*/
@@ -86,9 +86,6 @@ public class ClientProxy extends CommonProxy {
     public static KeyBinding raildevtoolNextPoint, raildevtoolLastPoint;
 
     public static KeyBinding raildevtoolQuality;
-
-    /**Decides whether to use Traincraft or TiM assembly tables. */
-    public static boolean isTraincraft = true;
 
     /**
      * <h2> Client GUI Redirect </h2>
@@ -155,7 +152,7 @@ public class ClientProxy extends CommonProxy {
                 "Overrides the render of train and rollingstock items to use their full model. NOTICE: after the pre-alpha stages this should default to false.");
 
         preRenderModels = config.getBoolean("preRenderModels","Quality (Client only)", false,
-                "Pre-renders transport entity and item models during loading screen and stores them on GPU, Requires a lot of VRAM but makes the game run smoother, Don't use if get the GL error 1285 (Out of memory)");
+                "Pre-renders transport entity and item models during loading screen and stores them on GPU, Requires a lot of VRAM but makes the game run smoother, especially with NEI/JEI, Don't use if get the GL error 1285 (Out of memory)");
 
         disableCache = config.getBoolean("disableGLCache","Quality (Client only)", false,
                 "forces the render to skip model caching, this will cause significant lag, but is good for debugging, or if you get the GL error 1285 (Out of memory)");
@@ -173,17 +170,9 @@ public class ClientProxy extends CommonProxy {
 
         railSkin = config.getInt("railSkin","Quality (Client only)", 3,0,3,
                 "Defines the rail model to use. 0: flat 2D rail similar to vanilla. 1: basic 3D rail similar to an extruded 2D. 2: Normal 3D rail. 3: High detail 3D rail");
-
-        config.addCustomCategoryComment("Keybinds (Client only)", "accepted values can be set from in-game, or defined using the key code values from: http://minecraft.gamepedia.com/Key_codes");
-
-        KeyLamp.setKeyCode(config.getInt("LampKeybind", "Keybinds (Client only)", Keyboard.KEY_L, 0, 0, ""));
-        KeyHorn.setKeyCode(config.getInt("HornKeybind", "Keybinds (Client only)", Keyboard.KEY_H, 0, 0, ""));
-        KeyInventory.setKeyCode(config.getInt("InventoryKeybind", "Keybinds (Client only)", Keyboard.KEY_I, 0, 0, ""));
-
         config.save();
 
         configDirectory = event.getModConfigurationDirectory().getAbsolutePath();
-
 
     }
 
@@ -267,25 +256,6 @@ public class ClientProxy extends CommonProxy {
         protected void bindTexture(ResourceLocation p_147499_1_){}
     };
 
-    public class railItemRederer extends ItemRenderer{
-        public railItemRederer(Minecraft p_i1247_1_) {
-            super(p_i1247_1_);
-        }
-        @Override
-        public void renderItem(EntityLivingBase p_78443_1_, ItemStack p_78443_2_, int p_78443_3_, IItemRenderer.ItemRenderType type) {
-            if(p_78443_2_.getItem() instanceof ItemRail){
-                if(p_78443_2_.getTagCompound().hasKey("ballast")){
-                    RailShapeCore p = new RailShapeCore();
-                    p.activePath.add(new Vec6f(-0.5f,0f,0f,0,0));
-                    p.activePath.add(new Vec6f(0.5f,0f,0f,0,0));
-                    p.gauge=new int[]{375};
-                    ModelBallast.modelPotatoBallast(p,0.5f,-0.5f, 1f,
-                            ItemStack.loadItemStackFromNBT(p_78443_2_.getTagCompound().getCompoundTag("ballast")));
-                }
-            }
-
-        }
-    }
 
     public static final RenderWagon transportRenderer = new RenderWagon();
 

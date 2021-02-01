@@ -40,7 +40,7 @@ public class GUITrainTable extends GuiContainer {
         hostname=world.getBlock(x,y,z).getUnlocalizedName();
         xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.dimensionId;
 
-        if (ClientProxy.isTraincraft && !hostname.equals("tile.block.traintable")) {
+        if (CommonProxy.isTraincraft && !hostname.equals("tile.block.traintable")) {
             this.ySize = 256;
         }
     }
@@ -95,7 +95,7 @@ public class GUITrainTable extends GuiContainer {
     }
 
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        if (!ClientProxy.isTraincraft || hostname.equals("tile.block.traintable")) {
+        if (!CommonProxy.isTraincraft || hostname.equals("tile.block.traintable")) {
             this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
         } else {
             if (hostname.startsWith("tile.block.traintable")) {
@@ -158,7 +158,7 @@ public class GUITrainTable extends GuiContainer {
             GL11.glPopMatrix();
 
         } else if (hostname.startsWith("tile.block.traintable")){
-            if (!ClientProxy.isTraincraft || hostname.equals("tile.block.traintable")) { //TiM stuff
+            if (!CommonProxy.isTraincraft || hostname.equals("tile.block.traintable")) { //TiM stuff
                 this.mc.getTextureManager().bindTexture(ClientUtil.craftingTableGuiTextures);
                 this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 

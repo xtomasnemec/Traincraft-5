@@ -214,7 +214,9 @@ public class RenderWagon extends Render {
         GL11.glTranslated(x, y+ railOffset + ((entity.getRenderScale()-0.0625f)*10)+bogieOffset, z);
         //rotate the model.
         GL11.glPushMatrix();
-        GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
+        if(!isPaintBucket) {
+            GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
+        }
         GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
 
         /*

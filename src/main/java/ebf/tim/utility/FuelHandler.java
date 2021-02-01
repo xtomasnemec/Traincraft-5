@@ -31,8 +31,8 @@ public class FuelHandler{
 
 	/**the main burnHeat variable used by most trains*/
 	public int burnHeat =0;
-	private float burnTime =0;
-	private float burnTimeMax =0;
+	public float burnTime =0;
+	public float burnTimeMax =0;
 
 	public enum DefaultTanks {
 		STEAM(new String[][]{{FluidRegistry.WATER.getName()},{TiMFluids.fluidSteam.getName()}}),
@@ -145,7 +145,7 @@ public class FuelHandler{
 
 		//if there's a fluid item in the slot and the train can consume the entire thing
 		if (getUseableFluid(train.waterSlot().getSlotID(),train) !=null &&
-				train.fill(null, getUseableFluid(401,train))) {
+				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==0) {
 
 			train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
@@ -193,10 +193,14 @@ public class FuelHandler{
 				train.dropItem(train.getItem(), 1);
 				train.setDead();
 			}
-			train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+			if(!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
+				train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+				train.updateConsist();
+			}
 		} else {
 			train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
 			train.accelerator=0;
+			train.updateConsist();
 		}
 
 		if (train.getTankInfo(null)[1] !=null && train.getTankInfo(null)[1].fluid.amount >0) {
@@ -219,6 +223,7 @@ public class FuelHandler{
 			if (train.fill(null, getUseableFluid(400,train))) {
 				if(!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+					train.addItem(new ItemStack(Items.bucket));
 				}
 			}
             //todo: fluid pipe support, should be able to be toggled in server settings
@@ -228,16 +233,18 @@ public class FuelHandler{
         if (train.getBoolean(GenericRailTransport.boolValues.RUNNING)){
             //diesel trains use fuel similar to electric, except idle will use fuel.
 			if(train.accelerator==0){//idle
-				if(train.drain(null, 0, (int)(1f*train.getEfficiency()),false)>0) {
+				if(train.drain(null, 0, (int)(1f*train.getEfficiency()),false)==0) {
 					train.drain(null, 0, (int) (1f * train.getEfficiency()), true);
 				} else {
 					train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+					train.updateConsist();
 				}
 			} else {//moving
-				if (train.drain(null, 0, MathHelper.floor_double((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), false)>0) {
+				if (train.drain(null, 0, MathHelper.floor_double((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), false)==0) {
 					train.drain(null, 0,  MathHelper.floor_double((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), true);
 				} else {
 					train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+					train.updateConsist();
 				}
 			}
         }
@@ -278,22 +285,25 @@ public class FuelHandler{
 		if(getUseableFluid(train.fuelSlot().getSlotID(),train)!=null){
 			if(train.fill(null,getUseableFluid(train.fuelSlot().getSlotID(),train))){
 				train.fill(null,getUseableFluid(train.fuelSlot().getSlotID(),train),true);
-				if(train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem() instanceof IEnergyContainerItem){
-					((IEnergyContainerItem) train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem())
-							.extractEnergy(train.getSlotIndexByID(train.fuelSlot().getSlotID()).getStack(), 250, false);
-				} else {
-					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
-				}
 
+				if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
+					if (train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem() instanceof IEnergyContainerItem) {
+						((IEnergyContainerItem) train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem())
+								.extractEnergy(train.getSlotIndexByID(train.fuelSlot().getSlotID()).getStack(), 250, false);
+					} else {
+						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+					}
+				}
 			}
 		}
 
-		//fill from overhead wires/3rd rail
+		//fill from overhead wires/3rd rail/under rail
 		if (train.fill(null, new FluidStack(TiMFluids.fluidRedstone, 100), false) == 0) {
 			int draw = 0;
 			TileEntity te;
 			Block b;
-			for (int i=-1; i<5;i++) {
+			for (int i=-2; i<5;i++) {
+				if(i==1){continue;}
 				te=train.worldObj.getTileEntity(MathHelper.floor_double(train.posX), MathHelper.floor_double(train.posY + i), MathHelper.floor_double(train.posZ));
 				if (te instanceof IEnergyHandler) {
 					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
@@ -325,6 +335,7 @@ public class FuelHandler{
 				train.drain(null, 0, MathHelper.floor_double((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), true);
 			} else {
 				train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+				train.updateConsist();
 			}
 		}
 	}

@@ -3,12 +3,15 @@ package ebf.tim.entities;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.utility.CommonProxy;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.FuelHandler;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import train.library.EnumSounds;
+import train.library.Info;
 
 import java.util.List;
 import java.util.UUID;
@@ -99,8 +102,8 @@ public class EntityTrainCore extends GenericRailTransport {
     @Override
     public float getPower(){
         //the average difference between metric horsepower and MHP is about 3.75% or tractiveEffort*26.3=MHP
-            return (transportTractiveEffort()<1f?transportMetricHorsePower()*281.125f
-                    :transportTractiveEffort());
+            return (transportTractiveEffort()<1f?transportMetricHorsePower()
+                    :transportTractiveEffort()*0.0035571365f);
 
                     //90mhp translating to 1 mircoblock a second sounds about right
                     //(*0.009/16 = 0.0005625), then divide by ticks to turn to seconds (0.0005625/20=0.000028125).
@@ -133,7 +136,9 @@ public class EntityTrainCore extends GenericRailTransport {
         super.setValuesOnLinkUpdate(consist);
         maxPowerMicroblocks =0;
         for(GenericRailTransport t : consist) {
-            maxPowerMicroblocks +=t.getPower();
+            if(t.getBoolean(boolValues.RUNNING)) {
+                maxPowerMicroblocks += t.getPower();
+            }
         }
     }
 
@@ -168,18 +173,28 @@ public class EntityTrainCore extends GenericRailTransport {
 
 
 
-                vectorCache[1][0] = (maxPowerMicroblocks*1.11039648f)
-                        *getAcceleratiorPercentage();//applied MHP, buffed by linear gravity
+                vectorCache[1][0] = (maxPowerMicroblocks*1.11039648f);//applied MHP, buffed by linear gravity
 
                 //skip the rest of updating if speed is 0.
                 if(vectorCache[1][0]==0){
                     return;
                 }
 
-                vectorCache[1][0]*=(weight/13.6f);
-                vectorCache[1][0]*=0.0254f; //movement distance of 1 MHP in meters per second (30.48/60/20).
-                vectorCache[1][0]*=0.05f;//scale to ticks
-                vectorCache[1][0]*=0.000000025f;//scale to i dont even know but it feels right
+                //vectorCache[1][0]*=(weight/13.6f);
+                //vectorCache[1][0]*=0.0254f; //movement distance of 1 MHP in meters per second (30.48/60/20).
+                //vectorCache[1][0]*=0.05f;//scale to ticks
+                //vectorCache[1][0]*=0.000000025f;//scale to i dont even know but it feels right
+
+
+                vectorCache[1][0]=maxPowerMicroblocks;
+                vectorCache[1][0]/=accelerator<0?transportTopSpeedReverse():transportTopSpeed();
+                vectorCache[1][0]/=weight;
+                vectorCache[1][0]*=600;
+                vectorCache[1][0]*=getAcceleratiorPercentage();
+
+
+                //vectorCache[1][0]=0;
+
                 if(!CommonProxy.realSpeed){
                     vectorCache[1][0]*=0.25f;//scale to TC speed
                 }
@@ -255,32 +270,27 @@ public class EntityTrainCore extends GenericRailTransport {
                 if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
                     frontBogie.setVelocity(0,0,0);
                     backBogie.setVelocity(0,0,0);
-                }
-
-                //cap to top speed, top speed is calculated as KMH converted to meters per second, converted to meters per tick
-                if(accelerator>0 && vectorCache[1][0]!=0) {
-                    //handle TiM forward movement
-                    Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
-                    frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-                    backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-                } else if(accelerator<0 && vectorCache[1][0]!=0) {
-                    //handle TiM backwards movement
+                } else if(accelerator!=0) {
                     Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
                     frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
                     backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
                 }
-
 
 
                 updatePosition();
             }
 
         }
+        if(whistleDelay>0) {
+            whistleDelay--;
+        }
     }
 
     @Override
     public void manageFuel(){
-        if(getTypes().contains(DIESEL)){
+        if(getTypes().contains(STEAM)) {
+            fuelHandler.manageSteam(this);
+        } else if(getTypes().contains(DIESEL)){
             FuelHandler.manageDieselFuel(this);
         } else if(getTypes().contains(ELECTRIC)){
             FuelHandler.manageElectricFuel(this);
@@ -315,19 +325,39 @@ public class EntityTrainCore extends GenericRailTransport {
     }
 
 
+    private int whistleDelay=0;
+    public void soundHorn() {
+        for (EnumSounds sounds : EnumSounds.values()) {
+            if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")&& sounds.getEntityClass().equals(this.getClass()) && whistleDelay == 0) {
+                worldObj.playSoundAtEntity(this, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
+                whistleDelay = 65;
+            }
+        }
+    }
+
+
     @Override
     public boolean interact(int player, boolean isFront, boolean isBack, int key) {
         if (!super.interact(player, isFront, isBack, key)){
             switch (key){
                 case 8:{ //toggle ignition
                     setBoolean(boolValues.RUNNING, !getBoolean(boolValues.RUNNING));
+                    updateConsist();
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
                     //the second to last value is volume, and idk what the last one is.
-                    worldObj.playSoundEffect(posX, posY, posZ, getHorn().getResourcePath(), 1, 0.5f);
+                    //worldObj.playSoundEffect(posX, posY, posZ, getHorn().getResourcePath(), 1, 0.5f);
+                    if(whistleDelay==0){
+                        soundHorn();
+                    }
                     return true;
                 }case 2:{ //decrease speed
                     if (accelerator >-6 && getBoolean(boolValues.RUNNING)) {
+                        for(GenericRailTransport consist : getConsist()){
+                            if(consist.getAccelerator()!=0){
+                                return true;
+                            }
+                        }
                         if(accelerator>6){
                             accelerator=6;
                         } else {
@@ -338,6 +368,11 @@ public class EntityTrainCore extends GenericRailTransport {
                     return true;
                 }case 3:{ //increase speed
                     if (accelerator <6 && getBoolean(boolValues.RUNNING)) {
+                        for(GenericRailTransport consist : getConsist()){
+                            if(consist.getAccelerator()!=0){
+                                return true;
+                            }
+                        }
                         if(accelerator<-6){
                             accelerator=-6;
                         } else {

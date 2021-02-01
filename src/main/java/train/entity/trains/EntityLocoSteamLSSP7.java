@@ -53,7 +53,7 @@ public class EntityLocoSteamLSSP7 extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLSSP7()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.3f, worldObj==null?0.1f:0.3f, -0.8f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.3f, worldObj==null?0.1f:0.36f, -0.825f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -93,7 +93,7 @@ public class EntityLocoSteamLSSP7 extends EntityTrainCore {
     public float transportTopSpeed(){return 45;}
     @Override
     public ItemStackSlot fuelSlot(){
-        return super.fuelSlot().setOverlay(Items.coal);
+        return super.fuelSlot();
     }
     @Override
     public int[] getTankCapacity(){return new int[]{5000, 1000};}

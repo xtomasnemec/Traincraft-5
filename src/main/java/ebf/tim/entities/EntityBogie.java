@@ -52,6 +52,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     public float yOffset=0;
 
     public int lastKnownRailX=0, lastKnownRailZ=0;
+    public double lastKnownRailY=0;
 
     public EntityBogie(World world) {
         super(world);
@@ -187,6 +188,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             if (block instanceof BlockRailBase) {
                 lastKnownRailX=(int)posX;
                 lastKnownRailZ=(int)posZ;
+                lastKnownRailY=posY;
                 this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
                 //prevent moving without motion velocity
@@ -211,6 +213,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             } else {
                 posX=lastKnownRailX+0.5;
                 posZ=lastKnownRailZ+0.5;
+                posY=lastKnownRailY;
                 return true;
             }
         }
@@ -221,8 +224,15 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     private void segmentMovement(double velocity, int floorX, int floorY, int floorZ, BlockRailBase block, GenericRailTransport host){
         while (velocity>0) {
-            moveBogieVanillaDirectional(Math.min(0.3,velocity), floorX, floorY, floorZ, block, host);
-            velocity-=0.3;
+            //on straight track, use bigger movement vectors for performance.
+            if(block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==0||
+                    block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==0){
+                moveBogieVanillaDirectional(Math.min(0.3, velocity), floorX, floorY, floorZ, block, host);
+                velocity -= 0.35;
+            } else {
+                moveBogieVanillaDirectional(Math.min(0.75, velocity), floorX, floorY, floorZ, block, host);
+                velocity -= 0.075;
+            }
 
             //update the last used block to the one we just used, if it's actually different.
             floorX = MathHelper.floor_double(this.posX);

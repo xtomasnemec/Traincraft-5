@@ -82,7 +82,7 @@ public class EntityLocoElectricBP4 extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{-1.7f,1.35f, 0.25f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{-1.7f,1.25f, 0.25f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{5.6f,2.4f,1.4f};}
     @Override
@@ -96,7 +96,7 @@ public class EntityLocoElectricBP4 extends EntityTrainCore {
     public float transportTopSpeed(){return 105;}
     @Override
     public ItemStackSlot fuelSlot(){
-        return super.fuelSlot().setOverlay(Items.coal);
+        return super.fuelSlot();
     }
     @Override
     public int[] getTankCapacity(){return new int[]{8650};}

@@ -36,8 +36,8 @@ public class CommonProxy implements IGuiHandler {
     public static String configDirectory;
     public static boolean realSpeed=false;
     public static boolean enableChunkloading=true;
-
-
+    /**Decides whether to use Traincraft or TiM assembly tables. */
+    public static boolean isTraincraft = true;
 
 
     /**

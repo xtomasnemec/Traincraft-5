@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import ebf.tim.TrainsInMotion;
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.registry.TiMGenericRegistry;
@@ -18,7 +19,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +26,10 @@ import train.blocks.TCBlocks;
 import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
 import train.core.TrainModCore;
-import train.core.handlers.*;
+import train.core.handlers.ConfigHandler;
+import train.core.handlers.FuelHandler;
+import train.core.handlers.PacketHandler;
+import train.core.handlers.VillagerTraincraftHandler;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.generation.ComponentVillageTrainstation;
@@ -36,7 +39,7 @@ import train.library.TrainRegistry;
 
 import java.io.File;
 
-@Mod(modid = Info.modID, name = Info.modName, version = Info.modVersion)
+@Mod(modid = Info.modID, name = Info.modName, version = Info.modVersion, dependencies="after:"+ TrainsInMotion.MODID)
 public class Traincraft {
 
 	/* TrainCraft instance */
@@ -71,44 +74,6 @@ public class Traincraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		tcLog.info("Starting Traincraft " + Info.modVersion + "!");
-
-		GUICraftBook.addPage(Info.modID, "Traincraft\n" +
-				"Developers: \n" +
-				"Eternal Blue Flame\n" +
-				"Canitzp, ComputerButter\n\n" +
-				"Project Overseer:\nSpitfire4466\n\n" +
-				"Lead artists: Broscolotos,\n" +
-				"    Riggs64,\n"
-				);
-
-		GUICraftBook.addPage(Info.modID, "Honorable Mentions:\n" +
-				"Mr. Brutal,\n" +
-				"helldiver, DAYdiecast,\n" +
-				"BlockStormTwo, FriscoWolf,\n" +
-				"ChandlerBingUA, KiraKun,\n" +
-				"NitroxydeX");
-
-		GUICraftBook.addPage(Info.modID, "DISCLAIMER:\n" +
-				"All transport into including\n" +
-				"but not limited to\n" +
-				"weight, year, country, \n" +
-				"seating capacity, etc...\n" +
-				"may be inaccurate, this\n" +
-				"is written to the best of \n" +
-				"our knowledge and we\n" +
-				"encourage the community to\n" +
-				"  correct us, with citation.");
-
-		GUICraftBook.addPage(Info.modID,
-				"This release is an alpha,\n" +
-						"and some features may be\n" +
-						"missing, buggy, or\n" +
-						"incomplete.\n" +
-						"We appreciate your\n" +
-						"patience and reports as\n" +
-						"we work on adding back all\n" +
-						"of the missing features,\nand many many more.");
 
 				/* Config handler */
 		configDirectory= event.getModConfigurationDirectory();
@@ -131,7 +96,56 @@ public class Traincraft {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		tcLog.info("Start Initialization");
+		tcLog.info("Starting Traincraft " + Info.modVersion + "!");
 
+		if(event.getSide().isClient()) {
+			GUICraftBook.addPage(Info.modID, "Traincraft\n" +
+					"Developers: \n" +
+					"Eternal Blue Flame\n" +
+					"Canitzp, ComputerButter\n\n" +
+					"Project Overseer:\nSpitfire4466\n\n" +
+					"Lead artists: \nBroscolotos, Riggs64"
+			);
+
+			GUICraftBook.addPage(Info.modID, "Honorable Mentions:\n" +
+					"Mr. Brutal,\n" +
+					"helldiver, DAYdiecast,\n" +
+					"BlockStormTwo, FriscoWolf,\n" +
+					"ChandlerBingUA, KiraKun,\n" +
+					"NitroxydeX");
+
+			GUICraftBook.addPage(Info.modID, "DISCLAIMER:\n" +
+					"All transport into including\n" +
+					"but not limited to\n" +
+					"weight, year, country, \n" +
+					"seating capacity, etc...\n" +
+					"may be inaccurate, this\n" +
+					"is written to the best of \n" +
+					"our knowledge and we\n" +
+					"encourage the community to\n" +
+					"correct us, with citation.");
+
+			GUICraftBook.addPage(Info.modID,
+					"WARNING:\nThis release is an alpha,\n" +
+							"and some features may be\n" +
+							"missing, buggy, or\n" +
+							"incomplete.\n" +
+							"We appreciate your\n" +
+							"patience and reports as\n" +
+							"we work on adding back all\n" +
+							"of the missing features,\nand many many more.");
+
+			GUICraftBook.addPage(Info.modID,
+					"I WILL STATE THIS AGAIN\n" +
+							"This release is an alpha,\n" +
+							"and some features may be\n" +
+							"missing, buggy, or\n" +
+							"incomplete.\n" +
+							"We appreciate your\n" +
+							"patience and reports as\n" +
+							"we work on adding back all\n" +
+							"of the missing features,\nand many many more.");
+		}
 		//proxy.getCape();
 
 		/* Register Items, Blocks, ... */
@@ -142,6 +156,7 @@ public class Traincraft {
 		trainCloth = proxy.addArmor("Paintable");
 		trainCompositeSuit = proxy.addArmor("CompositeSuit");
 		TCBlocks.init();
+		TCBlocks.registerRecipes();
 		TCItems.init();
 
 		if(ConfigHandler.ENABLE_STEAM) {
@@ -172,7 +187,6 @@ public class Traincraft {
 			TiMGenericRegistry.registryPosition++;
 		}
 
-		proxy.registerTileEntities();
 		proxy.registerSounds();
 		proxy.setHook(); // Moved file needed to run JLayer, we need to set a hook in order to retrieve it
 

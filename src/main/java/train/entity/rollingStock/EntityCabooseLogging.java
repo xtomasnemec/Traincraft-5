@@ -5,6 +5,7 @@ import ebf.tim.api.SkinRegistry;
 import ebf.tim.api.TransportSkin;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemTransport;
+import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import train.Traincraft;
 import train.library.Info;
-import train.library.ItemIDs;
 
 import java.util.List;
 import java.util.UUID;
@@ -73,7 +73,7 @@ public class EntityCabooseLogging extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 3), new ItemStack(ItemIDs.woodenBogie.item, 2), new ItemStack(ItemIDs.woodenFrame.item, 2),
+                new ItemStack(Blocks.planks, 3), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2),
                 new ItemStack(Items.iron_ingot, 1), null, null, null, null, new ItemStack(Blocks.crafting_table, 1)        };
     }
 
@@ -82,7 +82,7 @@ public class EntityCabooseLogging extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0,1.2f, 0f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{2.0f,2.4f,1.45f};}
+    public float[] getHitboxSize(){return new float[]{worldObj==null?3.25f:2.0f,2.4f,1.45f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.25f, -0.325f};}
 

@@ -2,6 +2,7 @@ package ebf.tim.entities;
 
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,6 +28,7 @@ import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityMultiPart;
@@ -41,6 +43,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -131,6 +134,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public float[] velocity=new float[]{0,0};
     public int forceBackupTimer =0;
     public float pullingWeight=0;
+
+    private List<GenericRailTransport> consist = new ArrayList<>();
 
     //@SideOnly(Side.CLIENT)
     public TransportRenderData renderData = new TransportRenderData();
@@ -309,7 +314,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**
      * <h2>Entity first placed initialization</h2>
      * this is only ever called once, from the entity's item instance when the entity is first placed.
-     * this is good for add-ons to dynamically set the default texture or other values.
      */
     public void entityFirstInit(ItemStack item){}
 
@@ -330,7 +334,18 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public ItemStackSlot fuelSlot(){
-        return new ItemStackSlot(this, 400,114,32);
+        if(getTypes().contains(STEAM)) {
+            return new ItemStackSlot(this, 400, 114, 32).setOverlay(Items.coal);
+        }
+        if(getTypes().contains(DIESEL)) {
+            return new ItemStackSlot(this, 400, 114, 32).setOverlay(TiMFluids.bucketOil);
+        }
+        if(getTypes().contains(ELECTRIC)) {
+            return new ItemStackSlot(this, 400, 114, 32).setOverlay(Items.redstone);
+        }
+
+
+        return new ItemStackSlot(this, 400, 114, 32);
 
     }
     public ItemStackSlot waterSlot(){
@@ -578,8 +593,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float p_70097_2_){
-
-
         if (damageSource.getEntity() instanceof GenericRailTransport){
             return false;
         }
@@ -934,7 +947,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-        dataWatcher.updateObject(12,velocity[0]=(float)((Math.abs(posX)-Math.abs(prevPosX))+(Math.abs(posZ)-Math.abs(prevPosZ))));
+        dataWatcher.updateObject(12,velocity[0]= (float)Math.sqrt(motionX*motionX + motionZ*motionZ));
         collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
 
     }
@@ -1037,7 +1050,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     seats.add(seat);
                 }
             }
-            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
 
         /*
@@ -1067,7 +1079,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 double[] roll = CommonUtil.rotatePoint(new double[]{
                         ((backBogie.posY-frontBogie.posY)
                         /(Math.abs(rotationPoints()[0])+Math.abs(rotationPoints()[1]))
-                        )*0.01,0,0},
+                        )*0.0025,0,0},
                         0, rotationYaw,0);
                 frontBogie.addVelocity(roll[0],roll[1],roll[2]);
                 backBogie.addVelocity(roll[0],roll[1],roll[2]);
@@ -1120,7 +1132,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //be sure the owner entityID is currently loaded, this variable is dynamic so we don't save it to NBT.
-        if (!worldObj.isRemote &&ticksExisted %10==0){
+        if (!worldObj.isRemote &&ticksExisted %20==0){
 
             manageFuel();
 
@@ -1289,6 +1301,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     /**
      * iterates all the links to check if the stock has a train
+     * called on linking changes and when a train changes running states
      */
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
@@ -1307,6 +1320,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             link = link.backLinkedID==null?null:(GenericRailTransport) worldObj.getEntityByID(link.backLinkedID);
         }
 
+        consist=transports;
+
         //now tell everything in the list, including this, that there's a new list, and provide said list.
         for(GenericRailTransport t : transports){
             t.setValuesOnLinkUpdate(transports);
@@ -1314,12 +1329,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
 
-    //todo: update needed info like weight and combined tractive effort based on values in this array
+    /**
+     * called on linking changes and when a train changes running states
+     * @see #updateConsist() 
+     * @param consist the list of entities in the consist
+     */
     public void setValuesOnLinkUpdate(List<GenericRailTransport> consist){
         pullingWeight=0;
         for(GenericRailTransport t : consist) {
             pullingWeight +=t.weightKg();
         }
+    }
+
+    public List<GenericRailTransport> getConsist(){
+        return consist;
     }
 
     //used for trains and B-units
@@ -1719,15 +1742,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return inventory==null || inventory.size()<p_70304_1_?null:inventory.get(p_70304_1_).getStack();
     }
     @Override
-    public void markDirty() {forceBackupTimer = 30;}
+    public void markDirty() {
+        if(forceBackupTimer==0) {
+            forceBackupTimer = 30;
+        }
+
+    }
     /**called when the inventory GUI is opened*/
     @Override
     public void openInventory() {}
     /**called when the inventory GUI is closed*/
     @Override
     public void closeInventory() {
-        if (!worldObj.isRemote){
-            ServerLogger.writeWagonToFolder(this);
+        if(forceBackupTimer==0) {
+            forceBackupTimer = 30;
         }
     }
 
@@ -1913,7 +1941,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if (getTankInfo(null)[stack]!=null && (
                     resource.getFluid() == null || getTankInfo(null)[stack].fluid.getFluid() == resource.getFluid() ||
                             getTankInfo(null)[stack].fluid.amount ==0)) {
-                if(resource.amount+getTankInfo(null)[stack].fluid.amount<=getTankInfo(null)[stack].capacity){
+                if(resource.amount+getTankInfo(null)[stack].fluid.amount<=getTankCapacity()[stack]){
                     getTankInfo(null)[stack] = new FluidTankInfo(
                             new FluidStack(resource.fluid, getTankInfo(null)[stack].fluid.amount+resource.amount),
                             getTankInfo(null)[stack].capacity);
@@ -2008,9 +2036,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         Bogie[] ret = new Bogie[bogieModelOffsets().length];
         for(int i=0; i<bogieModelOffsets().length;i++){
             if(i>=bogieModels().length){
-                ret[i] = new Bogie(bogieModels()[0], bogieModelOffsets()[i]);
+                ret[i] = new Bogie(bogieModels()[0], -bogieModelOffsets()[i][0],bogieModelOffsets()[i][1],bogieModelOffsets()[i][2]);
             } else {
-                ret[i] = new Bogie(bogieModels()[i], bogieModelOffsets()[i]);
+                ret[i] = new Bogie(bogieModels()[i], -bogieModelOffsets()[i][0],bogieModelOffsets()[i][1],bogieModelOffsets()[i][2]);
             }
         }
         return ret;

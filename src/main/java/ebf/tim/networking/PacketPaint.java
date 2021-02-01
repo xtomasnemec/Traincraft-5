@@ -2,8 +2,10 @@ package ebf.tim.networking;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import ebf.tim.entities.GenericRailTransport;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.common.DimensionManager;
 
 /**
@@ -32,8 +34,12 @@ public class PacketPaint implements IMessage {
         key = ByteBufUtils.readUTF8String(bbuf);
 
         try {
-            DimensionManager.getWorld(dimensionID).getEntityByID(entityId).
-                    getDataWatcher().updateObject(24, key);
+            Entity e=DimensionManager.getWorld(dimensionID).getEntityByID(entityId);
+            if(e instanceof GenericRailTransport) {
+                DimensionManager.getWorld(dimensionID).getEntityByID(entityId).
+                        getDataWatcher().updateObject(24, key);
+                ((GenericRailTransport) e).renderData.needsModelUpdate=true;
+            }
         } catch (Exception e){
             System.out.println("Forge must have confused trains with chickens... You should tell Eternal, and send him this entire stacktrace, just to be sure.");
             e.printStackTrace();

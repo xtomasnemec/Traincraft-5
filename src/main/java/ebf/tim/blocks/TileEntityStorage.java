@@ -3,14 +3,10 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.registry.TiMFluids;
-import ebf.tim.utility.ClientProxy;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
-import ebf.tim.utility.ItemStackSlot;
+import ebf.tim.utility.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -36,6 +32,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     public int storageType=0;
     public int outputPage=1;
     public int pages=1;
+
     public int assemblyTableTier = -1; //only applies if part of assemblyTable/traintable, no need to set otherwise.
 
     public TileEntityStorage(BlockDynamic block){
@@ -56,7 +53,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 this.assemblyTableTier = 0;
             }
 
-            if (!ClientProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
+            if (!CommonProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
                 //inventory grid (left grid)
                 for (int l = 0; l < 3; ++l) {
                     for (int i1 = 0; i1 < 3; ++i1) {
@@ -78,18 +75,19 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 inventory.add(new ItemStackSlot(this, s+1, assemblyTableTier).setCoords(79, 27).setCraftingInput(true));
                 inventory.add(new ItemStackSlot(this, s+2, assemblyTableTier).setCoords(115, 27).setCraftingInput(true));
                 //the following is dye slot, removed so we can have 9 crafting slots; if adding back, remember to increment everything
-                //inventory.add(new ItemStackSlot(this, s+3, assemblyTableTier).setCoords(145, 27).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+3, assemblyTableTier).setCoords(25, 61).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+4, assemblyTableTier).setCoords(79, 61).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+5, assemblyTableTier).setCoords(115, 61).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+6, assemblyTableTier).setCoords(43, 93).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+7, assemblyTableTier).setCoords(79, 93).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+8, assemblyTableTier).setCoords(145, 93).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+3, assemblyTableTier).setCoords(145, 27).setCraftingInput(true));
+
+                inventory.add(new ItemStackSlot(this, s+4, assemblyTableTier).setCoords(25, 61).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+5, assemblyTableTier).setCoords(79, 61).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+6, assemblyTableTier).setCoords(115, 61).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+7, assemblyTableTier).setCoords(43, 93).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+8, assemblyTableTier).setCoords(79, 93).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+9, assemblyTableTier).setCoords(145, 93).setCraftingInput(true));
 
                 //create the assembly table output slots (9-16)
                 for(int i = 0; i < 4; ++i){
                     for(int j = 0; j < 2; ++j){
-                        inventory.add(new ItemStackSlot(this, (s+9) + (j * 4 + i), assemblyTableTier).setCoords(92 + i * 18, (128) + j * 18).setCraftingOutput(true));
+                        inventory.add(new ItemStackSlot(this, (s+10) + (j * 4 + i), assemblyTableTier).setCoords(92 + i * 18, (128) + j * 18).setCraftingOutput(true));
                     }
                 }
 
@@ -109,7 +107,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
             inventory.add(new ItemStackSlot(this,402).setCoords( 30 , 37).setCraftingInput(true).setOverlay(Blocks.gravel)); //ballast
 
             inventory.add(new ItemStackSlot(this,403).setCoords( 50 , 7).setCraftingInput(true)); //wires
-            inventory.add(new ItemStackSlot(this,404).setCoords( 50 , 27).setCraftingInput(true));//augument slot
+            inventory.add(new ItemStackSlot(this,404).setCoords( 50 , 27).setCraftingInput(true));//augment slot
 
             inventory.add(new ItemStackSlot(this,405).setCoords( 124 , -2).setCraftingInput(true).setOverlay(Blocks.rail));//old shape input
 
@@ -173,18 +171,6 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
             }
         }
         tag.setString("xmlData",data.toXMLString());
-    }
-
-
-    public void syncTileEntity(){
-        for(Object o : this.worldObj.playerEntities){
-            if(o instanceof EntityPlayerMP){
-                EntityPlayerMP player = (EntityPlayerMP) o;
-                if(player.getDistance(xCoord, yCoord, zCoord) <= 64) {
-                    player.playerNetServerHandler.sendPacket(this.getDescriptionPacket());
-                }
-            }
-        }
     }
 
     /**the fluidTank tank*/
@@ -462,20 +448,16 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
             //get the number of remaining pages
             //if there are some, increment the outputPage int
             outputPage++;
-            for(ItemStackSlot slot: inventory) {
-                slot.onSlotChanged();
-                slot.onCraftMatrixChanged(this, inventory, false);
-            }
+            getSlotIndexByID(400).updatePage(this, inventory);
+            this.markDirty();
         }
     }
 
     public void decrementPage() {
         if (pages > 1 && outputPage > 1) {
             outputPage--;
-            for(ItemStackSlot slot: inventory) {
-                slot.onSlotChanged();
-                slot.onCraftMatrixChanged(this, inventory, false);
-            }
+            getSlotIndexByID(400).updatePage(this, inventory);
+            this.markDirty();
         }
     }
 

@@ -2,8 +2,8 @@ package train.blocks.distil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
+import ebf.tim.blocks.TileRenderFacing;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ public class BlockDistil extends BlockDynamic {
 
 
 	public BlockDistil() {
-		super(Material.rock, true,true);
+		super(Material.rock,true);
 		//setRequiresSelfNotify();
 	}
 
@@ -83,7 +83,8 @@ public class BlockDistil extends BlockDynamic {
 	}
 
 	public ResourceLocation getTexture(int x, int y, int z){
-		if(Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z) instanceof TileEntityDistil){
+		if(Minecraft.getMinecraft().theWorld!=null &&
+				Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z) instanceof TileEntityDistil){
 			if(((TileEntityDistil) Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z)).isBurning()){
 				return new ResourceLocation("traincraft", "textures/blocks/distil_on.png");
 			}
@@ -102,24 +103,8 @@ public class BlockDistil extends BlockDynamic {
 	}
 
 	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
-		super.onBlockAdded(world, i, j, k);
-		world.markBlockForUpdate(i, j, k);
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack stack) {
-		TileEntityDistil te = (TileEntityDistil) world.getTileEntity(i, j, k);
-		if (te != null) {
-			int dir = MathHelper.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-			te.setFacing(ForgeDirection.getOrientation(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
-			world.markBlockForUpdate(i, j, k);
-		}
-	}
-
-	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityDistil();
+		return new TileEntityDistil(this);
 	}
 
 }

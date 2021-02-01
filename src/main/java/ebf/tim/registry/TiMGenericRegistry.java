@@ -125,9 +125,8 @@ public class TiMGenericRegistry {
         if(block instanceof BlockDynamic) {
             if(model!=null) {
                 ((BlockDynamic) block).setModel(model);
-            }
-            if(((BlockDynamic) block).texture==null){
-                ((BlockDynamic) block).texture=new ResourceLocation(MODID, unlocalizedName);
+            } else if (TESR!=null){
+                ((BlockDynamic) block).setTESR(TESR);
             }
         }
         if(block instanceof ITileEntityProvider){

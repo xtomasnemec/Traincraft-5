@@ -17,10 +17,7 @@ import ebf.tim.entities.EntitySeat;
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.ItemAdminBook;
 import ebf.tim.items.TiMTab;
-import ebf.tim.networking.PacketCraftingPage;
-import ebf.tim.networking.PacketInteract;
-import ebf.tim.networking.PacketPaint;
-import ebf.tim.networking.PacketRemove;
+import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
 import ebf.tim.utility.ChunkHandler;
 import ebf.tim.utility.ClientProxy;
@@ -153,11 +150,13 @@ public class TrainsInMotion {
             GUICraftBook.addPage(MODID, "Trains in Motion\nDev: Eternal Blue Flame" +
                     "\n\nHonorable mentions\nfor helping development:\nFerdinand (Fexcraft)\n" +
                     "Zora no Densha, cam27cam\nMothershipQ, Broscolotos\nSebasver, Dominik__1\n");
+            GUICraftBook.addPage(MODID,"More honorable mentions\nRiggs64, ComputerButter\n\nArt by\n" +
+                    "LunarTales, Bidahochi,\nand twitter.com/MaePoss");
 
-            GUICraftBook.addPage(MODID,
+                    GUICraftBook.addPage(MODID,
                     "A special thanks to\neveryone that helped\nsupport the mod through\ndonations:" +
                             "\nNightScale5755" +"\nChielmeiberg1112"+
-                            "\n \nAnd a big thanks to\nthe Traincraft community\nfor all the patience!");
+                            "\n \n   And a big thanks to\nthe Traincraft community\nfor all the patience!");
         }
 
 
