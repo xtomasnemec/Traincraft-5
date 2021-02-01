@@ -29,6 +29,8 @@ import mods.railcraft.api.carts.ILinkableCart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityMultiPart;
@@ -1094,14 +1096,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 double drag = Math.pow(
                         //scale by weight, heavier means more drag
                         Math.pow(weight, -0.015),
-
                         //then scale by speed, faster speeds mean more drag.
                         //use speed from the front bogie, when you take out direction, both bogies should move at the same speed
                         //multiply by 100 to give a more accurate scale, as 1 block per tick is a value of 1.
                         Math.pow((Math.abs(motionX)+Math.abs(motionZ))*10, -0.025));
                 //give it a little buff to feel more arcade-like, the closer to 1, the less drag.
-                drag+=0.25;
-
+                drag+=0.125;
                 //it should never be able to go over these caps, but i don't trust my math
                 if(drag>0.99){
                     drag=0.99;
@@ -1227,11 +1227,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
 
-                    double[] motion = CommonUtil.rotatePoint(0.2,0,
+                    double[] motion = CommonUtil.rotatePoint(0.075,0,
                             CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
 
                     if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0) {
-                        double distance = Math.copySign(0.2,motion[0]);
+                        double distance = Math.copySign(0.075,motion[0]);
                         if(distance>0){
                             if(frontBogie.motionX+distance>distance){
                                 motion[0]=Math.max(0,distance-frontBogie.motionX);
@@ -1241,7 +1241,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                                 motion[0]=Math.min(0,distance-frontBogie.motionX);
                             }
                         }
-                        distance = Math.copySign(0.2,motion[2]);
+                        distance = Math.copySign(0.075,motion[2]);
                         if(distance>0){
                             if(frontBogie.motionZ+distance>distance){
                                 motion[2]=Math.max(0,distance-frontBogie.motionZ);
