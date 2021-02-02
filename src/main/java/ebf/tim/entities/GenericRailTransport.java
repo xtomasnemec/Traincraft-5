@@ -74,8 +74,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**defines the colors, the outer array is for each different color, and the inner int[] is for the RGB color*/
     public List<Integer> colorsFrom = new ArrayList<>();
     public List<Integer> colorsTo = new ArrayList<>();
-    /**the server-sided persistent UUID of the owner*/
-    private UUID owner = null;
     /**the front entity bogie*/
     public EntityBogie frontBogie = null;
     /**the back entity bogie*/
@@ -139,6 +137,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     //@SideOnly(Side.CLIENT)
     public TransportRenderData renderData = new TransportRenderData();
+
+    XmlBuilder entityData = new XmlBuilder();
 
     /**the array of booleans, defined as bits
      * 0- brake: defines the brake
@@ -261,7 +261,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         posY = yPos;
         posX = xPos;
         posZ = zPos;
-        this.owner = owner;
+        entityData.putUUID("owner", owner);
         setSize(0.25f,0.25f);
         ignoreFrustumCheck = true;
         inventory = new ArrayList<>();
@@ -716,10 +716,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Deprecated //todo: send this data over the datawatcher or other more reliable means
     @Override
     public void readSpawnData(ByteBuf additionalData) {
-        owner = new UUID(additionalData.readLong(), additionalData.readLong());
+        XmlBuilder xml = new XmlBuilder(ByteBufUtils.readUTF8String(additionalData));
         rotationYaw = additionalData.readFloat();
 
-        XmlBuilder xml = new XmlBuilder(ByteBufUtils.readUTF8String(additionalData));
         if(getTankCapacity()!=null) {
             fluidTank = new FluidTankInfo[getTankCapacity().length];
             for (int i = 0; i < getTankCapacity().length; i++) {
@@ -746,10 +745,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**sends the data to server from client*/
     @Override
     public void writeSpawnData(ByteBuf buffer) {
-        buffer.writeLong(owner.getMostSignificantBits());
-        buffer.writeLong(owner.getLeastSignificantBits());
         buffer.writeFloat(rotationYaw);
         XmlBuilder xml = new XmlBuilder();
+        xml.putUUID("owner", entityData.getUUID("owner"));
         for(int i=0; i<getTankInfo(null).length;i++){
             if(getTankInfo(null) !=null) {
                 xml.putFluidStack("tanks." + i, getTankInfo(null)[i].fluid);
@@ -766,6 +764,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**loads the entity's save file*/
     @Override
     protected void readEntityFromNBT(NBTTagCompound tag) {
+        if(tag.hasKey("entityxml")) {
+            entityData = new XmlBuilder(tag.getString("entityxml"));
+        }
         bools.set(tag.getInteger(NBTKeys.bools));
         isDead = tag.getBoolean(NBTKeys.dead);
         //load links
@@ -776,7 +777,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             backLinkedTransport = new UUID(tag.getLong(NBTKeys.backLinkMost), tag.getLong(NBTKeys.backLinkLeast));
         }
         //load owner
-        owner = new UUID(tag.getLong(NBTKeys.ownerMost),tag.getLong(NBTKeys.ownerLeast));
+        //@DEPRECIATED, legacy support to prevent save corruption
+        if(tag.hasKey(NBTKeys.ownerMost)){
+            UUID owner = new UUID(tag.getLong(NBTKeys.ownerMost),tag.getLong(NBTKeys.ownerLeast));
+            entityData.putUUID("owner",owner);
+        }
         ownerName = tag.getString(NBTKeys.ownerName);
 
         String skin = tag.getString(NBTKeys.skinURI);
@@ -826,6 +831,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**saves the entity to server world*/
     @Override
     protected void writeEntityToNBT(NBTTagCompound tag) {
+        tag.setString("entityxml", entityData.toXMLString());
         tag.setInteger(NBTKeys.bools, bools.toInt());
         tag.setBoolean(NBTKeys.dead, isDead);
         //frontLinkedTransport and backLinkedTransport bogies
@@ -838,8 +844,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             tag.setLong(NBTKeys.backLinkLeast, backLinkedTransport.getLeastSignificantBits());
         }
         //owner
-        tag.setLong(NBTKeys.ownerMost, owner.getMostSignificantBits());
-        tag.setLong(NBTKeys.ownerLeast, owner.getLeastSignificantBits());
         tag.setString(NBTKeys.ownerName, ownerName);
 
 
@@ -1137,7 +1141,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             if (ownerName.equals("")) {
                 @Nullable
-                Entity player = CommonProxy.getEntityFromUuid(owner);
+                Entity player = CommonProxy.getEntityFromUuid(entityData.getUUID("owner"));
                 if (player instanceof EntityPlayer) {
                     if (!ownerName.equals(((EntityPlayer) player).getDisplayName())) {
                         ownerName = ((EntityPlayer) player).getDisplayName();
@@ -1329,7 +1333,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     /**
      * called on linking changes and when a train changes running states
-     * @see #updateConsist() 
+     * @see #updateConsist()
      * @param consist the list of entities in the consist
      */
     public void setValuesOnLinkUpdate(List<GenericRailTransport> consist){

@@ -73,7 +73,7 @@ public class EntityTrainCore extends GenericRailTransport {
     @Override
     protected void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
-        tag.setInteger(NBTKeys.accelerator, accelerator);
+        tag.setInteger(NBTKeys.accelerator, getAccelerator());
         tag.setFloat(NBTKeys.transportFuel, dataWatcher.getWatchableObjectFloat(16));
         tag.setFloat(NBTKeys.trainSpeed, vectorCache[1][0]);
 
@@ -97,7 +97,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
 
     @Override
-    public boolean hasDrag(){return !getBoolean(boolValues.RUNNING) || accelerator==0;}
+    public boolean hasDrag(){return !getBoolean(boolValues.RUNNING) || getAccelerator()==0;}
 
     @Override
     public float getPower(){
@@ -116,13 +116,13 @@ public class EntityTrainCore extends GenericRailTransport {
     }
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
     public float getAcceleratiorPercentage(){
-        switch (Math.abs(accelerator)){
-            case 1:{return Math.copySign(0.1f,accelerator);}//would otherwise be 0833
-            case 2:{return Math.copySign(0.175f,accelerator);}//would otherwise be 166
-            case 3:{return Math.copySign(0.24f,accelerator);}//would otherwise be 2499
-            case 4:{return Math.copySign(0.3f,accelerator);}//would otherwise be 33
-            case 5:{return Math.copySign(0.375f,accelerator);}//would otherwise be 4166
-            case 6: case 7:{return Math.copySign(0.425f,accelerator);}//would otherwise be 499
+        switch (Math.abs(getAccelerator())){
+            case 1:{return Math.copySign(0.1f,getAccelerator());}//would otherwise be 0833
+            case 2:{return Math.copySign(0.175f,getAccelerator());}//would otherwise be 166
+            case 3:{return Math.copySign(0.24f,getAccelerator());}//would otherwise be 2499
+            case 4:{return Math.copySign(0.3f,getAccelerator());}//would otherwise be 33
+            case 5:{return Math.copySign(0.375f,getAccelerator());}//would otherwise be 4166
+            case 6: case 7:{return Math.copySign(0.425f,getAccelerator());}//would otherwise be 499
             default:{return 0;}
         }
         //old way that didnt compensate for pressure/gearing efficiency.

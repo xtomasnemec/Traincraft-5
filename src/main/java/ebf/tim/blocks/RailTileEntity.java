@@ -131,6 +131,7 @@ public class RailTileEntity extends TileEntity {
                 railGLID = null;
             }
         }
+        data.buildXML();
 
     }
 
@@ -162,7 +163,7 @@ public class RailTileEntity extends TileEntity {
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
         tag.setInteger("meta", meta);
-        if(data!=null) {
+        if(data!=null && data.toXMLString()!=null && data.toXMLString().length()>0) {
             tag.setString("raildata", data.toXMLString());
         }
     }
