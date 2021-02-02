@@ -193,6 +193,9 @@ public class TiMItems {
         RecipeManager.registerRecipe(
                 new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.dustPlastic,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
                 new ItemStack(steelWire,8));
+        RecipeManager.registerRecipe(
+                new Object[]{TiMOres.ingotSteel,Blocks.glass,TiMOres.ingotSteel,Blocks.glass,Blocks.glass,Blocks.glass,TiMOres.ingotSteel,Blocks.glass,TiMOres.ingotSteel},
+                new ItemStack(carbonWire,8));
 
         //cabins
         RecipeManager.registerRecipe(
@@ -233,6 +236,29 @@ public class TiMItems {
         RecipeManager.registerRecipe(
                 new Object[]{null,TiMOres.dustPlastic,null,TiMOres.dustPlastic,Items.iron_ingot,TiMOres.dustPlastic,null,TiMOres.dustPlastic,null},
                 new ItemStack(wheelPlastic,1));
+
+
+        RecipeManager.registerRecipe(
+                new Object[]{null,null,null,Blocks.planks,null,Blocks.planks,Blocks.planks,Blocks.planks,Blocks.planks},
+                new ItemStack(frameWood,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,null,null,Blocks.planks,null,Blocks.planks,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+                new ItemStack(frameIron,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,null,null,Items.iron_ingot,null,Items.iron_ingot,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
+                new ItemStack(frameSteel,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,null,null,TiMOres.ingotAluminum,null,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum},
+                new ItemStack(frameAluminium,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,null,null,Blocks.planks,null,Blocks.planks,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper},
+                new ItemStack(frameCopper,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,null,null,TiMOres.dustPlastic,null,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic},
+                new ItemStack(framePlastic,1));
+        RecipeManager.registerRecipe(
+                new Object[]{null,null,null,TiMOres.ingotSteel,null,TiMOres.ingotSteel,Blocks.glass,Blocks.glass,Blocks.glass},
+                new ItemStack(frameFiberglass,1));
 
     }
 
