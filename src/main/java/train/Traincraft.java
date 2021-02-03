@@ -1,7 +1,5 @@
 package train;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -20,13 +18,11 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
-import train.blocks.bench.TrainWorkbenchRecipeFactoryHelper;
 import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
 import train.core.TrainModCore;
@@ -207,29 +203,6 @@ public class Traincraft {
 		/* Recipes */
 		tcLog.info("Initialize Recipes");
 
-        ResourceLocation testRecipe = new ResourceLocation("traincraft:recipes/crafting_test.json");
-
-        String json = "{\n" +
-                "  \"type\": \"traincraft:train_workbench\",\n" +
-                "  \"pattern\": [\n" +
-                "    \"TTT\",\n" +
-                "    \"TBT\",\n" +
-                "    \"TTT\"\n" +
-                "  ],\n" +
-                "  \"key\": {\n" +
-                "    \"T\": {\n" +
-                "      \"item\": \"minecraft:rail\"\n" +
-                "    },\n" +
-                "    \"B\": {\n" +
-                "      \"item\": \"minecraft:book\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"result\": {\n" +
-                "    \"item\": \"minecraft:book\"\n" +
-                "  }\n" +
-                "}";
-        JsonObject convertedObject = new Gson().fromJson(json, JsonObject.class);
-        TrainWorkbenchRecipeFactoryHelper.parseAndAddRecipe(convertedObject);
 
 		/*Trainman Villager*/
 		tcLog.info("Initialize Station Chief Villager");

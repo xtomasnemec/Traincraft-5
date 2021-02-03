@@ -1,4 +1,4 @@
-package train.blocks.bench;
+package ebf.tim.utility;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -10,36 +10,43 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import train.Traincraft;
 
 import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * This class will handle parsing and adding train workbench recipes to the train workbench.
+ * This class will handle parsing and adding recipes to the TiM table.
  * Recipes should be written in json and added to the resources section as if it was a 1.12 or newer mod. Json recipes
  * should use the same format as 1.12 and newer recipes. See the forge documentation for more information:
  * @see {https://mcforge.readthedocs.io/en/1.12.x/utilities/recipes/}
  *
  * TODO: MAKE SURE ORE DICT WORKS, TEST OTHER POSSIBLE ITEMS TOO, TEST DYES AND ITEMS WITH DATA TAG AND COUNT TAG
+ * TODO: make count tag work for items in recipe
+ * TODO: ore dict adds wrong count to itemstack!?
+ * TODO: make json recipes
  *
  * @note For forge 1.12 and greater, make a simple wrapper for this class. There were too many minor differences and I
  *       didn't want to leave landmines of commented out code.
  *
- * @note Recipes may have to change in future due to changes in naming, ie. dyes changed
+ * @note Recipe json may have to change in future due to changes in naming, ie. dyes changed
  *
  * @author ComputerButter
  */
-public class TrainWorkbenchRecipeFactoryHelper {
-
-    //to make 1.12 compatibility easier. 1.12 likes ItemStack.EMPTY, so this will replace that.
-    // WARN: It is not a drop-in replacement, and other things will have to be changed for 1.12 compat, but makes a little easier.
-    private static ItemStack NULL_ITEM = null;
+public class JsonRecipeHelper {
 
     //I used this logger because it makes debugging easier and will show up nicer in logs both for users and us.
     private static Logger LOGGER = LogManager.getLogger("traincraft");
 
     /**
-     * The main function that handles the taking the recipe, parsing it, and then adding it to the array of recipes in the trainworkbench
+     * This function handles parsing and adding a 3x3 (or smaller) json recipe to the TiM table.
      *
      * @param json the json of the recipe we need to parse
      */
@@ -87,8 +94,8 @@ public class TrainWorkbenchRecipeFactoryHelper {
         ingredients = deserializeIngredients(patternStrings, keyMap);
 
         //create and add recipe to workbench.
-        TrainWorkbenchRecipe recipe = new TrainWorkbenchRecipe(ingredients, craftingResult, craftingWidth, craftingHeight);
-        TrainCraftingManager.instance.recipes.add(recipe);
+        SizedRecipe recipe = new SizedRecipe(craftingResult, ingredients, craftingWidth, craftingHeight);
+        RecipeManager.registerRecipe(recipe);
     }
 
     /**
@@ -123,11 +130,11 @@ public class TrainWorkbenchRecipeFactoryHelper {
     }
 
     /**
-      * Turns the "key" json object into a map of recipe ingredient keys (ie. #, X, etc.) and the corresponding ingredient.
-      *
-      * @param json The object containing the array of keys
-      * @return A map of the keys to a group of ItemStacks that it represents (can be multiple because of ore dict)
-      */
+     * Turns the "key" json object into a map of recipe ingredient keys (ie. #, X, etc.) and the corresponding ingredient.
+     *
+     * @param json The object containing the array of keys
+     * @return A map of the keys to a group of ItemStacks that it represents (can be multiple because of ore dict)
+     */
     private static Map<String, ItemStack[]> deserializeKey(JsonObject json){
         Map<String, ItemStack[]> map = Maps.newHashMap();
 
@@ -292,11 +299,11 @@ public class TrainWorkbenchRecipeFactoryHelper {
     }
 
     /**
-          * Removes empty rows and columns from the crafting recipe, good for being able to use (ie) one row recipe in any row.
-          *
-          * @param toShrink array of strings to shrink.
-          * @return shrunken recipe
-          */
+     * Removes empty rows and columns from the crafting recipe, good for being able to use (ie) one row recipe in any row.
+     *
+     * @param toShrink array of strings to shrink.
+     * @return shrunken recipe
+     */
     private static String[] shrink(String... toShrink){
         int i = Integer.MAX_VALUE;
         int j = 0;
@@ -365,7 +372,7 @@ public class TrainWorkbenchRecipeFactoryHelper {
             throw new JsonSyntaxException("Expected " + memberName + " to be a Int.");
         }
     }
-//    private static int getInt(JsonObject json, String memberName) {
+    //    private static int getInt(JsonObject json, String memberName) {
 //        if (json.has(memberName)) {
 //            return getInt(json.get(memberName), memberName);
 //        } else {
@@ -411,225 +418,38 @@ public class TrainWorkbenchRecipeFactoryHelper {
 //    private static JsonObject getJsonObject(JsonObject json, String memberName, JsonObject fallback) {
 //        return json.has(memberName) ? getJsonObject(json.get(memberName), memberName) : fallback;
 //    }
+
+    /**
+     * Gets the recipes from the recipe folder and adds them to the trainworkbench.
+     * This will not be necessary in 1.12, as it will be handled automatically.
+     */
+    public static void loadRecipes() {
+        URL recipesFolder = Traincraft.class.getResource("/assets/trainsinmotion/recipes/");
+        if (recipesFolder == null) {
+            //crash and burn
+            LOGGER.log(Level.FATAL, "Could not find recipes folder.");
+            return;
+        }
+
+        try {
+            File folder = new File(recipesFolder.toURI());
+            for (File recipeFile : folder.listFiles()) { //we know this is valid path, can ignore warning.
+                if (recipeFile.getName().substring(0, 1).equals("_")) {
+                    //not a file to parse if starts with underscore.
+                    continue;
+                }
+                parseAndAddRecipe(new Gson().fromJson(readFile(recipeFile.getPath(), StandardCharsets.UTF_8), JsonObject.class));
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.FATAL, "Problem trying to get recipes (make sure to use UTF-8): " + e);
+            return;
+        }
+    }
+
+    /** {@link "https://stackoverflow.com/a/326440/5526401"}
+     */
+    private static String readFile(String path, Charset encoding) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
+    }
 }
-
-
-///**
-// * This class allows for json implementation of recipes for the Train Workbench, used to craft train parts.
-// * <p>
-// * WARNING: Please make sure patterns are 3x3 to avoid any problems. This should be fixed once things work.
-// *
-// * @author PseudonymPatel
-// * @since 2020-7-30
-// */
-//public class TrainWorkbenchRecipeFactoryHelper implements IRecipeFactory {
-//
-//    public IRecipe parse(JsonContext context, JsonObject json){
-//
-//        //this basically a copy of how minecraft does it.
-//        //String group = JsonUtils.getString(json, "group", ""); //we can use group in the future if there is a need for it.
-//        Map<String, Ingredient> map = deserializeKey(JsonUtils.getJsonObject(json, "key"));
-//        String[] patternString = shrink(patternFromJson(JsonUtils.getJsonArray(json, "pattern")));
-//
-//        //these aid in non-3x3 crafting.
-//        int i = patternString[0].length();
-//        int j = patternString.length;
-//        NonNullList<Ingredient> nonnulllist = deserializeIngredients(patternString, map, i, j);
-//        ItemStack itemstack = deserializeItem(JsonUtils.getJsonObject(json, "result"), true);
-//
-//        //turn the nonnulllist into a InventoryBasic. Or nevermind, just make everything use the nonnulllist.
-//        return new TrainWorkbenchRecipe(nonnulllist, itemstack, i, j);
-//    }
-//
-//    //This function is also copied directly from vanilla ShapedRecipes class (because private)
-//    private static NonNullList<Ingredient> deserializeIngredients(String[] pattern, Map<String, Ingredient> keys, int patternWidth, int patternHeight){
-//        NonNullList<Ingredient> nonnulllist = NonNullList.<Ingredient>withSize(patternWidth * patternHeight, Ingredient.EMPTY);
-//        Set<String> set = Sets.newHashSet(keys.keySet());
-//        set.remove(" ");
-//
-//        for(int i = 0; i < pattern.length; ++i){
-//            for(int j = 0; j < pattern[i].length(); ++j){
-//                String s = pattern[i].substring(j, j + 1);
-//                Ingredient ingredient = keys.get(s);
-//
-//                if(ingredient == null){
-//                    throw new JsonSyntaxException("Pattern references symbol '" + s + "' but it's not defined in the key");
-//                }
-//
-//                set.remove(s);
-//                nonnulllist.set(j + patternWidth * i, ingredient);
-//            }
-//        }
-//
-//        if(!set.isEmpty()){
-//            throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
-//        } else{
-//            return nonnulllist;
-//        }
-//    }
-//
-//    //also from ShapedRecipes, this one takes the pattern element and turns it into a array of strings.
-//    private static String[] patternFromJson(JsonArray jsonArr){
-//        String[] astring = new String[jsonArr.size()];
-//
-//        if(astring.length > 3){
-//            throw new JsonSyntaxException("Invalid pattern: too many rows, 3 is maximum");
-//        } else if(astring.length == 0){
-//            throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
-//        } else{
-//            for(int i = 0; i < astring.length; ++i){
-//                String s = JsonUtils.getString(jsonArr.get(i), "pattern[" + i + "]");
-//
-//                if(s.length() > 3){
-//                    throw new JsonSyntaxException("Invalid pattern: too many columns, 3 is maximum");
-//                }
-//
-//                if(i > 0 && astring[0].length() != s.length()){
-//                    throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
-//                }
-//
-//                astring[i] = s;
-//            }
-//
-//            return astring;
-//        }
-//    }
-//
-//    /**
-//     * Turns the json object into a map of recipe ingredient keys (ie. #, X, etc.) and the corresponding ingredient.
-//     *
-//     * @param json The object containing the array of keys
-//     * @return A map of the keys to the corresponding Ingredient
-//     */
-//    private static Map<String, Ingredient> deserializeKey(JsonObject json){
-//        Map<String, Ingredient> map = Maps.<String, Ingredient>newHashMap();
-//
-//        for(Map.Entry<String, JsonElement> entry : json.entrySet()){
-//            if(((String) entry.getKey()).length() != 1){
-//                throw new JsonSyntaxException("Invalid key entry: '" + (String) entry.getKey() + "' is an invalid symbol (must be 1 character only).");
-//            }
-//
-//            if(" ".equals(entry.getKey())){
-//                throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
-//            }
-//
-//            map.put(entry.getKey(), deserializeIngredient(entry.getValue()));
-//        }
-//
-//        map.put(" ", Ingredient.EMPTY);
-//        return map;
-//    }
-//
-//    /**
-//     * Removes empty rows and columns from the crafting recipe, good for being able to use (ie) one row recipe in any row.
-//     *
-//     * @param toShrink array of strings to shrink.
-//     * @return shrunken recipe
-//     */
-//    private static String[] shrink(String... toShrink){
-//        int i = Integer.MAX_VALUE;
-//        int j = 0;
-//        int k = 0;
-//        int l = 0;
-//
-//        for(int i1 = 0; i1 < toShrink.length; ++i1){
-//            String s = toShrink[i1];
-//            i = Math.min(i, firstNonSpace(s));
-//            int j1 = lastNonSpace(s);
-//            j = Math.max(j, j1);
-//
-//            if(j1 < 0){
-//                if(k == i1){
-//                    ++k;
-//                }
-//
-//                ++l;
-//            } else{
-//                l = 0;
-//            }
-//        }
-//
-//        if(toShrink.length == l){
-//            return new String[0];
-//        } else{
-//            String[] astring = new String[toShrink.length - l - k];
-//
-//            for(int k1 = 0; k1 < astring.length; ++k1){
-//                astring[k1] = toShrink[k1 + k].substring(i, j + 1);
-//            }
-//
-//            return astring;
-//        }
-//    }
-//
-//    //ngl, never seen a for loop used in the way it is in the next two functions. v cool tho
-//    private static int firstNonSpace(String str){
-//        int i;
-//
-//        for(i = 0; i < str.length() && str.charAt(i) == ' '; ++i){
-//            ;
-//        }
-//
-//        return i;
-//    }
-//
-//    private static int lastNonSpace(String str){
-//        int i;
-//
-//        for(i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i){
-//            ;
-//        }
-//
-//        return i;
-//    }
-//
-//    /**
-//     * Takes a jsonElement describing a Ingredient and turns it into the corresponding Ingredient.
-//     * NOTE: this is overridden to provide support for forge ore dictionary.
-//     *
-//     * @param jsonElement object/array of objects describing single ingredient.
-//     * @return the ingredient
-//     */
-//    private static Ingredient deserializeIngredient(@Nullable JsonElement jsonElement){
-//        if(jsonElement != null && !jsonElement.isJsonNull()){
-//            //first check if using ore dict, otherwise do normal stuff
-//            if(jsonElement.getAsJsonObject().has("type")){
-//                if(jsonElement.getAsJsonObject().get("type").getAsString().equals("forge:ore_dict")){
-//                    if(jsonElement.getAsJsonObject().has("ore")){
-//                        //find all ItemStacks for ore
-//                        NonNullList<ItemStack> itemStacksNNlist = OreDictionary.getOres(jsonElement.getAsJsonObject().get("ore").getAsString());
-//                        ItemStack[] itemStacks = new ItemStack[itemStacksNNlist.size()];
-//                        for(int i = 0; i < itemStacksNNlist.size(); ++i){
-//                            itemStacks[i] = itemStacksNNlist.get(i);
-//                        }
-//                        return Ingredient.fromStacks(itemStacks);
-//                    } else{
-//                        throw new JsonSyntaxException("Does not contain ore item.");
-//                    }
-//                } else{
-//                    throw new JsonSyntaxException("Does not support non forge:ore_dict types.");
-//                }
-//            } else if(jsonElement.isJsonObject()){
-//                return Ingredient.fromStacks(deserializeItem(jsonElement.getAsJsonObject(), false));
-//            } else if(!jsonElement.isJsonArray()){
-//                throw new JsonSyntaxException("Expected item to be object or array of objects");
-//            } else{
-//                JsonArray jsonarray = jsonElement.getAsJsonArray();
-//
-//                if(jsonarray.size() == 0){
-//                    throw new JsonSyntaxException("Item array cannot be empty, at least one item must be defined");
-//                } else{
-//                    ItemStack[] aitemstack = new ItemStack[jsonarray.size()];
-//
-//                    for(int i = 0; i < jsonarray.size(); ++i){
-//                        aitemstack[i] = deserializeItem(JsonUtils.getJsonObject(jsonarray.get(i), "item"), false);
-//                    }
-//
-//                    return Ingredient.fromStacks(aitemstack);
-//                }
-//            }
-//        } else{
-//            throw new JsonSyntaxException("Item cannot be null");
-//        }
-//    }
-//}

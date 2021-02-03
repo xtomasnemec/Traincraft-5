@@ -10,10 +10,12 @@
       "item": "minecraft:rail"
     },
     "B": {
-      "item": "minecraft:book"
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
     }
   },
   "result": {
-    "item": "traincraft:guide"
+    "item": "minecraft:book",
+    "count": 3
   }
 }

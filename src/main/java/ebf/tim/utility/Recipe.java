@@ -11,9 +11,28 @@ import java.util.List;
 
 public class Recipe {
 
-    List<ItemStack> result = new ArrayList<>();
-    List<List<ItemStack>> input = new ArrayList<>();
+    /**
+     * All the items, whether it be transports, parts, etc. that this recipe can craft.
+     */
+    public List<ItemStack> result = new ArrayList<>();
+
+    /**
+     * A list of all ingredients that the recipe requires to be able to craft the items in result. Generally in order
+     * from left-to-right, top-to-bottom, as if you were reading the slots. Size depends on the tier of table you want
+     * to use to craft, but can be less. The TC assembly tables is 10slots, but TiM table is 9.
+     * If the size of input is less than the number of crafting slots in the table, the missing slots are null.
+     */
+    public List<List<ItemStack>> input = new ArrayList<>();
+
+    /**
+     * A "tier" assigned to the table which decides which recipes can be crafted on it. This functions more like an ID
+     * for the recipe, and only crafting tables with the same tier as the recipe will allow the recipe to be crafted on it.
+     * Tier 0 is for the TiM table, tiers 1, 2, and 3 are for the TC assembly tables. If you are an addon developer and
+     * want to add your own tier, please choose a large 3-digit number rather than the next number to avoid colliding with
+     * other mods' ID numbers or potential future TiM IDs.
+     */
     private int tier = 0; //a tier either 0, 1, 2, or 3
+
     private int[] displayItem=new int[]{0,0,0,0,0,0,0,0,0,0}; //idk what this for, but it will have to be changed for supporting 10 input slots
 
 
@@ -123,9 +142,13 @@ public class Recipe {
     }
 
 
-
-
-
+    /**
+     * The recipe checking when player is using the table. Simpler than the other because the player can only put one
+     * itemstack in each slot.
+     *
+     * @param stacks The stacks that the player has put in.
+     * @return If the stacks parameter matches the recipe's input and can be crafted.
+     */
     public boolean inputMatches(List<ItemStack> stacks){
         //first make sure that stacks isn't too small, ie. recipe for 9 slots and stacks is 10
         if (stacks.size() < input.size()) return false;
@@ -150,7 +173,12 @@ public class Recipe {
     }
 
 
-
+    /**
+     * This is the input matching that is used in the RecipeManager when checking to see if to add a transport to this
+     * recipe.
+     * @param stacks
+     * @return
+     */
     public boolean recipeInputMatches(List<List<ItemStack>> stacks){ //is this correctly comparing when null is present in the stacks parameter?
         int i=0;
         boolean slotClear=false;

@@ -22,6 +22,7 @@ import ebf.tim.registry.TiMGenericRegistry;
 import ebf.tim.utility.ChunkHandler;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.JsonRecipeHelper;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -140,6 +141,9 @@ public class TrainsInMotion {
 
         //register blocks, items, fluids, etc.
         proxy.register();
+
+        //parse and register json crafting recipes
+        JsonRecipeHelper.loadRecipes();
 
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);
