@@ -1,8 +1,6 @@
 package ebf.tim;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -40,7 +38,7 @@ import java.util.List;
  *
  * @author Eternal Blue Flame
  */
-@Mod(modid = TrainsInMotion.MODID, version = TrainsInMotion.MOD_VERSION, name = "Trains in Motion")
+@Mod(modid = TrainsInMotion.MODID, name = "Trains in Motion")
 public class TrainsInMotion {
 
     /*
@@ -50,8 +48,6 @@ public class TrainsInMotion {
 
     /**the ID of the mod and the version displayed in game, as well as used for version check in the version.txt file*/
     public static final String MODID = "trainsinmotion";
-    /**the version identifier of the mod*/
-    public static final String MOD_VERSION="2.3 pre-alpha";
     /**an instance of the mod*/
     @Mod.Instance(MODID)
     public static TrainsInMotion instance;

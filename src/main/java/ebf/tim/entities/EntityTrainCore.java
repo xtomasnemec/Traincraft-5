@@ -90,7 +90,7 @@ public class EntityTrainCore extends GenericRailTransport {
     public void initInventorySlots(){
         super.initInventorySlots();
         inventory.add(fuelSlot());
-        if(getTankInfo(ForgeDirection.UNKNOWN).length>1){
+        if(getTankCapacity().length>1){
             inventory.add(waterSlot());
         }
     }

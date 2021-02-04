@@ -1,9 +1,9 @@
 package train;
 
-import cpw.mods.fml.common.Mod;
+import com.google.common.eventbus.EventBus;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -38,8 +38,10 @@ import train.library.Info;
 import train.library.TrainRegistry;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
 
-@Mod(modid = Info.modID, name = Info.modName, version = Info.modVersion, dependencies="after:"+ TrainsInMotion.MODID)
+@Mod(modid = Info.modID, name = Info.modName, dependencies="after:"+ TrainsInMotion.MODID)
 public class Traincraft {
 
 	/* TrainCraft instance */
@@ -96,7 +98,6 @@ public class Traincraft {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		tcLog.info("Start Initialization");
-		tcLog.info("Starting Traincraft " + Info.modVersion + "!");
 
 		if(event.getSide().isClient()) {
 			GUICraftBook.addPage(Info.modID, "Traincraft\n" +
