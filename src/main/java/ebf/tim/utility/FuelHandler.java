@@ -181,11 +181,11 @@ public class FuelHandler{
 		if (train.getDataWatcher().getWatchableObjectFloat(16) >100){
 			int steam = (int)Math.floor(
 					((train.getDataWatcher().getWatchableObjectFloat(16)-100)*0.005f) * //calculate heat from burnHeat
-							(train.getTankInfo(null)[0].fluid.amount*0.005f) //calculate surface area of water
+							(train.entityData.getFluidStack("tanks.0").amount*0.005f) //calculate surface area of water
 			);
 			//drain fluid
 			if (train.drain(null, steam!=0?steam/5:0,true)!= null) {
-				train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int)(-(Math.abs(train.accelerator) * (train.getTankInfo(null)[1].capacity*0.01f))+steam*0.9f)), true);
+				train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int)(-(Math.abs(train.accelerator) * (train.getTankCapacity()[1]*0.01f))+steam*0.9f)), true);
 
 				//if no fluid left and not creative mode, explode.
 			} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)){
@@ -203,9 +203,10 @@ public class FuelHandler{
 			train.updateConsist();
 		}
 
-		if (train.getTankInfo(null)[1] !=null && train.getTankInfo(null)[1].fluid.amount >0) {
+		if (train.entityData.containsFluidStack("tanks.1")&& train.entityData.getFluidStack("tanks.1").amount >0) {
 			//steam is expelled through the pistons to push them back and forth, but even when the accelerator is off, a degree of steam is still escaping.
-			train.getTankInfo(null)[1].fluid.amount -= (5 * train.getEfficiency()) * ((train.accelerator) * train.getEfficiency()) * 0.55;
+			train.entityData.putFluidStack("tanks.1", new FluidStack(train.entityData.getFluidStack("tanks.1").getFluid(),
+					train.entityData.getFluidStack("tanks.1").amount-(int)((5 * train.getEfficiency()) * ((train.accelerator) * train.getEfficiency()) * 0.55)));
 		}
 
 		//update the datawatchers so client can display the info on the GUI.
@@ -359,11 +360,11 @@ public class FuelHandler{
 		if (transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID())!=null && FluidContainerRegistry.isEmptyContainer(transport.getSlotIndexByID(401).getStack())) {
 			for (int i = 0; i < transport.getTankCapacity().length; i++) {
 				if (FluidContainerRegistry.fillFluidContainer(
-						new FluidStack(transport.getTankInfo(ForgeDirection.UNKNOWN)[i].fluid,1000)
+						new FluidStack(transport.entityData.getFluidStack("tanks."+i).fluid,1000)
 						, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()) !=null) {
 
 					transport.addItem(FluidContainerRegistry.fillFluidContainer(
-							new FluidStack(transport.getTankInfo(ForgeDirection.UNKNOWN)[i].fluid,1000)
+							new FluidStack(transport.entityData.getFluidStack("tanks."+i).fluid,1000)
 							, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()));
 					transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrStackSize(1);
 					return;

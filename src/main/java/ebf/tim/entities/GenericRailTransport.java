@@ -97,8 +97,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public float[][] vectorCache = new float[7][3];
     /**the health of the entity, similar to that of EntityLiving*/
     private int health = 20;
-    /**the fluidTank tank*/
-    private FluidTankInfo[] fluidTank = null;
     /**local cache for fluid tanks, to check if parsing is necessary or not*/
     private String fluidCache="";
     /**the list of items used for the inventory and crafting slots.*/
@@ -138,7 +136,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     //@SideOnly(Side.CLIENT)
     public TransportRenderData renderData = new TransportRenderData();
 
-    XmlBuilder entityData = new XmlBuilder();
+    public XmlBuilder entityData = new XmlBuilder();
 
     /**the array of booleans, defined as bits
      * 0- brake: defines the brake
@@ -716,50 +714,19 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Deprecated //todo: send this data over the datawatcher or other more reliable means
     @Override
     public void readSpawnData(ByteBuf additionalData) {
-        XmlBuilder xml = new XmlBuilder(ByteBufUtils.readUTF8String(additionalData));
-        rotationYaw = additionalData.readFloat();
-
-        if(getTankCapacity()!=null) {
-            fluidTank = new FluidTankInfo[getTankCapacity().length];
-            for (int i = 0; i < getTankCapacity().length; i++) {
-                if (xml.containsFluidStack("tanks." + i)) {
-                    fluidTank[i] = new FluidTankInfo(xml.getFluidStack("tanks." + i), getTankCapacity()[i]);
-                }
-            }
-        } else {
-            fluidTank= null;
-        }
-
         inventory = new ArrayList<>();
         //shouldn't need this, but enable if getting nulls
         initInventorySlots();
-
-        if (getSizeInventory()>0) {
-            for (int i=0;i<getSizeInventory();i++) {
-                inventory.get(i).setSlotContents(xml.getItemStack("transportinv."+i),inventory);
-            }
-        }
+        entityData = new XmlBuilder(ByteBufUtils.readUTF8String(additionalData));
+        rotationYaw = additionalData.readFloat();
 
     }
     @Deprecated //todo: send this data over the datawatcher or other more reliable means
     /**sends the data to server from client*/
     @Override
     public void writeSpawnData(ByteBuf buffer) {
+        ByteBufUtils.writeUTF8String(buffer, entityData.toXMLString());
         buffer.writeFloat(rotationYaw);
-        XmlBuilder xml = new XmlBuilder();
-        xml.putUUID("owner", entityData.getUUID("owner"));
-        for(int i=0; i<getTankInfo(null).length;i++){
-            if(getTankInfo(null) !=null) {
-                xml.putFluidStack("tanks." + i, getTankInfo(null)[i].fluid);
-            }
-        }
-
-        if (inventory!=null) {
-            for (int i=0;i<getSizeInventory();i++) {
-                xml.putItemStack("transportinv."+i, inventory.get(i).getStack());
-            }
-        }
-        ByteBufUtils.writeUTF8String(buffer, xml.toXMLString());
     }
     /**loads the entity's save file*/
     @Override
@@ -801,15 +768,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         rotationRoll = tag.getFloat(NBTKeys.rotationRoll);
         prevRotationRoll = tag.getFloat(NBTKeys.prevRotationRoll);
 
+        //@DEPRECIATED, legacy data loading
         if(getTankCapacity()!=null) {
-            fluidTank = new FluidTankInfo[getTankCapacity().length];
             for (int i = 0; i < getTankCapacity().length; i++) {
                 if (tag.hasKey("tanks." + i)) {
-                    fluidTank[i] = new FluidTankInfo(FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("tanks." + i)), getTankCapacity()[i]);
+                    entityData.putFluidStack("tanks."+i,FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("tanks." + i)));
                 }
             }
-        } else {
-            fluidTank= null;
         }
 
         inventory = new ArrayList<>();
@@ -858,14 +823,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         tag.setFloat(NBTKeys.rotationRoll, rotationRoll);
         tag.setFloat(NBTKeys.prevRotationRoll, prevRotationRoll);
 
-
-        for(int i=0; i<getTankInfo(null).length;i++){
-            if(getTankInfo(null) !=null) {
-                NBTTagCompound tank = new NBTTagCompound();
-                getTankInfo(null)[i].fluid.writeToNBT(tank);
-                tag.setTag("tanks." + i, tank);
-            }
-        }
         NBTTagCompound invTag;
 
         if (inventory!=null) {
@@ -1172,10 +1129,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     StringBuilder tanks = new StringBuilder();
                     for (int i = 0; i < getTankCapacity().length; i++) {
                         //todo: these should NEVER be null
-                        if (getTankInfo(null)[i] != null && getTankInfo(null)[i].fluid != null) {
-                            tanks.append(getTankInfo(null)[i].fluid.amount);
+                        if (entityData.containsFluidStack("tanks."+i) && entityData.getFluidStack("tanks."+i).fluid != null) {
+                            tanks.append(entityData.getFluidStack("tanks."+i).amount);
                             tanks.append(",");
-                            tanks.append(getTankInfo(null)[i].fluid.getFluid().getName());
+                            tanks.append(entityData.getFluidStack("tanks."+i).getFluid().getName());
                             tanks.append(";");
                         } else {
                             tanks.append(0);
@@ -1805,8 +1762,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**Returns true if the given fluid can be extracted.*/
     @Override
     public boolean canDrain(@Nullable ForgeDirection from, Fluid resource){
-        for(FluidTankInfo stack : getTankInfo(null)) {
-            if (stack.fluid.amount > 0 && (resource == null || stack.fluid.getFluid() == resource)) {
+        for(int i=0;i<getTankCapacity().length;i++) {
+            if (entityData.getFluidStack("tanks."+i).amount > 0 && (resource == null || entityData.getFluidStack("tanks."+i).getFluid() == resource)) {
                 return true;
             }
         }
@@ -1825,16 +1782,18 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public FluidStack drain(@Nullable ForgeDirection from, FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
-        for(FluidTankInfo stack : getTankInfo(null)) {
-            if (stack.fluid.amount > 0 && (stack.fluid.getFluid()==TiMFluids.nullFluid || stack.fluid.getFluid() == resource.getFluid())) {
-                if(leftoverDrain>stack.fluid.amount){
-                    leftoverDrain-=stack.fluid.amount;
+        FluidStack stack;
+        for(int i=0;i<getTankCapacity().length;i++) {
+            stack=entityData.getFluidStack("tanks."+i);
+            if (stack.amount > 0 && (stack.getFluid()==TiMFluids.nullFluid || stack.getFluid() == resource.getFluid())) {
+                if(leftoverDrain>stack.amount){
+                    leftoverDrain-=stack.amount;
                     if(doDrain){
-                        stack.fluid.amount=0;
+                        entityData.putFluidStack("tanks."+i,new FluidStack(TiMFluids.nullFluid,0));
                     }
                 } else {
                     if(doDrain){
-                        stack.fluid.amount-=leftoverDrain;
+                        entityData.putFluidStack("tanks."+i,new FluidStack(stack.getFluid(),stack.amount-leftoverDrain));
                     }
                     return null;
                 }
@@ -1846,15 +1805,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public int drain(@Nullable ForgeDirection from, int tankID, int amount, boolean doDrain){
         int leftoverDrain=amount;
-        if (getTankInfo(null)[tankID].fluid.amount > 0) {
-            if(leftoverDrain>getTankInfo(null)[tankID].fluid.amount){
-                leftoverDrain-=getTankInfo(null)[tankID].fluid.amount;
+        FluidStack stack = entityData.getFluidStack("tanks."+tankID);
+        if (stack.amount > 0) {
+            if(leftoverDrain>stack.amount){
+                leftoverDrain-=stack.amount;
                 if(doDrain){
-                    getTankInfo(null)[tankID].fluid.amount=0;
+                    entityData.putFluidStack("tanks."+tankID,new FluidStack(TiMFluids.nullFluid,0));
                 }
             } else {
                 if(doDrain){
-                    getTankInfo(null)[tankID].fluid.amount-=leftoverDrain;
+                    entityData.putFluidStack("tanks."+tankID,new FluidStack(stack.getFluid(),stack.amount-leftoverDrain));
                 }
                 return 0;
             }
@@ -1869,6 +1829,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public int fill(@Nullable ForgeDirection from, FluidStack resource, boolean doFill){
         if(getTankCapacity()==null){return resource.amount;}
         int leftoverDrain=resource.amount;
+        FluidStack fluid;
         for(int stack =0; stack<getTankCapacity().length;stack++) {
             if(getTankFilters()!=null && getTankFilters()[stack]!=null) {
                 boolean check=false;
@@ -1884,27 +1845,24 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     continue;
                 }
             }
-            if (getTankInfo(null)[stack]!=null && (
-                    resource.getFluid() == null || getTankInfo(null)[stack].fluid.getFluid() == resource.getFluid() ||
-                            getTankInfo(null)[stack].fluid.amount ==0)) {
+            if (entityData.containsFluidStack("tanks."+stack)&& (
+                    resource.getFluid() == null || entityData.getFluidStack("tanks."+stack).getFluid() == resource.getFluid() ||
+                            entityData.getFluidStack("tanks."+stack).amount ==0)) {
+                fluid=entityData.getFluidStack("tanks."+stack);
 
-                if(leftoverDrain+getTankInfo(null)[stack].fluid.amount>getTankInfo(null)[stack].capacity){
-                    leftoverDrain-=getTankInfo(null)[stack].capacity-getTankInfo(null)[stack].fluid.amount;
+                if(leftoverDrain+fluid.amount>getTankCapacity()[stack]){
+                    leftoverDrain-=getTankCapacity()[stack]-fluid.amount;
                     if(doFill){
-                        getTankInfo(null)[stack] = new FluidTankInfo(
-                                new FluidStack(resource.fluid, getTankInfo(null)[stack].capacity), getTankInfo(null)[stack].capacity);
+                        entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),getTankCapacity()[stack]));
                     }
-                } else if (leftoverDrain+getTankInfo(null)[stack].fluid.amount<0){
-                    leftoverDrain-=getTankInfo(null)[stack].fluid.amount-resource.amount;
+                } else if (leftoverDrain+fluid.amount<0){
+                    leftoverDrain-=fluid.amount-resource.amount;
                     if(doFill){
-                        getTankInfo(null)[stack] = new FluidTankInfo(
-                                new FluidStack(getTankInfo(null)[stack].fluid, 0), getTankInfo(null)[stack].capacity);
+                        entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),0));
                     }
                 } else {
                     if(doFill){
-                        getTankInfo(null)[stack] = new FluidTankInfo(
-                                new FluidStack(resource.fluid, getTankInfo(null)[stack].fluid.amount+leftoverDrain),
-                                getTankInfo(null)[stack].capacity);
+                        entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),fluid.amount+leftoverDrain));
                     }
                     leftoverDrain=0;
                 }
@@ -1940,13 +1898,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     continue;
                 }
             }
-            if (getTankInfo(null)[stack]!=null && (
-                    resource.getFluid() == null || getTankInfo(null)[stack].fluid.getFluid() == resource.getFluid() ||
-                            getTankInfo(null)[stack].fluid.amount ==0)) {
-                if(resource.amount+getTankInfo(null)[stack].fluid.amount<=getTankCapacity()[stack]){
-                    getTankInfo(null)[stack] = new FluidTankInfo(
-                            new FluidStack(resource.fluid, getTankInfo(null)[stack].fluid.amount+resource.amount),
-                            getTankInfo(null)[stack].capacity);
+            if (entityData.containsFluidStack("tanks."+stack) && (
+                    resource.getFluid() == null || entityData.getFluidStack("tanks."+stack).getFluid() == resource.getFluid() ||
+                            entityData.getFluidStack("tanks."+stack).amount ==0)) {
+                if(resource.amount+entityData.getFluidStack("tanks."+stack).amount<=getTankCapacity()[stack]){
+                    entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),
+                            entityData.getFluidStack("tanks."+stack).amount+resource.amount));
                     return true;
                 }
             }
@@ -1954,20 +1911,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return false;
     }
 
-    /**returns the list of fluid tanks and their capacity.*/
+    /**returns the list of fluid tanks and their capacity. READ ONLY!!!*/
     @Override
+    @Deprecated
     public FluidTankInfo[] getTankInfo(ForgeDirection from){
         if(getTankCapacity()==null || getTankCapacity().length ==0){
             return new FluidTankInfo[]{};
         }
-
-        if (fluidTank==null || fluidTank.length<getTankCapacity().length) {
+        //force build XML, just to be sure
+        entityData.buildXML();
+        //if it's not initialized, do stuff
+        if (entityData.fluidMap.size()<getTankCapacity().length) {
             //initialize tanks
-            FluidTankInfo[] tanks = new FluidTankInfo[getTankCapacity().length];
             for (int i = 0; i < getTankCapacity().length; i++) {
-                tanks[i] = new FluidTankInfo(new FluidStack(FluidRegistry.WATER, 0), getTankCapacity()[i]);
+                entityData.putFluidStack("tanks."+i,new FluidStack(FluidRegistry.WATER, 0));
             }
-            fluidTank = tanks;
         }
         //if its server, remake when null, otherwise remake if changed, this is called every frame when a GUI is up and/or if the model needs to render it so cache VERY important.
         if(worldObj!=null && worldObj.isRemote && fluidCache.equals("") || !fluidCache.equals(dataWatcher.getWatchableObjectString(20))){
@@ -1978,12 +1936,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 String[] fluids = fluidCache.split(";");
                 for (int i = 0; i < getTankCapacity().length; i++) {
                     String[] data = fluids[i].split(",");
-                    fluidTank[i] = new FluidTankInfo(new FluidStack(FluidRegistry.getFluid(data[1]), Integer.parseInt(data[0])), getTankCapacity()[i]);
+                    entityData.putFluidStack("tanks."+i,new FluidStack(FluidRegistry.getFluid(data[1]), Integer.parseInt(data[0])));
                 }
             }
         }
 
-        return fluidTank;
+        //generate return value.
+        FluidTankInfo[] tanks = new FluidTankInfo[getTankCapacity().length];
+        for(int i=0;i<getTankCapacity().length;i++){
+            tanks[i]= new FluidTankInfo(entityData.getFluidStack("tanks."+i),getTankCapacity()[i]);
+        }
+        return tanks;
     }
 
     /*
