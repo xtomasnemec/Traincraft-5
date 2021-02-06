@@ -46,13 +46,21 @@ public class RecipeManager {
                             ((SizedRecipe) r).getCraftWidth() != ((SizedRecipe) recipe).getCraftWidth()) {
                         //one of dimensions don't match
                         continue;
+                    } else {
+                        if (((SizedRecipe) r).recipeInputMatches(recipe.input, ((SizedRecipe) r).getCraftWidth(), ((SizedRecipe) r).getCraftHeight())) {
+                            if (r.getTier() == recipe.getTier()) {
+                                r.addResults(recipe.result);
+                                return;
+                            }
+                        }
                     }
-                }
-
-                if (r.recipeInputMatches(recipe.input)) {
-                    if (r.getTier() == recipe.getTier()) {
-                        r.addResults(recipe.result);
-                        return;
+                } else {
+                    //not sized
+                    if (r.recipeInputMatches(recipe.input)) {
+                        if (r.getTier() == recipe.getTier()) {
+                            r.addResults(recipe.result);
+                            return;
+                        }
                     }
                 }
             }

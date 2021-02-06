@@ -26,12 +26,11 @@ import java.util.*;
  * This class will handle parsing and adding recipes to the TiM table.
  * Recipes should be written in json and added to the resources section as if it was a 1.12 or newer mod. Json recipes
  * should use the same format as 1.12 and newer recipes. See the forge documentation for more information:
- * @see {https://mcforge.readthedocs.io/en/1.12.x/utilities/recipes/}
+ * @see <a href="https://mcforge.readthedocs.io/en/1.12.x/utilities/recipes/">Recipes documentation</a>
  *
- * TODO: MAKE SURE ORE DICT WORKS, TEST OTHER POSSIBLE ITEMS TOO, TEST DYES AND ITEMS WITH DATA TAG AND COUNT TAG
- * TODO: make count tag work for items in recipe
- * TODO: ore dict adds wrong count to itemstack!?
  * TODO: make json recipes
+ * BUG: count tag is incorrect for ingotSteel. Where is this happening?
+ *   more info: the parse func parses correctly and returns the correctly counted recipe.
  *
  * @note For forge 1.12 and greater, make a simple wrapper for this class. There were too many minor differences and I
  *       didn't want to leave landmines of commented out code.
@@ -51,7 +50,7 @@ public class JsonRecipeHelper {
      * @param json the json of the recipe we need to parse
      */
     public static void parseAndAddRecipe(JsonObject json) {
-        if (json == null && json.isJsonNull()) {
+        if (json == null || json.isJsonNull()) {
             //make sure not empty, just in case
             return;
         }
@@ -90,7 +89,7 @@ public class JsonRecipeHelper {
         int craftingHeight = patternStrings.length;
 
         //use keymap with grid to generate resulting recipe input.
-        List<List<ItemStack>> ingredients = new ArrayList<>();
+        List<List<ItemStack>> ingredients;
         ingredients = deserializeIngredients(patternStrings, keyMap);
 
         //create and add recipe to workbench.
@@ -159,7 +158,6 @@ public class JsonRecipeHelper {
     /**
      * Takes a jsonElement describing a Ingredient and turns it into the corresponding Ingredient. This is very similar
      * to deserializeItem, except for more support for things other than simply the "item:" tag
-     * NOTE: this is overridden to provide support for forge ore dictionary.
      *
      * @param jsonElement object/array of objects describing single ingredient.
      * @return the ingredient
@@ -177,6 +175,11 @@ public class JsonRecipeHelper {
                         for (int i = 0; i < oresFromOreDict.size(); ++i) {
                             itemStacks[i] = oresFromOreDict.get(i);
                         }
+
+                        int count = getInt(jsonElement.getAsJsonObject(), "count", 1);
+                        for (ItemStack itemStack : itemStacks) {
+                            itemStack.stackSize = count;
+                        }
                         return itemStacks;
 
                     } else {
@@ -187,7 +190,7 @@ public class JsonRecipeHelper {
                 }
 
             } else if (jsonElement.isJsonObject()) {
-                return new ItemStack[]{deserializeItem(jsonElement.getAsJsonObject(), false)};
+                return new ItemStack[]{deserializeItem(jsonElement.getAsJsonObject(), true)};
             } else if (!jsonElement.isJsonArray()) {
                 throw new JsonSyntaxException("Expected item to be object or array of objects");
             } else {
@@ -199,7 +202,7 @@ public class JsonRecipeHelper {
                     ItemStack[] aitemstack = new ItemStack[jsonarray.size()];
 
                     for (int i = 0; i < jsonarray.size(); ++i) {
-                        aitemstack[i] = deserializeItem(getJsonObject(jsonarray.get(i), "item"), false);
+                        aitemstack[i] = deserializeItem(getJsonObject(jsonarray.get(i), "item"), true);
                     }
 
                     return aitemstack;
@@ -264,7 +267,8 @@ public class JsonRecipeHelper {
     }
 
     /**
-     *  UNFINISHED AS OF 1/27/21, make sure function works, then finish with rest of parse.
+     * Takes in a map of symbols to the ingredients and a array of strings corresponding to how each row looks in the table,
+     * and converts it to a list of ingredients. length of list depends on craftingWidth and Height.
      * @param pattern An array of strings that represent how pattern looks in crafting table (must be 3x3)
      * @param keys A map relating characters in pattern with the Items they represent.
      * @return
@@ -280,6 +284,9 @@ public class JsonRecipeHelper {
         for(int i = 0; i < pattern.length; ++i){
             for(int j = 0; j < pattern[i].length(); ++j){
                 String s = pattern[i].substring(j, j + 1);
+                if (s.equals(" ")) {
+                    continue;
+                }
                 ItemStack[] ingredient = keys.get(s);
 
                 if(ingredient == null){

@@ -42,7 +42,7 @@ public class Recipe {
         this.tier = tier;
     }
     public Recipe(List<ItemStack> results, List<List<ItemStack>> cost){
-        result=results;input=cost;tier=1;
+        result=results;input=cost;tier=0;
     }
     public void addResults(List<ItemStack> results){
         result.addAll(results);

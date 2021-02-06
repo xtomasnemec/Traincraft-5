@@ -2,7 +2,6 @@ package ebf.tim.utility;
 
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +14,7 @@ public class SizedRecipe extends Recipe {
         super(Arrays.asList(result), recipeIngredients);
         this.craftWidth = craftWidth;
         this.craftHeight = craftHeight;
+        this.setTier(0);
     }
 
     public int getCraftHeight() {
@@ -47,7 +47,7 @@ public class SizedRecipe extends Recipe {
         //eliminate empty rows and columns for non 3x3 crafting
         if(stacks.get(0) == null && stacks.get(1) == null && stacks.get(2) == null){
             //first row is empty, shift everything up one, and rerun the function with new inventory.
-            List<ItemStack> newInv = new ArrayList<>(9);
+            List<ItemStack> newInv = Arrays.asList(null, null, null, null, null, null, null, null, null);
             for(int i = 3; i < 9; ++i){ //set the bottom two row to top
                 newInv.set(i - 3, stacks.get(i));
             }
@@ -59,7 +59,7 @@ public class SizedRecipe extends Recipe {
 
         //eliminate empty columns by removing the first column (if empty) and recursing
         if(stacks.get(0) == null && stacks.get(3) == null && stacks.get(6) == null){
-            List<ItemStack> newInv = new ArrayList<>(9);
+            List<ItemStack> newInv = Arrays.asList(null, null, null, null, null, null, null, null, null);
 
             //do this manually, sadly it might be the best way :(
             newInv.set(0, stacks.get(1));
@@ -78,13 +78,22 @@ public class SizedRecipe extends Recipe {
         }
 
         //with the recipe minimized, do the comparison.
-        for (int row = 0; row < craftHeight; row++) {
-            for (int col = 0; col < craftWidth; col++) {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
                 boolean foundMatch = false;
                 int invIndex = row*craftWidth + col;
 
-                ItemStack invItem = stacks.get(invIndex);
+                ItemStack invItem = stacks.get((row*3) + col);
                 List<ItemStack> recipeIngredients = input.get(invIndex);
+
+                //if (row, col) out of bound of recipe, make sure it is null
+                if (row > craftHeight-1 || col > craftWidth-1) {
+                    if (invItem != null) {
+                        return false;
+                    } else {
+                        continue;
+                    }
+                }
 
                 if (recipeIngredients == null) {
                     if (invItem == null) {
@@ -113,8 +122,20 @@ public class SizedRecipe extends Recipe {
         return true;
     }
 
+    /**
+     * Don't use this one. It does not compare for size of recipe. Moved it to ({@link #recipeInputMatches(List, int, int)}
+     */
     @Override
     public boolean recipeInputMatches(List<List<ItemStack>> stacks) {
+        return false;
+    }
+
+    public boolean recipeInputMatches(List<List<ItemStack>> stacks, int width, int height) {
+
+        if (width != this.craftWidth || height != this.craftHeight) {
+            return false;
+        }
+
         //can assume already minimized bc comparing recipe to recipe
         //with the recipe minimized, do the comparison.
         for (int row = 0; row < craftHeight; row++) {

@@ -1,17 +1,16 @@
 {
   "type": "traincraft:train_workbench",
   "pattern": [
-    "TTT",
-    "TBT",
-    "TTT"
+    " T",
+    "TB",
+    "  "
   ],
   "key": {
     "T": {
       "item": "minecraft:rail"
     },
     "B": {
-      "type": "forge:ore_dict",
-      "ore": "ingotSteel"
+      "item": "minecraft:book"
     }
   },
   "result": {
