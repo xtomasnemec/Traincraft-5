@@ -363,7 +363,8 @@ public class XmlBuilder {
             while(index<lineReader.length) {
                 switch (checkType(lineReader[index])) {
 
-                    case 1:{this.stringMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
+                    case 1:{
+                        this.stringMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
                             tagSubstring(lineReader, index));index++;break;}
                     case 2:{this.intMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
                             Integer.parseInt(lineReader[index+1]));index++;break;}
@@ -436,7 +437,6 @@ public class XmlBuilder {
         int i = index+1;
         while (i<parse.length && !parse[i].contains(tag)){
             b.append(parse[i]);
-            b.append("\n");
             i++;
         }
         return b.toString();

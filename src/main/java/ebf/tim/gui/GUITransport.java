@@ -81,7 +81,7 @@ public class GUITransport extends GUIContainerNoNEI {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         //draw inventory slots and whatnot
-        if (transport.inventory.size()>0){
+        if (transport.getSizeInventory()>0){
             renderFreightInventory(mc,mouseX, mouseY);
         }
         if (transport instanceof EntityTrainCore){
