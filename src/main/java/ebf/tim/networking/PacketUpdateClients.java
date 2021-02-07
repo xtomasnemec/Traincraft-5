@@ -27,14 +27,12 @@ public class PacketUpdateClients implements IMessage {
     public PacketUpdateClients(String key, Entity entity) {
         this.entityId = entity.getEntityId();
         this.entityData=key;
-        DebugUtil.println("updating client?", entity.worldObj.isRemote);
 
     }
     /**reads the packet on server to get the variables from the Byte Buffer*/
     @Override
     public void fromBytes(ByteBuf bbuf) {
         Entity e = Minecraft.getMinecraft().theWorld.getEntityByID(bbuf.readInt());
-        DebugUtil.println("updating client?", e.worldObj.isRemote);
         if (e instanceof GenericRailTransport) {
             ((GenericRailTransport)e).entityData= new XmlBuilder(ByteBufUtils.readUTF8String(bbuf));
         }
@@ -44,6 +42,5 @@ public class PacketUpdateClients implements IMessage {
     public void toBytes(ByteBuf bbuf) {
         bbuf.writeInt(entityId);
         ByteBufUtils.writeUTF8String(bbuf, entityData);
-        DebugUtil.println("packet size: ",entityData.getBytes().length);
     }
 }

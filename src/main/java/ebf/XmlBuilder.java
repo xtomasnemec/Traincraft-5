@@ -356,7 +356,6 @@ public class XmlBuilder {
 
     private void parseXMLString(String from){
         if(from==null || !from.contains("<")){return;}
-//        DebugUtil.println(from);
         if(from.startsWith("<eternalXMLV2/>")){
             String[] lineReader = from.split("\n");
             int index =1;

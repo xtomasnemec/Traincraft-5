@@ -323,7 +323,7 @@ public class RenderWagon extends Render {
                 b.bogieModel.render(entity, 0, 0, 0, 0, 0, entity.getRenderScale());
 
                 //render the particles, if there are any. do this _after_ the normal render because it breaks texture bind
-                if(!isPaintBucket && entity.worldObj!=null) {
+                if(!isPaintBucket && entity.worldObj!=null && entity.renderData.bogieParticles.size()>0) {
                     for (ParticleFX p : entity.renderData.bogieParticles.get(ii)) {
                         ParticleFX.doRender(p, entity.getRenderScale(), yaw);
                     }

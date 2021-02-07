@@ -1448,7 +1448,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(!this.entityData.containsString("skin")){
             this.entityData.putString("skin", getDefaultSkin());
         }
-        //DebugUtil.println(this.entityData.getString("skin"));
         return getSkinList(viewer, false).get(this.entityData.getString("skin"));
     }
     public TransportSkin getCurrentSkin(){
@@ -1461,7 +1460,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     //only works when called from server
     public void setSkin(String s){
         this.entityData.putString("skin", s);
-        DebugUtil.println("updating client?", worldObj.isRemote, s, entityData.getString("skin"));
         TrainsInMotion.updateChannel.sendToAllAround(new PacketUpdateClients(entityData.toXMLString(),this),
                 new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId,posX,posY,posZ,16*4));
     }
