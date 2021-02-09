@@ -33,7 +33,7 @@ public class TrainModCore {
 	}
 
 	public static void ModsLoaded() {
-		if(Loader.isModLoaded("Railcraft")){
+		if(Loader.isModLoaded("Railcraft") && !Loader.isModLoaded("tc")){
 			readRailcraftConfig();
 			if (!rcVanillaRecipes) {
 				PluginRailcraft.init();

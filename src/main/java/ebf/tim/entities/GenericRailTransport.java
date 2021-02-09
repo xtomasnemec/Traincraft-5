@@ -392,7 +392,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(renderData!=null && renderData.bogies!=null){
                 for(Bogie b : renderData.bogies){
                     if(ClientProxy.EnableAnimations) {
-                        b.setRotation(this);
+                        b.updateRotation(this);
                     } else {
                         b.rotationYaw=rotationYaw;
                     }
@@ -958,7 +958,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
                 if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
                     for(Bogie b : renderData.bogies){
-                        b.setPosition(this, null);
+                        b.updatePosition(this, null);
                     }
                 }
                 collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
@@ -1393,7 +1393,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //be sure operators and owners can do whatever
-        if ((player.capabilities.isCreativeMode && player.canCommandSenderUseCommand(2, "")) || entityData.getString("ownername").equals(player.getDisplayName())) {
+        if ((player.capabilities.isCreativeMode && player.canCommandSenderUseCommand(2, ""))
+                || (entityData.containsString("ownername") && entityData.getString("ownername").equals(player.getDisplayName()))) {
             return true;
         }
 
@@ -1455,6 +1456,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             this.entityData.putString("skin", getDefaultSkin());
         }
         return getSkinList(null, false).get(this.entityData.getString("skin"));
+    }
+
+    public String getCurrentSkinName(){
+        TransportSkin s = getCurrentSkin();
+        return s==null||s.name==null?"":s.name;
     }
 
     //only works when called from server
@@ -1816,7 +1822,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public int drain(@Nullable ForgeDirection from, int tankID, int amount, boolean doDrain){
         int leftoverDrain=amount;
         FluidStack stack = entityData.getFluidStack("tanks."+tankID);
-        if (stack.amount > 0) {
+        if (stack!=null && stack.amount > 0) {
             if(leftoverDrain>stack.amount){
                 leftoverDrain-=stack.amount;
                 if(doDrain){
