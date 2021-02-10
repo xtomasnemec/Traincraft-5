@@ -17,6 +17,7 @@ import ebf.tim.items.ItemTicket;
 import ebf.tim.models.Bogie;
 import ebf.tim.networking.PacketInteract;
 import ebf.tim.networking.PacketRemove;
+import ebf.tim.networking.PacketUpdateClients;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.registry.TiMFluids;
 import ebf.tim.render.ParticleFX;
@@ -28,7 +29,6 @@ import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityMultiPart;
@@ -43,7 +43,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -88,8 +87,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public UUID backLinkedTransport = null;
     /**the id of the rollingstock linked to the back*/
     public Integer backLinkedID = null;
-    /**the ID of the owner*/
-    public String ownerName ="";
     /**the destination for routing*/
     public String destination ="";
     /**used to initialize a large number of variables that are used to calculate everything from movement to linking.
@@ -98,6 +95,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**the health of the entity, similar to that of EntityLiving*/
     private int health = 20;
     /**local cache for fluid tanks, to check if parsing is necessary or not*/
+    @Deprecated
     private String fluidCache="";
     /**the list of items used for the inventory and crafting slots.*/
     public List<ItemStackSlot> inventory = null;
@@ -107,14 +105,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     private ForgeChunkManager.Ticket chunkTicket;
     /**a cached list of the loaded chunks*/
     public List<ChunkCoordIntPair> chunkLocations = new ArrayList<>();
-    /**The X velocity of the front bogie*/
-    public double frontVelocityX=0;
-    /**The Z velocity of the front bogie*/
-    public double frontVelocityZ=0;
-    /**The X velocity of the back bogie*/
-    public double backVelocityX=0;
-    /**The Z velocity of the back bogie*/
-    public double backVelocityZ=0;
     /**Used same as MinecartX/Y/Z in super to smoothly move on client*/
     private double transportX=0, transportY=0, transportZ=0;
     /**this is used like the turn progress in the super class*/
@@ -289,11 +279,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         this.dataWatcher.addObject(16, 40.0f);//train heat
         this.dataWatcher.addObject(17, bools!=null?bools.toInt():BitList.newInt());//booleans
         //18 is an int used by EntityTrainCore for the accelerator
-        //19 is a float used by the core minecart to define damage taken (we dont use this, but if we override it things break).
-        this.dataWatcher.addObject(23, "");//owner
         this.dataWatcher.addObject(21, 0);//front linked transport
         this.dataWatcher.addObject(22, 0);//back linked transport
-        this.dataWatcher.addObject(24,getDefaultSkin());//currently used
 
 
         /*possible conflict notes:
@@ -405,7 +392,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(renderData!=null && renderData.bogies!=null){
                 for(Bogie b : renderData.bogies){
                     if(ClientProxy.EnableAnimations) {
-                        b.setRotation(this);
+                        b.updateRotation(this);
                     } else {
                         b.rotationYaw=rotationYaw;
                     }
@@ -749,21 +736,27 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             UUID owner = new UUID(tag.getLong(NBTKeys.ownerMost),tag.getLong(NBTKeys.ownerLeast));
             entityData.putUUID("owner",owner);
         }
-        ownerName = tag.getString(NBTKeys.ownerName);
+        if (tag.hasKey(NBTKeys.ownerName)) {
+            entityData.putString("ownername",tag.getString(NBTKeys.ownerName));
+        }
 
-        String skin = tag.getString(NBTKeys.skinURI);
-        if(SkinRegistry.getSkin(this, null, false,skin)!=null) {
-            dataWatcher.updateObject(24, skin);
-        } else {
-            dataWatcher.updateObject(24, this.getDefaultSkin());
+        if(tag.hasKey(NBTKeys.skinURI)) {
+            String skin = tag.getString(NBTKeys.skinURI);
+            if (SkinRegistry.getSkin(this, null, false, skin) != null) {
+                entityData.putString("skin",skin);
+            } else {
+                entityData.putString("skin",getDefaultSkin());
+            }
         }
 
 
         //load bogie velocities
-        frontVelocityX = tag.getDouble(NBTKeys.frontBogieX);
-        frontVelocityZ = tag.getDouble(NBTKeys.frontBogieZ);
-        backVelocityX = tag.getDouble(NBTKeys.backBogieX);
-        backVelocityZ = tag.getDouble(NBTKeys.backBogieZ);
+        if(tag.hasKey(NBTKeys.frontBogieX)) {
+            entityData.putDouble(NBTKeys.frontBogieX,tag.getDouble(NBTKeys.frontBogieX));
+            entityData.putDouble(NBTKeys.frontBogieZ,tag.getDouble(NBTKeys.frontBogieZ));
+            entityData.putDouble(NBTKeys.backBogieX,tag.getDouble(NBTKeys.backBogieX));
+            entityData.putDouble(NBTKeys.backBogieZ,tag.getDouble(NBTKeys.backBogieZ));
+        }
 
         rotationRoll = tag.getFloat(NBTKeys.rotationRoll);
         prevRotationRoll = tag.getFloat(NBTKeys.prevRotationRoll);
@@ -776,19 +769,24 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
             }
         }
+        //@DEPRECIATED, legacy data loading
+        if(tag.hasKey("transportinv.0")) {
+            inventory = new ArrayList<>();
+            initInventorySlots();
 
-        inventory = new ArrayList<>();
-        initInventorySlots();
+            NBTTagCompound invTag;
 
-        NBTTagCompound invTag;
-
-        if (getSizeInventory()>0) {
-            for (int i=0;i<getSizeInventory();i++) {
-                invTag = tag.getCompoundTag("transportinv."+i);
-                if (invTag!=null) {
-                    inventory.get(i).setSlotContents(ItemStack.loadItemStackFromNBT(invTag),inventory);
+            if (getSizeInventory() > 0) {
+                for (int i = 0; i < getSizeInventory(); i++) {
+                    if (tag.hasKey("transportinv." + i)) {
+                        invTag = tag.getCompoundTag("transportinv." + i);
+                        if (invTag != null) {
+                            inventory.get(i).setSlotContents(ItemStack.loadItemStackFromNBT(invTag), inventory);
+                        }
+                    }
                 }
             }
+            closeInventory();
         }
 
         updateWatchers = true;
@@ -808,32 +806,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             tag.setLong(NBTKeys.backLinkMost, backLinkedTransport.getMostSignificantBits());
             tag.setLong(NBTKeys.backLinkLeast, backLinkedTransport.getLeastSignificantBits());
         }
-        //owner
-        tag.setString(NBTKeys.ownerName, ownerName);
 
-
-        tag.setString(NBTKeys.skinURI, dataWatcher.getWatchableObjectString(24));
-
-        //bogie velocities
-        tag.setDouble(NBTKeys.frontBogieX, frontVelocityX);
-        tag.setDouble(NBTKeys.frontBogieZ, frontVelocityZ);
-        tag.setDouble(NBTKeys.backBogieX, backVelocityX);
-        tag.setDouble(NBTKeys.backBogieZ, backVelocityZ);
 
         tag.setFloat(NBTKeys.rotationRoll, rotationRoll);
         tag.setFloat(NBTKeys.prevRotationRoll, prevRotationRoll);
-
-        NBTTagCompound invTag;
-
-        if (inventory!=null) {
-            for (int i=0;i<getSizeInventory();i++) {
-                invTag = new NBTTagCompound();
-                if(inventory.get(i)!=null && inventory.get(i).getStack()!=null) {
-                    inventory.get(i).getStack().writeToNBT(invTag);
-                }
-                tag.setTag("transportinv."+i, invTag);
-            }
-        }
 
     }
 
@@ -891,12 +867,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //actually move
         prevPosX=posX;
         prevPosZ=posZ;
+        motionX = (frontBogie.motionX+backBogie.motionX)*0.5;
+        motionX = (frontBogie.motionX+backBogie.motionX)*0.5;
         frontBogie.minecartMove(this);
         backBogie.minecartMove(this);
-        motionX = frontVelocityX = frontBogie.motionX;
-        motionZ = frontVelocityZ = frontBogie.motionZ;
-        backVelocityX = backBogie.motionX;
-        backVelocityZ = backBogie.motionZ;
+
+        entityData.putDouble(NBTKeys.frontBogieX,frontBogie.motionX);
+        entityData.putDouble(NBTKeys.frontBogieZ,frontBogie.motionZ);
+        entityData.putDouble(NBTKeys.backBogieX,backBogie.motionX);
+        entityData.putDouble(NBTKeys.backBogieZ,backBogie.motionZ);
 
         setRotation((CommonUtil.atan2degreesf(
                 frontBogie.posZ - backBogie.posZ,
@@ -979,7 +958,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
                 if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
                     for(Bogie b : renderData.bogies){
-                        b.setPosition(this, null);
+                        b.updatePosition(this, null);
                     }
                 }
                 collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
@@ -996,11 +975,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //spawn front bogie
             vectorCache[0] = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0,rotationPitch, rotationYaw,0);
             frontBogie = new EntityBogie(worldObj, posX + vectorCache[0][0], posY + vectorCache[0][1], posZ + vectorCache[0][2], getEntityId(), true);
-            frontBogie.setVelocity(frontVelocityX,0,frontVelocityZ);
+            if(entityData.containsDouble(NBTKeys.frontBogieX)) {
+                frontBogie.setVelocity(entityData.getDouble(NBTKeys.frontBogieX), 0, entityData.getDouble(NBTKeys.frontBogieZ));
+            }
             //spawn back bogie
             vectorCache[0] = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw,0);
             backBogie = new EntityBogie(worldObj, posX + vectorCache[0][0], posY + vectorCache[0][1], posZ + vectorCache[0][2], getEntityId(), false);
-            backBogie.setVelocity(backVelocityX, 0, backVelocityZ);
+            if(entityData.containsDouble(NBTKeys.backBogieX)) {
+                backBogie.setVelocity(entityData.getDouble(NBTKeys.backBogieX), 0, entityData.getDouble(NBTKeys.backBogieZ));
+            }
             worldObj.spawnEntityInWorld(frontBogie);
             worldObj.spawnEntityInWorld(backBogie);
 
@@ -1011,6 +994,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     seats.add(seat);
                 }
             }
+            //sync inventory on spawn
+            openInventory();
         }
 
         /*
@@ -1096,14 +1081,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             manageFuel();
 
 
-            if (ownerName.equals("")) {
+            if (!entityData.containsString("ownername") || entityData.getString("ownername").equals("")) {
                 @Nullable
                 Entity player = CommonProxy.getEntityFromUuid(entityData.getUUID("owner"));
                 if (player instanceof EntityPlayer) {
-                    if (!ownerName.equals(((EntityPlayer) player).getDisplayName())) {
-                        ownerName = ((EntityPlayer) player).getDisplayName();
-                        updateWatchers = true;
-                    }
+                    entityData.putString("ownername",((EntityPlayer) player).getDisplayName());
+                    updateWatchers = true;
                 }
             }
             //sync the linked transports with client, and on server, easier to use an ID than a UUID.
@@ -1144,7 +1127,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                     this.dataWatcher.updateObject(20, tanks.toString());
                 }
-                this.dataWatcher.updateObject(23, ownerName);
                 this.dataWatcher.updateObject(17, bools.toInt());
                 this.dataWatcher.updateObject(21, frontLinkedID!=null?frontLinkedID:-1);
                 this.dataWatcher.updateObject(22, backLinkedID!=null?backLinkedID:-1);
@@ -1411,7 +1393,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //be sure operators and owners can do whatever
-        if ((player.capabilities.isCreativeMode && player.canCommandSenderUseCommand(2, "")) || ownerName.equals(player.getDisplayName())) {
+        if ((player.capabilities.isCreativeMode && player.canCommandSenderUseCommand(2, ""))
+                || (entityData.containsString("ownername") && entityData.getString("ownername").equals(player.getDisplayName()))) {
             return true;
         }
 
@@ -1453,20 +1436,38 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
     public GameProfile getOwner(){
-        if (ownerName != null && !ownerName.equals("") && worldObj.getPlayerEntityByName(ownerName) !=null){
-            return (worldObj.getPlayerEntityByName(ownerName)).getGameProfile();
+        if (entityData.containsString("ownername") && worldObj.getPlayerEntityByName(entityData.getString("ownername")) !=null){
+            return (worldObj.getPlayerEntityByName(entityData.getString("ownername"))).getGameProfile();
         }
         return null;
     }
 
     /**defines the ID of the owner*/
-    public String getOwnerName(){return ownerName.equals("")?this.dataWatcher.getWatchableObjectString(23):ownerName;}
+    public String getOwnerName(){return entityData.containsString("ownername")?entityData.getString("ownername"):"";}
 
     public TransportSkin getTexture(EntityPlayer viewer){
-        return getSkinList(viewer, false).get(this.dataWatcher.getWatchableObjectString(24));
+        if(!this.entityData.containsString("skin")){
+            this.entityData.putString("skin", getDefaultSkin());
+        }
+        return getSkinList(viewer, false).get(this.entityData.getString("skin"));
     }
     public TransportSkin getCurrentSkin(){
-        return getSkinList(null, false).get(this.dataWatcher.getWatchableObjectString(24));
+        if(!this.entityData.containsString("skin")){
+            this.entityData.putString("skin", getDefaultSkin());
+        }
+        return getSkinList(null, false).get(this.entityData.getString("skin"));
+    }
+
+    public String getCurrentSkinName(){
+        TransportSkin s = getCurrentSkin();
+        return s==null||s.name==null?"":s.name;
+    }
+
+    //only works when called from server
+    public void setSkin(String s){
+        this.entityData.putString("skin", s);
+        TrainsInMotion.updateChannel.sendToAllAround(new PacketUpdateClients(entityData.toXMLString(),this),
+                new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId,posX,posY,posZ,16*4));
     }
 
     public float getVelocity(){
@@ -1529,7 +1530,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public int getSizeInventory() {
-        return inventory.size();
+        return inventory==null?0:inventory.size();
     }
 
     /**
@@ -1705,16 +1706,31 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(forceBackupTimer==0) {
             forceBackupTimer = 30;
         }
+        for (ItemStackSlot slot : inventory){
+            entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
+        }
 
     }
     /**called when the inventory GUI is opened*/
     @Override
-    public void openInventory() {}
+    public void openInventory() {
+        if(!worldObj.isRemote){
+            entityData.buildXML();
+            for(String key : entityData.itemMap.keySet()){
+                getSlotIndexByID(Integer.parseInt(key.substring(4))).setStack(entityData.getItemStack(key));
+            }
+        }
+    }
     /**called when the inventory GUI is closed*/
     @Override
     public void closeInventory() {
-        if(forceBackupTimer==0) {
-            forceBackupTimer = 30;
+        if(!worldObj.isRemote) {
+            if(forceBackupTimer==0) {
+                forceBackupTimer = 30;
+            }
+            for (ItemStackSlot slot : inventory) {
+                entityData.putItemStack("inv." + slot.getSlotID(), slot.getStack());
+            }
         }
     }
 
@@ -1806,7 +1822,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public int drain(@Nullable ForgeDirection from, int tankID, int amount, boolean doDrain){
         int leftoverDrain=amount;
         FluidStack stack = entityData.getFluidStack("tanks."+tankID);
-        if (stack.amount > 0) {
+        if (stack!=null && stack.amount > 0) {
             if(leftoverDrain>stack.amount){
                 leftoverDrain-=stack.amount;
                 if(doDrain){

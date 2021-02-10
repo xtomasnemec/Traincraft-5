@@ -27,7 +27,6 @@ public class ItemKey extends Item{
 
 
     public static void addHost(ItemStack stack, UUID host, String entityName){
-        DebugUtil.println(host.toString(), entityName);
         if(stack.stackTagCompound ==null && stack.getItem() instanceof ItemKey){
             stack.stackTagCompound = new NBTTagCompound();
         }

@@ -67,6 +67,7 @@ public class TrainsInMotion {
      * Every wrapper runs on it's own thread, so heavy traffic should go on it's own wrapper, using channels to separate packet types.*/
     public static SimpleNetworkWrapper keyChannel;
     public static SimpleNetworkWrapper trackChannel;
+    public static SimpleNetworkWrapper updateChannel;
 
 
     /**Instance a new chunk handler, this class manages chunk loading events and functionality.*/
@@ -170,6 +171,8 @@ public class TrainsInMotion {
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[4], PacketPaint.class, 6, Side.CLIENT);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[5], PacketCraftingPage.class, 7, Side.SERVER);
         TrainsInMotion.trackChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.track");
+        TrainsInMotion.updateChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.update");
+        TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 8, Side.CLIENT);
 
 
 
@@ -195,6 +198,9 @@ public class TrainsInMotion {
 
     //each packet needs it's own entry in this, duplicates are not allowed, for whatever reason
     private static final IMessageHandler[] HANDLERS = new IMessageHandler[]{
+            new IMessageHandler<IMessage, IMessage>() {
+                @Override public IMessage onMessage(IMessage message, MessageContext ctx) {return null;}
+            },
             new IMessageHandler<IMessage, IMessage>() {
                 @Override public IMessage onMessage(IMessage message, MessageContext ctx) {return null;}
             },

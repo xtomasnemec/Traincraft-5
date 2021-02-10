@@ -220,6 +220,18 @@ public class XmlBuilder {
     public boolean containsUUID(String id){buildXML(); return uuidMap.containsKey(id);}
     public boolean containsXml(String id){buildXML(); return xmlMap.containsKey(id);}
 
+    //QoL stuff because i instinctivley type "has" instead of "contains"
+    public boolean hasString(String id){return containsString(id);}
+    public boolean hasInt(String id){return containsInt(id);}
+    public boolean hasIntArray(String id){return containsIntArray(id);}
+    public boolean hasFloat(String id){return containsFloat(id);}
+    public boolean hasFloatArray(String id){return containsFloatArray(id);}
+    public boolean hasDouble(String id){return containsDouble(id);}
+    public boolean hasItemStack(String id){return containsItemStack(id);}
+    public boolean hasFluidStack(String id){return containsFluidStack(id);}
+    public boolean hasUUID(String id){return containsUUID(id);}
+    public boolean hasXml(String id){return containsXml(id);}
+
     /*
      *----------Internal Method Section----------
      */
@@ -356,14 +368,14 @@ public class XmlBuilder {
 
     private void parseXMLString(String from){
         if(from==null || !from.contains("<")){return;}
-//        DebugUtil.println(from);
         if(from.startsWith("<eternalXMLV2/>")){
             String[] lineReader = from.split("\n");
             int index =1;
             while(index<lineReader.length) {
                 switch (checkType(lineReader[index])) {
 
-                    case 1:{this.stringMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
+                    case 1:{
+                        this.stringMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
                             tagSubstring(lineReader, index));index++;break;}
                     case 2:{this.intMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
                             Integer.parseInt(lineReader[index+1]));index++;break;}
@@ -436,7 +448,6 @@ public class XmlBuilder {
         int i = index+1;
         while (i<parse.length && !parse[i].contains(tag)){
             b.append(parse[i]);
-            b.append("\n");
             i++;
         }
         return b.toString();

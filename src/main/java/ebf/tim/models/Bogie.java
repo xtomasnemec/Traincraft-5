@@ -16,7 +16,7 @@ public class Bogie {
     public float rotationYaw;
     /**the model defined in the registration of this.*/
     public ModelBase bogieModel;
-    public float[] offset = new float[]{0,0},prevPos = null, position = new float[]{0,0};
+    public float[] offset = new float[]{0,0},prevPos = null, position = new float[]{0,0}, rotation=new float[]{0,0,0};
 
     public List<Bogie> subBogies=new ArrayList<>();
 
@@ -65,24 +65,32 @@ public class Bogie {
         return this;
     }
 
+    /**sets rotation in degrees*/
+    public Bogie setRotation(float x, float y, float z){
+        rotation[0]=x;
+        rotation[1]=y;
+        rotation[2]=z;
+        return this;
+    }
+
     /**
      * <h2>handle rotation of model</h2>
      * updates the positions of the model, and then uses that data to set the rotations.
      * @param entity the GenericRailTransport to get the pitch from.
      */
-    public void setRotation(GenericRailTransport entity){
+    public void updateRotation(GenericRailTransport entity){
         //update positions
         if(prevPos!=position && prevPos!=null && position!=null&&entity.getVelocity()>0.001) {
             rotationYaw = CommonUtil.atan2degreesf(prevPos[1] - position[1], prevPos[0] - position[0]);
             for(Bogie b : subBogies){
-                b.setRotation(entity);
+                b.updateRotation(entity);
             }
         } else if(prevPos==null){
             rotationYaw=entity.rotationYaw;
         }
     }
 
-    public void setPosition(GenericRailTransport entity, Vec3f prevOffset){
+    public void updatePosition(GenericRailTransport entity, Vec3f prevOffset){
         prevPos = position;
         if(prevOffset==null){
             prevOffset= CommonUtil.rotatePoint(new Vec3f(offset[0],0,offset[1]),0,entity.rotationYaw,0);
@@ -92,7 +100,7 @@ public class Bogie {
         position=new float[]{(float)entity.posX+prevOffset.xCoord, (float)entity.posZ+prevOffset.zCoord};
 
         for(Bogie b : subBogies){
-            b.setPosition(entity,prevOffset);
+            b.updatePosition(entity,prevOffset);
         }
     }
 }
