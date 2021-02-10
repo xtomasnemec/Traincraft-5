@@ -171,7 +171,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
             this.detectAndSendChanges();
         }
 
-        if (clickTypeIn == 4){
+        if (clickTypeIn == 4 && player.worldObj.isRemote){
             clickTypeIn = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
                     player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
                             (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
