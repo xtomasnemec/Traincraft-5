@@ -240,6 +240,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 s.stackSize -= 1;
                                 player.inventory.setItemStack(s);
                             }
+                            slot.onCraftMatrixChanged(hostInventory, inventory);
                             this.detectAndSendChanges();
                         }
                         break;
@@ -249,18 +250,19 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                             slot.onCrafting(hostType, inventory, 1);
                             slot.setSlotContents(null, inventory);
                         } else if(dragType==1) {
-                            ItemStack stack= slot.getStack().copy();
+                            ItemStack stack = slot.getStack().copy();
                             //make it round up.
-                            if(stack.stackSize%2!=0){
-                                stack.stackSize/=2;
-                                stack.stackSize+=1;
+                            if (stack.stackSize % 2 != 0) {
+                                stack.stackSize /= 2;
+                                stack.stackSize += 1;
                             } else {
-                                stack.stackSize/=2;
+                                stack.stackSize /= 2;
                             }
                             player.inventory.setItemStack(stack);
                             slot.decrStackSize(stack.stackSize);
                             slot.onCrafting(hostType, inventory, 1);
                         }
+                        slot.onCraftMatrixChanged(hostInventory, inventory);
                         this.detectAndSendChanges();
                     }
                     break;

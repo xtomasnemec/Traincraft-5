@@ -39,10 +39,29 @@ public class RecipeManager {
 
         // adds a result to the recipe if it already exists, rather than creating a new one.
         for(Recipe r : recipeList){
-            if(r.recipeInputMatches(recipe.input)){
-                if (r.getTier() == recipe.getTier()) {
-                    r.addResults(recipe.result);
-                    return;
+            if ((r instanceof SizedRecipe) == (recipe instanceof SizedRecipe)) { //either both sized or both not
+
+                if (r instanceof SizedRecipe) { //both sized
+                    if (((SizedRecipe) r).getCraftHeight() != ((SizedRecipe) recipe).getCraftHeight() ||
+                            ((SizedRecipe) r).getCraftWidth() != ((SizedRecipe) recipe).getCraftWidth()) {
+                        //one of dimensions don't match
+                        continue;
+                    } else {
+                        if (((SizedRecipe) r).recipeInputMatches(recipe.input, ((SizedRecipe) r).getCraftWidth(), ((SizedRecipe) r).getCraftHeight())) {
+                            if (r.getTier() == recipe.getTier()) {
+                                r.addResults(recipe.result);
+                                return;
+                            }
+                        }
+                    }
+                } else {
+                    //not sized
+                    if (r.recipeInputMatches(recipe.input)) {
+                        if (r.getTier() == recipe.getTier()) {
+                            r.addResults(recipe.result);
+                            return;
+                        }
+                    }
                 }
             }
         }
