@@ -1,6 +1,6 @@
 {
   "_comment": "This is used in 1.12 and higher to direct forge to how to parse the recipes.",
   "recipes": {
-    "traincraft:train_workbench": "train.blocks.bench.TrainWorkbenchRecipeFactory"
+    "trainsinmotion:table": "ebf.tim.registry.craftTableRecipeFactory"
   }
 }

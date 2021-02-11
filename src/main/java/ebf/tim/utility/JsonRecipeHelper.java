@@ -3,9 +3,9 @@ package ebf.tim.utility;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +29,7 @@ import java.util.*;
  * @see <a href="https://mcforge.readthedocs.io/en/1.12.x/utilities/recipes/">Recipes documentation</a>
  *
  * TODO: make json recipes
- * BUG: count tag is incorrect for ingotSteel. Where is this happening?
+ * TODO: BUG: count tag is incorrect for ingotSteel. Where is this happening?
  *   more info: the parse func parses correctly and returns the correctly counted recipe.
  *
  * @note For forge 1.12 and greater, make a simple wrapper for this class. There were too many minor differences and I
@@ -55,46 +55,27 @@ public class JsonRecipeHelper {
             return;
         }
 
+        if (!getString(json, "type").equals("trainsinmotion:table"))
+            return; //don't parse non-TiM table recipes.
+
         //get result first
-        ItemStack craftingResult;
-        try {
-            JsonObject resultJson = json.getAsJsonObject("result");
-            craftingResult = deserializeItem(resultJson, true);
-        } catch (Exception e) {
-            LOGGER.log(Level.ERROR, "Result not found while parsing recipe: " + e.getLocalizedMessage());
-            return;
-        }
+        ItemStack craftingResult = deserializeItem(json.getAsJsonObject("result"), true);
 
         //parse the crafting grid
         // first parse the keys ("X": { ... }, ...)
-        Map<String, ItemStack[]> keyMap;
-        try {
-            JsonObject keyJson = json.getAsJsonObject("key");
-            keyMap = deserializeKey(keyJson);
-        } catch (Exception e) {
-            LOGGER.log(Level.ERROR, "Problem found while parsing keys: " + e.getLocalizedMessage());
-            return;
-        }
+        Map<String, ItemStack[]> keyMap = deserializeKey(json.getAsJsonObject("key"));
 
         //get the pattern of the crafting recipe
-        String[] patternStrings;
-        try {
-            JsonArray keyJson = json.getAsJsonArray("pattern");
-            patternStrings = patternFromJson(keyJson);
-        } catch (Exception e) {
-            LOGGER.log(Level.ERROR, "Problem found while parsing keys: " + e.getLocalizedMessage());
-            return;
-        }
+        String[] patternStrings = patternFromJson(json.getAsJsonArray("pattern"));
+
         int craftingWidth = patternStrings[0].length();
         int craftingHeight = patternStrings.length;
 
         //use keymap with grid to generate resulting recipe input.
-        List<List<ItemStack>> ingredients;
-        ingredients = deserializeIngredients(patternStrings, keyMap);
+        List<List<ItemStack>> ingredients = deserializeIngredients(patternStrings, keyMap);
 
         //create and add recipe to workbench.
-        SizedRecipe recipe = new SizedRecipe(craftingResult, ingredients, craftingWidth, craftingHeight);
-        RecipeManager.registerRecipe(recipe);
+        RecipeManager.registerRecipe(new SizedRecipe(craftingResult, ingredients, craftingWidth, craftingHeight));
     }
 
     /**
@@ -113,9 +94,9 @@ public class JsonRecipeHelper {
     {
         String itemString = getString(json, "item");
 
-        //NOTE: IN 1.12, change this to:
+        //NOTE: IN 1.12, this was in Traincraft/Traincraft, but also might only be for vanilla items:
         //Item item = Item.REGISTRY.getObject(new ResourceLocation(itemString));
-        Item item = (Item) Item.itemRegistry.getObject(new ResourceLocation(itemString).getResourcePath());
+        Item item = GameData.getItemRegistry().getObject(itemString);
 
         if (item == null) {
             throw new JsonSyntaxException("Unknown item '" + itemString + "'");
@@ -448,7 +429,7 @@ public class JsonRecipeHelper {
                 parseAndAddRecipe(new Gson().fromJson(readFile(recipeFile.getPath(), StandardCharsets.UTF_8), JsonObject.class));
             }
         } catch (Exception e) {
-            LOGGER.log(Level.FATAL, "Problem trying to get recipes (make sure to use UTF-8): " + e);
+            LOGGER.log(Level.FATAL, "Problem trying to get recipes: " + e);
             return;
         }
     }

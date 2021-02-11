@@ -1,9 +1,9 @@
 {
   "type": "traincraft:train_workbench",
   "pattern": [
-    " T",
-    "TB",
-    "  "
+    "${patternFirstRow}",
+    "${patternSecondRow}",
+    "${patternThirdRow}"
   ],
   "key": {
     "T": {
@@ -14,7 +14,7 @@
     }
   },
   "result": {
-    "item": "minecraft:book",
-    "count": 3
+    "item": "${result}",
+    "count": ${resultCount}
   }
 }
