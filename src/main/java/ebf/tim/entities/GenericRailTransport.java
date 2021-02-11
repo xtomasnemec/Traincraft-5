@@ -94,9 +94,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public float[][] vectorCache = new float[7][3];
     /**the health of the entity, similar to that of EntityLiving*/
     private int health = 20;
-    /**local cache for fluid tanks, to check if parsing is necessary or not*/
-    @Deprecated
-    private String fluidCache="";
     /**the list of items used for the inventory and crafting slots.*/
     public List<ItemStackSlot> inventory = null;
     /**whether or not this needs to update the datawatchers*/
@@ -118,7 +115,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     float rotationRoll;
     /**calculated movement speed, first value is used for GUI and speed, second is used for render effects.*/
     public float[] velocity=new float[]{0,0};
-    public int forceBackupTimer =0;
+    public int forceBackupTimer =0, syncTimer=0;
     public float pullingWeight=0;
 
     private List<GenericRailTransport> consist = new ArrayList<>();
@@ -605,9 +602,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if (health<1 && worldObj.isRemote){
             //remove this
             if (damageSource.getEntity() instanceof EntityPlayer) {
-                TrainsInMotion.keyChannel.sendToServer(new PacketRemove(getEntityId(), !((EntityPlayer) damageSource.getEntity()).capabilities.isCreativeMode));
+                worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, new ItemStack(getItem(), 1)));
+                    //since it was a player be sure we remove the entity from the logging.
+                ServerLogger.deleteWagon(this);
+                //be sure we drop the inventory items on death.
+                dropAllItems();
             } else {
-                TrainsInMotion.keyChannel.sendToServer(new PacketRemove(getEntityId(),false));
+                //since it was a player be sure we remove the entity from the logging.
+                ServerLogger.deleteWagon(this);
+                //be sure we drop the inventory items on death.
+                dropAllItems();
             }
             setDead();
             return true;
@@ -795,7 +799,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     protected void writeEntityToNBT(NBTTagCompound tag) {
         tag.setString("entityxml", entityData.toXMLString());
-        tag.setInteger(NBTKeys.bools, bools.toInt());
+        tag.setByteArray(NBTKeys.bools, bools.getBits());
         tag.setBoolean(NBTKeys.dead, isDead);
         //frontLinkedTransport and backLinkedTransport bogies
         if (frontLinkedTransport != null){
@@ -917,6 +921,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 ServerLogger.writeWagonToFolder(this);
                 forceBackupTimer--;
             }
+
+            if(syncTimer>0){
+                syncTimer--;
+            } else if (syncTimer==0) {
+                TrainsInMotion.updateChannel.sendToAllAround(new PacketUpdateClients(entityData.toXMLString(),this),
+                        new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId,posX,posY,posZ,16*4));
+                syncTimer--;
+            }
         }
 
         //regen health after a while
@@ -994,6 +1006,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     seats.add(seat);
                 }
             }
+            //initialize fluid tanks
+            getTankInfo(null);
             //sync inventory on spawn
             openInventory();
         }
@@ -1710,6 +1724,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
         }
 
+        if(syncTimer==0){
+            syncTimer=60;
+        }
+
     }
     /**called when the inventory GUI is opened*/
     @Override
@@ -1725,12 +1743,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public void closeInventory() {
         if(!worldObj.isRemote) {
-            if(forceBackupTimer==0) {
-                forceBackupTimer = 30;
-            }
-            for (ItemStackSlot slot : inventory) {
-                entityData.putItemStack("inv." + slot.getSlotID(), slot.getStack());
-            }
+            markDirty();
         }
     }
 
@@ -1806,10 +1819,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     leftoverDrain-=stack.amount;
                     if(doDrain){
                         entityData.putFluidStack("tanks."+i,new FluidStack(TiMFluids.nullFluid,0));
+                        markDirty();
                     }
                 } else {
                     if(doDrain){
                         entityData.putFluidStack("tanks."+i,new FluidStack(stack.getFluid(),stack.amount-leftoverDrain));
+                        markDirty();
                     }
                     return null;
                 }
@@ -1827,10 +1842,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 leftoverDrain-=stack.amount;
                 if(doDrain){
                     entityData.putFluidStack("tanks."+tankID,new FluidStack(TiMFluids.nullFluid,0));
+                    markDirty();
                 }
             } else {
                 if(doDrain){
                     entityData.putFluidStack("tanks."+tankID,new FluidStack(stack.getFluid(),stack.amount-leftoverDrain));
+                    markDirty();
                 }
                 return 0;
             }
@@ -1870,15 +1887,18 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     leftoverDrain-=getTankCapacity()[stack]-fluid.amount;
                     if(doFill){
                         entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),getTankCapacity()[stack]));
+                        markDirty();
                     }
                 } else if (leftoverDrain+fluid.amount<0){
                     leftoverDrain-=fluid.amount-resource.amount;
                     if(doFill){
                         entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),0));
+                        markDirty();
                     }
                 } else {
                     if(doFill){
                         entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),fluid.amount+leftoverDrain));
+                        markDirty();
                     }
                     leftoverDrain=0;
                 }
@@ -1898,7 +1918,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * @return true if the tank was able to fill with the entire stack, false if not.
      */
     public boolean fill(@Nullable ForgeDirection from, FluidStack resource){
-        if(getTankCapacity()==null || resource==null ||resource.amount<1){return false;}
+        if(getTankCapacity()==null || resource==null ||resource.amount<1){DebugUtil.println("no tanks?");return false;}
         for(int stack =0; stack<getTankCapacity().length;stack++) {
             if(getTankFilters()!=null && getTankFilters()[stack]!=null) {
                 boolean check=false;
@@ -1920,6 +1940,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 if(resource.amount+entityData.getFluidStack("tanks."+stack).amount<=getTankCapacity()[stack]){
                     entityData.putFluidStack("tanks."+stack,new FluidStack(resource.getFluid(),
                             entityData.getFluidStack("tanks."+stack).amount+resource.amount));
+                    markDirty();
                     return true;
                 }
             }
@@ -1929,8 +1950,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     /**returns the list of fluid tanks and their capacity. READ ONLY!!!*/
     @Override
-    @Deprecated
     public FluidTankInfo[] getTankInfo(ForgeDirection from){
+        //todo: what the crap, this doesn't add tanks to XML. it's supposed to add tanks to XML.
         if(getTankCapacity()==null || getTankCapacity().length ==0){
             return new FluidTankInfo[]{};
         }
@@ -1941,19 +1962,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //initialize tanks
             for (int i = 0; i < getTankCapacity().length; i++) {
                 entityData.putFluidStack("tanks."+i,new FluidStack(FluidRegistry.WATER, 0));
-            }
-        }
-        //if its server, remake when null, otherwise remake if changed, this is called every frame when a GUI is up and/or if the model needs to render it so cache VERY important.
-        if(worldObj!=null && worldObj.isRemote && fluidCache.equals("") || !fluidCache.equals(dataWatcher.getWatchableObjectString(20))){
-
-            //actually put in the data
-            fluidCache = dataWatcher.getWatchableObjectString(20);
-            if (fluidCache.length()>3) {
-                String[] fluids = fluidCache.split(";");
-                for (int i = 0; i < getTankCapacity().length; i++) {
-                    String[] data = fluids[i].split(",");
-                    entityData.putFluidStack("tanks."+i,new FluidStack(FluidRegistry.getFluid(data[1]), Integer.parseInt(data[0])));
-                }
             }
         }
 
