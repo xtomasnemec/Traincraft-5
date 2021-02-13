@@ -2,11 +2,7 @@ package ebf.tim.registry;
 
 import ebf.tim.TrainsInMotion;
 import ebf.tim.items.*;
-import ebf.tim.utility.RecipeManager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class TiMItems {
 
@@ -160,8 +156,6 @@ public class TiMItems {
         //controlStand = createItem("control.stand");
         //connectingRod = createItem("connecting.rod");
         generator = createItem("generator");
-
-        registerItemRecipes();
     }
 
     private static Item createItem(String unlocalizedName) {
@@ -170,97 +164,4 @@ public class TiMItems {
         item.setTextureName(TrainsInMotion.MODID+ ":" + "crafting/" + item.getUnlocalizedName().replace("item.", ""));
         return item;
     }
-
-    public static void registerItemRecipes(){
-        RecipeManager.registerRecipe(
-                new Object[]{Blocks.rail,Blocks.rail,Blocks.rail,Blocks.rail, Items.book,Blocks.rail,Blocks.rail,Blocks.rail,Blocks.rail},
-                recipeBook);
-
-        RecipeManager.registerRecipe(
-                new Object[]{copperWire,copperWire,copperWire,Items.redstone,TiMOres.dustPlastic,Items.redstone,copperWire,copperWire,copperWire},
-                steelPinCircuit);
-
-        //wire
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.dustPlastic,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper},
-                new ItemStack(copperWire,8));
-        RecipeManager.registerRecipe(
-                new Object[]{Items.gold_ingot,Items.gold_ingot,Items.gold_ingot,Items.gold_ingot,TiMOres.dustPlastic,Items.gold_ingot,Items.gold_ingot,Items.gold_ingot,Items.gold_ingot},
-                new ItemStack(goldWire,8));
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.dustPlastic,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum},
-                new ItemStack(aluminiumWire,8));
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.dustPlastic,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
-                new ItemStack(steelWire,8));
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.ingotSteel,Blocks.glass,TiMOres.ingotSteel,Blocks.glass,Blocks.glass,Blocks.glass,TiMOres.ingotSteel,Blocks.glass,TiMOres.ingotSteel},
-                new ItemStack(carbonWire,8));
-
-        //cabins
-        RecipeManager.registerRecipe(
-                new Object[]{Blocks.planks,Blocks.planks,Blocks.planks,Blocks.planks,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
-                new ItemStack(cabinWood,1));
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
-                new ItemStack(cabinAluminium,1));
-        RecipeManager.registerRecipe(
-                new Object[]{Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
-                new ItemStack(cabinIron,1));
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
-                new ItemStack(cabinSteel,1));
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper,null,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
-                new ItemStack(cabinCopper,1));
-        RecipeManager.registerRecipe(
-                new Object[]{Blocks.glass_pane,Blocks.glass_pane,Blocks.glass_pane,Blocks.glass_pane,null,null,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
-                new ItemStack(cabinFiberglass,1));
-        RecipeManager.registerRecipe(
-                new Object[]{TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,null,null,TiMOres.dustPlastic,Items.iron_ingot,TiMOres.dustPlastic},
-                new ItemStack(cabinPlastic,1));
-
-        //wheels
-        RecipeManager.registerRecipe(
-                new Object[]{null,Blocks.planks,null,Blocks.planks,Items.iron_ingot,Blocks.planks,null,Blocks.planks,null},
-                new ItemStack(wheelWood,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,TiMOres.ingotAluminum,null,TiMOres.ingotAluminum,Items.iron_ingot,TiMOres.ingotAluminum,null,TiMOres.ingotAluminum,null},
-                new ItemStack(wheelAluminium,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,Items.iron_ingot,null,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,null,Items.iron_ingot,null},
-                new ItemStack(wheelIron,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,TiMOres.ingotSteel,null,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,null,TiMOres.ingotSteel,null},
-                new ItemStack(wheelSteel,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,TiMOres.dustPlastic,null,TiMOres.dustPlastic,Items.iron_ingot,TiMOres.dustPlastic,null,TiMOres.dustPlastic,null},
-                new ItemStack(wheelPlastic,1));
-
-
-        RecipeManager.registerRecipe(
-                new Object[]{null,null,null,Blocks.planks,null,Blocks.planks,Blocks.planks,Blocks.planks,Blocks.planks},
-                new ItemStack(frameWood,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,null,null,Blocks.planks,null,Blocks.planks,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
-                new ItemStack(frameIron,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,null,null,Items.iron_ingot,null,Items.iron_ingot,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
-                new ItemStack(frameSteel,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,null,null,TiMOres.ingotAluminum,null,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum,TiMOres.ingotAluminum},
-                new ItemStack(frameAluminium,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,null,null,Blocks.planks,null,Blocks.planks,TiMOres.ingotCopper,TiMOres.ingotCopper,TiMOres.ingotCopper},
-                new ItemStack(frameCopper,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,null,null,TiMOres.dustPlastic,null,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic},
-                new ItemStack(framePlastic,1));
-        RecipeManager.registerRecipe(
-                new Object[]{null,null,null,TiMOres.ingotSteel,null,TiMOres.ingotSteel,Blocks.glass,Blocks.glass,Blocks.glass},
-                new ItemStack(frameFiberglass,1));
-
-    }
-
-
 }

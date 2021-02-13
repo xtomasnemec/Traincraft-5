@@ -2,6 +2,7 @@ package ebf.tim.utility;
 
 import ebf.XmlBuilder;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class Recipe {
      * to use to craft, but can be less. The TC assembly tables is 10slots, but TiM table is 9.
      * If the size of input is less than the number of crafting slots in the table, the missing slots are null.
      */
-    public List<List<ItemStack>> input = new ArrayList<>();
+    public final List<List<ItemStack>> input;
 
     /**
      * A "tier" assigned to the table which decides which recipes can be crafted on it. This functions more like an ID
@@ -56,17 +57,20 @@ public class Recipe {
 
         result.addAll(Arrays.asList(resultItems));
 
-        input.add(Arrays.asList(topLeft));
-        input.add(Arrays.asList(topCenter));
-        input.add(Arrays.asList(topRight));
+        List<List<ItemStack>> recipeInProgress = new ArrayList<>();
+        recipeInProgress.add(Arrays.asList(topLeft));
+        recipeInProgress.add(Arrays.asList(topCenter));
+        recipeInProgress.add(Arrays.asList(topRight));
 
-        input.add(Arrays.asList(middleLeft));
-        input.add(Arrays.asList(middleCenter));
-        input.add(Arrays.asList(middleRight));
+        recipeInProgress.add(Arrays.asList(middleLeft));
+        recipeInProgress.add(Arrays.asList(middleCenter));
+        recipeInProgress.add(Arrays.asList(middleRight));
 
-        input.add(Arrays.asList(bottomLeft));
-        input.add(Arrays.asList(bottomCenter));
-        input.add(Arrays.asList(bottomRight));
+        recipeInProgress.add(Arrays.asList(bottomLeft));
+        recipeInProgress.add(Arrays.asList(bottomCenter));
+        recipeInProgress.add(Arrays.asList(bottomRight));
+
+        this.input = recipeInProgress;
 
         tier = 0;
     }
@@ -79,17 +83,21 @@ public class Recipe {
 
         this.result.add(result);
 
-        input.add(Collections.singletonList(topLeft));
-        input.add(Collections.singletonList(topCenter));
-        input.add(Collections.singletonList(topRight));
+        List<List<ItemStack>> recipeInProgress = new ArrayList<>();
 
-        input.add(Collections.singletonList(middleLeft));
-        input.add(Collections.singletonList(middleCenter));
-        input.add(Collections.singletonList(middleRight));
+        recipeInProgress.add(Collections.singletonList(topLeft));
+        recipeInProgress.add(Collections.singletonList(topCenter));
+        recipeInProgress.add(Collections.singletonList(topRight));
 
-        input.add(Collections.singletonList(bottomLeft));
-        input.add(Collections.singletonList(bottomCenter));
-        input.add(Collections.singletonList(bottomRight));
+        recipeInProgress.add(Collections.singletonList(middleLeft));
+        recipeInProgress.add(Collections.singletonList(middleCenter));
+        recipeInProgress.add(Collections.singletonList(middleRight));
+
+        recipeInProgress.add(Collections.singletonList(bottomLeft));
+        recipeInProgress.add(Collections.singletonList(bottomCenter));
+        recipeInProgress.add(Collections.singletonList(bottomRight));
+
+        this.input = recipeInProgress;
 
         tier = 0;
     }
@@ -162,7 +170,7 @@ public class Recipe {
                 } else if (s == null && stacks.get(i) != null) {
                     //the recipe can be null but an item could be in the slot
                     return false;
-                } else if(stacks.get(i)==null || s.getItem()!=stacks.get(i).getItem() || s.stackSize>stacks.get(i).stackSize){
+                } else if(stacks.get(i)==null || OreDictionary.itemMatches(stacks.get(i), s, false) || s.stackSize>stacks.get(i).stackSize){
                     //s!=null here, so if stacks.get(i) null bad, or the item not equal, or stack not big enough
                     return false;
                 }
@@ -229,21 +237,22 @@ public class Recipe {
         return xml.toXMLString();
     }
 
-    public Recipe loadRecipe(String s){
-        XmlBuilder xml = new XmlBuilder(s);
-        input = new ArrayList<>();
-        for (int i=0;i<9;i++){
-            List<ItemStack> list=new ArrayList<>();
-
-            XmlBuilder builder = xml.getXml("slot "+i);
-            for(String stack : builder.itemMap.keySet()) {
-                list.add(builder.getItemStack(stack));
-            }
-            input.add(list);
-
-        }
-
-        return this;
-    }
+    //TODO: this. What is the intended use?
+//    public Recipe loadRecipe(String s){
+//        XmlBuilder xml = new XmlBuilder(s);
+//        input = new ArrayList<>();
+//        for (int i=0;i<9;i++){
+//            List<ItemStack> list=new ArrayList<>();
+//
+//            XmlBuilder builder = xml.getXml("slot "+i);
+//            for(String stack : builder.itemMap.keySet()) {
+//                list.add(builder.getItemStack(stack));
+//            }
+//            input.add(list);
+//
+//        }
+//
+//        return this;
+//    }
 
 }

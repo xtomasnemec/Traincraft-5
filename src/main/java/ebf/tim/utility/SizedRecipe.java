@@ -1,6 +1,7 @@
 package ebf.tim.utility;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,7 +110,7 @@ public class SizedRecipe extends Recipe {
                 for (ItemStack ingredient : recipeIngredients) {
                     int ingSize = ingredient.stackSize;
                     int invItemSize = invItem.stackSize;
-                    if (ingredient.isItemEqual(invItem) && invItemSize >= ingSize) {
+                    if (OreDictionary.itemMatches(ingredient, invItem, false) && invItemSize >= ingSize) {
                         foundMatch = true;
                         break;
                     }

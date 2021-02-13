@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMItems;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -289,6 +290,9 @@ public class RecipeManager {
         }
         else if (itm instanceof Item){
             list=ODC(new ItemStack((Item)itm));
+        }
+        else if (itm instanceof Block) {
+            list=ODC(new ItemStack(Item.getItemFromBlock((Block)itm)));
         }
         else if(itm instanceof String){
             String[] data = ((String) itm).split(" ");
