@@ -55,8 +55,10 @@ public class JsonRecipeHelper {
             return;
         }
 
-        if (!getString(json, "type").equals("trainsinmotion:table"))
+        if (!getString(json, "type").equals("trainsinmotion:table")) {
+            LOGGER.log(Level.WARN, "TiM table given recipe to parse that is not for it.");
             return; //don't parse non-TiM table recipes.
+        }
 
         //get result first
         ItemStack craftingResult = deserializeItem(json.getAsJsonObject("result"), true);
@@ -154,7 +156,7 @@ public class JsonRecipeHelper {
                         ArrayList<ItemStack> oresFromOreDict = OreDictionary.getOres(jsonElement.getAsJsonObject().get("ore").getAsString());
                         ItemStack[] itemStacks = new ItemStack[oresFromOreDict.size()];
                         for (int i = 0; i < oresFromOreDict.size(); ++i) {
-                            itemStacks[i] = oresFromOreDict.get(i);
+                            itemStacks[i] = oresFromOreDict.get(i).copy();
                         }
 
                         int count = getInt(jsonElement.getAsJsonObject(), "count", 1);
@@ -409,6 +411,7 @@ public class JsonRecipeHelper {
 
     /**
      * Gets the recipes from the recipe folder and adds them to the trainworkbench.
+     * looks recursively into the folders, so we can organize them and whatnot.
      * This will not be necessary in 1.12, as it will be handled automatically.
      */
     public static void loadRecipes() {
@@ -421,19 +424,32 @@ public class JsonRecipeHelper {
 
         try {
             File folder = new File(recipesFolder.toURI());
-            for (File recipeFile : folder.listFiles()) { //we know this is valid path, can ignore warning.
-                if (recipeFile.getName().substring(0, 1).equals("_")) {
-                    //not a file to parse if starts with underscore.
-                    continue;
-                }
-                parseAndAddRecipe(new Gson().fromJson(readFile(recipeFile.getPath(), StandardCharsets.UTF_8), JsonObject.class));
-            }
+            parseFilesInFolder(folder);
         } catch (Exception e) {
-            LOGGER.log(Level.FATAL, "Problem trying to get recipes: " + e);
-            return;
+            LOGGER.log(Level.FATAL, "Problem with preparing to parse json recipes: " + e);
         }
+
     }
 
+    private static void parseFilesInFolder(File folder) throws JsonSyntaxException, IOException {
+        for (File recipeFile : folder.listFiles()) { //we know this is valid path, can ignore warning.
+            if (recipeFile.isDirectory()) {
+                parseFilesInFolder(recipeFile);
+                continue;
+            }
+            if (recipeFile.getName().substring(0, 1).equals("_")) {
+                //not a file to parse if starts with underscore.
+                continue;
+            }
+
+            try {
+                parseAndAddRecipe(new Gson().fromJson(readFile(recipeFile.getPath(), StandardCharsets.UTF_8), JsonObject.class));
+            } catch (Exception e) {
+                LOGGER.log(Level.ERROR, "Problem trying to get recipe " + recipeFile.getName() + ": " + e);
+            }
+        }
+
+    }
     /** {@link "https://stackoverflow.com/a/326440/5526401"}
      */
     private static String readFile(String path, Charset encoding) throws IOException {
