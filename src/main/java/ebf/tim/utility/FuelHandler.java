@@ -177,30 +177,32 @@ public class FuelHandler{
 				train.getDataWatcher().updateObject(16, train.getDataWatcher().getWatchableObjectFloat(16)+heat);
 			}
 		}
-		//if the boiler temp is above the boiling point, start generating steam.
-		if (train.getDataWatcher().getWatchableObjectFloat(16) >100){
-			int steam = (int)Math.floor(
-					((train.getDataWatcher().getWatchableObjectFloat(16)-100)*0.005f) * //calculate heat from burnHeat
-							(train.entityData.getFluidStack("tanks.0").amount*0.005f) //calculate surface area of water
-			);
-			//drain fluid
-			if (train.drain(null, steam!=0?steam/5:0,true)!= null) {
-				train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int)(-(Math.abs(train.accelerator) * (train.getTankCapacity()[1]*0.01f))+steam*0.9f)), true);
+		if(train.entityData.containsFluidStack("tanks.0")) {
+			//if the boiler temp is above the boiling point, start generating steam.
+			if (train.getDataWatcher().getWatchableObjectFloat(16) > 100) {
+				int steam = (int) Math.floor(
+						((train.getDataWatcher().getWatchableObjectFloat(16) - 100) * 0.005f) * //calculate heat from burnHeat
+								(train.entityData.getFluidStack("tanks.0").amount * 0.005f) //calculate surface area of water
+				);
+				//drain fluid
+				if (train.drain(null, steam != 0 ? steam / 5 : 0, true) != null) {
+					train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int) (-(Math.abs(train.accelerator) * (train.getTankCapacity()[1] * 0.01f)) + steam * 0.9f)), true);
 
-				//if no fluid left and not creative mode, explode.
-			} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)){
-				train.worldObj.createExplosion(train, train.posX, train.posY, train.posZ, 5f, false);
-				train.dropItem(train.getItem(), 1);
-				train.setDead();
-			}
-			if(!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
-				train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+					//if no fluid left and not creative mode, explode.
+				} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
+					train.worldObj.createExplosion(train, train.posX, train.posY, train.posZ, 5f, false);
+					train.dropItem(train.getItem(), 1);
+					train.setDead();
+				}
+				if (!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
+					train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+					train.updateConsist();
+				}
+			} else {
+				train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+				train.accelerator = 0;
 				train.updateConsist();
 			}
-		} else {
-			train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
-			train.accelerator=0;
-			train.updateConsist();
 		}
 
 		if (train.entityData.containsFluidStack("tanks.1")&& train.entityData.getFluidStack("tanks.1").amount >0) {

@@ -17,10 +17,7 @@ import ebf.tim.items.ItemAdminBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
-import ebf.tim.utility.ChunkHandler;
-import ebf.tim.utility.ClientProxy;
-import ebf.tim.utility.CommonProxy;
-import ebf.tim.utility.JsonRecipeHelper;
+import ebf.tim.utility.*;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -145,6 +142,7 @@ public class TrainsInMotion {
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntitySeat.class, "Seat", 16, TrainsInMotion.instance, 60, 3, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(CollisionBox.class, "TiM.Hitbox", 17, TrainsInMotion.instance, 60, 3, true);
 
         if(event.getSide().isClient()){
 

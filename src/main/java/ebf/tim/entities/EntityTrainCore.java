@@ -1,10 +1,7 @@
 package ebf.tim.entities;
 
 import ebf.tim.registry.NBTKeys;
-import ebf.tim.utility.CommonProxy;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
-import ebf.tim.utility.FuelHandler;
+import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -333,6 +330,21 @@ public class EntityTrainCore extends GenericRailTransport {
                 whistleDelay = 65;
             }
         }
+    }
+
+    @Override
+    public void markDirty() {
+        if(forceBackupTimer==0) {
+            forceBackupTimer = 30;
+        }
+        for (ItemStackSlot slot : inventory){
+            entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
+        }
+
+        if(syncTimer==0){
+            syncTimer=20;
+        }
+
     }
 
 

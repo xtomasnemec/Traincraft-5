@@ -251,11 +251,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         ignoreFrustumCheck = true;
         inventory = new ArrayList<>();
         initInventorySlots();
-        if(world!=null && collisionHandler==null) {
-            this.height = 0.25f;
-            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
-            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-        }
     }
 
     /**
@@ -568,6 +563,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     }
 
+    public Entity[] getParts(){
+        return collisionHandler.interactionBoxes.toArray(new Entity[]{});
+    }
+
     /**
      * <h2>damage and destruction</h2>
      * attackEntityFromPart is called when one of the hitboxes of the entity has taken damage of some form.
@@ -599,7 +598,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //on Destruction
-        if (health<1 && worldObj.isRemote){
+        if (health<1 && !worldObj.isRemote){
             //remove this
             if (damageSource.getEntity() instanceof EntityPlayer) {
                 worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, new ItemStack(getItem(), 1)));
@@ -660,7 +659,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
         if(collisionHandler!=null && collisionHandler.interactionBoxes!=null){
-            for(HitboxDynamic.collisionBox box : collisionHandler.interactionBoxes){
+            for(CollisionBox box : collisionHandler.interactionBoxes){
                 if(box !=null){
                     box.setDead();
                     worldObj.removeEntity(box);
@@ -719,10 +718,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         ByteBufUtils.writeUTF8String(buffer, entityData.toXMLString());
         buffer.writeFloat(rotationYaw);
     }
+
     /**loads the entity's save file*/
     @Override
-    protected void readEntityFromNBT(NBTTagCompound tag) {
-        if(tag.hasKey("entityxml")) {
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+
+        if (tag.hasKey("entityxml")) {
             entityData = new XmlBuilder(tag.getString("entityxml"));
         }
         bools.set(tag.getInteger(NBTKeys.bools));
@@ -736,45 +738,45 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
         //load owner
         //@DEPRECIATED, legacy support to prevent save corruption
-        if(tag.hasKey(NBTKeys.ownerMost)){
-            UUID owner = new UUID(tag.getLong(NBTKeys.ownerMost),tag.getLong(NBTKeys.ownerLeast));
-            entityData.putUUID("owner",owner);
+        if (tag.hasKey(NBTKeys.ownerMost)) {
+            UUID owner = new UUID(tag.getLong(NBTKeys.ownerMost), tag.getLong(NBTKeys.ownerLeast));
+            entityData.putUUID("owner", owner);
         }
         if (tag.hasKey(NBTKeys.ownerName)) {
-            entityData.putString("ownername",tag.getString(NBTKeys.ownerName));
+            entityData.putString("ownername", tag.getString(NBTKeys.ownerName));
         }
 
-        if(tag.hasKey(NBTKeys.skinURI)) {
+        if (tag.hasKey(NBTKeys.skinURI)) {
             String skin = tag.getString(NBTKeys.skinURI);
             if (SkinRegistry.getSkin(this, null, false, skin) != null) {
-                entityData.putString("skin",skin);
+                entityData.putString("skin", skin);
             } else {
-                entityData.putString("skin",getDefaultSkin());
+                entityData.putString("skin", getDefaultSkin());
             }
         }
 
 
         //load bogie velocities
-        if(tag.hasKey(NBTKeys.frontBogieX)) {
-            entityData.putDouble(NBTKeys.frontBogieX,tag.getDouble(NBTKeys.frontBogieX));
-            entityData.putDouble(NBTKeys.frontBogieZ,tag.getDouble(NBTKeys.frontBogieZ));
-            entityData.putDouble(NBTKeys.backBogieX,tag.getDouble(NBTKeys.backBogieX));
-            entityData.putDouble(NBTKeys.backBogieZ,tag.getDouble(NBTKeys.backBogieZ));
+        if (tag.hasKey(NBTKeys.frontBogieX)) {
+            entityData.putDouble(NBTKeys.frontBogieX, tag.getDouble(NBTKeys.frontBogieX));
+            entityData.putDouble(NBTKeys.frontBogieZ, tag.getDouble(NBTKeys.frontBogieZ));
+            entityData.putDouble(NBTKeys.backBogieX, tag.getDouble(NBTKeys.backBogieX));
+            entityData.putDouble(NBTKeys.backBogieZ, tag.getDouble(NBTKeys.backBogieZ));
         }
 
         rotationRoll = tag.getFloat(NBTKeys.rotationRoll);
         prevRotationRoll = tag.getFloat(NBTKeys.prevRotationRoll);
 
         //@DEPRECIATED, legacy data loading
-        if(getTankCapacity()!=null) {
+        if (getTankCapacity() != null) {
             for (int i = 0; i < getTankCapacity().length; i++) {
                 if (tag.hasKey("tanks." + i)) {
-                    entityData.putFluidStack("tanks."+i,FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("tanks." + i)));
+                    entityData.putFluidStack("tanks." + i, FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("tanks." + i)));
                 }
             }
         }
         //@DEPRECIATED, legacy data loading
-        if(tag.hasKey("transportinv.0")) {
+        if (tag.hasKey("transportinv.0")) {
             inventory = new ArrayList<>();
             initInventorySlots();
 
@@ -792,12 +794,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
             closeInventory();
         }
-
         updateWatchers = true;
     }
+
     /**saves the entity to server world*/
     @Override
-    protected void writeEntityToNBT(NBTTagCompound tag) {
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+
         tag.setString("entityxml", entityData.toXMLString());
         tag.setByteArray(NBTKeys.bools, bools.getBits());
         tag.setBoolean(NBTKeys.dead, isDead);
@@ -816,6 +820,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         tag.setFloat(NBTKeys.prevRotationRoll, prevRotationRoll);
 
     }
+
+    //stops super class from writing unnecessary things.
+    @Override
+    public boolean hasDisplayTile(){return false;}
 
     @Override
     public boolean writeMountToNBT(NBTTagCompound tag){
@@ -892,6 +900,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
         dataWatcher.updateObject(12,velocity[0]= (float)Math.sqrt(motionX*motionX + motionZ*motionZ));
+        if(!worldObj.isRemote) {
+            for (CollisionBox box : collisionHandler.interactionBoxes) {
+                box.onUpdate();
+            }
+        }
         collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
 
     }
@@ -1160,7 +1173,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         worldObj.removeEntity(e);
                     }
 
-                } else if (e instanceof HitboxDynamic.collisionBox) {
+                } else if (e instanceof CollisionBox) {
                     double d0 = e.posX - this.posX;
                     double d1 = e.posZ - this.posZ;
                     double d2 = MathHelper.abs_max(d0, d1) * 1.25d;
