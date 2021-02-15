@@ -275,6 +275,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         this.dataWatcher.addObject(22, 0);//back linked transport
 
 
+        if(worldObj!=null) {
+            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        }
         /*possible conflict notes:
         EntityMinecart uses the following datawatchers.
          overriding them has not proven to be harmful or conflicting, but it needs notation in case that changes.
@@ -564,7 +568,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public Entity[] getParts(){
-        return collisionHandler.interactionBoxes.toArray(new Entity[]{});
+        return collisionHandler==null || collisionHandler.interactionBoxes==null?null:
+                collisionHandler.interactionBoxes.toArray(new Entity[]{});
     }
 
     /**
@@ -658,12 +663,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 back.backLinkedTransport = null;
             }
         }
-        if(collisionHandler!=null && collisionHandler.interactionBoxes!=null){
-            for(CollisionBox box : collisionHandler.interactionBoxes){
-                if(box !=null){
-                    box.setDead();
-                    worldObj.removeEntity(box);
-                }
+        for(CollisionBox box : collisionHandler.interactionBoxes){
+            if(box !=null){
+                box.setDead();
+                worldObj.removeEntity(box);
             }
         }
 
@@ -837,6 +840,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean hasDrag(){return true;}
 
     public void updatePosition(){
+
+        if(collisionHandler==null) {
+            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        }
+
         //reposition bogies to be sure they are the right distance
         if(!worldObj.isRemote && ticksExisted%2==0) {
             float[] f = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0, rotationPitch, rotationYaw, 0);
@@ -900,13 +909,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
         dataWatcher.updateObject(12,velocity[0]= (float)Math.sqrt(motionX*motionX + motionZ*motionZ));
-        if(!worldObj.isRemote) {
+        if (!worldObj.isRemote) {
             for (CollisionBox box : collisionHandler.interactionBoxes) {
                 box.onUpdate();
             }
         }
         collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-
     }
 
 
@@ -1023,6 +1031,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             getTankInfo(null);
             //sync inventory on spawn
             openInventory();
+
+            updatePosition();
         }
 
         /*

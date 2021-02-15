@@ -142,7 +142,6 @@ public class TrainsInMotion {
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntitySeat.class, "Seat", 16, TrainsInMotion.instance, 60, 3, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(CollisionBox.class, "TiM.Hitbox", 17, TrainsInMotion.instance, 60, 3, true);
 
         if(event.getSide().isClient()){
 
