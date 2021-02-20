@@ -1,6 +1,8 @@
 package ebf.tim;
 
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -17,7 +19,10 @@ import ebf.tim.items.ItemAdminBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
-import ebf.tim.utility.*;
+import ebf.tim.utility.ChunkHandler;
+import ebf.tim.utility.ClientProxy;
+import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.JsonRecipeHelper;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -137,7 +142,7 @@ public class TrainsInMotion {
         proxy.register();
 
         //parse and register json crafting recipes
-        JsonRecipeHelper.loadRecipes();
+        JsonRecipeHelper.loadRecipes("/assets/trainsinmotion/recipes/");
 
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);
