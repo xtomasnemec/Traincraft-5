@@ -204,7 +204,7 @@ public class Recipe {
                         //  Already accounted for both null, so this is safe to return false.
                         return false;
                     }
-                    if ((s.getItem() == stak.getItem() && s.stackSize <= stak.stackSize)) {
+                    if ((OreDictionary.itemMatches(s, stak, false) && s.stackSize <= stak.stackSize)) {
                         slotClear=true;
                         break;
                     }

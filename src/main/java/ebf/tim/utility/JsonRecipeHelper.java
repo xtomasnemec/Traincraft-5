@@ -252,7 +252,7 @@ public class JsonRecipeHelper {
     /**
      * Takes in a map of symbols to the ingredients and a array of strings corresponding to how each row looks in the table,
      * and converts it to a list of ingredients. length of list depends on craftingWidth and Height.
-     * @param pattern An array of strings that represent how pattern looks in crafting table (must be 3x3)
+     * @param pattern An array of strings that represent how pattern looks in crafting table
      * @param keys A map relating characters in pattern with the Items they represent.
      * @return
      */
@@ -414,8 +414,8 @@ public class JsonRecipeHelper {
      * looks recursively into the folders, so we can organize them and whatnot.
      * This will not be necessary in 1.12, as it will be handled automatically.
      */
-    public static void loadRecipes() {
-        URL recipesFolder = Traincraft.class.getResource("/assets/trainsinmotion/recipes/");
+    public static void loadRecipes(String url) {
+        URL recipesFolder = Traincraft.class.getResource(url);
         if (recipesFolder == null) {
             //crash and burn
             LOGGER.log(Level.FATAL, "Could not find recipes folder.");
@@ -431,7 +431,7 @@ public class JsonRecipeHelper {
 
     }
 
-    private static void parseFilesInFolder(File folder) throws JsonSyntaxException, IOException {
+    private static void parseFilesInFolder(File folder) throws JsonSyntaxException {
         for (File recipeFile : folder.listFiles()) { //we know this is valid path, can ignore warning.
             if (recipeFile.isDirectory()) {
                 parseFilesInFolder(recipeFile);

@@ -1,9 +1,9 @@
 package train;
 
-import com.google.common.eventbus.EventBus;
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -14,6 +14,7 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.registry.TiMGenericRegistry;
+import ebf.tim.utility.JsonRecipeHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -38,8 +39,6 @@ import train.library.Info;
 import train.library.TrainRegistry;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 
 @Mod(modid = Info.modID, name = Info.modName, dependencies="after:"+ TrainsInMotion.MODID)
 public class Traincraft {
@@ -159,6 +158,9 @@ public class Traincraft {
 		TCBlocks.init();
 		TCBlocks.registerRecipes();
 		TCItems.init();
+
+		//parse and register json crafting recipes
+		JsonRecipeHelper.loadRecipes("/assets/traincraft/recipes/");
 
 		if(ConfigHandler.ENABLE_STEAM) {
 			//the null last value defines we aren't implementing a custom entity render.

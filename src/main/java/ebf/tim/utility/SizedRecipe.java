@@ -29,7 +29,6 @@ public class SizedRecipe extends Recipe {
      * Matches this recipe with the given 9-slot inventory. Recurses to make dimensions match.
      * Slots 0 - 9 must be the 3x3 grid.
      * WARNING: only takes 3x3 matrices.
-     * WARNING: will overflow if no items in recipe.
      *
      * @param stacks the inventory to compare
      * @return whether the recipe matches the inventory or not
@@ -172,5 +171,47 @@ public class SizedRecipe extends Recipe {
             }
         }
         return true;
+    }
+
+    //no fucking tuples in java
+    /**
+     * Finds the amount the crafting inventory will have to move in order to shrink it, and return a integer array of two
+     * elements corresponding to how to shift back the minimized version to get back stacks.
+     * @param stacks stacks to minimize and find amount of shrinkage
+     * @return [int: vertical shifting, int: horizontal shifting]
+     */
+    public int[] shiftSlotsBy(List<ItemStack> stacks) {
+        int verticalShifts = 0;
+        int horizontalShifts = 0;
+
+        boolean notEmpty = false;
+        for (int i = 0; i < 9; i++) {
+            if (stacks.get(i) != null) {
+                notEmpty = true;
+                break;
+            }
+        }
+        if (!notEmpty) return new int[]{0, 0};
+
+
+        //eliminate empty rows and columns for non 3x3 crafting
+        if(stacks.get(0) == null && stacks.get(1) == null && stacks.get(2) == null){
+            verticalShifts = 1;
+
+            if(stacks.get(3) == null && stacks.get(4) == null && stacks.get(5) == null) {
+                verticalShifts = 2;
+            }
+        }
+
+        //eliminate empty columns by removing the first column (if empty) and recursing
+        if(stacks.get(0) == null && stacks.get(3) == null && stacks.get(6) == null){
+            horizontalShifts = 1;
+
+            if (stacks.get(1) == null && stacks.get(4) == null && stacks.get(7) == null)  {
+                horizontalShifts = 2;
+            }
+        }
+
+        return new int[]{horizontalShifts, verticalShifts};
     }
 }

@@ -225,6 +225,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                         } else {
                                             player.inventory.setItemStack(new ItemStack(player.inventory.getItemStack().getItem(), player.inventory.getItemStack().stackSize + 1));
                                             slot.onCrafting(hostType, inventory, 1);
+                                            slot.onCraftMatrixChanged(hostInventory, inventory);
                                         }
                                     }
                                 }
@@ -312,7 +313,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                         }
                     }
 
-                } else if(!slot.isCraftingOutput()){//if the selected slot was in transport inventory, and not a crafting slot
+                } else if(!slot.isCraftingOutput()){//if the selected slot is in the tileentity but not an output
                     //try the players
                     for(ItemStackSlot s : inventory){
                         if(s.getSlotID()<36){
@@ -343,7 +344,8 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                             }
                         }
                     }
-                } else {//if the selected slot was in a crafting slot
+                } else {//if the selected slot was in a crafting output slot
+                    //TODO: what happens if there are some slots to move items into but not enough for them all?
                     boolean hasStorage = false;
                     //try the players
                     for(ItemStackSlot s : inventory){
@@ -383,7 +385,8 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 slot.setSlotContents(null,inventory);
                             }
                         } else if (slot != null) {
-                            player.inventory.setInventorySlotContents(dragType, slot.mergeStack(itemstack.splitStack(slot.getSlotStackLimit()),inventory, hostType));
+                            int amountToShrink = Math.min(slot.getSlotStackLimit(), itemstack.stackSize);
+                            player.inventory.setInventorySlotContents(dragType, slot.mergeStack(itemstack.splitStack(amountToShrink),inventory, hostType));
                         }
                     }
                 }
