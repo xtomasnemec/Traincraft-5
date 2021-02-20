@@ -36,7 +36,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**defines if this is the front bogie of the transport*/
     private boolean isFront=true;
     /**used to calculate the X/Y/Z velocity based on the direction the rail is facing, similar to how vanilla minecarts work.*/
-    private static final int[][][] vanillaRailMatrix = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
+    private static final int[][][] martix = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
 
     /**cached value for the rail path, prevents need to generate a new variable multiple times per tick*/
     private double railPathX, railPathZ;
@@ -260,8 +260,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
 
         //figure out the current rail's direction
-        railPathX = (vanillaRailMatrix[railMetadata][1][0] - vanillaRailMatrix[railMetadata][0][0]);
-        railPathZ = (vanillaRailMatrix[railMetadata][1][2] - vanillaRailMatrix[railMetadata][0][2]);
+        railPathX = (martix[railMetadata][1][0] - martix[railMetadata][0][0]);
+        railPathZ = (martix[railMetadata][1][2] - martix[railMetadata][0][2]);
         railPathSqrt = Math.sqrt(railPathX * railPathX + railPathZ * railPathZ);
 
         if (motionX * railPathX + motionZ * railPathZ < 0.0D) {
@@ -274,14 +274,25 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         motionX = motionSqrt * (railPathX / railPathSqrt);
         motionZ = motionSqrt * (railPathZ / railPathSqrt);
 
+        //cover booster track, may not work for RC, idk.
+        if (block == Blocks.golden_rail) {
+            double d15 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+            if (d15 > 0.01D) {
+                double d16 = 0.06D;
+                this.motionX += this.motionX / d15 * d16;
+                this.motionZ += this.motionZ / d15 * d16;
+            }
+        }
+
         double[] movementPath = CommonUtil.rotatePoint(currentMotion,0,
                 CommonUtil.atan2degreesf(railPathZ,railPathX));
 
         //define the rail path again, to center the transport.
-        railPathX2 = Math.floor(posX) + 0.5D + vanillaRailMatrix[railMetadata][0][0] * 0.5D;
-        railPathZ2 = Math.floor(posZ) + 0.5D + vanillaRailMatrix[railMetadata][0][2] * 0.5D;
-        railPathX = (Math.floor(posX) + 0.5D + vanillaRailMatrix[railMetadata][1][0] * 0.5D) - railPathX2;
-        railPathZ = (Math.floor(posZ) + 0.5D + vanillaRailMatrix[railMetadata][1][2] * 0.5D) - railPathZ2;
+        railPathX2 = Math.floor(posX) + 0.5D + martix[railMetadata][0][0] * 0.5D;
+        railPathZ2 = Math.floor(posZ) + 0.5D + martix[railMetadata][0][2] * 0.5D;
+        railPathX = (Math.floor(posX) + 0.5D + martix[railMetadata][1][0] * 0.5D) - railPathX2;
+        railPathZ = (Math.floor(posZ) + 0.5D + martix[railMetadata][1][2] * 0.5D) - railPathZ2;
 
         //pick the bigger one
         if (railPathX == 0.0D) {

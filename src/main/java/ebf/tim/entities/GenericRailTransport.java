@@ -1145,25 +1145,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
 
             if(updateWatchers){
-                if(getTankCapacity()!=null) {
-                    StringBuilder tanks = new StringBuilder();
-                    for (int i = 0; i < getTankCapacity().length; i++) {
-                        //todo: these should NEVER be null
-                        if (entityData.containsFluidStack("tanks."+i) && entityData.getFluidStack("tanks."+i).fluid != null) {
-                            tanks.append(entityData.getFluidStack("tanks."+i).amount);
-                            tanks.append(",");
-                            tanks.append(entityData.getFluidStack("tanks."+i).getFluid().getName());
-                            tanks.append(";");
-                        } else {
-                            tanks.append(0);
-                            tanks.append(",");
-                            tanks.append(FluidRegistry.WATER.getName());
-                            tanks.append(";");
-                        }
-                    }
-
-                    this.dataWatcher.updateObject(20, tanks.toString());
-                }
                 this.dataWatcher.updateObject(17, bools.toInt());
                 this.dataWatcher.updateObject(21, frontLinkedID!=null?frontLinkedID:-1);
                 this.dataWatcher.updateObject(22, backLinkedID!=null?backLinkedID:-1);
