@@ -109,7 +109,7 @@ public class TiMItems {
 
         //Engines
         //petrolEngine = createItem("petrol.engine");
-        //smallDieselEngine = createItem("small.diesel.engine");
+        smallDieselEngine = createItem("small.diesel.engine");
         mediumDieselEngine = createItem("medium.diesel.engine");
         //largeDieselEngine = createItem("large.diesel.engine");
         smallElectricEngine = createItem("small.electric.engine");
@@ -124,7 +124,7 @@ public class TiMItems {
 
         //Transmissions + Other
         hydraulicTransmission = createItem("hydraulic.transmission");
-        //pneumaticTransmission = createItem("pneumatic.transmission");
+        pneumaticTransmission = createItem("pneumatic.transmission");
         transformer = createItem("transformer");
         //transformerHV = createItem("transformer.hv");
         //electricControls = createItem("electric.controls");

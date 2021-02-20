@@ -312,8 +312,12 @@ public class RecipeManager {
         return list;
     }
 
-    /**Ore Directory Converter
-     * converts any input to the ore directory version so recipes will have automatic ore directory support*/
+    /**
+     * Ore Directory Converter
+     * converts any input to the ore directory version so recipes will have automatic ore directory support
+     *
+     * todo: update this to not use depreciated func, make more robust/efficient
+     */
     public static ItemStack[] ODC(ItemStack s){
         if(s==null){
             return null;
@@ -326,7 +330,9 @@ public class RecipeManager {
         List<ItemStack> dir = new ArrayList<>();
         //create a list of ore directory entries
         for(int oreID : OreDictionary.getOreIDs(s)){
-            dir.addAll(OreDictionary.getOres(oreID));
+            for (ItemStack ore : OreDictionary.getOres(oreID)) {
+                dir.add(ore.copy());
+            }
         }
         if(dir.size()>0) {
             for (ItemStack stack : dir) {
