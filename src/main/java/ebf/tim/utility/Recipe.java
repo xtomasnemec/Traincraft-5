@@ -162,19 +162,24 @@ public class Recipe {
         if (stacks.size() < input.size()) return false;
 
         int i=0;
-        for(List<ItemStack> slot : input){
-            for(ItemStack s : slot){
+        for(List<ItemStack> slot : input){ //each ing
+            boolean isMatching = false;
+            for(ItemStack s : slot){ //possible items for ing
+
+                //checking to make sure both null or both not null
                 if(s==null && stacks.get(i) == null) {
                     //both must be null otherwise stacks.get(i) could have something and it falsely matches
                     continue;
-                } else if (s == null && stacks.get(i) != null) {
-                    //the recipe can be null but an item could be in the slot
-                    return false;
-                } else if(stacks.get(i)==null || OreDictionary.itemMatches(stacks.get(i), s, false) || s.stackSize>stacks.get(i).stackSize){
-                    //s!=null here, so if stacks.get(i) null bad, or the item not equal, or stack not big enough
-                    return false;
                 }
+
+                if (OreDictionary.itemMatches(stacks.get(i), s, false) && s.stackSize <= stacks.get(i).stackSize){
+                    //items not equal or stack isn't big enough, or stack not big enough
+                    isMatching = true;
+                }
+
+                if (isMatching) break;
             }
+            if (!isMatching) return false;
             i++;
         }
         return true;
@@ -187,7 +192,7 @@ public class Recipe {
      * @param stacks
      * @return
      */
-    public boolean recipeInputMatches(List<List<ItemStack>> stacks){ //is this correctly comparing when null is present in the stacks parameter?
+    public boolean recipeInputMatches(List<List<ItemStack>> stacks){ //is this correctly comparing?
         int i=0;
         boolean slotClear=false;
         for(List<ItemStack> slot : input){//iterate through the recipe's ingredients
