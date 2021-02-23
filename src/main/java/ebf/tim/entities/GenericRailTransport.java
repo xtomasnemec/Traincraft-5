@@ -1670,10 +1670,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         for(ItemStackSlot slot : inventory){
             item = slot.mergeStack(item,inventory,0);
             if (item == null){
+                markDirty();
                 return;
             }
         }
         entityDropItem(item, item.stackSize);
+        markDirty();
     }
 
     /**

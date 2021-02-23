@@ -38,6 +38,7 @@ public class ModelRendererTurbo {
     public float rotationPointX=0,rotationPointY=0,rotationPointZ=0;
     public float width, height, depth;
     public boolean showModel; //previously known as !field_1402_i
+    public boolean noCull=false;
     public boolean ignoresLighting=false;
     public String boxName = null;
     public boolean animated=false;
@@ -1313,6 +1314,9 @@ public class ModelRendererTurbo {
         if (ignoresLighting){
             Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
         }
+        if(noCull){
+            GL11.glDisable(GL11.GL_CULL_FACE);
+        }
         if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
         }
@@ -1332,6 +1336,9 @@ public class ModelRendererTurbo {
         }
         if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(-rotationPointX * scale, -rotationPointY * scale, -rotationPointZ * scale);
+        }
+        if(noCull){
+            GL11.glEnable(GL11.GL_CULL_FACE);
         }
         if (ignoresLighting){
             Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);

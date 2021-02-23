@@ -6,11 +6,13 @@ import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -19,6 +21,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import java.util.List;
 
 public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
     GenericRailTransport host;
@@ -65,7 +69,7 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
     }
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float p_70097_2_){
-        return this.entityDragonObj.attackEntityFromPart(this, damageSource, p_70097_2_);
+        return this.host.attackEntityFromPart(this, damageSource, p_70097_2_);
     }
 
     @Override

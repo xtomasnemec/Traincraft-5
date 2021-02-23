@@ -106,6 +106,8 @@ public class RenderWagon extends Render {
                         //attempt to cache the parts for the main transport model
                         if(StaticModelAnimator.checkCulls(render)){
                             render.showModel = false;
+                        } else if(StaticModelAnimator.checkCulls(render)){
+                            render.noCull = true;
                         }
                         if(render.boxName.contains(StaticModelAnimator.tagGlow)){
                             render.boxName=render.boxName.replace(StaticModelAnimator.tagGlow,"");

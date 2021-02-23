@@ -146,7 +146,6 @@ public class FuelHandler{
 		//if there's a fluid item in the slot and the train can consume the entire thing
 		if (getUseableFluid(train.waterSlot().getSlotID(),train) !=null &&
 				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==0) {
-
 			train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);

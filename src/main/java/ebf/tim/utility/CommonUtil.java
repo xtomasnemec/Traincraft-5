@@ -135,7 +135,7 @@ public class CommonUtil {
     }
 
 
-    public static float calculatePitch(double yFront, double yBack, double distance){
+    public static float calculatePitch(double yBack, double yFront, double distance){
             double yDiff = yFront - yBack;
             return (float) (Math.acos(yDiff / Math.sqrt(distance + yDiff * yDiff)) * CommonUtil.degreesD) - 90f;
     }

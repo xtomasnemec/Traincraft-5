@@ -170,13 +170,13 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         if (hostInventory instanceof TileEntityStorage && ((TileEntityStorage) hostInventory).assemblyTableTier >= 0) {
             this.detectAndSendChanges();
         }
-
-        if (clickTypeIn == 4 && player.worldObj.isRemote){
+        if (clickTypeIn == 4){
             clickTypeIn = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
                     player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
                             (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
                                     0;//cover everything else
         }
+
         ItemStack itemstack = null;
         ItemStackSlot slot = getSlotByID(slotId);
         int hostType = (hostInventory instanceof TileEntityStorage? ((TileEntityStorage) hostInventory).storageType:0);
@@ -185,12 +185,9 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                 if (slotId == -999) { //if the slot was the cursor
                     if (player.inventory.getItemStack() != null) {
                         if (dragType == 0) {
-                            if (!player.worldObj.isRemote) {
-                                player.entityDropItem(player.inventory.getItemStack(), player.inventory.getItemStack().stackSize);
-                                break;
-                            }
+                            player.entityDropItem(player.inventory.getItemStack(), player.inventory.getItemStack().stackSize);
                             player.inventory.setItemStack(null);
-                        } else if (dragType == 1 && !player.worldObj.isRemote) {
+                        } else if (dragType == 1) {
                             player.entityDropItem(player.inventory.getItemStack(), 1);
                             break;
                         }
