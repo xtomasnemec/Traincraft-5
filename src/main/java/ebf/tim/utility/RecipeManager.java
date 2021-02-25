@@ -104,6 +104,7 @@ public class RecipeManager {
         for (ItemStack is : recipe) {
             if (is != null) {
                 empty = false;
+                break;
             }
         }
         if (empty) return null;

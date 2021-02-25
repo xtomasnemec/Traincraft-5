@@ -108,26 +108,26 @@ public class TiMItems {
         fireboxSteel = createItem("firebox.steel");
 
         //Engines
-        //petrolEngine = createItem("petrol.engine");
+        petrolEngine = createItem("petrol.engine"); //c
         smallDieselEngine = createItem("small.diesel.engine");
         mediumDieselEngine = createItem("medium.diesel.engine");
-        //largeDieselEngine = createItem("large.diesel.engine");
+        largeDieselEngine = createItem("large.diesel.engine"); //c
         smallElectricEngine = createItem("small.electric.engine");
-        //mediumElectricEngine = createItem("medium.electric.engine");
-        //largeElectricEngine = createItem("large.electric.engine");
+        mediumElectricEngine = createItem("medium.electric.engine"); //c
+        largeElectricEngine = createItem("large.electric.engine"); //c
 
         //Seats
         seatsWooden = createItem("seats.wooden");
-        //seatsIron = createItem("seats.iron");
-        //seatsPadded = createItem("seats.padded");
-        //seatsLuxury = createItem("seats.luxury");
+        seatsIron = createItem("seats.iron"); //c
+        seatsPadded = createItem("seats.padded"); //c
+        seatsLuxury = createItem("seats.luxury"); //c
 
         //Transmissions + Other
         hydraulicTransmission = createItem("hydraulic.transmission");
         pneumaticTransmission = createItem("pneumatic.transmission");
         transformer = createItem("transformer");
-        //transformerHV = createItem("transformer.hv");
-        //electricControls = createItem("electric.controls");
+        transformerHV = createItem("transformer.hv"); //c
+        electricControls = createItem("electric.controls"); //c
 
         //Wires
         copperWire = createItem("copper.wire");
@@ -135,15 +135,15 @@ public class TiMItems {
         carbonWire = createItem("carbon.wire");
         steelWire = createItem("steel.wire");
         aluminiumWire = createItem("aluminium.wire");
-        //insulatedCopperWire = createItem("insulated.copper.wire");
-        //insulatedAluminiumWire = createItem("insulated.aluminium.wire");
+        insulatedCopperWire = createItem("insulated.copper.wire"); //c
+        insulatedAluminiumWire = createItem("insulated.aluminium.wire"); //c
 
         //Valve Gears
-        //walschaertsValveGear = createItem("walschaerts.valve.gear");
-        //stephensonValveGear = createItem("stephenson.valve.gear");
-        //bakerValveGear = createItem("baker.valve.gear");
-        //radialValveGear = createItem("radial.valve.gear");
-        //conjugatingValveGear = createItem("conjugating.valve.gear");
+        walschaertsValveGear = createItem("walschaerts.valve.gear"); //c
+        stephensonValveGear = createItem("stephenson.valve.gear"); //c
+        bakerValveGear = createItem("baker.valve.gear"); //c
+        radialValveGear = createItem("radial.valve.gear"); //c
+        conjugatingValveGear = createItem("conjugating.valve.gear"); //c
 
         //Other
         enginePiston = createItem("engine.piston");
@@ -151,10 +151,10 @@ public class TiMItems {
         camshaft = createItem("camshaft");
         graphite = createItem("graphite");
         steelPinCircuit = createItem("steel.pin.circuit");
-        //goldPinCircuit = createItem("gold.pin.circuit");
+        goldPinCircuit = createItem("gold.pin.circuit"); //c
         controlPanel = createItem("control.panel");
-        //controlStand = createItem("control.stand");
-        //connectingRod = createItem("connecting.rod");
+        controlStand = createItem("control.stand"); //c
+        connectingRod = createItem("connecting.rod"); //c
         generator = createItem("generator");
     }
 
