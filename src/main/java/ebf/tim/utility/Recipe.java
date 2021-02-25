@@ -166,16 +166,7 @@ public class Recipe {
             boolean isMatching = false;
             for(ItemStack s : slot){ //possible items for ing
 
-                //checking to make sure both null or both not null
-                if(s==null && stacks.get(i) == null) {
-                    //both must be null otherwise stacks.get(i) could have something and it falsely matches
-                    continue;
-                }
-
-                if (OreDictionary.itemMatches(stacks.get(i), s, false) && s.stackSize <= stacks.get(i).stackSize){
-                    //items not equal or stack isn't big enough, or stack not big enough
-                    isMatching = true;
-                }
+                isMatching = compareItemsAndSize(s, stacks.get(i));
 
                 if (isMatching) break;
             }
@@ -199,21 +190,7 @@ public class Recipe {
             if (stacks.size() <= i){return false;} //recipes are variable length, terminate if it gets to the end without success
             for(ItemStack s : slot){//iterate through the items that fit as the recipe's ingredient
                 for(ItemStack stak : stacks.get(i)) { //iterate the items that fit as that ingredient in stacks
-                    slotClear = false; //need to reset, so doesn't carry over from prev. matching
-                    if(s==null && stak==null) { //if both are null, that is ok, it matches
-                        slotClear=true;
-                        break;
-                    } else if(s==null || stak==null){ //one is null when the other isn't.
-                        //Can either s or stak be null when there is a possible ingredient?
-                        //  I think not, so this means the ingredients don't match. Return false.
-                        //  Already accounted for both null, so this is safe to return false.
-                        return false;
-                    }
-                    if ((OreDictionary.itemMatches(s, stak, false) && s.stackSize <= stak.stackSize)) {
-                        slotClear=true;
-                        break;
-                    }
-                    if(slotClear){break;}
+                    slotClear = compareItemsAndSize(s, stak);
                 }
                 if(!slotClear){return false;}
             }
@@ -222,7 +199,24 @@ public class Recipe {
         return true;
     }
 
+    /**
+     * Compares the toCompare item to the target item. Compares if the the items are equivalent and if the toCompare size
+     * is greater than the target's size. Also checks if the target is a wildcard item, and adjusts accordingly. Also
+     * returns true if both are null.
+     * @param target target ItemStack, can be a wildcard, and toCompare should be at least this size
+     * @param toCompare ItemStack being compared.
+     * @return true if toCompare is the same item and is equal to or bigger than target.
+     */
+    private static boolean compareItemsAndSize(ItemStack target, ItemStack toCompare) {
+        //checking to make sure both null or both not null
+        if(target==null && toCompare == null) {
+            //both must be null otherwise stacks.get(i) could have something and it falsely matches
+            return true;
+        }
 
+        //items not equal or stack isn't big enough, or stack not big enough
+        return OreDictionary.itemMatches(target, toCompare, false) && target.stackSize <= toCompare.stackSize;
+    }
 
 
 

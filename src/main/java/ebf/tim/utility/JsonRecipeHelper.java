@@ -259,7 +259,7 @@ public class JsonRecipeHelper {
     private static List<List<ItemStack>> deserializeIngredients(String[] pattern, Map<String, ItemStack[]> keys /*, int craftingWidth, int craftingHeight*/) {
         List<List<ItemStack>> finalList = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            finalList.add(null);
+            finalList.add(null); //.add(new ArrayList<ItemStack>(0));g
         }
         Set<String> set = Sets.newHashSet(keys.keySet());
         //set.remove(" "); //not present anyways
