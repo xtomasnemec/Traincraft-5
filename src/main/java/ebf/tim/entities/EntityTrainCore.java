@@ -341,7 +341,7 @@ public class EntityTrainCore extends GenericRailTransport {
             entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
         }
 
-        if(syncTimer==0){
+        if(syncTimer==-1){
             syncTimer=20;
         }
 
