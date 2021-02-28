@@ -124,6 +124,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**defines the update tick of the entity, in this case we rely on the transport to provide that for us, keeps things synced on the chance entities ever get individualized threads*/
     @Override
     public void onUpdate() {
+        if(ticksExisted%40==0 || ticksExisted==0)
         //be sure to remove this if the parent is null, or in a different castle, I mean world.
         if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport){
             if (worldObj.isRemote) {

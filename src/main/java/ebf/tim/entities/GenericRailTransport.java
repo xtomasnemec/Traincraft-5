@@ -628,18 +628,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //remove bogies
         if (frontBogie != null) {
             frontBogie.setDead();
-            TrainsInMotion.keyChannel.sendToServer(new PacketRemove(frontBogie.getEntityId(), false));
             worldObj.removeEntity(frontBogie);
         }
         if (backBogie != null) {
             backBogie.setDead();
-            TrainsInMotion.keyChannel.sendToServer(new PacketRemove(backBogie.getEntityId(), false));
             worldObj.removeEntity(backBogie);
         }
         //remove seats
         for (EntitySeat seat : seats) {
             seat.setDead();
-            TrainsInMotion.keyChannel.sendToServer(new PacketRemove(seat.getEntityId(),false));
             seat.worldObj.removeEntity(seat);
         }
         //be sure the front and back links are removed in the case of this entity being removed from the world.

@@ -1,7 +1,9 @@
 package ebf.tim.utility;
 
+import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
+import ebf.tim.networking.PacketRemove;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
 import net.minecraft.client.Minecraft;
@@ -69,6 +71,9 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
     }
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float p_70097_2_){
+        if(worldObj.isRemote){
+            TrainsInMotion.keyChannel.sendToServer(new PacketRemove(host.getEntityId(), damageSource==null?-1:damageSource.getEntity().getEntityId()));
+        }
         return this.host.attackEntityFromPart(this, damageSource, p_70097_2_);
     }
 
