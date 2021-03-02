@@ -2,6 +2,7 @@ package ebf.tim.models;
 
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.Vec3f;
 
@@ -80,18 +81,24 @@ public class Bogie {
      */
     public void updateRotation(GenericRailTransport entity){
         //update positions
-        if(prevPos!=position && prevPos!=null && position!=null&&entity.getVelocity()>0.001) {
+        if(prevPos!=position && prevPos!=null && position!=null&&
+                Math.abs(Math.abs(position[0])+Math.abs(position[1])-Math.abs(prevPos[0])-Math.abs(prevPos[1]))>0.25f
+        ) {
             rotationYaw = CommonUtil.atan2degreesf(prevPos[1] - position[1], prevPos[0] - position[0]);
+            if(Math.abs(rotationYaw)> Math.abs(entity.rotationYaw)+90){
+                rotationYaw-=180;
+            }
             for(Bogie b : subBogies){
                 b.updateRotation(entity);
             }
+            prevPos = position;
         } else if(prevPos==null){
             rotationYaw=entity.rotationYaw;
+            prevPos = position;
         }
     }
 
     public void updatePosition(GenericRailTransport entity, Vec3f prevOffset){
-        prevPos = position;
         if(prevOffset==null){
             prevOffset= CommonUtil.rotatePoint(new Vec3f(offset[0],0,offset[1]),0,entity.rotationYaw,0);
         } else {

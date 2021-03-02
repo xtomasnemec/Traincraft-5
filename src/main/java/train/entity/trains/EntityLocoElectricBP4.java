@@ -1,10 +1,13 @@
 package train.entity.trains;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.api.TransportSkin;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.items.ItemTransport;
+import ebf.tim.models.Bogie;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
 import ebf.tim.utility.ItemStackSlot;
@@ -12,9 +15,11 @@ import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import train.Traincraft;
 import train.library.Info;
+import train.render.models.ModelBP4Bogie;
 
 import java.util.List;
 import java.util.UUID;
@@ -60,9 +65,11 @@ public class EntityLocoElectricBP4 extends EntityTrainCore {
     @Override
     public void registerSkins(){
         SkinRegistry.addSkin(this.getClass(),
-            new TransportSkin(Info.modID,"textures/trains/bp4_Green.png","Green", "description.bp4.Green"));
+            new TransportSkin(Info.modID,"textures/trains/bp4_Green.png","Green", "description.bp4.Green")
+                    .setBogieTextures(new ResourceLocation(Info.resourceLocation, "textures/trains/bp4bogie.png")));
         SkinRegistry.addSkin(this.getClass(),
-            new TransportSkin(Info.modID,"textures/trains/bp4_Purple.png","Purple", "description.bp4.Purple"));
+            new TransportSkin(Info.modID,"textures/trains/bp4_Purple.png","Purple", "description.bp4.Purple")
+                    .setBogieTextures(new ResourceLocation(Info.resourceLocation, "textures/trains/bp4bogie_purple.png")));
     }
     @Override
     public String getDefaultSkin(){
@@ -101,6 +108,14 @@ public class EntityLocoElectricBP4 extends EntityTrainCore {
     @Override
     public int[] getTankCapacity(){return new int[]{8650};}
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Bogie[] bogies(){
+        return new Bogie[]{
+                new Bogie(new ModelBP4Bogie(), -1.6f,-0.15f,0),
+                new Bogie(new ModelBP4Bogie(), 1.5f,-0.15f,0)
+        };
+    }
 
 
     //these only change in very specific use cases.
