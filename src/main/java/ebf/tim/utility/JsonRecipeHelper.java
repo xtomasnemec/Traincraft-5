@@ -4,23 +4,26 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import cpw.mods.fml.common.registry.GameData;
+import ebf.tim.TrainsInMotion;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import train.Traincraft;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 /**
  * This class will handle parsing and adding recipes to the TiM table.
@@ -413,9 +416,11 @@ public class JsonRecipeHelper {
      * Gets the recipes from the recipe folder and adds them to the trainworkbench.
      * looks recursively into the folders, so we can organize them and whatnot.
      * This will not be necessary in 1.12, as it will be handled automatically.
+     *
+     * @param modID The mod-id of the mod to find recipes in. eg. "traincraft" or "trainsinmotion"
      */
-    public static void loadRecipes(String url) {
-        URL recipesFolder = Traincraft.class.getResource(url);
+    public static void loadRecipes(String modID) {
+        URL recipesFolder = TrainsInMotion.class.getResource("/assets/" + modID + "/recipes");
         if (recipesFolder == null) {
             //crash and burn
             LOGGER.log(Level.FATAL, "Could not find recipes folder.");
@@ -423,10 +428,42 @@ public class JsonRecipeHelper {
         }
 
         try {
-            File folder = new File(recipesFolder.toURI());
-            parseFilesInFolder(folder);
+            //convert slash into backorforwards slash modifier.
+            Pattern pat = Pattern.compile(".*[/\\\\]" + modID + "[/\\\\]recipes[/\\\\].*");
+            final Collection<String> list = getResources(pat); //todo: figure out how to make this more efficient.
+            for(final String name : list){
+                String nameC = name;
+                if (name.indexOf("assets") != 0) {
+                    nameC = name.substring(name.indexOf("assets") - 1);
+                }
+                InputStream inputStream = TrainsInMotion.class.getClassLoader().getResourceAsStream(nameC);
+
+                StringBuilder textBuilder = new StringBuilder();
+                try (Reader reader = new BufferedReader(new InputStreamReader
+                        (inputStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
+                    int c = 0;
+                    while ((c = reader.read()) != -1) {
+                        textBuilder.append((char) c);
+                    }
+
+                    try {
+                        //continue if file name starts with underscore.
+                        int lastSlash = nameC.lastIndexOf("/");
+                        if (lastSlash == -1) lastSlash = nameC.lastIndexOf("\\");
+                        if (nameC.substring(lastSlash+1, lastSlash+2).equals("_")) continue;
+
+                        parseAndAddRecipe(new Gson().fromJson(textBuilder.toString(), JsonObject.class));
+                    } catch (Exception e) {
+                        LOGGER.log(Level.ERROR, "Problem trying to get recipe " + name + ": " + e);
+                        e.printStackTrace();
+                    }
+                }
+            }
+//            File folder = new File(recipesFolder.toURI());
+//            parseFilesInFolder(folder);
         } catch (Exception e) {
             LOGGER.log(Level.FATAL, "Problem with preparing to parse json recipes: " + e);
+            e.printStackTrace();
         }
 
     }
@@ -455,5 +492,78 @@ public class JsonRecipeHelper {
     private static String readFile(String path, Charset encoding) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
+    }
+
+    //https://stackoverflow.com/questions/3923129/get-a-list-of-resources-from-classpath-directory
+    //https://bryanbende.com/development/2014/10/20/extracting-classpath-resources
+    public static Collection<String> getResources(final Pattern pattern){
+        final ArrayList<String> retval = new ArrayList<String>();
+        final String classPath = System.getProperty("java.class.path", ".");
+        final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
+        for(final String element : classPathElements){
+            retval.addAll(getResources(element, pattern));
+        }
+        return retval;
+    }
+
+    private static Collection<String> getResources(final String element, final Pattern pattern){
+        final ArrayList<String> retval = new ArrayList<String>();
+        final File file = new File(element);
+        if(file.isDirectory()){
+            retval.addAll(getResourcesFromDirectory(file, pattern));
+        } else{
+            retval.addAll(getResourcesFromJarFile(file, pattern));
+        }
+        return retval;
+    }
+
+    private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern){
+        final ArrayList<String> retval = new ArrayList<String>();
+        ZipFile zf;
+        try{
+            zf = new ZipFile(file);
+        } catch(final ZipException e){
+            throw new Error(e);
+        } catch(final IOException e){
+            throw new Error(e);
+        }
+        final Enumeration e = zf.entries();
+        while(e.hasMoreElements()){
+            final ZipEntry ze = (ZipEntry) e.nextElement();
+            final String fileName = ze.getName();
+            final boolean accept = pattern.matcher(fileName).matches();
+            if(accept){
+                retval.add(fileName);
+            }
+        }
+        try{
+            zf.close();
+        } catch(final IOException e1){
+            throw new Error(e1);
+        }
+        return retval;
+    }
+
+    private static Collection<String> getResourcesFromDirectory(
+            final File directory,
+            final Pattern pattern){
+        final ArrayList<String> retval = new ArrayList<String>();
+        final File[] fileList = directory.listFiles();
+        for(final File file : fileList){
+            if(file.isDirectory()){
+                retval.addAll(getResourcesFromDirectory(file, pattern));
+            } else{
+                try{
+                    final String fileName = file.getCanonicalPath();
+                    final boolean accept = pattern.matcher(fileName).matches();
+                    if(accept){
+                        retval.add(fileName);
+                    }
+                } catch(final IOException e){
+                    throw new Error(e);
+                }
+            }
+        }
+        return retval;
     }
 }
