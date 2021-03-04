@@ -85,7 +85,7 @@ public class Bogie {
                 Math.abs(Math.abs(position[0])+Math.abs(position[1])-Math.abs(prevPos[0])-Math.abs(prevPos[1]))>0.25f
         ) {
             rotationYaw = CommonUtil.atan2degreesf(prevPos[1] - position[1], prevPos[0] - position[0]);
-            if(Math.abs(rotationYaw)> Math.abs(entity.rotationYaw)+90){
+            if(Math.abs(rotationYaw)+90< Math.abs(entity.rotationYaw)-90){
                 rotationYaw-=180;
             }
             for(Bogie b : subBogies){

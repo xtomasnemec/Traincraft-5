@@ -366,7 +366,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 }case 2:{ //decrease speed
                     if (accelerator >-6 && getBoolean(boolValues.RUNNING)) {
                         for(GenericRailTransport consist : getConsist()){
-                            if(consist.getAccelerator()!=0){
+                            if(consist!=this && consist.getAccelerator()!=0){
                                 return true;
                             }
                         }
@@ -381,7 +381,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 }case 3:{ //increase speed
                     if (accelerator <6 && getBoolean(boolValues.RUNNING)) {
                         for(GenericRailTransport consist : getConsist()){
-                            if(consist.getAccelerator()!=0){
+                            if(consist!=this && consist.getAccelerator()!=0){
                                 return true;
                             }
                         }
