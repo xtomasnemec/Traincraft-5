@@ -886,7 +886,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         prevPosX=posX;
         prevPosZ=posZ;
         motionX = (frontBogie.motionX+backBogie.motionX)*0.5;
-        motionX = (frontBogie.motionX+backBogie.motionX)*0.5;
+        motionZ = (frontBogie.motionZ+backBogie.motionZ)*0.5;
         frontBogie.minecartMove(this);
         backBogie.minecartMove(this);
 
@@ -1486,7 +1486,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public float getVelocity(){
-        return worldObj.isRemote?this.dataWatcher.getWatchableObjectFloat(12):velocity[0];
+        return (float)Math.max(Math.max(Math.abs(motionX),0.001f),Math.abs(motionZ));
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.

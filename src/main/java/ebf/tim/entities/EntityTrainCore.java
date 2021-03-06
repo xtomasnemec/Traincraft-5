@@ -107,10 +107,6 @@ public class EntityTrainCore extends GenericRailTransport {
                     //*0.000028125f;
     }
 
-    //returns the current speed in blocks (meters) per tick
-    public float getVelocity(){
-        return (float)Math.max(Math.abs(motionX)+Math.abs(motionZ),0.01f);
-    }
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
     public float getAcceleratiorPercentage(){
         switch (Math.abs(getAccelerator())){

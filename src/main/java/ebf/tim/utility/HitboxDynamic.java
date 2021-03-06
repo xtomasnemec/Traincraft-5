@@ -125,26 +125,26 @@ public class HitboxDynamic {
                                 } else if(host.backLinkedID!=null && stock.getEntityId()==host.backLinkedID){
                                     continue;
                                 }
-                                Vec3 vec;
-                                if(host.getBoolean(GenericRailTransport.boolValues.COUPLINGFRONT)) {
-                                    vec = CommonUtil.rotateDistance(longest+1.3f, host.rotationPitch, host.rotationYaw);
-                                    vec.addVector(host.posX, host.posY+0.1, host.posZ);
-                                    if (stock.collisionHandler.containsPoint(vec.xCoord, vec.yCoord, vec.zCoord)) {
-                                        if (transportCollide(host, stock, true)) {
-                                            continue;
-                                        }
-                                    }
-                                }
-                                if(host.getBoolean(GenericRailTransport.boolValues.COUPLINGBACK)) {
-                                    vec = CommonUtil.rotateDistance(-longest - 1.3f, host.rotationPitch, host.rotationYaw);
-                                    vec.addVector(host.posX, host.posY+0.1, host.posZ);
-                                    if (stock.collisionHandler.containsPoint(vec.xCoord, vec.yCoord, vec.zCoord)) {
-                                        if (transportCollide(host, stock, false)) {
-                                            continue;
-                                        }
-                                    }
-                                }
                                 if(stock.collisionHandler!=null) {
+                                    Vec3 vec;
+                                    if(host.getBoolean(GenericRailTransport.boolValues.COUPLINGFRONT)) {
+                                        vec = CommonUtil.rotateDistance(longest+1.3f, host.rotationPitch, host.rotationYaw);
+                                        vec.addVector(host.posX, host.posY+0.1, host.posZ);
+                                        if (stock.collisionHandler.containsPoint(vec.xCoord, vec.yCoord, vec.zCoord)) {
+                                            if (transportCollide(host, stock, true)) {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                    if(host.getBoolean(GenericRailTransport.boolValues.COUPLINGBACK)) {
+                                        vec = CommonUtil.rotateDistance(-longest - 1.3f, host.rotationPitch, host.rotationYaw);
+                                        vec.addVector(host.posX, host.posY+0.1, host.posZ);
+                                        if (stock.collisionHandler.containsPoint(vec.xCoord, vec.yCoord, vec.zCoord)) {
+                                            if (transportCollide(host, stock, false)) {
+                                                continue;
+                                            }
+                                        }
+                                    }
                                     for (CollisionBox b : stock.collisionHandler.interactionBoxes) {
                                         if (containsEntity(b)) {
                                             arraylist.add(b);

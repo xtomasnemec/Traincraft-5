@@ -229,11 +229,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         while (velocity>0) {
             //on straight track, use bigger movement vectors for performance.
             if(block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==0||
-                    block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==0){
+                    block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==1){
                 moveBogieVanillaDirectional(Math.min(0.3, velocity), floorX, floorY, floorZ, block, host);
                 velocity -= 0.35;
             } else {
-                moveBogieVanillaDirectional(Math.min(0.75, velocity), floorX, floorY, floorZ, block, host);
+                moveBogieVanillaDirectional(Math.min(0.075, velocity), floorX, floorY, floorZ, block, host);
                 velocity -= 0.075;
             }
 
