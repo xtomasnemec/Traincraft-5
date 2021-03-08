@@ -3,7 +3,9 @@ package ebf.tim.utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SizedRecipe extends Recipe {
@@ -12,7 +14,7 @@ public class SizedRecipe extends Recipe {
     private int craftHeight;
 
     public SizedRecipe(ItemStack result, List<List<ItemStack>> recipeIngredients, int craftWidth, int craftHeight) {
-        super(Arrays.asList(result), recipeIngredients);
+        super(new ArrayList<>(Collections.singletonList(result)), recipeIngredients);
         this.craftWidth = craftWidth;
         this.craftHeight = craftHeight;
         this.setTier(0);

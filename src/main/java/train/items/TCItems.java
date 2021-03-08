@@ -7,15 +7,7 @@
 
 package train.items;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import ebf.tim.registry.TiMItems;
-import ebf.tim.registry.TiMOres;
-import ebf.tim.utility.Recipe;
-import ebf.tim.utility.RecipeManager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import train.Traincraft;
 import train.library.Info;
 import train.library.ItemIDs;
@@ -27,15 +19,6 @@ public class TCItems {
 	public static void init() {
 		loadItems();
 		registerItems();
-
-
-		RecipeManager.registerRecipe(
-				new Object[]{TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,null,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic,TiMOres.dustPlastic},
-				new ItemStack(ItemIDs.emptyCanister.item));
-
-		RecipeManager.registerRecipe(
-				new Object[]{TiMOres.dustPlastic,TiMItems.graphite,TiMOres.dustPlastic,TiMItems.graphite,TiMOres.dustPlastic,TiMItems.graphite, Blocks.glass_pane, TiMItems.graphite,Blocks.glass_pane},
-				new ItemStack(ItemIDs.reinforcedPlastic.item));
 
 		/* Clothes
 		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.overalls.item, 1),  " # ", "X$X", "X X", Character.valueOf('X'), new ItemStack(Items.dye, 1, 4), Character.valueOf('$'), Items.leather_leggings, Character.valueOf('#'), new ItemStack(Items.dye, 1, 1) );
