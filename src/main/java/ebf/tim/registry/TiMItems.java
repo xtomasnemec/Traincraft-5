@@ -130,6 +130,7 @@ public class TiMItems {
         electricControls = createItem("electric.controls"); //c
 
         //Wires
+        //TODO in future? rename to wire.material to match naming scheme
         copperWire = createItem("copper.wire");
         goldWire = createItem("gold.wire");
         carbonWire = createItem("carbon.wire");
@@ -139,6 +140,7 @@ public class TiMItems {
         insulatedAluminiumWire = createItem("insulated.aluminium.wire"); //c
 
         //Valve Gears
+        //TODO in future? reverse order to match naming scheme
         walschaertsValveGear = createItem("walschaerts.valve.gear"); //c
         stephensonValveGear = createItem("stephenson.valve.gear"); //c
         bakerValveGear = createItem("baker.valve.gear"); //c
@@ -146,6 +148,7 @@ public class TiMItems {
         conjugatingValveGear = createItem("conjugating.valve.gear"); //c
 
         //Other
+        //TODO in future? reverse order to match naming scheme
         enginePiston = createItem("engine.piston");
         cylinder = createItem("engine.cylinder");
         camshaft = createItem("camshaft");

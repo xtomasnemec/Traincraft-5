@@ -430,7 +430,12 @@ public class JsonRecipeHelper {
         try {
             //convert slash into backorforwards slash modifier.
             Pattern pat = Pattern.compile(".*[/\\\\]" + modID + "[/\\\\]recipes[/\\\\].*");
+
+            long startTime = System.nanoTime();
             final Collection<String> list = getResources(pat); //todo: figure out how to make this more efficient.
+            long endTime = System.nanoTime();
+            LOGGER.log(Level.INFO, "Time taken to get resources: " + (endTime - startTime) / 1_000_000 + "ms");
+
             for(final String name : list){
                 String nameC = name;
                 if (name.indexOf("assets") != 0) {
@@ -455,7 +460,9 @@ public class JsonRecipeHelper {
                         parseAndAddRecipe(new Gson().fromJson(textBuilder.toString(), JsonObject.class));
                     } catch (Exception e) {
                         LOGGER.log(Level.ERROR, "Problem trying to get recipe " + name + ": " + e);
-                        e.printStackTrace();
+                        if (!(e instanceof JsonSyntaxException)) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -485,8 +492,8 @@ public class JsonRecipeHelper {
                 LOGGER.log(Level.ERROR, "Problem trying to get recipe " + recipeFile.getName() + ": " + e);
             }
         }
-
     }
+
     /** {@link "https://stackoverflow.com/a/326440/5526401"}
      */
     private static String readFile(String path, Charset encoding) throws IOException {
