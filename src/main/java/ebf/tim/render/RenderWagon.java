@@ -215,12 +215,16 @@ public class RenderWagon extends Render {
         //set the render position
         GL11.glTranslated(x, y+ railOffset + ((entity.getRenderScale()-0.0625f)*10)+bogieOffset, z);
         //rotate the model.
-        GL11.glPushMatrix();
+
         if(!isPaintBucket) {
             GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
         }
-        GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
+        GL11.glRotatef(-entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
+        GL11.glPushMatrix();
 
+        if(entity.frontBogie!=null && entity.backBogie!=null){
+            GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
+        }
         /*
          * <h3>animations</h3>
          * Be sure animations are enabled in user settings, then check of there is something to animate.
