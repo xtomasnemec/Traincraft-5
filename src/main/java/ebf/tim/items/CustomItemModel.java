@@ -106,7 +106,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
                     break;
                 }
                 case INVENTORY: {
-                    GL11.glRotatef(180,0,1,0);
+                    GL11.glRotatef(270,0,1,0);
                     GL11.glTranslatef(0,-0.85f,0);
                     break;
                 }

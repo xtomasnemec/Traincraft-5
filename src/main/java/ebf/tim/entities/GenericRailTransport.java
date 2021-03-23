@@ -898,7 +898,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setRotation((CommonUtil.atan2degreesf(
                 frontBogie.posZ - backBogie.posZ,
                 frontBogie.posX - backBogie.posX)),
-                CommonUtil.calculatePitch(frontBogie.posY+frontBogie.yOffset,backBogie.posY+backBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
 
         vectorCache[3] = CommonUtil.rotatePointF(-rotationPoints()[0],0,0,rotationPitch, rotationYaw,0);
 
@@ -984,7 +984,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     setRotation(CommonUtil.atan2degreesf(
                             frontBogie.posZ - backBogie.posZ,
                             frontBogie.posX - backBogie.posX),
-                            CommonUtil.calculatePitch(frontBogie.posY+frontBogie.yOffset,backBogie.posY+backBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                            CommonUtil.calculatePitch(backBogie.posY+backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
                 }
                 if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
                     for(Bogie b : renderData.bogies){

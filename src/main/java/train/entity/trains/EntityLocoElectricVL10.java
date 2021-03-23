@@ -80,7 +80,7 @@ public class EntityLocoElectricVL10 extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{-1.2f,1.4f, 0.2f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{-1.1f,1.35f, 0.2f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{3.5f,2.7f,1.3f};}
     @Override

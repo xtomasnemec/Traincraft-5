@@ -54,8 +54,8 @@ public class EntityLocoSteamHeavy extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelHeavySteamLoco()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{1.4f, 0.54f, 0.0f}};}
-@Override
+    public float[][] modelOffsets(){return new float[][]{{1.55f, 0.54f, 0.0f}};}
+    @Override
     public float[][] modelRotations(){return new float[][]{{0f,180f,180f}};}
     @Override
     public void registerSkins(){
@@ -82,7 +82,7 @@ public class EntityLocoSteamHeavy extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{1.5f,1.5f, 0.25f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{5.0f,2.4f,1.3f};}
+    public float[] getHitboxSize(){return new float[]{4.65f,2.4f,1.3f};}
     @Override
     public float[] rotationPoints() {return new float[]{1.1f, -1.8f};}
     //Train specific stuff
