@@ -8,6 +8,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Important note about working with this class versus the normal recipe class:
+ *   This class's ingredients will have null for ingredients where there is no item in that spot.
+ *   In the normal recipe class, there will instead be an empty List
+ *   This class: ingredients = {List w/ stuff, List w/ stuff, null, null, etc...}
+ *   Normal recipe = {List w/ stuff, List w/ stuff, empty List, etc...}
+ */
 public class SizedRecipe extends Recipe {
 
     private int craftWidth;

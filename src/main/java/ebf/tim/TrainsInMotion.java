@@ -1,6 +1,7 @@
 package ebf.tim;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,10 +20,7 @@ import ebf.tim.items.ItemAdminBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
-import ebf.tim.utility.ChunkHandler;
-import ebf.tim.utility.ClientProxy;
-import ebf.tim.utility.CommonProxy;
-import ebf.tim.utility.JsonRecipeHelper;
+import ebf.tim.utility.*;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -193,6 +191,10 @@ public class TrainsInMotion {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
+        if (Loader.isModLoaded("NotEnoughItems")) {
+            TiMTableNEIIntegration.setupNEIintegration();
+        }
+
         TiMGenericRegistry.endRegistration();
     }
 
