@@ -81,7 +81,13 @@ public class AssemblyTableNEIIntegration extends TiMTableNEIIntegration {
         }
     }
 
-    //Following three functions do not have to be overridden but are necessary for this table
+    //TODO: localization
+    @Override
+    public String getRecipeName() {
+        return "Assembly Tables";
+    }
+
+    //Following three functions do not have to be overridden but are necessary for this specific table
 
     @Override
     public void drawExtras(int recipe) { //draws text showing correct tier.

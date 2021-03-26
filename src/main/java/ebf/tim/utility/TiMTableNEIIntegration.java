@@ -174,9 +174,10 @@ public class TiMTableNEIIntegration extends TemplateRecipeHandler {
         return "textures/gui/container/crafting_table.png";
     }
 
+    //TODO: localization
     @Override
     public String getRecipeName() {
-        return "TiMTable";
+        return "Train Crafting Table";
     }
 
     @Override
