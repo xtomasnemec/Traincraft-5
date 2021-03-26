@@ -18,7 +18,7 @@
     }
   },
   "result": {
-    "item": "traincraft:item_fiberglass_plate",
+    "item": "traincraft:item.fiberglass_plate",
     "count": 16
   }
 }

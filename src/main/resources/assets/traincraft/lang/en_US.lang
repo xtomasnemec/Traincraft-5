@@ -9,6 +9,7 @@ tile.block.hearthfurnace.name=Hearth Furnace
 tile.traincraft:stopper.name=Train Buffer
 tile.block.parttable.name=Train Workbench
 tile.block.distil.name=Distill
+tile.block.asmtable.name=Assembly Table
 tile.block.traintabletier1.name=Assembly Table I
 tile.block.traintabletier2.name=Assembly Table II
 tile.block.traintabletier3.name=Assembly Table III

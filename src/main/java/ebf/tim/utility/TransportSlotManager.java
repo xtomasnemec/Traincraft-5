@@ -280,10 +280,9 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                 }
 
                 if(slotId<36 || slotId==-999){//if the selected slot was in player inventory or on the cursor
-                    //todo: if no open slots, it is removed from existence :(
                     //try the crafting slots
                     for(ItemStackSlot s : inventory){
-                        if(s.getSlotID()>399){
+                        if(s.getSlotID()>399 && !s.isCraftingOutput()){
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
                             if(slot.getStack()==null) {
                                 this.detectAndSendChanges();
@@ -303,7 +302,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     }
                     //all else fails, go back to the players...
                     for(ItemStackSlot s : inventory){
-                        if(s.getSlotID()<36){
+                        if(s.getSlotID()<36 && slotId != s.getSlotID()){ //prevent slot from trying to merge into itself
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
                             if(slot.getStack()==null) {
                                 this.detectAndSendChanges();
@@ -313,7 +312,6 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     }
 
                 } else if(!slot.isCraftingOutput()){//if the selected slot is in the tileentity but not an output
-                    //TODO: adapt to other parts, turn into function.
                     for (int k = 0; k < 2; k++) { //loop twice. once to combine, the next to put in any available slots
                         for (int l = 0; l < this.inventory.size(); l++) {
                             Slot slotToAddInto = getSlot(l);

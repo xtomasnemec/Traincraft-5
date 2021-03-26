@@ -124,8 +124,26 @@ public class RecipeManager {
         }
     }
 
-
-
+    public static List<Recipe> getRecipesContaining(ItemStack itemStack, int tier) {
+        ArrayList<Recipe> containing = new ArrayList<>();
+        for (Recipe recipe : recipeList) {
+            boolean hasFound = false;
+            if (recipe.getTier() != tier) continue;
+            for (List<ItemStack> ingredient : recipe.getRecipeItems()) {
+                if (ingredient == null) continue;
+                for (ItemStack permutation : ingredient) {
+                    if (permutation == null) break;
+                    if (OreDictionary.itemMatches(permutation, itemStack, false)) {
+                        containing.add(recipe);
+                        hasFound = true;
+                        break;
+                    }
+                }
+                if (hasFound) break;
+            }
+        }
+        return containing;
+    }
 
     /**
      * Crafting table related stuff
@@ -231,8 +249,6 @@ public class RecipeManager {
 
     }
 
-
-
     public static boolean ingotInDirectory(Item i){
         for(ItemStack stack : getAcceptedRailItems()){
             if (stack !=null && stack.getItem()==i){
@@ -241,10 +257,6 @@ public class RecipeManager {
         }
         return false;
     }
-
-
-
-
 
     public static Recipe getRecipe(Object[] obj, ItemStack cartItem){
         Recipe r = new Recipe(new ItemStack[]{cartItem},

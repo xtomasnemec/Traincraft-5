@@ -1,5 +1,6 @@
 package train;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -31,6 +32,7 @@ import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
 import train.core.handlers.PacketHandler;
 import train.core.handlers.VillagerTraincraftHandler;
+import train.core.plugins.AssemblyTableNEIIntegration;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.generation.ComponentVillageTrainstation;
@@ -229,6 +231,11 @@ public class Traincraft {
 		tcLog.info("Activation Mod Compatibility");
 		TrainModCore.ModsLoaded();
 		LiquidManager.getLiquidsFromDictionnary();
+
+		if (Loader.isModLoaded("NotEnoughItems")) {
+			AssemblyTableNEIIntegration.setupNEIIntegration();
+		}
+
 		tcLog.info("Finished PostInitialization");
 	}
 
