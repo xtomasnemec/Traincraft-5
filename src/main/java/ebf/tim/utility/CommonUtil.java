@@ -370,6 +370,12 @@ public class CommonUtil {
             //define the direction
             int railMeta=((BlockRailBase)worldObj.getBlock(posX,posY,posZ)).getBasicRailMetadata(worldObj, null,posX,posY,posZ);
             int playerMeta=MathHelper.floor_double((playerEntity.rotationYaw / 90.0F) + 2.5D) & 3;
+
+            float rotation =atan2degreesf(posX-playerEntity.posX, posZ-playerEntity.posZ);
+
+            //todo: this line calculates rotation for player correctly. intentionally limited to 90 degree intervals
+            DebugUtil.println(rotation, rotation>90?180:rotation>0?90:rotation<-90?-180:-90, railMeta);
+
             if(railMeta==0){
                 //this direction is a bit more complicated due to how the numbers line up when coming from the other side
                 //also we have to %360 because some moron thought it a cool idea to have the character rotate from -360 to 360
