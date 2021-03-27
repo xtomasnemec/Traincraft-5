@@ -172,7 +172,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         }
         //force build to be sure there's no errors
         data.buildXML();
-        if(data.toXMLString() != null && data.toXMLString().length()>1) {
+        if(data.toXMLString() != null && !data.toXMLString().equals("") && data.toXMLString().length()>1) {
             tag.setString("xmlData", data.toXMLString());
         }
     }
