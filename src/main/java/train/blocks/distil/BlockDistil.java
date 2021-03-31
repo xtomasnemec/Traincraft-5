@@ -96,7 +96,7 @@ public class BlockDistil extends BlockDynamic {
 	public void breakBlock(World world, int i, int j, int k, Block par5, int par6) {
 		//todo: keep inventory code for item
 		TileEntity te = world.getTileEntity(i,j,k);
-		if(te instanceof TileEntityDistil){
+		if(te instanceof TileEntityDistil && world.getGameRules().getGameRuleBooleanValue("doTileDrops")){
 			((TileEntityDistil) te).dropInventory();
 		}
 		super.breakBlock(world, i, j, k, par5, par6);

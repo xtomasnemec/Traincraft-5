@@ -60,7 +60,6 @@ public class BlockDynamic extends BlockContainer {
     @Override
     public void breakBlock(World w, int x, int y, int z, Block b, int meta) {
         super.breakBlock(w, x, y, z, b, meta);
-        w.removeTileEntity(x,y,z);
     }
 
     @Override

@@ -12,10 +12,12 @@ import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -348,7 +350,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         if(p_149749_1_!=null && !p_149749_1_.isRemote && p_149749_1_.getClosestPlayer(p_149749_2_,p_149749_3_,p_149749_4_,6) !=null &&
                 !p_149749_1_.getClosestPlayer(p_149749_2_,p_149749_3_,p_149749_4_,6).capabilities.isCreativeMode){
             TileEntity e = p_149749_1_.getTileEntity(p_149749_2_,p_149749_3_,p_149749_4_);
-            if(e instanceof RailTileEntity){
+            if(e instanceof RailTileEntity && p_149749_1_.getGameRules().getGameRuleBooleanValue("doTileDrops")){
                 ((RailTileEntity) e).dropItem();
             }
         }

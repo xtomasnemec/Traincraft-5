@@ -604,19 +604,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         //on Destruction
         if (health<1 && !worldObj.isRemote){
-            //remove this
-            if (damageSource.getEntity() instanceof EntityPlayer) {
-                worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, new ItemStack(getItem(), 1)));
-                    //since it was a player be sure we remove the entity from the logging.
-                ServerLogger.deleteWagon(this);
-                //be sure we drop the inventory items on death.
-                dropAllItems();
-            } else {
-                //since it was a player be sure we remove the entity from the logging.
-                ServerLogger.deleteWagon(this);
-                //be sure we drop the inventory items on death.
-                dropAllItems();
-            }
+            //since it was a player be sure we remove the entity from the logging.
+            ServerLogger.deleteWagon(this);
+            //be sure we drop the inventory items on death.
+            dropAllItems();
             setDead();
             return true;
         }
@@ -727,7 +718,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if (tag.hasKey("entityxml")) {
             entityData = new XmlBuilder(tag.getString("entityxml"));
         }
-        bools.set(tag.getInteger(NBTKeys.bools));
+        bools.set(tag.getByteArray(NBTKeys.bools));
         isDead = tag.getBoolean(NBTKeys.dead);
         //load links
         if (tag.hasKey(NBTKeys.frontLinkMost)) {

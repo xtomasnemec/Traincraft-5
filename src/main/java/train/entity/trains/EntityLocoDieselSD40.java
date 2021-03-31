@@ -92,7 +92,7 @@ public class EntityLocoDieselSD40 extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{1,1.4f, 0.2f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{-1,1.4f, 0.2f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{4.7f,2.3f,1.1f};}
     @Override

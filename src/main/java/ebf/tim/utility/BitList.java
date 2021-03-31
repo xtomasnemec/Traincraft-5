@@ -25,6 +25,12 @@ public class BitList {
             bits[i]= (value & (1 << i)) != 0;
         }
     }
+    /*set the value of the array from an array of bytes*/
+    public void set(byte[] values){
+        for (int i=0; i<16; i++){
+            bits[i]= values[i]==0;
+        }
+    }
 
     public byte[] getBits() {
         byte[] value= new byte[bits.length];
