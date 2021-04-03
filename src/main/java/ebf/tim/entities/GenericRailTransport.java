@@ -1062,21 +1062,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     weight = pullingWeight* (getBoolean(boolValues.BRAKE)?4:1);
                 }
                 //this still seems obscene to me, but the result numbers check out pretty well
-                double drag = Math.pow(
-                        //scale by weight, heavier means more drag
-                        Math.pow(weight, -0.015),
-                        //then scale by speed, faster speeds mean more drag.
-                        //use speed from the front bogie, when you take out direction, both bogies should move at the same speed
-                        //multiply by 100 to give a more accurate scale, as 1 block per tick is a value of 1.
-                        Math.pow((Math.abs(motionX)+Math.abs(motionZ))*10, -0.025));
-                //give it a little buff to feel more arcade-like, the closer to 1, the less drag.
-                drag+=0.125;
+                double drag = 1;
+                //scale by weight, heavier means more drag
+                drag*=Math.pow(weight, -0.00074);
+                //todo: scale by speed, more speed means more drag, weight should be the _main_ factor from drag
+                //drag*= Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.00075);
+                //DebugUtil.println(drag);
+
                 //it should never be able to go over these caps, but i don't trust my math
-                if(drag>0.99){
-                    drag=0.99;
-                } else if (drag<0.1){
-                    drag=0.1;
+                if(drag>0.99999999){
+                    drag=0.99999999;
+                } else if (drag<0.01){
+                    drag=0.01;
                 }
+                DebugUtil.println(drag,frontBogie.motionX,frontBogie.motionZ);
 
                 frontBogie.motionX*=drag;
                 frontBogie.motionZ*=drag;

@@ -200,7 +200,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 //try to adhere to limiter track
                 float max = ((BlockRailBase) block).getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
                 if(max!=0.4f) {
-                    segmentMovement(Math.min(Math.abs(motionX) + Math.abs(motionZ), max),
+                    segmentMovement(Math.min(Math.abs(motionX) + Math.abs(motionZ), Math.abs(max)),
                             floorX, floorY, floorZ, (BlockRailBase) block, host);
                 } else {
                     segmentMovement(Math.abs(motionX) + Math.abs(motionZ),
