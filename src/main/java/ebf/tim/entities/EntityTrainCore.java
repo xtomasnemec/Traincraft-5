@@ -182,7 +182,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 vectorCache[1][0]=maxPowerMicroblocks;
                 vectorCache[1][0]/=accelerator<0?transportTopSpeedReverse():transportTopSpeed();
                 vectorCache[1][0]/=weight;
-                vectorCache[1][0]*=600;
+                vectorCache[1][0]*=40;
                 vectorCache[1][0]*=getAcceleratiorPercentage();
 
 

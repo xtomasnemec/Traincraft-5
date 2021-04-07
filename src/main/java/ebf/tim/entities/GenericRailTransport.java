@@ -1056,18 +1056,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 backBogie.addVelocity(roll[0],roll[1],roll[2]);
             } else if (hasDrag()) {
                 //be sure consist weight is properly updated and calculated for collective drag and other things.
-                float weight=pullingWeight* (getBoolean(boolValues.BRAKE)?4:1);
                 if(pullingWeight==0){
                     updateConsist();
-                    weight = pullingWeight* (getBoolean(boolValues.BRAKE)?4:1);
                 }
                 //this still seems obscene to me, but the result numbers check out pretty well
                 double drag = 1;
                 //scale by weight, heavier means more drag
-                drag*=Math.pow(weight, -0.00074);
-                //todo: scale by speed, more speed means more drag, weight should be the _main_ factor from drag
-                //drag*= Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.00075);
-                //DebugUtil.println(drag);
+                drag*=Math.pow(pullingWeight, (getBoolean(boolValues.BRAKE)?-0.00174:-0.000174));
+                //scale drag further by the speed, make the drag from speed more intense the faster it goes
+                drag*= 1-(Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.000076)-1);
 
                 //it should never be able to go over these caps, but i don't trust my math
                 if(drag>0.99999999){
@@ -1075,7 +1072,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 } else if (drag<0.01){
                     drag=0.01;
                 }
-                DebugUtil.println(drag,frontBogie.motionX,frontBogie.motionZ);
 
                 frontBogie.motionX*=drag;
                 frontBogie.motionZ*=drag;
