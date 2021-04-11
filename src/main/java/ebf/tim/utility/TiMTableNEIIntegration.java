@@ -3,6 +3,7 @@ package ebf.tim.utility;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -93,12 +94,18 @@ public class TiMTableNEIIntegration extends TemplateRecipeHandler {
                 for (int y = 0; y < height; y++) {
                     if (items.get(y * width + x) == null) {
                         continue;
-                    } else if (items.get(y * width + x).get(0) == null) {
+                    } else if (items.get(y * width + x).size() == 0 || items.get(y * width + x).get(0) == null) {
                         continue;
                     }
 
                     //can make a positioned stack from either a single ItemStack, array or list of ItemStacks. Here we use the list of ItemStack
                     PositionedStack stack = new PositionedStack(items.get(y * width + x), 25 + x * 18, 6 + y * 18, true);
+
+                    int ss = items.get(y * width + x).get(0).stackSize;
+                    for (ItemStack perm : stack.items) {
+                        perm.stackSize = ss;
+                    }
+
                     tempIng.add(stack);
                 }
             }
@@ -174,10 +181,9 @@ public class TiMTableNEIIntegration extends TemplateRecipeHandler {
         return "textures/gui/container/crafting_table.png";
     }
 
-    //TODO: localization
     @Override
     public String getRecipeName() {
-        return "Train Crafting Table";
+        return I18n.format("container.traincrafting");
     }
 
     @Override

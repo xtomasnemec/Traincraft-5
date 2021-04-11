@@ -40,7 +40,12 @@ public class AssemblyTableNEIIntegration extends TiMTableNEIIntegration {
                 if (items.size() <= i) break;
                 if (items.get(i) != null && items.get(i).get(0) != null) {
                     PositionedStack ps = new PositionedStack(items.get(i), inputXPos[i], inputYPos[i], true);
-                    ps.setMaxSize(items.get(i).get(0).stackSize);
+
+                    int ss = items.get(i).get(0).stackSize;
+                    for (ItemStack perm : ps.items) {
+                        perm.stackSize = ss;
+                    }
+
                     tempStacks.add(ps);
                 }
             }
@@ -81,10 +86,9 @@ public class AssemblyTableNEIIntegration extends TiMTableNEIIntegration {
         }
     }
 
-    //TODO: localization
     @Override
     public String getRecipeName() {
-        return "Assembly Tables";
+        return I18n.format("tile.block.asmtable.name");
     }
 
     //Following three functions do not have to be overridden but are necessary for this specific table

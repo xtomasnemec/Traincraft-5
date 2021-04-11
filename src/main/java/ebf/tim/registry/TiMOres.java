@@ -16,7 +16,7 @@ import static ebf.tim.registry.TiMGenericRegistry.registerOreGen;
 
 public class TiMOres {
 
-    public static Item ingotSteel, ingotCopper, ingotAluminum, dustPlastic;
+    public static Item ingotSteel, ingotCopper, ingotAluminum, dustPlastic, dustCoal;
 
     public static BlockDynamic copperBlock = new BlockDynamic(new Material(MapColor.mapColorArray[2]), false);
     public static BlockDynamic steelBlock = new BlockDynamic(new Material(MapColor.mapColorArray[6]), false);
@@ -41,6 +41,7 @@ public class TiMOres {
 
         ingotSteel = createItem("ingot.steel", "ingotSteel").setTextureName(TrainsInMotion.MODID + ":materials/ingot.steel");
         dustPlastic = createItem("dust.plastic", "dustPlastic").setTextureName(TrainsInMotion.MODID + ":materials/dust.plastic");
+        dustCoal = createItem("dust.coal", "dustCoal").setTextureName(TrainsInMotion.MODID + ":materials/dust.coal");
         ingotCopper = createItem("ingot.copper", "ingotCopper").setTextureName(TrainsInMotion.MODID + ":materials/ingot.copper");
         ingotAluminum = createItem("ingot.aluminum", "ingotAluminum").setTextureName(TrainsInMotion.MODID + ":materials/ingot.aluminum");
 

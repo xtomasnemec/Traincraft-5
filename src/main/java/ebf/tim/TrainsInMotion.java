@@ -140,7 +140,11 @@ public class TrainsInMotion {
         proxy.register();
 
         //parse and register json crafting recipes
+
+        long startTime = System.nanoTime();
         JsonRecipeHelper.loadRecipes(MODID);
+        long endTime = System.nanoTime();
+        System.out.println("Time taken to load recipes: " + (endTime - startTime) / 1_000_000 + "ms");
 
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);

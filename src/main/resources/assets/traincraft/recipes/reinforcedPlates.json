@@ -7,7 +7,7 @@
   ],
   "key": {
     "R": {
-      "item": "traincraft:item.fiberglass_plate"
+      "item": "traincraft:reinforcedPlastic"
     },
     "S": {
       "type": "forge:ore_dict",
@@ -18,6 +18,6 @@
     }
   },
   "result": {
-    "item": "traincraft:item.reinforced_plate"
+    "item": "traincraft:reinforcedPlates"
   }
 }

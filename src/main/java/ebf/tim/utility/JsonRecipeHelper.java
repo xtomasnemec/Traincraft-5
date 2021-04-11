@@ -432,9 +432,10 @@ public class JsonRecipeHelper {
             Pattern pat = Pattern.compile(".*[/\\\\]" + modID + "[/\\\\]recipes[/\\\\].*");
 
             long startTime = System.nanoTime();
-            final Collection<String> list = getResources(pat); //todo: figure out how to make this more efficient.
+            final Collection<String> list = getResources(pat);
             long endTime = System.nanoTime();
             LOGGER.log(Level.INFO, "Time taken to get resources: " + (endTime - startTime) / 1_000_000 + "ms");
+            LOGGER.log(Level.INFO, "Found " + list.size() + " recipes.");
 
             for(final String name : list){
                 String nameC = name;
@@ -508,6 +509,7 @@ public class JsonRecipeHelper {
         final String classPath = System.getProperty("java.class.path", ".");
         final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
         for(final String element : classPathElements){
+            LOGGER.log(Level.INFO, "Recipe directory found: " + element);
             retval.addAll(getResources(element, pattern));
         }
         return retval;

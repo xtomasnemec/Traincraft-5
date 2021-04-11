@@ -12,7 +12,7 @@
     }
   },
   "result": {
-    "item": "traincraft:item_canister",
+    "item": "traincraft:emptyCanister",
     "count": 4
   }
 }
