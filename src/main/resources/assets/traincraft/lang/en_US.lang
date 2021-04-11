@@ -55,7 +55,6 @@ tile.traincraft.track.steel.name=Steel Track
 item.traincraft:diesel.name=Diesel Canister
 item.traincraft:stake.name=Stake
 item.traincraft:steeldust.name=Steel Dust
-item.traincraft:coaldust.name=Coal Dust
 item.traincraft:graphite.name=Graphite
 item.traincraft:boiler.name=Boiler
 item.traincraft:firebox.name=Firebox

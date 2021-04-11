@@ -11,10 +11,10 @@
       "ore": "ingotSteel"
     },
     "R": {
-      "item": "traincraft:item_fiberglass_plate"
+      "item": "traincraft:reinforcedPlates"
     }
   },
   "result": {
-    "item": "traincraft:item.composite_wrench"
+    "item": "traincraft:composite_wrench"
   }
 }

@@ -124,7 +124,7 @@ public class TCBlocks {
 		OreDictionary.registerOre("orePetroleum", new ItemStack(orePetroleum, 1, 2));
 
 
-		OreDictionary.registerOre("dustCoal", new ItemStack(ItemIDs.coaldust.item));
+		//OreDictionary.registerOre("dustCoal", new ItemStack(ItemIDs.coaldust.item));
 		setHarvestLevels();
 
 	}
