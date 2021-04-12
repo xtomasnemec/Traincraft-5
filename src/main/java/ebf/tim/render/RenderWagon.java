@@ -320,11 +320,10 @@ public class RenderWagon extends Render {
                 }
                 GL11.glPushMatrix();
                 GL11.glRotatef(b.rotation[0], 1.0f, 0.0f, 0.0f);
-                GL11.glRotatef(b.rotation[1], 0.0f, 1.0f, 0.0f);
+                GL11.glRotatef(b.rotation[1]-180, 0.0f, 1.0f, 0.0f);
                 GL11.glRotatef(b.rotation[2], 0.0f, 0.0f, 1.0f);
-                GL11.glRotatef(-entity.rotationYaw, 0.0f, 1.0f, 0.0f);
-                GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
                 GL11.glTranslated(-b.offset[0], -b.offset[1], -b.offset[2]);
+                //GL11.glRotatef(-180, 0.0f, 0.0f, 1.0f);
                 if(!isPaintBucket) {
                     GL11.glRotatef(b.rotationYaw-entity.rotationYaw, 0.0f, 1.0f, 0);
                     GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
