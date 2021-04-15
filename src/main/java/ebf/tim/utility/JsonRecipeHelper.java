@@ -7,23 +7,25 @@ import cpw.mods.fml.common.registry.GameData;
 import ebf.tim.TrainsInMotion;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
-import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 /**
  * This class will handle parsing and adding recipes to the TiM table.
@@ -32,8 +34,6 @@ import java.util.zip.ZipFile;
  * @see <a href="https://mcforge.readthedocs.io/en/1.12.x/utilities/recipes/">Recipes documentation</a>
  *
  * TODO: make json recipes
- * TODO: BUG: count tag is incorrect for ingotSteel. Where is this happening?
- *   more info: the parse func parses correctly and returns the correctly counted recipe.
  *
  * @note For forge 1.12 and greater, make a simple wrapper for this class. There were too many minor differences and I
  *       didn't want to leave landmines of commented out code.
@@ -85,18 +85,17 @@ public class JsonRecipeHelper {
 
     /**
      * Takes an jsonObject that usually looks like:
-     *     {
-     *       "item": "minecraft:rail"
-     *     }
+     * {
+     * "item": "minecraft:rail"
+     * }
      * and turns it into an ItemStack.
      *
-     * @param json jsonObject to parse
+     * @param json     jsonObject to parse
      * @param useCount whether or not to include number of items included with
      * @return An ItemStack representing the given jsonObject, null if not found.
      */
     @Nullable
-    private static ItemStack deserializeItem(JsonObject json, boolean useCount)
-    {
+    private static ItemStack deserializeItem(JsonObject json, boolean useCount) {
         String itemString = getString(json, "item");
 
         //NOTE: IN 1.12, this was in Traincraft/Traincraft, but also might only be for vanilla items:
@@ -120,16 +119,16 @@ public class JsonRecipeHelper {
      * @param json The object containing the array of keys
      * @return A map of the keys to a group of ItemStacks that it represents (can be multiple because of ore dict)
      */
-    private static Map<String, ItemStack[]> deserializeKey(JsonObject json){
+    private static Map<String, ItemStack[]> deserializeKey(JsonObject json) {
         Map<String, ItemStack[]> map = Maps.newHashMap();
 
         //iterate through keys
-        for(Map.Entry<String, JsonElement> entry : json.entrySet()){
-            if(((String) entry.getKey()).length() != 1){
+        for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
+            if (((String) entry.getKey()).length() != 1) {
                 throw new JsonSyntaxException("Invalid key entry: '" + (String) entry.getKey() + "' is an invalid symbol (must be 1 character only).");
             }
 
-            if(" ".equals(entry.getKey())){
+            if (" ".equals(entry.getKey())) {
                 throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
             }
 
@@ -206,22 +205,22 @@ public class JsonRecipeHelper {
      * @param jsonArr the array of strings, looks like: ["XXX", "E E", "OO "] or similar. Can be not 3x3, must be square-shaped
      * @return An array of 1-3 strings.
      */
-    private static String[] patternFromJson(JsonArray jsonArr){
+    private static String[] patternFromJson(JsonArray jsonArr) {
         String[] astring = new String[jsonArr.size()];
 
-        if(astring.length > 3){
+        if (astring.length > 3) {
             throw new JsonSyntaxException("Invalid pattern: too many rows, 3 is maximum");
-        } else if(astring.length == 0){
+        } else if (astring.length == 0) {
             throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
-        } else{
-            for(int i = 0; i < astring.length; ++i){
+        } else {
+            for (int i = 0; i < astring.length; ++i) {
                 String s = getString(jsonArr.get(i), "pattern[" + i + "]");
 
-                if(s.length() > 3){
+                if (s.length() > 3) {
                     throw new JsonSyntaxException("Invalid pattern: too many columns, 3 is maximum");
                 }
 
-                if(i > 0 && astring[0].length() != s.length()){
+                if (i > 0 && astring[0].length() != s.length()) {
                     throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
                 }
 
@@ -255,8 +254,9 @@ public class JsonRecipeHelper {
     /**
      * Takes in a map of symbols to the ingredients and a array of strings corresponding to how each row looks in the table,
      * and converts it to a list of ingredients. length of list depends on craftingWidth and Height.
+     *
      * @param pattern An array of strings that represent how pattern looks in crafting table
-     * @param keys A map relating characters in pattern with the Items they represent.
+     * @param keys    A map relating characters in pattern with the Items they represent.
      * @return
      */
     private static List<List<ItemStack>> deserializeIngredients(String[] pattern, Map<String, ItemStack[]> keys /*, int craftingWidth, int craftingHeight*/) {
@@ -267,24 +267,24 @@ public class JsonRecipeHelper {
         Set<String> set = Sets.newHashSet(keys.keySet());
         //set.remove(" "); //not present anyways
 
-        for(int i = 0; i < pattern.length; ++i){
-            for(int j = 0; j < pattern[i].length(); ++j){
+        for (int i = 0; i < pattern.length; ++i) {
+            for (int j = 0; j < pattern[i].length(); ++j) {
                 String s = pattern[i].substring(j, j + 1);
                 if (s.equals(" ")) {
                     continue;
                 }
                 ItemStack[] ingredient = keys.get(s);
 
-                if(ingredient == null){
+                if (ingredient == null) {
                     throw new JsonSyntaxException("Pattern references symbol '" + s + "' but it's not defined in the key");
                 }
 
                 set.remove(s);
-                finalList.set(j + (pattern[0].length())*i, Arrays.asList(ingredient));
+                finalList.set(j + (pattern[0].length()) * i, Arrays.asList(ingredient));
             }
         }
 
-        if(!set.isEmpty()){
+        if (!set.isEmpty()) {
             LOGGER.log(Level.WARN, "Key defines symbols that aren't used in pattern: " + set);
         }
 
@@ -297,35 +297,35 @@ public class JsonRecipeHelper {
      * @param toShrink array of strings to shrink.
      * @return shrunken recipe
      */
-    private static String[] shrink(String... toShrink){
+    private static String[] shrink(String... toShrink) {
         int i = Integer.MAX_VALUE;
         int j = 0;
         int k = 0;
         int l = 0;
 
-        for(int i1 = 0; i1 < toShrink.length; ++i1){
+        for (int i1 = 0; i1 < toShrink.length; ++i1) {
             String s = toShrink[i1];
             i = Math.min(i, firstNonSpace(s));
             int j1 = lastNonSpace(s);
             j = Math.max(j, j1);
 
-            if(j1 < 0){
-                if(k == i1){
+            if (j1 < 0) {
+                if (k == i1) {
                     ++k;
                 }
 
                 ++l;
-            } else{
+            } else {
                 l = 0;
             }
         }
 
-        if(toShrink.length == l){
+        if (toShrink.length == l) {
             return new String[0];
-        } else{
+        } else {
             String[] astring = new String[toShrink.length - l - k];
 
-            for(int k1 = 0; k1 < astring.length; ++k1){
+            for (int k1 = 0; k1 < astring.length; ++k1) {
                 astring[k1] = toShrink[k1 + k].substring(i, j + 1);
             }
 
@@ -334,20 +334,20 @@ public class JsonRecipeHelper {
     }
 
     //ngl, never seen a for loop used in the way it is in the next two functions. v cool tho
-    private static int firstNonSpace(String str){
+    private static int firstNonSpace(String str) {
         int i;
 
-        for(i = 0; i < str.length() && str.charAt(i) == ' '; ++i){
+        for (i = 0; i < str.length() && str.charAt(i) == ' '; ++i) {
             ;
         }
 
         return i;
     }
 
-    private static int lastNonSpace(String str){
+    private static int lastNonSpace(String str) {
         int i;
 
-        for(i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i){
+        for (i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i) {
             ;
         }
 
@@ -365,6 +365,7 @@ public class JsonRecipeHelper {
             throw new JsonSyntaxException("Expected " + memberName + " to be a Int.");
         }
     }
+
     //    private static int getInt(JsonObject json, String memberName) {
 //        if (json.has(memberName)) {
 //            return getInt(json.get(memberName), memberName);
@@ -383,6 +384,7 @@ public class JsonRecipeHelper {
             throw new JsonSyntaxException("Expected " + memberName + " to be a string.");
         }
     }
+
     private static String getString(JsonObject json, String memberName) {
         if (json.has(memberName)) {
             return getString(json.get(memberName), memberName);
@@ -413,166 +415,99 @@ public class JsonRecipeHelper {
 //    }
 
     /**
-     * Gets the recipes from the recipe folder and adds them to the trainworkbench.
-     * looks recursively into the folders, so we can organize them and whatnot.
-     * This will not be necessary in 1.12, as it will be handled automatically.
+     * Base of this function is simply yoinked from forge 1.12, vanilla. Then modified extensively to be compatible for 1.7.10
      *
-     * @param modID The mod-id of the mod to find recipes in. eg. "traincraft" or "trainsinmotion"
+     * @param modID modid of the mod to get recipes for.
+     * @return Whether it worked or not
      */
-    public static void loadRecipes(String modID) {
-        URL recipesFolder = TrainsInMotion.class.getResource("/assets/" + modID + "/recipes");
-        if (recipesFolder == null) {
-            //crash and burn
-            LOGGER.log(Level.FATAL, "Could not find recipes folder.");
-            return;
-        }
+    public static boolean loadRecipes(String modID) {
+        FileSystem filesystem = null;
+        boolean flag1;
 
         try {
-            //convert slash into backorforwards slash modifier.
-            Pattern pat = Pattern.compile(".*[/\\\\]" + modID + "[/\\\\]recipes[/\\\\].*");
+            URL url = TrainsInMotion.class.getResource(""); //we need to get something to figure out if in jar or filesystem, why a blank thing works beats megradle
 
-            long startTime = System.nanoTime();
-            final Collection<String> list = getResources(pat);
-            long endTime = System.nanoTime();
-            LOGGER.log(Level.INFO, "Time taken to get resources: " + (endTime - startTime) / 1_000_000 + "ms");
-            LOGGER.log(Level.INFO, "Found " + list.size() + " recipes.");
+            if (url != null) {
+                URI uri = url.toURI();
+                Path path;
 
-            for(final String name : list){
-                String nameC = name;
-                if (name.indexOf("assets") != 0) {
-                    nameC = name.substring(name.indexOf("assets") - 1);
-                }
-                InputStream inputStream = TrainsInMotion.class.getClassLoader().getResourceAsStream(nameC);
-
-                StringBuilder textBuilder = new StringBuilder();
-                try (Reader reader = new BufferedReader(new InputStreamReader
-                        (inputStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
-                    int c = 0;
-                    while ((c = reader.read()) != -1) {
-                        textBuilder.append((char) c);
+                //following block figures out the correct path that the recipes are in.
+                if ("file".equals(uri.getScheme())) { //if we are using a filesystem
+                    path = Paths.get(CraftingManager.class.getResource("/assets/" + modID + "/recipes").toURI());
+                } else { //make sure we are using a jar scheme then
+                    if (!"jar".equals(uri.getScheme())) { //if not using a jar, well fuck
+                        LOGGER.error("Unsupported scheme " + uri + " trying to list all recipes");
+                        return false;
                     }
+                    filesystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+                    path = filesystem.getPath("/assets/" + modID +"/recipes");
+                }
 
-                    try {
-                        //continue if file name starts with underscore.
-                        int lastSlash = nameC.lastIndexOf("/");
-                        if (lastSlash == -1) lastSlash = nameC.lastIndexOf("\\");
-                        if (nameC.substring(lastSlash+1, lastSlash+2).equals("_")) continue;
+                //recursively walks found path and parses files that don't start with underscore.
+                // yoinkie yoinkie https://www.techiedelight.com/traverse-directory-print-files-java-7-8/
+                try {
+                    Files.walkFileTree(Paths.get(path.toUri()), new SimpleFileVisitor<Path>() {
+                        @Override
+                        public FileVisitResult visitFile(Path filePath, BasicFileAttributes attributes) {
+                            //do stuff with a recipe path:
+                            try {
+                                //continue if file name starts with underscore.
+                                int lastSlash = filePath.toString().lastIndexOf("/"); //find slashes
+                                if (lastSlash == -1) lastSlash = filePath.toString().lastIndexOf("\\"); //if no forward slashes, find backslashes
+                                if (filePath.toString().substring(lastSlash + 1, lastSlash + 2).equals("_")) return FileVisitResult.CONTINUE;
 
-                        parseAndAddRecipe(new Gson().fromJson(textBuilder.toString(), JsonObject.class));
-                    } catch (Exception e) {
-                        LOGGER.log(Level.ERROR, "Problem trying to get recipe " + name + ": " + e);
-                        if (!(e instanceof JsonSyntaxException)) {
-                            e.printStackTrace();
+                                //finally parse and add the recipe.
+                                parseAndAddRecipe(getJsonFromPath(filePath));
+                            } catch (Exception e) {
+                                LOGGER.log(Level.ERROR, "Problem trying to get recipe: " + filePath.toString() + ": " + e);
+                                if (!(e instanceof JsonSyntaxException)) {
+                                    e.printStackTrace(); //only stack trace if it isn't a json error.
+                                }
+                            }
+                            return FileVisitResult.CONTINUE;
                         }
-                    }
+                    });
+                } catch (IOException e) {
+                    LOGGER.error("Problem walking recipe file tree: " + e);
+                    e.printStackTrace();
                 }
+
+                return true;
             }
-//            File folder = new File(recipesFolder.toURI());
-//            parseFilesInFolder(folder);
-        } catch (Exception e) {
-            LOGGER.log(Level.FATAL, "Problem with preparing to parse json recipes: " + e);
-            e.printStackTrace();
+
+            LOGGER.error("Couldn't find assets!?");
+        } catch (IOException | URISyntaxException urisyntaxexception) {
+            LOGGER.error("Couldn't get a list of all recipe files", urisyntaxexception);
+            return false;
+        } finally {
+            IOUtils.closeQuietly(filesystem);
         }
 
+        return false;
     }
 
-    private static void parseFilesInFolder(File folder) throws JsonSyntaxException {
-        for (File recipeFile : folder.listFiles()) { //we know this is valid path, can ignore warning.
-            if (recipeFile.isDirectory()) {
-                parseFilesInFolder(recipeFile);
-                continue;
-            }
-            if (recipeFile.getName().substring(0, 1).equals("_")) {
-                //not a file to parse if starts with underscore.
-                continue;
-            }
+    private static JsonObject getJsonFromPath(Path path) {
+        String s = FilenameUtils.removeExtension(path.toString()).replaceAll("\\\\", "/");
+        ResourceLocation resourcelocation = new ResourceLocation(s);
+        BufferedReader bufferedreader = null;
 
+        try {
             try {
-                parseAndAddRecipe(new Gson().fromJson(readFile(recipeFile.getPath(), StandardCharsets.UTF_8), JsonObject.class));
-            } catch (Exception e) {
-                LOGGER.log(Level.ERROR, "Problem trying to get recipe " + recipeFile.getName() + ": " + e);
-            }
-        }
-    }
-
-    /** {@link "https://stackoverflow.com/a/326440/5526401"}
-     */
-    private static String readFile(String path, Charset encoding) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-    }
-
-    //https://stackoverflow.com/questions/3923129/get-a-list-of-resources-from-classpath-directory
-    //https://bryanbende.com/development/2014/10/20/extracting-classpath-resources
-    public static Collection<String> getResources(final Pattern pattern){
-        final ArrayList<String> retval = new ArrayList<String>();
-        final String classPath = System.getProperty("java.class.path", ".");
-        final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
-        for(final String element : classPathElements){
-            LOGGER.log(Level.INFO, "Recipe directory found: " + element);
-            retval.addAll(getResources(element, pattern));
-        }
-        return retval;
-    }
-
-    private static Collection<String> getResources(final String element, final Pattern pattern){
-        final ArrayList<String> retval = new ArrayList<String>();
-        final File file = new File(element);
-        if(file.isDirectory()){
-            retval.addAll(getResourcesFromDirectory(file, pattern));
-        } else{
-            retval.addAll(getResourcesFromJarFile(file, pattern));
-        }
-        return retval;
-    }
-
-    private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern){
-        final ArrayList<String> retval = new ArrayList<String>();
-        ZipFile zf;
-        try{
-            zf = new ZipFile(file);
-        } catch(final ZipException e){
-            throw new Error(e);
-        } catch(final IOException e){
-            throw new Error(e);
-        }
-        final Enumeration e = zf.entries();
-        while(e.hasMoreElements()){
-            final ZipEntry ze = (ZipEntry) e.nextElement();
-            final String fileName = ze.getName();
-            final boolean accept = pattern.matcher(fileName).matches();
-            if(accept){
-                retval.add(fileName);
-            }
-        }
-        try{
-            zf.close();
-        } catch(final IOException e1){
-            throw new Error(e1);
-        }
-        return retval;
-    }
-
-    private static Collection<String> getResourcesFromDirectory(
-            final File directory,
-            final Pattern pattern){
-        final ArrayList<String> retval = new ArrayList<String>();
-        final File[] fileList = directory.listFiles();
-        for(final File file : fileList){
-            if(file.isDirectory()){
-                retval.addAll(getResourcesFromDirectory(file, pattern));
-            } else{
-                try{
-                    final String fileName = file.getCanonicalPath();
-                    final boolean accept = pattern.matcher(fileName).matches();
-                    if(accept){
-                        retval.add(fileName);
-                    }
-                } catch(final IOException e){
-                    throw new Error(e);
+                List<String> listOfLines = Files.readAllLines(path, Charset.forName("UTF-8"));
+                StringBuilder sb = new StringBuilder();
+                for(String str: listOfLines) {
+                    sb.append(str);
                 }
+                return new Gson().fromJson(sb.toString(), JsonObject.class);
+            } catch (JsonParseException jsonparseexception) {
+                LOGGER.error("Parsing error loading recipe " + resourcelocation, jsonparseexception);
+                return null;
+            } catch (IOException ioexception) {
+                LOGGER.error("Couldn't read recipe " + resourcelocation + " from " + path, ioexception);
+                return null;
             }
+        } finally {
+            IOUtils.closeQuietly(bufferedreader);
         }
-        return retval;
     }
 }
