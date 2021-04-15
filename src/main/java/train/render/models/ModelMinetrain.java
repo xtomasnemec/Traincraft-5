@@ -180,7 +180,7 @@ public class ModelMinetrain extends ModelBase {
 		bodyModel=new ModelRendererTurbo[]{box,
 				box0,box1,box2,box3,box4,box5,box6,box7,box8,box9,
 				box10,box11,box12,box13,box14,box15,box16,box17,box18,box19,
-				box20,box21,box22,box23,box24,box25,box26,box27
+				box20,box21,box22,box23,box24,box25
 		};
 
 		fixRotation(bodyModel);
@@ -191,8 +191,6 @@ public class ModelMinetrain extends ModelBase {
 		if (ClientProxy.isHoliday()) {
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/minetrain_winter.png"));
 		}
-		box27.showModel=false;
-		box26.showModel=false;
 		
 		int cargo = 0;
 
@@ -203,10 +201,10 @@ public class ModelMinetrain extends ModelBase {
 		}
 		if (cargo != 0) {
 			if(cargo<=9) {
-				box27.showModel=true;
+				box27.render();
 			}
 			else {
-				box26.showModel=true;
+				box26.render();
 			}
 		}
 

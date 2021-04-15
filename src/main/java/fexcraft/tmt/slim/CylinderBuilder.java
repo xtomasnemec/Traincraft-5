@@ -87,7 +87,7 @@ public class CylinderBuilder {
     }
 
     public CylinderBuilder removePolygon(int index){
-        if(index >= 0 && index <= 5){
+        if(index >= 0 && index < 4){
             togglesides[index] = true;
         }
         return this;
@@ -95,7 +95,7 @@ public class CylinderBuilder {
 
     public CylinderBuilder removePolygons(int... poly_indices){
         for(int index : poly_indices){
-            if(index >= 0 && index <= 5){
+            if(index >= 0 && index < 4){
                 togglesides[index] = true;
             }
         }
@@ -103,7 +103,7 @@ public class CylinderBuilder {
     }
 
     public CylinderBuilder removePolygons(boolean... sides){
-        for(int index = 0; index < 6; index++){
+        for(int index = 0; index < 4; index++){
             if(sides.length >= (index + 1) && sides[index]){
                 togglesides[index] = true;
             }
