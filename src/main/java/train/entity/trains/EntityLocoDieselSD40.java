@@ -54,7 +54,7 @@ public class EntityLocoDieselSD40 extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelSD40()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0f, 0.67f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0f, 0.62f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{180, 90.0f, 0}};}
     @Override

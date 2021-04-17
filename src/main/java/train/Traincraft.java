@@ -27,12 +27,12 @@ import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
 import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
-import train.core.TrainModCore;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
 import train.core.handlers.PacketHandler;
 import train.core.handlers.VillagerTraincraftHandler;
 import train.core.plugins.AssemblyTableNEIIntegration;
+import train.core.plugins.PluginRailcraft;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.generation.ComponentVillageTrainstation;
@@ -41,6 +41,9 @@ import train.library.Info;
 import train.library.TrainRegistry;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 @Mod(modid = Info.modID, name = Info.modName, dependencies="after:"+ TrainsInMotion.MODID)
 public class Traincraft {
@@ -229,7 +232,29 @@ public class Traincraft {
 		tcLog.info("Register ChunkHandler");
 
 		tcLog.info("Activation Mod Compatibility");
-		TrainModCore.ModsLoaded();
+		//railcraft recipe compatibility
+		if(Loader.isModLoaded("Railcraft") && !Loader.isModLoaded("tc")){
+			File file = new File("./config/railcraft/railcraft.cfg");
+			try {
+				@SuppressWarnings("resource") Scanner scanner = new Scanner(new FileInputStream(file));
+
+				while (scanner.hasNextLine()) {
+					String line = scanner.nextLine().trim();
+
+					if (line.equals("B:useAltRecipes=true")) {
+						Traincraft.tcLog.info(
+								"You've enabled vanilla rail recipes in Railcraft. Disable them to get Traincraft additional tracks");
+						break;
+					} else if (line.equals("B:useAltRecipes=false")) {
+						PluginRailcraft.init();
+						Traincraft.tcLog.info("Enabled Traincraft additional tracks for Railcraft");
+						break;
+					}
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 		LiquidManager.getLiquidsFromDictionnary();
 
 		if (Loader.isModLoaded("NotEnoughItems")) {
