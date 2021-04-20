@@ -1373,8 +1373,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
 
         //scale distance based on movement length with linking distance.
-        vectorCache[4][0] = 0.4f * norm * vectorCache[4][0];
-        vectorCache[4][2] = 0.4f * norm * vectorCache[4][2];
+        vectorCache[4][0] = 0.08f * norm * vectorCache[4][0];
+        vectorCache[4][2] = 0.08f * norm * vectorCache[4][2];
 
 
         //apply velocity to both entities, due to async updates this is necessary for next step
