@@ -14,6 +14,8 @@ import java.util.List;
  *   In the normal recipe class, there will instead be an empty List
  *   This class: ingredients = {List w/ stuff, List w/ stuff, null, null, etc...}
  *   Normal recipe = {List w/ stuff, List w/ stuff, empty List, etc...}
+ *
+ * @author ComputerButter
  */
 public class SizedRecipe extends Recipe {
 

@@ -165,7 +165,7 @@ public class Traincraft {
 		TCItems.init();
 
 		//parse and register json crafting recipes
-		JsonRecipeHelper.loadRecipes(Info.modID);
+		JsonRecipeHelper.loadRecipes(Info.modID, this.getClass());
 
 		if(ConfigHandler.ENABLE_STEAM) {
 			//the null last value defines we aren't implementing a custom entity render.
