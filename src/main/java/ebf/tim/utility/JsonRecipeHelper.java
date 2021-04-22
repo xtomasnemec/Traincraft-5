@@ -421,7 +421,7 @@ public class JsonRecipeHelper {
         FileSystem filesystem = null;
 
         try {
-            URL url = modClass.getProtectionDomain().getCodeSource().getLocation(); //we need to get something to figure out if in jar or filesystem, why a blank thing works beats me
+            URL url = modClass.getProtectionDomain().getCodeSource().getLocation(); //we need to get something to figure out if in jar or filesystem
 
             if (url != null) {
                 LOGGER.info("URL of this mod's main class: " + url.getPath());
