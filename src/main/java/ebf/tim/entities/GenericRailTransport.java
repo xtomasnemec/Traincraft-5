@@ -27,6 +27,7 @@ import fexcraft.tmt.slim.ModelBase;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
+import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.Entity;
@@ -65,7 +66,7 @@ import static ebf.tim.utility.CommonUtil.rotatePointF;
  * this is the base for all trains and rollingstock.
  * @author Eternal Blue Flame
  */
-public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, IFluidCart, ILinkableCart, IEntityMultiPart {
+public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, IFluidCart, ILinkableCart, IEntityMultiPart, IMinecart {
 
     /*
      * <h2>variables</h2>
@@ -200,6 +201,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean attackEntityFromPart(EntityDragonPart part, DamageSource source, float p_70965_3_) {
         //todo: this could be used to cheat which side is being interacted :thonk:
         return attackEntityFrom(source, p_70965_3_);
+    }
+
+    /**
+     * Returns true if the Minecart matches the item provided. Generally just
+     * stack.isItemEqual(cart.getCartItem()), but some carts may need more
+     * control (the Tank Cart for example).
+     *
+     * @param stack the Filter
+     * @param cart  the Cart
+     * @return true if the item matches the cart
+     */
+    @Override
+    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+        return stack.getItem().delegate.name().equals(getItem().delegate.name());
     }
 
     public enum boolValues{BRAKE(0), LOCKED(1), LAMP(2), CREATIVE(3), COUPLINGFRONT(4), COUPLINGBACK(5), WHITELIST(6), RUNNING(7), @Deprecated DERAILED(8);
@@ -739,6 +754,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         if (tag.hasKey(NBTKeys.skinURI)) {
             String skin = tag.getString(NBTKeys.skinURI);
+
+            if(worldObj.isRemote &&
+                    (!entityData.containsString("skin") || !entityData.getString("skin").equals(skin))){
+                this.renderData.needsModelUpdate=true;
+            }
+
             if (SkinRegistry.getSkin(this, null, false, skin) != null) {
                 entityData.putString("skin", skin);
             } else {
@@ -1062,7 +1083,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 //this still seems obscene to me, but the result numbers check out pretty well
                 double drag = 1;
                 //scale by weight, heavier means more drag
-                drag*=Math.pow(pullingWeight, (getBoolean(boolValues.BRAKE)?-0.00174:-0.000174));
+                drag*=Math.pow(pullingWeight, (getBoolean(boolValues.BRAKE)?-0.03:-0.003));
                 //scale drag further by the speed, make the drag from speed more intense the faster it goes
                 drag*= 1-(Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.000076)-1);
 
@@ -1169,7 +1190,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
 
-                    double[] motion = CommonUtil.rotatePoint(0.075,0,
+                    double[] motion = CommonUtil.rotatePoint(0.05,0,
                             CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
 
                     if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0) {
@@ -1352,8 +1373,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
 
         //scale distance based on movement length with linking distance.
-        vectorCache[4][0] = 0.4f * norm * vectorCache[4][0];
-        vectorCache[4][2] = 0.4f * norm * vectorCache[4][2];
+        vectorCache[4][0] = 0.08f * norm * vectorCache[4][0];
+        vectorCache[4][2] = 0.08f * norm * vectorCache[4][2];
 
 
         //apply velocity to both entities, due to async updates this is necessary for next step
