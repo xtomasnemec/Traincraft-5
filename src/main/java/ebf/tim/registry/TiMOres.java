@@ -34,7 +34,6 @@ public class TiMOres {
         oreAluminium.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/ore.aluminum.png");
         oreSteel.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/ore.steel.png");
 
-
         copperBlock.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/block.copper.png");
         aluminiumBlock.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/block.aluminum.png");
         steelBlock.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/block.steel.png");
@@ -44,12 +43,6 @@ public class TiMOres {
         dustCoal = createItem("dust.coal", "dustCoal").setTextureName(TrainsInMotion.MODID + ":materials/dust.coal");
         ingotCopper = createItem("ingot.copper", "ingotCopper").setTextureName(TrainsInMotion.MODID + ":materials/ingot.copper");
         ingotAluminum = createItem("ingot.aluminum", "ingotAluminum").setTextureName(TrainsInMotion.MODID + ":materials/ingot.aluminum");
-
-        //left these in case I f'ed something up by doing this.
-//        registerItem(dustPlastic= new Item(), "dustPlastic", TrainsInMotion.MODID).setTextureName("traincraft:textures/items/parts/item_plastic.png");
-//        registerItem(ingotCopper= new Item(), "ingotCopper", TrainsInMotion.MODID).setTextureName("traincraft:textures/items/parts/item_copper.png");
-//        registerItem(ingotSteel= new Item(), "ingotSteel", TrainsInMotion.MODID).setTextureName("traincraft:textures/items/parts/item_steel.png");
-//        registerItem(ingotAluminum= new Item(), "ingotAluminum", TrainsInMotion.MODID);
 
         registerBlock(oreCopper, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreCopper", "oreCopper", null);
         registerBlock(oreSteel, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreSteel", "oreSteel", null);
@@ -77,10 +70,19 @@ public class TiMOres {
         OreDictionary.registerOre("itemPlastic", new ItemStack(dustPlastic));
         OreDictionary.registerOre("dustPlastic", new ItemStack(dustPlastic));//MFR support
 
+        OreDictionary.registerOre("ingotAluminum", new ItemStack(ingotAluminum));
+        OreDictionary.registerOre("ingotAluminium", new ItemStack(ingotAluminum)); //what spelling is accepted?
 
 
         registerOreGen(0, new OreGen(oreCopper,5,50,6,4,4));
 
+        //setup block hardness and resistance, could be moved into the constructor very easily
+        oreCopper.setHardness(3).setHarvestLevel("pickaxe", 2);
+        copperBlock.setHardness(4).setHarvestLevel("pickaxe", 2);
+        oreSteel.setHardness(4).setHarvestLevel("pickaxe", 2);
+        steelBlock.setHardness(5).setHarvestLevel("pickaxe", 2);
+        oreAluminium.setHardness(3).setHarvestLevel("pickaxe", 2);
+        aluminiumBlock.setHardness(4).setHarvestLevel("pickaxe", 2);
     }
 
     private static Item createItem(String unlocalizedName, String oredictName) {

@@ -33,8 +33,6 @@ import java.util.*;
  * should use the same format as 1.12 and newer recipes. See the forge documentation for more information:
  * @see <a href="https://mcforge.readthedocs.io/en/1.12.x/utilities/recipes/">Recipes documentation</a>
  *
- * TODO: make json recipes
- *
  * @note For forge 1.12 and greater, make a simple wrapper for this class. There were too many minor differences and I
  *       didn't want to leave landmines of commented out code.
  *
@@ -422,7 +420,6 @@ public class JsonRecipeHelper {
      */
     public static boolean loadRecipes(String modID) {
         FileSystem filesystem = null;
-        boolean flag1;
 
         try {
             URL url = TrainsInMotion.class.getResource(""); //we need to get something to figure out if in jar or filesystem, why a blank thing works beats megradle

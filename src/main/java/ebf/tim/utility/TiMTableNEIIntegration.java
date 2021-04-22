@@ -19,6 +19,9 @@ import java.util.List;
  *   See the functions for more detail.
  *
  *  Also subclass the CachedTiMTableRecipe and override the setIngredients(List) function, see it for more detail.
+ *
+ *  Contact for more info:
+ * @author ComputerButter
  */
 public class TiMTableNEIIntegration extends TemplateRecipeHandler {
 

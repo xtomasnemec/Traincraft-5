@@ -33,7 +33,12 @@ public class TiMBlocks {
                 "WWW", "WIW", "WWW", 'W', Blocks.planks, 'I', Items.iron_ingot); //original
 
         addRecipe(new ItemStack(registerBlock(railTable, TrainsInMotion.creativeTab, TrainsInMotion.MODID,"block.railtable", null, null),1),
-                "III", "I I", "I I", 'I', Items.iron_ingot);
+                "IRI", "WCW", "WWW", 'I', Items.iron_ingot, 'W', Blocks.planks, 'C', Blocks.crafting_table, 'R', Blocks.rail);
 
+        trainTable.setHardness(3);
+        railTable.setHardness(3);
+
+        railBlock.setHardness(0.7f);
+        railBlock.setResistance(0.7f);
     }
 }

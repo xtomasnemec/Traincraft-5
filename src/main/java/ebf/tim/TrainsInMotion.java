@@ -142,7 +142,6 @@ public class TrainsInMotion {
         //parse and register json crafting recipes
 
         long startTime = System.nanoTime();
-        //JsonRecipeHelper.loadRecipes(MODID);
         JsonRecipeHelper.loadRecipes(MODID);
         long endTime = System.nanoTime();
         System.out.println("Time taken to load recipes: " + (endTime - startTime) / 1_000_000 + "ms");
