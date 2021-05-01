@@ -524,6 +524,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     return true;
                 }case 15: {//toggle brake
                     setBoolean(boolValues.BRAKE, !getBoolean(boolValues.BRAKE));
+                    updateConsist();
                     return true;
                 }case 5: { //Toggle lamp
                     setBoolean(boolValues.LAMP, !getBoolean(boolValues.LAMP));

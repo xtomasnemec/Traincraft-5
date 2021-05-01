@@ -283,9 +283,11 @@ public class EntityTrainCore extends GenericRailTransport {
     public void manageFuel(){
         if(getTypes().contains(STEAM)) {
             fuelHandler.manageSteam(this);
-        } else if(getTypes().contains(DIESEL)){
+        }
+        if(getTypes().contains(DIESEL)){
             FuelHandler.manageDieselFuel(this);
-        } else if(getTypes().contains(ELECTRIC)){
+        }
+        if(getTypes().contains(ELECTRIC)){
             FuelHandler.manageElectricFuel(this);
         }
     }

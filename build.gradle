@@ -3,11 +3,10 @@ import org.apache.tools.ant.filters.ReplaceTokens
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven {url = "http://files.minecraftforge.net/maven"}
+        maven {url="./jdt"}
     }
+
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
