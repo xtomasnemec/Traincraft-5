@@ -11,7 +11,6 @@ import train.core.helpers.CapesHelper;
 import train.core.util.MP3Player;
 
 public class ClientTickHandler {
-	private static final Minecraft mc = Minecraft.getMinecraft();
 
 	@SubscribeEvent
 	public void tick(TickEvent event) {
@@ -30,12 +29,15 @@ public class ClientTickHandler {
 	}
 
 	private void tickStart(TickEvent event) {
-		if (mc.theWorld == null) { // fixes streaming after exiting a world
+		if(event.side.isServer()){
+			return;
+		}
+		if (Minecraft.getMinecraft().theWorld == null) { // fixes streaming after exiting a world
 			for (MP3Player player : Traincraft.proxy.playerList) if (player != null) player.stop();
 			Traincraft.proxy.playerList.clear();
 		}
-		if(mc.theWorld != null && mc.theWorld.playerEntities != null) {
-			for (Object p: mc.theWorld.playerEntities) {
+		if(Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().theWorld.playerEntities != null) {
+			for (Object p: Minecraft.getMinecraft().theWorld.playerEntities) {
 				AbstractClientPlayer player = (AbstractClientPlayer) p;
 				CapesHelper user = CapesHelper.users.get(player.getDisplayName());
 				if(user == null) {
