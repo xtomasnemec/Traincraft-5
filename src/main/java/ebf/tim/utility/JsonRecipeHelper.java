@@ -42,7 +42,7 @@ import java.util.*;
 public class JsonRecipeHelper {
 
     //I used this logger because it makes debugging easier and will show up nicer in logs both for users and us.
-    private static Logger LOGGER = LogManager.getLogger("traincraft");
+    private static Logger LOGGER = LogManager.getLogger("trainsinmotion");
 
     /**
      * This function handles parsing and adding a 3x3 (or smaller) json recipe to the TiM table.
@@ -444,7 +444,8 @@ public class JsonRecipeHelper {
                 //recursively walks found path and parses files that don't start with underscore.
                 // yoinkie yoinkie https://www.techiedelight.com/traverse-directory-print-files-java-7-8/
                 try {
-                    Files.walkFileTree(Paths.get(path.toUri()), new SimpleFileVisitor<Path>() {
+                    Path start = Paths.get(path.toUri()); //problem line
+                    Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
                         @Override
                         public FileVisitResult visitFile(Path filePath, BasicFileAttributes attributes) {
                             //do stuff with a recipe path:
@@ -466,8 +467,14 @@ public class JsonRecipeHelper {
                         }
                     });
                 } catch (IOException e) {
-                    LOGGER.error("Problem walking recipe file tree: " + e);
+                    LOGGER.error("[TiM] Problem walking recipe file tree: " + e);
                     e.printStackTrace();
+                    return false;
+                } catch (FileSystemNotFoundException e) {
+                    //todo: fix this
+                    LOGGER.error("[TiM] Could not create file system, SKIPPING loading recipes. error: " + e);
+                    e.printStackTrace();
+                    return false;
                 }
 
                 return true;

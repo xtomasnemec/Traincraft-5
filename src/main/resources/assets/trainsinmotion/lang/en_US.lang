@@ -231,7 +231,12 @@ fluid.diesel=Diesel Fluid
 tile.block.oil=Oil Fluid
 fluid.oil.name=Oil Fluid
 fluid.redstone=RF
-tile.ore.steel.name=Steel Ore
+tile.oreSteel.name=Steel Ore
+tile.oreCopper.name=Copper Ore
+tile.oreAluminum.name=Aluminum Ore
+tile.blockSteel.name=Steel Block
+tile.blockCopper.name=Copper Block
+tile.blockAluminum.name=Aluminum Block
 
 <!-- ## Item Lore ## -->
 menu.item.stake.lore1=Use on a transport to toggle linking.
