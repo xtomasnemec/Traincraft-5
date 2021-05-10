@@ -11,6 +11,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import cpw.mods.fml.relauncher.Side;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.TiMTab;
@@ -29,8 +30,10 @@ import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
-import train.core.handlers.PacketHandler;
 import train.core.handlers.VillagerTraincraftHandler;
+import train.core.network.PacketKeyPress;
+import train.core.network.PacketLantern;
+import train.core.network.PacketSetJukeboxStreamingUrl;
 import train.core.plugins.AssemblyTableNEIIntegration;
 import train.core.plugins.PluginRailcraft;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
@@ -94,7 +97,16 @@ public class Traincraft {
 		proxy.registerEvents(event);
 
 		/* Networking and Packet initialisation */
-		PacketHandler.init();
+		tcLog.info("Initialize Packets");
+		modChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.channel);
+		keyChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.keyChannel);
+		rotationChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.rotationChannel);
+
+
+		keyChannel.registerMessage(PacketKeyPress.Handler.class, PacketKeyPress.class, 1, Side.SERVER);
+		modChannel.registerMessage(PacketSetJukeboxStreamingUrl.Handler.class,
+				PacketSetJukeboxStreamingUrl.class, 2, Side.SERVER);
+		modChannel.registerMessage(PacketLantern.Handler.class, PacketLantern.class, 3, Side.SERVER);
 
 		tcLog.info("Finished PreInitialization");
 	}

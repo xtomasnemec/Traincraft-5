@@ -213,9 +213,8 @@ public class RenderWagon extends Render {
         GL11.glEnable(GL_NORMALIZE);
 
         //set the render position
-        GL11.glTranslated(x, y+ railOffset + ((entity.getRenderScale()-0.0625f)*10)+bogieOffset, z);
+        GL11.glTranslated(x, y+ railOffset +bogieOffset, z);
         //rotate the model.
-
         if(!isPaintBucket) {
             GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
         }
@@ -225,6 +224,10 @@ public class RenderWagon extends Render {
         if(entity.frontBogie!=null && entity.backBogie!=null){
             GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
         }
+
+        //scale the model
+        GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f));
+
         /*
          * <h3>animations</h3>
          * Be sure animations are enabled in user settings, then check of there is something to animate.
@@ -284,7 +287,7 @@ public class RenderWagon extends Render {
                 GL11.glRotatef(entity.modelRotations()[i][1],0,1,0);
                 GL11.glRotatef(entity.modelRotations()[i][2],0,0,1);
             }
-            entity.renderData.modelList[i].render(entity, 0,0,0,0,0, entity.getRenderScale());
+            entity.renderData.modelList[i].render(entity, 0,0,0,0,0, 0.0625f);
             GL11.glPopMatrix();
         }
 
@@ -328,7 +331,10 @@ public class RenderWagon extends Render {
                     GL11.glRotatef(b.rotationYaw-entity.rotationYaw, 0.0f, 1.0f, 0);
                     GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
                 }
-                b.bogieModel.render(entity, 0, 0, 0, 0, 0, entity.getRenderScale());
+                //scale the model.
+                GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f));
+
+                b.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
 
                 //render the particles, if there are any. do this _after_ the normal render because it breaks texture bind
                 if(!isPaintBucket && entity.worldObj!=null && entity.renderData.bogieParticles.size()>0) {
@@ -349,7 +355,7 @@ public class RenderWagon extends Render {
                         if(!isPaintBucket) {
                             GL11.glRotatef(sub.rotationYaw - b.rotationYaw, 0.0f, 1.0f, 0);
                         }
-                        sub.bogieModel.render(entity, 0, 0, 0, 0, 0, entity.getRenderScale());
+                        sub.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
                         GL11.glPopMatrix();
                         iii++;
                     }
