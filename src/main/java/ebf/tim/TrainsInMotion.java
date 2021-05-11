@@ -23,6 +23,7 @@ import ebf.tim.registry.TiMGenericRegistry;
 import ebf.tim.utility.*;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -144,7 +145,7 @@ public class TrainsInMotion {
         long startTime = System.nanoTime();
         JsonRecipeHelper.loadRecipes(MODID, this.getClass());
         long endTime = System.nanoTime();
-        System.out.println("Time taken to load recipes: " + (endTime - startTime) / 1_000_000 + "ms");
+        LogManager.getLogger("trainsinmotion").info("Time taken to load recipes: " + (endTime - startTime) / 1_000_000 + "ms");
 
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);
