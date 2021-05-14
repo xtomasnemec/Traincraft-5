@@ -226,7 +226,7 @@ public class RenderWagon extends Render {
         }
 
         //scale the model
-        GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f));
+        GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1);
 
         /*
          * <h3>animations</h3>
@@ -332,7 +332,7 @@ public class RenderWagon extends Render {
                     GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
                 }
                 //scale the model.
-                GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f),((entity.getRenderScale()-0.0625f)*10f));
+                GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1);
 
                 b.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
 
