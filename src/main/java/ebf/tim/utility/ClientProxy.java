@@ -56,7 +56,7 @@ public class ClientProxy extends CommonProxy {
     public static boolean useVanillaInventoryTextures = true;
     /**enables 3d items for trains and stock*/
     public static boolean hdTransportItems = true;
-    /*enables pre-render of models*/
+    /**enables pre-render of models*/
     public static boolean preRenderModels = false;
     /**the keybind for the lamp toggle*/
     public static KeyBinding KeyLamp = new KeyBinding("Lamp Toggle", Keyboard.KEY_L, "Trains in Motion");

@@ -231,7 +231,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 this.detectAndSendChanges();
                                 break;
                             }
-                        } else {
+                        } else if (slot.isItemValid(player.inventory.getItemStack().copy())) {
                             if (!slot.isCraftingOutput() && slot.getStack() ==null || (slot.getStack()!=null && slot.contentEquals(player.inventory.getItemStack()))) {
                                 ItemStack s = player.inventory.getItemStack().copy();
                                 ItemStack s2 = s.copy();

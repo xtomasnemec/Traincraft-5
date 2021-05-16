@@ -1,5 +1,6 @@
 package fexcraft.fvtm;
 
+import ebf.tim.utility.ClientProxy;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import net.minecraft.client.renderer.GLAllocation;
@@ -31,16 +32,21 @@ public class RollingStockModel extends ModelBase {
             }
         }
 
-        if(staticPartMap.get(this.getClass().getName())==null) {
+
+        if(ClientProxy.disableCache) {
+            for(TurboList list :groups) {
+                list.render(list.boxList);
+            }
+        } else if(staticPartMap.get(this.getClass().getName())==null) {
             staticPartMap.put(this.getClass().getName(), GLAllocation.generateDisplayLists(1));
             GL11.glNewList(staticPartMap.get(this.getClass().getName()), GL11.GL_COMPILE);
             for(TurboList list :groups) {
                 list.render(list.boxList);
             }
             GL11.glEndList();
-            //for(TurboList list :groups) {
-            //    list.boxList=null;
-            //}
+            for(TurboList list :groups) {
+                list.boxList=null;
+            }
         } else {
             if(GL11.glIsList(staticPartMap.get(this.getClass().getName()))) {
                 GL11.glCallList(staticPartMap.get(this.getClass().getName()));

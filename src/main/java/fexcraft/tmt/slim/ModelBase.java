@@ -1,5 +1,6 @@
 package fexcraft.tmt.slim;
 
+import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.DebugUtil;
 import net.minecraft.client.Minecraft;
@@ -38,7 +39,9 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 		    initAllParts();
 		}
 
-		if(staticPartMap.get(this.getClass().getName())==null) {
+		if(ClientProxy.disableCache) {
+			render(boxList);
+		} else if(staticPartMap.get(this.getClass().getName())==null) {
 			int disp=GLAllocation.generateDisplayLists(1);
 			staticPartMap.put(this.getClass().getName(), disp);
 			GL11.glNewList(disp, GL11.GL_COMPILE);
