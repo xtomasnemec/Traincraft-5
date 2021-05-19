@@ -595,6 +595,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float p_70097_2_){
+        if(damageSource==null){
+            health -=20;
+            //be sure we drop the inventory items on death.
+            dropAllItems();
+            setDead();
+            return true;
+        }
         if (damageSource.getEntity() instanceof GenericRailTransport){
             return false;
         }
@@ -997,7 +1004,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     setRotation(CommonUtil.atan2degreesf(
                             frontBogie.posZ - backBogie.posZ,
                             frontBogie.posX - backBogie.posX),
-                            CommonUtil.calculatePitch(backBogie.posY+backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                            CommonUtil.calculatePitch(
+                                    backBogie.posY, frontBogie.posY,
+                                    Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
                 }
                 if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
                     for(Bogie b : renderData.bogies){
@@ -1449,7 +1458,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     protected void setRotation(float p_70101_1_, float p_70101_2_) {
         this.prevRotationYaw = this.rotationYaw = p_70101_1_;
-        this. prevRotationPitch = this.rotationPitch = p_70101_2_;
+        this.prevRotationPitch = this.rotationPitch = p_70101_2_;
     }
 
     protected void setRotation(float yaw, float pitch, float roll){

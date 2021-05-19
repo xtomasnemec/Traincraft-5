@@ -13,6 +13,7 @@ import mods.railcraft.api.carts.IRoutableCart;
 import mods.railcraft.api.tracks.ITrackSwitch;
 import mods.railcraft.api.tracks.ITrackTile;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.init.Blocks;
@@ -201,10 +202,10 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 float max = ((BlockRailBase) block).getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
                 if(max!=0.4f) {
                     segmentMovement(Math.min(Math.abs(motionX) + Math.abs(motionZ), Math.abs(max)),
-                            floorX, floorY, floorZ, (BlockRailBase) block, host);
+                            floorX, floorY, floorZ, (BlockRailBase) block);
                 } else {
                     segmentMovement(Math.abs(motionX) + Math.abs(motionZ),
-                            floorX, floorY, floorZ, (BlockRailBase) block, host);
+                            floorX, floorY, floorZ, (BlockRailBase) block);
                 }
                 //update on ZnD rails, and ones that don't extend block rail base.
                 //todo ZnD support, either by jar reference or API update
@@ -212,11 +213,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 //update position for ZnD rails.
                 //moveBogieZnD(motionX, motionZ, floorX, floorY, floorZ, (ITrackBase) block);
             } else {
-                if(posX!=lastKnownRailX && posZ!=lastKnownRailZ) {
-                    posX = lastKnownRailX;
-                    posZ = lastKnownRailZ;
-                    posY = lastKnownRailY;
-                }
+
+                segmentOffRailMovement(Math.abs(motionX) + Math.abs(motionZ));
                 return true;
             }
         }
@@ -225,15 +223,15 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
 
 
-    private void segmentMovement(double velocity, int floorX, int floorY, int floorZ, BlockRailBase block, GenericRailTransport host){
+    private void segmentMovement(double velocity, int floorX, int floorY, int floorZ, BlockRailBase block){
         while (velocity>0) {
             //on straight track, use bigger movement vectors for performance.
             if(block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==0||
                     block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==1){
-                moveBogieVanillaDirectional(Math.min(0.3, velocity), floorX, floorY, floorZ, block, host);
+                moveBogieVanillaDirectional(Math.min(0.35, velocity), floorX, floorY, floorZ, block);
                 velocity -= 0.35;
             } else {
-                moveBogieVanillaDirectional(Math.min(0.075, velocity), floorX, floorY, floorZ, block, host);
+                moveBogieVanillaDirectional(Math.min(0.075, velocity), floorX, floorY, floorZ, block);
                 velocity -= 0.075;
             }
 
@@ -247,11 +245,26 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 block=(BlockRailBase) blockNext;
             }
         }
+    }
+
+    private void segmentOffRailMovement(double velocity){
+        while (velocity>0) {
+            //on straight track, use bigger movement vectors for performance.
+            posX+=Math.min(0.35, motionX);
+            posZ+=Math.min(0.35, motionZ);
+            motionX-=Math.min(0.35, motionX);
+            motionZ-=Math.min(0.35, motionZ);
+            velocity -= 0.35;
+
+            if (worldObj.getBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY-0.5), MathHelper.floor_double(posZ)) instanceof BlockAir) {
+                posY--;
+            }
+        }
 
     }
 
 
-    private void moveBogieVanillaDirectional(double currentMotion, int floorX, int floorY, int floorZ, BlockRailBase block, GenericRailTransport host){
+    private void moveBogieVanillaDirectional(double currentMotion, int floorX, int floorY, int floorZ, BlockRailBase block){
         //get the direction of the rail from it's metadata
         if (worldObj.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
             railMetadata =((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
@@ -309,19 +322,19 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //endMagic();
 
         //be sure the movement was significant enough to merit a change in Y position, and/or to do rail functionality
-        if(floorX!=MathHelper.floor_double(posX) || floorZ != MathHelper.floor_double(posZ)) {
+        floorX = MathHelper.floor_double(posX);
+        floorZ = MathHelper.floor_double(posZ);
+        if(!BlockRailBase.func_150049_b_(worldObj, floorX, floorY, floorZ)){
             this.prevPosY =posY;
-            floorX = MathHelper.floor_double(posX);
-            floorZ = MathHelper.floor_double(posZ);
-            if(!BlockRailBase.func_150049_b_(worldObj, floorX, floorY, floorZ)){
-                if(BlockRailBase.func_150049_b_(worldObj, floorX, floorY+1, floorZ)){
-                    posY++;
-                } else if(BlockRailBase.func_150049_b_(worldObj, floorX, floorY-1, floorZ)) {
-                    posY--;
-                }
-                floorY=MathHelper.floor_double(posY);
+            if(BlockRailBase.func_150049_b_(worldObj, floorX, floorY+1, floorZ)){
+                posY++;
+            } else if (BlockRailBase.func_150049_b_(worldObj, floorX, floorY-1, floorZ)) {
+                posY--;
             }
+            floorY = MathHelper.floor_double(posY);
+        }
 
+         if(floorX!=MathHelper.floor_double(posX) || floorZ != MathHelper.floor_double(posZ)) {
             //do the rail functions.
             if(shouldDoRailFunctions()) {
                 block.onMinecartPass(worldObj, this, floorX, floorY, floorZ);
@@ -402,7 +415,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         prevPosX=x;
         prevPosY=y;
         prevPosZ=z;
-        motionProgress = turnProgress;
+        motionProgress = turnProgress+2;
     }
 
 
