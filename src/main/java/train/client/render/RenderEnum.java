@@ -253,7 +253,7 @@ public enum RenderEnum {
 	locoBR185(EntityLocoElectricBR185.class, new BR185_EngineModel(), "BR185_Engine_", true, new float[] { -2.0F, 0.1F, 0.0F },  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	locoClass85(EntityLocoElectricClass85.class, new ModelClass85(), "Class85", false, new float[] { -3.0F, 0.65F, 0.0F },  new float[] { 0F, 90F, 180F }, null, "", 0, null, "", null, 0, false),
 	locoBP4(EntityLocoElectricBP4.class, new ModelBP4(), "bp4_", true, new float[] { -1.4F, 0.15F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	locoDeltic(EntityLocoDieselDeltic.class, new ModelDeltic(), "Deltic", true, new float[] { -2.25F, 0.8F, 0.0F },  new float[] { 0F, 90F, 180F }, null, "largesmoke", 1, new ArrayList<double[]>() {
+	locoDeltic(EntityLocoDieselDeltic.class, new ModelDeltic(), "Deltic_", true, new float[] { -2.25F, 0.8F, 0.0F },  new float[] { 0F, 90F, 180F }, null, "largesmoke", 1, new ArrayList<double[]>() {
 		{
 			add(new double[]{2.3D, 1.6D, 0D});
 		}
