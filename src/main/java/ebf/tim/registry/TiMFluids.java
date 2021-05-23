@@ -8,6 +8,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.Collection;
 
@@ -36,6 +37,11 @@ public class TiMFluids {
     public static Fluid fluidRedstone = new Fluid("Redstone");
     public static Item bucketRedstone;
 
+    public static Fluid fluidBCFuel = FluidRegistry.getFluid("fuel");
+    public static Fluid fluidEthanol = FluidRegistry.getFluid("bioethanol");
+    public static Fluid fluidBiofuel = FluidRegistry.getFluid("biofuel");
+    public static Fluid fluidBioDiesel = FluidRegistry.getFluid("biodiesel");
+    public static Fluid fluidBiomass = FluidRegistry.getFluid("biomass");
 
     public static Fluid nullFluid = new Fluid("nullFluid");
 
@@ -76,6 +82,8 @@ public class TiMFluids {
             TiMGenericRegistry.registerRCFluid(TiMFluids.fluidOil,5000);
             TiMGenericRegistry.registerRCFluid(TiMFluids.fluidDiesel, 10000);
         }
+        if (Loader.isModLoaded("Forestry")){
 
+        }
     }
 }
