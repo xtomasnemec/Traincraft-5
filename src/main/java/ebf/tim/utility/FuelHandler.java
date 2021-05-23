@@ -77,8 +77,16 @@ public class FuelHandler{
 			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
 					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")){
 				return new FluidStack(TiMFluids.fluidDiesel,1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
+				return new FluidStack(TiMFluids.fluidfueloil, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("oil")) {
+				return new FluidStack(TiMFluids.fluidOil,1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fuel")) {
+				return new FluidStack(TiMFluids.fluidfueloil, 1000);
 			}
-
 		}
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.STEAM)){
 			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&

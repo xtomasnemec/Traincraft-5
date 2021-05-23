@@ -1,7 +1,12 @@
 package ebf.tim.registry;
 
 
+import buildcraft.api.fuels.BuildcraftFuelRegistry;
+import buildcraft.api.fuels.IFuel;
+import buildcraft.core.lib.block.BlockBuildCraftFluid;
 import cpw.mods.fml.common.IWorldGenerator;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
@@ -13,6 +18,7 @@ import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
+import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
@@ -42,10 +48,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import static ebf.tim.utility.RecipeManager.getRecipe;
 import static ebf.tim.utility.RecipeManager.getRecipeWithTier;
@@ -309,17 +313,19 @@ public class TiMGenericRegistry {
     }
 
 
-    /*todo:add support for buildcraft/railcraft burnable fluids
+    //todo:add support for buildcraft/railcraft burnable fluids
+
 	@Optional.Method(modid = "BuildCraft|Energy")
-	private void registerBCFluid(Fluid f, int powerPerCycle, int totalBurningTime){
+    static void registerBCFluid(Fluid f, int powerPerCycle, int totalBurningTime){
 		BuildcraftFuelRegistry.fuel.addFuel(f, powerPerCycle, totalBurningTime);
 	}
 
 	@Optional.Method(modid = "Railcraft")
-	private void registerRCFluid(Fluid f, int totalBurningTime) {
+    static void registerRCFluid(Fluid f, int totalBurningTime) {
 		FuelManager.addBoilerFuel(f, totalBurningTime);
 	}
-     */
+
+
 
 
 }
