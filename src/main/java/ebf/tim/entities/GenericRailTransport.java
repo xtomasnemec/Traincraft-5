@@ -863,44 +863,56 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
 
+
         //reposition bogies to be sure they are the right distance
-        if(!worldObj.isRemote && ticksExisted%2==0) {
+        if(!worldObj.isRemote) {
+
             float[] f = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0, rotationPitch, rotationYaw, 0);
 
-            frontBogie.setPosition((f[0] + posX), frontBogie.posY, (f[2] + posZ));
+            //can't hard clamp
+            // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
+            if(Math.abs(f[0])>0.1 || Math.abs(f[2])>0.1) {
+                frontBogie.addVelocity(
+                        ((f[0] + posX) - frontBogie.posX)*0.01, 0,
+                        ((f[2] + posZ) - frontBogie.posZ)*0.01);
+            }
 
             f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw, 0);
+            if(Math.abs(f[0])>0.1 || Math.abs(f[2])>0.1) {
+                backBogie.addVelocity(
+                        ((f[0] + posX) - backBogie.posX)*0.01, 0,
+                        ((f[2] + posZ) - backBogie.posZ)*0.01);
+            }
 
-            backBogie.setPosition((f[0] + posX), backBogie.posY, (f[2] + posZ));
+            //do scaled rail boosting but keep it capped to the max velocity of the rail
+            Block b = worldObj.getBlock((int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ);
+            if (b instanceof BlockRailBase && ((BlockRailBase) b).isPowered() &&
+                    Math.abs(frontBogie.motionX) + Math.abs(frontBogie.motionZ) <//this part keeps it capped
+                            ((BlockRailBase) b).getRailMaxSpeed(worldObj, frontBogie, (int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ)) {
+                frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
+                        Math.copySign(
+                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, frontBogie, (int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ) * 0.005f,
+                                frontBogie.motionX),
+                        0,
+                        Math.copySign(
+                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, frontBogie, (int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ) * 0.005f,
+                                frontBogie.motionZ));
+            }
+            b = worldObj.getBlock((int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ);
+            if (b instanceof BlockRailBase && ((BlockRailBase) b).isPowered() &&
+                    Math.abs(backBogie.motionX) + Math.abs(backBogie.motionZ) <
+                            ((BlockRailBase) b).getRailMaxSpeed(worldObj, backBogie, (int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ)) {
+                backBogie.addVelocity(
+                        Math.copySign(
+                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, backBogie, (int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ) * 0.005f,
+                                backBogie.motionX),
+                        0,
+                        Math.copySign(
+                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, backBogie, (int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ) * 0.005f,
+                                backBogie.motionZ));
+            }
         }
 
-        //do scaled rail boosting but keep it capped to the max velocity of the rail
-        Block b = worldObj.getBlock((int)frontBogie.posX,(int)frontBogie.posY, (int)frontBogie.posZ);
-        if(b instanceof BlockRailBase && ((BlockRailBase) b).isPowered() &&
-                Math.abs(frontBogie.motionX)+Math.abs(frontBogie.motionZ)<//this part keeps it capped
-                        ((BlockRailBase) b).getRailMaxSpeed(worldObj,frontBogie, (int)frontBogie.posX, (int)frontBogie.posY, (int)frontBogie.posZ)){
-            frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
-                    Math.copySign(
-                    ((BlockRailBase) b).getRailMaxSpeed(worldObj,frontBogie, (int)frontBogie.posX, (int)frontBogie.posY, (int)frontBogie.posZ)*0.005f,
-                    frontBogie.motionX),
-                    0,
-                    Math.copySign(
-                            ((BlockRailBase) b).getRailMaxSpeed(worldObj,frontBogie, (int)frontBogie.posX, (int)frontBogie.posY, (int)frontBogie.posZ)*0.005f,
-                            frontBogie.motionZ));
-        }
-        b = worldObj.getBlock((int)backBogie.posX,(int)backBogie.posY, (int)backBogie.posZ);
-        if(b instanceof BlockRailBase && ((BlockRailBase) b).isPowered() &&
-                Math.abs(backBogie.motionX)+Math.abs(backBogie.motionZ)<
-                        ((BlockRailBase) b).getRailMaxSpeed(worldObj,backBogie, (int)backBogie.posX, (int)backBogie.posY, (int)backBogie.posZ)){
-            backBogie.addVelocity(
-                    Math.copySign(
-                    ((BlockRailBase) b).getRailMaxSpeed(worldObj,backBogie, (int)backBogie.posX, (int)backBogie.posY, (int)backBogie.posZ)*0.005f,
-                    backBogie.motionX),
-                    0,
-                    Math.copySign(
-                            ((BlockRailBase) b).getRailMaxSpeed(worldObj,backBogie, (int)backBogie.posX, (int)backBogie.posY, (int)backBogie.posZ)*0.005f,
-                            backBogie.motionZ));
-        }
 
         //actually move
         prevPosX=posX;
@@ -987,39 +999,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             this.requestTicket();
         }
 
-        //CLIENT UPDATE
-        if(worldObj.isRemote){
-            if(tickOffset >0) {
-                prevPosX=posX;prevPosZ=posZ;
-                setPosition(
-                        this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
-                        this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
-                        this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
-                );
-                velocity[1]=(float)((Math.abs(posX)-Math.abs(prevPosX))+(Math.abs(posZ)-Math.abs(prevPosZ)));
-                if(frontBogie!=null &&backBogie!=null){
-                    frontBogie.minecartMove(this);
-                    backBogie.minecartMove(this);
-
-                    setRotation(CommonUtil.atan2degreesf(
-                            frontBogie.posZ - backBogie.posZ,
-                            frontBogie.posX - backBogie.posX),
-                            CommonUtil.calculatePitch(
-                                    backBogie.posY, frontBogie.posY,
-                                    Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
-                }
-                if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
-                    for(Bogie b : renderData.bogies){
-                        b.updatePosition(this, null);
-                    }
-                }
-                collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-                tickOffset--;
-            } else {
-                velocity[1]=0;
-            }
-        }
-
         //be sure bogies exist
 
         //always be sure the bogies exist on client and server.
@@ -1054,6 +1033,39 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             updatePosition();
         }
 
+        //CLIENT UPDATE
+        if(worldObj.isRemote){
+            if(tickOffset >0) {
+                prevPosX=posX;prevPosZ=posZ;
+                setPosition(
+                        this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
+                        this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
+                        this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
+                );
+                velocity[1]=(float)((Math.abs(posX)-Math.abs(prevPosX))+(Math.abs(posZ)-Math.abs(prevPosZ)));
+                if(frontBogie!=null &&backBogie!=null){
+                    setRotation(CommonUtil.atan2degreesf(
+                            frontBogie.posZ - backBogie.posZ,
+                            frontBogie.posX - backBogie.posX),
+                            CommonUtil.calculatePitch(
+                                    backBogie.posY, frontBogie.posY,
+                                    Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                    frontBogie.minecartMove(this);
+                    backBogie.minecartMove(this);
+                }
+                if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
+                    for(Bogie b : renderData.bogies){
+                        b.updatePosition(this, null);
+                    }
+                }
+                collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+                tickOffset--;
+            } else {
+                velocity[1]=0;
+            }
+        }
+
+
         /*
          * run the hitbox check whether or not the bogies exist so we can ensure interaction even during severe client-sided error.
          *check if the bogies exist, because they may not yet, and if they do, check if they are actually moving or colliding.
@@ -1063,7 +1075,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          *
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
-        if (!worldObj.isRemote && frontBogie!=null && backBogie != null && (!getBoolean(boolValues.DERAILED) || ticksExisted==1)){
+        if (!worldObj.isRemote && frontBogie!=null && backBogie != null && ticksExisted>1){
             //handle movement.
 
             //update positions related to linking
@@ -1329,7 +1341,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public void updateRiderPosition() {
-        if (getRiderOffsets() != null) {
+        if (getRiderOffsets() != null && worldObj!=null) {
             if (riddenByEntity != null) {
                 vectorCache[2] = rotatePointF(getRiderOffsets()[0][0],getRiderOffsets()[0][1],getRiderOffsets()[0][2], rotationPitch, rotationYaw, 0);
                 riddenByEntity.setPosition(vectorCache[2][0] + this.posX, vectorCache[2][1] + this.posY+(worldObj.isRemote?0:1)+(frontBogie==null?0:frontBogie.yOffset), vectorCache[2][2] + this.posZ);
@@ -1388,10 +1400,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
         //apply velocity to both entities, due to async updates this is necessary for next step
-        this.frontBogie.addVelocity(-vectorCache[4][0],0,-vectorCache[4][2]);
-        this.backBogie.addVelocity(-vectorCache[4][0],0,-vectorCache[4][2]);
-        linkedTransport.frontBogie.addVelocity(vectorCache[4][0],0,vectorCache[4][2]);
-        linkedTransport.backBogie.addVelocity(vectorCache[4][0],0,vectorCache[4][2]);
+        if(!(this instanceof EntityTrainCore) || !getBoolean(boolValues.BRAKE)) {
+            this.frontBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
+            this.backBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
+        }
+        if (!(linkedTransport instanceof EntityTrainCore) || !linkedTransport.getBoolean(boolValues.BRAKE)) {
+            linkedTransport.frontBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
+            linkedTransport.backBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
+        }
 
         //calculate distance based on the movement of each entity
         norm = (float)((this.frontBogie.motionX - linkedTransport.frontBogie.motionX) * vectorCache[5][0] +
@@ -1402,10 +1418,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         vectorCache[4][2] = 0.4f * norm * vectorCache[5][2] * -1;
 
         //now dampen the original movement distance based on the calculated movement speed
-        this.frontBogie.addVelocity(vectorCache[4][0],0,vectorCache[4][2]);
-        this.backBogie.addVelocity(vectorCache[4][0],0,vectorCache[4][2]);
-        linkedTransport.frontBogie.addVelocity(-vectorCache[4][0],0,-vectorCache[4][2]);
-        linkedTransport.backBogie.addVelocity(-vectorCache[4][0],0,-vectorCache[4][2]);
+        if(!(this instanceof EntityTrainCore) || !getBoolean(boolValues.BRAKE)) {
+            this.frontBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
+            this.backBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
+        }
+        if (!(linkedTransport instanceof EntityTrainCore) || !linkedTransport.getBoolean(boolValues.BRAKE)) {
+            linkedTransport.frontBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
+            linkedTransport.backBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
+        }
     }
 
 
