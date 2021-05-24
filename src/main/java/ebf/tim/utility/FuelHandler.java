@@ -77,8 +77,28 @@ public class FuelHandler{
 			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
 					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")){
 				return new FluidStack(TiMFluids.fluidDiesel,1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
+				return new FluidStack(TiMFluids.fluidfueloil, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("oil")) {
+				return new FluidStack(TiMFluids.fluidOil,1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fuel")) {
+				return new FluidStack(TiMFluids.fluidBCFuel, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("bioethanol")) {
+				return new FluidStack(TiMFluids.fluidEthanol, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biofuel")) {
+				return new FluidStack(TiMFluids.fluidBiofuel, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biodiesel")) {
+				return new FluidStack(TiMFluids.fluidBioDiesel, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biomass")) {
+				return new FluidStack(TiMFluids.fluidBiomass, 1000);
 			}
-
 		}
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.STEAM)){
 			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
