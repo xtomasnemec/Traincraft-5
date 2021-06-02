@@ -2,10 +2,6 @@ package ebf.tim.registry;
 
 
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
-import buildcraft.api.fuels.IFuel;
-import buildcraft.core.lib.block.BlockBuildCraftFluid;
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
@@ -18,7 +14,6 @@ import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
-import li.cil.oc.integration.forestry.ModForestry;
 import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -26,33 +21,23 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenEnd;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static ebf.tim.utility.RecipeManager.getRecipe;
 import static ebf.tim.utility.RecipeManager.getRecipeWithTier;
 
 /**

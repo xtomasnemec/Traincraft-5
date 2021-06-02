@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class ClientUtil {

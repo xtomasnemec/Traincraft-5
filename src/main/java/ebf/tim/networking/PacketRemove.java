@@ -2,13 +2,10 @@ package ebf.tim.networking;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.utility.ServerLogger;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.DimensionManager;
 

@@ -221,6 +221,10 @@ public class RenderWagon extends Render {
         GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
         GL11.glPushMatrix();
 
+        //todo: this is jank and kinda inaccurate, but it's close.
+        GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
+                Math.abs(entity.bogieLengthFromCenter()[0])+Math.abs(entity.bogieLengthFromCenter()[1]),
+                0,0), entity.rotationPitch,0,0).yCoord*2, 0);
         if(entity.frontBogie!=null && entity.backBogie!=null){
             GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
         }
@@ -329,7 +333,7 @@ public class RenderWagon extends Render {
                 //GL11.glRotatef(-180, 0.0f, 0.0f, 1.0f);
                 if(!isPaintBucket) {
                     GL11.glRotatef(b.rotationYaw-entity.rotationYaw, 0.0f, 1.0f, 0);
-                    GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
+                   //GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
                 }
                 //scale the model.
                 GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1);

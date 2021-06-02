@@ -1,21 +1,21 @@
 package ebf.tim.entities;
 
 import ebf.tim.registry.NBTKeys;
-import ebf.tim.utility.*;
+import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.FuelHandler;
+import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import train.library.EnumSounds;
 import train.library.Info;
 
 import java.util.List;
 import java.util.UUID;
 
-import static ebf.tim.TrainsInMotion.transportTypes.DIESEL;
-import static ebf.tim.TrainsInMotion.transportTypes.ELECTRIC;
-import static ebf.tim.TrainsInMotion.transportTypes.STEAM;
+import static ebf.tim.TrainsInMotion.transportTypes.*;
 
 /**
  * <h1>Train core</h1>

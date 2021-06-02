@@ -16,7 +16,6 @@ import ebf.tim.items.ItemStake;
 import ebf.tim.items.ItemTicket;
 import ebf.tim.models.Bogie;
 import ebf.tim.networking.PacketInteract;
-import ebf.tim.networking.PacketRemove;
 import ebf.tim.networking.PacketUpdateClients;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.registry.TiMFluids;

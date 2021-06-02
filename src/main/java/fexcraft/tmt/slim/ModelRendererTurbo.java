@@ -1413,14 +1413,6 @@ public class ModelRendererTurbo {
         poly.add(addPolygonReturn(vert1, vert0, vert3, vert2, 0,0,0,0));
         poly.add(addPolygonReturn(vert4, vert5, vert6, vert7, 0,0,0,0));
 
-
-
-        for(int i=0; i<poly.size();i++){
-            Vec3f vec0 = new Vec3f(poly.get(i).vertices.get(1).vector3F.subtract(poly.get(i).vertices.get(0).vector3F));
-            Vec3f vec1 = new Vec3f(poly.get(i).vertices.get(1).vector3F.subtract(poly.get(i).vertices.get(2).vector3F));
-            faces.get(i).normal = vec1.crossProduct(vec0).normalize();
-        }
-
         return this;
     }
 

@@ -1,6 +1,5 @@
 package ebf.tim.registry;
 
-import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import cpw.mods.fml.common.Loader;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.OreGen;
@@ -9,8 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import java.util.Collection;
 
 import static ebf.tim.registry.TiMGenericRegistry.RegisterFluid;
 import static ebf.tim.registry.TiMGenericRegistry.registerOreGen;
