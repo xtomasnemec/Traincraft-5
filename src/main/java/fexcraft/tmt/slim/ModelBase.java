@@ -47,7 +47,9 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 			GL11.glNewList(disp, GL11.GL_COMPILE);
 			render(boxList);
 			GL11.glEndList();
-			boxList=null;
+			if(!ClientProxy.EnableAnimations) {
+				boxList = null;
+			}
 		} else {
 			//TODO: NOTE: find all instances of this,check if the entry exists before rendering, if not, make it generate a new one.
 			if(GL11.glIsList(staticPartMap.get(this.getClass().getName()))) {
@@ -58,7 +60,9 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 				GL11.glNewList(disp, GL11.GL_COMPILE);
 				render(boxList);
 				GL11.glEndList();
-				boxList=null;
+				if(!ClientProxy.EnableAnimations) {
+					boxList = null;
+				}
 			}
 		}
 

@@ -44,8 +44,10 @@ public class RollingStockModel extends ModelBase {
                 list.render(list.boxList);
             }
             GL11.glEndList();
-            for(TurboList list :groups) {
-                list.boxList=null;
+            if(!ClientProxy.EnableAnimations) {
+                for(TurboList list :groups) {
+                    list.boxList = null;
+                }
             }
         } else {
             if(GL11.glIsList(staticPartMap.get(this.getClass().getName()))) {

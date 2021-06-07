@@ -1196,18 +1196,28 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                     //push entity away
                     if (d2 >= 0.009999999776482582D) {
-                        d2 = MathHelper.sqrt_double(d2);
-                        d0 /= d2;
-                        d1 /= d2;
+                        if(this.getVelocity()>0.01) {
+                            this.backBogie.setVelocity(backBogie.motionX * -0.5, 0, backBogie.motionX * -0.5);
+                            this.frontBogie.setVelocity(frontBogie.motionX * -0.5, 0, frontBogie.motionZ * -0.5);
+                        } else {
+                            d2 = MathHelper.sqrt_double(d2);
+                            d0 /= d2;
+                            d1 /= d2;
 
-                        d0 *= Math.min(1.0D / d2, 1D);
-                        d1 *= Math.min(1.0D / d2, 1D);
-                        d0 *= 0.05000000074505806D;
-                        d1 *= 0.05000000074505806D;
-                        d0 *= (1.0D - this.entityCollisionReduction);
-                        d1 *= (1.0D - this.entityCollisionReduction);
-                        this.backBogie.addVelocity(-d0, 0, -d1);
-                        this.frontBogie.addVelocity(-d0, 0, -d1);
+                            d0 *= Math.min(1.0D / d2, 1D);
+                            d1 *= Math.min(1.0D / d2, 1D);
+                            this.backBogie.setVelocity(-d0, 0, -d1);
+                            this.frontBogie.setVelocity(-d0, 0, -d1);
+
+                            CollisionBox colliding = ((CollisionBox)e);
+                            this.backBogie.setVelocity(
+                                    Math.copySign(colliding.host.frontBogie.motionX*0.25, backBogie.motionX), 0,
+                                    Math.copySign(colliding.host.frontBogie.motionZ*0.25, backBogie.motionZ));
+
+                            this.frontBogie.setVelocity(
+                                    Math.copySign(colliding.host.frontBogie.motionX*0.25, frontBogie.motionX), 0,
+                                    Math.copySign(colliding.host.frontBogie.motionZ*0.25, frontBogie.motionZ));
+                        }
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
 
@@ -1445,7 +1455,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         //be sure operators and owners can do whatever
         if ((player.capabilities.isCreativeMode && player.canCommandSenderUseCommand(2, ""))
-                || (entityData.containsString("ownername") && entityData.getString("ownername").equals(player.getDisplayName()))) {
+                || (entityData!=null && entityData.containsString("ownername") && entityData.getString("ownername").equals(player.getDisplayName()))) {
             return true;
         }
 

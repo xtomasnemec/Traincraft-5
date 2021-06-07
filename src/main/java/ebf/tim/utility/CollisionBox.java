@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
-    GenericRailTransport host;
+    public GenericRailTransport host;
     public CollisionBox(GenericRailTransport transport) {
         super(transport, HitboxDynamic.dragonBoxName, transport.getHitboxSize()[2],transport.getHitboxSize()[1]);
         host=transport;
