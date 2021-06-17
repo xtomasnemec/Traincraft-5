@@ -74,7 +74,7 @@ public class RailTileEntity extends TileEntity {
             if(railGLID==null && data !=null && data.floatArrayMap.size()>0){
                 RailShapeCore route =new RailShapeCore().fromXML(data);
                 if (route.activePath!=null) {
-                    if(ClientProxy.disableCache) {
+                    if(!ClientProxy.disableCache) {
                         railGLID = net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
                         org.lwjgl.opengl.GL11.glNewList(railGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
 

@@ -1200,23 +1200,26 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                             this.backBogie.setVelocity(backBogie.motionX * -0.5, 0, backBogie.motionX * -0.5);
                             this.frontBogie.setVelocity(frontBogie.motionX * -0.5, 0, frontBogie.motionZ * -0.5);
                         } else {
-                            d2 = MathHelper.sqrt_double(d2);
-                            d0 /= d2;
-                            d1 /= d2;
-
-                            d0 *= Math.min(1.0D / d2, 1D);
-                            d1 *= Math.min(1.0D / d2, 1D);
-                            this.backBogie.setVelocity(-d0, 0, -d1);
-                            this.frontBogie.setVelocity(-d0, 0, -d1);
-
                             CollisionBox colliding = ((CollisionBox)e);
-                            this.backBogie.setVelocity(
-                                    Math.copySign(colliding.host.frontBogie.motionX*0.25, backBogie.motionX), 0,
-                                    Math.copySign(colliding.host.frontBogie.motionZ*0.25, backBogie.motionZ));
 
-                            this.frontBogie.setVelocity(
-                                    Math.copySign(colliding.host.frontBogie.motionX*0.25, frontBogie.motionX), 0,
-                                    Math.copySign(colliding.host.frontBogie.motionZ*0.25, frontBogie.motionZ));
+                            if(colliding.host!=null && colliding.host.frontBogie!=null && colliding.host.backBogie!=null) {
+                                d2 = MathHelper.sqrt_double(d2);
+                                d0 /= d2;
+                                d1 /= d2;
+
+                                d0 *= Math.min(1.0D / d2, 1D);
+                                d1 *= Math.min(1.0D / d2, 1D);
+                                this.backBogie.setVelocity(-d0, 0, -d1);
+                                this.frontBogie.setVelocity(-d0, 0, -d1);
+
+                                this.backBogie.setVelocity(
+                                        Math.copySign(colliding.host.frontBogie.motionX * 0.25, backBogie.motionX), 0,
+                                        Math.copySign(colliding.host.frontBogie.motionZ * 0.25, backBogie.motionZ));
+
+                                this.frontBogie.setVelocity(
+                                        Math.copySign(colliding.host.frontBogie.motionX * 0.25, frontBogie.motionX), 0,
+                                        Math.copySign(colliding.host.frontBogie.motionZ * 0.25, frontBogie.motionZ));
+                            }
                         }
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
@@ -1532,7 +1535,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public float getVelocity(){
-        return (float)Math.max(Math.max(Math.abs(motionX),0.001f),Math.abs(motionZ));
+        return (float)Math.max(Math.max(Math.abs(motionX),0.0001f),Math.abs(motionZ));
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.

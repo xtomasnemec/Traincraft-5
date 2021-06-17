@@ -2,6 +2,7 @@ package ebf.tim.models;
 
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.Vec3f;
 
@@ -84,7 +85,9 @@ public class Bogie {
                 Math.abs(Math.abs(position[0])+Math.abs(position[1])-Math.abs(prevPos[0])-Math.abs(prevPos[1]))>0.25f
         ) {
             rotationYaw = CommonUtil.atan2degreesf(prevPos[1] - position[1], prevPos[0] - position[0]);
-            if(Math.abs(rotationYaw)-(entity.rotationYaw)>90){
+
+            if(Math.abs(entity.rotationYaw+180)-Math.abs(rotationYaw+180)>90 ||
+                    Math.abs(entity.rotationYaw+180)-Math.abs(rotationYaw+180)<-90){
                 rotationYaw-=180;
             }
             for(Bogie b : subBogies){

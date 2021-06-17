@@ -1,10 +1,7 @@
 package ebf.tim.entities;
 
 import ebf.tim.registry.NBTKeys;
-import ebf.tim.utility.CommonProxy;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.FuelHandler;
-import ebf.tim.utility.ItemStackSlot;
+import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -183,14 +180,12 @@ public class EntityTrainCore extends GenericRailTransport {
                 vectorCache[1][0]/=accelerator<0?transportTopSpeedReverse():transportTopSpeed();
                 vectorCache[1][0]/=weight;
                 vectorCache[1][0]*=40;
-                vectorCache[1][0]*=getAcceleratiorPercentage();
-
-
-                //vectorCache[1][0]=0;
+                vectorCache[1][0]*=getAcceleratiorPercentage()*0.05;
 
                 if(!CommonProxy.realSpeed){
                     vectorCache[1][0]*=0.25f;//scale to TC speed
                 }
+
 
 
                 //-4.0880573E-7 applied MHP somehow needs to relate to a value that can move
@@ -204,18 +199,6 @@ public class EntityTrainCore extends GenericRailTransport {
                     //DebugUtil.println("SCREECH","wheelspin: " + (vectorCache[1][0]*-745.7),
                     //        "Grip: " + (vectorCache[1][1]/7457), "i really need to get those spark particles in..");
                    // vectorCache[1][0] *=0.33f;
-                }
-
-
-                //velocity cap, since a running train has no drag, 0 is keep speed.
-                if (accelerator>0){
-                    if(getVelocity()>= (transportTopSpeed()*0.0297f)*(CommonProxy.realSpeed?1:0.25)) {
-                        vectorCache[1][0]=0;
-                    }
-                } else if(accelerator<0) {
-                    if(getVelocity()>= (transportTopSpeedReverse()*0.0297f)*(CommonProxy.realSpeed?1:0.25)){
-                        vectorCache[1][0]=0;
-                    }
                 }
 
             } else {
