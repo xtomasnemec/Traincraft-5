@@ -57,7 +57,9 @@ public class BlockDynamic extends BlockContainer {
 
     @Override
     public void breakBlock(World w, int x, int y, int z, Block b, int meta) {
-        super.breakBlock(w, x, y, z, b, meta);
+        //super.breakBlock(w, x, y, z, b, meta);
+        w.getChunkFromChunkCoords(x >> 4, z >> 4)
+                .removeTileEntity(x & 15, y, z & 15);
     }
 
     @Override
@@ -114,9 +116,10 @@ public class BlockDynamic extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
-        if(world.getTileEntity(x,y,z)==null){
-            world.setTileEntity(x,y,z,createNewTileEntity(world,0));
-        }
+        //manual tile spawning should be redundant, forge should handle this automatically
+        //if(world.getTileEntity(x,y,z)==null){
+        //    world.setTileEntity(x,y,z,createNewTileEntity(world,0));
+        //}
         if(world.getTileEntity(x,y,z) instanceof TileRenderFacing){
             ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(
                     MathHelper.floor_double((entity.rotationYaw / 90.0F) + 2.5D) & 3);

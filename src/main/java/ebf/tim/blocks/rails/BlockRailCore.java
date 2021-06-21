@@ -21,6 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -352,7 +353,8 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             }
         }
         if(p_149749_1_!=null) {
-            p_149749_1_.removeTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+            p_149749_1_.getChunkFromChunkCoords(p_149749_2_ >> 4, p_149749_4_ >> 4)
+                    .removeTileEntity(p_149749_2_ & 15, p_149749_3_, p_149749_4_ & 15);
         }
     }
 
