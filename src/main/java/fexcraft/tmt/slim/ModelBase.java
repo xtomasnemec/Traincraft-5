@@ -1,5 +1,6 @@
 package fexcraft.tmt.slim;
 
+import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.DebugUtil;
 import net.minecraft.client.Minecraft;
@@ -38,13 +39,17 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 		    initAllParts();
 		}
 
-		if(staticPartMap.get(this.getClass().getName())==null) {
+		if(ClientProxy.disableCache) {
+			render(boxList);
+		} else if(staticPartMap.get(this.getClass().getName())==null) {
 			int disp=GLAllocation.generateDisplayLists(1);
 			staticPartMap.put(this.getClass().getName(), disp);
 			GL11.glNewList(disp, GL11.GL_COMPILE);
 			render(boxList);
 			GL11.glEndList();
-			boxList=null;
+			if(!ClientProxy.EnableAnimations) {
+				boxList = null;
+			}
 		} else {
 			//TODO: NOTE: find all instances of this,check if the entry exists before rendering, if not, make it generate a new one.
 			if(GL11.glIsList(staticPartMap.get(this.getClass().getName()))) {
@@ -55,7 +60,9 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 				GL11.glNewList(disp, GL11.GL_COMPILE);
 				render(boxList);
 				GL11.glEndList();
-				boxList=null;
+				if(!ClientProxy.EnableAnimations) {
+					boxList = null;
+				}
 			}
 		}
 

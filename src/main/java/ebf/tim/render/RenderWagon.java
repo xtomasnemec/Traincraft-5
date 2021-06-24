@@ -106,6 +106,8 @@ public class RenderWagon extends Render {
                         //attempt to cache the parts for the main transport model
                         if(StaticModelAnimator.checkCulls(render)){
                             render.showModel = false;
+                        } else if(StaticModelAnimator.checkNoCulls(render)){
+                            render.noCull = true;
                         }
                         if(render.boxName.contains(StaticModelAnimator.tagGlow)){
                             render.boxName=render.boxName.replace(StaticModelAnimator.tagGlow,"");
@@ -211,13 +213,24 @@ public class RenderWagon extends Render {
         GL11.glEnable(GL_NORMALIZE);
 
         //set the render position
-        GL11.glTranslated(x, y+ railOffset + ((entity.getRenderScale()-0.0625f)*10)+bogieOffset, z);
+        GL11.glTranslated(x, y+ railOffset +bogieOffset, z);
         //rotate the model.
-        GL11.glPushMatrix();
         if(!isPaintBucket) {
             GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
         }
         GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
+        GL11.glPushMatrix();
+
+        //todo: this is jank and kinda inaccurate, but it's close.
+        GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
+                Math.abs(entity.bogieLengthFromCenter()[0])+Math.abs(entity.bogieLengthFromCenter()[1]),
+                0,0), entity.rotationPitch,0,0).yCoord*2, 0);
+        if(entity.frontBogie!=null && entity.backBogie!=null){
+            GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
+        }
+
+        //scale the model
+        GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1);
 
         /*
          * <h3>animations</h3>
@@ -278,7 +291,7 @@ public class RenderWagon extends Render {
                 GL11.glRotatef(entity.modelRotations()[i][1],0,1,0);
                 GL11.glRotatef(entity.modelRotations()[i][2],0,0,1);
             }
-            entity.renderData.modelList[i].render(entity, 0,0,0,0,0, entity.getRenderScale());
+            entity.renderData.modelList[i].render(entity, 0,0,0,0,0, 0.0625f);
             GL11.glPopMatrix();
         }
 
@@ -313,17 +326,22 @@ public class RenderWagon extends Render {
                     TextureManager.bindTexture(s.getBogieSkin(ii), s.colorsFrom, s.colorsTo, entity.colorsFrom, entity.colorsTo);
                 }
                 GL11.glPushMatrix();
-                GL11.glRotatef(-entity.rotationYaw, 0.0f, 1.0f, 0.0f);
-                GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
-                GL11.glTranslated(-b.offset[0], -b.offset[1], -b.offset[2]);
+                GL11.glTranslated(b.offset[0], -b.offset[1], b.offset[2]);
+                GL11.glRotatef(b.rotation[0], 1.0f, 0.0f, 0.0f);
+                GL11.glRotatef(b.rotation[1], 0.0f, 1.0f, 0.0f);
+                GL11.glRotatef(b.rotation[2], 0.0f, 0.0f, 1.0f);
+                //GL11.glRotatef(-180, 0.0f, 0.0f, 1.0f);
                 if(!isPaintBucket) {
                     GL11.glRotatef(b.rotationYaw-entity.rotationYaw, 0.0f, 1.0f, 0);
-                    GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
+                   //GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
                 }
-                b.bogieModel.render(entity, 0, 0, 0, 0, 0, entity.getRenderScale());
+                //scale the model.
+                GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1);
+
+                b.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
 
                 //render the particles, if there are any. do this _after_ the normal render because it breaks texture bind
-                if(!isPaintBucket && entity.worldObj!=null) {
+                if(!isPaintBucket && entity.worldObj!=null && entity.renderData.bogieParticles.size()>0) {
                     for (ParticleFX p : entity.renderData.bogieParticles.get(ii)) {
                         ParticleFX.doRender(p, entity.getRenderScale(), yaw);
                     }
@@ -341,7 +359,7 @@ public class RenderWagon extends Render {
                         if(!isPaintBucket) {
                             GL11.glRotatef(sub.rotationYaw - b.rotationYaw, 0.0f, 1.0f, 0);
                         }
-                        sub.bogieModel.render(entity, 0, 0, 0, 0, 0, entity.getRenderScale());
+                        sub.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
                         GL11.glPopMatrix();
                         iii++;
                     }

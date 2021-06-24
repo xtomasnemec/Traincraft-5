@@ -7,10 +7,13 @@ import ebf.tim.utility.*;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -34,11 +37,14 @@ public class GUITrainTable extends GuiContainer {
     };
 
     private String hostname;
+    /**a reference to the player that opened the GUI.*/
+    private EntityPlayer player;
 
     public GUITrainTable(InventoryPlayer inventoryPlayer, World world, int x, int y, int z) {
         super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) world.getTileEntity(x,y,z)));
         hostname=world.getBlock(x,y,z).getUnlocalizedName();
         xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.dimensionId;
+        player = inventoryPlayer.player;
 
         if (CommonProxy.isTraincraft && !hostname.equals("tile.block.traintable")) {
             this.ySize = 256;
@@ -236,4 +242,21 @@ public class GUITrainTable extends GuiContainer {
             ((GUIButton) button).onClick();
         }
     }
+
+
+    @Override
+    protected void handleMouseClick(Slot p_146984_1_, int p_146984_2_, int p_146984_3_, int p_146984_4_) {
+        if (p_146984_1_ != null) {
+            p_146984_2_ = p_146984_1_.slotNumber;
+        }
+
+        if (p_146984_4_ == 4){
+            p_146984_4_ = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
+                    player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
+                            (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
+                                    0;//cover everything else
+        }
+        this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, p_146984_4_, this.mc.thePlayer);
+    }
+
 }

@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMItems;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -39,10 +40,29 @@ public class RecipeManager {
 
         // adds a result to the recipe if it already exists, rather than creating a new one.
         for(Recipe r : recipeList){
-            if(r.recipeInputMatches(recipe.input)){
-                if (r.getTier() == recipe.getTier()) {
-                    r.addResults(recipe.result);
-                    return;
+            if ((r instanceof SizedRecipe) == (recipe instanceof SizedRecipe)) { //either both sized or both not
+
+                if (r instanceof SizedRecipe) { //both sized
+                    if (((SizedRecipe) r).getCraftHeight() != ((SizedRecipe) recipe).getCraftHeight() ||
+                            ((SizedRecipe) r).getCraftWidth() != ((SizedRecipe) recipe).getCraftWidth()) {
+                        //one of dimensions don't match
+                        continue;
+                    } else {
+                        if (((SizedRecipe) r).recipeInputMatches(recipe.input, ((SizedRecipe) r).getCraftWidth(), ((SizedRecipe) r).getCraftHeight())) {
+                            if (r.getTier() == recipe.getTier()) {
+                                r.addResults(recipe.result);
+                                return;
+                            }
+                        }
+                    }
+                } else {
+                    //not sized
+                    if (r.recipeInputMatches(recipe.input)) {
+                        if (r.getTier() == recipe.getTier()) {
+                            r.addResults(recipe.result);
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -84,6 +104,7 @@ public class RecipeManager {
         for (ItemStack is : recipe) {
             if (is != null) {
                 empty = false;
+                break;
             }
         }
         if (empty) return null;
@@ -103,8 +124,26 @@ public class RecipeManager {
         }
     }
 
-
-
+    public static List<Recipe> getRecipesContaining(ItemStack itemStack, int tier) {
+        ArrayList<Recipe> containing = new ArrayList<>();
+        for (Recipe recipe : recipeList) {
+            boolean hasFound = false;
+            if (recipe.getTier() != tier) continue;
+            for (List<ItemStack> ingredient : recipe.getRecipeItems()) {
+                if (ingredient == null) continue;
+                for (ItemStack permutation : ingredient) {
+                    if (permutation == null) break;
+                    if (OreDictionary.itemMatches(permutation, itemStack, false)) {
+                        containing.add(recipe);
+                        hasFound = true;
+                        break;
+                    }
+                }
+                if (hasFound) break;
+            }
+        }
+        return containing;
+    }
 
     /**
      * Crafting table related stuff
@@ -210,8 +249,6 @@ public class RecipeManager {
 
     }
 
-
-
     public static boolean ingotInDirectory(Item i){
         for(ItemStack stack : getAcceptedRailItems()){
             if (stack !=null && stack.getItem()==i){
@@ -220,10 +257,6 @@ public class RecipeManager {
         }
         return false;
     }
-
-
-
-
 
     public static Recipe getRecipe(Object[] obj, ItemStack cartItem){
         Recipe r = new Recipe(new ItemStack[]{cartItem},
@@ -271,6 +304,9 @@ public class RecipeManager {
         else if (itm instanceof Item){
             list=ODC(new ItemStack((Item)itm));
         }
+        else if (itm instanceof Block) {
+            list=ODC(new ItemStack(Item.getItemFromBlock((Block)itm)));
+        }
         else if(itm instanceof String){
             String[] data = ((String) itm).split(" ");
             int stacksize = data.length>1?Integer.parseInt(data[1].trim()):1;
@@ -289,8 +325,12 @@ public class RecipeManager {
         return list;
     }
 
-    /**Ore Directory Converter
-     * converts any input to the ore directory version so recipes will have automatic ore directory support*/
+    /**
+     * Ore Directory Converter
+     * converts any input to the ore directory version so recipes will have automatic ore directory support
+     *
+     * todo: update this to not use depreciated func, make more robust/efficient
+     */
     public static ItemStack[] ODC(ItemStack s){
         if(s==null){
             return null;
@@ -303,7 +343,9 @@ public class RecipeManager {
         List<ItemStack> dir = new ArrayList<>();
         //create a list of ore directory entries
         for(int oreID : OreDictionary.getOreIDs(s)){
-            dir.addAll(OreDictionary.getOres(oreID));
+            for (ItemStack ore : OreDictionary.getOres(oreID)) {
+                dir.add(ore.copy());
+            }
         }
         if(dir.size()>0) {
             for (ItemStack stack : dir) {

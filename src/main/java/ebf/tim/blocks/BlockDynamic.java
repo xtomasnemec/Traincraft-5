@@ -3,12 +3,10 @@ package ebf.tim.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
-import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,8 +57,9 @@ public class BlockDynamic extends BlockContainer {
 
     @Override
     public void breakBlock(World w, int x, int y, int z, Block b, int meta) {
-        super.breakBlock(w, x, y, z, b, meta);
-        w.removeTileEntity(x,y,z);
+        //super.breakBlock(w, x, y, z, b, meta);
+        w.getChunkFromChunkCoords(x >> 4, z >> 4)
+                .removeTileEntity(x & 15, y, z & 15);
     }
 
     @Override
@@ -117,9 +116,10 @@ public class BlockDynamic extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
-        if(world.getTileEntity(x,y,z)==null){
-            world.setTileEntity(x,y,z,createNewTileEntity(world,0));
-        }
+        //manual tile spawning should be redundant, forge should handle this automatically
+        //if(world.getTileEntity(x,y,z)==null){
+        //    world.setTileEntity(x,y,z,createNewTileEntity(world,0));
+        //}
         if(world.getTileEntity(x,y,z) instanceof TileRenderFacing){
             ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(
                     MathHelper.floor_double((entity.rotationYaw / 90.0F) + 2.5D) & 3);

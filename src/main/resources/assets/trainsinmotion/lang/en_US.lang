@@ -70,7 +70,6 @@ menu.item.pullingpower=Pulling power
 menu.item.tons=Tons
 menu.item.weight=Weight
 menu.item.mhp=Metric Horsepower
-menu.item.seats=Seats
 menu.item.tractiveeffort=Tractive Effort
 menu.item.unknown=Unknown
 menu.item.undefined=Undefined
@@ -101,7 +100,6 @@ menu.item.china=China
 menu.item.britain=Great Britain
 menu.item.north korea=North Korea
 menu.item.south korea=South Korea
-menu.item.undefined=Undefined
 menu.item.canada=Canada
 menu.item.mexico=Mexico
 menu.item.africa=Africa
@@ -123,7 +121,9 @@ menu.item.austria=Austria
 menu.item.brazil=Brazil
 menu.item.italy=Italy
 menu.item.cambodia=Cambodia
-menu.item.Factorio=Factorio
+menu.item.factorio=Factorio
+menu.item.singapore=Singapore
+menu.item.sweden=Sweden
 
 
 
@@ -144,6 +144,7 @@ item.ingot.steel.name=Steel Ingot
 item.ingot.aluminum.name=Aluminum Ingot
 item.ingot.copper.name=Copper Ingot
 item.dust.plastic.name=Plastic Dust
+item.dust.coal.name=Coal Dust
 
 <!-- ## Crafting Items ## -->
 item.cabin.wood.name=Wood Cabin
@@ -230,7 +231,12 @@ fluid.diesel=Diesel Fluid
 tile.block.oil=Oil Fluid
 fluid.oil.name=Oil Fluid
 fluid.redstone=RF
-tile.ore.steel.name=Steel Ore
+tile.oreSteel.name=Steel Ore
+tile.oreCopper.name=Copper Ore
+tile.oreAluminum.name=Aluminum Ore
+tile.blockSteel.name=Steel Block
+tile.blockCopper.name=Copper Block
+tile.blockAluminum.name=Aluminum Block
 
 <!-- ## Item Lore ## -->
 menu.item.stake.lore1=Use on a transport to toggle linking.

@@ -115,7 +115,7 @@ public class ModelFreightCartUS extends ModelBase {
 		box9.setPosition(11F, 4F, -4F);
 
 		bodyModel=new ModelRendererTurbo[]{box,
-				box0,box1,box2,box3,box4,box5,box8,box9,
+				box1,box2,box3,box4,box5,box8,box9,
 				box10,box11,box12,box13,box19,
 				box20,box21,box22,box23,box24,box25,
 		};

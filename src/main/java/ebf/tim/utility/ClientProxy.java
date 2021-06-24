@@ -6,31 +6,24 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import ebf.tim.blocks.TileEntityStorage;
-import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.gui.*;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemPaintBucket;
-import ebf.tim.items.ItemRail;
 import ebf.tim.render.RenderWagon;
-import ebf.tim.render.models.ModelBallast;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import org.lwjgl.input.Keyboard;
@@ -63,7 +56,7 @@ public class ClientProxy extends CommonProxy {
     public static boolean useVanillaInventoryTextures = true;
     /**enables 3d items for trains and stock*/
     public static boolean hdTransportItems = true;
-    /*enables pre-render of models*/
+    /**enables pre-render of models*/
     public static boolean preRenderModels = false;
     /**the keybind for the lamp toggle*/
     public static KeyBinding KeyLamp = new KeyBinding("Lamp Toggle", Keyboard.KEY_L, "Trains in Motion");
@@ -189,7 +182,7 @@ public class ClientProxy extends CommonProxy {
         //seats
         RenderingRegistry.registerEntityRenderingHandler(EntitySeat.class, nullRender);
         //hitboxes
-        RenderingRegistry.registerEntityRenderingHandler(HitboxDynamic.collisionBox.class, nullRender);
+        RenderingRegistry.registerEntityRenderingHandler(CollisionBox.class, nullRender);
         //player scaler
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, playerRender);
 

@@ -2,7 +2,9 @@ package ebf.tim.networking;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
+import ebf.tim.utility.DebugUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -35,9 +37,9 @@ public class PacketPaint implements IMessage {
 
         try {
             Entity e=DimensionManager.getWorld(dimensionID).getEntityByID(entityId);
+            DebugUtil.println(e.worldObj.isRemote);
             if(e instanceof GenericRailTransport) {
-                DimensionManager.getWorld(dimensionID).getEntityByID(entityId).
-                        getDataWatcher().updateObject(24, key);
+                ((GenericRailTransport)DimensionManager.getWorld(dimensionID).getEntityByID(entityId)).setSkin(key);
                 ((GenericRailTransport) e).renderData.needsModelUpdate=true;
             }
         } catch (Exception e){
@@ -51,5 +53,6 @@ public class PacketPaint implements IMessage {
         bbuf.writeInt(dimensionID);
         bbuf.writeInt(entityId);
         ByteBufUtils.writeUTF8String(bbuf, key);
+        DebugUtil.println(TrainsInMotion.proxy.isClient());
     }
 }

@@ -1,5 +1,6 @@
 package train;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -10,10 +11,12 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import cpw.mods.fml.relauncher.Side;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.registry.TiMGenericRegistry;
+import ebf.tim.utility.JsonRecipeHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -25,11 +28,14 @@ import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
 import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
-import train.core.TrainModCore;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
-import train.core.handlers.PacketHandler;
 import train.core.handlers.VillagerTraincraftHandler;
+import train.core.network.PacketKeyPress;
+import train.core.network.PacketLantern;
+import train.core.network.PacketSetJukeboxStreamingUrl;
+import train.core.plugins.AssemblyTableNEIIntegration;
+import train.core.plugins.PluginRailcraft;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.generation.ComponentVillageTrainstation;
@@ -38,8 +44,11 @@ import train.library.Info;
 import train.library.TrainRegistry;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
-@Mod(modid = Info.modID, name = Info.modName, version = Info.modVersion, dependencies="after:"+ TrainsInMotion.MODID)
+@Mod(modid = Info.modID, name = Info.modName, dependencies="after:"+ TrainsInMotion.MODID)
 public class Traincraft {
 
 	/* TrainCraft instance */
@@ -88,7 +97,16 @@ public class Traincraft {
 		proxy.registerEvents(event);
 
 		/* Networking and Packet initialisation */
-		PacketHandler.init();
+		tcLog.info("Initialize Packets");
+		modChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.channel);
+		keyChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.keyChannel);
+		rotationChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.rotationChannel);
+
+
+		keyChannel.registerMessage(PacketKeyPress.Handler.class, PacketKeyPress.class, 1, Side.SERVER);
+		modChannel.registerMessage(PacketSetJukeboxStreamingUrl.Handler.class,
+				PacketSetJukeboxStreamingUrl.class, 2, Side.SERVER);
+		modChannel.registerMessage(PacketLantern.Handler.class, PacketLantern.class, 3, Side.SERVER);
 
 		tcLog.info("Finished PreInitialization");
 	}
@@ -96,7 +114,6 @@ public class Traincraft {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		tcLog.info("Start Initialization");
-		tcLog.info("Starting Traincraft " + Info.modVersion + "!");
 
 		if(event.getSide().isClient()) {
 			GUICraftBook.addPage(Info.modID, "Traincraft\n" +
@@ -158,6 +175,9 @@ public class Traincraft {
 		TCBlocks.init();
 		TCBlocks.registerRecipes();
 		TCItems.init();
+
+		//parse and register json crafting recipes
+		JsonRecipeHelper.loadRecipes(Info.modID, this.getClass());
 
 		if(ConfigHandler.ENABLE_STEAM) {
 			//the null last value defines we aren't implementing a custom entity render.
@@ -224,8 +244,35 @@ public class Traincraft {
 		tcLog.info("Register ChunkHandler");
 
 		tcLog.info("Activation Mod Compatibility");
-		TrainModCore.ModsLoaded();
+		//railcraft recipe compatibility
+		if(Loader.isModLoaded("Railcraft") && !Loader.isModLoaded("tc")){
+			File file = new File("./config/railcraft/railcraft.cfg");
+			try {
+				@SuppressWarnings("resource") Scanner scanner = new Scanner(new FileInputStream(file));
+
+				while (scanner.hasNextLine()) {
+					String line = scanner.nextLine().trim();
+
+					if (line.equals("B:useAltRecipes=true")) {
+						Traincraft.tcLog.info(
+								"You've enabled vanilla rail recipes in Railcraft. Disable them to get Traincraft additional tracks");
+						break;
+					} else if (line.equals("B:useAltRecipes=false")) {
+						PluginRailcraft.init();
+						Traincraft.tcLog.info("Enabled Traincraft additional tracks for Railcraft");
+						break;
+					}
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 		LiquidManager.getLiquidsFromDictionnary();
+
+		if (Loader.isModLoaded("NotEnoughItems")) {
+			AssemblyTableNEIIntegration.setupNEIIntegration();
+		}
+
 		tcLog.info("Finished PostInitialization");
 	}
 

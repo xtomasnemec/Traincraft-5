@@ -1,24 +1,18 @@
 package ebf.tim.entities;
 
 import ebf.tim.registry.NBTKeys;
-import ebf.tim.utility.CommonProxy;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
-import ebf.tim.utility.FuelHandler;
+import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import train.library.EnumSounds;
 import train.library.Info;
 
 import java.util.List;
 import java.util.UUID;
 
-import static ebf.tim.TrainsInMotion.transportTypes.DIESEL;
-import static ebf.tim.TrainsInMotion.transportTypes.ELECTRIC;
-import static ebf.tim.TrainsInMotion.transportTypes.STEAM;
+import static ebf.tim.TrainsInMotion.transportTypes.*;
 
 /**
  * <h1>Train core</h1>
@@ -73,7 +67,7 @@ public class EntityTrainCore extends GenericRailTransport {
     @Override
     protected void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
-        tag.setInteger(NBTKeys.accelerator, accelerator);
+        tag.setInteger(NBTKeys.accelerator, getAccelerator());
         tag.setFloat(NBTKeys.transportFuel, dataWatcher.getWatchableObjectFloat(16));
         tag.setFloat(NBTKeys.trainSpeed, vectorCache[1][0]);
 
@@ -90,14 +84,14 @@ public class EntityTrainCore extends GenericRailTransport {
     public void initInventorySlots(){
         super.initInventorySlots();
         inventory.add(fuelSlot());
-        if(getTankInfo(ForgeDirection.UNKNOWN).length>1){
+        if(getTankCapacity().length>1){
             inventory.add(waterSlot());
         }
     }
 
 
     @Override
-    public boolean hasDrag(){return !getBoolean(boolValues.RUNNING) || accelerator==0;}
+    public boolean hasDrag(){return !getBoolean(boolValues.RUNNING) || getAccelerator()==0;}
 
     @Override
     public float getPower(){
@@ -110,19 +104,15 @@ public class EntityTrainCore extends GenericRailTransport {
                     //*0.000028125f;
     }
 
-    //returns the current speed in blocks (meters) per tick
-    public float getVelocity(){
-        return (float)Math.max(Math.abs(motionX)+Math.abs(motionZ),0.01f);
-    }
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
     public float getAcceleratiorPercentage(){
-        switch (Math.abs(accelerator)){
-            case 1:{return Math.copySign(0.1f,accelerator);}//would otherwise be 0833
-            case 2:{return Math.copySign(0.175f,accelerator);}//would otherwise be 166
-            case 3:{return Math.copySign(0.24f,accelerator);}//would otherwise be 2499
-            case 4:{return Math.copySign(0.3f,accelerator);}//would otherwise be 33
-            case 5:{return Math.copySign(0.375f,accelerator);}//would otherwise be 4166
-            case 6: case 7:{return Math.copySign(0.425f,accelerator);}//would otherwise be 499
+        switch (Math.abs(getAccelerator())){
+            case 1:{return Math.copySign(0.1f,getAccelerator());}//would otherwise be 0833
+            case 2:{return Math.copySign(0.175f,getAccelerator());}//would otherwise be 166
+            case 3:{return Math.copySign(0.24f,getAccelerator());}//would otherwise be 2499
+            case 4:{return Math.copySign(0.3f,getAccelerator());}//would otherwise be 33
+            case 5:{return Math.copySign(0.375f,getAccelerator());}//would otherwise be 4166
+            case 6: case 7:{return Math.copySign(0.425f,getAccelerator());}//would otherwise be 499
             default:{return 0;}
         }
         //old way that didnt compensate for pressure/gearing efficiency.
@@ -149,11 +139,11 @@ public class EntityTrainCore extends GenericRailTransport {
         if (accelerator !=0 && accelerator!=8) {
             //speed is defined by the power in newtons divided by the weight, divided by the number of ticks in a second.
             if(getPower() !=0) {
-                float weight = pullingWeight* (getBoolean(boolValues.BRAKE)?6:1);
+                float weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
                 //update the consist if somehow it didnt get initialized.
                 if(maxPowerMicroblocks==0 || pullingWeight==0){
                     updateConsist();
-                    weight = pullingWeight* (getBoolean(boolValues.BRAKE)?6:1);
+                    weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
                 }
                 // weight's effect on HP is generally inverse of HP itself, it can be described as
                 // 30 lbs of coal about 100 feet in one minute = 33,000 lbf for 1.01387 MHP
@@ -189,15 +179,13 @@ public class EntityTrainCore extends GenericRailTransport {
                 vectorCache[1][0]=maxPowerMicroblocks;
                 vectorCache[1][0]/=accelerator<0?transportTopSpeedReverse():transportTopSpeed();
                 vectorCache[1][0]/=weight;
-                vectorCache[1][0]*=600;
-                vectorCache[1][0]*=getAcceleratiorPercentage();
-
-
-                //vectorCache[1][0]=0;
+                vectorCache[1][0]*=40;
+                vectorCache[1][0]*=getAcceleratiorPercentage()*0.05;
 
                 if(!CommonProxy.realSpeed){
                     vectorCache[1][0]*=0.25f;//scale to TC speed
                 }
+
 
 
                 //-4.0880573E-7 applied MHP somehow needs to relate to a value that can move
@@ -211,18 +199,6 @@ public class EntityTrainCore extends GenericRailTransport {
                     //DebugUtil.println("SCREECH","wheelspin: " + (vectorCache[1][0]*-745.7),
                     //        "Grip: " + (vectorCache[1][1]/7457), "i really need to get those spark particles in..");
                    // vectorCache[1][0] *=0.33f;
-                }
-
-
-                //velocity cap, since a running train has no drag, 0 is keep speed.
-                if (accelerator>0){
-                    if(getVelocity()>= (transportTopSpeed()*0.0297f)*(CommonProxy.realSpeed?1:0.25)) {
-                        vectorCache[1][0]=0;
-                    }
-                } else if(accelerator<0) {
-                    if(getVelocity()>= (transportTopSpeedReverse()*0.0297f)*(CommonProxy.realSpeed?1:0.25)){
-                        vectorCache[1][0]=0;
-                    }
                 }
 
             } else {
@@ -290,9 +266,11 @@ public class EntityTrainCore extends GenericRailTransport {
     public void manageFuel(){
         if(getTypes().contains(STEAM)) {
             fuelHandler.manageSteam(this);
-        } else if(getTypes().contains(DIESEL)){
+        }
+        if(getTypes().contains(DIESEL)){
             FuelHandler.manageDieselFuel(this);
-        } else if(getTypes().contains(ELECTRIC)){
+        }
+        if(getTypes().contains(ELECTRIC)){
             FuelHandler.manageElectricFuel(this);
         }
     }
@@ -335,6 +313,21 @@ public class EntityTrainCore extends GenericRailTransport {
         }
     }
 
+    @Override
+    public void markDirty() {
+        if(forceBackupTimer==0) {
+            forceBackupTimer = 30;
+        }
+        for (ItemStackSlot slot : inventory){
+            entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
+        }
+
+        if(syncTimer==-1){
+            syncTimer=20;
+        }
+
+    }
+
 
     @Override
     public boolean interact(int player, boolean isFront, boolean isBack, int key) {
@@ -354,7 +347,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 }case 2:{ //decrease speed
                     if (accelerator >-6 && getBoolean(boolValues.RUNNING)) {
                         for(GenericRailTransport consist : getConsist()){
-                            if(consist.getAccelerator()!=0){
+                            if(consist!=this && consist.getAccelerator()!=0){
                                 return true;
                             }
                         }
@@ -369,7 +362,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 }case 3:{ //increase speed
                     if (accelerator <6 && getBoolean(boolValues.RUNNING)) {
                         for(GenericRailTransport consist : getConsist()){
-                            if(consist.getAccelerator()!=0){
+                            if(consist!=this && consist.getAccelerator()!=0){
                                 return true;
                             }
                         }

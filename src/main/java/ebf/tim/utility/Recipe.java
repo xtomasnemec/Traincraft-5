@@ -2,6 +2,7 @@ package ebf.tim.utility;
 
 import ebf.XmlBuilder;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,9 +12,28 @@ import java.util.List;
 
 public class Recipe {
 
-    List<ItemStack> result = new ArrayList<>();
-    List<List<ItemStack>> input = new ArrayList<>();
+    /**
+     * All the items, whether it be transports, parts, etc. that this recipe can craft.
+     */
+    public List<ItemStack> result = new ArrayList<>();
+
+    /**
+     * A list of all ingredients that the recipe requires to be able to craft the items in result. Generally in order
+     * from left-to-right, top-to-bottom, as if you were reading the slots. Size depends on the tier of table you want
+     * to use to craft, but can be less. The TC assembly tables is 10slots, but TiM table is 9.
+     * If the size of input is less than the number of crafting slots in the table, the missing slots are null.
+     */
+    public final List<List<ItemStack>> input;
+
+    /**
+     * A "tier" assigned to the table which decides which recipes can be crafted on it. This functions more like an ID
+     * for the recipe, and only crafting tables with the same tier as the recipe will allow the recipe to be crafted on it.
+     * Tier 0 is for the TiM table, tiers 1, 2, and 3 are for the TC assembly tables. If you are an addon developer and
+     * want to add your own tier, please choose a large 3-digit number rather than the next number to avoid colliding with
+     * other mods' ID numbers or potential future TiM IDs.
+     */
     private int tier = 0; //a tier either 0, 1, 2, or 3
+
     private int[] displayItem=new int[]{0,0,0,0,0,0,0,0,0,0}; //idk what this for, but it will have to be changed for supporting 10 input slots
 
 
@@ -23,7 +43,7 @@ public class Recipe {
         this.tier = tier;
     }
     public Recipe(List<ItemStack> results, List<List<ItemStack>> cost){
-        result=results;input=cost;tier=1;
+        result=results;input=cost;tier=0;
     }
     public void addResults(List<ItemStack> results){
         result.addAll(results);
@@ -37,17 +57,20 @@ public class Recipe {
 
         result.addAll(Arrays.asList(resultItems));
 
-        input.add(Arrays.asList(topLeft));
-        input.add(Arrays.asList(topCenter));
-        input.add(Arrays.asList(topRight));
+        List<List<ItemStack>> recipeInProgress = new ArrayList<>();
+        recipeInProgress.add(Arrays.asList(topLeft));
+        recipeInProgress.add(Arrays.asList(topCenter));
+        recipeInProgress.add(Arrays.asList(topRight));
 
-        input.add(Arrays.asList(middleLeft));
-        input.add(Arrays.asList(middleCenter));
-        input.add(Arrays.asList(middleRight));
+        recipeInProgress.add(Arrays.asList(middleLeft));
+        recipeInProgress.add(Arrays.asList(middleCenter));
+        recipeInProgress.add(Arrays.asList(middleRight));
 
-        input.add(Arrays.asList(bottomLeft));
-        input.add(Arrays.asList(bottomCenter));
-        input.add(Arrays.asList(bottomRight));
+        recipeInProgress.add(Arrays.asList(bottomLeft));
+        recipeInProgress.add(Arrays.asList(bottomCenter));
+        recipeInProgress.add(Arrays.asList(bottomRight));
+
+        this.input = recipeInProgress;
 
         tier = 0;
     }
@@ -60,17 +83,21 @@ public class Recipe {
 
         this.result.add(result);
 
-        input.add(Collections.singletonList(topLeft));
-        input.add(Collections.singletonList(topCenter));
-        input.add(Collections.singletonList(topRight));
+        List<List<ItemStack>> recipeInProgress = new ArrayList<>();
 
-        input.add(Collections.singletonList(middleLeft));
-        input.add(Collections.singletonList(middleCenter));
-        input.add(Collections.singletonList(middleRight));
+        recipeInProgress.add(Collections.singletonList(topLeft));
+        recipeInProgress.add(Collections.singletonList(topCenter));
+        recipeInProgress.add(Collections.singletonList(topRight));
 
-        input.add(Collections.singletonList(bottomLeft));
-        input.add(Collections.singletonList(bottomCenter));
-        input.add(Collections.singletonList(bottomRight));
+        recipeInProgress.add(Collections.singletonList(middleLeft));
+        recipeInProgress.add(Collections.singletonList(middleCenter));
+        recipeInProgress.add(Collections.singletonList(middleRight));
+
+        recipeInProgress.add(Collections.singletonList(bottomLeft));
+        recipeInProgress.add(Collections.singletonList(bottomCenter));
+        recipeInProgress.add(Collections.singletonList(bottomRight));
+
+        this.input = recipeInProgress;
 
         tier = 0;
     }
@@ -123,56 +150,47 @@ public class Recipe {
     }
 
 
-
-
-
+    /**
+     * The recipe checking when player is using the table. Simpler than the other because the player can only put one
+     * itemstack in each slot.
+     *
+     * @param stacks The stacks that the player has put in.
+     * @return If the stacks parameter matches the recipe's input and can be crafted.
+     */
     public boolean inputMatches(List<ItemStack> stacks){
         //first make sure that stacks isn't too small, ie. recipe for 9 slots and stacks is 10
         if (stacks.size() < input.size()) return false;
 
         int i=0;
-        for(List<ItemStack> slot : input){
-            for(ItemStack s : slot){
-                if(s==null && stacks.get(i) == null) {
-                    //both must be null otherwise stacks.get(i) could have something and it falsely matches
-                    continue;
-                } else if (s == null && stacks.get(i) != null) {
-                    //the recipe can be null but an item could be in the slot
-                    return false;
-                } else if(stacks.get(i)==null || s.getItem()!=stacks.get(i).getItem() || s.stackSize>stacks.get(i).stackSize){
-                    //s!=null here, so if stacks.get(i) null bad, or the item not equal, or stack not big enough
-                    return false;
-                }
+        for(List<ItemStack> slot : input){ //each ing
+            boolean isMatching = false;
+            for(ItemStack s : slot){ //possible items for ing
+
+                isMatching = compareItemsAndSize(s, stacks.get(i));
+
+                if (isMatching) break;
             }
+            if (!isMatching) return false;
             i++;
         }
         return true;
     }
 
 
-
-    public boolean recipeInputMatches(List<List<ItemStack>> stacks){ //is this correctly comparing when null is present in the stacks parameter?
+    /**
+     * This is the input matching that is used in the RecipeManager when checking to see if to add a transport to this
+     * recipe.
+     * @param stacks
+     * @return
+     */
+    public boolean recipeInputMatches(List<List<ItemStack>> stacks){ //is this correctly comparing?
         int i=0;
         boolean slotClear=false;
         for(List<ItemStack> slot : input){//iterate through the recipe's ingredients
             if (stacks.size() <= i){return false;} //recipes are variable length, terminate if it gets to the end without success
             for(ItemStack s : slot){//iterate through the items that fit as the recipe's ingredient
                 for(ItemStack stak : stacks.get(i)) { //iterate the items that fit as that ingredient in stacks
-                    slotClear = false; //need to reset, so doesn't carry over from prev. matching
-                    if(s==null && stak==null) { //if both are null, that is ok, it matches
-                        slotClear=true;
-                        break;
-                    } else if(s==null || stak==null){ //one is null when the other isn't.
-                        //Can either s or stak be null when there is a possible ingredient?
-                        //  I think not, so this means the ingredients don't match. Return false.
-                        //  Already accounted for both null, so this is safe to return false.
-                        return false;
-                    }
-                    if ((s.getItem() == stak.getItem() && s.stackSize <= stak.stackSize)) {
-                        slotClear=true;
-                        break;
-                    }
-                    if(slotClear){break;}
+                    slotClear = compareItemsAndSize(s, stak);
                 }
                 if(!slotClear){return false;}
             }
@@ -181,7 +199,24 @@ public class Recipe {
         return true;
     }
 
+    /**
+     * Compares the toCompare item to the target item. Compares if the the items are equivalent and if the toCompare size
+     * is greater than the target's size. Also checks if the target is a wildcard item, and adjusts accordingly. Also
+     * returns true if both are null.
+     * @param target target ItemStack, can be a wildcard, and toCompare should be at least this size
+     * @param toCompare ItemStack being compared.
+     * @return true if toCompare is the same item and is equal to or bigger than target.
+     */
+    private static boolean compareItemsAndSize(ItemStack target, ItemStack toCompare) {
+        //checking to make sure both null or both not null
+        if(target==null && toCompare == null) {
+            //both must be null otherwise stacks.get(i) could have something and it falsely matches
+            return true;
+        }
 
+        //items not equal or stack isn't big enough, or stack not big enough
+        return OreDictionary.itemMatches(target, toCompare, false) && target.stackSize <= toCompare.stackSize;
+    }
 
 
 
@@ -201,21 +236,22 @@ public class Recipe {
         return xml.toXMLString();
     }
 
-    public Recipe loadRecipe(String s){
-        XmlBuilder xml = new XmlBuilder(s);
-        input = new ArrayList<>();
-        for (int i=0;i<9;i++){
-            List<ItemStack> list=new ArrayList<>();
-
-            XmlBuilder builder = xml.getXml("slot "+i);
-            for(String stack : builder.itemMap.keySet()) {
-                list.add(builder.getItemStack(stack));
-            }
-            input.add(list);
-
-        }
-
-        return this;
-    }
+    //TODO: this. What is the intended use?
+//    public Recipe loadRecipe(String s){
+//        XmlBuilder xml = new XmlBuilder(s);
+//        input = new ArrayList<>();
+//        for (int i=0;i<9;i++){
+//            List<ItemStack> list=new ArrayList<>();
+//
+//            XmlBuilder builder = xml.getXml("slot "+i);
+//            for(String stack : builder.itemMap.keySet()) {
+//                list.add(builder.getItemStack(stack));
+//            }
+//            input.add(list);
+//
+//        }
+//
+//        return this;
+//    }
 
 }

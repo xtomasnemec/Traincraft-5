@@ -7,7 +7,6 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketPaint;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

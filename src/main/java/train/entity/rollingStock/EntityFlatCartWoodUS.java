@@ -35,7 +35,7 @@ public class EntityFlatCartWoodUS extends GenericRailTransport {
     @Override
     public String transportName(){return "Freight Flat Cart Wood US";}
     @Override
-    public String transportcountry(){return "1826";}
+    public String transportcountry(){return "1826";} //todo: is this correct?
     @Override
     public String transportYear(){return "15000";}
     @Override

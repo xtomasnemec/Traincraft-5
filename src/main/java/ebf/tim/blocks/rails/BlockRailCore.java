@@ -6,7 +6,6 @@ import ebf.XmlBuilder;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMItems;
-import ebf.tim.utility.DebugUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
@@ -22,6 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -345,13 +345,17 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
     @Override
     public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-        if(!p_149749_1_.isRemote && !p_149749_1_.getClosestPlayer(p_149749_2_,p_149749_3_,p_149749_4_,6).capabilities.isCreativeMode){
+        if(p_149749_1_!=null && !p_149749_1_.isRemote && p_149749_1_.getClosestPlayer(p_149749_2_,p_149749_3_,p_149749_4_,6) !=null &&
+                !p_149749_1_.getClosestPlayer(p_149749_2_,p_149749_3_,p_149749_4_,6).capabilities.isCreativeMode){
             TileEntity e = p_149749_1_.getTileEntity(p_149749_2_,p_149749_3_,p_149749_4_);
-            if(e instanceof RailTileEntity){
+            if(e instanceof RailTileEntity && p_149749_1_.getGameRules().getGameRuleBooleanValue("doTileDrops")){
                 ((RailTileEntity) e).dropItem();
             }
         }
-        p_149749_1_.removeTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+        if(p_149749_1_!=null) {
+            p_149749_1_.getChunkFromChunkCoords(p_149749_2_ >> 4, p_149749_4_ >> 4)
+                    .removeTileEntity(p_149749_2_ & 15, p_149749_3_, p_149749_4_ & 15);
+        }
     }
 
     @Override

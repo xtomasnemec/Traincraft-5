@@ -38,6 +38,7 @@ public class ModelRendererTurbo {
     public float rotationPointX=0,rotationPointY=0,rotationPointZ=0;
     public float width, height, depth;
     public boolean showModel; //previously known as !field_1402_i
+    public boolean noCull=false;
     public boolean ignoresLighting=false;
     public String boxName = null;
     public boolean animated=false;
@@ -1313,6 +1314,9 @@ public class ModelRendererTurbo {
         if (ignoresLighting){
             Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
         }
+        if(noCull){
+            GL11.glDisable(GL11.GL_CULL_FACE);
+        }
         if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
         }
@@ -1332,6 +1336,9 @@ public class ModelRendererTurbo {
         }
         if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(-rotationPointX * scale, -rotationPointY * scale, -rotationPointZ * scale);
+        }
+        if(noCull){
+            GL11.glEnable(GL11.GL_CULL_FACE);
         }
         if (ignoresLighting){
             Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
@@ -1405,14 +1412,6 @@ public class ModelRendererTurbo {
         poly.add(addPolygonReturn(vert2, vert3, vert7, vert6, 0,0,0,0));
         poly.add(addPolygonReturn(vert1, vert0, vert3, vert2, 0,0,0,0));
         poly.add(addPolygonReturn(vert4, vert5, vert6, vert7, 0,0,0,0));
-
-
-
-        for(int i=0; i<poly.size();i++){
-            Vec3f vec0 = new Vec3f(poly.get(i).vertices.get(1).vector3F.subtract(poly.get(i).vertices.get(0).vector3F));
-            Vec3f vec1 = new Vec3f(poly.get(i).vertices.get(1).vector3F.subtract(poly.get(i).vertices.get(2).vector3F));
-            faces.get(i).normal = vec1.crossProduct(vec0).normalize();
-        }
 
         return this;
     }

@@ -7,8 +7,6 @@ import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.Vec5f;
 import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.IResourceManager;
@@ -106,7 +104,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
                     break;
                 }
                 case INVENTORY: {
-                    GL11.glRotatef(180,0,1,0);
+                    GL11.glRotatef(270,0,1,0);
                     GL11.glTranslatef(0,-0.85f,0);
                     break;
                 }

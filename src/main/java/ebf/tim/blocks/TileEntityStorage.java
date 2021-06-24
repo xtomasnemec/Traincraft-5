@@ -3,7 +3,10 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.registry.TiMFluids;
-import ebf.tim.utility.*;
+import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
+import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,7 +77,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 inventory.add(new ItemStackSlot(this, s+0, assemblyTableTier).setCoords(25, 27).setCraftingInput(true));
                 inventory.add(new ItemStackSlot(this, s+1, assemblyTableTier).setCoords(79, 27).setCraftingInput(true));
                 inventory.add(new ItemStackSlot(this, s+2, assemblyTableTier).setCoords(115, 27).setCraftingInput(true));
-                //the following is dye slot, removed so we can have 9 crafting slots; if adding back, remember to increment everything
+                //the following is dye slot
                 inventory.add(new ItemStackSlot(this, s+3, assemblyTableTier).setCoords(145, 27).setCraftingInput(true));
 
                 inventory.add(new ItemStackSlot(this, s+4, assemblyTableTier).setCoords(25, 61).setCraftingInput(true));
@@ -170,7 +173,11 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 data.putFluidStack("tanks." + i, null);
             }
         }
-        tag.setString("xmlData",data.toXMLString());
+        //force build to be sure there's no errors
+        data.buildXML();
+        if(data.toXMLString() != null && !data.toXMLString().equals("") && data.toXMLString().length()>1) {
+            tag.setString("xmlData", data.toXMLString());
+        }
     }
 
     /**the fluidTank tank*/

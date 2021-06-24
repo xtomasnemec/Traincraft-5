@@ -1,6 +1,7 @@
 package ebf.tim.utility;
 
 
+import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
@@ -135,9 +136,87 @@ public class CommonUtil {
     }
 
 
-    public static float calculatePitch(double yFront, double yBack, double distance){
+    /**
+     *
+     * @param path should be relative to `/scr/main/`? needs further testing
+     * @return a list of file names in the provided path
+     */
+    public List<String> listFolders(String path){
+        InputStream stream = loadStream(path);
+        if(stream==null){
+            DebugUtil.println("failed to load folder", path);
+            return new ArrayList<>();
+        }
+        //create a buffered reader for the directory
+        InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
+        BufferedReader buffer = new BufferedReader(reader);
+
+        //build the list of files
+        List<String> lines = new ArrayList<>();
+        String line="";
+        while(line !=null){
+            try {
+                line = buffer.readLine();
+                if(line!=null) {
+                    lines.add(buffer.readLine());
+                }
+            } catch (IOException ignored) {}
+        }
+        //close the streams to cleanup
+        try {
+            buffer.close();
+            reader.close();
+            stream.close();
+        } catch (IOException ignored) {}
+
+        return lines;
+    }
+
+    //in some scenarios the file structure seems to change based on whether or not the jar is compiled
+    public static InputStream loadStream(String file){
+        //todo: results may differ with `ClassLoader.getSystemClassLoader().getResourceAsStream` worth trying later
+        if(DebugUtil.dev()){
+           return TrainsInMotion.instance.getClass().getClassLoader().getResourceAsStream(file);
+        } else {
+            return TrainsInMotion.instance.getClass().getResourceAsStream("/resources/" + file);
+        }
+    }
+
+
+    //returns file contents as string. returns null if the file does not exist
+    public static String accessFile(String file) {
+        InputStream stream = loadStream(file);
+
+        //make a StringWriter and use apache commons to copy the contents of the input stream file
+        StringWriter reader = new StringWriter();
+        try {
+            if(stream !=null) {
+                IOUtils.copy(stream, reader);
+                String str =reader.toString();
+                //close the streams to cleanup
+                try {
+                    reader.close();
+                    stream.close();
+                } catch (IOException ignored) {}
+
+                return str;
+            } else {
+                DebugUtil.println(TrainsInMotion.instance.getClass().getClassLoader().getResource(file).toString(),"was null");
+                return null;
+            }
+        } catch (IOException e) {
+            DebugUtil.println(TrainsInMotion.instance.getClass().getClassLoader().getResource(file).toString(),"was not found");
+            return null;
+        }
+
+    }
+
+
+
+
+    public static float calculatePitch(double yBack, double yFront, double distance){
             double yDiff = yFront - yBack;
-            return (float) (Math.acos(yDiff / Math.sqrt(distance + yDiff * yDiff)) * CommonUtil.degreesD) - 90f;
+            return (float) ((yDiff / distance) * -CommonUtil.degreesD);
     }
 
     /**
@@ -367,81 +446,46 @@ public class CommonUtil {
 
         //be sure there is a rail at the location
         if (CommonUtil.isRailBlockAt(worldObj, posX,posY,posZ) && !worldObj.isRemote) {
-            //define the direction
+            //define the direction of the track
             int railMeta=((BlockRailBase)worldObj.getBlock(posX,posY,posZ)).getBasicRailMetadata(worldObj, null,posX,posY,posZ);
-            int playerMeta=MathHelper.floor_double((playerEntity.rotationYaw / 90.0F) + 2.5D) & 3;
+            //define the angle between the player and the track.
+            // this is more reliable than player direction because player goes from -360 to 360 for no real reason.
+            float rotation =atan2degreesf(posX-playerEntity.posX, posZ-playerEntity.posZ);
+
             if(railMeta==0){
-                //this direction is a bit more complicated due to how the numbers line up when coming from the other side
-                //also we have to %360 because some moron thought it a cool idea to have the character rotate from -360 to 360
-                if(playerEntity.rotationYaw%360>90&&playerEntity.rotationYaw%360<270){
-                    playerMeta=0;
-                } else {
-                    playerMeta=2;
-                }
-            } else if (railMeta==1){
-                if(playerEntity.rotationYaw%360>-180){
-                    playerMeta=1;
-                } else {
-                    playerMeta=3;
-                }
-            }
-
-            //check player direction
-            if (playerMeta == 3) {
-                //check if the transport can be placed in the area
-                if (!CommonUtil.isRailBlockAt(worldObj, posX + MathHelper.floor_float(entity.rotationPoints()[0]+ 1.0F ), posY, posZ)
-                        && !CommonUtil.isRailBlockAt(worldObj, posX + MathHelper.floor_float(entity.rotationPoints()[1] - 1.0F ), posY, posZ)) {
-                    playerEntity.addChatMessage(new ChatComponentText("Place on a straight piece of track that is of sufficient length"));
-                    return false;
-                }
-                entity.rotationYaw= 0;
-                //spawn the entity
-                worldObj.spawnEntityInWorld(entity);
-                entity.entityFirstInit(stack);
-                return true;
-
-            }
-            //same as above, but reverse direction.
-            else if (playerMeta == 1) {
-
-                if (!CommonUtil.isRailBlockAt(worldObj, posX - MathHelper.floor_double(entity.rotationPoints()[0]+ 1.0f ), posY, posZ)
-                        && !CommonUtil.isRailBlockAt(worldObj, posX - MathHelper.floor_double(entity.rotationPoints()[1]- 1.0f ), posY, posZ)) {
-                    playerEntity.addChatMessage(new ChatComponentText("Place on a straight piece of track that is of sufficient length"));
-                    return false;
-                }
-                entity.rotationYaw= 180;
-
-                worldObj.spawnEntityInWorld(entity);
-                entity.entityFirstInit(stack);
-                return true;
-            }
-
-            else if (playerMeta == 0) {
-
+                //check if the train fits on the track
                 if (!CommonUtil.isRailBlockAt(worldObj, posX, posY, posZ + MathHelper.floor_float(entity.rotationPoints()[0]+ 1.0f ))
                         && !CommonUtil.isRailBlockAt(worldObj, posX, posY, posZ + MathHelper.floor_float(entity.rotationPoints()[1]- 1.0f ))) {
                     playerEntity.addChatMessage(new ChatComponentText("Place on a straight piece of track that is of sufficient length"));
                     return false;
                 }
-                entity.rotationYaw= 90;
+                //decide the rotation based on placement direction
+                //the math for this is a bit more complicated because the angles are awkward
+                if((rotation+270)%360>180){
+                    entity.rotationYaw= 270;
+                } else {
+                    entity.rotationYaw= 90;
+                }
 
-                worldObj.spawnEntityInWorld(entity);
-                entity.entityFirstInit(stack);
-                return true;
-            }
-            else if (playerMeta == 2) {
-
-                if (!CommonUtil.isRailBlockAt(worldObj, posX, posY, posZ - MathHelper.floor_double(entity.rotationPoints()[0]+ 1.0f ))
-                        && !CommonUtil.isRailBlockAt(worldObj, posX, posY, posZ - MathHelper.floor_double(entity.rotationPoints()[1]- 1.0f ))) {
+            } else if (railMeta==1){
+                //check if the train fits on the track
+                if (!CommonUtil.isRailBlockAt(worldObj, posX - MathHelper.floor_double(entity.rotationPoints()[0]+ 1.0f ), posY, posZ)
+                        && !CommonUtil.isRailBlockAt(worldObj, posX - MathHelper.floor_double(entity.rotationPoints()[1]- 1.0f ), posY, posZ)) {
                     playerEntity.addChatMessage(new ChatComponentText("Place on a straight piece of track that is of sufficient length"));
                     return false;
                 }
 
-                entity.rotationYaw= 270;
-                worldObj.spawnEntityInWorld(entity);
-                entity.entityFirstInit(stack);
-                return true;
+                //decide the rotation based on placement direction
+                if(rotation>0){
+                    entity.rotationYaw= 180;
+                } else {
+                    entity.rotationYaw= 0;
+                }
             }
+            //actually place the entity
+            worldObj.spawnEntityInWorld(entity);
+            entity.entityFirstInit(stack);
+            return true;
         }
 
 

@@ -35,7 +35,7 @@ public class EntityLocoElectricBR185 extends EntityTrainCore {
     @Override
     public String transportName(){return "Loco Electric BR 185";}
     @Override
-    public String transportcountry(){return "german";}
+    public String transportcountry(){return "germany";}
     @Override
     public String transportYear(){return "1996";}
     @Override

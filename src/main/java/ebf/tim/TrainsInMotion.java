@@ -1,6 +1,7 @@
 package ebf.tim;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,11 +20,10 @@ import ebf.tim.items.ItemAdminBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
-import ebf.tim.utility.ChunkHandler;
-import ebf.tim.utility.ClientProxy;
-import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.*;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author Eternal Blue Flame
  */
-@Mod(modid = TrainsInMotion.MODID, version = TrainsInMotion.MOD_VERSION, name = "Trains in Motion")
+@Mod(modid = TrainsInMotion.MODID, name = "Trains in Motion")
 public class TrainsInMotion {
 
     /*
@@ -50,8 +50,6 @@ public class TrainsInMotion {
 
     /**the ID of the mod and the version displayed in game, as well as used for version check in the version.txt file*/
     public static final String MODID = "trainsinmotion";
-    /**the version identifier of the mod*/
-    public static final String MOD_VERSION="2.3 pre-alpha";
     /**an instance of the mod*/
     @Mod.Instance(MODID)
     public static TrainsInMotion instance;
@@ -70,6 +68,7 @@ public class TrainsInMotion {
      * Every wrapper runs on it's own thread, so heavy traffic should go on it's own wrapper, using channels to separate packet types.*/
     public static SimpleNetworkWrapper keyChannel;
     public static SimpleNetworkWrapper trackChannel;
+    public static SimpleNetworkWrapper updateChannel;
 
 
     /**Instance a new chunk handler, this class manages chunk loading events and functionality.*/
@@ -141,6 +140,13 @@ public class TrainsInMotion {
         //register blocks, items, fluids, etc.
         proxy.register();
 
+        //parse and register json crafting recipes
+
+        long startTime = System.nanoTime();
+        JsonRecipeHelper.loadRecipes(MODID, this.getClass());
+        long endTime = System.nanoTime();
+        LogManager.getLogger("trainsinmotion").info("Time taken to load recipes: " + (endTime - startTime) / 1_000_000 + "ms");
+
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntitySeat.class, "Seat", 16, TrainsInMotion.instance, 60, 3, true);
@@ -170,6 +176,8 @@ public class TrainsInMotion {
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[4], PacketPaint.class, 6, Side.CLIENT);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[5], PacketCraftingPage.class, 7, Side.SERVER);
         TrainsInMotion.trackChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.track");
+        TrainsInMotion.updateChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.update");
+        TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 8, Side.CLIENT);
 
 
 
@@ -188,6 +196,10 @@ public class TrainsInMotion {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
+        if (Loader.isModLoaded("NotEnoughItems")) {
+            TiMTableNEIIntegration.setupNEIintegration();
+        }
+
         TiMGenericRegistry.endRegistration();
     }
 
@@ -195,6 +207,9 @@ public class TrainsInMotion {
 
     //each packet needs it's own entry in this, duplicates are not allowed, for whatever reason
     private static final IMessageHandler[] HANDLERS = new IMessageHandler[]{
+            new IMessageHandler<IMessage, IMessage>() {
+                @Override public IMessage onMessage(IMessage message, MessageContext ctx) {return null;}
+            },
             new IMessageHandler<IMessage, IMessage>() {
                 @Override public IMessage onMessage(IMessage message, MessageContext ctx) {return null;}
             },

@@ -77,8 +77,28 @@ public class FuelHandler{
 			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
 					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")){
 				return new FluidStack(TiMFluids.fluidDiesel,1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
+				return new FluidStack(TiMFluids.fluidfueloil, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("oil")) {
+				return new FluidStack(TiMFluids.fluidOil,1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fuel")) {
+				return new FluidStack(TiMFluids.fluidBCFuel, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("bioethanol")) {
+				return new FluidStack(TiMFluids.fluidEthanol, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biofuel")) {
+				return new FluidStack(TiMFluids.fluidBiofuel, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biodiesel")) {
+				return new FluidStack(TiMFluids.fluidBioDiesel, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biomass")) {
+				return new FluidStack(TiMFluids.fluidBiomass, 1000);
 			}
-
 		}
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.STEAM)){
 			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
@@ -146,7 +166,6 @@ public class FuelHandler{
 		//if there's a fluid item in the slot and the train can consume the entire thing
 		if (getUseableFluid(train.waterSlot().getSlotID(),train) !=null &&
 				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==0) {
-
 			train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);
@@ -177,35 +196,38 @@ public class FuelHandler{
 				train.getDataWatcher().updateObject(16, train.getDataWatcher().getWatchableObjectFloat(16)+heat);
 			}
 		}
-		//if the boiler temp is above the boiling point, start generating steam.
-		if (train.getDataWatcher().getWatchableObjectFloat(16) >100){
-			int steam = (int)Math.floor(
-					((train.getDataWatcher().getWatchableObjectFloat(16)-100)*0.005f) * //calculate heat from burnHeat
-							(train.getTankInfo(null)[0].fluid.amount*0.005f) //calculate surface area of water
-			);
-			//drain fluid
-			if (train.drain(null, steam!=0?steam/5:0,true)!= null) {
-				train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int)(-(Math.abs(train.accelerator) * (train.getTankInfo(null)[1].capacity*0.01f))+steam*0.9f)), true);
+		if(train.entityData.containsFluidStack("tanks.0")) {
+			//if the boiler temp is above the boiling point, start generating steam.
+			if (train.getDataWatcher().getWatchableObjectFloat(16) > 100) {
+				int steam = (int) Math.floor(
+						((train.getDataWatcher().getWatchableObjectFloat(16) - 100) * 0.005f) * //calculate heat from burnHeat
+								(train.entityData.getFluidStack("tanks.0").amount * 0.005f) //calculate surface area of water
+				);
+				//drain fluid
+				if (train.drain(null, steam != 0 ? steam / 5 : 0, true) != null) {
+					train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int) (-(Math.abs(train.accelerator) * (train.getTankCapacity()[1] * 0.01f)) + steam * 0.9f)), true);
 
-				//if no fluid left and not creative mode, explode.
-			} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)){
-				train.worldObj.createExplosion(train, train.posX, train.posY, train.posZ, 5f, false);
-				train.dropItem(train.getItem(), 1);
-				train.setDead();
-			}
-			if(!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
-				train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+					//if no fluid left and not creative mode, explode.
+				} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
+					train.worldObj.createExplosion(train, train.posX, train.posY, train.posZ, 5f, false);
+					train.dropItem(train.getItem(), 1);
+					train.setDead();
+				}
+				if (!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
+					train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+					train.updateConsist();
+				}
+			} else {
+				train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
+				train.accelerator = 0;
 				train.updateConsist();
 			}
-		} else {
-			train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
-			train.accelerator=0;
-			train.updateConsist();
 		}
 
-		if (train.getTankInfo(null)[1] !=null && train.getTankInfo(null)[1].fluid.amount >0) {
+		if (train.entityData.containsFluidStack("tanks.1")&& train.entityData.getFluidStack("tanks.1").amount >0) {
 			//steam is expelled through the pistons to push them back and forth, but even when the accelerator is off, a degree of steam is still escaping.
-			train.getTankInfo(null)[1].fluid.amount -= (5 * train.getEfficiency()) * ((train.accelerator) * train.getEfficiency()) * 0.55;
+			train.entityData.putFluidStack("tanks.1", new FluidStack(train.entityData.getFluidStack("tanks.1").getFluid(),
+					train.entityData.getFluidStack("tanks.1").amount-(int)((5 * train.getEfficiency()) * ((train.accelerator) * train.getEfficiency()) * 0.55)));
 		}
 
 		//update the datawatchers so client can display the info on the GUI.
@@ -359,11 +381,11 @@ public class FuelHandler{
 		if (transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID())!=null && FluidContainerRegistry.isEmptyContainer(transport.getSlotIndexByID(401).getStack())) {
 			for (int i = 0; i < transport.getTankCapacity().length; i++) {
 				if (FluidContainerRegistry.fillFluidContainer(
-						new FluidStack(transport.getTankInfo(ForgeDirection.UNKNOWN)[i].fluid,1000)
+						new FluidStack(transport.entityData.getFluidStack("tanks."+i).fluid,1000)
 						, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()) !=null) {
 
 					transport.addItem(FluidContainerRegistry.fillFluidContainer(
-							new FluidStack(transport.getTankInfo(ForgeDirection.UNKNOWN)[i].fluid,1000)
+							new FluidStack(transport.entityData.getFluidStack("tanks."+i).fluid,1000)
 							, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()));
 					transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrStackSize(1);
 					return;

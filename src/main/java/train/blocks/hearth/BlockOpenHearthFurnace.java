@@ -97,7 +97,7 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 		//todo:keep inventory on break?
 
 		TileEntity te = world.getTileEntity(i,j,k);
-		if(te instanceof TileEntityOpenHearthFurnace){
+		if(te instanceof TileEntityOpenHearthFurnace && world.getGameRules().getGameRuleBooleanValue("doTileDrops")){
 			((TileEntityOpenHearthFurnace) te).dropInventory();
 		}
 		super.breakBlock(world, i, j, k, par5, par6);

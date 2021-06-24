@@ -58,7 +58,7 @@ public class TextureManager {
      * custom texture binding method, generally same as vanilla, but possible to improve performance later.
      * @param textureURI
      */
-    public static void bindTexture(ResourceLocation textureURI) {
+    public static int bindTexture(ResourceLocation textureURI) {
         if (textureURI == null){
             textureURI= new ResourceLocation(TrainsInMotion.MODID,"nullTrain");
         }
@@ -75,6 +75,7 @@ public class TextureManager {
                 Minecraft.getMinecraft().getTextureManager().loadTexture(textureURI, object);
             }
             GL11.glBindTexture(GL_TEXTURE_2D, object.getGlTextureId());
+            return object.getGlTextureId();
         } else {
             Integer id = tmtMap.get(textureURI);
             if (id ==null){
@@ -90,6 +91,7 @@ public class TextureManager {
                 GL11.glBindTexture(GL_TEXTURE_2D, id);
             }
         }
+        return -1;
     }
 
     //most compilers should process this type of function faster than a normal typecast.
@@ -268,7 +270,10 @@ public class TextureManager {
 
 
     public static boolean createAWT(ResourceLocation textureURI, int[] skinColorsFrom, int[] skinColorsTo, List<Integer> colorsFrom, List<Integer> colorsTo){
-        bindTexture(textureURI);
+        int GLtexture = bindTexture(textureURI);
+        if(GLtexture==-1){
+            return true;
+        }
 
         //get image data from the currently bound image
         int width =glGetTexLevelParameteri(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH);
@@ -337,6 +342,12 @@ public class TextureManager {
             }
             ImageIO.write(skin, "PNG", new File(getID(textureURI,skinColorsFrom, skinColorsTo, colorsFrom,colorsTo,true)));
             buffer.clear();
+
+
+            if(GL11.glIsTexture(GLtexture)){
+                GL11.glDeleteTextures(GLtexture);
+            }
+
             return true;
         } catch (IOException e) {
             e.printStackTrace();

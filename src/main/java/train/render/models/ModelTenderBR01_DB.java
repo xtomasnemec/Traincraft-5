@@ -358,7 +358,7 @@ public class ModelTenderBR01_DB extends ModelBase {
 				box30,box32,box33,box34,box35,box36,box37,box38,box39,
 				box47,box48,box49,
 				box50,box51,box52,box53,box54,box55,box56,box58,box59,
-				box60,box61,box62,box63,box64,box65,box66,box67,box68,box69,
+				box60,box61,box62,box63,box64,box65,box66,box67,box69,
 				box70,box71,box81
 		};
 

@@ -17,7 +17,7 @@ public class ContainerTrainWorkbench extends TransportSlotManager {
 	@Override
 	public void onCraftMatrixChanged(IInventory inv) {
 		super.onCraftMatrixChanged(inv);
-		((TileEntityStorage)hostInventory).getSlotIndexByID(400).setStack(TrainCraftingManager.getInstance().func_82787_a(hostInventory));
+		((TileEntityStorage)hostInventory).getSlotIndexByID(409).setStack(TrainCraftingManager.getInstance().func_82787_a(hostInventory));
 	}
 
 	/*
@@ -26,7 +26,7 @@ public class ContainerTrainWorkbench extends TransportSlotManager {
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		((TileEntityStorage)hostInventory).getSlotIndexByID(400).setStack(TrainCraftingManager.getInstance().func_82787_a(hostInventory));
+		((TileEntityStorage)hostInventory).getSlotIndexByID(409).setStack(TrainCraftingManager.getInstance().func_82787_a(hostInventory));
 	}
 
 	@Override
