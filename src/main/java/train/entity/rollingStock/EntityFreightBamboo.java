@@ -72,7 +72,7 @@ public class EntityFreightBamboo extends GenericRailTransport {
         SkinRegistry.addSkin(this.getClass(),
             new TransportSkin(Info.modID,"textures/trains/bamboo_freight_Pink.png","Pink", "description.bamboo.freight.Pink"));
         SkinRegistry.addSkin(this.getClass(),
-            new TransportSkin(Info.modID,"textures/trains/bamboo_freight_LightGrey.png","LightGrey", "description.bamboo.freight.LightGrey"));
+            new TransportSkin(Info.modID,"textures/trains/bamboo_freight_LightGray.png","LightGrey", "description.bamboo.freight.LightGrey"));
         SkinRegistry.addSkin(this.getClass(),
             new TransportSkin(Info.modID,"textures/trains/bamboo_freight_Green.png","Green", "description.bamboo.freight.Green"));
         SkinRegistry.addSkin(this.getClass(),
@@ -88,7 +88,7 @@ public class EntityFreightBamboo extends GenericRailTransport {
         SkinRegistry.addSkin(this.getClass(),
             new TransportSkin(Info.modID,"textures/trains/bamboo_freight_Orange.png","Orange", "description.bamboo.freight.Orange"));
         SkinRegistry.addSkin(this.getClass(),
-            new TransportSkin(Info.modID,"textures/trains/bamboo_freight_Grey.png","Grey", "description.bamboo.freight.Grey"));
+            new TransportSkin(Info.modID,"textures/trains/bamboo_freight_Gray.png","Grey", "description.bamboo.freight.Grey"));
     }
     @Override
     public String getDefaultSkin(){
