@@ -116,10 +116,8 @@ public class BlockDynamic extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
-        //manual tile spawning should be redundant, forge should handle this automatically
-        //if(world.getTileEntity(x,y,z)==null){
-        //    world.setTileEntity(x,y,z,createNewTileEntity(world,0));
-        //}
+        //force tile spawn manually and override any existing tile at the space
+        world.setTileEntity(x,y,z,createNewTileEntity(world,0));
         if(world.getTileEntity(x,y,z) instanceof TileRenderFacing){
             ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(
                     MathHelper.floor_double((entity.rotationYaw / 90.0F) + 2.5D) & 3);
