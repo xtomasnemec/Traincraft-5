@@ -108,6 +108,25 @@ public class RailVanillaShapes extends RailShapeCore{
         }
 
 
+        //cover unrealistic vanilla switches
+        if (nearbyMeta[1] == 8 && nearbyMeta[0] == 1) {
+            shape.setStart(parallelWidth, 0, -1.5f, parallelWidth)
+                    .setCenter(0, 0, -0.5f)
+                    .setSleeperCount(8);
+        } else if (nearbyMeta[7] == 7 && nearbyMeta[6] == 1) {
+            shape.setEnd(parallelWidth, 0, 1.5f, parallelWidth)
+                    .setCenter(0, 0, 0.5f)
+                    .setSleeperCount(8);
+        } else if (nearbyMeta[1] == 9 && nearbyMeta[2] == 1) {
+            shape.setStart(-parallelWidth, 0, -1.5f, parallelWidth)
+                    .setCenter(0, 0, -0.5f)
+                    .setSleeperCount(8);
+        } else if (nearbyMeta[7] == 6 && nearbyMeta[8] == 1) {
+            shape.setEnd(-parallelWidth, 0, 1.5f, parallelWidth)
+                    .setCenter(0, 0, 0.5f)
+                    .setSleeperCount(8);
+        }
+
         //slopes
         if(nearbyMeta[7]==5 && nearbyMeta[1]==4){
             shape.setStart(0,0.2f,-0.6f).setEnd(0,0.2f,0.6f);
@@ -203,6 +222,25 @@ public class RailVanillaShapes extends RailShapeCore{
         } else if(nearbyMeta[5]==6 && nearbyMeta[8]==8){
             shape.setStart(2,0,-parallelWidth,parallelWidth)
                     .setCenter(1,0,0)
+                    .setSleeperCount(8);
+        }
+
+        //cover unrealistic vanilla switches
+        if (nearbyMeta[5] == 6 && nearbyMeta[8] == 0) {
+            shape.setStart(1.5f, 0, -parallelWidth, parallelWidth)
+                    .setCenter(0.5f, 0, 0)
+                    .setSleeperCount(8);
+        } else if (nearbyMeta[3] == 7 && nearbyMeta[6] == 0) {
+            shape.setEnd(-1.5f, 0, -parallelWidth, parallelWidth)
+                    .setCenter(-0.5f, 0, 0)
+                    .setSleeperCount(8);
+        } else if (nearbyMeta[5] == 9 && nearbyMeta[2] == 0) {
+            shape.setStart(1.5f, 0, parallelWidth, parallelWidth)
+                    .setCenter(0.5f, 0, 0)
+                    .setSleeperCount(8);
+        } else if (nearbyMeta[3] == 8 && nearbyMeta[0] == 0) {
+            shape.setEnd(-1.5f, 0, parallelWidth, parallelWidth)
+                    .setCenter(-0.5f, 0, 0)
                     .setSleeperCount(8);
         }
 
