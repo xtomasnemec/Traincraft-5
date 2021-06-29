@@ -186,11 +186,11 @@ public class RailVanillaShapes extends RailShapeCore{
             shape.setStart(0.5f,0,0).setCenter( -0.5f, 0, 0).setEnd(-1,0,-0.5f).setSleeperCount(7);
         } else if (nearbyMeta[3]==6 && nearbyMeta[6]==7) {
             shape.setStart(0.5f,0,0).setCenter( -0.5f, 0, 0).setEnd(-1,0,0.5f).setSleeperCount(7);
-        }/* else if (nearbyMeta[0] == 8 && nearbyMeta[1] == 7) {
-            shape.setStart(0,0,0.5f).setCenter( 0, 0, -0.5f).setEnd(-0.5f,0,-1).setSleeperCount(7);
-        } else if (nearbyMeta[2]==9 && nearbyMeta[1]==6) {
-            shape.setStart(0,0,0.5f).setCenter( 0, 0, -0.5f).setEnd(0.5f,0,-1).setSleeperCount(7);
-        }*/
+        } else if (nearbyMeta[2]==9 && nearbyMeta[5]==8) {
+            shape.setStart(-0.5f,0,0).setCenter( 0.5f, 0, 0).setEnd(1,0,-0.5f).setSleeperCount(7);
+        } else if (nearbyMeta[8]==6 && nearbyMeta[5]==7) {
+            shape.setStart(-0.5f,0,0).setCenter( 0.5f, 0, 0).setEnd(1,0,0.5f).setSleeperCount(7);
+        }
 
         //cover parallels
         if(((nearbyMeta[3]==9 && nearbyMeta[0]==6) || (nearbyMeta[3]==6 && nearbyMeta[6]==9))
@@ -312,16 +312,13 @@ public class RailVanillaShapes extends RailShapeCore{
         if(nearbyMeta[7]==7) {
             shape.setStart(0,0,0.5f).setCenter(-0.5f,0,1).setEnd(-1,0,1-wyeWidth,wyeWidth).setSleeperCount(5);
         }
-        //WS
-        if(nearbyMeta[2]==9 && nearbyMeta[7]==8) {
-            shape.setStart(1, 0, -0.5f).setCenter(0.5f, 0, 0).setEnd(0,0,0.5f).setSleeperCount(6);
-        }
         //WN
         if(nearbyMeta[2]==9) {
             shape.setCenter(0.5f, 0, 0).setStart(1, 0, 0.5f).setSleeperCount(6);
             if(nearbyMeta[7]==0)
-                shape.setStart(1, 0, 0.5f)
-                        .setCenter(0, 0, -0.5f)
+                shape.setEnd(1, 0, -0.5f)
+                        .setCenter(0, 0, 0.5f)
+                        .setStart(0,0,1)
                         .setSleeperCount(8);
             else if(nearbyMeta[7]==8) {
                 shape.setStart(1, 0, -0.5f).setCenter(0.5f, 0, 0).setEnd(0,0,0.5f).setSleeperCount(6);
