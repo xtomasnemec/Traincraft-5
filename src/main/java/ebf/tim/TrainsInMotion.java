@@ -23,6 +23,7 @@ import ebf.tim.registry.TiMGenericRegistry;
 import ebf.tim.utility.*;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.Collections;
@@ -143,8 +144,12 @@ public class TrainsInMotion {
         //parse and register json crafting recipes
 
         long startTime = System.nanoTime();
-        JsonRecipeHelper.loadRecipes(MODID, this.getClass());
+        boolean suc = JsonRecipeHelper.loadRecipes(MODID, this.getClass());
         long endTime = System.nanoTime();
+        if (!suc) {
+            //bruh it failed somehow
+            LogManager.getLogger("trainsinmotion").log(Level.ERROR, "[Trainsinmotion] *** There was a problem loading the json recipes. ***");
+        }
         LogManager.getLogger("trainsinmotion").info("Time taken to load recipes: " + (endTime - startTime) / 1_000_000 + "ms");
 
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,

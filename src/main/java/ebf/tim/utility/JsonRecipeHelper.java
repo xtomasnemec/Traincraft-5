@@ -18,10 +18,13 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -412,12 +415,104 @@ public class JsonRecipeHelper {
 //    }
 
     /**
+     * Loads recipes from given folder, recursively searching through subdirectories.
+     * *For addon writers*: the `recipeFolder` should be your modID + "/recipes"
+     *
+     * @return if the function completed successfully.
+     */
+    public static boolean loadRecipes(String modID, Class modClass) {
+        //get the manifest and enumerate it.
+
+        InputStream stream = modClass.getClassLoader().getResourceAsStream("assets/" + modID + "/recipes/_manifest");
+        if (stream == null) {
+            LOGGER.log(Level.FATAL, "Could not find manifest file.");
+            return false;
+        }
+        InputStreamReader streamReader = new InputStreamReader(stream, StandardCharsets.UTF_8);
+        BufferedReader bufferedReader = new BufferedReader(streamReader);
+
+        String line;
+        while (true) {
+            try {
+                line = bufferedReader.readLine();
+            } catch (IOException e) {
+                LOGGER.log(Level.FATAL, "Unable to get a new line of manifest.");
+                e.printStackTrace();
+                return false;
+            }
+
+            if (line == null) {
+                break;
+            }
+
+            if (line.equals("") || line.startsWith("#")) {
+                continue;
+            }
+
+            InputStream file = modClass.getResourceAsStream("/assets/" + modID + "/recipes/" + line);
+            if (file == null) {
+                LOGGER.log(Level.FATAL, "Could not load file referenced in manifest: " + line);
+                continue;
+            }
+            InputStreamReader fileSR = new InputStreamReader(file, StandardCharsets.UTF_8);
+            BufferedReader fileBR = new BufferedReader(fileSR);
+            StringBuilder fileContents = new StringBuilder();
+            String l;
+            for (;;) {
+                try {
+                    l = fileBR.readLine();
+                } catch (IOException e) {
+                    break;
+                }
+                if (l == null)
+                    break;
+                fileContents.append(l);
+            }
+            parseAndAddRecipe(new Gson().fromJson(fileContents.toString(), JsonObject.class));
+        }
+
+        try { bufferedReader.close(); streamReader.close(); stream.close(); } catch (IOException ignored) {}
+
+        return true;
+    }
+
+    public static boolean loadRecipesWithCURecursiveLoader(String recipeFolder) {
+        Gson gson = new Gson();
+
+        List<String> objects = CommonUtil.listFolders(recipeFolder);
+
+        if (objects.size() == 0) {
+            LOGGER.error("No recipes or recipe folders found.");
+        }
+
+        for (String item : objects) {
+            LOGGER.info("Item found: " + item);
+            if (item.endsWith(".json")) {
+                if (item.contains("/_"))  {
+                    continue; //don't parse json files starting with underscore.
+                }
+                //json not starting with underscore is a recipe
+                try {
+                    parseAndAddRecipe(gson.fromJson(CommonUtil.accessFile(item), JsonObject.class));
+                } catch (JsonParseException jsonParseException) {
+                    LOGGER.error("[TiM] problem handling json recipe: " + item);
+                    jsonParseException.printStackTrace();
+                }
+            } else {
+                //folder
+                loadRecipesWithCURecursiveLoader(item);
+            }
+        }
+        return true;
+    }
+
+    /**
      * Base of this function is simply yoinked from forge 1.12, vanilla. Then modified extensively to be compatible for 1.7.10
      *
      * @param modID modid of the mod to get recipes for.
      * @return Whether it worked or not
      */
-    public static boolean loadRecipes(String modID, Class modClass) {
+    public static boolean oldloadRecipes(String modID, Class modClass) {
         FileSystem filesystem = null;
 
         try {
