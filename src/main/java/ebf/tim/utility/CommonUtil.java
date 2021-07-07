@@ -141,7 +141,7 @@ public class CommonUtil {
      * @param path should be relative to `/scr/main/`? needs further testing
      * @return a list of file names in the provided path
      */
-    public List<String> listFolders(String path){
+    public static List<String> listFolders(String path){
         InputStream stream = loadStream(path);
         if(stream==null){
             DebugUtil.println("failed to load folder", path);
@@ -158,7 +158,7 @@ public class CommonUtil {
             try {
                 line = buffer.readLine();
                 if(line!=null) {
-                    lines.add(buffer.readLine());
+                    lines.add(path + "/" + line);
                 }
             } catch (IOException ignored) {}
         }
@@ -175,11 +175,20 @@ public class CommonUtil {
     //in some scenarios the file structure seems to change based on whether or not the jar is compiled
     public static InputStream loadStream(String file){
         //todo: results may differ with `ClassLoader.getSystemClassLoader().getResourceAsStream` worth trying later
-        if(DebugUtil.dev()){
-           return TrainsInMotion.instance.getClass().getClassLoader().getResourceAsStream(file);
+        String protocol = TrainsInMotion.instance.getClass().getResource("").getProtocol();
+        if(protocol.equals("jar")){
+            return TrainsInMotion.instance.getClass().getResourceAsStream("/assets/" + file);
+        } else if(protocol.equals("file")) {
+            return TrainsInMotion.instance.getClass().getClassLoader().getResourceAsStream("assets/" + file);
         } else {
-            return TrainsInMotion.instance.getClass().getResourceAsStream("/resources/" + file);
+            System.out.println("Unknown way of running project -- not in IDE or jar form!");
+            return null;
         }
+//        if(DebugUtil.dev()) {  //is dev() reliable? what about deobf but packaged?
+//            return TrainsInMotion.instance.getClass().getClassLoader().getResourceAsStream("assets/" + file);
+//        } else {
+//            return TrainsInMotion.instance.getClass().getResourceAsStream("/resources/" + file);
+//        }
     }
 
 
@@ -201,11 +210,11 @@ public class CommonUtil {
 
                 return str;
             } else {
-                DebugUtil.println(TrainsInMotion.instance.getClass().getClassLoader().getResource(file).toString(),"was null");
+                DebugUtil.println(file, " was null");
                 return null;
             }
         } catch (IOException e) {
-            DebugUtil.println(TrainsInMotion.instance.getClass().getClassLoader().getResource(file).toString(),"was not found");
+            DebugUtil.println(file, " was not found");
             return null;
         }
 
