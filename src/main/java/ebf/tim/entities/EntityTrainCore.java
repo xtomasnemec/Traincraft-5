@@ -176,11 +176,21 @@ public class EntityTrainCore extends GenericRailTransport {
                 //vectorCache[1][0]*=0.000000025f;//scale to i dont even know but it feels right
 
 
-                vectorCache[1][0]=maxPowerMicroblocks;
-                //decrease acceleration from weight
-                vectorCache[1][0] /= weight;
+                //set initial value to scale based on weight pulled over weight of the entity itself
+                vectorCache[1][0]=((maxPowerMicroblocks)/this.weightKg())*(weight/maxPowerMicroblocks);
+
+                //scale to the max speed
+                vectorCache[1][0]*=(accelerator<0?transportTopSpeedReverse():transportTopSpeed());
+                //convert from km/h to blocks per tick
+                vectorCache[1][0]*=0.0138889;
+                //add momentum from last tick.
+                vectorCache[1][0]+=vectorCache[1][2];
+
+                //add to momentum for the next tick.
+                vectorCache[1][2]+=vectorCache[1][0]*0.2f;
+
                 //increase acceleration rate for faster trains.
-                vectorCache[1][0]*=getAcceleratiorPercentage()* (accelerator<0?transportTopSpeedReverse()*0.00025:transportTopSpeed()*0.00025);
+                vectorCache[1][0]*=getAcceleratiorPercentage();//* (accelerator<0?transportTopSpeedReverse()*0.00025:transportTopSpeed()*0.00025);
 
                 if(!CommonProxy.realSpeed){
                     vectorCache[1][0]*=0.25f;//scale to TC speed

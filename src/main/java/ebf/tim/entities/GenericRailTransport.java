@@ -1119,6 +1119,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 frontBogie.motionZ*=drag;
                 backBogie.motionX*=drag;
                 backBogie.motionZ*=drag;
+                //for trains, decreases momentum from drag.
+                vectorCache[1][2]*=drag;
             }
 
             if(!(this instanceof EntityTrainCore)) {
