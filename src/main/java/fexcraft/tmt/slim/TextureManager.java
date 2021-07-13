@@ -240,7 +240,8 @@ public class TextureManager {
 
             GL11.glEnable(GL_TEXTURE_2D);
             if (!tmtBoundTextures.containsKey(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, false))) {
-                if (createAWT(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo)) {
+                if (createAWT(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo) &&
+                        new File(getID(textureURI,skinColorsFrom, skinColorsTo, colorsFrom,colorsTo,true)).exists()) {
                     try {
                         BufferedImage image = ImageIO.read(new File(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true)));
 
@@ -249,9 +250,9 @@ public class TextureManager {
                                         Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(
                                                 getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true),
                                                 new DynamicTexture(image))).getGlTextureId());
-                    } catch (IOException ignored) {
+                    } catch (IOException exception) {
                         DebugUtil.println("AWT FAILED");
-                        ignored.printStackTrace();
+                        exception.printStackTrace();
                     }
                 }
             } else {
