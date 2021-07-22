@@ -30,9 +30,19 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 	private int updateTicks;
 	public boolean wasBurning=false;
 
+	public TileEntityDistil(){}
+
 	public TileEntityDistil(BlockDynamic host) {
 		//slots 0=input 1=fuel 3=output 2=input canister ?=filled canister
 		super(host);
+		initInventoryFromBlock( host );
+	}
+
+	protected void initInventoryFromBlock( BlockDynamic block )
+	{
+		if ( host == null )
+			super.initInventoryFromBlock( block );
+
 		distilBurnTime = 0;
 		currentItemBurnTime = 0;
 		distilCookTime = 0;

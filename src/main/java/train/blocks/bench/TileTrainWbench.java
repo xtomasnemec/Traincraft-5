@@ -17,8 +17,18 @@ import java.util.ArrayList;
 
 public class TileTrainWbench extends TileEntityStorage {
 
+	public TileTrainWbench(){}
+
 	public TileTrainWbench(BlockDynamic host) {
 		super(host);
+		initInventoryFromBlock( host );
+	}
+
+	protected void initInventoryFromBlock( BlockDynamic block )
+	{
+		if ( host == null )
+			super.initInventoryFromBlock( block );
+
 		inventory=new ArrayList<>();
 
 		int var6;
