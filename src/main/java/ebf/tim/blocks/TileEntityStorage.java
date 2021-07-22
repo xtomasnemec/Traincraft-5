@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.oredict.OreDictionary;
+import train.library.Info;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -38,11 +39,17 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
 
     public int assemblyTableTier = -1; //only applies if part of assemblyTable/traintable, no need to set otherwise.
 
+    public TileEntityStorage(){}
+
     public TileEntityStorage(BlockDynamic block){
         super(block);
-        int s=400;
+        initInventoryFromBlock( block );
+        markDirty();
+    }
 
-        inventory= new ArrayList<>();
+    protected void initInventoryFromBlock( BlockDynamic block ){
+        int s=400;
+        inventory = new ArrayList<>();
         if(block.getUnlocalizedName().equals("tile.block.traintabletier1") ||
                 block.getUnlocalizedName().equals("tile.block.traintabletier2") ||
                 block.getUnlocalizedName().equals("tile.block.traintabletier3") ||
@@ -117,7 +124,6 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
             inventory.add(new ItemStackSlot(this,406).setCoords( 124 , 33).setCraftingOutput(true)); //output
             storageType=0;
         }
-        markDirty();
     }
 
     @Override
@@ -132,7 +138,23 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+
+        // When world load, we need to recreate TileEntity from default constructor (no args)
+        // So we need to retrieve host block from NBT data
+        if ( host == null ) {
+            String hostName = tag.getString("hostBlockName");
+            Block block = Block.getBlockFromName(Info.modID + ":" + hostName);
+
+            if ( block instanceof BlockDynamic )
+            {
+                host = (BlockDynamic)  block;
+                initInventoryFromBlock( host );
+            }
+        }
+
         XmlBuilder data = new XmlBuilder(tag.getString("xmlData"));
+        // Build to create itemMap
+        data.buildXML();
 
         if (getSizeInventory()>0 && !data.itemMap.isEmpty()) {
             for (int i=0;i<getSizeInventory();i++) {
@@ -158,6 +180,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
+
+        if ( host != null )
+                tag.setString( "hostBlockName", host.getUnlocalizedName().replaceFirst("tile.", "") );
+
         XmlBuilder data = new XmlBuilder();
         if (inventory!=null) {
             for (int i=0;i<getSizeInventory();i++) {
