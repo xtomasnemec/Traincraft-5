@@ -223,16 +223,17 @@ public class GUIPaintBucket extends GuiScreen {
         //check scaling Width vs scaling Height, we want the smaller of the two, however we scale them differently.
         float scale = entity.getHitboxSize()[0];
         if(scale!=0){
-            scale = 0.25f/(scale /0.25f);
+           // scale = 0.25f/(scale /0.25f);
         }
 
         float scale2 =  entity.getHitboxSize()[1];
         if(scale2!=0){
-            scale2 = 0.125f/(scale2 /0.125f);
+          //  scale2 = 0.125f/(scale2 /0.125f);
         }
         scale=Math.min(scale,scale2);
         //now scale based on the resolution
-        scale*=Math.min(mc.displayWidth/800f, mc.displayHeight/600f);
+        scale*=Math.min(mc.displayWidth/800f, mc.displayHeight/300f);
+        scale *=0.004f;
 
 
 
@@ -241,7 +242,7 @@ public class GUIPaintBucket extends GuiScreen {
         GL11.glPushMatrix();
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glTranslatef(-0.4f,0.05f,-1f);
+        GL11.glTranslatef(-0.4f,0.15f,-1f);
 
         Project.gluPerspective(45.0F, (float)Minecraft.getMinecraft().displayWidth/(float)Minecraft.getMinecraft().displayHeight, 0.05f, 2);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);

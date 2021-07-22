@@ -50,14 +50,13 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**cached value for the rail path, prevents need to generate a new variable multiple times per tick*/
     private Block blockNext;
     /**normally this variable exists already in 1.7, this additional declaration of it is support for 1.8.9+*/
-    public float yOffset=0;
+    public float yOffset=0.425f;
 
     public double lastKnownRailX=0, lastKnownRailZ=0;
     public double lastKnownRailY=0;
 
     public EntityBogie(World world) {
         super(world);
-        yOffset=0.2f;
     }
 
     /**
@@ -72,7 +71,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         posZ = zPos;
         parentId = parent;
         isFront = front;
-        yOffset=0.2f;
     }
 
     /**Small networking check to add the bogie to the host train/rollingstock. Or to remove the bogie from the world if the host doesn't exist.*/

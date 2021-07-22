@@ -561,9 +561,10 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
 
     /*a modified replica of the 1.12 version*/
     public static boolean canAddItemToSlot(@Nullable Slot slotIn, ItemStack stack) {
-        boolean flag = slotIn == null || !slotIn.getHasStack();
+        boolean flag = slotIn == null || stack==null || !slotIn.getHasStack();
 
-        if (!flag && stack.isItemEqual(slotIn.getStack()) && ItemStack.areItemStackTagsEqual(slotIn.getStack(), stack)) {
+        if (!flag && stack.isItemEqual(slotIn.getStack()) &&
+                ItemStack.areItemStackTagsEqual(slotIn.getStack(), stack)) {
             return slotIn.getStack().stackSize <= stack.getMaxStackSize();
         } else {
             return flag;

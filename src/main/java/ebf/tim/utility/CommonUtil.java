@@ -1,6 +1,7 @@
 package ebf.tim.utility;
 
 
+import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
@@ -133,6 +134,93 @@ public class CommonUtil {
             return outStr.toString();
         } catch (Exception e){return "";}
     }
+
+
+    /**
+     *
+     * @param path should be relative to `/scr/main/`? needs further testing
+     * @return a list of file names in the provided path
+     */
+    public static List<String> listFolders(String path){
+        InputStream stream = loadStream(path);
+        if(stream==null){
+            DebugUtil.println("failed to load folder", path);
+            return new ArrayList<>();
+        }
+        //create a buffered reader for the directory
+        InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
+        BufferedReader buffer = new BufferedReader(reader);
+
+        //build the list of files
+        List<String> lines = new ArrayList<>();
+        String line="";
+        while(line !=null){
+            try {
+                line = buffer.readLine();
+                if(line!=null) {
+                    lines.add(path + "/" + line);
+                }
+            } catch (IOException ignored) {}
+        }
+        //close the streams to cleanup
+        try {
+            buffer.close();
+            reader.close();
+            stream.close();
+        } catch (IOException ignored) {}
+
+        return lines;
+    }
+
+    //in some scenarios the file structure seems to change based on whether or not the jar is compiled
+    public static InputStream loadStream(String file){
+        //todo: results may differ with `ClassLoader.getSystemClassLoader().getResourceAsStream` worth trying later
+        String protocol = TrainsInMotion.instance.getClass().getResource("").getProtocol();
+        if(protocol.equals("jar")){
+            return TrainsInMotion.instance.getClass().getResourceAsStream("/assets/" + file);
+        } else if(protocol.equals("file")) {
+            return TrainsInMotion.instance.getClass().getClassLoader().getResourceAsStream("assets/" + file);
+        } else {
+            System.out.println("Unknown way of running project -- not in IDE or jar form!");
+            return null;
+        }
+//        if(DebugUtil.dev()) {  //is dev() reliable? what about deobf but packaged?
+//            return TrainsInMotion.instance.getClass().getClassLoader().getResourceAsStream("assets/" + file);
+//        } else {
+//            return TrainsInMotion.instance.getClass().getResourceAsStream("/resources/" + file);
+//        }
+    }
+
+
+    //returns file contents as string. returns null if the file does not exist
+    public static String accessFile(String file) {
+        InputStream stream = loadStream(file);
+
+        //make a StringWriter and use apache commons to copy the contents of the input stream file
+        StringWriter reader = new StringWriter();
+        try {
+            if(stream !=null) {
+                IOUtils.copy(stream, reader);
+                String str =reader.toString();
+                //close the streams to cleanup
+                try {
+                    reader.close();
+                    stream.close();
+                } catch (IOException ignored) {}
+
+                return str;
+            } else {
+                DebugUtil.println(file, " was null");
+                return null;
+            }
+        } catch (IOException e) {
+            DebugUtil.println(file, " was not found");
+            return null;
+        }
+
+    }
+
+
 
 
     public static float calculatePitch(double yBack, double yFront, double distance){

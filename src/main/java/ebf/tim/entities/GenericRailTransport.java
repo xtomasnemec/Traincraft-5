@@ -1119,6 +1119,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 frontBogie.motionZ*=drag;
                 backBogie.motionX*=drag;
                 backBogie.motionZ*=drag;
+                //for trains, decreases momentum from drag.
+                vectorCache[1][2]*=drag;
             }
 
             if(!(this instanceof EntityTrainCore)) {
@@ -1190,36 +1192,41 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
 
                 } else if (e instanceof CollisionBox) {
-                    double d0 = e.posX - this.posX;
-                    double d1 = e.posZ - this.posZ;
-                    double d2 = MathHelper.abs_max(d0, d1) * 1.25d;
+                    CollisionBox colliding = ((CollisionBox) e);
+                    if (colliding.host != null && colliding.host.frontBogie != null && colliding.host.backBogie != null) {
 
-                    //push entity away
-                    if (d2 >= 0.009999999776482582D) {
-                        if(this.getVelocity()>0.01) {
-                            this.backBogie.setVelocity(backBogie.motionX * -0.5, 0, backBogie.motionX * -0.5);
-                            this.frontBogie.setVelocity(frontBogie.motionX * -0.5, 0, frontBogie.motionZ * -0.5);
+                        //calculate the distance to yeet based on how far one pushed into the other
+                        double d0 = colliding.host.posX - this.posX;
+                        double d1 = colliding.host.posZ - this.posZ;
+                        double d2 = MathHelper.abs_max(d0, d1);
+                        d2 = MathHelper.sqrt_double(d2 * 0.0625)*0.01;
+                        d0 *= d2;
+                        d1 *= d2;
+                        //todo: scale by combined distance from center length of the two entities
+
+                        //if one was a train, half the yeeted value for that one, if the accelerator was not 0
+                        //    alternativley, yeet less hard, and the other _harder_ if the brake is on
+                        if(this instanceof EntityTrainCore && ((EntityTrainCore) this).accelerator!=0){
+                            backBogie.addVelocity(-d0*0.5, 0, -d1*0.5);
+                            frontBogie.addVelocity(-d0*0.5, 0, -d1*0.5);
+                        } else if(colliding.host.getBoolean(boolValues.BRAKE)) {
+                            backBogie.addVelocity(-d0*1.5, 0, -d1*1.5);
+                            frontBogie.addVelocity(-d0*1.5, 0, -d1*1.5);
                         } else {
-                            CollisionBox colliding = ((CollisionBox)e);
+                            backBogie.addVelocity(-d0, 0, -d1);
+                            frontBogie.addVelocity(-d0, 0, -d1);
+                        }
+                        if(colliding.host instanceof EntityTrainCore && ((EntityTrainCore) colliding.host).accelerator!=0){
 
-                            if(colliding.host!=null && colliding.host.frontBogie!=null && colliding.host.backBogie!=null) {
-                                d2 = MathHelper.sqrt_double(d2);
-                                d0 /= d2;
-                                d1 /= d2;
+                            colliding.host.backBogie.addVelocity(d0*0.5, 0, d1*0.5);
+                            colliding.host.frontBogie.addVelocity(d0*0.5, 0, d1*0.5);
 
-                                d0 *= Math.min(1.0D / d2, 1D);
-                                d1 *= Math.min(1.0D / d2, 1D);
-                                this.backBogie.setVelocity(-d0, 0, -d1);
-                                this.frontBogie.setVelocity(-d0, 0, -d1);
-
-                                this.backBogie.setVelocity(
-                                        Math.copySign(colliding.host.frontBogie.motionX * 0.25, backBogie.motionX), 0,
-                                        Math.copySign(colliding.host.frontBogie.motionZ * 0.25, backBogie.motionZ));
-
-                                this.frontBogie.setVelocity(
-                                        Math.copySign(colliding.host.frontBogie.motionX * 0.25, frontBogie.motionX), 0,
-                                        Math.copySign(colliding.host.frontBogie.motionZ * 0.25, frontBogie.motionZ));
-                            }
+                        } else if(getBoolean(boolValues.BRAKE)) {
+                            colliding.host.backBogie.addVelocity(d0*1.5, 0, d1*1.5);
+                            colliding.host.frontBogie.addVelocity(d0*1.5, 0, d1*1.5);
+                        } else {
+                            colliding.host.backBogie.addVelocity(d0, 0, d1);
+                            colliding.host.frontBogie.addVelocity(d0, 0, d1);
                         }
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {

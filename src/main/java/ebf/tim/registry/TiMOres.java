@@ -2,41 +2,40 @@ package ebf.tim.registry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
-import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.OreGen;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
+import ebf.tim.blocks.SimpleBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
+import static net.minecraftforge.oredict.OreDictionary.registerOre;
 import static cpw.mods.fml.common.registry.GameRegistry.addRecipe;
-import static ebf.tim.registry.TiMGenericRegistry.registerBlock;
+import static cpw.mods.fml.common.registry.GameRegistry.addShapelessRecipe;
 import static ebf.tim.registry.TiMGenericRegistry.registerOreGen;
 
 public class TiMOres {
 
     public static Item ingotSteel, ingotCopper, ingotAluminum, dustPlastic, dustCoal;
 
-    public static BlockDynamic copperBlock = new BlockDynamic(new Material(MapColor.mapColorArray[2]), false);
-    public static BlockDynamic steelBlock = new BlockDynamic(new Material(MapColor.mapColorArray[6]), false);
-    public static BlockDynamic aluminiumBlock = new BlockDynamic(new Material(MapColor.mapColorArray[14]), false);
+    public static SimpleBlock blockCopper;
+    public static SimpleBlock blockAluminum;
+    public static SimpleBlock blockSteel;
 
-    public static BlockDynamic oreCopper = new BlockDynamic(new Material(MapColor.mapColorArray[11]), false);
-    public static BlockDynamic oreSteel = new BlockDynamic(new Material(MapColor.mapColorArray[11]), false);
-    public static BlockDynamic oreAluminium = new BlockDynamic(new Material(MapColor.mapColorArray[11]), false);
-
+    public static SimpleBlock oreCopper;
+    public static SimpleBlock oreAluminum;
+    public static SimpleBlock oreSteel;
 
 
     public static void registerOres(){
 
-        oreCopper.setTextureName("traincraft:textures/blocks/ores/ore_copper.png");
-        oreAluminium.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/ore.aluminum.png");
-        oreSteel.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/ore.steel.png");
+        //create all items/blocks
 
-        copperBlock.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/block.copper.png");
-        aluminiumBlock.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/block.aluminum.png");
-        steelBlock.setTextureName(TrainsInMotion.MODID+ ":textures/blocks/ores/block.steel.png");
+        blockCopper = new SimpleBlock(4.0F, 4.0F, "blockCopper", TrainsInMotion.MODID + ":ores/block.copper");
+        blockAluminum = new SimpleBlock(4.0F, 4.0F, "blockAluminum", TrainsInMotion.MODID + ":ores/block.aluminum");
+        blockSteel = new SimpleBlock(5.0F, 5.0F, "blockSteel", TrainsInMotion.MODID + ":ores/block.steel");
+
+        oreCopper = new SimpleBlock(3.0F, 3.0F, "oreCopper", TrainsInMotion.MODID + ":ores/ore.copper");
+        oreAluminum = new SimpleBlock(3.0F, 3.0F, "oreAluminum", TrainsInMotion.MODID + ":ores/ore.aluminum");
+        oreSteel = new SimpleBlock(3.0F, 3.0F, "oreSteel", TrainsInMotion.MODID + ":ores/ore.steel");
 
         ingotSteel = createItem("ingot.steel", "ingotSteel").setTextureName(TrainsInMotion.MODID + ":materials/ingot.steel");
         dustPlastic = createItem("dust.plastic", "dustPlastic").setTextureName(TrainsInMotion.MODID + ":materials/dust.plastic");
@@ -44,45 +43,46 @@ public class TiMOres {
         ingotCopper = createItem("ingot.copper", "ingotCopper").setTextureName(TrainsInMotion.MODID + ":materials/ingot.copper");
         ingotAluminum = createItem("ingot.aluminum", "ingotAluminum").setTextureName(TrainsInMotion.MODID + ":materials/ingot.aluminum");
 
-        registerBlock(oreCopper, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreCopper", "oreCopper", null);
-        registerBlock(oreSteel, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreSteel", "oreSteel", null);
-        registerBlock(oreAluminium, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreAluminum", "oreAluminum", null);
 
+        //add recipes and smelting
 
+        addRecipe(new ItemStack(blockCopper), "III","III","III", 'I', ingotCopper);
+        addRecipe(new ItemStack(blockSteel), "III","III","III", 'I', ingotSteel);
+        addRecipe(new ItemStack(blockAluminum), "III","III","III", 'I', ingotAluminum);
 
-        addRecipe(new ItemStack(registerBlock(copperBlock, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "blockCopper", "blockCopper", null),1),
-                "III","III","III", 'I', ingotCopper);
-        addRecipe(new ItemStack(registerBlock(steelBlock, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "blockSteel", "blockSteel", null),1),
-                "III","III","III", 'I', ingotSteel);
-        addRecipe(new ItemStack(registerBlock(aluminiumBlock, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "blockAluminum", "blockAluminum", null),1),
-                "III","III","III", 'I', ingotAluminum);
+        addShapelessRecipe(new ItemStack(ingotCopper, 9), blockCopper);
+        addShapelessRecipe(new ItemStack(ingotAluminum, 9), blockAluminum);
+        addShapelessRecipe(new ItemStack(ingotSteel, 9), blockSteel);
 
         GameRegistry.addSmelting(oreCopper, new ItemStack(ingotCopper), 0.7f);
         GameRegistry.addSmelting(oreSteel, new ItemStack(ingotSteel), 1.2f);
-        GameRegistry.addSmelting(oreAluminium, new ItemStack(ingotAluminum), 0.5f);
+        GameRegistry.addSmelting(oreAluminum, new ItemStack(ingotAluminum), 0.5f);
 
 
+        //register into ore dictionary
 
-        OreDictionary.registerOre("ingotCopper", new ItemStack(ingotCopper));
+        registerOre("oreCopper", new ItemStack(oreCopper));
+        registerOre("oreAluminium", new ItemStack(oreAluminum));
+        registerOre("oreAluminum", new ItemStack(oreAluminum));
+        registerOre("oreSteel", new ItemStack(oreSteel));
 
-        OreDictionary.registerOre("ingotSteel", new ItemStack(ingotSteel));
+        registerOre("blockCopper", new ItemStack(blockCopper));
+        registerOre("blockAluminium", new ItemStack(blockAluminum));
+        registerOre("blockAluminum", new ItemStack(blockAluminum));
+        registerOre("blockSteel", new ItemStack(blockSteel));
 
-        OreDictionary.registerOre("itemPlastic", new ItemStack(dustPlastic));
-        OreDictionary.registerOre("dustPlastic", new ItemStack(dustPlastic));//MFR support
+        registerOre("ingotCopper", new ItemStack(ingotCopper));
+        registerOre("ingotSteel", new ItemStack(ingotSteel));
+        registerOre("ingotAluminum", new ItemStack(ingotAluminum));
+        registerOre("ingotAluminium", new ItemStack(ingotAluminum)); //what spelling is accepted?
 
-        OreDictionary.registerOre("ingotAluminum", new ItemStack(ingotAluminum));
-        OreDictionary.registerOre("ingotAluminium", new ItemStack(ingotAluminum)); //what spelling is accepted?
+        registerOre("itemPlastic", new ItemStack(dustPlastic));
+        registerOre("dustPlastic", new ItemStack(dustPlastic)); //MFR support
 
+
+        //register copper for generation
 
         registerOreGen(0, new OreGen(oreCopper,5,50,6,4,4));
-
-        //setup block hardness and resistance, could be moved into the constructor very easily
-        oreCopper.setHardness(3).setHarvestLevel("pickaxe", 2);
-        copperBlock.setHardness(4).setHarvestLevel("pickaxe", 2);
-        oreSteel.setHardness(4).setHarvestLevel("pickaxe", 2);
-        steelBlock.setHardness(5).setHarvestLevel("pickaxe", 2);
-        oreAluminium.setHardness(3).setHarvestLevel("pickaxe", 2);
-        aluminiumBlock.setHardness(4).setHarvestLevel("pickaxe", 2);
     }
 
     private static Item createItem(String unlocalizedName, String oredictName) {

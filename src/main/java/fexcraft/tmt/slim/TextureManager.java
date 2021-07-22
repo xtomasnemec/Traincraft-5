@@ -68,7 +68,7 @@ public class TextureManager {
             tmtMap=new HashMap<>();
             tmtBoundTextures = new HashMap<>();
         }
-        if(ClientProxy.ForceTextureBinding) {
+        if(!ClientProxy.ForceTextureBinding) {
             object = Minecraft.getMinecraft().getTextureManager().getTexture(textureURI);
             if (object == null) {
                 object = new SimpleTexture(textureURI);
@@ -77,8 +77,8 @@ public class TextureManager {
             GL11.glBindTexture(GL_TEXTURE_2D, object.getGlTextureId());
             return object.getGlTextureId();
         } else {
-            Integer id = tmtMap.get(textureURI);
-            if (id ==null){
+            Integer id;
+            if (!tmtMap.containsKey(textureURI)){
                 object = Minecraft.getMinecraft().getTextureManager().getTexture(textureURI);
                 if (object == null) {
                     object = new SimpleTexture(textureURI);
@@ -86,6 +86,8 @@ public class TextureManager {
                 }
                 id=object.getGlTextureId();
                 tmtMap.put(textureURI, id);
+            } else {
+                id= tmtMap.get(textureURI);
             }
             if(GL11.glGetInteger(GL_TEXTURE_2D) !=id) {
                 GL11.glBindTexture(GL_TEXTURE_2D, id);
@@ -238,7 +240,8 @@ public class TextureManager {
 
             GL11.glEnable(GL_TEXTURE_2D);
             if (!tmtBoundTextures.containsKey(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, false))) {
-                if (createAWT(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo)) {
+                if (createAWT(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo) &&
+                        new File(getID(textureURI,skinColorsFrom, skinColorsTo, colorsFrom,colorsTo,true)).exists()) {
                     try {
                         BufferedImage image = ImageIO.read(new File(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true)));
 
@@ -247,9 +250,9 @@ public class TextureManager {
                                         Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(
                                                 getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true),
                                                 new DynamicTexture(image))).getGlTextureId());
-                    } catch (IOException ignored) {
+                    } catch (IOException exception) {
                         DebugUtil.println("AWT FAILED");
-                        ignored.printStackTrace();
+                        exception.printStackTrace();
                     }
                 }
             } else {
