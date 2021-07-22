@@ -27,8 +27,18 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 	private Random random;
 	private boolean wasBurning = false;
 
+	public TileEntityOpenHearthFurnace() {}
+
 	public TileEntityOpenHearthFurnace(BlockDynamic host) {
 		super(host);
+		initInventoryFromBlock( host );
+	}
+
+	protected void initInventoryFromBlock( BlockDynamic block )
+	{
+		if ( host == null )
+			super.initInventoryFromBlock( block );
+
 		furnaceBurnTime = 0;
 		currentItemBurnTime = 0;
 		furnaceCookTime = 0;
