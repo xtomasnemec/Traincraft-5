@@ -45,9 +45,11 @@ public class GUICraftBook extends GuiScreen {
         if(pageData==null) {
             List<Object> pages = new ArrayList<>();
 
-            List<String> modids = new ArrayList<>();
-            modids.addAll(CommonProxy.recipesInMods.keySet());
-            modids.addAll(infoPages.keySet());
+            Set<String> modidsSet = new HashSet<>();
+            modidsSet.addAll(CommonProxy.recipesInMods.keySet());
+            modidsSet.addAll(infoPages.keySet());
+
+            List<String> modids = new ArrayList<>(modidsSet);
             modids.remove(TrainsInMotion.MODID);
             java.util.Collections.sort(modids);
             modids.add(0,TrainsInMotion.MODID);//make sure core mod entries are at start
