@@ -91,7 +91,7 @@ public class RailTileEntity extends TileEntity {
 
     @Override
     public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
-        return oldMeta!=newMeta;
+        return (oldBlock != newBlock) || (oldMeta != newMeta);
     }
 
     @Override
