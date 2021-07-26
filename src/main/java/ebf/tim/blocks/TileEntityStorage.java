@@ -18,7 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.oredict.OreDictionary;
-import train.library.Info;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -143,7 +142,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         // So we need to retrieve host block from NBT data
         if ( host == null ) {
             String hostName = tag.getString("hostBlockName");
-            Block block = Block.getBlockFromName(Info.modID + ":" + hostName);
+            Block block = Block.getBlockFromName(hostName);
 
             if ( block instanceof BlockDynamic )
             {
@@ -182,7 +181,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         super.writeToNBT(tag);
 
         if ( host != null )
-                tag.setString( "hostBlockName", host.getUnlocalizedName().replaceFirst("tile.", "") );
+            tag.setString( "hostBlockName", Block.blockRegistry.getNameForObject( host ) );
 
         XmlBuilder data = new XmlBuilder();
         if (inventory!=null) {
