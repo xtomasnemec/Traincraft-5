@@ -4,8 +4,10 @@ import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -20,8 +22,8 @@ public class XmlBuilder {
     public HashMap<String, Float> floatMap = new HashMap<>();
     public HashMap<String, float[]> floatArrayMap = new HashMap<>();
     public HashMap<String, String> stringMap = new HashMap<>();
-    public HashMap<String, String[]> itemMap = new HashMap<>();
-    public HashMap<String, String[]> fluidMap = new HashMap<>();
+    public HashMap<String, ItemStack> itemMap = new HashMap<>();
+    public HashMap<String, FluidStack> fluidMap = new HashMap<>();
 
     String buildString=null;
     boolean isBuilt=false;
@@ -45,21 +47,13 @@ public class XmlBuilder {
     }
     public XmlBuilder putItemStack(String id, ItemStack stack){
         buildXML();
-        itemMap.put(id,
-                stack==null?new String[]{"null"}:
-                        new String[]{
-                                stack.getItem().delegate.name(),
-                        stack.stackSize+"",stack.getItemDamage()+""});
+        itemMap.put( id, stack );
         rebuildXML();
         return this;
     }
     public XmlBuilder putFluidStack(String id, FluidStack stack){
         buildXML();
-        fluidMap.put(id,
-                stack==null?new String[]{"null"}:
-                        new String[]{
-                                FluidRegistry.getFluidName(stack),
-                                stack.amount+""});
+        fluidMap.put( id, stack );
         rebuildXML();
         return this;
     }
@@ -184,29 +178,37 @@ public class XmlBuilder {
     public UUID getUUID(String id){buildXML(); return uuidMap.get(id);}
     public XmlBuilder getXml(String id){buildXML(); return xmlMap.get(id);}
 
-    public ItemStack getItemStack(String id){
+    public ItemStack getItemStack(String id) {
         buildXML();
-        if(itemMap.get(id) == null || itemMap.get(id)[0].equals("null")){return null;}
-        Item i = GameData.getItemRegistry().get(itemMap.get(id)[0]);
+        return itemMap.get(id);
+    }
+
+    public static ItemStack getItemStackFromStringArray(String[] data){
+        if(data[0].equals("null")){return null;}
+        Item i = GameData.getItemRegistry().getObject(data[0]);
         ItemStack s;
         if (i==null){
-            Block b = GameData.getBlockRegistry().get(itemMap.get(id)[0]);
+            Block b = GameData.getBlockRegistry().getObject(data[0]);
             if(b!=null) {
-                s = new ItemStack(b, Integer.parseInt(itemMap.get(id)[1]));
+                s = new ItemStack(b, Integer.parseInt(data[1]));
             } else{
                 return null;
             }
         } else {
-            s = new ItemStack(i,Integer.parseInt(itemMap.get(id)[1]));
+            s = new ItemStack(i,Integer.parseInt(data[1]));
         }
-        s.setItemDamage(Integer.parseInt(itemMap.get(id)[2]));
+        s.setItemDamage(Integer.parseInt(data[2]));
         return s;
     }
 
     public FluidStack getFluidStack(String id){
         buildXML();
-        if(fluidMap.get(id) == null || fluidMap.get(id)[0].equals("null")){return null;}
-        return FluidRegistry.getFluidStack(fluidMap.get(id)[0], Integer.parseInt(fluidMap.get(id)[1]));
+        return fluidMap.get( id );
+    }
+
+    public static FluidStack getFluidStackFromStringArray(String[] data) {
+        if(data[0].equals("null")){return null;}
+        return FluidRegistry.getFluidStack(data[0], Integer.parseInt(data[1]));
     }
 
     public boolean containsString(String id){buildXML(); return stringMap.containsKey(id);}
@@ -220,7 +222,7 @@ public class XmlBuilder {
     public boolean containsUUID(String id){buildXML(); return uuidMap.containsKey(id);}
     public boolean containsXml(String id){buildXML(); return xmlMap.containsKey(id);}
 
-    //QoL stuff because i instinctivley type "has" instead of "contains"
+    //QoL stuff because i instinctively type "has" instead of "contains"
     public boolean hasString(String id){return containsString(id);}
     public boolean hasInt(String id){return containsInt(id);}
     public boolean hasIntArray(String id){return containsIntArray(id);}
@@ -252,30 +254,133 @@ public class XmlBuilder {
         }
     }
 
-    //todo
-	/*
-	NBTTagCompound convertToNBT(){
-	tag =new NBTTagCompound
-	for (String s: stringMap.keys){tag.putString(s, stringMap.get(s));}
-	for (String s: intMap.keys){tag.putInteger(s, stringMap.get(s));}
-	for xml : tag.putNBT(s, xml.convertToNbt);
-	...
-	return tag;
-	}
-	 */
+    private static final char typeXmlBuilderChar = 'x';
+    private static final char typeIntegerChar = 'i';
+    private static final char typeUUIDChar = 'u';
+    private static final char typeIntArrayChar = 'I';
+    private static final char typeDoubleChar = 'd';
+    private static final char typeFloatChar = 'f';
+    private static final char typeFloatArrayChar = 'F';
+    private static final char typeStringChar = 's';
+    private static final char typeItemChar = 'y';
+    private static final char typeFluidChar = 'l';
 
-	/*
-	@Depreciated //it is advised to do this manually, the guesswork required for this method is unreasonable overhead.
-	xmlBuilder convertFromNBT(NBT tag){
-	for(String key : tag.getKeys()){
-	try{String s= tag.getString(key); if (s!null){StringMap.put(tag,s);}
-	try{Integer s= tag.getInteger(key); if (s!null){intMap.put(tag,s);}
-	}
-	}
+    NBTTagCompound convertToNBT(){
+        NBTTagCompound tag = new NBTTagCompound();
 
-	 */
+        for( String s : xmlMap.keySet() ){ tag.setTag( typeXmlBuilderChar + s, xmlMap.get(s).convertToNBT() ); }
+        for( String s : intMap.keySet() ){ tag.setInteger( typeIntegerChar + s, intMap.get(s) ); }
+        for( String s : intArrayMap.keySet() ){ tag.setIntArray( typeIntArrayChar + s, intArrayMap.get(s) ); }
+        for( String s : doubleMap.keySet() ){ tag.setDouble( typeDoubleChar + s, doubleMap.get(s) ); }
+        for( String s : floatMap.keySet() ){ tag.setFloat(  typeFloatChar + s, floatMap.get(s) ); }
+        for( String s : stringMap.keySet() ){ tag.setString( typeStringChar + s, stringMap.get(s) ); }
 
-	public String toXMLString(){return buildString;}
+        for( String s : itemMap.keySet() ){
+            NBTTagCompound itemTag = new NBTTagCompound();
+            itemTag = itemMap.get( s ).writeToNBT( itemTag );
+            tag.setTag( typeItemChar + s, itemTag );
+        }
+
+        for( String s : fluidMap.keySet() ){
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            fluidTag = fluidMap.get( s ).writeToNBT( fluidTag );
+            tag.setTag( typeFluidChar + s, fluidTag );
+        }
+
+        // TODO save in more compact way : UUID and Float[]
+        for( String s : uuidMap.keySet() ){ tag.setString( typeUUIDChar + s, uuidMap.get(s).toString() ); }
+        for( String s : floatArrayMap.keySet() ){
+            NBTTagCompound floatArrayTag = new NBTTagCompound();
+            float[] array = floatArrayMap.get(s);
+            floatArrayTag.setInteger( "L", array.length );
+
+            for( int i = 0; i < array.length; i++ ){
+                floatArrayTag.setFloat( String.valueOf(i), array[i] );
+            }
+
+            tag.setTag( typeFloatArrayChar + s, floatArrayTag);
+        }
+
+        return tag;
+    }
+
+    static XmlBuilder convertFromNBT( NBTTagCompound nbt ){
+        XmlBuilder xml = new XmlBuilder();
+
+        for( Object oKey : nbt.func_150296_c() ) // func_150296_c <=> getKeySet()
+        {
+                // Only deal with String keys
+            if ( oKey instanceof String )
+            {
+                String key = (String) oKey;
+                char firstChar = key.charAt(0);
+                String id = key.substring(1);
+                switch (firstChar){
+                    case typeXmlBuilderChar:
+                        xml.putXml( id, convertFromNBT( nbt.getCompoundTag( key ) ) );
+                        break;
+                    case typeIntegerChar:
+                        xml.putInt( id, nbt.getInteger( key ));
+                        break;
+                    case typeUUIDChar:
+                        xml.putUUID( id, UUID.fromString( nbt.getString( key ) ) );
+                        break;
+                    case typeIntArrayChar:
+                        xml.putIntArray( id, nbt.getIntArray( key ));
+                        break;
+                    case typeDoubleChar:
+                        xml.putDouble( id, nbt.getDouble( key ));
+                        break;
+                    case typeFloatChar:
+                        xml.putFloat( id, nbt.getFloat( key ));
+                        break;
+                    case typeFloatArrayChar:
+                        NBTTagCompound floatArrayTag = new NBTTagCompound();
+                        int length = floatArrayTag.getInteger( "L" );
+                        float[] array = new float[length];
+
+                        for( int i = 0; i < length; i++)
+                        {
+                            array[i] = floatArrayTag.getFloat( String.valueOf(i) );
+                        }
+
+                        xml.putFloatArray( id, array );
+
+                        break;
+                    case typeStringChar:
+                        xml.putString( id, nbt.getString( key ) );
+                        break;
+                    case typeItemChar:
+                        NBTTagCompound itemTag = nbt.getCompoundTag( key );
+                        if ( itemTag == null ) {
+                            xml.putItemStack( id, null );
+                        } else {
+                            xml.putItemStack( id, ItemStack.loadItemStackFromNBT( itemTag ));
+                        }
+                        break;
+                    case typeFluidChar:
+                        NBTTagCompound fluidTag = nbt.getCompoundTag( key );
+                        if ( fluidTag == null ) {
+                            xml.putFluidStack( id, null);
+                        } else {
+                            xml.putFluidStack( id, FluidStack.loadFluidStackFromNBT( nbt ) );
+                        }
+                        break;
+                    default:
+                        LogManager.getLogger("trainsinmotion").warn( "XmlBuilder : invalid key : '" + key + "'" );
+                }
+
+            }
+        }
+
+
+        return xml;
+    }
+
+	public String toXMLString(){
+	    buildXML(); // build string just in case
+	    return buildString;
+	}
 
     public String rebuildXMLString(){
         StringBuilder data = new StringBuilder();
@@ -339,26 +444,29 @@ public class XmlBuilder {
         }
         for(String key : itemMap.keySet()){
             tag(key, data, "item");
-            if(itemMap.get(key) == null || itemMap.get(key)[0].equals("null")){
+            if ( itemMap.get(key) == null ){
                 data.append("null");
             } else {
-                data.append(itemMap.get(key)[0]);
+                ItemStack stack = itemMap.get(key);
+                data.append(stack.getItem().delegate.name());
                 data.append(",");
-                data.append(itemMap.get(key)[1]);
+                data.append(stack.stackSize);
                 data.append(",");
-                data.append(itemMap.get(key)[2]);
+                data.append(stack.getItemDamage());
             }
             tag(key, data);
         }
 
         for(String key : fluidMap.keySet()){
             tag(key, data, "fluid");
-            if(fluidMap.get(key) == null || fluidMap.get(key)[0].equals("null")){
+            if(fluidMap.get(key) == null)
+            {
                 data.append("null");
             } else {
-                data.append(fluidMap.get(key)[0]);
+                FluidStack stack = fluidMap.get( key );
+                data.append(FluidRegistry.getFluidName(stack));
                 data.append(",");
-                data.append(fluidMap.get(key)[1]);
+                data.append(stack.amount);
             }
             tag(key, data);
         }
@@ -389,46 +497,51 @@ public class XmlBuilder {
                     case 6:{this.uuidMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
                             UUID.fromString(lineReader[index+1]));index++;break;}
 
-                    case 11:{this.itemMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
-                            lineReader[index+1].split(","));index++;break;}
+                    case 11:{
+                        String id = lineReader[index-1].substring(1, lineReader[index-1].length()-1);
+                        String[] data = lineReader[index+1].split(",");
+
+                        itemMap.put( id, getItemStackFromStringArray(data) );
+                        index++;
+                        break;
+                    }
 
                     case 12: {
                         String[] s = lineReader[index + 1].split(",");
                         if (s[0].equals("null")) {
                             intArrayMap.put(lineReader[index - 1].substring(1, lineReader[index - 1].length() - 1), null);
-                            index++;
-                            break;
                         } else {
                             int[] i = new int[s.length];
                             for (int entry = 0; entry < s.length; entry++) {
                                 i[entry] = Integer.parseInt(s[entry]);
                             }
                             this.intArrayMap.put(lineReader[index - 1].substring(1, lineReader[index - 1].length() - 1), i);
-                            index++;
-                            break;
                         }
+                        index++;
+                        break;
                     }
 
                     case 13: {
                         String[] s = lineReader[index + 1].split(",");
                         if (s[0].equals("null")) {
                             floatArrayMap.put(lineReader[index - 1].substring(1, lineReader[index - 1].length() - 1), null);
-                            index++;
-                            break;
                         } else {
                             float[] i = new float[s.length];
                             for (int entry = 0; entry < s.length; entry++) {
                                 i[entry] = Float.parseFloat(s[entry]);
                             }
                             this.floatArrayMap.put(lineReader[index - 1].substring(1, lineReader[index - 1].length() - 1), i);
-                            index++;
-                            break;
                         }
+                        index++;
+                        break;
                     }
 
                     case 14:{
-                        this.fluidMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
-                                lineReader[index+1].split(","));index++;break;
+                        String id = lineReader[index-1].substring(1, lineReader[index-1].length()-1);
+                        String[] info = lineReader[index+1].split(",");
+                        this.fluidMap.put( id, getFluidStackFromStringArray( info ) );
+                        index++;
+                        break;
                     }
 
                     case 0:{this.xmlMap.put(lineReader[index-1].substring(1, lineReader[index-1].length()-1),
@@ -440,8 +553,6 @@ public class XmlBuilder {
         }
     }
 
-
-
     private static String tagSubstring(String[] parse, int index){
         StringBuilder b = new StringBuilder();
         String tag = parse[index-1].substring(1);
@@ -452,7 +563,6 @@ public class XmlBuilder {
         }
         return b.toString();
     }
-
 
     private int checkType(String s){
         return stringContains(s, "<type=xml>") ? 0 :
