@@ -46,7 +46,7 @@ public class GUITrainTable extends GuiContainer {
         xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.dimensionId;
         player = inventoryPlayer.player;
 
-        if (CommonProxy.isTraincraft && !hostname.equals("tile.block.traintable")) {
+        if (CommonProxy.isTraincraft && hostname.startsWith("tile.block.traintabletier")) {
             this.ySize = 256;
         }
     }
@@ -65,27 +65,31 @@ public class GUITrainTable extends GuiContainer {
             downButtonCoord = new int[]{141, 34};
         }
 
-        this.buttonList.add(new GUIButton(guiLeft+upButtonCoord[0], guiTop+upButtonCoord[1], 18, 18,"<<"){
-            @Override
-            public String getHoverText() {
-                return "Previous Page";
-            }
-            @Override
-            public void onClick() {
-                TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(false,xCoord,yCoord,zCoord,dimension));
-            }
-        });
+        if (hostname.equals("tile.block.traintable")) {
+            this.buttonList.add(new GUIButton(guiLeft + upButtonCoord[0], guiTop + upButtonCoord[1], 18, 18, "<<") {
+                @Override
+                public String getHoverText() {
+                    return "Previous Page";
+                }
 
-        this.buttonList.add(new GUIButton(this.guiLeft + downButtonCoord[0], this.guiTop + downButtonCoord[1], 18,18, ">>") {
-            @Override
-            public String getHoverText() {
-                return "Next Page";
-            }
-            @Override
-            public void onClick() {
-                TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(true,xCoord,yCoord,zCoord,dimension));
-            }
-        });
+                @Override
+                public void onClick() {
+                    TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(false, xCoord, yCoord, zCoord, dimension));
+                }
+            });
+
+            this.buttonList.add(new GUIButton(this.guiLeft + downButtonCoord[0], this.guiTop + downButtonCoord[1], 18, 18, ">>") {
+                @Override
+                public String getHoverText() {
+                    return "Next Page";
+                }
+
+                @Override
+                public void onClick() {
+                    TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(true, xCoord, yCoord, zCoord, dimension));
+                }
+            });
+        }
     }
 
     @Override
@@ -106,7 +110,6 @@ public class GUITrainTable extends GuiContainer {
         } else {
             if (hostname.startsWith("tile.block.traintable")) {
                 //assembly table and traincraft
-                //TODO: localize strings, edit colors if need be.
                 this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 92, 4210752);
                 this.fontRendererObj.drawString(I18n.format(hostname + ".name"), 8, 5, 12241200);
                 this.fontRendererObj.drawString(I18n.format("container.storage"), 8, 118, 4210752);

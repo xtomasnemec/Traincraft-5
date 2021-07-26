@@ -4,13 +4,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.OreGen;
 import ebf.tim.blocks.SimpleBlock;
+import ebf.tim.utility.CommonProxy;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import static net.minecraftforge.oredict.OreDictionary.registerOre;
 import static cpw.mods.fml.common.registry.GameRegistry.addRecipe;
 import static cpw.mods.fml.common.registry.GameRegistry.addShapelessRecipe;
 import static ebf.tim.registry.TiMGenericRegistry.registerOreGen;
+import static net.minecraftforge.oredict.OreDictionary.registerOre;
 
 public class TiMOres {
 
@@ -81,8 +83,20 @@ public class TiMOres {
 
 
         //register copper for generation
-
-        registerOreGen(0, new OreGen(oreCopper,5,50,6,4,4));
+        if (CommonProxy.doCopperGeneration) {
+            registerOreGen(3, new OreGen(oreCopper, 5, 50, 6, 4, 6));
+        }
+        if (CommonProxy.doSteelGeneration) {
+            //nether ore, lava oceans gen at y=31
+            OreGen steelGen = new OreGen(oreSteel, 31, 50, 8, 4, 5).setDimensions(new Integer[]{-1}).setFiller(Blocks.netherrack);
+            registerOreGen(5, steelGen);
+            //make steel especially common under lava. Want high generation because it is used a lot.
+            OreGen steelGen2 = new OreGen(oreSteel, 1, 30, 4, 3, 10).setDimensions(new Integer[]{-1}).setFiller(Blocks.netherrack);
+            registerOreGen(5, steelGen2);
+        }
+        if (CommonProxy.doAluminumGeneration) {
+            registerOreGen(5, new OreGen(oreAluminum, 12, 30, 6, 3, 4));
+        }
     }
 
     private static Item createItem(String unlocalizedName, String oredictName) {
