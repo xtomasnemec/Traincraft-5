@@ -2323,6 +2323,25 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**this is the default value to define the acceleration speed and pulling power of a transport.*/
     public float transportMetricHorsePower(){return 0;}
 
+    /**This defines the acceleration rate in meters per second
+     * the example code is a little long to add more realistic scaling without needing to know any real specifics*/
+    public float transportAcceleration(){
+        if(transportTopSpeed()==0){return 0;}//efficiency shorthand for rollingstock.
+
+        //the n700 is noted to go 0 to 60(96.56km/h) in 37 seconds.
+        //if we assume a little high,to 45, that makes it 96.56/45=2.14579 km/s per second acceleration or
+        // 2145.79 meters per second.
+        if(getVelocity()<transportTopSpeed()*0.25){
+            return 2145.79f;
+        } else if (getVelocity()<transportTopSpeed()*0.5){
+            return 2467.659f;//typically middle-speeds are geared for higher acceleration since less torque is needed
+        } else if (getVelocity()<transportTopSpeed()*0.85){
+            return 2145.79f;//return the normal amount for higher speeds like a bit of a bell curve
+        } else {
+            return 1287.4746f;//returns about 60% at the top of the gear since you're bottoming out in the transmission
+        }
+    }
+
     /**additional lore for the item, each entry in the array is a new line.
      * return null if unused.*/
     public String[] additionalItemText(){return null;}

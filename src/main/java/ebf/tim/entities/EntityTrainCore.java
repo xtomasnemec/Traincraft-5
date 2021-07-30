@@ -98,25 +98,19 @@ public class EntityTrainCore extends GenericRailTransport {
         //the average difference between metric horsepower and MHP is about 3.75% or tractiveEffort*26.3=MHP
             return (transportTractiveEffort()<1f?transportMetricHorsePower()
                     :transportTractiveEffort()*0.0035571365f);
-
-                    //90mhp translating to 1 mircoblock a second sounds about right
-                    //(*0.009/16 = 0.0005625), then divide by ticks to turn to seconds (0.0005625/20=0.000028125).
-                    //*0.000028125f;
     }
 
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
     public float getAcceleratiorPercentage(){
         switch (Math.abs(getAccelerator())){
-            case 1:{return Math.copySign(0.1f,getAccelerator());}//would otherwise be 0833
-            case 2:{return Math.copySign(0.175f,getAccelerator());}//would otherwise be 166
-            case 3:{return Math.copySign(0.24f,getAccelerator());}//would otherwise be 2499
-            case 4:{return Math.copySign(0.3f,getAccelerator());}//would otherwise be 33
-            case 5:{return Math.copySign(0.375f,getAccelerator());}//would otherwise be 4166
-            case 6: case 7:{return Math.copySign(0.425f,getAccelerator());}//would otherwise be 499
+            case 1:{return Math.copySign(0.1f,getAccelerator());}
+            case 2:{return Math.copySign(0.25f,getAccelerator());}
+            case 3:{return Math.copySign(0.5f,getAccelerator());}
+            case 4:{return Math.copySign(0.7f,getAccelerator());}
+            case 5:{return Math.copySign(0.875f,getAccelerator());}
+            case 6: case 7:{return Math.copySign(1f,getAccelerator());}
             default:{return 0;}
         }
-        //old way that didnt compensate for pressure/gearing efficiency.
-        //return (accelerator*0.16666666666f)*0.05f;
     }
 
     private float maxPowerMicroblocks =0;
@@ -170,6 +164,9 @@ public class EntityTrainCore extends GenericRailTransport {
                     return;
                 }
 
+
+                //the following is commented out in case it's needed in the future.
+                // it shouldn't be and it should probably be tossed, but we need a confirmed working one first
                 //vectorCache[1][0]*=(weight/13.6f);
                 //vectorCache[1][0]*=0.0254f; //movement distance of 1 MHP in meters per second (30.48/60/20).
                 //vectorCache[1][0]*=0.05f;//scale to ticks
@@ -177,7 +174,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
 
                 //set initial value to scale based on weight pulled over weight of the entity itself
-                vectorCache[1][0]=((maxPowerMicroblocks)/this.weightKg())*(weight/maxPowerMicroblocks);
+                /*vectorCache[1][0]=((maxPowerMicroblocks)/this.weightKg())*(weight/maxPowerMicroblocks);
 
                 //scale to the max speed
                 vectorCache[1][0]*=(accelerator<0?transportTopSpeedReverse():transportTopSpeed());
@@ -191,9 +188,36 @@ public class EntityTrainCore extends GenericRailTransport {
 
                 //increase acceleration rate for faster trains.
                 vectorCache[1][0]*=getAcceleratiorPercentage();//* (accelerator<0?transportTopSpeedReverse()*0.00025:transportTopSpeed()*0.00025);
+*/
 
-                if(!CommonProxy.realSpeed){
-                    vectorCache[1][0]*=0.25f;//scale to TC speed
+
+                //NEW MATH
+                //the effect of weight on horsepower is more or less inverse of horsepower itself.
+                // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
+                // in which case we increase by around 70%
+                vectorCache[1][0] = (maxPowerMicroblocks*(maxPowerMicroblocks*0.7f));
+                //now figure out the percentage of this vs with weight subtracted
+                vectorCache[1][1]=vectorCache[1][0]-weight;
+                if(vectorCache[1][1]<1){
+                    //if too much weight, you stall
+                    vectorCache[1][0]=0;
+                } else {
+                    //this is a mess, but it should reliably scale the speed based on weight pulled
+                    vectorCache[1][0]= (vectorCache[1][0]-vectorCache[1][1])/vectorCache[1][0];
+
+                    //now throw in the transport m/s acceleration, but convert m/s to m/t
+                    //todo: if too fast maybe microblock/tick?
+                    vectorCache[1][0]=(transportAcceleration()*0.05f)*vectorCache[1][0];
+                    //todo: this needs to pull in from the other entities in the consist, preferably in realtime somehow.
+
+                    //scale by throttle position
+                    vectorCache[1][0]*=getAcceleratiorPercentage();
+
+                    //scale to TC speed, basically shows higher numbers than what we're actually moving at
+                    // to make it more dramatic.
+                    if(!CommonProxy.realSpeed){
+                        vectorCache[1][0]*=0.25f;//scale to TC speed
+                    }
                 }
 
 
