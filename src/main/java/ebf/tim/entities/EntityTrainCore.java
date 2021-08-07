@@ -91,7 +91,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
 
     @Override
-    public boolean hasDrag(){return !getBoolean(boolValues.RUNNING) || getAccelerator()==0;}
+    public boolean hasDrag(){return true;}
 
     @Override
     public float getPower(){
@@ -155,44 +155,6 @@ public class EntityTrainCore extends GenericRailTransport {
                 //this end result means we now can move at 0.62428 of the speed provided by MHP
                 //0.62428*0.508=0.317 blocks per second acceleration.
 
-
-
-                vectorCache[1][0] = (maxPowerMicroblocks*1.11039648f);//applied MHP, buffed by linear gravity
-
-                //skip the rest of updating if speed is 0.
-                if(vectorCache[1][0]==0){
-                    return;
-                }
-
-
-                //the following is commented out in case it's needed in the future.
-                // it shouldn't be and it should probably be tossed, but we need a confirmed working one first
-                //vectorCache[1][0]*=(weight/13.6f);
-                //vectorCache[1][0]*=0.0254f; //movement distance of 1 MHP in meters per second (30.48/60/20).
-                //vectorCache[1][0]*=0.05f;//scale to ticks
-                //vectorCache[1][0]*=0.000000025f;//scale to i dont even know but it feels right
-
-
-                //set initial value to scale based on weight pulled over weight of the entity itself
-                /*vectorCache[1][0]=((maxPowerMicroblocks)/this.weightKg())*(weight/maxPowerMicroblocks);
-
-                //scale to the max speed
-                vectorCache[1][0]*=(accelerator<0?transportTopSpeedReverse():transportTopSpeed());
-                //convert from km/h to blocks per tick
-                vectorCache[1][0]*=0.0138889;
-                //add momentum from last tick.
-                vectorCache[1][0]+=vectorCache[1][2];
-
-                //add to momentum for the next tick.
-                vectorCache[1][2]+=vectorCache[1][0]*0.2f;
-
-                //increase acceleration rate for faster trains.
-                vectorCache[1][0]*=getAcceleratiorPercentage();//* (accelerator<0?transportTopSpeedReverse()*0.00025:transportTopSpeed()*0.00025);
-*/
-
-
-                //NEW MATH
-                //the effect of weight on horsepower is more or less inverse of horsepower itself.
                 // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
                 // in which case we increase by around 70%
                 vectorCache[1][0] = (maxPowerMicroblocks*(maxPowerMicroblocks*0.7f));
@@ -205,17 +167,17 @@ public class EntityTrainCore extends GenericRailTransport {
                     //this is a mess, but it should reliably scale the speed based on weight pulled
                     vectorCache[1][0]= (vectorCache[1][0]-vectorCache[1][1])/vectorCache[1][0];
 
-                    //now throw in the transport m/s acceleration, but convert m/s to m/t
-                    //todo: if too fast maybe microblock/tick?
-                    vectorCache[1][0]=(transportAcceleration()*0.05f)*vectorCache[1][0];
-                    //todo: this needs to pull in from the other entities in the consist, preferably in realtime somehow.
+                    //now throw in the transport m/s acceleration, but convert m/s to m/t, (1/20)
+                    // and then convert that to microblocks (0.05/16)
+                    // give an extra debuff of 0.000125 to better balance with drag
+                    vectorCache[1][0]=(transportAcceleration()*0.003125f)*vectorCache[1][0];
 
                     //scale by throttle position
                     vectorCache[1][0]*=getAcceleratiorPercentage();
 
                     //scale to TC speed, basically shows higher numbers than what we're actually moving at
                     // to make it more dramatic.
-                    if(!CommonProxy.realSpeed){
+                    if(CommonProxy.realSpeed){
                         vectorCache[1][0]*=0.25f;//scale to TC speed
                     }
                 }

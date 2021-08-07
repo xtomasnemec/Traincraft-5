@@ -1074,11 +1074,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          *
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
-        if (!worldObj.isRemote && frontBogie!=null && backBogie != null && ticksExisted>1){
-            //handle movement.
-
+        else if (frontBogie!=null && backBogie != null && ticksExisted>1){
             //update positions related to linking
-            if(!(this instanceof EntityTrainCore && getAccelerator()!=0)){//disable linking motion if it's a running train
+            if(getAccelerator()==0 && !getBoolean(boolValues.BRAKE)){
                 if (frontLinkedID != null && worldObj.getEntityByID(frontLinkedID) instanceof GenericRailTransport) {
                     manageLinks((GenericRailTransport) worldObj.getEntityByID(frontLinkedID));
                 }
@@ -1090,44 +1088,30 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //calculate for slopes
             if(Math.abs(rotationPitch)>4f){
                 double[] roll = CommonUtil.rotatePoint(new double[]{
-                        ((backBogie.posY-frontBogie.posY)
-                        /(Math.abs(rotationPoints()[0])+Math.abs(rotationPoints()[1]))
-                        )*0.0025,0,0},
+                                ((backBogie.posY-frontBogie.posY)
+                                        /(Math.abs(rotationPoints()[0])+Math.abs(rotationPoints()[1]))
+                                )*0.0025,0,0},
                         0, rotationYaw,0);
                 frontBogie.addVelocity(roll[0],roll[1],roll[2]);
                 backBogie.addVelocity(roll[0],roll[1],roll[2]);
-            } else if (hasDrag() && frontLinkedTransport==null && backLinkedTransport==null) {
-                //be sure consist weight is properly updated and calculated for collective drag and other things.
-                if(pullingWeight==0){
-                    updateConsist();
+            } else if (hasDrag()) {//calculate for friction drag.
+                //add some extra drag at lower speeds to smooth out stopping
+                if(Math.abs(motionX)<0.3 && Math.abs(motionZ) <0.3){
+                    frontBogie.motionX*=0.985;
+                    frontBogie.motionZ*=0.985;
+                    backBogie.motionX*=0.985;
+                    backBogie.motionZ*=0.985;
                 }
-                //this still seems obscene to me, but the result numbers check out pretty well
-                double drag = 1;
-                //scale by weight, heavier means more drag
-                drag*=Math.pow(pullingWeight, (getBoolean(boolValues.BRAKE)?-0.03:-0.003));
-                //scale drag further by the speed, make the drag from speed more intense the faster it goes
-                drag*= 1-(Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.00000076)-1);
-                //it should never be able to go over these caps, but i don't trust my math
-                if (Double.isInfinite(drag)) {
-                    drag=1;
-                } else if(drag>0.99999999){
-                    drag=0.99999999;
-                } else if (drag<0.01){
-                    drag=0.01;
-                }
-                DebugUtil.println(drag);
-
-                frontBogie.motionX*=drag;
-                frontBogie.motionZ*=drag;
-                backBogie.motionX*=drag;
-                backBogie.motionZ*=drag;
-                //for trains, decreases momentum from drag.
-                vectorCache[1][2]*=drag;
+                frontBogie.motionX*=0.998;
+                frontBogie.motionZ*=0.998;
+                backBogie.motionX*=0.998;
+                backBogie.motionZ*=0.998;
             }
 
             if(!(this instanceof EntityTrainCore)) {
                 updatePosition();
             }
+
         }
 
         //rider updating isn't called if there's no driver/conductor, so just in case of that, we reposition the seats here too.
@@ -1400,32 +1384,27 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLinks(GenericRailTransport linkedTransport) {
+
         //needs velocity so it can be a tick ahead, otherwise it rubberbands back
-        vectorCache[4][0]=  (float)Math.abs((this.posX+this.motionX) - linkedTransport.posX);
-        vectorCache[4][0]+= (float)Math.abs((this.posZ+this.motionZ) - linkedTransport.posZ);
+        vectorCache[4][0]=  (float)Math.abs((posX+motionX) - linkedTransport.posX);
+        vectorCache[4][0]+= (float)Math.abs((posZ+motionZ) - linkedTransport.posZ);
         vectorCache[4][0]-= (float)Math.abs(this.getHitboxSize()[0]*0.5)+Math.abs(linkedTransport.getHitboxSize()[0]*0.5);
 
         //dont bother if the distance is stupid levels of small
-        if(vectorCache[4][0]<0.1 && vectorCache[4][0]>-0.1){
+        if(vectorCache[4][0]<0.15 && vectorCache[4][0]>-0.15){
             return;
         }
 
         //defines springy-ness
-        vectorCache[4][0]*=0.25;
+        //vectorCache[4][0]*=0.75;
         //apply and rotate
         vectorCache[5]=CommonUtil.rotatePointF(vectorCache[4][0],0,0, 0,
                 CommonUtil.atan2degreesf(linkedTransport.posZ - posZ,linkedTransport.posX - posX),0);
 
-        //apply velocity to both entities, due to async updates this is necessary for next step
-        if(!(this instanceof EntityTrainCore) || (!getBoolean(boolValues.BRAKE) && getAccelerator()==0)) {
-            this.frontBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
-            this.backBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
-        }
-        //if (!(linkedTransport instanceof EntityTrainCore) || (!linkedTransport.getBoolean(boolValues.BRAKE)
-        //        && linkedTransport.getAccelerator()==0)) {
-            //linkedTransport.frontBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
-            //linkedTransport.backBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
-       // }
+        //apply velocity
+        frontBogie.setPosition(frontBogie.posX+vectorCache[5][0], frontBogie.posY, frontBogie.posZ+vectorCache[5][2]);
+        backBogie.setPosition(backBogie.posX+vectorCache[5][0], backBogie.posY, backBogie.posZ+vectorCache[5][2]);
+        setPosition(posX+vectorCache[5][0],posY,posZ+vectorCache[5][2]);
     }
 
 
