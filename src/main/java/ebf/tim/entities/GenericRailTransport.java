@@ -1096,7 +1096,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         0, rotationYaw,0);
                 frontBogie.addVelocity(roll[0],roll[1],roll[2]);
                 backBogie.addVelocity(roll[0],roll[1],roll[2]);
-            } else if (hasDrag()) {
+            } else if (hasDrag() && frontLinkedTransport==null && backLinkedTransport==null) {
                 //be sure consist weight is properly updated and calculated for collective drag and other things.
                 if(pullingWeight==0){
                     updateConsist();
@@ -1106,14 +1106,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 //scale by weight, heavier means more drag
                 drag*=Math.pow(pullingWeight, (getBoolean(boolValues.BRAKE)?-0.03:-0.003));
                 //scale drag further by the speed, make the drag from speed more intense the faster it goes
-                drag*= 1-(Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.000076)-1);
-
+                drag*= 1-(Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.00000076)-1);
                 //it should never be able to go over these caps, but i don't trust my math
-                if(drag>0.99999999){
+                if (Double.isInfinite(drag)) {
+                    drag=1;
+                } else if(drag>0.99999999){
                     drag=0.99999999;
                 } else if (drag<0.01){
                     drag=0.01;
                 }
+                DebugUtil.println(drag);
 
                 frontBogie.motionX*=drag;
                 frontBogie.motionZ*=drag;
@@ -1398,53 +1400,32 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLinks(GenericRailTransport linkedTransport) {
-        //distance
-        vectorCache[4][0]= (float)(this.posX - linkedTransport.posX);
-        vectorCache[4][2]= (float)(this.posZ - linkedTransport.posZ);
+        //needs velocity so it can be a tick ahead, otherwise it rubberbands back
+        vectorCache[4][0]=  (float)Math.abs((this.posX+this.motionX) - linkedTransport.posX);
+        vectorCache[4][0]+= (float)Math.abs((this.posZ+this.motionZ) - linkedTransport.posZ);
+        vectorCache[4][0]-= (float)Math.abs(this.getHitboxSize()[0]*0.5)+Math.abs(linkedTransport.getHitboxSize()[0]*0.5);
 
-        //movement length
-        float norm = MathHelper.sqrt_double(
-                vectorCache[4][0] * vectorCache[4][0] + vectorCache[4][2] * vectorCache[4][2]);
+        //dont bother if the distance is stupid levels of small
+        if(vectorCache[4][0]<0.1 && vectorCache[4][0]>-0.1){
+            return;
+        }
 
-        //scale the distance
-        vectorCache[5][0] = vectorCache[4][0] / norm;
-        vectorCache[5][2] = vectorCache[4][2] / norm;
-
-        //add in linking distance to the movement length
-        norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
-
-        //scale distance based on movement length with linking distance.
-        vectorCache[4][0] = 0.08f * norm * vectorCache[4][0];
-        vectorCache[4][2] = 0.08f * norm * vectorCache[4][2];
-
+        //defines springy-ness
+        vectorCache[4][0]*=0.25;
+        //apply and rotate
+        vectorCache[5]=CommonUtil.rotatePointF(vectorCache[4][0],0,0, 0,
+                CommonUtil.atan2degreesf(linkedTransport.posZ - posZ,linkedTransport.posX - posX),0);
 
         //apply velocity to both entities, due to async updates this is necessary for next step
-        if(!(this instanceof EntityTrainCore) || !getBoolean(boolValues.BRAKE)) {
-            this.frontBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
-            this.backBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
+        if(!(this instanceof EntityTrainCore) || (!getBoolean(boolValues.BRAKE) && getAccelerator()==0)) {
+            this.frontBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
+            this.backBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
         }
-        if (!(linkedTransport instanceof EntityTrainCore) || !linkedTransport.getBoolean(boolValues.BRAKE)) {
-            linkedTransport.frontBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
-            linkedTransport.backBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
-        }
-
-        //calculate distance based on the movement of each entity
-        norm = (float)((this.frontBogie.motionX - linkedTransport.frontBogie.motionX) * vectorCache[5][0] +
-                (this.frontBogie.motionZ - linkedTransport.frontBogie.motionZ) * vectorCache[5][2]);
-
-        //scale the distance based on the original scaled distance.
-        vectorCache[4][0] = 0.4f * norm * vectorCache[5][0] * -1;
-        vectorCache[4][2] = 0.4f * norm * vectorCache[5][2] * -1;
-
-        //now dampen the original movement distance based on the calculated movement speed
-        if(!(this instanceof EntityTrainCore) || !getBoolean(boolValues.BRAKE)) {
-            this.frontBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
-            this.backBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
-        }
-        if (!(linkedTransport instanceof EntityTrainCore) || !linkedTransport.getBoolean(boolValues.BRAKE)) {
-            linkedTransport.frontBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
-            linkedTransport.backBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
-        }
+        //if (!(linkedTransport instanceof EntityTrainCore) || (!linkedTransport.getBoolean(boolValues.BRAKE)
+        //        && linkedTransport.getAccelerator()==0)) {
+            //linkedTransport.frontBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
+            //linkedTransport.backBogie.addVelocity(vectorCache[5][0], 0, vectorCache[5][2]);
+       // }
     }
 
 
