@@ -205,6 +205,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     segmentMovement(Math.abs(motionX) + Math.abs(motionZ),
                             floorX, floorY, floorZ, (BlockRailBase) block);
                 }
+                if(!isFront){
+                    host.motionX=motionX;
+                    host.motionZ=motionZ;
+                }
+//                DebugUtil.println(motionX,motionZ);
                 //update on ZnD rails, and ones that don't extend block rail base.
                 //todo ZnD support, either by jar reference or API update
             //} else if (block instanceof ITrackBase) {
@@ -419,15 +424,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     @Override
     public void setVelocity(double x, double y, double z) {
-        motionX = x;
-        motionY = y;
-        motionZ = z;
-        motionX=(int)(motionX*1000000000);
-        motionX*=0.000000001;
-        motionY=(int)(motionY*1000000000);
-        motionY*=0.000000001;
-        motionZ=(int)(motionZ*1000000000);
-        motionZ*=0.000000001;
+        motionX=(((long)(x*100000000))*0.00000001);
+        motionY=(((long)(y*100000000))*0.00000001);
+        motionZ=(((long)(z*100000000))*0.00000001);
 
 
         isAirBorne = true;
@@ -440,12 +439,12 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**override of the super method just so we can set the position without updating the hitbox, because we don't need to.*/
     @Override
     public void setPosition(double x, double y, double z) {
-        posX=(int)(posX*10000);
-        posX*=0.0001;
-        posY=(int)(posY*10000);
-        posY*=0.0001;
-        posZ=(int)(posZ*10000);
-        posZ*=0.0001;
+        posX=(int)(x*1000);
+        posX*=0.001;
+        posY=(int)(y*1000);
+        posY*=0.001;
+        posZ=(int)(z*1000);
+        posZ*=0.001;
     }
 
 

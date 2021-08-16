@@ -916,8 +916,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //actually move
         prevPosX=posX;
         prevPosZ=posZ;
-        motionX = (frontBogie.motionX+backBogie.motionX)*0.5;
-        motionZ = (frontBogie.motionZ+backBogie.motionZ)*0.5;
         frontBogie.minecartMove(this);
         backBogie.minecartMove(this);
 
@@ -936,7 +934,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-        dataWatcher.updateObject(12,velocity[0]= (float)Math.sqrt(motionX*motionX + motionZ*motionZ));
+        dataWatcher.updateObject(12,(float)(Math.abs(motionX)+Math.abs(motionZ)));
         if (!worldObj.isRemote) {
             for (CollisionBox box : collisionHandler.interactionBoxes) {
                 box.onUpdate();
@@ -1076,7 +1074,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          */
         else if (frontBogie!=null && backBogie != null && ticksExisted>1){
             //update positions related to linking
-            if(getAccelerator()==0 && !getBoolean(boolValues.BRAKE)){
+            if(getAccelerator()==0){
                 if (frontLinkedID != null && worldObj.getEntityByID(frontLinkedID) instanceof GenericRailTransport) {
                     manageLinks((GenericRailTransport) worldObj.getEntityByID(frontLinkedID));
                 }
@@ -1096,16 +1094,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 backBogie.addVelocity(roll[0],roll[1],roll[2]);
             } else if (hasDrag()) {//calculate for friction drag.
                 //add some extra drag at lower speeds to smooth out stopping
-                if(Math.abs(motionX)<0.3 && Math.abs(motionZ) <0.3){
+                if((Math.abs(motionX)<0.3 && Math.abs(motionZ) <0.3) || getBoolean(boolValues.BRAKE)){
                     frontBogie.motionX*=0.985;
                     frontBogie.motionZ*=0.985;
                     backBogie.motionX*=0.985;
                     backBogie.motionZ*=0.985;
                 }
-                frontBogie.motionX*=0.998;
-                frontBogie.motionZ*=0.998;
-                backBogie.motionX*=0.998;
-                backBogie.motionZ*=0.998;
+                frontBogie.motionX*=0.996;
+                frontBogie.motionZ*=0.996;
+                backBogie.motionX*=0.996;
+                backBogie.motionZ*=0.996;
             }
 
             if(!(this instanceof EntityTrainCore)) {
@@ -1501,8 +1499,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId,posX,posY,posZ,16*4));
     }
 
-    public float getVelocity(){
-        return (float)Math.max(Math.max(Math.abs(motionX),0.0001f),Math.abs(motionZ));
+    public double getVelocity(){
+        return dataWatcher.getWatchableObjectFloat(12);
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.

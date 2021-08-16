@@ -155,6 +155,9 @@ public class EntityTrainCore extends GenericRailTransport {
                 //this end result means we now can move at 0.62428 of the speed provided by MHP
                 //0.62428*0.508=0.317 blocks per second acceleration.
 
+                //store this for later first
+                vectorCache[1][2]=vectorCache[1][0];
+
                 // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
                 // in which case we increase by around 70%
                 vectorCache[1][0] = (maxPowerMicroblocks*(maxPowerMicroblocks*0.7f));
@@ -168,12 +171,13 @@ public class EntityTrainCore extends GenericRailTransport {
                     vectorCache[1][0]= (vectorCache[1][0]-vectorCache[1][1])/vectorCache[1][0];
 
                     //now throw in the transport m/s acceleration, but convert m/s to m/t, (1/20)
-                    // and then convert that to microblocks (0.05/16)
-                    // give an extra debuff of 0.000125 to better balance with drag
-                    vectorCache[1][0]=(transportAcceleration()*0.003125f)*vectorCache[1][0];
+                    //debuff by 0.02 to make it a bit less quick, otherwise it accelerates like it's in a vacuum.
+                    vectorCache[1][0]=(transportAcceleration()*0.03f)*vectorCache[1][0];
 
                     //scale by throttle position
                     vectorCache[1][0]*=getAcceleratiorPercentage();
+
+                    vectorCache[1][0]+=vectorCache[1][2]*0.15f;
 
                     //scale to TC speed, basically shows higher numbers than what we're actually moving at
                     // to make it more dramatic.
@@ -227,9 +231,9 @@ public class EntityTrainCore extends GenericRailTransport {
                 //twice a second, re-calculate the speed.
                 if (accelerator != 0 && ticksExisted % 10 == 0) {
                     //stop calculation if it can't move, running should be managed from the fuel handler, to be more dynamic
-                    if (getBoolean(boolValues.RUNNING) && !getBoolean(boolValues.BRAKE)) {
+                    if (getBoolean(boolValues.RUNNING)) {
                         //skip updating speed on TC style cruise control
-                        if(accelerator!=8 && accelerator!=-8) {
+                        if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
                             calculateAcceleration();
                         }
                     } else {
@@ -243,9 +247,16 @@ public class EntityTrainCore extends GenericRailTransport {
                     frontBogie.setVelocity(0,0,0);
                     backBogie.setVelocity(0,0,0);
                 } else if(accelerator!=0) {
-                    Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
-                    frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-                    backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
+                    //only add velocity when it's not at max speed.
+                    if(Math.abs(frontBogie.motionX)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01 &&
+                            Math.abs(frontBogie.motionZ)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01 &&
+                            Math.abs(backBogie.motionX)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01 &&
+                            Math.abs(backBogie.motionZ)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01
+                    ){
+                        Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
+                        frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
+                        backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
+                    }
                 }
 
 
