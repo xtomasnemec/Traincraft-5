@@ -352,6 +352,10 @@ public class RenderWagon extends Render {
                     for (Bogie sub : b.subBogies) {
                         if(s!=null && s.getSubBogieSkin(iii)!=null){
                             TextureManager.bindTexture(s.getSubBogieSkin(iii), s.colorsFrom, s.colorsTo, entity.colorsFrom, entity.colorsTo);
+                        } else if (s!=null && s.getBogieSkin(ii) != null) {
+                            //redundency additional force texture bind if sub-bogies inherit bogie skin, and have any
+                            //  animations that override texture, like lights
+                            TextureManager.bindTexture(s.getBogieSkin(ii), s.colorsFrom, s.colorsTo, entity.colorsFrom, entity.colorsTo);
                         }
                         GL11.glPushMatrix();
                         GL11.glTranslated(sub.offset[0]-b.offset[0], sub.offset[1]-b.offset[1], sub.offset[2]-b.offset[2]);

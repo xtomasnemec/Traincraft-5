@@ -62,7 +62,7 @@ public class HUDloco extends GuiScreen {
 
 	private void renderText(EntityTrainCore loco) {
 		double speed =(loco.getVelocity()* (CommonProxy.realSpeed ?25D:100D));
-		speed*= ClientProxy.speedInKmh?1:0.621371;
+		speed*=ClientProxy.speedInKmh?1:0.621371;
 		int h;
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
 			h = 15;
@@ -75,7 +75,7 @@ public class HUDloco extends GuiScreen {
 		fontRendererObj.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
 		fontRendererObj.drawStringWithShadow("  " + Math.floor(speed), 106,
 				windowHeight + 18 + (h), 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow(" Km/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
 			fontRendererObj.drawStringWithShadow("State: " + getState(loco.fuelHandler), 50, windowHeight + 80, 0xFFFFFF);
