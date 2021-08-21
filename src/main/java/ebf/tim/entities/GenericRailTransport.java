@@ -916,8 +916,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //actually move
         prevPosX=posX;
         prevPosZ=posZ;
-        motionX = (frontBogie.motionX+backBogie.motionX)*0.5;
-        motionZ = (frontBogie.motionZ+backBogie.motionZ)*0.5;
         frontBogie.minecartMove(this);
         backBogie.minecartMove(this);
 
@@ -936,7 +934,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-        dataWatcher.updateObject(12,velocity[0]= (float)Math.sqrt(motionX*motionX + motionZ*motionZ));
+        dataWatcher.updateObject(12,(float)(Math.abs(motionX)+Math.abs(motionZ)));
         if (!worldObj.isRemote) {
             for (CollisionBox box : collisionHandler.interactionBoxes) {
                 box.onUpdate();
@@ -1074,11 +1072,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          *
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
-        if (!worldObj.isRemote && frontBogie!=null && backBogie != null && ticksExisted>1){
-            //handle movement.
-
+        else if (frontBogie!=null && backBogie != null && ticksExisted>1){
             //update positions related to linking
-            if(!(this instanceof EntityTrainCore && getAccelerator()!=0)){//disable linking motion if it's a running train
+            if(getAccelerator()==0){
                 if (frontLinkedID != null && worldObj.getEntityByID(frontLinkedID) instanceof GenericRailTransport) {
                     manageLinks((GenericRailTransport) worldObj.getEntityByID(frontLinkedID));
                 }
@@ -1090,40 +1086,30 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //calculate for slopes
             if(Math.abs(rotationPitch)>4f){
                 double[] roll = CommonUtil.rotatePoint(new double[]{
-                        ((backBogie.posY-frontBogie.posY)
-                        /(Math.abs(rotationPoints()[0])+Math.abs(rotationPoints()[1]))
-                        )*0.0025,0,0},
+                                ((backBogie.posY-frontBogie.posY)
+                                        /(Math.abs(rotationPoints()[0])+Math.abs(rotationPoints()[1]))
+                                )*0.0025,0,0},
                         0, rotationYaw,0);
                 frontBogie.addVelocity(roll[0],roll[1],roll[2]);
                 backBogie.addVelocity(roll[0],roll[1],roll[2]);
-            } else if (hasDrag()) {
-                //be sure consist weight is properly updated and calculated for collective drag and other things.
-                if(pullingWeight==0){
-                    updateConsist();
+            } else if (hasDrag()) {//calculate for friction drag.
+                //add some extra drag at lower speeds to smooth out stopping
+                if((Math.abs(motionX)<0.3 && Math.abs(motionZ) <0.3) || getBoolean(boolValues.BRAKE)){
+                    frontBogie.motionX*=0.985;
+                    frontBogie.motionZ*=0.985;
+                    backBogie.motionX*=0.985;
+                    backBogie.motionZ*=0.985;
                 }
-                //this still seems obscene to me, but the result numbers check out pretty well
-                double drag = 1;
-                //scale by weight, heavier means more drag
-                drag*=Math.pow(pullingWeight, (getBoolean(boolValues.BRAKE)?-0.03:-0.003));
-                //scale drag further by the speed, make the drag from speed more intense the faster it goes
-                drag*= 1-(Math.pow((Math.abs(motionX)+Math.abs(motionZ)),-0.000076)-1);
-
-                //it should never be able to go over these caps, but i don't trust my math
-                if(drag>0.99999999){
-                    drag=0.99999999;
-                } else if (drag<0.01){
-                    drag=0.01;
-                }
-
-                frontBogie.motionX*=drag;
-                frontBogie.motionZ*=drag;
-                backBogie.motionX*=drag;
-                backBogie.motionZ*=drag;
+                frontBogie.motionX*=0.996;
+                frontBogie.motionZ*=0.996;
+                backBogie.motionX*=0.996;
+                backBogie.motionZ*=0.996;
             }
 
             if(!(this instanceof EntityTrainCore)) {
                 updatePosition();
             }
+
         }
 
         //rider updating isn't called if there's no driver/conductor, so just in case of that, we reposition the seats here too.
@@ -1396,53 +1382,27 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLinks(GenericRailTransport linkedTransport) {
-        //distance
-        vectorCache[4][0]= (float)(this.posX - linkedTransport.posX);
-        vectorCache[4][2]= (float)(this.posZ - linkedTransport.posZ);
 
-        //movement length
-        float norm = MathHelper.sqrt_double(
-                vectorCache[4][0] * vectorCache[4][0] + vectorCache[4][2] * vectorCache[4][2]);
+        //needs velocity so it can be a tick ahead, otherwise it rubberbands back
+        vectorCache[4][0]=  (float)Math.abs((posX+motionX) - linkedTransport.posX);
+        vectorCache[4][0]+= (float)Math.abs((posZ+motionZ) - linkedTransport.posZ);
+        vectorCache[4][0]-= (float)Math.abs(this.getHitboxSize()[0]*0.5)+Math.abs(linkedTransport.getHitboxSize()[0]*0.5);
 
-        //scale the distance
-        vectorCache[5][0] = vectorCache[4][0] / norm;
-        vectorCache[5][2] = vectorCache[4][2] / norm;
-
-        //add in linking distance to the movement length
-        norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
-
-        //scale distance based on movement length with linking distance.
-        vectorCache[4][0] = 0.08f * norm * vectorCache[4][0];
-        vectorCache[4][2] = 0.08f * norm * vectorCache[4][2];
-
-
-        //apply velocity to both entities, due to async updates this is necessary for next step
-        if(!(this instanceof EntityTrainCore) || !getBoolean(boolValues.BRAKE)) {
-            this.frontBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
-            this.backBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
-        }
-        if (!(linkedTransport instanceof EntityTrainCore) || !linkedTransport.getBoolean(boolValues.BRAKE)) {
-            linkedTransport.frontBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
-            linkedTransport.backBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
+        //dont bother if the distance is stupid levels of small
+        if(vectorCache[4][0]<0.15 && vectorCache[4][0]>-0.15){
+            return;
         }
 
-        //calculate distance based on the movement of each entity
-        norm = (float)((this.frontBogie.motionX - linkedTransport.frontBogie.motionX) * vectorCache[5][0] +
-                (this.frontBogie.motionZ - linkedTransport.frontBogie.motionZ) * vectorCache[5][2]);
+        //defines springy-ness
+        //vectorCache[4][0]*=0.75;
+        //apply and rotate
+        vectorCache[5]=CommonUtil.rotatePointF(vectorCache[4][0],0,0, 0,
+                CommonUtil.atan2degreesf(linkedTransport.posZ - posZ,linkedTransport.posX - posX),0);
 
-        //scale the distance based on the original scaled distance.
-        vectorCache[4][0] = 0.4f * norm * vectorCache[5][0] * -1;
-        vectorCache[4][2] = 0.4f * norm * vectorCache[5][2] * -1;
-
-        //now dampen the original movement distance based on the calculated movement speed
-        if(!(this instanceof EntityTrainCore) || !getBoolean(boolValues.BRAKE)) {
-            this.frontBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
-            this.backBogie.addVelocity(vectorCache[4][0], 0, vectorCache[4][2]);
-        }
-        if (!(linkedTransport instanceof EntityTrainCore) || !linkedTransport.getBoolean(boolValues.BRAKE)) {
-            linkedTransport.frontBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
-            linkedTransport.backBogie.addVelocity(-vectorCache[4][0], 0, -vectorCache[4][2]);
-        }
+        //apply velocity
+        frontBogie.setPosition(frontBogie.posX+vectorCache[5][0], frontBogie.posY, frontBogie.posZ+vectorCache[5][2]);
+        backBogie.setPosition(backBogie.posX+vectorCache[5][0], backBogie.posY, backBogie.posZ+vectorCache[5][2]);
+        setPosition(posX+vectorCache[5][0],posY,posZ+vectorCache[5][2]);
     }
 
 
@@ -1539,8 +1499,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId,posX,posY,posZ,16*4));
     }
 
-    public float getVelocity(){
-        return (float)Math.max(Math.max(Math.abs(motionX),0.0001f),Math.abs(motionZ));
+    public double getVelocity(){
+        return dataWatcher.getWatchableObjectFloat(12);
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.
@@ -2320,6 +2280,25 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public float transportTractiveEffort(){return 0;}
     /**this is the default value to define the acceleration speed and pulling power of a transport.*/
     public float transportMetricHorsePower(){return 0;}
+
+    /**This defines the acceleration rate in meters per second
+     * the example code is a little long to add more realistic scaling without needing to know any real specifics*/
+    public float transportAcceleration(){
+        if(transportTopSpeed()==0){return 0;}//efficiency shorthand for rollingstock.
+
+        //the n700 is noted to go 0 to 60(96.56km/h) in 37 seconds.
+        //if we assume a little high,to 45, that makes it 96.56/45=2.14579 km/s per second acceleration or
+        // 2145.79 meters per second.
+        if(getVelocity()<transportTopSpeed()*0.25){
+            return 2145.79f;
+        } else if (getVelocity()<transportTopSpeed()*0.5){
+            return 2467.659f;//typically middle-speeds are geared for higher acceleration since less torque is needed
+        } else if (getVelocity()<transportTopSpeed()*0.85){
+            return 2145.79f;//return the normal amount for higher speeds like a bit of a bell curve
+        } else {
+            return 1287.4746f;//returns about 60% at the top of the gear since you're bottoming out in the transmission
+        }
+    }
 
     /**additional lore for the item, each entry in the array is a new line.
      * return null if unused.*/

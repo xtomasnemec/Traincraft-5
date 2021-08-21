@@ -61,7 +61,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderText(EntityTrainCore loco) {
-		double speed =loco.getVelocity()* (CommonProxy.realSpeed ?20:49);
+		double speed =(loco.getVelocity()* (CommonProxy.realSpeed ?25D:100D));
 		speed*= ClientProxy.speedInKmh?1:0.621371;
 		int h;
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
@@ -73,7 +73,7 @@ public class HUDloco extends GuiScreen {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
 		fontRendererObj.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("  " + Math.floor(speed*(ClientProxy.realSpeed?0.25:1)), 106,
+		fontRendererObj.drawStringWithShadow("  " + Math.floor(speed), 106,
 				windowHeight + 18 + (h), 0xFFFFFF);
 		fontRendererObj.drawStringWithShadow(" Km/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 

@@ -34,8 +34,12 @@ public class CommonProxy implements IGuiHandler {
     public static EventManagerServer eventManagerServer = new EventManagerServer();
     public static Map<String, List<Recipe>> recipesInMods = new HashMap<>();
     public static String configDirectory;
+
     public static boolean realSpeed=false;
-    public static boolean enableChunkloading=true;
+    public static boolean enableChunkloading = true;
+    public static boolean doAluminumGeneration = true;
+    public static boolean doSteelGeneration = true;
+    public static boolean doCopperGeneration = true;
     /**Decides whether to use Traincraft or TiM assembly tables. */
     public static boolean isTraincraft = true;
 
@@ -81,16 +85,22 @@ public class CommonProxy implements IGuiHandler {
         SkinRegistry.debugSkinRegistration = config.getBoolean("DebugSkinRegister", "Debug (Common, IDE Only)",false,
                 "Logs all TransportSkin registration events to debug console.");
 
-        config.save();
-        configDirectory = event.getModConfigurationDirectory().getAbsolutePath();
-
+        config.addCustomCategoryComment("Gameplay", "Settings that affect gameplay (ie. chunk loading, world generation, train speed");
         realSpeed=config.getBoolean("UseRealSpeed","Gameplay", false,
                 "Real speed moves the train on the assumption a block is a meter. Setting this to false will move the train on the assumption a block is 16 meters (more similar to Traincraft).");
 
         enableChunkloading=config.getBoolean("enableChunkloading","Gameplay", true,
                 "Allows Trains and Rollingstock to load chunks in a 3x3 area around them, this allows them to function without players nearby, but at the cost of performance (effects server and singleplayer only)");
 
+        doAluminumGeneration = config.getBoolean("doAluminumGeneration","Gameplay", true,
+                "Decides whether or not to generate the aluminum ore in the overworld. Enabling will not cause retrogen (yet).");
+        doSteelGeneration = config.getBoolean("doSteelGeneration","Gameplay", true,
+                "Decides whether or not to generate the steel ore in the nether. Enabling will not cause retrogen (yet).");
+        doCopperGeneration = config.getBoolean("doCopperGeneration","Gameplay", true,
+                "Decides whether or not to generate the copper ore in the nether. Enabling will not cause retrogen (yet).");
 
+        config.save();
+        configDirectory = event.getModConfigurationDirectory().getAbsolutePath();
 
 
 

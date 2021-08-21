@@ -130,7 +130,7 @@ public class TileRenderFacing extends TileEntity {
 
     @Override
     public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
-        return false;
+        return (newBlock != oldBlock);
     }
 
     @Override

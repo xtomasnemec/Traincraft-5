@@ -1,8 +1,10 @@
 package ebf.tim.utility;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.items.ItemRail;
+import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -11,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import train.core.handlers.ConfigHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -82,6 +85,24 @@ public class RecipeManager {
                     }
                 }
                 else if(stack.getItem()==result.getItem()){
+                    //TC enable/disable different types of stock functionality.
+                    //faster to check the bools first, then check if it's actually valid, since most wont use this feature.
+                    if((!ConfigHandler.ENABLE_DIESEL || !ConfigHandler.ENABLE_ELECTRIC || !ConfigHandler.ENABLE_STEAM)
+                            && result.getItem() instanceof ItemTransport && ((ItemTransport)result.getItem()).types!=null) {
+                        if (!ConfigHandler.ENABLE_DIESEL
+                                && ((ItemTransport)result.getItem()).types.contains(TrainsInMotion.transportTypes.DIESEL)) {
+                            return null;
+                        }
+                        if (!ConfigHandler.ENABLE_ELECTRIC
+                                && ((ItemTransport)result.getItem()).types.contains(TrainsInMotion.transportTypes.ELECTRIC)) {
+                            return null;
+                        }
+                        if (!ConfigHandler.ENABLE_STEAM
+                                && ((ItemTransport)result.getItem()).types.contains(TrainsInMotion.transportTypes.STEAM)) {
+                            return null;
+                        }
+                    }
+
                     return r;
                 }
             }
