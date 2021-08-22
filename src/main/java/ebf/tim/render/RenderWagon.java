@@ -324,6 +324,10 @@ public class RenderWagon extends Render {
                 //bind the texture
                 if (s!=null && s.getBogieSkin(ii) != null) {
                     TextureManager.bindTexture(s.getBogieSkin(ii), s.colorsFrom, s.colorsTo, entity.colorsFrom, entity.colorsTo);
+                } else if (s!=null && s.getBogieSkin(ii) == null) {
+                    //redundency additional force texture bind if bogies inherit locomotive skin, and have any
+                    //  animations that override texture, like lights
+                    TextureManager.bindTexture(s.getTexture(ii), s.colorsFrom, s.colorsTo, entity.colorsFrom, entity.colorsTo);
                 }
                 GL11.glPushMatrix();
                 GL11.glTranslated(b.offset[0], -b.offset[1], b.offset[2]);
