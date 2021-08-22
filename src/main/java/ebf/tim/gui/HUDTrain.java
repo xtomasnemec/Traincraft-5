@@ -56,10 +56,10 @@ public class HUDTrain extends GuiScreen {
                 fontRendererObj.drawString("DEBUG INFO:", 8, 18, 4210752);
                 fontRendererObj.drawString("Accelerator State: " + -trainEntity.getDataWatcher().getWatchableObjectInt(18), 8, 28, 4210752);
                 //speed is velocity *20 to get meters per second. convert to km/h by dividing by 3.6, or mph by 2.236936293
-                double speed =trainEntity.getVelocity()* (CommonProxy.realSpeed ?20:100);
-                speed*=ClientProxy.speedInKmh?2.23694:3.6;
-                String speedDisplay = speed+"";
-                speedDisplay=speedDisplay.substring(0,Math.min(speedDisplay.length(),4));
+                double speed =trainEntity.getVelocity()* (CommonProxy.realSpeed ?25D:100D);
+                speed*=ClientProxy.speedInKmh?1:0.621371;
+                String speedDisplay = speed+".....";
+                speedDisplay=speedDisplay.substring(0,4);
 
                 if(ClientProxy.speedInKmh) {
                     fontRendererObj.drawString("speed: " + speedDisplay + "km/h", 8, 38, 4210752);
