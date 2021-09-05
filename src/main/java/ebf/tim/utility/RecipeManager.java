@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import train.core.handlers.ConfigHandler;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -280,19 +281,31 @@ public class RecipeManager {
     }
 
     public static Recipe getRecipe(Object[] obj, ItemStack cartItem){
-        Recipe r = new Recipe(new ItemStack[]{cartItem},
-                getItem(obj[0]),
-                getItem(obj[1]),
-                getItem(obj[2]),
-                getItem(obj[3]),
-                getItem(obj[4]),
-                getItem(obj[5]),
-                getItem(obj[6]),
-                getItem(obj[7]),
-                getItem(obj[8])
-        );
-        return r;
+        List<ItemStack> result = new ArrayList<>();
+        result.add(cartItem);
+        List<List<ItemStack>> ingred = new ArrayList<>();
+        for (Object ingredient : obj) {
+            ingred.add(Arrays.asList(getItem(ingredient)));
+        }
+        return new Recipe(result, ingred);
     }
+
+
+    //old getRecipe
+//    public static Recipe getRecipe(Object[] obj, ItemStack cartItem){
+//        Recipe r = new Recipe(new ItemStack[]{cartItem},
+//                getItem(obj[0]),
+//                getItem(obj[1]),
+//                getItem(obj[2]),
+//                getItem(obj[3]),
+//                getItem(obj[4]),
+//                getItem(obj[5]),
+//                getItem(obj[6]),
+//                getItem(obj[7]),
+//                getItem(obj[8])
+//        );
+//        return r;
+//    }
 
     //This is necessary because the GenericRegistry will have to set the tier on the recipe somehow, in case it is set on the class.
     public static Recipe getRecipeWithTier(Object[] obj, ItemStack cartItem, int tier){
