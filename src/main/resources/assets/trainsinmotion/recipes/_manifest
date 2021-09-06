@@ -17,6 +17,8 @@ steelFirebox.json
 steelPinCircuit.json
 transformer.json
 
+boilers/woodBoiler.json
+boilers/copperBoiler.json
 boilers/ironBoiler.json
 boilers/steelBoiler.json
 
@@ -31,6 +33,12 @@ cabins/cabinWood.json
 chimneys/chimneyIron.json
 chimneys/chimneySteel.json
 chimneys/chimneySteelShort.json
+chimneys/chimneyWood.json
+chimneys/chimneyCopper.json
+# chimneys/chimneyFiberglass.json TODO: this recipe
+chimneys/chimneyPlastic.json
+chimneys/chimneyAlum.json
+chimneys/chimneyAlumShort.json
 
 frames/frameAluminium.json
 frames/frameCopper.json
