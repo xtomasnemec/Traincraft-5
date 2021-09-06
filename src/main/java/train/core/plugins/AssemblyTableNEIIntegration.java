@@ -120,7 +120,7 @@ public class AssemblyTableNEIIntegration extends TiMTableNEIIntegration {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         if (arecipes.get(recipe) instanceof CachedAsmTableRecipe) {
             int tier = ((CachedAsmTableRecipe) arecipes.get(recipe)).getRecipe().getTier();
-            GuiDraw.changeTexture(asmTableGUIs[tier]);
+            GuiDraw.changeTexture(asmTableGUIs[tier-1]);
             GuiDraw.drawTexturedModalRect(0, 0, 0, 0, 175, 170);
         } else {
             //default (slightly modified from TemplateRecipeHandler)
