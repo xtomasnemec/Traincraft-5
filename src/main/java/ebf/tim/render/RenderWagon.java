@@ -105,8 +105,10 @@ public class RenderWagon extends Render {
                         if (render.boxName ==null){continue;}
                         //attempt to cache the parts for the main transport model
                         if(StaticModelAnimator.checkCulls(render)){
+                            render.boxName=render.boxName.replace("cull","").replace("Cull", "");
                             render.showModel = false;
                         } else if(StaticModelAnimator.checkNoCulls(render)){
+                            render.boxName=render.boxName.replace("nocull","").replace("Nocull", "").replace("NoCull", "");
                             render.noCull = true;
                         }
                         if(render.boxName.contains(StaticModelAnimator.tagGlow)){

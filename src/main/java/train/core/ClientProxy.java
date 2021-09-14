@@ -118,11 +118,6 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void registerSounds() {
-		MinecraftForge.EVENT_BUS.register(new Traincraft_EventSounds());
-	}
-
-	@Override
 	public Minecraft getMinecraft() {
 		return Minecraft.getMinecraft();
 	}

@@ -158,7 +158,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
      * @see CommonUtil
      * returns true or false depending on whether or not it derails from having no rail.
      */
-    public boolean minecartMove(GenericRailTransport host) {
+    public boolean minecartMove(GenericRailTransport host, double moveX, double moveZ) {
         //define the yaw from the super
         this.setRotation(host.rotationYaw, host.rotationPitch);
         //client only, update position
@@ -170,7 +170,13 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
         }
         //server only
-        else {
+        else if(!worldObj.isRemote) {
+
+            //prevent moving without motion velocity
+            if (Math.abs(moveX) + Math.abs(moveZ) < 0.000001) {
+                return true;
+            }
+
             //update old position, add the gravity, and get the block below this,
             this.prevPosX = this.posX;
             this.prevPosY = this.posY;
@@ -181,35 +187,17 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             int floorY = MathHelper.floor_double(this.posY);
             int floorZ = MathHelper.floor_double(this.posZ);
 
+            double velocity = Math.abs(moveX) + Math.abs(moveZ);
 
 
             Block block = worldObj.getBlock(floorX, floorY, floorZ);
+            //todo: if (block instanceof BlockRailCore) {
+            //update using spline movement
+            //} else if (block instanceof BlockRailBase)
+
             //update on normal rails
             if (block instanceof BlockRailBase) {
-                lastKnownRailX=posX;
-                lastKnownRailZ=posZ;
-                lastKnownRailY=posY;
-                this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
-
-                //prevent moving without motion velocity
-                if(Math.abs(motionX)+Math.abs(motionZ)<0.000001){
-                    return true;
-                }
-
-                //try to adhere to limiter track
-                float max = ((BlockRailBase) block).getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
-                if(max!=0.4f) {
-                    segmentMovement(Math.min(Math.abs(motionX) + Math.abs(motionZ), Math.abs(max)),
-                            floorX, floorY, floorZ, (BlockRailBase) block);
-                } else {
-                    segmentMovement(Math.abs(motionX) + Math.abs(motionZ),
-                            floorX, floorY, floorZ, (BlockRailBase) block);
-                }
-                if(!isFront){
-                    host.motionX=motionX;
-                    host.motionZ=motionZ;
-                }
-//                DebugUtil.println(motionX,motionZ);
+                loopVanilla(velocity, moveX, moveZ, floorX,floorY,floorZ, (BlockRailBase) block);
                 //update on ZnD rails, and ones that don't extend block rail base.
                 //todo ZnD support, either by jar reference or API update
             //} else if (block instanceof ITrackBase) {
@@ -217,57 +205,70 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 //moveBogieZnD(motionX, motionZ, floorX, floorY, floorZ, (ITrackBase) block);
             } else {
 
-                segmentOffRailMovement(Math.abs(motionX) + Math.abs(motionZ));
+                while (velocity>0) {
+                    posX+=Math.min(0.35, motionX);
+                    posZ+=Math.min(0.35, motionZ);
+                    motionX-=Math.min(0.35, motionX);
+                    motionZ-=Math.min(0.35, motionZ);
+                    velocity -= 0.35;
+
+                    if (worldObj.getBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY-0.5), MathHelper.floor_double(posZ)) instanceof BlockAir) {
+                        posY--;
+                    }
+                }
                 return true;
+            }
+
+            if(!isFront){
+                host.motionX=motionX;
+                host.motionZ=motionZ;
             }
         }
         return false;
     }
 
+    private void loopVanilla(double velocity, double velocityX, double velocityZ, int floorX, int floorY,int floorZ, BlockRailBase block){
+        lastKnownRailX=posX;
+        lastKnownRailZ=posZ;
+        lastKnownRailY=posY;
+        this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
+        //try to adhere to limiter track
+        float max = block.getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
+        if(max!=0.4f){
+            velocity=Math.min(velocity,max);
+        }
+        int meta;
 
-    private void segmentMovement(double velocity, int floorX, int floorY, int floorZ, BlockRailBase block){
+        //actually move
         while (velocity>0) {
+            meta = block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ);
+
             //on straight track, use bigger movement vectors for performance.
-            if(block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==0||
-                    block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ)==1){
-                moveBogieVanillaDirectional(Math.min(0.35, velocity), floorX, floorY, floorZ, block);
+            if(meta==0|| meta==1){
+                moveBogieVanilla(Math.min(0.35, velocity), velocityX, velocityZ, floorX, floorY, floorZ, block);
                 velocity -= 0.35;
             } else {
-                moveBogieVanillaDirectional(Math.min(0.075, velocity), floorX, floorY, floorZ, block);
+                moveBogieVanilla(Math.min(0.075, velocity), velocityX, velocityZ, floorX, floorY, floorZ, block);
                 velocity -= 0.075;
             }
 
             //update the last used block to the one we just used, if it's actually different.
-            floorX = MathHelper.floor_double(this.posX);
-            floorY = MathHelper.floor_double(this.posY);
-            floorZ = MathHelper.floor_double(this.posZ);
-            blockNext = this.worldObj.getBlock(floorX, floorY, floorZ);
-            //now loop this again for the next increment of movement, if there is one
-            if (blockNext instanceof BlockRailBase) {
-                block=(BlockRailBase) blockNext;
+            if(floorX!=MathHelper.floor_double(this.posX) || floorZ != MathHelper.floor_double(this.posZ)) {
+                floorX = MathHelper.floor_double(this.posX);
+                floorY = MathHelper.floor_double(this.posY);
+                floorZ = MathHelper.floor_double(this.posZ);
+                blockNext = this.worldObj.getBlock(floorX, floorY, floorZ);
+                //now loop this again for the next increment of movement, if there is one
+                if (blockNext instanceof BlockRailBase) {
+                    block = (BlockRailBase) blockNext;
+                }
             }
         }
     }
 
-    private void segmentOffRailMovement(double velocity){
-        while (velocity>0) {
-            //on straight track, use bigger movement vectors for performance.
-            posX+=Math.min(0.35, motionX);
-            posZ+=Math.min(0.35, motionZ);
-            motionX-=Math.min(0.35, motionX);
-            motionZ-=Math.min(0.35, motionZ);
-            velocity -= 0.35;
 
-            if (worldObj.getBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY-0.5), MathHelper.floor_double(posZ)) instanceof BlockAir) {
-                posY--;
-            }
-        }
-
-    }
-
-
-    private void moveBogieVanillaDirectional(double currentMotion, int floorX, int floorY, int floorZ, BlockRailBase block){
+    private void moveBogieVanilla(double currentMotion, double velocityX, double velocityZ, int floorX, int floorY, int floorZ, BlockRailBase block){
         //get the direction of the rail from it's metadata
         if (worldObj.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
             railMetadata =((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
@@ -281,7 +282,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         railPathZ = (martix[railMetadata][1][2] - martix[railMetadata][0][2]);
         railPathSqrt = Math.sqrt(railPathX * railPathX + railPathZ * railPathZ);
 
-        if (motionX * railPathX + motionZ * railPathZ < 0.0D) {
+        if (velocityX * railPathX + velocityZ * railPathZ < 0.0D) {
             railPathX = -railPathX;
             railPathZ = -railPathZ;
         }
@@ -290,17 +291,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         motionSqrt = Math.sqrt(motionX * motionX + motionZ * motionZ);
         motionX = motionSqrt * (railPathX / railPathSqrt);
         motionZ = motionSqrt * (railPathZ / railPathSqrt);
-
-        //cover booster track, may not work for RC, idk.
-        if (block == Blocks.golden_rail) {
-            double d15 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-
-            if (d15 > 0.01D) {
-                double d16 = 0.06D;
-                this.motionX += this.motionX / d15 * d16;
-                this.motionZ += this.motionZ / d15 * d16;
-            }
-        }
 
         double[] movementPath = CommonUtil.rotatePoint(currentMotion,0,
                 CommonUtil.atan2degreesf(railPathZ,railPathX));

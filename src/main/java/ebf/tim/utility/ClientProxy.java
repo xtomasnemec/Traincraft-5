@@ -72,6 +72,9 @@ public class ClientProxy extends CommonProxy {
     public static boolean disableCache = false;
 
     public static boolean debugHUD=false;
+    /**Defines the control scheme used, auto is 0, TC is 1, TiM is 2.
+     * for TiM releases this should be 0, for TC it should be 1*/
+    public static int controls = 1;
 
     public static KeyBinding raildevtoolUp, raildevtoolDown,
             raildevtoolLeft, raildevtoolRight, raildevtoolRaise, raildevtoolLower;
@@ -130,6 +133,7 @@ public class ClientProxy extends CommonProxy {
 
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
+
         config.addCustomCategoryComment("Quality (Client only)", "");
         EnableParticles = config.getBoolean("EnableParticles","Quality (Client only)", true,
                 "Smoke, steam, sparks, and lighting effects are several hundred more lightweight than those of normal minecraft. These shouldn't cause much lag if any, but its client only so if you wanna disable it you can.");
@@ -138,31 +142,41 @@ public class ClientProxy extends CommonProxy {
         EnableAnimations = config.getBoolean("EnableAnimations","Quality (Client only)", true,
                 "Animations are calculated by vector positioning and rotation every frame. These shouldn't cause much lag if any, but its client only so if you wanna disable it you can.");
 
-        useVanillaInventoryTextures = config.getBoolean("UseVanillaInventoryTextures","Quality (Client only)", true,
-                "Overrides the render of train and rollingstock inventories to use textures from vanilla (including resourcepacks), so you can use textures in a texturepack specifically for this mod");
-
         hdTransportItems = config.getBoolean("3dTransportItems","Quality (Client only)", true,
                 "Overrides the render of train and rollingstock items to use their full model. NOTICE: after the pre-alpha stages this should default to false.");
 
-        preRenderModels = config.getBoolean("preRenderModels","Quality (Client only)", false,
-                "Pre-renders transport entity and item models during loading screen and stores them on GPU, Requires a lot of VRAM but makes the game run smoother, especially with NEI/JEI, Don't use if get the GL error 1285 (Out of memory)");
 
-        disableCache = config.getBoolean("disableGLCache","Quality (Client only)", false,
-                "forces the render to skip model caching, this will cause significant lag, but is good for debugging, or if you get the GL error 1285 (Out of memory)");
 
-        ForceTextureBinding = config.getBoolean("ForceTextureBinding","Quality (Client only)", false,
-                "Forces textures to be bound, slows performance on some machines, speeds it up on others, and fixes a rare bug where the the texture does not get bound. So... This REALLY depends on your machine, see what works best for you.");
+        config.addCustomCategoryComment("Customization (Client only)", "");
+        railSkin = config.getInt("railSkin","Customization (Client only)", 3,0,3,
+                "Defines the rail model to use. 0: flat 2D rail similar to vanilla. 1: basic 3D rail similar to an extruded 2D. 2: Normal 3D rail. 3: High detail 3D rail");
 
-        speedInKmh = config.getBoolean("SpeedInKmh","Quality (Client only)", true,
+        speedInKmh = config.getBoolean("SpeedInKmh","Customization (Client only)", true,
                 "Sets the HUD to show speeds in km/h. set to false for mph");
 
-        debugHUD = config.getBoolean("debugHUD","Quality (Client only)", false,
+        useVanillaInventoryTextures = config.getBoolean("UseVanillaInventoryTextures","Customization (Client only)", true,
+                "Overrides the render of train and rollingstock inventories to use textures from vanilla (including resourcepacks), so you can use textures in a texturepack specifically for this mod");
+
+        controls = config.getInt("controls","Customization (Client only)", 1,0,2,
+                "Defines the train controls, 1 is the old TC method (default), 2 is TiM's notch system that allows for control in 20% increments. 0 allows you to switch between them");
+
+
+
+        config.addCustomCategoryComment("Debugging and Fixes (Client only)", "");
+        debugHUD = config.getBoolean("debugHUD","Debugging and Fixes (Client only)", false,
                 "displays additional information in the HUD, such as the train name, if it's running, and the state of the brake and lamp");
 
+        preRenderModels = config.getBoolean("preRenderModels","Debugging and Fixes (Client only)", false,
+                "Pre-renders transport entity and item models during loading screen and stores them on GPU, Requires a lot of VRAM but makes the game run smoother, especially with NEI/JEI, Don't use if get the GL error 1285 (Out of memory)");
+
+        disableCache = config.getBoolean("disableGLCache","Debugging and Fixes (Client only)", false,
+                "forces the render to skip model caching, this will cause significant lag, but is good for debugging, or if you get the GL error 1285 (Out of memory)");
+
+        ForceTextureBinding = config.getBoolean("ForceTextureBinding","Debugging and Fixes (Client only)", false,
+                "Forces textures to be bound, slows performance on some machines, speeds it up on others, and fixes a rare bug where the the texture does not get bound. So... This REALLY depends on your machine, see what works best for you.");
 
 
-        railSkin = config.getInt("railSkin","Quality (Client only)", 3,0,3,
-                "Defines the rail model to use. 0: flat 2D rail similar to vanilla. 1: basic 3D rail similar to an extruded 2D. 2: Normal 3D rail. 3: High detail 3D rail");
+
         config.save();
 
         configDirectory = event.getModConfigurationDirectory().getAbsolutePath();

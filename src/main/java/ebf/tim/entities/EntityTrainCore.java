@@ -297,19 +297,6 @@ public class EntityTrainCore extends GenericRailTransport {
     }
 
 
-    /**
-     * <h2>linking management</h2>
-     * this is an override to make sure rollingstock doesn't push trains
-     * @see GenericRailTransport#manageLinks(GenericRailTransport)
-     */
-    @Override
-    public void manageLinks(GenericRailTransport linkedTransport){
-        if(accelerator==0){
-            super.manageLinks(linkedTransport);
-        }
-    }
-
-
     private int whistleDelay=0;
     public void soundHorn() {
         for (EnumSounds sounds : EnumSounds.values()) {
@@ -396,6 +383,12 @@ public class EntityTrainCore extends GenericRailTransport {
                 }case 4: {//TC control, keep speed
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = (int)Math.copySign(8,accelerator);
+                        this.dataWatcher.updateObject(18, accelerator);
+                    }
+                    return true;
+                }case 14: {//TC control, keep speed
+                    if(getBoolean(boolValues.RUNNING)) {
+                        accelerator = 0;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
