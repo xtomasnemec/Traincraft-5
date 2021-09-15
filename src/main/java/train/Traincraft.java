@@ -207,7 +207,6 @@ public class Traincraft {
 			TiMGenericRegistry.registryPosition++;
 		}
 
-		proxy.registerSounds();
 		proxy.setHook(); // Moved file needed to run JLayer, we need to set a hook in order to retrieve it
 
 		GameRegistry.registerFuelHandler(new FuelHandler());

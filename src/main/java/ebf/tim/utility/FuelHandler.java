@@ -179,7 +179,7 @@ public class FuelHandler{
 			if(heat==0){heat=1;}
 			train.getDataWatcher().updateObject(16,
 					(heat+
-							(float) ((1f- Math.sqrt(heat/maxHeat(train))) * Math.sqrt((heat+burnHeat)/burnHeat))*train.getEfficiency()));
+							(float) ((1f- Math.sqrt(heat/maxHeat(train))) * Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*4)));
 
 		} else {//if engine is not running
 			float heat = (((train.worldObj.getBiomeGenForCoords(train.chunkCoordX, train.chunkCoordZ).temperature -0.15f)//biome temperature with offset to compensate for freezing point

@@ -66,11 +66,13 @@ public class EventManager {
             if (player.ridingEntity instanceof EntityTrainCore) {
                 //for speed change
                 if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isPressed()) {
-                    if (holdTimer<15){
+                    //dont send if controls are TC mode
+                    if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(2, player.ridingEntity.getEntityId()));
                     }
                 } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
-                    if (holdTimer<15){
+                    //dont send if controls are TC mode
+                    if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(3, player.ridingEntity.getEntityId()));
                     }
                 } else if (ClientProxy.KeyHorn.isPressed()){
@@ -164,6 +166,12 @@ public class EventManager {
     public void onClientTick(TickEvent.PlayerTickEvent event) {
         if(event.player.ridingEntity instanceof EntityTrainCore){
             if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
+                //for TC only controls, skip wait, for TiM only controls just stop.
+                if(ClientProxy.controls==1 && holdTimer<40){
+                    holdTimer=40;
+                } else if (ClientProxy.controls==2){
+                    return;
+                }
                 if (holdTimer==40){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(12, event.player.ridingEntity.getEntityId()));
                     holdTimer++;
@@ -171,6 +179,13 @@ public class EventManager {
                     holdTimer++;
                 }
             } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
+                //for TC only controls, skip wait, for TiM only controls just stop.
+                if(ClientProxy.controls==1 && holdTimer<40){
+                    holdTimer=40;
+                } else if (ClientProxy.controls==2){
+                    return;
+                }
+
                 if (holdTimer==40){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(11, event.player.ridingEntity.getEntityId()));
                     holdTimer++;
@@ -178,12 +193,14 @@ public class EventManager {
                     holdTimer++;
                 }
             }
-
-
             else if(!FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed() &&
                     !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()){
                 if (holdTimer>40){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, event.player.ridingEntity.getEntityId()));
+                    if(ClientProxy.controls!=1) {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, event.player.ridingEntity.getEntityId()));
+                    } else {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(14, event.player.ridingEntity.getEntityId()));
+                    }
                 }
                 holdTimer=0;
             }

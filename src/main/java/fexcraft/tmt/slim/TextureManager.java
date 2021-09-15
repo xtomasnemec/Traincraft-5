@@ -347,7 +347,7 @@ public class TextureManager {
             buffer.clear();
 
 
-            if(GL11.glIsTexture(GLtexture)){
+            if(GL11.glIsTexture(GLtexture) && !ClientProxy.ForceTextureBinding){
                 GL11.glDeleteTextures(GLtexture);
             }
 

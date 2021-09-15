@@ -37,16 +37,16 @@ public class TCKeyHandler {
 			if (up.getIsKeyPressed()) {
 				sendKeyControlsPacket(0);
 			}
-			if (down.getIsKeyPressed()) {
+			else if (down.getIsKeyPressed()) {
 				sendKeyControlsPacket(2);
 			}
-			if (idle.isPressed()) {
+			else if (idle.isPressed()) {
 				sendKeyControlsPacket(6);
 			}
-			if (inventory.isPressed()) {
+			else if (inventory.isPressed()) {
 				sendKeyControlsPacket(7);
 			}
-			if (furnace.isPressed()) {
+			else if (furnace.isPressed()) {
 				sendKeyControlsPacket(9);
 			}
 		}
