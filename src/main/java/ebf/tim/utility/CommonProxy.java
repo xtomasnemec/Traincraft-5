@@ -35,6 +35,7 @@ public class CommonProxy implements IGuiHandler {
     public static Map<String, List<Recipe>> recipesInMods = new HashMap<>();
     public static String configDirectory;
 
+    public static boolean pushabletrains=true;
     public static boolean realSpeed=false;
     public static boolean enableChunkloading = true;
     public static boolean doAluminumGeneration = true;
@@ -86,6 +87,8 @@ public class CommonProxy implements IGuiHandler {
                 "Logs all TransportSkin registration events to debug console.");
 
         config.addCustomCategoryComment("Gameplay", "Settings that affect gameplay (ie. chunk loading, world generation, train speed");
+
+        pushabletrains=config.getBoolean("PushableTrains", "Gameplay",true,"Enables/Disables the ability to push trains and rollingstock around.");
         realSpeed=config.getBoolean("UseRealSpeed","Gameplay", false,
                 "Real speed moves the train on the assumption a block is a meter. Setting this to false will move the train on the assumption a block is 16 meters (more similar to Traincraft).");
 
