@@ -1216,30 +1216,32 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                     double[] motion = CommonUtil.rotatePoint(0.05,0,
                             CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
-
                     if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0) {
                         double distance = Math.copySign(0.075,motion[0]);
-                        if(distance>0){
-                            if(frontBogie.motionX+distance>distance){
-                                motion[0]=Math.max(0,distance-frontBogie.motionX);
+                        if  (CommonProxy.pushabletrains) {
+                            if(distance>0){
+                                if(frontBogie.motionX+distance>distance){
+                                    motion[0]=Math.max(0,distance-frontBogie.motionX);
+                                }
+                            } else {
+                                if(frontBogie.motionX+distance<distance){
+                                    motion[0]=Math.min(0,distance-frontBogie.motionX);
+                                }
                             }
-                        } else {
-                            if(frontBogie.motionX+distance<distance){
-                                motion[0]=Math.min(0,distance-frontBogie.motionX);
+                            distance = Math.copySign(0.075,motion[2]);
+                            if(distance>0){
+                                if(frontBogie.motionZ+distance>distance){
+                                    motion[2]=Math.max(0,distance-frontBogie.motionZ);
+                                }
+                            } else {
+                                if(frontBogie.motionZ+distance<distance){
+                                    motion[2]=Math.min(0,distance-frontBogie.motionZ);
+                                }
                             }
+                            this.frontBogie.minecartMove(this, motion[0], motion[2]);
+                            this.backBogie.minecartMove(this,motion[0], motion[2]);
                         }
-                        distance = Math.copySign(0.075,motion[2]);
-                        if(distance>0){
-                            if(frontBogie.motionZ+distance>distance){
-                                motion[2]=Math.max(0,distance-frontBogie.motionZ);
-                            }
-                        } else {
-                            if(frontBogie.motionZ+distance<distance){
-                                motion[2]=Math.min(0,distance-frontBogie.motionZ);
-                            }
-                        }
-                        this.frontBogie.minecartMove(this, motion[0], motion[2]);
-                        this.backBogie.minecartMove(this,motion[0], motion[2]);
+
                     }
                     //hurt entity if going fast
                     if (Math.abs(motionX) + Math.abs(motionZ) > 0.25f) {
@@ -1256,12 +1258,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                     double d0 = e.posX - this.posX;
                     double d1 = e.posZ - this.posZ;
-                    double d2 = MathHelper.abs_max(d0, d1)*30;
+                    double d2 = MathHelper.abs_max(d0, d1) * 30;
                     if (d2 >= 0.0009D) {
                         d0 /= d2;
                         d1 /= d2;
                     }
-                    e.addVelocity(d0,0,d1);
+                    e.addVelocity(d0, 0, d1);
                 }
             }
         }
