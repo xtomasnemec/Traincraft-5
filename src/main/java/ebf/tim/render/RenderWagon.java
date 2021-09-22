@@ -101,7 +101,7 @@ public class RenderWagon extends Render {
             if (entity.worldObj!=null && ClientProxy.EnableAnimations && entity.renderData.needsModelUpdate) {
                 boolean isAdded;
                 for (ModelBase part : entity.renderData.modelList) {
-                    for (ModelRendererTurbo render : part.getParts()) {
+                    for (ModelRendererTurbo render : part.getnamedParts()) {
                         if (render.boxName ==null){continue;}
                         //attempt to cache the parts for the main transport model
                         if(StaticModelAnimator.checkCulls(render)){
@@ -145,7 +145,7 @@ public class RenderWagon extends Render {
                     for (Bogie bogie : entity.renderData.bogies) {
                         bogie.rotationYaw=entity.rotationYaw;
                         List<ParticleFX> animators = new ArrayList<>();
-                        for (ModelRendererTurbo box : bogie.bogieModel.getParts()) {
+                        for (ModelRendererTurbo box : bogie.bogieModel.getnamedParts()) {
                             if (box.boxName ==null){continue;}
                             //attempt to cache the parts for the main transport model
                             if(StaticModelAnimator.checkCulls(box)){
@@ -170,7 +170,7 @@ public class RenderWagon extends Render {
                         //cache the animating parts on sub-bogies
                         for(Bogie subBogie : bogie.subBogies){
                             subBogie.rotationYaw=entity.rotationYaw;
-                            for(ModelRendererTurbo box : subBogie.bogieModel.getParts()){
+                            for(ModelRendererTurbo box : subBogie.bogieModel.getnamedParts()){
                                 if (box.boxName ==null){continue;}
                                 //attempt to cache the parts for the main transport model
                                 if(StaticModelAnimator.checkCulls(box)){

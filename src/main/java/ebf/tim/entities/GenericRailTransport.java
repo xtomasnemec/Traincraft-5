@@ -52,10 +52,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static ebf.tim.TrainsInMotion.transportTypes.*;
 import static ebf.tim.utility.CommonUtil.rotatePointF;
@@ -919,10 +916,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         frontBogie.minecartMove(this, frontBogie.motionX,frontBogie.motionZ);
         backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
 
-        entityData.putDouble(NBTKeys.frontBogieX,frontBogie.motionX);
-        entityData.putDouble(NBTKeys.frontBogieZ,frontBogie.motionZ);
-        entityData.putDouble(NBTKeys.backBogieX,backBogie.motionX);
-        entityData.putDouble(NBTKeys.backBogieZ,backBogie.motionZ);
+        if (!worldObj.isRemote) {
+            entityData.putDouble(NBTKeys.frontBogieX, frontBogie.motionX);
+            entityData.putDouble(NBTKeys.frontBogieZ, frontBogie.motionZ);
+            entityData.putDouble(NBTKeys.backBogieX, backBogie.motionX);
+            entityData.putDouble(NBTKeys.backBogieZ, backBogie.motionZ);
+            frontBogie.setVelocity(0,0,0);
+            backBogie.setVelocity(0,0,0);
+        }
 
         setRotation((CommonUtil.atan2degreesf(
                 frontBogie.posZ - backBogie.posZ,
@@ -934,7 +935,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-        dataWatcher.updateObject(12,(float)(Math.abs(motionX)+Math.abs(motionZ)));
+        dataWatcher.updateObject(12, (float)Math.abs((motionX*motionX)+(motionZ*motionZ)));
         if (!worldObj.isRemote) {
             for (CollisionBox box : collisionHandler.interactionBoxes) {
                 box.onUpdate();
@@ -1092,11 +1093,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 backBogie.addVelocity(roll[0],roll[1],roll[2]);
             } else if (hasDrag()) {//calculate for friction drag.
                 //add some extra drag at lower speeds to smooth out stopping
-                if((Math.abs(motionX)<0.3 && Math.abs(motionZ) <0.3) || getBoolean(boolValues.BRAKE)){
-                    frontBogie.motionX*=0.985;
-                    frontBogie.motionZ*=0.985;
-                    backBogie.motionX*=0.985;
-                    backBogie.motionZ*=0.985;
+                if((getVelocity()<0.3) || getBoolean(boolValues.BRAKE)){
+                    frontBogie.motionX*=0.95;
+                    frontBogie.motionZ*=0.95;
+                    backBogie.motionX*=0.95;
+                    backBogie.motionZ*=0.95;
                 }
                 frontBogie.motionX*=0.996;
                 frontBogie.motionZ*=0.996;
@@ -1386,58 +1387,40 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         vectorCache[4][0]=0;
         //needs velocity so it can be a tick ahead, otherwise it rubberbands back
         if(front instanceof GenericRailTransport) {
-            vectorCache[4][0] += (float) Math.abs(posX - front.posX);
-            vectorCache[4][0] += (float) Math.abs(posZ - front.posZ);
+            vectorCache[4][0] += (float) (Math.abs(posX - front.posX) * Math.abs(posX - front.posX));
+            vectorCache[4][0] += (float) (Math.abs(posZ - front.posZ) * Math.abs(posZ - front.posZ));
             vectorCache[4][0] -= (this.getHitboxSize()[0] * 0.5)
                     + (((GenericRailTransport) front).getHitboxSize()[0] * 0.5);
 
-            vectorCache[5] = CommonUtil.rotatePointF(vectorCache[4][0], 0, 0, 0,
-                    CommonUtil.atan2degreesf(front.posZ - posZ, front.posX - posX), 0);
+            //dont bother if the distance is stupid levels of small
+            if(Math.abs(vectorCache[4][0])>0.15){
+                vectorCache[5] = CommonUtil.rotatePointF(vectorCache[4][0], 0, 0, 0,
+                        CommonUtil.atan2degreesf(front.posZ - posZ, front.posX - posX), 0);
 
-            frontBogie.minecartMove(this,vectorCache[5][0], vectorCache[5][2]);
-            backBogie.minecartMove(this, vectorCache[5][0], vectorCache[5][2]);
+
+                frontBogie.minecartMove(this,vectorCache[5][0], vectorCache[5][2]);
+                backBogie.minecartMove(this, vectorCache[5][0], vectorCache[5][2]);
+            }
         }
 
         vectorCache[4][0]=0;
         if(back instanceof GenericRailTransport) {
-            vectorCache[4][0] += (float) -Math.abs(back.posX - posX);
-            vectorCache[4][0] += (float) -Math.abs(back.posZ - posZ);
+            vectorCache[4][0] += (float) -(Math.abs(back.posX - posX) * Math.abs(back.posX - posX));
+            vectorCache[4][0] += (float) -(Math.abs(back.posZ - posZ) * Math.abs(back.posZ - posZ));
             vectorCache[4][0] += (this.getHitboxSize()[0] * 0.5)
                     + (((GenericRailTransport) back).getHitboxSize()[0] * 0.5);
 
-            vectorCache[5] = CommonUtil.rotatePointF(vectorCache[4][0], 0, 0, 0,
-                    CommonUtil.atan2degreesf(posZ - back.posZ, posX - back.posX), 0);
+            //dont bother if the distance is stupid levels of small
+            if(Math.abs(vectorCache[4][0])>0.15){
+                vectorCache[5] = CommonUtil.rotatePointF(vectorCache[4][0], 0, 0, 0,
+                        CommonUtil.atan2degreesf(posZ - back.posZ, posX - back.posX), 0);
 
-            frontBogie.minecartMove(this,vectorCache[5][0], vectorCache[5][2]);
-            backBogie.minecartMove(this, vectorCache[5][0], vectorCache[5][2]);
+                frontBogie.minecartMove(this,vectorCache[5][0], vectorCache[5][2]);
+                backBogie.minecartMove(this, vectorCache[5][0], vectorCache[5][2]);
+            }
         }
 
-        //dont bother if the distance is stupid levels of small
-        if(vectorCache[4][0]<0.15 && vectorCache[4][0]>-0.15){
-            return;
-        }
-        vectorCache[4][0]*=0.00625f;
 
-        //defines springy-ness
-        //vectorCache[4][0]*=0.75;
-        //apply and rotate
-        if(front!=null && back !=null) {
-            //if both are connected, calculate rotation from both
-            vectorCache[5] = CommonUtil.rotatePointF(vectorCache[4][0], 0, 0, 0,
-                    CommonUtil.atan2degreesf(front.posZ - back.posZ, front.posX - back.posX), 0);
-        } else if (front!=null){//if only front is connected, calculate rotation normally
-            vectorCache[5] = CommonUtil.rotatePointF(vectorCache[4][0], 0, 0, 0,
-                    CommonUtil.atan2degreesf(front.posZ - posZ, front.posX - posX), 0);
-        } else {//if only back is connected, calculate rotation backwards
-            vectorCache[5] = CommonUtil.rotatePointF(vectorCache[4][0], 0, 0, 0,
-                    CommonUtil.atan2degreesf(posZ - back.posZ, posX - back.posX), 0);
-        }
-
-        //apply velocity
-       // frontBogie.minecartMove(this,vectorCache[5][0], vectorCache[5][2]);
-       // backBogie.minecartMove(this, vectorCache[5][0], vectorCache[5][2]);
-        //setPosition(posX+vectorCache[5][0],posY,posZ+vectorCache[5][2]);
-        //updatePosition();
     }
 
 

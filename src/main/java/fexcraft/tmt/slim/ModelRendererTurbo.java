@@ -1031,7 +1031,7 @@ public class ModelRendererTurbo {
         boolean dirMirror = (baseDirection == MR_LEFT || baseDirection == MR_BOTTOM || baseDirection == MR_BACK);
         if(baseScale == 0) baseScale = 1f; if(topScale == 0) topScale = 1f;
         if(segments < 3) segments = 3; if(seglimit <= 0) seglimit = segments; boolean segl = seglimit < segments;
-        ArrayList<TexturedVertex> verts = new ArrayList<>(); ArrayList<TexturedPolygon> polis = new ArrayList<>();
+        ArrayList<TexturedPolygon> polis = new ArrayList<>();
         //Vertex
         float xLength = (dirSide ? length : 0), yLength = (dirTop ? length : 0), zLength = (dirFront ? length : 0);
         float xStart = (dirMirror ? x + xLength : x);
@@ -1078,7 +1078,6 @@ public class ModelRendererTurbo {
                     TexturedVertex copy = new TexturedVertex(verts1.get(0)); verts1.add(copy);
                 }
             }
-            verts.addAll(verts0); verts.addAll(verts1);
             if(repeat == 0){ verts2.addAll(verts0); verts2.addAll(verts1); }
             else{ verts3.addAll(verts0); verts3.addAll(verts1); }
             float xSize, ySize; float mul = repeat == 0 ? 0.5f : 1.5f;

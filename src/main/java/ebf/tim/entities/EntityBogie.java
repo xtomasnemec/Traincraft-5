@@ -187,7 +187,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             int floorY = MathHelper.floor_double(this.posY);
             int floorZ = MathHelper.floor_double(this.posZ);
 
-            double velocity = Math.abs(moveX) + Math.abs(moveZ);
+            double velocity = moveX*moveX+moveZ*moveZ;
 
 
             Block block = worldObj.getBlock(floorX, floorY, floorZ);
@@ -249,8 +249,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 moveBogieVanilla(Math.min(0.35, velocity), velocityX, velocityZ, floorX, floorY, floorZ, block);
                 velocity -= 0.35;
             } else {
-                moveBogieVanilla(Math.min(0.075, velocity), velocityX, velocityZ, floorX, floorY, floorZ, block);
-                velocity -= 0.075;
+                moveBogieVanilla(Math.min(0.0625, velocity), velocityX, velocityZ, floorX, floorY, floorZ, block);
+                velocity -= 0.0625;
             }
 
             //update the last used block to the one we just used, if it's actually different.
@@ -262,6 +262,13 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 //now loop this again for the next increment of movement, if there is one
                 if (blockNext instanceof BlockRailBase) {
                     block = (BlockRailBase) blockNext;
+                    //do the rail functions.
+                    if(shouldDoRailFunctions()) {
+                        block.onMinecartPass(worldObj, this, floorX, floorY, floorZ);
+                    }
+                    if (block == Blocks.activator_rail) {
+                        this.onActivatorRailPass(floorX, floorY, floorZ, (worldObj.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
+                    }
                 }
             }
         }
@@ -288,9 +295,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         }
 
         //update the motion's direction to match facing.
-        motionSqrt = Math.sqrt(motionX * motionX + motionZ * motionZ);
-        motionX = motionSqrt * (railPathX / railPathSqrt);
-        motionZ = motionSqrt * (railPathZ / railPathSqrt);
+        if(motionX==velocityX && motionZ==velocityZ) {
+            motionSqrt = Math.sqrt(velocityX * velocityX + velocityZ * velocityZ);
+            motionX = motionSqrt * (railPathX / railPathSqrt);
+            motionZ = motionSqrt * (railPathZ / railPathSqrt);
+        }
 
         double[] movementPath = CommonUtil.rotatePoint(currentMotion,0,
                 CommonUtil.atan2degreesf(railPathZ,railPathX));
@@ -300,6 +309,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         railPathZ2 = Math.floor(posZ) + 0.5D + martix[railMetadata][0][2] * 0.5D;
         railPathX = (Math.floor(posX) + 0.5D + martix[railMetadata][1][0] * 0.5D) - railPathX2;
         railPathZ = (Math.floor(posZ) + 0.5D + martix[railMetadata][1][2] * 0.5D) - railPathZ2;
+
 
         //pick the bigger one
         if (railPathX == 0.0D) {
@@ -323,17 +333,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 posY++;
             } else if (BlockRailBase.func_150049_b_(worldObj, floorX, floorY-1, floorZ)) {
                 posY--;
-            }
-            floorY = MathHelper.floor_double(posY);
-        }
-
-         if(floorX!=MathHelper.floor_double(posX) || floorZ != MathHelper.floor_double(posZ)) {
-            //do the rail functions.
-            if(shouldDoRailFunctions()) {
-                block.onMinecartPass(worldObj, this, floorX, floorY, floorZ);
-            }
-            if (block == Blocks.activator_rail) {
-                this.onActivatorRailPass(floorX, floorY, floorZ, (worldObj.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
             }
         }
     }

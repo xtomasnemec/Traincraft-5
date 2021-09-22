@@ -2,10 +2,8 @@ package fexcraft.tmt.slim;
 
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
@@ -25,7 +23,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 	//    exists once on GPU, so 40 boxcar bases would still be the animated parts
 	//    and a single static to cover all of them.
 	public List<ModelRendererTurbo> boxList = new ArrayList<>();
-	public List<ModelRendererTurbo> animatedList = new ArrayList<>();
+	public List<ModelRendererTurbo> namedList = new ArrayList<>();
 	public List<String> creators = new ArrayList<>();
 	public boolean init=true;
 	public ModelRendererTurbo base[],bodyModel[],open[],closed[],r1[],r2[],r3[],r4[],r5[],r6[],r7[],r8[],r9[],r0[];
@@ -66,13 +64,13 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 			}
 		}
 
-		if(animatedList==null){return;}
+		if(namedList ==null){return;}
 		ModelRendererTurbo part;
-		for(int i=0;i<animatedList.size();i++){
+		for(int i = 0; i< namedList.size(); i++){
 			//for animations to work we have to limit the displaylist cache to ONLY the geometry, and then
 			//    the position and offsets must be done manually every frame.
 			if(displayList.size()>i){
-				part=animatedList.get(i);
+				part= namedList.get(i);
 				if(!part.showModel){
 					continue;
 				}
@@ -90,7 +88,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 					int disp = GLAllocation.generateDisplayLists(1);
 					displayList.set(i,disp);
 					GL11.glNewList(disp, GL11.GL_COMPILE);
-					for (TexturedPolygon poly : animatedList.get(i).faces) {
+					for (TexturedPolygon poly : namedList.get(i).faces) {
 						Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625F);
 					}
 					GL11.glEndList();
@@ -102,11 +100,11 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 				}
 				GL11.glPopMatrix();
 
-			} else if(animatedList.get(i)!=null) {
+			} else if(namedList.get(i)!=null) {
 				int disp = GLAllocation.generateDisplayLists(1);
 				displayList.add(disp);
 				GL11.glNewList(disp, GL11.GL_COMPILE);
-				for (TexturedPolygon poly : animatedList.get(i).faces) {
+				for (TexturedPolygon poly : namedList.get(i).faces) {
 					Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625F);
 				}
 				GL11.glEndList();
@@ -149,7 +147,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 		translate(r9, x, y, z);
 		translate(bodyModel,x,y,z);
 		translate(boxList,x,y,z);
-		translate(animatedList,x,y,z);
+		translate(namedList,x,y,z);
 	}
 
 
@@ -169,7 +167,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 		rotate(r9, x, y, z);
 		rotate(bodyModel,x,y,z);
 		rotate(boxList,x,y,z);
-		rotate(animatedList,x,y,z);
+		rotate(namedList,x,y,z);
 	}
     public void flipAll(){
         flip(base);
@@ -187,7 +185,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
         flip(r9);
 		flip(bodyModel);
 		flip(boxList);
-		flip(animatedList);
+		flip(namedList);
     }
 
 
@@ -266,22 +264,19 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 		}
 	}
 
-	public List<ModelRendererTurbo> getParts(){
+	public List<ModelRendererTurbo> getnamedParts(){
 
 		if(init){
 			initAllParts();
 		}
-	    List<ModelRendererTurbo> ret = new ArrayList<>();
-	    ret.addAll(boxList);
-	    ret.addAll(animatedList);
-		return ret;
+		return namedList;
 	}
 
 	public void addPart(ModelRendererTurbo part){
 		if(part==null) {
 			return;
 		}if(part.boxName!=null && part.boxName.length()>2){
-			animatedList.add(part);
+			namedList.add(part);
 		} else {
 			boxList.add(part);
 		}
