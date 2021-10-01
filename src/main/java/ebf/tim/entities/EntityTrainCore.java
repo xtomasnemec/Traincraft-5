@@ -91,7 +91,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
 
     @Override
-    public boolean hasDrag(){return true;}
+    public boolean hasDrag(){return getAccelerator()==0 || Math.abs(getAccelerator())<6;}
 
     @Override
     public float getPower(){

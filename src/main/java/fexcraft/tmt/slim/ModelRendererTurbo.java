@@ -1382,36 +1382,6 @@ public class ModelRendererTurbo {
         }
         addRectShape(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], w, h, d,null);
 
-        f4 += 1; f5 += 1; f6 += 1;
-        //now do normals, this doesn't fix normals that have two nearly identical vertex points, but it does make it less bad
-        float[][] norms  = {
-                {x  - x0, y  - y0, z  - z0},
-                {f4 + x1, y  - y1, z  - z1},
-                {f4 + x5, f5 + y5, z  - z5},
-                {x  - x4, f5 + y4, z  - z4},
-                {x  - x3, y  - y3, f6 + z3},
-                {f4 + x2, y  - y2, f6 + z2},
-                {f4 + x6, f5 + y6, f6 + z6},
-                {x  - x7, f5 + y7, f6 + z7}
-        };
-        List<TexturedPolygon> poly = new ArrayList<>();
-        TexturedVertex vert0 = new TexturedVertex(norms[0][0], norms[0][1], norms[0][2]);
-        TexturedVertex vert1 = new TexturedVertex(norms[1][0], norms[1][1], norms[1][2]);
-        TexturedVertex vert2 = new TexturedVertex(norms[2][0], norms[2][1], norms[2][2]);
-        TexturedVertex vert3 = new TexturedVertex(norms[3][0], norms[3][1], norms[3][2]);
-        TexturedVertex vert4 = new TexturedVertex(norms[4][0], norms[4][1], norms[4][2]);
-        TexturedVertex vert5 = new TexturedVertex(norms[5][0], norms[5][1], norms[5][2]);
-        TexturedVertex vert6 = new TexturedVertex(norms[6][0], norms[6][1], norms[6][2]);
-        TexturedVertex vert7 = new TexturedVertex(norms[7][0], norms[7][1], norms[7][2]);
-
-
-        poly.add(addPolygonReturn(vert5, vert1, vert2, vert6, 0,0,0,0));
-        poly.add(addPolygonReturn(vert0, vert4, vert7, vert3, 0,0,0,0));
-        poly.add(addPolygonReturn(vert5, vert4, vert0, vert1, 0,0,0,0));
-        poly.add(addPolygonReturn(vert2, vert3, vert7, vert6, 0,0,0,0));
-        poly.add(addPolygonReturn(vert1, vert0, vert3, vert2, 0,0,0,0));
-        poly.add(addPolygonReturn(vert4, vert5, vert6, vert7, 0,0,0,0));
-
         return this;
     }
 

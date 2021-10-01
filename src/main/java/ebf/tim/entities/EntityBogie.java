@@ -39,21 +39,17 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**used to calculate the X/Y/Z velocity based on the direction the rail is facing, similar to how vanilla minecarts work.*/
     private static final int[][][] martix = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
 
-    /**cached value for the rail path, prevents need to generate a new variable multiple times per tick*/
+    /**cached values for the rail path
+     * prevents need to generate a new variable multiple times per tick and reduces GC strain*/
     private double railPathX, railPathZ;
-    /**cached value for the rail path, prevents need to generate a new variable multiple times per tick*/
     private double railPathSqrt, motionSqrt, railPathDirection;
-    /**cached value for the rail path, prevents need to generate a new variable multiple times per tick*/
     private double railPathX2, railPathZ2;
-    /**cached value for the rail path, prevents need to generate a new variable multiple times per tick*/
     private int railMetadata;
-    /**cached value for the rail path, prevents need to generate a new variable multiple times per tick*/
     private Block blockNext;
+    double[] movementPath, retValue;
     /**normally this variable exists already in 1.7, this additional declaration of it is support for 1.8.9+*/
     public float yOffset=0.425f;
 
-    public double lastKnownRailX=0, lastKnownRailZ=0;
-    public double lastKnownRailY=0;
 
     public EntityBogie(World world) {
         super(world);
@@ -228,9 +224,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     }
 
     private void loopVanilla(double velocity, double velocityX, double velocityZ, int floorX, int floorY,int floorZ, BlockRailBase block){
-        lastKnownRailX=posX;
-        lastKnownRailZ=posZ;
-        lastKnownRailY=posY;
         this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
@@ -238,26 +231,29 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         if(max!=0.4f){
             velocity=Math.min(velocity,max);
         }
-        int meta;
-
+        double[] vel = new double[]{velocityX,velocityZ};
+        railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
         //actually move
         while (velocity>0) {
-            meta = block.getBasicRailMetadata(worldObj,this,floorX,floorY,floorZ);
-
-            //on straight track, use bigger movement vectors for performance.
-            if(meta==0|| meta==1){
-                moveBogieVanilla(Math.min(0.35, velocity), velocityX, velocityZ, floorX, floorY, floorZ, block);
-                velocity -= 0.35;
-            } else {
-                moveBogieVanilla(Math.min(0.0625, velocity), velocityX, velocityZ, floorX, floorY, floorZ, block);
-                velocity -= 0.0625;
-            }
+            vel=moveBogieVanilla(Math.min(0.35, velocity), vel[0], vel[1], floorX, floorY, floorZ, block);
+            velocity -= 0.35;
 
             //update the last used block to the one we just used, if it's actually different.
             if(floorX!=MathHelper.floor_double(this.posX) || floorZ != MathHelper.floor_double(this.posZ)) {
                 floorX = MathHelper.floor_double(this.posX);
                 floorY = MathHelper.floor_double(this.posY);
                 floorZ = MathHelper.floor_double(this.posZ);
+                //handle slope movement before other interactions
+                if(!BlockRailBase.func_150049_b_(worldObj, floorX, floorY, floorZ)){
+                    this.prevPosY =posY;
+                    if(BlockRailBase.func_150049_b_(worldObj, floorX, floorY+1, floorZ)){
+                        posY++;
+                    } else if (BlockRailBase.func_150049_b_(worldObj, floorX, floorY-1, floorZ)) {
+                        posY--;
+                    }
+                    floorY = MathHelper.floor_double(this.posY);
+                }
+
                 blockNext = this.worldObj.getBlock(floorX, floorY, floorZ);
                 //now loop this again for the next increment of movement, if there is one
                 if (blockNext instanceof BlockRailBase) {
@@ -269,21 +265,19 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     if (block == Blocks.activator_rail) {
                         this.onActivatorRailPass(floorX, floorY, floorZ, (worldObj.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
                     }
+                    //get the direction of the rail from it's metadata
+                    railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
+                }
+                //get the direction of the rail from it's metadata
+                else if (worldObj.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
+                    railMetadata =((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
                 }
             }
         }
     }
 
 
-    private void moveBogieVanilla(double currentMotion, double velocityX, double velocityZ, int floorX, int floorY, int floorZ, BlockRailBase block){
-        //get the direction of the rail from it's metadata
-        if (worldObj.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
-            railMetadata =((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
-        } else {
-            railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
-        }
-
-
+    private double[] moveBogieVanilla(double currentMotion, double velocityX, double velocityZ, int floorX, int floorY, int floorZ, BlockRailBase block){
         //figure out the current rail's direction
         railPathX = (martix[railMetadata][1][0] - martix[railMetadata][0][0]);
         railPathZ = (martix[railMetadata][1][2] - martix[railMetadata][0][2]);
@@ -294,15 +288,18 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             railPathZ = -railPathZ;
         }
 
+        motionSqrt = Math.sqrt(velocityX * velocityX + velocityZ * velocityZ);
         //update the motion's direction to match facing.
         if(motionX==velocityX && motionZ==velocityZ) {
-            motionSqrt = Math.sqrt(velocityX * velocityX + velocityZ * velocityZ);
             motionX = motionSqrt * (railPathX / railPathSqrt);
             motionZ = motionSqrt * (railPathZ / railPathSqrt);
         }
 
-        double[] movementPath = CommonUtil.rotatePoint(currentMotion,0,
-                CommonUtil.atan2degreesf(railPathZ,railPathX));
+        retValue = new double[]{motionSqrt * (railPathX / railPathSqrt),
+                motionSqrt * (railPathZ / railPathSqrt)};
+
+        movementPath = new double[]{currentMotion * (railPathX / railPathSqrt),0,
+                currentMotion * (railPathZ / railPathSqrt)};
 
         //define the rail path again, to center the transport.
         railPathX2 = Math.floor(posX) + 0.5D + martix[railMetadata][0][0] * 0.5D;
@@ -323,18 +320,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         this.posX = (railPathX2 + railPathX * railPathDirection)+movementPath[0];
         this.posZ = (railPathZ2 + railPathZ * railPathDirection)+movementPath[2];
         //endMagic();
-
-        //be sure the movement was significant enough to merit a change in Y position, and/or to do rail functionality
-        floorX = MathHelper.floor_double(posX);
-        floorZ = MathHelper.floor_double(posZ);
-        if(!BlockRailBase.func_150049_b_(worldObj, floorX, floorY, floorZ)){
-            this.prevPosY =posY;
-            if(BlockRailBase.func_150049_b_(worldObj, floorX, floorY+1, floorZ)){
-                posY++;
-            } else if (BlockRailBase.func_150049_b_(worldObj, floorX, floorY-1, floorZ)) {
-                posY--;
-            }
-        }
+        return retValue;
     }
 
 
