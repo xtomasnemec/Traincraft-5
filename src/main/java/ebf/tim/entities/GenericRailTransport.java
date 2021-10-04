@@ -1130,20 +1130,24 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             if (!entityData.containsString("ownername") || entityData.getString("ownername").equals("")) {
                 @Nullable
-                Entity player = CommonProxy.getEntityFromUuid(entityData.getUUID("owner"));
+                Entity player = CommonProxy.getEntityFromUuid(entityData.getUUID("owner"), worldObj);
                 if (player instanceof EntityPlayer) {
                     entityData.putString("ownername",((EntityPlayer) player).getDisplayName());
                     updateWatchers = true;
                 }
             }
             //sync the linked transports with client, and on server, easier to use an ID than a UUID.
-            Entity linkedTransport = CommonProxy.getEntityFromUuid(frontLinkedTransport);
-            if (linkedTransport instanceof GenericRailTransport && (frontLinkedID == null || linkedTransport.getEntityId() != frontLinkedID)) {
+            Entity linkedTransport = CommonProxy.getEntityFromUuid(frontLinkedTransport, worldObj);
+            if (linkedTransport instanceof GenericRailTransport
+                    && (frontLinkedID == null || linkedTransport.getEntityId() != frontLinkedID)
+                    && (backLinkedID == null || linkedTransport.getEntityId() != backLinkedID)) {
                 frontLinkedID = linkedTransport.getEntityId();
                 updateWatchers = true;
             }
-            linkedTransport = CommonProxy.getEntityFromUuid(backLinkedTransport);
-            if (linkedTransport instanceof GenericRailTransport && (backLinkedID == null || linkedTransport.getEntityId() != backLinkedID)) {
+            linkedTransport = CommonProxy.getEntityFromUuid(backLinkedTransport, worldObj);
+            if (linkedTransport instanceof GenericRailTransport
+                    && (backLinkedID == null || linkedTransport.getEntityId() != backLinkedID)
+                    && (backLinkedID == null || linkedTransport.getEntityId() != backLinkedID)) {
                 backLinkedID = linkedTransport.getEntityId();
                 updateWatchers = true;
             }
@@ -1214,11 +1218,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
 
-                    double[] motion = CommonUtil.rotatePoint(0.05,0,
-                            CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
+                    DebugUtil.println(e.getClass(),getBoolean(boolValues.BRAKE), getAccelerator(), CommonProxy.pushabletrains);
                     if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0) {
-                        double distance = Math.copySign(0.075,motion[0]);
                         if  (CommonProxy.pushabletrains) {
+                            double[] motion = CommonUtil.rotatePoint(0.25,0,
+                                    CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
+                            double distance = Math.copySign(0.25,motion[0]);
                             if(distance>0){
                                 if(frontBogie.motionX+distance>distance){
                                     motion[0]=Math.max(0,distance-frontBogie.motionX);
@@ -1389,8 +1394,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         vectorCache[4][0]=0;
         //needs velocity so it can be a tick ahead, otherwise it rubberbands back
         if(front instanceof GenericRailTransport) {
-            vectorCache[4][0] += (float) (Math.abs(posX - front.posX) * Math.abs(posX - front.posX));
-            vectorCache[4][0] += (float) (Math.abs(posZ - front.posZ) * Math.abs(posZ - front.posZ));
+            vectorCache[4][0] += (float) (Math.abs(posX - front.posX));
+            vectorCache[4][0] += (float) (Math.abs(posZ - front.posZ));
             vectorCache[4][0] -= (this.getHitboxSize()[0] * 0.5)
                     + (((GenericRailTransport) front).getHitboxSize()[0] * 0.5);
 
@@ -1407,8 +1412,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         vectorCache[4][0]=0;
         if(back instanceof GenericRailTransport) {
-            vectorCache[4][0] += (float) -(Math.abs(back.posX - posX) * Math.abs(back.posX - posX));
-            vectorCache[4][0] += (float) -(Math.abs(back.posZ - posZ) * Math.abs(back.posZ - posZ));
+            vectorCache[4][0] += (float) -(Math.abs(back.posX - posX));
+            vectorCache[4][0] += (float) -(Math.abs(back.posZ - posZ));
             vectorCache[4][0] += (this.getHitboxSize()[0] * 0.5)
                     + (((GenericRailTransport) back).getHitboxSize()[0] * 0.5);
 

@@ -113,18 +113,27 @@ public class CommonProxy implements IGuiHandler {
      * <h2>load entity from UUID</h2>
      * This checks every entity in every dimension for one with the proper UUID,
      * this is very similar to the system used in 1.8+.
+     * there is an additional optimization it will check the current dimension first,
      * NOTE: this is SERVER ONLY.
      *
      * We can't use a foreach loop, if we do it will very often throw a java.util.ConcurrentModificationException
      */
-    @Deprecated //use a world relative value via DimensionManager.getWorld(dimensionId)
     @Nullable
-    public static Entity getEntityFromUuid(UUID uuid) {
+    public static Entity getEntityFromUuid(UUID uuid, World dim) {
+        int i;
+        for (i=0; i< dim.loadedEntityList.size();i++) {
+            //if it's an entity, not null, and has a matching UUID, then return it.
+            if (dim.loadedEntityList.get(i) instanceof Entity &&
+                    ((Entity) dim.loadedEntityList.get(i)).getUniqueID().equals(uuid)) {
+                return (Entity) dim.loadedEntityList.get(i);
+            }
+        }
+
         //loop for dimensions, even ones from mods.
         for (int w=0; w < MinecraftServer.getServer().worldServers.length; w++) {
-            if (MinecraftServer.getServer().worldServers[w] != null) {
+            if (MinecraftServer.getServer().worldServers[w] != null && dim.provider.dimensionId!=w) {
                 //if the server isn't null, loop for the entities loaded in that server
-                for (int i=0; i< MinecraftServer.getServer().worldServers[w].loadedEntityList.size();i++) {
+                for (i=0; i< MinecraftServer.getServer().worldServers[w].loadedEntityList.size();i++) {
                     //if it's an entity, not null, and has a matching UUID, then return it.
                     if (MinecraftServer.getServer().worldServers[w].loadedEntityList.get(i) instanceof Entity &&
                             ((Entity) MinecraftServer.getServer().worldServers[w].loadedEntityList.get(i)).getUniqueID().equals(uuid)) {
