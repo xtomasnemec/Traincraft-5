@@ -416,15 +416,158 @@ public enum ItemIDs {
 	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 9),
 	minecartDash9_44CW("ItemRollingStock", "d944cw", 14),
 	minecartGP15("ItemRollingStock", "gp15", 11),
-	minecart11000DOT111("ItemRollingStock", "11000DOT", 4),
-	minecart20600DOT111("ItemRollingStock", "20600DOT", 5),
-	minecart29080DOT111("ItemRollingStock", "29080DOT", 6),
+
 	minecartE8A( "ItemRollingStock", "e8a", 13),
 	minecartE9A( "ItemRollingStock", "e9a", 13),
 	minecartF3A( "ItemRollingStock", "f3a", 10),
 	minecartU36C( "ItemRollingStock", "u36c", 15),
 	minecartE8B( "ItemRollingStock", "e8b", 13),
 	minecartE9B( "ItemRollingStock", "e9b", 13),
+
+	//stEAmeeee
+	minecartClimaxNew("ItemRollingStock", "train_climax2", 5),
+	minecartVBShay2("ItemRollingStock", "vbshay2", 5),
+	minecartSkook("ItemRollingStock", "skookum", 5),
+	minecartSkookTender("ItemRollingStock", "skookum_tender", 4),
+	minecartShay3Truck("ItemRollingStock", "3TruckShay", 5),
+	minecartShay3TruckTender("ItemRollingStock", "3TruckShayTender", 4),
+
+	minecartLocoC11("ItemRollingStock", "train_C11", 5),
+	minecartOnion("ItemRollingStock", "Onion", 10),
+	minecartOnionTender("ItemRollingStock", "OnionTender", 10),
+
+	minecartPELocomotive("ItemRollingStock", "PELocoIcon", 5),
+	minecartPETender("ItemRollingStock", "PETenderIcon", 3),
+
+
+	//EMD
+	minecartF7A("ItemRollingStock", "f7a", 5),
+	minecartF7B("ItemRollingStock", "f7b", 5),
+	minecartCF7("ItemRollingStock", "cf7angle", 3),
+	minecartCF7round("ItemRollingStock", "cf7round", 3),
+
+	minecartGP7("ItemRollingStock", "gp7", 4),
+	minecartGP7b("ItemRollingStock", "gp7b", 4),
+	minecartGP7u("ItemRollingStock", "gp7u", 4),
+	minecartGP9("ItemRollingStock", "gp9", 4),
+	minecartGP13("ItemRollingStock", "gp13", 9),
+	minecartGP15("ItemRollingStock", "gp15", 4),
+	minecartGP30("ItemRollingStock", "gp30", 5),
+	minecartGP38dash2("ItemRollingStock", "gp38dash2", 5),
+	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 3),
+	minecartGP49("ItemRollingStock", "gp49", 5),
+
+	minecartSD9("ItemRollingStock", "sd9", 4),
+	minecartSD40dash2("ItemRollingStock", "sd40dash2", 6),
+	minecartSD70Mac("ItemRollingStock", "sd70mac", 7),
+
+	minecartSW1("ItemRollingStock","sw1", 2),
+	minecartSW8("ItemRollingStock", "train_sw8", 4),
+	minecartSW1500("ItemRollingStock", "sw1500", 4),
+	minecartSW1200("ItemRollingStock","sw1200", 3),
+
+	minecartBeep("ItemRollingStock", "BeepIcon", 2),
+
+	//GE
+	minecart44Ton("ItemRollingStock", "44-tonner_icon", 4),
+
+	minecartU18B("ItemRollingStock", "U18B", 3),
+	minecartU23B("ItemRollingStock", "u23b", 4),
+	minecartU36C( "ItemRollingStock", "u36c", 6),
+
+	minecartB23("ItemRollingStock", "b23", 5),
+
+	minecartDash840B("ItemRollingStock", "B40-8", 4),
+	minecartDash840BB("ItemRollingStock", "B40-8B", 4),
+	minecartDash840BW("ItemRollingStock", "B40-8W", 4),
+	minecartDash840C("ItemRollingStock", "C40-8", 4),
+
+	minecartDash9_44CW("ItemRollingStock", "d944cw", 7),
+
+	minecartES44("ItemRollingStock", "es44", 8),
+
+	//ALCO
+	minecartC424("ItemRollingStock", "c424", 5),
+	minecartC425("ItemRollingStock", "c425", 5),
+	minecartDH643("ItemRollingStock", "DH643", 5),
+
+	minecartHH660("ItemRollingStock", "hh660", 2),
+	minecartS2("ItemRollingStock", "alco_s2", 2),
+
+	minecartRSD15("ItemRollingStock","RSD15_Icon", 4),
+
+	//BRuhMOMent
+
+
+	//other MOtOEr Shuite
+	minecartH1044("ItemRollingStock", "h1044", 4),
+	minecartNRE3gs21b("ItemRollingStock", "3gs21b", 4),
+
+	//E-lect-trock
+	minecartEF1("ItemRollingStock", "ef1", 6),
+	minecartEF1B("ItemRollingStock", "ef1b", 5),
+	minecartEP1A("ItemRollingStock", "ep1a", 6),
+
+	minecartGM6C("ItemRollingStock", "GM6C_Icon", 5),
+
+	minecartILMA("ItemRollingStock", "I.L.MA_icon", 2),
+	minecartILMB("ItemRollingStock", "I.L.M.B", 2),
+
+	//FrERf
+	minecartRoundHopper("ItemRollingStock", "train_RoundHopper", 2),
+	minecartRibbedHopper("ItemRollingStock", "train_ribbed_hopper", 2),
+	minecartHopper5201("ItemRollingStock", "Hopper5201", 4),
+	minecartHopper6260("ItemRollingStock", "Hopper6260", 5),
+
+	minecart60centerbeam("ItemRollingStock", "60centerbeam", 3),
+	minecart66centerbeam("ItemRollingStock", "66centerbeam", 3),
+	minecart73centerbeam("ItemRollingStock", "73centerbeam", 4),
+
+	minecartPS140("ItemRollingStock", "ps140", 3),
+	minecartPS150("ItemRollingStock", "ps150", 4),
+	minecartPS160("ItemRollingStock", "ps160", 5),
+	minecartOWO60Verticube("ItemRollingStock", "owocube", 6),
+	minecartMILW40boxcar("ItemRollingStock", "milw40", 3),
+	minecart40highcube("ItemRollingStock", "40highcube", 3),
+	minecarthicube60foot("ItemRollingStock", "hicube60", 5),
+	minecartReefer64("ItemRollingStock", "Reefer64", 5),
+
+	minecartVersaLongi("ItemRollingStock", "versalongi", 5),
+	minecartVersaTrans("ItemRollingStock", "versatrans", 5),
+	minecartMillGondola("ItemRollingStock", "millgondola", 4),
+	minecartWoodchipHopper("ItemRollingStock", "woodchiphopper", 4),
+	minecartOreJenny("ItemRollingStock", "orejenny", 2),
+
+	minecart11000DOT111("ItemRollingStock", "11000DOT", 4),
+	minecart20600DOT111("ItemRollingStock", "20600DOT", 5),
+	minecart29080DOT111("ItemRollingStock", "29080DOT", 6),
+
+	minecartSkeletonLogCar("ItemRollingStock", "Skeleton", 1),
+
+	//Assenger
+	minecartPCH120Commute("ItemRollingStock", "pch120", 4),
+	minecartPCH120Car("ItemRollingStock", "pch120car", 3),
+
+	minecartPS73Baggage("ItemRollingStock", "PS_73_baggage_icon", 3),
+	minecartPS85Baggage("ItemRollingStock", "PS_85_baggage_icon", 3),
+	minecartPS52seatCoach("ItemRollingStock", "PS52seatCoach", 3),
+	minecartPScombine("ItemRollingStock", "PScombine", 3),
+	minecartPSCenterDiner("ItemRollingStock", "PScenterDiner", 3),
+	minecartPSDamnitAnotherDiner("ItemRollingStock", "BAP_Pullman_Standard_lightweight_center_diner_icom", 3),
+	minecartPSSleeper565("ItemRollingStock", "BAP_PS_lightweight_5-6-5_sleeper_icon", 3),
+	minecartPSSleeper565DRGW("ItemRollingStock", "BAP_PS_lightweight_DRGW_5-6-5_sleeper_icon", 3),
+
+	minecartAmfleet("ItemRollingStock", "Amfleet", 3),
+	minecartAmfleet2("ItemRollingStock", "Amfleet2", 3),
+
+	minecartPEcooch("ItemRollingStock", "pecoach", 6),
+	minecartPEobserve("ItemRollingStock", "peobserve", 6),
+
+	//othershizzle
+	minecartWVcaboose("ItemRollingStock", "wvcaboose",3),
+	minecartHBC1Ccaboose("ItemRollingStock", "HBC1C",3),
+	minecartDRGWCaboose("ItemRollingStock", "DRGW_01400_series_caboose",3),
+
 	;
 
 	public Item item;

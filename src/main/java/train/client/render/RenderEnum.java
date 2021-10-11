@@ -1031,6 +1031,7 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
+
 	;
 
 	private Class<? extends AbstractTrains> entityClass;
