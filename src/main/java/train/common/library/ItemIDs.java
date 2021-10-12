@@ -334,7 +334,6 @@ public enum ItemIDs {
 	minecartGeGenesis("ItemRollingStock", "geGenesis", 14),
 	//minecartHuskyStackWellcar("ItemRollingStock", "huskystack", 3),
 	minecartHustler("ItemRollingStock", "hustler", 2),
-	minecartF40PH("ItemRollingStock", "f40ph", 10),
 	minecartBoulderWagon("ItemRollingStock","BoulderWagon",3),
 	minecartSDP40F("ItemRollingStock","sdp40f",12),
 	minecartFP45("ItemRollingStock", "fp45", 10),
@@ -368,6 +367,7 @@ public enum ItemIDs {
 	minecartF7B("ItemRollingStock", "f7b", 5),
 	minecartCF7angle("ItemRollingStock", "cf7angle", 3),
 	minecartCF7round("ItemRollingStock", "cf7round", 3),
+	minecartF40PH("ItemRollingStock", "f40ph", 5),
 
 	minecartE8A( "ItemRollingStock", "e8a", 5),
 	minecartE8B( "ItemRollingStock", "e8b", 5),
