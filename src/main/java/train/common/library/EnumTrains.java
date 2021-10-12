@@ -266,19 +266,14 @@ public enum EnumTrains {
 	locoSteamSnowPlow("Loco Steam Snow Plow", EntityLocoSteamSnowPlow.class, ItemIDs.minecartLocoSnowPlow.item, "steam, snow plow", 200, 20, 0, 10, 120, 170, 0.7, 0.965, 6850, null, 18, -4.75),
 
 	/** JCIR-TC*/
-	S2("S2",  DieselAlcoS2.class, ItemIDs.minecartS2.item, "diesel", 1000, 96, 0, 5, 0, 170, 0.7, 0.965, 3000, new String[] {"Black", "Grey", "Green", "Orange", "Pink", "White", "Blue", "LightGrey", "Magenta", "Red"}, 18, -2),
 	pch120("PCH-120 Commute", PCH120Commute.class, ItemIDs.minecartPCH120Commute.item, "electric",1400, 120, 0, 5, 0, 160, 0.8, 0.985, 0, new String[] {"White", "Blue", "Red", "Green","Cyan"}, 18, -2.7, new String[] {"Model by Bidahochi, train by PeachMaster"}),
 	pch120coach("PCH-120 Commute Car", PCH120Coach.class, ItemIDs.minecartPCH120Car.item, "passenger",0, 0, 2, 0, 0, 0, 0, 0, 0,new String[] {"White", "Blue", "Red", "Green", "Cyan"}, 0, 0,new String[] {"Model by Bidahochi"}),
 	geometryCar("NXTrack Geometry Car", ExperimentalGeometryCar.class, ItemIDs.minecartGeometryCar.item, "geometry car", 0, 0, 2, 0, 0, 0, 0, 0, 0, new String[] {"Grey", "LightGrey"}, 18, 0, new String[] {"Model by Bidahochi, train by PeachMaster, checks the railroad for things up to standard"}),
 	amfleet("Amfleet", Amfleet.class, ItemIDs.minecartAmfleet.item, "passenger", 2, new String[] {"White", "Grey", "LightGrey", "LightBlue", "Red", "Blue", "Green"}, 0, 0, new String[] {"Model by Valaktik, Updated by Bidahochi"}),
 	HighrailTruck("Highrail Truck", DieselHighrailTruck.class, ItemIDs.minecartHighrailTruck.item, "diesel", 90, 80, 0, 10, 0, 140, 0.7, 0.8, 1000,new String[] {"Yellow", "White", "LightGrey"},18, 2.7, new String[] {"Model by MessibOOmer"}),
-	freightRibbedHopper("Ribbed Hopper", RibbedHopper.class, ItemIDs.minecartRibbedHopper.item, "freight", 6, new String[] {"Grey", "Cyan", "LightGrey", "Red", "Brown"}, 0, 54, new String[] {"Cargo: Any"}),
 	Thanos("Thanos", Thanos.class, ItemIDs.minecartThanos.item, "electric", 1000001, 6210000, 0, 69, 0, 1, 6, 3, 0, null, 18, -1, new String[] {"You don't want to mess with the Universe's Best"}),
 	SD45dash2("SD45-2", DieselSD45dash2.class, ItemIDs.minecartSD45dash2.item, "diesel", 3600, 132, 0, 5, 0, 190, 0.75, 0.89, 12000, new String[] {"Green", "White", "Black", "Orange", "Blue", "Pink", "Magenta", "LightBlue", "Yellow", "Grey","Red", "LightGrey", "Purple", "Brown", "Lime", "skin16"}, 10, -3.8),
-	bawx40highcube("40highcube", bawx40highcube.class, ItemIDs.minecart40highcube.item, "freight", 4, new String[] {"Brown", "Green", "Cyan", "Orange", "Grey", "Red", "Lime", "LightGrey"}, 0, 40, new String[] {"Model by Prof Binky"}),
 	FRED("FRED", FRED.class, ItemIDs.minecartFRED.item, "misc", 0.2, null, 0, 1, new String[] {"the least used item in the mod"}),
-	WoodchipHopper("Woodchip Hopper", WoodchipHopper.class, ItemIDs.minecartWoodchipHopper.item, "freight", 5, new String[] {"Brown", "Blue", "Green", "Orange", "Red", "White"}, 0, 50, new String[] {"Cargo: Wood, Model by Binky"}),
-	OreJenny("Ore Jenny", OreJenny.class, ItemIDs.minecartOreJenny.item, "freight", 0.5, new String[] {"Brown", "Red", "Orange", "Pink", "Black"}, 0, 27, new String[] {"Cargo: Ore (dUh), Model by Binky"}),
 	geGenesis("Ge Genesis", GeGenesis.class, ItemIDs.minecartGeGenesis.item, "diesel", 4250, 177, 0, 5, 0, 175, 0.93, 0.94, 10000, new String[] {"Grey", "LightGrey", "White"}, 10, -5.5, new String[] {"Model by MessicOOmer"}),
 	BombCart("Payload", BombCart.class, ItemIDs.minecartBombCart.item, "misc", 3, new String[]{"LightBlue", "Red", "Black", "Blue", "Cyan", "Green", "Grey", "Brown", "LightGrey", "Lime", "Magenta", "Orange", "Pink", "Purple", "Yellow", "White"}, 0, 0, new String[] {"Who is not pushing ze Cart!?"}),
 	//HuskyStackWellcar("53' HuskyStack Wellcar", HuskyStackWellcar.class, ItemIDs.minecartHuskyStackWellcar.item, "freight", 4, new String[] {"Yellow", "Pink"}, 0,0, new String[] {"Model by Bidahochi"}),
@@ -297,42 +292,22 @@ public enum EnumTrains {
 	Hustler("Hustler", DieselHustler.class, ItemIDs.minecartHustler.item, "diesel", 150, 30, 0, 50, 0, 170, 0.6, 0.7, 9000,  new String[] {"Yellow", "Black", "Blue", "Brown"}, 10, -2, new String[] {"Made by BigJ"}),
 	F40PH("F40PH", DieselF40PH.class, ItemIDs.minecartF40PH.item, "diesel", 3000, 103, 0, 5, 0, 170, 0.75, 0.95, 6000, new String[] {"LightGrey", "Grey", "Red", "Yellow", "Cyan"}, 10, -3.5, new String[] {"Model by Bida & Mr Coomer"}),
 	SDP40F("SDP40F",DieselSDP40F.class, ItemIDs.minecartSDP40F.item, "diesel", 3000, 160, 0, 10, 0, 190, 0.8, 0.9, 12000, new String[] {"LightBlue", "White", "LightGrey", "Grey", "Yellow"}, 10, -3.95, new String[] {"Model by Prof_Binky"}),
-	gtavthing("gtavthing", Dieselgtavthing.class, ItemIDs.minecartgtavthing.item, "diesel", 1550, 110, 0, 45, 0, 160, 0.85, 0.9, 7000, new String[] {"Yellow"}, 10, -3.2, new String[] {"Fictional locomotive from GTAV"}),
 	HHgregg("HHgregg", DieselHHgregg.class, ItemIDs.minecartHHgregg.item, "awesome", 9932, 299, 0, 42, 0, 48, 0.9, 0.9, 7, null, 10, -2, new String[] {"hhhgregg, Panasonic Blu-ray nintey-nine dollars, thirty-two inch LCD TV two-nintey nine, LG fourty-two inch HD TV only four eighty-nine, everything on sale during chirstmas in"}),
 	BoulderWagon("BoulderWagon", BoulderWagon.class, ItemIDs.minecartBoulderWagon.item, "freight", 5, new String[]{"Grey","skin16"}, 0, 9, new String[]{"Made by hariesh"}),
-	MILW40boxcar("MILW40boxcar", MILW40boxcar.class, ItemIDs.minecartMILW40boxcar.item, "freight", 4, new String[] {"Red", "Brown", "Yellow", "Green", "Blue", "Purple", "Orange", "Lime"}, 0, 27, new String[]{"Made by Prof_Binky"}),
-	C425("C425", DieselC425.class, ItemIDs.minecartC425.item, "diesel", 2500, 113, 0, 5, 0, 190, 0.7, 0.8, 6000, new String[]{"Black", "Orange"}, 10, -3.6),
-	VO1000("VO1000", DieselVO1000.class, ItemIDs.minecartVO1000.item, "diesel", 1000, 67, 0, 5, 0, 180, 0.8, 0.9, 3000, new String[]{"Green", "Pink", "Blue"}, 10, -2.2, new String[] {"Made by Prof_Binky"}),
 	FP45("FP45",DieselFP45.class, ItemIDs.minecartFP45.item, "diesel", 3600, 145, 0, 10, 0, 190, 0.75, 0.9, 12000, new String[] {"Orange", "Yellow", "LightGrey", "Grey"}, 10, -3.95, new String[] {"Model by Prof_Binky"}),
 	F45("F45",DieselF45.class, ItemIDs.minecartF45.item, "diesel", 3600, 145, 0, 10, 0, 190, 0.75, 0.9, 12000, new String[] {"LightBlue", "Green", "Blue", "Yellow", "Red"}, 10, -3.65, new String[] {"Model by Prof_Binky"}),
 	SD40T2("SD40T-2", DieselSD40T2.class, ItemIDs.minecartSD40T2.item, "diesel", 3000, 105, 0, 10, 0, 190, 0.75, 0.89, 12000, new String[] {"LightGrey", "Grey", "Blue", "White", "Black", "Red"}, 10, -3.8),
-	Freight60centerbeam("60centerbeam", Freight60centerbeam.class, ItemIDs.minecart60centerbeam.item, "freight", 6, new String[] {"Black", "Yellow", "Green", "LightGrey"}, 0, 54, new String[]{"Made by Prof_Binky"}),
-	Freight66centerbeam("66centerbeam", Freight66centerbeam.class, ItemIDs.minecart66centerbeam.item, "freight", 6, new String[] {"Orange", "Cyan"}, 0, 54, new String[]{"Made by Prof_Binky and bIDa"}),
-	Freight73centerbeam("73centerbeam", Freight73centerbeam.class, ItemIDs.minecart73centerbeam.item, "freight", 7, new String[] {"Pink", "Cyan", "Green", "Orange"}, 0, 54, new String[]{"Made by Prof_Binky"}),
-	PS140("PS140", PS140.class, ItemIDs.minecartPS140.item, "freight", 4, new String[] {"Brown", "Red", "LightBlue", "Green", "Cyan"}, 0, 27, new String[]{"Made by Prof_Binky"}),
-	PS150("PS150", PS150.class, ItemIDs.minecartPS150.item, "freight", 5, new String[] {"White", "Lime", "Red"}, 0, 36, new String[]{"Made by Prof_Binky"}),
-	PS160("PS160", PS160.class, ItemIDs.minecartPS160.item, "freight", 6, new String[] {"Blue", "Orange", "Cyan", "White"}, 0, 45, new String[]{"Made by Prof_Binky"}),
 	WVcaboose("WVcaboose", WVcaboose.class, ItemIDs.minecartWVcaboose.item, "caboose", 4, new String[] {"Red", "Green", "Lime", "Cyan"}, 0, 36, new String[]{"Made by Prof_Binky"}),
     EF1("EF1",ElectricEF1.class, ItemIDs.minecartEF1.item, "electric", 1720, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, new String[] {"Orange", "Yellow", "Red", "Green", "Black", "Grey"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
 	EF1B("EF1B",ElectricEF1B.class, ItemIDs.minecartEF1B.item, "electric", 1720, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, new String[] {"Orange", "Red", "Black", "Pink"}, 10, -2.3125, new String[] {"Model by Prof_Binky"}),
 	EP1A("EP1A",ElectricEP1A.class, ItemIDs.minecartEP1A.item, "electric", 2500, 120, 0, 55, 0, 150, 0.75, 0.85, 12500, new String[] {"Orange", "Red"}, 10, -3.4375, new String[] {"Model by Prof_Binky"}),
 	LogcarNP("LogcarNP",LogcarNP.class, ItemIDs.minecartLogcarNP.item,"freight",2, new String[]{"Brown","Black"}, 0, 18, new String[]{"Made by BigJ1359"}),
 	CF7R("CF7R", DieselCF7R.class, ItemIDs.minecartCF7R.item, "diesel", 2350, 105, 0, 5, 0, 185, 0.8, 0.9, 7000, new String[] {"Blue", "Yellow", "Black"}, 10, -3, new String[] {"CF7 Rebuild Rebuilt"}),
-	OWO60Verticube("OWO 60 Verticube", OWO60Verticube.class, ItemIDs.minecartOWO60Verticube.item, "freight", 6, new String[] {"Cyan", "Lime", "Green", "LightGrey", "White", "Blue"}, 0, 54, new String[]{"Capacity: a lot lol"}),
 	SD45dash2B("SD45-2B", DieselSD45dash2B.class, ItemIDs.minecartSD45dash2B.item, "diesel", 3600, 132, 0, 10, 0, 190, 0.75, 0.89, 12000, new String[] {"Blue", "Yellow", "Red", "White"}, 10, -3.8),
 	HighrailVan("Highrail Van", DieselHighrailVan.class, ItemIDs.minecartHighrailVan.item, "diesel", 90, 80, 0, 10, 0, 140, 0.7, 0.8, 1000,new String[] {"Yellow", "White", "Grey", "Orange", "Green"},18, 2.7),
 	BigMeme("BigMeme", BigMeme.class, ItemIDs.minecartBigMeme.item, "awesome", 1, 200, 0, 50, 0, 0, 0.9, 0.9, 8000, new String[] {"LightGrey", "Grey"},10 , -1.1, new String[] {"Big Shack Yo"}),
-	C415H("C415H", DieselC415H.class, ItemIDs.minecartC415H.item, "diesel", 1500, 106, 0, 5, 0, 170, 0.87, 0.93, 4000, new String[] {"Purple", "LightGrey"}, 10, -2.5),
-	//C415S("C415S", DieselC415S.class, ItemIDs.minecartC415S.item, "diesel", 1500, 106, 0, 45, 0, 170, 0.87, 0.93, 17000, new String[] {"Yellow", "Orange", "White"}, 10, -2.5),
-	//C415L("C415L", DieselC415L.class, ItemIDs.minecartC415L.item, "diesel", 1500, 106, 0, 45, 0, 170, 0.87, 0.93, 17000, new String[] {"Yellow", "LightGrey"}, 10, -2.5),
 	PEcoach("PEcoach", PEcoach.class, ItemIDs.minecartPEcooch.item, "festive passenger",  0, 0, 6, 0, 0, 0, 0, 0, 0, new String[]{"Blue", "Cyan"}, 10, 0),
 	PEobserve("PEobserve", PEobserve.class, ItemIDs.minecartPEobserve.item, "festive passenger",  0, 0, 6, 0, 0, 0, 0, 0, 0, new String[]{"Blue", "Cyan"}, 10, 0),
-	VersaLongi("VersaLongi", VersaLongi.class, ItemIDs.minecartVersaLongi.item, "freight", 5, new String[] {"LightGrey", "Black", "Orange"}, 30, 36, new String[] {"Cargo: Aggregates"}),
-	VersaTrans("VersaTrans", VersaTrans.class, ItemIDs.minecartVersaTrans.item, "freight", 5, new String[] {"LightBlue", "Grey", "LightGrey"}, 30, 36, new String[] {"Cargo: Aggregates"}),
-	NRE3gs21b("NRE3gs21b", DieselNRE3gs21b.class, ItemIDs.minecartNRE3gs21b.item, "diesel genset", 2100, 104, 0, 10,0,  160, 0.78, 0.9, 11000, new String[]{"Yellow", "LightGrey", "Orange", "Grey"}, 10, -3.1),
-	DOT11111000( "DOT11000", DOT11111000.class, ItemIDs.minecart11000DOT111.item, "tank", 0, 0, 4, 0, 0, 0, 0, 0, 41000, new String[] {"Black", "LightGrey", "Grey"}, 10, 0, new String[]{"Capacity: 41000mb"}),
-	DOT11120600( "DOT20600", DOT11120600.class, ItemIDs.minecart20600DOT111.item, "tank", 0, 0, 5, 0, 0, 0, 0, 0, 78000, new String[] {"Grey", "Black"}, 10, 0, new String[]{"Capacity: 78000mb"}),
-	DOT11129080( "DOT29080", DOT11129080.class, ItemIDs.minecart29080DOT111.item, "tank", 0, 0, 6, 0, 0, 0, 0, 0, 110000, new String[] {"Black", "Orange", "LightGrey", "White"}, 10, 0, new String[]{"Capacity: 110000mb"}),
 
 	//stEAmeeee//
 	Climax2("2TruckClimax", SteamClimaxNew.class, ItemIDs.minecartClimaxNew.item, "steam", 280,35,0,50,160,120,0.7,0.8,8000, null,15,-1.0),
@@ -407,19 +382,68 @@ public enum EnumTrains {
 	ES44("ES44", DieselES44.class, ItemIDs.minecartES44.item, "diesel", 4400, 120, 0, 10, 0, 190, 0.7, 0.8, 21000, new String[] {"Lime", "Orange", "Red", "Yellow", "Blue", "LightGrey", "Grey", "Black"}, 10, -4.3),
 
 	//ALCO//
+	C415H("C415H", DieselC415H.class, ItemIDs.minecartC415H.item, "diesel", 1500, 106, 0, 35, 0, 170, 0.87, 0.93, 8000, new String[] {"Purple", "LightGrey"}, 10, -2.5),
+	//C415S("C415S", DieselC415S.class, ItemIDs.minecartC415S.item, "diesel", 1500, 106, 0, 35, 0, 170, 0.87, 0.93, 17000, new String[] {"Yellow", "Orange", "White"}, 10, -2.5),
+	//C415L("C415L", DieselC415L.class, ItemIDs.minecartC415L.item, "diesel", 1500, 106, 0, 35, 0, 170, 0.87, 0.93, 17000, new String[] {"Yellow", "LightGrey"}, 10, -2.5),
+	C424("C424",DieselC424.class, ItemIDs.minecartC424.item, "diesel", 2400, 113, 0, 40, 0, 190, 0.7, 0.8, 18000, new String[]{"Yellow", "Red", "Cyan", "Pink"}, 10, -3.5),
+	C425("C425", DieselC425.class, ItemIDs.minecartC425.item, "diesel", 2500, 113, 0, 40, 0, 190, 0.7, 0.8, 18000, new String[]{"Black"}, 10, -3.5),
+	DH643("DH643", DieselDH643.class, ItemIDs.minecartDH643.item, "diesel", 4300, 124, 0, 60, 0, 180, 0.7, 0.87, 26000, null, 10, -4.1),
 
+	HH660("HH660", DieselHH660.class, ItemIDs.minecartHH660.item, "diesel", 660, 50, 0, 15, 0, 165, 0.9, 0.95, 4000, new String[] {"Yellow", "Orange", "Black"}, 10, -2),
+	S2("S2",  DieselAlcoS2.class, ItemIDs.minecartS2.item, "diesel", 1000, 96, 0, 15, 0, 170, 0.7, 0.965, 4000, new String[] {"Black", "Grey", "Green", "Orange", "Pink", "White", "Blue", "LightGrey", "Magenta", "Red"}, 18, -2),
+
+	RSD15("RSD15", DieselRSD15.class, ItemIDs.minecartRSD15.item, "diesel", 2400, 105, 0, 30, 0, 180, 0.7, 0.91, 18000, new String[] {"Black", "Grey", "Blue"}, 10, -3.2),
 
 	//BRuhMOMent//
-
+	VO1000("VO1000", DieselVO1000.class, ItemIDs.minecartVO1000.item, "diesel", 1000, 67, 0, 20, 0, 180, 0.8, 0.9, 6000, new String[]{"Green", "Pink", "Blue"}, 10, -2.2),
 
 	//other MOtOEr Shuite//
-
+	H1044("H1044", DieselH1044.class, ItemIDs.minecartH1044.item, "diesel", 1000, 97, 0, 25, 0, 175, 0.75, 0.85, 10000, new String[]{"Green", "Yellow", "Black", "Red", "Blue", "Grey", "LightBlue", "Orange", "White", "Lime", "LightGrey"}, 18, -2.2),
+	NRE3gs21b("NRE3gs21b", DieselNRE3gs21b.class, ItemIDs.minecartNRE3gs21b.item, "diesel genset", 2100, 104, 0, 10,0,  160, 0.78, 0.8, 14000, new String[]{"Yellow", "Orange", "Grey", "LightGrey"}, 10, -3.1),
+	gtavthing("gtavthing", Dieselgtavthing.class, ItemIDs.minecartgtavthing.item, "diesel", 1550, 110, 0, 45, 0, 160, 0.85, 0.9, 10000, new String[] {"Yellow"}, 10, -3.2, new String[] {"Fictional locomotive from GTA-V"}),
+	FOLM1B("FOL-M1B", DieselFOLM1B.class, ItemIDs.minecartFOLM1B.item, "diesel", 5000, 110, 0, 10, 0, 170, 0.7, 0.965, 15000, new String[]{"Grey", "Blue"}, 18, -3.8, new String[] {"Fictional B unit for the Fictional loco from Factorio"}),
+	Krautt("Krautt", DieselKrautt.class, ItemIDs.minecartKrautt.item, "diesel", 3540, 113, 0, 65, 0, 190, 0.75, 0.85, 20000, new String[] {"Grey", "LightGrey", "Black"}, 10, -3.3),
 
 	//E-lect-trock//
+	EF1("EF1",ElectricEF1.class, ItemIDs.minecartEF1.item, "electric", 1720, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, new String[] {"Orange", "Yellow", "Red", "Green", "Black", "Grey"}, 10, -3.4375),
+	EF1B("EF1B",ElectricEF1B.class, ItemIDs.minecartEF1B.item, "electric", 1720, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, new String[] {"Orange", "Red", "Black", "Pink"}, 10, -2.3125),
+	EP1A("EP1A",ElectricEP1A.class, ItemIDs.minecartEP1A.item, "electric", 2500, 120, 0, 55, 0, 150, 0.75, 0.85, 12500, new String[] {"Orange", "Red"}, 10, -3.4375),
 
+	GM6C("GM6C",ElectricGM6C.class, ItemIDs.minecartGM6C.item, "electric", 6000, 115, 0, 55, 0, 150, 0.65, 0.79, 12500, null, 10, -3.8),
+
+	ILMA("Loco Electric ILMA",ElectricILMA.class, ItemIDs.minecartILMA.item,"electric",400,40,0,45,0,400,0.9,0.946,0,new String[] {"Green", "Lime"},18,-1),
+	ILMB("Loco Electric ILMB",ElectricILMB.class, ItemIDs.minecartILMB.item,"electric",500,40,0,45,0,400,0.9,0.946,0,new String[] {"Brown", "Lime"},18,-1),
 
 	//FrERf//
+	RoundHopper("Freight Round Covered Hopper", RoundHopper.class, ItemIDs.minecartRoundHopper.item, "freight", 4, new String[]{"Red", "Black", "White", "LightGrey"}, 18, 36,new String[] {"Cargo: Any."}),
+	RibbedHopper("Freight Ribbed Covered Hopper", RibbedHopper.class, ItemIDs.minecartRibbedHopper.item, "freight", 4, new String[]{"Grey", "Cyan", "LightGrey", "Red", "Brown", "White"}, 18, 36,new String[] {"Cargo: Any."}),
+	Hopper5201("5201 Cu Foot Hopper", Hopper5201.class, ItemIDs.minecartHopper5201.item, "freight", 4, new String[]{"Grey", "Cyan", "Black"}, 10, 36,new String[] {"Cargo: Any."}),
+	Hopper6260("6260 Cu Foot Jumbo Hopper", Hopper6260.class, ItemIDs.minecartHopper6260.item, "freight", 6, new String[]{"Grey", "LightGrey"}, 10, 45,new String[] {"Cargo: Any."}),
 
+	Freight60centerbeam("60centerbeam",  Freight60centerbeam.class, ItemIDs.minecart60centerbeam.item, "freight", 6, new String[] {"Black", "Yellow", "Green", "LightGrey"}, 0, 54, new String[] {"Cargo: Woodthings."}),
+	Freight66centerbeam("66centerbeam",  Freight66centerbeam.class, ItemIDs.minecart66centerbeam.item, "freight", 6, new String[] {"Orange", "Cyan", "Green", "Lime", "LightBlue", "Pink", "Blue", "Yellow", "Red", "Black"}, 0, 54, new String[] {"Cargo: Woodthings."}),
+	Freight73centerbeam("73centerbeam",  Freight73centerbeam.class, ItemIDs.minecart73centerbeam.item, "freight", 7, new String[] {"Pink", "Cyan", "Green", "Orange"}, 0, 54, new String[] {"Cargo: Woodthings."}),
+
+	PS140("PS140",  PS140.class, ItemIDs.minecartPS140.item, "freight", 4, new String[] {"Brown", "Red", "LightBlue", "Green", "Cyan", "Skin16"}, 0, 27, new String[] {"Cargo: Any."}),
+	PS150("PS150",  PS150.class, ItemIDs.minecartPS150.item, "freight", 5, new String[] {"White", "Lime", "Red"}, 0, 36, new String[] {"Cargo: Any."}),
+	PS160("PS160", PS160.class, ItemIDs.minecartPS160.item, "freight", 6, new String[] {"Blue", "Orange", "Cyan", "White"}, 0, 45, new String[] {"Cargo: Any."}),
+	OWO60Verticube("OWO 60 Verticube", OWO60Verticube.class, ItemIDs.minecartOWO60Verticube.item, "freight", 6, new String[] {"Cyan", "Lime", "Green", "LightGrey", "White", "Blue"}, 0, 54, new String[] {"Cargo: Any."}),
+	MILW40boxcar("MILW40boxcar", MILW40boxcar.class, ItemIDs.minecartMILW40boxcar.item, "freight", 4, new String[] {"Red", "Brown", "Yellow", "Green", "Blue", "Purple", "Orange", "Lime"}, 0, 27, new String[] {"Cargo: Any."}),
+	Freight40highcube("40highcube", bawx40highcube.class, ItemIDs.minecart40highcube.item, "freight", 4, new String[] {"Brown", "Green", "Cyan", "Orange", "Grey", "Red", "Lime", "LightGrey", "Pink", "Purple", "Blue", "Black", "White", "Magenta"}, 0, 40, new String[] {"Cargo: Any."}),
+	Hicube60("60 Foot Hi-Cube Boxcar", Hicube60foot.class, ItemIDs.minecarthicube60foot.item, "freight", 7, new String[] {"Yellow", "Red", "Pink", "Blue"}, 10, 54, new String[] {"Cargo: Any."}),
+	Reefer64("Reefer64", Reefer64Foot.class, ItemIDs.minecartReefer64.item, "freight", 6.5, new String[] {"White", "LightGrey", "Grey", "Orange", "Green", "Red", "Black", "Cyan"}, 10, 54, new String[] {"Cargo: Any."}),
+
+	BapVersaLongi("VersaLongi", VersaLongi.class, ItemIDs.minecartVersaLongi.item, "freight", 5, new String[] {"LightGrey", "Black", "Orange"}, 30, 36, new String[] {"Cargo: Aggregates."}),
+	BapVersaTrans("VersaTrans", VersaTrans.class, ItemIDs.minecartVersaTrans.item, "freight", 5, new String[] {"LightBlue", "Grey", "LightGrey"}, 30, 36, new String[] {"Cargo: Aggregates."}),
+	BapMillGondola("52footMillGondola", MillGondola.class, ItemIDs.minecartMillGondola.item, "freight", 5, new String[] {"Red", "Black", "Orange", "Green"}, 30, 50, new String[] {"Cargo: Any."}),
+	BapWoodchipHopper("Woodchip Hopper", WoodchipHopper.class, ItemIDs.minecartWoodchipHopper.item, "freight", 5, new String[] {"Brown", "Blue", "Green", "Orange", "Red", "White"}, 0, 50, new String[] {"Cargo: Woodchips/Sawdust."}),
+	BapOreJenny("Ore Jenny", OreJenny.class, ItemIDs.minecartOreJenny.item, "freight", 0.5, new String[] {"Brown", "Red", "Orange", "Pink", "Black"}, 0, 27, new String[] {"Cargo: Ores."}),
+
+	BapDOT11111000( "DOT11000", DOT11111000.class, ItemIDs.minecart11000DOT111.item, "tank", 0, 0, 4, 0, 0, 0, 0, 0, 41000, new String[] {"Black", "LightGrey", "Grey"}, 10, 0, new String[] {"Capacity: 41000mb."}),
+	BapDOT11120600( "DOT20600", DOT11120600.class, ItemIDs.minecart20600DOT111.item, "tank", 0, 0, 5, 0, 0, 0, 0, 0, 78000, new String[] {"Grey", "Black", "White", "Green"}, 10, 0, new String[] {"Capacity: 78000mb."}),
+	BapDOT11129080( "DOT29080", DOT11129080.class, ItemIDs.minecart29080DOT111.item, "tank", 0, 0, 6, 0, 0, 0, 0, 0, 110000, new String[] {"Black", "Orange", "LightGrey", "White"}, 10, 0, new String[] {"Capacity: 110000mb."}),
+
+	SkeletonCar("Skeleton", SkeletonLogCar.class, ItemIDs.minecartSkeletonLogCar.item, "freight", 1.5, new String[]{"Black","Grey", "LightGrey"}, 18, 18, new String[] {"Cargo: Logs."}),
 
 	//Assenger//
 
