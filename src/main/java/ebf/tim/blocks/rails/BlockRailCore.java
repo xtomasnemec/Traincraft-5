@@ -115,16 +115,25 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        if (getBasicRailMetadata(world, null, x, y, z) >6) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5f, 1.0F);
+        int meta = getBasicRailMetadata(world, null, x, y, z);
+        if (meta >1 && meta <6) {
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1f, 1.0F);
         } else {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
         }
     }
 
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB hitboxSelf, List p_149743_6_, Entity collidingEntity) {
-        this.setBlockBoundsBasedOnState(world, x, y, z);
-        super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
+        int meta = getBasicRailMetadata(world, null, x, y, z);
+        if (meta > 1 && meta < 6) {
+            //todo: return twi hitboxes so it can be climbed like stairs
+            this.setBlockBoundsBasedOnState(world, x, y, z);
+            super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
+        } else {
+            this.setBlockBoundsBasedOnState(world, x, y, z);
+            super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
+        }
+
     }
 
 

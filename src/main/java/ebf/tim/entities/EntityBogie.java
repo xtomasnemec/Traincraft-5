@@ -119,14 +119,21 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**defines the update tick of the entity, in this case we rely on the transport to provide that for us, keeps things synced on the chance entities ever get individualized threads*/
     @Override
     public void onUpdate() {
-        if(ticksExisted%40==0 || ticksExisted==0)
-        //be sure to remove this if the parent is null, or in a different castle, I mean world.
-        if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport){
-            if (worldObj.isRemote) {
-                ((GenericRailTransport) worldObj.getEntityByID(parentId)).setBogie(this, isFront);
+
+        //client only, update position
+        if (this.worldObj.isRemote){
+            super.onUpdate();
+        }
+
+        if(ticksExisted%40==0 || ticksExisted==0) {
+            //be sure to remove this if the parent is null, or in a different castle, I mean world.
+            if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport) {
+                if (worldObj.isRemote) {
+                    ((GenericRailTransport) worldObj.getEntityByID(parentId)).setBogie(this, isFront);
+                }
+            } else {
+                worldObj.removeEntity(this);
             }
-        } else {
-            worldObj.removeEntity(this);
         }
     }
     /**returns if this can be collided with, since we don't process collisions, we return false*/
@@ -155,18 +162,10 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
      * returns true or false depending on whether or not it derails from having no rail.
      */
     public boolean minecartMove(GenericRailTransport host, double moveX, double moveZ) {
-        //define the yaw from the super
-        this.setRotation(host.rotationYaw, host.rotationPitch);
-        //client only, update position
-        if (this.worldObj.isRemote && motionProgress > 0) {
-            this.posX += (prevPosX - this.posX) / motionProgress;
-            this.posY += (prevPosY - this.posY) / motionProgress;
-            this.posZ += (prevPosZ - this.posZ) / motionProgress;
-            --motionProgress;
-
-        }
         //server only
-        else if(!worldObj.isRemote) {
+        if(!worldObj.isRemote) {
+            //define the yaw from the super
+            this.setRotation(host.rotationYaw, host.rotationPitch);
 
             //prevent moving without motion velocity
             if (Math.abs(moveX) + Math.abs(moveZ) < 0.000001) {
@@ -390,10 +389,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     @Override
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int turnProgress) {
-        prevPosX=x;
-        prevPosY=y;
-        prevPosZ=z;
-        motionProgress = turnProgress+2;
+        super.setPositionAndRotation2(x,y,z,yaw,pitch,turnProgress);
     }
 
 
