@@ -361,7 +361,7 @@ public enum EnumTrains {
 	Dash840BW("Dash840BW", DieselDash840BW.class, ItemIDs.minecartDash840BW.item, "diesel", 4000, 90, 0, 40, 0, 180, 0.7, 0.88, 20000, new String[] {"Red"}, 10, -3.3),
 	Dash840C("Dash840C", DieselDash840C.class, ItemIDs.minecartDash840C.item, "diesel", 4000, 90, 0, 40, 0, 180, 0.7, 0.88, 21000, new String[] {"Orange", "Yellow", "Black", "Grey", "Red", "LightGrey"}, 10, -3.3),
 
-	Dash944CW("Dash9_44CW", DieselDash9_44CW.class, ItemIDs.minecartDash944CW.item, "diesel", 4400, 119, 0, 45, 0, 190, 0.7, 0.83, 21000, new String[] {"Grey", "LightGrey"}, 10, -4.3),
+	Dash944CW("Dash944CW", DieselDash944CW.class, ItemIDs.minecartDash944CW.item, "diesel", 4400, 119, 0, 45, 0, 190, 0.7, 0.83, 21000, new String[] {"Grey", "LightGrey"}, 10, -4.3),
 
 	ES44("ES44", DieselES44.class, ItemIDs.minecartES44.item, "diesel", 4400, 120, 0, 10, 0, 190, 0.7, 0.8, 21000, new String[] {"Lime", "Orange", "Red", "Yellow", "Blue", "LightGrey", "Grey", "Black"}, 10, -4.3),
 
@@ -374,7 +374,7 @@ public enum EnumTrains {
 	DH643("DH643", DieselDH643.class, ItemIDs.minecartDH643.item, "diesel", 4300, 124, 0, 60, 0, 180, 0.7, 0.87, 26000, null, 10, -4.1),
 
 	HH660("HH660", DieselHH660.class, ItemIDs.minecartHH660.item, "diesel", 660, 50, 0, 15, 0, 165, 0.9, 0.95, 4000, new String[] {"Yellow", "Orange", "Black"}, 10, -2),
-	S2("S2",  DieselAlcoS2.class, ItemIDs.minecartS2.item, "diesel", 1000, 96, 0, 15, 0, 170, 0.7, 0.965, 4000, new String[] {"Black", "Grey", "Green", "Orange", "Pink", "White", "Blue", "LightGrey", "Magenta", "Red"}, 18, -2),
+	S2("S2",  DieselS2.class, ItemIDs.minecartS2.item, "diesel", 1000, 96, 0, 15, 0, 170, 0.7, 0.965, 4000, new String[] {"Black", "Grey", "Green", "Orange", "Pink", "White", "Blue", "LightGrey", "Magenta", "Red"}, 18, -2),
 
 	RSD15("RSD15", DieselRSD15.class, ItemIDs.minecartRSD15.item, "diesel", 2400, 105, 0, 30, 0, 180, 0.7, 0.91, 18000, new String[] {"Black", "Grey", "Blue"}, 10, -3.2),
 
