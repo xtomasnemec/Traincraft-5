@@ -23,6 +23,8 @@ import train.common.entity.rollingStock.*;
 import train.common.items.ItemBlockOreTC;
 import train.common.items.ItemTCRail;
 
+import java.util.LinkedList;
+
 public class ItemHandler {
 	
 	public static boolean handleItems(Entity entity, ItemStack itemstack) {
@@ -67,6 +69,10 @@ public class ItemHandler {
 			return isid == plankWood || isid == logWood || isid == slabWood || isid == stairWood ||
 					itemstack.getItem() == Item.getItemFromBlock(Blocks.ladder) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence) || itemstack.getItem() == Item.getItemFromBlock(Blocks.fence_gate) || isid == rubberWood;
 		}
+		else if (entity instanceof SkeletonLogCar) {
+			int isid = OreDictionary.getOreID(itemstack);
+			return isid == logWood;
+		}
 		else if (entity instanceof EntityFlatCarRails_DB) {
 			return block instanceof BlockRailBase || itemstack.getItem() instanceof ItemTCRail;
 		}
@@ -95,6 +101,9 @@ public class ItemHandler {
 		}
 		else if (entity instanceof VersaLongi || entity instanceof VersaTrans){
 			return block.getMaterial() == Material.sand || block.getMaterial() == Material.clay || block.getMaterial() == Material.ground || itemstack.getItem() instanceof ItemBlockOreTC;
+		}
+		else if (entity instanceof OreJenny) {
+			return oreBlocks(itemstack);
 		}
 		else {
 			return true;
@@ -130,5 +139,22 @@ public class ItemHandler {
 			}
 		}
 		return false;
+	}
+
+	private static LinkedList<String> OREDICT_ORES = null;
+
+	public static boolean oreBlocks(ItemStack i){
+		if (OREDICT_ORES==null){
+			OREDICT_ORES = new LinkedList<>();
+		}
+		if (!OREDICT_ORES.contains(i.getUnlocalizedName())){
+			for(Integer ore : OreDictionary.getOreIDs(i)) {
+				if (OreDictionary.getOreName(ore).toLowerCase().startsWith("ore")){
+					OREDICT_ORES.add(i.getUnlocalizedName());
+					return true;
+				}
+			}
+		}
+		return OREDICT_ORES.contains(i.getUnlocalizedName());
 	}
 }

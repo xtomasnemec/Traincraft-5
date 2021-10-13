@@ -106,9 +106,9 @@ public class DieselGP49 extends DieselTrain {
         if (fakePlayer == null){
             fakePlayer = new FakePlayer(worldObj);
         }
-        rotation = MathHelper.floor_float(TraincraftUtil.atan2degreesf(
+        rotation = MathHelper.floor_double(Math.toDegrees(Math.atan2(
                 bogieLoco.posZ - posZ,
-                bogieLoco.posX - posX));
+                bogieLoco.posX - posX)));
 
         point1 = rotateVec3(blockpos[0], getPitch(), rotation);
         point1[0] += posX;point1[1] += posY;point1[2] += posZ;
