@@ -14,12 +14,12 @@ import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
 
-public class DieselDash9_44CW extends DieselTrain {
-    public DieselDash9_44CW(World world) {
-        super(world, EnumTrains.ES44.getTankCapacity(), LiquidManager.dieselFilter());
+public class DieselDash944CW extends DieselTrain {
+    public DieselDash944CW(World world) {
+        super(world, EnumTrains.Dash944CW.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
     }
-    public DieselDash9_44CW(World world, double d, double d1, double d2){
+    public DieselDash944CW(World world, double d, double d1, double d2){
         this(world);
         setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;

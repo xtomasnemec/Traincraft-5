@@ -18,7 +18,6 @@ public class DieselSW1 extends DieselTrain {
     public DieselSW1(World world) {
         super(world, EnumTrains.SW1.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
-        //apparently, the reason "world" was red was cus it needed the tank capacity thingg from something else, so iDk reER
     }
     public DieselSW1(World world, double d, double d1, double d2){
         this(world);
@@ -41,8 +40,8 @@ public class DieselSW1 extends DieselTrain {
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-        double distance = -0.2;
-        double yOffset = 0.3;
+        double distance = 0.1;
+        double yOffset = 0.2;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
         if(side.isServer()){
@@ -124,7 +123,7 @@ public class DieselSW1 extends DieselTrain {
     }
 
     @Override
-    public float getOptimalDistance(EntityMinecart cart) { return 1.2F;
+    public float getOptimalDistance(EntityMinecart cart) { return 1.1F;
     }
 
     @Override

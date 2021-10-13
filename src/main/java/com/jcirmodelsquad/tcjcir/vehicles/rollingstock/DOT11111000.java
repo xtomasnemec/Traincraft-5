@@ -12,7 +12,7 @@ import train.common.api.LiquidTank;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-public class DOT11111000  extends LiquidTank {
+public class DOT11111000 extends LiquidTank {
     public int freightInventorySize;
 
     public DOT11111000(World world) {

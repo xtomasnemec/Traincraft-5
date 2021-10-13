@@ -12,7 +12,7 @@ import train.common.Traincraft;
 import train.common.api.Freight;
 import train.common.library.GuiIDs;
 
-public class OWO60Verticube  extends Freight implements IInventory {
+public class OWO60Verticube extends Freight implements IInventory {
     public int freightInventorySize;
     public int numFreightSlots;
     public OWO60Verticube(World world) {
@@ -100,7 +100,7 @@ public class OWO60Verticube  extends Freight implements IInventory {
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 2.8125F;
+        return 2.95F;
     }
 
     @Override

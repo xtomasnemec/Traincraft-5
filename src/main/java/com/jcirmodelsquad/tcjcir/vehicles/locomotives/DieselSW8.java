@@ -13,13 +13,12 @@ import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-
-public class DieselCF7R extends DieselTrain {
-    public DieselCF7R(World world) {
-        super(world, EnumTrains.CF7R.getTankCapacity(), LiquidManager.dieselFilter());
+public class DieselSW8 extends DieselTrain {
+    public DieselSW8(World world) {
+        super(world, EnumTrains.SW8.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
     }
-    public DieselCF7R(World world, double d, double d1, double d2){
+    public DieselSW8(World world, double d, double d1, double d2){
         this(world);
         setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;
@@ -29,16 +28,19 @@ public class DieselCF7R extends DieselTrain {
         prevPosY = d1;
         prevPosZ = d2;
     }
+
     public void initLoco() {
         fuelTrain = 0;
         locoInvent = new ItemStack[inventorySize];
     }
+
     @Override
+
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-        double distance = 2.75;
-        double yOffset = 0.2;
+        double distance = -0.0;
+        double yOffset = 0.1;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
         if(side.isServer()){
@@ -51,6 +53,7 @@ public class DieselCF7R extends DieselTrain {
         float pitch1 = (float) (posY + getMountedYOffset() + riddenByEntity.getYOffset() + yOffset);
         double bogieX1 = (this.posX + (rotationCos1 * distance));
         double bogieZ1 = (this.posZ + (rotationSin1* distance));
+        //System.out.println(rotationCos1+" "+rotationSin1);
         if(anglePitchClient>20 && rotationCos1 == 1){
             bogieX1-=pitchRads*2;
             pitch-=pitchRads*1.2;
@@ -71,18 +74,20 @@ public class DieselCF7R extends DieselTrain {
         super.setDead();
         isDead = true;
     }
+
     @Override
     public void pressKey(int i) {
         if (i == 7 && riddenByEntity != null && riddenByEntity instanceof EntityPlayer) {
             ((EntityPlayer) riddenByEntity).openGui(Traincraft.instance, GuiIDs.LOCO, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
-
         }
     }
+
     @Override
     public void onUpdate() {
         checkInvent(locoInvent[0]);
         super.onUpdate();
     }
+
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
         super.writeEntityToNBT(nbttagcompound);
@@ -99,6 +104,7 @@ public class DieselCF7R extends DieselTrain {
         }
         nbttagcompound.setTag("Items", nbttaglist);
     }
+
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
         super.readEntityFromNBT(nbttagcompound);
@@ -114,21 +120,26 @@ public class DieselCF7R extends DieselTrain {
             }
         }
     }
+
     @Override
-    public float getOptimalDistance(EntityMinecart cart) { return 0.95F;
+    public float getOptimalDistance(EntityMinecart cart) { return 1.1F;
     }
+
     @Override
     public int getSizeInventory() {
         return inventorySize;
     }
+
     @Override
     public String getInventoryName() {
-        return "EMD CF7R Rebuild";
+        return "EMD SW8";
     }
+
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
         return false;
     }
+
     @Override
     public boolean interactFirst(EntityPlayer entityplayer) {
         playerEntity = entityplayer;
@@ -143,9 +154,9 @@ public class DieselCF7R extends DieselTrain {
         }
         return true;
     }
-
     @Override
     public boolean canBeAdjusted(EntityMinecart cart) {
         return canBeAdjusted;
     }
+
 }

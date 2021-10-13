@@ -13,14 +13,13 @@ import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-
-public class DieselCF7 extends DieselTrain {
-    public DieselCF7(World world) {
-        super(world, EnumTrains.CF7.getTankCapacity(), LiquidManager.dieselFilter());
+public class DieselDash840B extends DieselTrain {
+    public DieselDash840B(World world) {
+        super(world, EnumTrains.Dash840B.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
-        //when the benis sus
+
     }
-    public DieselCF7(World world, double d, double d1, double d2){
+    public DieselDash840B(World world, double d, double d1, double d2){
         this(world);
         setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;
@@ -40,8 +39,8 @@ public class DieselCF7 extends DieselTrain {
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-        double distance = 2.75;
-        double yOffset = 0.2;
+        double distance = 3.3;
+        double yOffset = 0.3;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
         if(side.isServer()){
@@ -76,13 +75,10 @@ public class DieselCF7 extends DieselTrain {
         isDead = true;
     }
 
-
-
     @Override
     public void pressKey(int i) {
         if (i == 7 && riddenByEntity != null && riddenByEntity instanceof EntityPlayer) {
             ((EntityPlayer) riddenByEntity).openGui(Traincraft.instance, GuiIDs.LOCO, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
-
         }
     }
 
@@ -113,7 +109,6 @@ public class DieselCF7 extends DieselTrain {
     protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
         super.readEntityFromNBT(nbttagcompound);
 
-        lampOn = nbttagcompound.getBoolean("lampOn");
         fuelTrain = nbttagcompound.getShort("fuelTrain");
         NBTTagList nbttaglist = nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         locoInvent = new ItemStack[getSizeInventory()];
@@ -126,9 +121,8 @@ public class DieselCF7 extends DieselTrain {
         }
     }
 
-
     @Override
-    public float getOptimalDistance(EntityMinecart cart) { return 0.95F;
+    public float getOptimalDistance(EntityMinecart cart) { return 1.4F;
     }
 
     @Override
@@ -138,7 +132,7 @@ public class DieselCF7 extends DieselTrain {
 
     @Override
     public String getInventoryName() {
-        return "EMD CF7";
+        return "GE Dash 8-40B";
     }
 
     @Override
@@ -160,7 +154,6 @@ public class DieselCF7 extends DieselTrain {
         }
         return true;
     }
-
     @Override
     public boolean canBeAdjusted(EntityMinecart cart) {
         return canBeAdjusted;

@@ -12,7 +12,7 @@ import train.common.Traincraft;
 import train.common.api.Freight;
 import train.common.library.GuiIDs;
 
-public class Freight66centerbeam  extends Freight implements IInventory {
+public class Freight66centerbeam extends Freight implements IInventory {
     public int freightInventorySize;
     public int numFreightSlots;
     public Freight66centerbeam(World world) {

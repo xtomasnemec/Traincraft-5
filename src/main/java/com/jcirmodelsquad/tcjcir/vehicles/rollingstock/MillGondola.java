@@ -12,15 +12,15 @@ import train.common.Traincraft;
 import train.common.api.Freight;
 import train.common.library.GuiIDs;
 
-public class MillGondola  extends Freight implements IInventory {
+public class MillGondola extends Freight implements IInventory {
     public int freightInventorySize;
     public int numFreightSlots;
-    public MillGondola(World world) {
+    public EntityFreightBapMillGondola(World world) {
         super(world);
         initFreightCart();
     }
 
-    public MillGondola(World world, double d, double d1, double d2){
+    public EntityFreightBapMillGondola(World world, double d, double d1, double d2){
         this(world);
         setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;

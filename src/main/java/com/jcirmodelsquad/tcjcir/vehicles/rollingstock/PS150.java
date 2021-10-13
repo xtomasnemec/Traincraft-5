@@ -12,7 +12,7 @@ import train.common.Traincraft;
 import train.common.api.Freight;
 import train.common.library.GuiIDs;
 
-public class PS150  extends Freight implements IInventory {
+public class PS150 extends Freight implements IInventory {
     public int freightInventorySize;
     public int numFreightSlots;
     public PS150(World world) {

@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import train.common.api.AbstractTrains;
 import train.common.core.util.TraincraftUtil;
 import train.common.entity.rollingStock.*;
+
 import java.lang.reflect.InvocationTargetException;
 
 public enum EnumTrains {
@@ -288,24 +289,24 @@ public enum EnumTrains {
 	F45("F45",DieselF45.class, ItemIDs.minecartF45.item, "diesel", 3600, 145, 0, 10, 0, 190, 0.75, 0.9, 12000, new String[] {"LightBlue", "Green", "Blue", "Yellow", "Red"}, 10, -3.65, new String[] {"Model by Prof_Binky"}),
 	SD40T2("SD40T-2", DieselSD40T2.class, ItemIDs.minecartSD40T2.item, "diesel", 3000, 105, 0, 10, 0, 190, 0.75, 0.89, 12000, new String[] {"LightGrey", "Grey", "Blue", "White", "Black", "Red"}, 10, -3.8),
 	LogcarNP("LogcarNP",LogcarNP.class, ItemIDs.minecartLogcarNP.item,"freight",2, new String[]{"Brown","Black"}, 0, 18, new String[]{"Made by BigJ1359"}),
-	CF7R("CF7R", DieselCF7R.class, ItemIDs.minecartCF7R.item, "diesel", 2350, 105, 0, 5, 0, 185, 0.8, 0.9, 7000, new String[] {"Blue", "Yellow", "Black"}, 10, -3, new String[] {"CF7 Rebuild Rebuilt"}),
+	//CF7R("CF7R", DieselCF7R.class, ItemIDs.minecartCF7R.item, "diesel", 2350, 105, 0, 5, 0, 185, 0.8, 0.9, 7000, new String[] {"Blue", "Yellow", "Black"}, 10, -3, new String[] {"CF7 Rebuild Rebuilt"}),
 	SD45dash2B("SD45-2B", DieselSD45dash2B.class, ItemIDs.minecartSD45dash2B.item, "diesel", 3600, 132, 0, 10, 0, 190, 0.75, 0.89, 12000, new String[] {"Blue", "Yellow", "Red", "White"}, 10, -3.8),
 	HighrailVan("Highrail Van", DieselHighrailVan.class, ItemIDs.minecartHighrailVan.item, "diesel", 90, 80, 0, 10, 0, 140, 0.7, 0.8, 1000,new String[] {"Yellow", "White", "Grey", "Orange", "Green"},18, 2.7),
 
 	//stEAmeeee//
 	Climax2("2TruckClimax", SteamClimaxNew.class, ItemIDs.minecartClimaxNew.item, "steam", 280,35,0,50,160,120,0.7,0.8,8000, null,15,-1.0),
-	VBShay("2TruckVerticalBoilerShay", SteamVBShay.class, ItemIDs.minecartVBShay2.item, "steam", 230,35,0,50,160,120,0.7,0.8,6000, new String[] {"Black", "Grey"},15,-1.3),
+	VBShay("2TruckVerticalBoilerShay", SteamVBShay2.class, ItemIDs.minecartVBShay2.item, "steam", 230,35,0,50,160,120,0.7,0.8,6000, new String[] {"Black", "Grey"},15,-1.3),
 	Skook("Skookum", SteamSkook.class, ItemIDs.minecartSkook.item, "steam", 670, 75, 0, 75, 75, 190, 0.8, 0.91, 2000, null, 10, -2.4),
-	SkookTender("Skookum Tender", SkookTender.class, ItemIDs.minecartSkookTender.item,"tender",0,0,2,0,0,0,0,0,15000,null,18,0, new String[] {"Water capacity: 15000mb."}),
+	SkookTender("Skookum Tender", TenderSkookTender.class, ItemIDs.minecartSkookTender.item,"tender",0,0,2,0,0,0,0,0,15000,null,18,0, new String[] {"Water capacity: 15000mb."}),
 	Shay3Truck("3 Truck Shay", SteamShay3Truck.class, ItemIDs.minecartShay3Truck.item, "steam", 438, 35, 0, 75, 75, 190, 0.8, 0.9, 4000, new String[] {"Black", "Grey", "White"}, 10, -1.8),
-	Shay3TruckTender("3 Truck Shay Tender", TenderShay3Truck.class, ItemIDs.minecartShay3TruckTender.item,"tender",0,0,2,0,0,0,0,0,10000, new String[] {"Black", "Grey", "White"},18,0,"Water capacity: 10000mb."),
+	Shay3TruckTender("3 Truck Shay Tender", TenderShay3Truck.class, ItemIDs.minecartShay3TruckTender.item,"tender",0,0,2,0,0,0,0,0,10000, new String[] {"Black", "Grey", "White"},18,0,new String[] {"Water capacity: 10000mb."}),
 
-	locoSteamC11("Loco Steam C11", SteamC11.class, ItemIDs.minecartLocoC11.item,"steam", 1030, 97, 0, 80, 100, 200, 0.35, 0.975, 16000, null, 10, -3.0),
+	C11("Loco Steam C11", SteamC11.class, ItemIDs.minecartLocoC11.item,"steam", 1030, 97, 0, 80, 100, 200, 0.35, 0.975, 16000, null, 10, -3.0),
 	Onion("Onion", SteamOnion.class, ItemIDs.minecartOnion.item, "steam", 350,155,0,50,140,100,0.7,0.99,8000, new String[]{"Black", "Orange", "Blue", "Grey", "Red", "Yellow", "White", "Brown", "LightGrey", "Pink"},15,-1.3),
-	OnionTender("Onion Tender", TenderOnion.class, ItemIDs.minecartOnionTender.item, "tender", 0, 0, 0.1, 0, 0, 0, 0, 0, 12000, new String[]{"Black", "Orange", "Blue", "Grey", "Red", "Yellow", "White", "Brown", "LightGrey", "Pink"}, 15, 0, "Water capacity: 12000mb."),
+	OnionTender("Onion Tender", TenderOnion.class, ItemIDs.minecartOnionTender.item, "tender", 0, 0, 0.1, 0, 0, 0, 0, 0, 12000, new String[]{"Black", "Orange", "Blue", "Grey", "Red", "Yellow", "White", "Brown", "LightGrey", "Pink"}, 15, 0, new String[] {"Water capacity: 12000mb."}),
 
 	PELoco("Loco Steam PELoco", SteamPELoco.class, ItemIDs.minecartPELocomotive.item,"steam", 1484, 120, 0, 80, 100, 200, 0.35, 0.975, 4000, null, 10, -3.4 ),
-	PETender("Tender PETender",TenderPETender.class, ItemIDs.minecartPETender.item,"tender",0,0,1.5,0,0,0,0,0,20000,null,18,0,"Water capacity: 20000mb"),
+	PETender("Tender PETender",TenderPETender.class, ItemIDs.minecartPETender.item,"tender",0,0,1.5,0,0,0,0,0,20000,null,18,0,new String[] {"Water capacity: 20000mb"}),
 
 	//EMD//
 	F3A("F3A", DieselF3A.class, ItemIDs.minecartF3A.item, "diesel", 1500, 133, 0, 25, 0, 180, 0.7, 0.79, 10000, new String[] {"Blue"}, 10, -2.5),
@@ -395,8 +396,8 @@ public enum EnumTrains {
 
 	GM6C("GM6C",ElectricGM6C.class, ItemIDs.minecartGM6C.item, "electric", 6000, 115, 0, 55, 0, 150, 0.65, 0.79, 12500, null, 10, -3.8),
 
-	ILMA("Loco Electric ILMA",ElectricILMA.class, ItemIDs.minecartILMA.item,"electric",400,40,0,45,0,400,0.9,0.946,0,new String[] {"Green", "Lime"},18,-1),
-	ILMB("Loco Electric ILMB",ElectricILMB.class, ItemIDs.minecartILMB.item,"electric",500,40,0,45,0,400,0.9,0.946,0,new String[] {"Brown", "Lime"},18,-1),
+	ILMA("Loco Electric ILMA", ElectricILMA.class, ItemIDs.minecartILMA.item,"electric",400,40,0,45,0,400,0.9,0.946,0,new String[] {"Green", "Lime"},18,-1),
+	ILMB("Loco Electric ILMB", ElectricILMB.class, ItemIDs.minecartILMB.item,"electric",500,40,0,45,0,400,0.9,0.946,0,new String[] {"Brown", "Lime"},18,-1),
 
 	//FrERf//
 	RoundHopper("Freight Round Covered Hopper", RoundHopper.class, ItemIDs.minecartRoundHopper.item, "freight", 4, new String[]{"Red", "Black", "White", "LightGrey"}, 18, 36,new String[] {"Cargo: Any."}),
@@ -413,7 +414,7 @@ public enum EnumTrains {
 	PS160("PS160", PS160.class, ItemIDs.minecartPS160.item, "freight", 6, new String[] {"Blue", "Orange", "Cyan", "White"}, 0, 45, new String[] {"Cargo: Any."}),
 	OWO60Verticube("OWO 60 Verticube", OWO60Verticube.class, ItemIDs.minecartOWO60Verticube.item, "freight", 6, new String[] {"Cyan", "Lime", "Green", "LightGrey", "White", "Blue"}, 0, 54, new String[] {"Cargo: Any."}),
 	MILW40boxcar("MILW40boxcar", MILW40boxcar.class, ItemIDs.minecartMILW40boxcar.item, "freight", 4, new String[] {"Red", "Brown", "Yellow", "Green", "Blue", "Purple", "Orange", "Lime"}, 0, 27, new String[] {"Cargo: Any."}),
-	Freight40highcube("40highcube", bawx40highcube.class, ItemIDs.minecart40highcube.item, "freight", 4, new String[] {"Brown", "Green", "Cyan", "Orange", "Grey", "Red", "Lime", "LightGrey", "Pink", "Purple", "Blue", "Black", "White", "Magenta"}, 0, 40, new String[] {"Cargo: Any."}),
+	Freight40highcube("40highcube", Freight40highcube.class, ItemIDs.minecart40highcube.item, "freight", 4, new String[] {"Brown", "Green", "Cyan", "Orange", "Grey", "Red", "Lime", "LightGrey", "Pink", "Purple", "Blue", "Black", "White", "Magenta"}, 0, 40, new String[] {"Cargo: Any."}),
 	Hicube60("60 Foot Hi-Cube Boxcar", Hicube60foot.class, ItemIDs.minecarthicube60foot.item, "freight", 7, new String[] {"Yellow", "Red", "Pink", "Blue"}, 10, 54, new String[] {"Cargo: Any."}),
 	Reefer64("Reefer64", Reefer64Foot.class, ItemIDs.minecartReefer64.item, "freight", 6.5, new String[] {"White", "LightGrey", "Grey", "Orange", "Green", "Red", "Black", "Cyan"}, 10, 54, new String[] {"Cargo: Any."}),
 

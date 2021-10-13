@@ -13,12 +13,12 @@ import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-public class DieselAlcoS2 extends DieselTrain {
-    public DieselAlcoS2(World world) {
-        super(world, EnumTrains.locoAlcoS2.getTankCapacity(), LiquidManager.dieselFilter());
+public class DieselS2 extends DieselTrain {
+    public DieselS2(World world) {
+        super(world, EnumTrains.S2.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
     }
-    public DieselAlcoS2(World world, double d, double d1, double d2) {
+    public DieselS2(World world, double d, double d1, double d2) {
         this(world);
         setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;

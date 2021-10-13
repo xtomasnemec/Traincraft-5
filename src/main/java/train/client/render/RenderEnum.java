@@ -640,13 +640,13 @@ public enum RenderEnum {
 		}
 	}, "", null, 0, false),
 	FRED(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.FRED.class, new ModelFRED(),"fred", false, new float[]{0F, 0.05F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	CF7R( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class,  new ModelCF7R(), "cf7r_", true,new float[] {-1.5F, -0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+	/*CF7R( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class,  new ModelCF7R(), "cf7r_", true,new float[] {-1.5F, -0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{
 			add(new double[]{0.6D, 1.4D, 0.0D});
 			add(new double[]{1.1D, 1.4D, 0.0D});
 
 		}
-	}, "", null, 0, false),
+	}, "", null, 0, false),*/
 	geGenesis(com.jcirmodelsquad.tcjcir.vehicles.locomotives.GeGenesis.class, new ModelGe_Genesis(), "genesis_", true, new float[] {-2.7F, -0.33F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke",  5,  new ArrayList<double[]>() {
 		{
 			add(new double[]{1.8D, 1.3D, 0D});
@@ -711,7 +711,7 @@ public enum RenderEnum {
 			add(new double[] { 1.0D, -0.0D, 0.8D });
 		}
 	}, 2, true),
-	VBShay(SteamVBShay.class, new ModelVBShay2(), "vbshay2", false, new float[] { -0.4F, -1.15F, -0.0F }, new float[] { 0F, 0F, 0F }, null, "largesmoke", 20, new ArrayList<double[]>() {
+	VBShay(SteamVBShay2.class, new ModelVBShay2(), "vbshay2", false, new float[] { -0.4F, -1.15F, -0.0F }, new float[] { 0F, 0F, 0F }, null, "largesmoke", 20, new ArrayList<double[]>() {
 		{
 			add(new double[] { 0.6D, 1.9D, -0.1D });
 		}
@@ -732,7 +732,7 @@ public enum RenderEnum {
 			add(new double[] { -0.5D, 1.5D, 0.0D });
 		}
 	}, 2, true),
-	SkookTender(SkookTender.class, new ModelSkookumTender(), "skookumtender", false, new float[] {-0.00F, 0.0F, 0F},  new float[] { 0F, 0F, 180F }, null, "", 0, null, "", null, 0, false),
+	SkookTender(TenderSkookTender.class, new ModelSkookumTender(), "skookumtender", false, new float[] {-0.00F, 0.0F, 0F},  new float[] { 0F, 0F, 180F }, null, "", 0, null, "", null, 0, false),
 	Shay3Truck(SteamShay3Truck.class,  new ModelShay3Truck(), "3truckShay_", true,new float[] {0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "largesmoke", 4,  new ArrayList<double[]>() {
 		{
 			add(new double[] { 2.15D, 1.3D, -0.17D });//1.1D
@@ -794,7 +794,7 @@ public enum RenderEnum {
 			add(new double[]{0.55D, 1.3D, 0.0D});
 		}
 	}, "", null, 0, false),
-	CF7angle( DieselCF7.class,  new ModelCF7Angle(), "cf7angle_", true,new float[] {-0F, -0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+	CF7angle( DieselCF7angle.class,  new ModelCF7Angle(), "cf7angle_", true,new float[] {-0F, -0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
 	CF7round( DieselCF7round.class,  new ModelCF7round(), "cf7round_", true,new float[] {-1.5F, -0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {

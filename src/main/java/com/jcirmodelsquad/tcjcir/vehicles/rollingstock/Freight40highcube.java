@@ -8,38 +8,35 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.FluidRegistry;
 import train.common.Traincraft;
-import train.common.api.LiquidManager;
-import train.common.api.Tender;
-import train.common.library.EnumTrains;
+import train.common.api.Freight;
 import train.common.library.GuiIDs;
 
-public class SkookTender extends Tender implements IInventory {
+public class Freight40highcube extends Freight implements IInventory  {
     public int freightInventorySize;
     public int numFreightSlots;
-
-    public SkookTender(World world) {
-        super(world, FluidRegistry.WATER, 0, EnumTrains.SkookTender.getTankCapacity(), LiquidManager.WATER_FILTER);
-        initFreightTender();
+    public Freight40highcube(World world) {
+        super(world);
+        initFreightCart();
     }
 
-    public void initFreightTender() {
-        freightInventorySize = 16;
-        tenderItems = new ItemStack[freightInventorySize];
-    }
-
-    public SkookTender(World world, double d, double d1, double d2) {
+    public Freight40highcube(World world, double d, double d1, double d2){
         this(world);
-        setPosition(d, d1 + (double) yOffset, d2);
+        setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;
         motionY = 0.0D;
         motionZ = 0.0D;
         prevPosX = d;
         prevPosY = d1;
         prevPosZ = d2;
+        initFreightCart();
     }
 
+    public void initFreightCart() {
+        numFreightSlots = 4;
+        freightInventorySize = trainSpec.getCargoCapacity();
+        cargoItems = new ItemStack[freightInventorySize];
+    }
     @Override
     public void setDead() {
         super.setDead();
@@ -47,24 +44,18 @@ public class SkookTender extends Tender implements IInventory {
     }
 
     @Override
-    public void onUpdate() {
-        super.onUpdate();
-        checkInvent(tenderItems[0], this);
-    }
-
-    @Override
     protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
         super.writeEntityToNBT(nbttagcompound);
-
         NBTTagList nbttaglist = new NBTTagList();
-        for (int i = 0; i < tenderItems.length; i++) {
-            if (tenderItems[i] != null) {
+        for (int i = 0; i < cargoItems.length; i++) {
+            if (cargoItems[i] != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte) i);
-                tenderItems[i].writeToNBT(nbttagcompound1);
+                cargoItems[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
+
         nbttagcompound.setTag("Items", nbttaglist);
     }
 
@@ -73,18 +64,19 @@ public class SkookTender extends Tender implements IInventory {
         super.readEntityFromNBT(nbttagcompound);
 
         NBTTagList nbttaglist = nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-        tenderItems = new ItemStack[getSizeInventory()];
+        cargoItems = new ItemStack[getSizeInventory()];
         for (int i = 0; i < nbttaglist.tagCount(); i++) {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 0xff;
-            if (j >= 0 && j < tenderItems.length) {
-                tenderItems[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            if (j >= 0 && j < cargoItems.length) {
+                cargoItems[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
     }
+
     @Override
     public String getInventoryName() {
-        return "Skookum Tender";
+        return "40 foot Highcube Boxcar";
     }
 
     @Override
@@ -94,24 +86,26 @@ public class SkookTender extends Tender implements IInventory {
 
     @Override
     public boolean interactFirst(EntityPlayer entityplayer) {
-        playerEntity = entityplayer;
         if ((super.interactFirst(entityplayer))) {
-            return false;
+            return true;
         }
-        if (!this.worldObj.isRemote) {
-            entityplayer.openGui(Traincraft.instance, GuiIDs.TENDER, worldObj, this.getEntityId(), -1, (int) this.posZ);
-        }
+        entityplayer.openGui(Traincraft.instance, GuiIDs.FREIGHT, worldObj, this.getEntityId(), -1, (int) this.posZ);
         return true;
     }
 
     @Override
-    public boolean canBeRidden() {
-        return false;
+    public boolean isStorageCart() {
+        return true;
     }
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.5F;
+        return 2F;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
     }
 
     @Override
