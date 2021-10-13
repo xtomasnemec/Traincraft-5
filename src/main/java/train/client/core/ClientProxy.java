@@ -26,6 +26,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Level;
 import train.client.core.handlers.ClientTickHandler;
+import train.client.core.handlers.CustomRenderHandler;
 import train.client.core.handlers.RecipeBookHandler;
 import train.client.core.handlers.TCKeyHandler;
 import train.client.core.helpers.JLayerHook;
@@ -68,6 +69,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerEvents(FMLPreInitializationEvent event) {
 		super.registerEvents(event);
 		ClientTickHandler tickHandler = new ClientTickHandler();
+		CustomRenderHandler renderHandler = new CustomRenderHandler();
 		HUDloco huDloco = new HUDloco();
 		if (Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("OpenComputers")){
 			HUDMTC hudMTC = new HUDMTC();
@@ -77,6 +79,7 @@ public class ClientProxy extends CommonProxy {
 	/*	HudTiltingHandler tiltingHandler = new HudTiltingHandler();
 		registerEvent(tiltingHandler);*/
 		registerEvent(tickHandler);
+		registerEvent(renderHandler);
 		registerEvent(huDloco);
 	}
 
