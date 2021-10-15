@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.client.render.models.ModelTypeAClassico;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
@@ -732,6 +733,7 @@ public class ModelBeep extends ModelConverter //Same as Filename
 		bodyModel[173].setRotationPoint(28.5F, -12.5F, 10.5F);
 	}
 	ModelTypeA theTrucks = new ModelTypeA();
+	ModelTypeAClassico theTrucksButBetter = new ModelTypeAClassico();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 174; i++) {
@@ -748,17 +750,18 @@ public class ModelBeep extends ModelConverter //Same as Filename
 			}
 		}
 		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==135465){
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typea_Grey.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeAclassic_Grey.png"));
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typea_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeAclassic_Black.png"));
 		}
 		GL11.glPushMatrix();
-		GL11.glTranslatef(-1.10F ,0.20F,0F);
+		GL11.glTranslatef(-1.10F ,-0.1F,0F);
 		theTrucks.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
+
 		GL11.glPushMatrix();
-		GL11.glTranslated(1.15F,0.20F,0);
-		theTrucks.render(entity,f,f1,f2,f3,f4,f5);
+		GL11.glTranslated(1.15F,-0.1F,0);
+		theTrucksButBetter.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)

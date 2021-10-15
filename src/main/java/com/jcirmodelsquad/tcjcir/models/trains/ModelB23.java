@@ -7,8 +7,7 @@
 // Created on: 06.11.2020 - 22:22:00
 // Last changed on: 06.11.2020 - 22:22:00
 
-package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
-
+package  com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelFB2;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
@@ -21,6 +20,8 @@ import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
+
+import java.util.ArrayList;
 
 public class ModelB23 extends ModelConverter //Same as Filename
 {
@@ -1445,6 +1446,15 @@ public class ModelB23 extends ModelConverter //Same as Filename
 			GL11.glTranslated(3.05, 0, 0);
 			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14 ||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 9){
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_bnsf_h1.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslated(-1.52, 0.33, 0);
+			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
+
+			GL11.glTranslated(3.05, 0, 0);
+			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glPopMatrix();
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb2_up.png"));
 			GL11.glPushMatrix();
@@ -1478,4 +1488,11 @@ public class ModelB23 extends ModelConverter //Same as Filename
 	{
 	}
 	public ModelRendererTurbo B23Model[];
+	public ArrayList<double[]> getSmokePosition() {
+		return new ArrayList<double[]>() {
+			{
+				add(new double[]{0.95D, 1.4D, 0.0D});
+			}
+		};
+	}
 }

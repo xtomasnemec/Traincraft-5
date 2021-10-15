@@ -20,12 +20,12 @@ import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
-public class ModelC424 extends ModelConverter //Same as Filename
+public class ModelC425 extends ModelConverter //Same as Filename
 {
 	int textureX = 512;
 	int textureY = 256;
 
-	public ModelC424() //Same as Filename
+	public ModelC425() //Same as Filename
 	{
 		bodyModel = new ModelRendererTurbo[367];
 
@@ -1552,7 +1552,7 @@ public class ModelC424 extends ModelConverter //Same as Filename
 			}
 		}
 
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14768679) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_Grey.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.55, 0.25, 0);
