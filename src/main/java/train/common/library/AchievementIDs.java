@@ -31,7 +31,8 @@ public enum AchievementIDs {
 			ItemIDs.minecartOpenWagon.item }),
 	liquid(new Item[] { ItemIDs.minecartWatertransp.item, ItemIDs.minecartTankWagon.item,
 			ItemIDs.minecartTankWagon2.item, ItemIDs.minecartTankWagon_DB.item,
-			ItemIDs.minecartTankWagonUS.item }),
+			ItemIDs.minecartTankWagonUS.item, ItemIDs.minecart11000DOT111.item, ItemIDs.minecart20600DOT111.item,
+			ItemIDs.minecart29080DOT111.item }),
 	tender(new Item[] { ItemIDs.minecartTender.item, ItemIDs.minecartTenderBR01_DB.item,
 			ItemIDs.minecartTenderEr.item, ItemIDs.minecartSteamRedTender.item }),
 	diesel(new Item[] { ItemIDs.minecartGP7Red.item, ItemIDs.minecartShunter.item, ItemIDs.minecartChmE3.item,
@@ -69,22 +70,24 @@ public enum AchievementIDs {
 	mail(new Item[] { ItemIDs.minecartMailWagon_DB.item }),
 
 
-	mtg(new Item[] { ItemIDs.minecartLUengine.item }),
-	crossrail(new Item[] { ItemIDs.minecartClass345.item }),
+	//mtg(new Item[] { ItemIDs.minecartLUengine.item }),
+	//crossrail(new Item[] { ItemIDs.minecartClass345.item }),
 
 	caboose(new Item[] { ItemIDs.minecartCaboose.item, ItemIDs.minecartCaboose3.item,
-			ItemIDs.minecartCabooseWork.item }),
+			ItemIDs.minecartCabooseWork.item, ItemIDs.minecartDRGWCaboose.item, ItemIDs.minecartWVcaboose.item, ItemIDs.minecartHBC1Ccaboose.item }),
 	stockCar(new Item[] { ItemIDs.minecartStockCar.item, ItemIDs.minecartDRWGStockCar.item }),
 	distilationTower(new Item[] { Item.getItemFromBlock(BlockIDs.distilIdle.block) }),
-	cf7(new Item[]{ItemIDs.minecartCF7.item}), thanos(new Item[]{ItemIDs.minecartThanos.item}),
+	cf7(new Item[]{ItemIDs.minecartCF7angle.item, ItemIDs.minecartCF7round.item}), thanos(new Item[]{ItemIDs.minecartThanos.item}),
 	sd9(new Item[]{ItemIDs.minecartSD9.item}),
 	geared(new Item[] { ItemIDs.minecartVBShay2.item, ItemIDs.minecartLocoSteamVBShay.item,
 			ItemIDs.minecartLocoSteamShay.item, ItemIDs.minecartLocoSteamClimax.item,
-			ItemIDs.minecartLocoLSSP7.item}),
+			ItemIDs.minecartLocoLSSP7.item,ItemIDs.minecartClimaxNew.item}),
 	gevo(new Item[]{ItemIDs.minecartES44.item}),
-	switchin(new Item[]{ItemIDs.minecartSW1.item, ItemIDs.minecartSW1500.item, ItemIDs.minecartAlcoS2.item, ItemIDs.minecartBoxcab23Ton.item,
-	ItemIDs.minecartH1044.item, ItemIDs.minecartHH660.item, ItemIDs.minecartHustler.item, ItemIDs.minecartVO1000.item}),
-	powerful(new Item[]{ItemIDs.minecartLocoDD35A.item});
+	switchin(new Item[]{ItemIDs.minecartSW1.item, ItemIDs.minecartSW1500.item, ItemIDs.minecartS2.item, ItemIDs.minecartBoxcab23Ton.item,
+			ItemIDs.minecartH1044.item, ItemIDs.minecartHH660.item, ItemIDs.minecartHustler.item, ItemIDs.minecartVO1000.item, ItemIDs.minecartSW8.item,
+			ItemIDs.minecartSW1200.item, ItemIDs.minecartBeep.item, ItemIDs.minecart44Ton.item, ItemIDs.minecartNRE3gs21b.item, ItemIDs.minecartC415H.item,
+			ItemIDs.minecartILMA.item, ItemIDs.minecartILMB.item}),
+	powerful(new Item[]{ItemIDs.minecartLocoDD35A.item, ItemIDs.minecartDH643.item, ItemIDs.minecartKrautt.item});
 
 	public Achievement	achievement;
 	protected Item[]	items;

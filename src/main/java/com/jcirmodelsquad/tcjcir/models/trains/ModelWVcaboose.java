@@ -9,8 +9,6 @@
 
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
-
-import com.jcirmodelsquad.tcjcir.models.trucks.Model70Truck;
 import com.jcirmodelsquad.tcjcir.models.trucks.Modelcaboosetruck;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

@@ -63,16 +63,16 @@ public class GUICreditsBook extends GuiScreen {
 
         addPage("", "", "left", null);
         addPage("", "", "right", null);
-        addPage("This is the JCIR-Traincraft Contributers Book! \nThis book has a list of who made what.\n\nContributers:\nPeachMaster\nBidahochi\nProf_Binky\nJCRail\nhariesh\nMessicrew\nBigJ\nEddie Dalton", "", "left", new ArrayList<StackToDraw>() {
+        addPage("This is the JCIR-Traincraft Contributers Book! \nThis book has a list of who made what.\nWarning: This is HIGHLY out of date.\nContributers:\nPeachMaster\nBidahochi\nProf_Binky\nJCRail\nhariesh\nMessicrew\nBigJ\nEddie Dalton", "", "left", new ArrayList<StackToDraw>() {
             {
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartAlcoS2.item), 20, 16));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartS2.item), 20, 16));
                 add(new StackToDraw(new ItemStack(BlockIDs.trainWorkbench.block), 170, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartCabooseWork.item), 60, 175));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartRibbedHopper.item), 80, 175));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartMillGondola.item), 100, 175));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecart40highcube.item), 120, 175));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartWoodchipHopper.item), 140, 175));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartCF7.item), 160, 175));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartCF7angle.item), 160, 175));
             }
         });
         addPage("Big thanks to the Mod Creators:\nSpitfire4466,\nMrbrutal,\nEternalBlueFlame,\nNitroxydeX,\nand the many people who\nhave submitted stuff into base TC.\n\nAnd by Players like you,\nThank You!\n\n-JCIRTC Dev Team\n", "", "right", new ArrayList<StackToDraw>() {
@@ -80,12 +80,12 @@ public class GUICreditsBook extends GuiScreen {
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartgtavthing.item), 20, 16));
                 add(new StackToDraw(new ItemStack(BlockIDs.assemblyTableII.block), 170, 16));
 
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120.item), 20, 175));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Coach.item), 40, 175));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Coach.item), 60, 175));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Coach.item), 80, 175));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Coach.item), 100, 175));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120.item), 120, 175));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Commute.item), 20, 175));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Car.item), 40, 175));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Car.item), 60, 175));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Car.item), 80, 175));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Car.item), 100, 175));
+                add(new StackToDraw(new ItemStack(ItemIDs.minecartPCH120Commute.item), 120, 175));
             }
         });
         addPage("Table of Contents:\n1- Cover\n2- Thanks Page\n3- ToC\n4- Model Contributions (Bida)\n6- Model Contributions (PeachMaster)\n7- Model Contributions (Prof_Binky)\n8- Model Contributions (Hariesh)\n9- Model Contributions (Messicrew)\n10- Model Contributions (Others)\n\n\n\n", "", "left", null);
@@ -200,7 +200,7 @@ public class GUICreditsBook extends GuiScreen {
         addPage("hariesh Code Contribution\n\n•Increase of Texture limit per Model\n•Recipes of Trains\n•Adding track recipe to crafting table\n•Train Imports\n•Texture Imports\n•Achievements Added\n•Bug Testing and Bug Fixes\n•Funny Quotes Added\n•Working Lights on Trains\n•More Switches added and coded in", "", "left", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.firebox.item), 20, 16));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartLUengine.item), 170, 16));
+                //add(new StackToDraw(new ItemStack(ItemIDs.minecartLUengine.item), 170, 16));
             }
         });
         addPage("Bida Code Contribution\n- Dynamic Freight Car Loads\n- Specific Wheels per Locomotive\n\n", "", "left", new ArrayList<StackToDraw>() {
@@ -233,7 +233,7 @@ public class GUICreditsBook extends GuiScreen {
         addPage("hariesh's Texture Contribution\n\n•LU 1996 Skin\n•Class345 Skin\n•PCH100H Overground Skin\n•PCH120 Underground Skin\n•Pumpkin Wagon Skin\n•Tank Wagon Skin Chemtech & Britain", "", "right", new ArrayList<StackToDraw>() {
             {
                 add(new StackToDraw(new ItemStack(ItemIDs.stake.item), 20, 16));
-                add(new StackToDraw(new ItemStack(ItemIDs.minecartClass345.item), 170, 16));
+                //add(new StackToDraw(new ItemStack(ItemIDs.minecartClass345.item), 170, 16));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartLocoBR01_DB.item), 40, 165));
                 add(new StackToDraw(new ItemStack(ItemIDs.stake.item), 60, 165));
                 add(new StackToDraw(new ItemStack(ItemIDs.minecartFreightCart2.item), 80, 165));

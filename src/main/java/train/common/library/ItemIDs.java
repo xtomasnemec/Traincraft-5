@@ -454,7 +454,7 @@ public enum ItemIDs {
 
 	//FrERf//
 	minecartRoundHopper("ItemRollingStock", "train_RoundHopper", 2),
-	minecartRibbedHopper("ItemRollingStock", "train_ribbed_hopper", 2),
+	minecartRibbedHopper("ItemRollingStock", "ribbed_hopper", 2),
 	minecartHopper5201("ItemRollingStock", "Hopper5201", 4),
 	minecartHopper6260("ItemRollingStock", "Hopper6260", 5),
 

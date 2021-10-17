@@ -15,7 +15,7 @@ import train.common.library.GuiIDs;
 
 public class DieselHHgregg extends DieselTrain {
     public DieselHHgregg(World world) {
-        super(world, EnumTrains.locoAlcoS2.getTankCapacity(), LiquidManager.dieselFilter());
+        super(world, EnumTrains.HHgregg.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
     }
     public DieselHHgregg(World world, double d, double d1, double d2) {

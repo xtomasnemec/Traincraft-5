@@ -3,12 +3,14 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelOreJennyTrucc;
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelOreJennyTruck2;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
 public class ModelOreJenny extends ModelConverter //Same as Filename
@@ -179,9 +181,8 @@ public class ModelOreJenny extends ModelConverter //Same as Filename
 		bodyModel[36].addShapeBox(0F, 0F, 0F, 28, 0, 20, 0F,0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F, 0F, 0F, 0.05F); // Box 0 load
 		bodyModel[36].setRotationPoint(-14F, -8.75F, -10F);
 	}
-
-
 	ModelOreJennyTrucc trucc = new ModelOreJennyTrucc();
+	ModelOreJennyTruck2 trucc2 = new ModelOreJennyTruck2();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -190,7 +191,7 @@ public class ModelOreJenny extends ModelConverter //Same as Filename
 			bodyModel[i].render(f5);
 		}
 
-		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/orejennytrucc.png"));
+		/*Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/orejennytrucc.png"));//
 
 		GL11.glPushMatrix();
 		GL11.glScalef(1,1,0.9f);
@@ -199,6 +200,18 @@ public class ModelOreJenny extends ModelConverter //Same as Filename
 
 		GL11.glTranslated(1.19,0,0.03);
 		trucc.render(entity,f,f1,f2,f3,f4,f5);
+		GL11.glPopMatrix();*/
+		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==9 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==1){
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/Ore_jenny_Truck2.png"));
+		} else {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/Ore_jenny_Truck2_journal_boxes.png"));
+		}
+		GL11.glPushMatrix();
+		GL11.glTranslated(-0.57,-0.05,-0.0);
+		trucc2.render(entity,f,f1,f2,f3,f4,f5);
+
+		GL11.glTranslated(1.17,-0.0,0.00);
+		trucc2.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}
 

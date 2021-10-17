@@ -9,6 +9,7 @@
 
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
+import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruck2;
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70Truck;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.common.api.AbstractTrains;
 import train.common.api.Freight;
 import train.common.library.Info;
 
@@ -344,6 +346,7 @@ public class ModelVersaTrans extends ModelConverter //Same as Filename
 		bodyModel[75].setRotationPoint(2F, -8F, -9F);
 	}
 	Model70Truck bogie = new Model70Truck();
+	Model70TonTruck2 bogie2 = new Model70TonTruck2();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 76; i++) {
@@ -354,27 +357,27 @@ public class ModelVersaTrans extends ModelConverter //Same as Filename
 						GL11.glPushMatrix();
 						GL11.glTranslatef(0, 1f + ((Freight) entity).getAmmountOfCargo() * -0.018f, 0); // 1f is the "starting height", the *-0.whatever is the multiplier
 						GL11.glScalef(0.8F, 1, 1);// 0.8
-						bodyModel[70].render(f5);
+						bodyModel[66].render(f5);
 						GL11.glPopMatrix();
 					} else if (cargo <= 10) {
 						GL11.glPushMatrix();
 						GL11.glTranslatef(0, 1f + ((Freight) entity).getAmmountOfCargo() * -0.018f, 0);
 						//GL11.glTranslatef(0, 0.0f + cargo * -0.015f, 0);
 						GL11.glScalef(0.8f, 1, 1); // - (((Freight) entity).getSizeInventory() - cargo) * 0.0168f
-						bodyModel[70].render(f5);
+						bodyModel[66].render(f5);
 						GL11.glPopMatrix();
 					} else if (cargo <= 28) {
 						GL11.glPushMatrix();
 						GL11.glTranslatef(0, 1f + ((Freight) entity).getAmmountOfCargo() * -0.018f, 0);
 						//GL11.glTranslatef(0, 0.0f + cargo * -0.015f, 0);
 						GL11.glScalef(0.8f, 1, 1); // - (((Freight) entity).getSizeInventory() - cargo) * 0.0168f
-						bodyModel[70].render(f5);
+						bodyModel[66].render(f5);
 						GL11.glPopMatrix();
 					} else {
 						GL11.glPushMatrix();
 						GL11.glTranslatef(0, 0.57f + ((Freight) entity).getAmmountOfCargo() * -0.015f, 0);
 						GL11.glScalef(1, 1, 1);
-						bodyModel[70].render(f5);
+						bodyModel[66].render(f5);
 						GL11.glPopMatrix();
 					}
 				}
@@ -385,7 +388,7 @@ public class ModelVersaTrans extends ModelConverter //Same as Filename
 			} else
 				bodyModel[i].render(f5);
 		}
-		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
+		/*Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
 
 		GL11.glPushMatrix();
 		GL11.glScalef(1, 1, 0.9f);
@@ -394,6 +397,19 @@ public class ModelVersaTrans extends ModelConverter //Same as Filename
 
 		GL11.glTranslated(2.5, 0, 0.03);
 		bogie.render(entity, f, f1, f2, f3, f4, f5);
+		GL11.glPopMatrix();*/
+		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==3456){
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Greyish.png"));
+		} else {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Black.png"));
+		}
+		GL11.glPushMatrix();
+		GL11.glTranslated(-1.25,-0.05,-0.0);
+		bogie2.render(entity,f,f1,f2,f3,f4,f5);
+
+		GL11.glTranslated(2.5,-0.0,0.00);
+		bogie2.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}
+	public float[] getTrans() { return new float[]{-0F, 0.10F, 0F}; }
 }

@@ -52,7 +52,7 @@ public class AchievementHandler {
 		AchievementIDs.stake.achievement = achievement("stake", -4, 4, ItemIDs.stake.item, AchievementIDs.steel.achievement);
 		AchievementIDs.dieselEngine.achievement = achievement("dieselEngine", -6, 4, ItemIDs.dieselengine.item, AchievementIDs.steel.achievement);
 		AchievementIDs.diesel.achievement = achievement("dieselLoco", -5, 5, ItemIDs.minecartGP7Red.item, AchievementIDs.dieselEngine.achievement);
-		AchievementIDs.cf7.achievement = achievement("cf7", -7, 5, ItemIDs.minecartCF7.item, AchievementIDs.dieselEngine.achievement).setSpecial();
+		AchievementIDs.cf7.achievement = achievement("cf7", -7, 5, ItemIDs.minecartCF7angle.item, AchievementIDs.dieselEngine.achievement).setSpecial();
 		AchievementIDs.thanos.achievement = achievement("thanos", 10, 1, ItemIDs.minecartThanos.item, AchievementIDs.assemblyTable.achievement).setSpecial();
 		AchievementIDs.sd9.achievement = achievement("sd9", -7, 6, ItemIDs.minecartSD9.item, AchievementIDs.dieselEngine.achievement);
 		AchievementIDs.powerful.achievement = achievement("powerful", -5, 7, ItemIDs.minecartLocoDD35A.item, AchievementIDs.dieselEngine.achievement);
@@ -70,8 +70,8 @@ public class AchievementHandler {
 		AchievementIDs.fast.achievement = achievement("fast", -8, 10, ItemIDs.minecartVL10.item, AchievementIDs.electMotor.achievement);
 
 		AchievementIDs.engineer.achievement = achievement("engineer", -2, -2, ItemIDs.overalls.item, null);
-		AchievementIDs.mtg.achievement = achievement("mtg", -12,12 , ItemIDs.minecartLUengine.item, AchievementIDs.electMotor.achievement);
-		AchievementIDs.crossrail.achievement = achievement("crossrail",-12,14, ItemIDs.minecartClass345.item, AchievementIDs.mtg.achievement).setSpecial();
+		//AchievementIDs.mtg.achievement = achievement("mtg", -12,12 , ItemIDs.minecartLUengine.item, AchievementIDs.electMotor.achievement);
+		//AchievementIDs.crossrail.achievement = achievement("crossrail",-12,14, ItemIDs.minecartClass345.item, AchievementIDs.mtg.achievement).setSpecial();
 
 		AchievementIDs.assemblyTable.achievement = achievement("assemblyTable", 6, 0, BlockIDs.assemblyTableI.block, null);
 		AchievementIDs.passenger.achievement = achievement("passenger", 5, 2, ItemIDs.minecartPassenger2.item, AchievementIDs.assemblyTable.achievement);
@@ -107,8 +107,8 @@ public class AchievementHandler {
 				AchievementIDs.assemblyTable.achievement, AchievementIDs.mail.achievement,
 				AchievementIDs.minetrain.achievement, AchievementIDs.cherepanov.achievement,
 				AchievementIDs.flatCart.achievement, AchievementIDs.stockCar.achievement,
-				AchievementIDs.caboose.achievement, AchievementIDs.mtg.achievement,
-				AchievementIDs.crossrail.achievement, AchievementIDs.heavySteam.achievement,
+				AchievementIDs.caboose.achievement, /*AchievementIDs.mtg.achievement,
+				AchievementIDs.crossrail.achievement,*/ AchievementIDs.heavySteam.achievement,
 				AchievementIDs.jukebox.achievement, AchievementIDs.cf7.achievement, AchievementIDs.thanos.achievement,
 				AchievementIDs.sd9.achievement, AchievementIDs.geared.achievement, AchievementIDs.powerful.achievement,
 				AchievementIDs.gevo.achievement, AchievementIDs.switchin.achievement};
