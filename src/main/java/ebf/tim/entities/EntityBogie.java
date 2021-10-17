@@ -235,6 +235,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //actually move
         while (velocity>0) {
             vel=moveBogieVanilla(Math.min(0.35, velocity), vel[0], vel[1], floorX, floorY, floorZ, block);
+            motionX=vel[0];
+            motionZ=vel[1];
             velocity -= 0.35;
 
             //update the last used block to the one we just used, if it's actually different.
@@ -288,11 +290,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         }
 
         motionSqrt = Math.sqrt(velocityX * velocityX + velocityZ * velocityZ);
-        //update the motion's direction to match facing.
-        if(motionX==velocityX && motionZ==velocityZ) {
-            motionX = motionSqrt * (railPathX / railPathSqrt);
-            motionZ = motionSqrt * (railPathZ / railPathSqrt);
-        }
 
         retValue = new double[]{motionSqrt * (railPathX / railPathSqrt),
                 motionSqrt * (railPathZ / railPathSqrt)};

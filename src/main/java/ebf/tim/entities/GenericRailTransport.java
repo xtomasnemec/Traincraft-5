@@ -381,7 +381,45 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean canBeCollidedWith() {return true;}
     /**client only positioning of the transport, this should help to smooth the movement*/
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_) {}
+    public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_) {
+        if (frontBogie!=null && backBogie!= null){
+
+            setRotation((float)Math.toDegrees(CommonUtil.atan2f(
+                    frontBogie.posZ - backBogie.posZ,
+                    frontBogie.posX - backBogie.posX)),
+                    CommonUtil.calculatePitch(frontBogie.posY,backBogie.posY,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+
+            transportX=p_70056_1_;
+            transportY=p_70056_3_;
+            transportZ=p_70056_5_;
+            tickOffset = p_70056_9_+2;
+
+            updateRiderPosition();
+
+            //handle bogie rotations
+            if(renderData!=null && renderData.bogies!=null){
+                for(Bogie b : renderData.bogies){
+                    if(ClientProxy.EnableAnimations) {
+                        b.updateRotation(this);
+                    } else {
+                        b.rotationYaw=rotationYaw;
+                    }
+                }
+            }
+
+            //handle particles
+            if (ClientProxy.EnableParticles){
+                if(getParticles().size()>0) {
+                    ParticleFX.updateParticleItterator(getParticles(), getBoolean(boolValues.RUNNING), false);
+                }
+                for(List<ParticleFX> p : renderData.bogieParticles){
+                    ParticleFX.updateParticleItterator(p, getBoolean(boolValues.RUNNING), false);
+                }
+            }
+        }else {
+            this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
+        }
+    }
 
     @Override
     public void moveEntity(double p_70091_1_, double p_70091_3_, double p_70091_5_){
@@ -898,7 +936,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-        dataWatcher.updateObject(12, (float)Math.abs((motionX*motionX)+(motionZ*motionZ)));
+        dataWatcher.updateObject(12, (float)Math.abs((motionX*motionX)+(motionZ*motionZ))*9f);
         if (!worldObj.isRemote) {
             for (CollisionBox box : collisionHandler.interactionBoxes) {
                 box.onUpdate();
@@ -996,24 +1034,33 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         //CLIENT UPDATE
         if(worldObj.isRemote){
-            if(frontBogie !=null && backBogie != null) {
-                setPosition((frontBogie.posX + backBogie.posX) * 0.5,
-                        (frontBogie.posY + backBogie.posY) * 0.5,
-                        (frontBogie.posZ + backBogie.posZ) * 0.5);
+            if(tickOffset >0) {
+                prevPosX = posX;
+                prevPosZ = posZ;
+                setPosition(
+                        this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
+                        this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
+                        this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
+                );
+                velocity[1] = (float) ((Math.abs(posX) - Math.abs(prevPosX)) + (Math.abs(posZ) - Math.abs(prevPosZ)));
+                if (frontBogie != null && backBogie != null) {
+                    frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
+                    backBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
 
-                setRotation(CommonUtil.atan2degreesf(
-                        frontBogie.posZ - backBogie.posZ,
-                        frontBogie.posX - backBogie.posX),
-                        CommonUtil.calculatePitch(
-                                backBogie.posY, frontBogie.posY,
-                                Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
-                collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-
+                    setRotation(CommonUtil.atan2degreesf(
+                            frontBogie.posZ - backBogie.posZ,
+                            frontBogie.posX - backBogie.posX),
+                            CommonUtil.calculatePitch(
+                                    backBogie.posY, frontBogie.posY,
+                                    Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                }
                 if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
                     for(Bogie b : renderData.bogies){
                         b.updatePosition(this, null);
                     }
                 }
+                collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+                tickOffset--;
             }
         }
 
@@ -1349,23 +1396,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
 
         //scale to just a little under half since we apply it to both entities every tick
-        norm*=0.49;
+        norm*=0.99;
 
 
         if(getAccelerator()==0) {
+            double radian = Math.PI/180d;
             //changes direction based on if the other entity is the front transport of this one
-            Vec3d velocity = CommonUtil.rotateDistance(front?norm:-norm, 0, rotationYaw);
-            frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-            backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-        }
+            double x = ((front?norm:-norm) * Math.cos(rotationYaw * radian));
+            double z = ((front?norm:-norm) * Math.sin(rotationYaw * radian));
 
-        if(linkedTransport.getAccelerator()==0) {
-            //changes direction based on if _this_ is the front transport of the other entity
-            Vec3d velocity = CommonUtil.rotateDistance(
-                    linkedTransport.frontLinkedID!=null&&linkedTransport.frontLinkedID==getEntityId()
-                            ?norm:-norm, 0, linkedTransport.rotationYaw);
-            linkedTransport.frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-            linkedTransport.backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
+            frontBogie.addVelocity(x,0,z);
+            backBogie.addVelocity(x,0,z);
         }
     }
 
