@@ -172,7 +172,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
                 //now throw in the transport m/s acceleration, but convert m/s to m/t, (1/20)
                 //in theory anyway, but i just threw a bunch of random garbage at this and it seems fine
-                vectorCache[1][0]=(transportAcceleration()*0.0005f)*vectorCache[1][0];
+                vectorCache[1][0]=(transportAcceleration()*0.00005f)*vectorCache[1][0];
 
                 //todo: accelerator is reverse, for some reason?
                 //scale by throttle position
@@ -186,20 +186,19 @@ public class EntityTrainCore extends GenericRailTransport {
                 //add back the speed from last tick
                 vectorCache[1][0]+=vectorCache[1][2];
 
-                //todo: IMPORTANT: need different values for realspeed and TCspeed
-                //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
                 if(CommonProxy.realSpeed){
-                    //the extra 0.111~ scales the max speed down to TC levels.
-                    if (vectorCache[1][0] < -transportTopSpeed() * (0.0277778f*0.1111111f)) {
-                        vectorCache[1][0] = -transportTopSpeed() * (0.0277778f*0.1111111f);
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.0277778f*0.1111111f)) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * (0.0277778f*0.1111111f);
+                    //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
+                    //add a buff to max speed of 0.25
+                    if (vectorCache[1][0] < -transportTopSpeed() * 0.0277778f*1.25f) {
+                        vectorCache[1][0] = -transportTopSpeed() * 0.0277778f*1.25f;
+                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * 0.0277778f*1.25f) {
+                        vectorCache[1][0] = transportTopSpeedReverse() * 0.0277778f*1.25f;
                     }
                 } else {
-                    if (vectorCache[1][0] < -transportTopSpeed() * (0.0277778f*0.1111111f)) {
-                        vectorCache[1][0] = -transportTopSpeed() * (0.0277778f*0.1111111f);
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.0277778f*0.1111111f)) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * (0.0277778f*0.1111111f);
+                    if (vectorCache[1][0] < -transportTopSpeed() * (0.0277778f)) {
+                        vectorCache[1][0] = -transportTopSpeed() * (0.0277778f);
+                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.0277778f)) {
+                        vectorCache[1][0] = transportTopSpeedReverse() * (0.0277778f);
                     }
                 }
 

@@ -914,6 +914,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //actually move
         prevPosX=posX;
         prevPosZ=posZ;
+        motionX=(frontBogie.motionX+backBogie.motionX)*0.5;
+        motionZ=(frontBogie.motionZ+backBogie.motionZ)*0.5;
         frontBogie.minecartMove(this, frontBogie.motionX,frontBogie.motionZ);
         backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
 
@@ -936,8 +938,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-        dataWatcher.updateObject(12, (float)Math.abs((motionX*motionX)+(motionZ*motionZ))*9f);
         if (!worldObj.isRemote) {
+            dataWatcher.updateObject(12, getVelocity());
             for (CollisionBox box : collisionHandler.interactionBoxes) {
                 box.onUpdate();
             }
@@ -1503,8 +1505,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId,posX,posY,posZ,16*4));
     }
 
-    public double getVelocity(){
-        return dataWatcher.getWatchableObjectFloat(12);
+    public float getVelocity(){
+        return worldObj.isRemote?dataWatcher.getWatchableObjectFloat(12):(float)Math.abs((motionX*motionX)+(motionZ*motionZ))*9f;
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.
