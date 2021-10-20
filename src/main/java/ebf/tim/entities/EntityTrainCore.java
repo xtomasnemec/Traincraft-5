@@ -172,7 +172,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
                 //now throw in the transport m/s acceleration, but convert m/s to m/t, (1/20)
                 //in theory anyway, but i just threw a bunch of random garbage at this and it seems fine
-                vectorCache[1][0]=(transportAcceleration()*0.00005f)*vectorCache[1][0];
+                vectorCache[1][0]=(transportAcceleration()*0.0000075f)*vectorCache[1][0];
 
                 //todo: accelerator is reverse, for some reason?
                 //scale by throttle position
@@ -189,16 +189,18 @@ public class EntityTrainCore extends GenericRailTransport {
                 if(CommonProxy.realSpeed){
                     //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
                     //add a buff to max speed of 0.25
-                    if (vectorCache[1][0] < -transportTopSpeed() * 0.0277778f*1.25f) {
-                        vectorCache[1][0] = -transportTopSpeed() * 0.0277778f*1.25f;
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * 0.0277778f*1.25f) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * 0.0277778f*1.25f;
+                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.05f)*1.25f) {
+                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.05f)*1.25f;
+                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.05f)*1.25f) {
+                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.05f)*1.25f;
                     }
                 } else {
-                    if (vectorCache[1][0] < -transportTopSpeed() * (0.0277778f)) {
-                        vectorCache[1][0] = -transportTopSpeed() * (0.0277778f);
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.0277778f)) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * (0.0277778f);
+                    DebugUtil.println(transportTopSpeed(), transportTopSpeedReverse() * (0.277778f*0.05f),
+                            -transportTopSpeed() * (0.277778f*0.075f),vectorCache[1][0]);
+                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.075f)) {
+                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.075f);
+                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.075f)) {
+                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.075f);
                     }
                 }
 

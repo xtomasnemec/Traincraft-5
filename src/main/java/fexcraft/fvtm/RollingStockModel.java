@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -81,12 +82,9 @@ public class RollingStockModel extends ModelBase {
 
     @Override
     public List<ModelRendererTurbo> getnamedParts(){
-        List<ModelRendererTurbo> turboList = new ArrayList<ModelRendererTurbo>();
+        LinkedList<ModelRendererTurbo> turboList = new LinkedList<>();
         for(TurboList g: groups){
-            if(g.init){
-                g.initAllParts();
-            }
-            turboList.addAll(g.namedList);
+            turboList.addAll(g.getnamedParts());
         }
         return turboList;
     }

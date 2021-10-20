@@ -908,25 +908,23 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                                 ((BlockRailBase) b).getRailMaxSpeed(worldObj, backBogie, (int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ) * 0.005f,
                                 backBogie.motionZ));
             }
-        }
 
 
         //actually move
-        prevPosX=posX;
-        prevPosZ=posZ;
-        motionX=(frontBogie.motionX+backBogie.motionX)*0.5;
-        motionZ=(frontBogie.motionZ+backBogie.motionZ)*0.5;
         frontBogie.minecartMove(this, frontBogie.motionX,frontBogie.motionZ);
         backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
+        motionX=(posX-prevPosX);
+        motionZ=(posZ-prevPosZ);
+        prevPosX=posX;
+        prevPosZ=posZ;
 
-        if (!worldObj.isRemote) {
             entityData.putDouble(NBTKeys.frontBogieX, frontBogie.motionX);
             entityData.putDouble(NBTKeys.frontBogieZ, frontBogie.motionZ);
             entityData.putDouble(NBTKeys.backBogieX, backBogie.motionX);
             entityData.putDouble(NBTKeys.backBogieZ, backBogie.motionZ);
             frontBogie.setVelocity(0,0,0);
             backBogie.setVelocity(0,0,0);
-        }
+
 
         setRotation((CommonUtil.atan2degreesf(
                 frontBogie.posZ - backBogie.posZ,
@@ -938,7 +936,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-        if (!worldObj.isRemote) {
             dataWatcher.updateObject(12, getVelocity());
             for (CollisionBox box : collisionHandler.interactionBoxes) {
                 box.onUpdate();
@@ -1506,7 +1503,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public float getVelocity(){
-        return worldObj.isRemote?dataWatcher.getWatchableObjectFloat(12):(float)Math.abs((motionX*motionX)+(motionZ*motionZ))*9f;
+        return worldObj.isRemote?dataWatcher.getWatchableObjectFloat(12):(float)(Math.abs(motionX)+Math.abs(motionZ));
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.
