@@ -10,6 +10,7 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergB;
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergBnew;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeA;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
 import net.minecraft.client.Minecraft;
@@ -1618,7 +1619,7 @@ public class ModelGP15 extends ModelConverter //Same as Filename
 	}
 	ModelBlombergB theTrucc = new ModelBlombergB();
 	ModelTypeB theTrucks1 = new ModelTypeB();
-
+	ModelBlombergBnew theTrucks3 = new ModelBlombergBnew();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -1645,46 +1646,46 @@ public class ModelGP15 extends ModelConverter //Same as Filename
 			GL11.glTranslated(2.85, 0, 0);
 			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
+
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11345||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 345||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 5345||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3456||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13453) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Grey.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_Silver.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.2, 0.15, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(-1.2, -0.01, 0);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(2.27, 0, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_spooki_up_trash.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_spooki_up_trashy_trash.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.2, 0.15, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(-1.2, -0.01, 0);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(2.27, 0, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 
-
-		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Stale_Egg.png"));
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6546) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_DarkerGrey.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.2, 0.15, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(-1.2, -0.01, 0);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glRotatef(180, 0, 1, 0);
-			GL11.glTranslated(-2.27, 0, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(2.27, 0, 0);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_Blac.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.2, 0.15, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(-1.2, -0.01, 0);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(2.27, 0, 0);
-			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		}
 	}

@@ -1,5 +1,5 @@
 //This File was created with the Minecraft-SMP Modelling Toolbox 2.3.0.0
-// Copyright (C) 2020 Minecraft-SMP.de
+// Copyright (C) 2021 Minecraft-SMP.de
 // This file is for Flan's Flying Mod Version 4.0.x+
 
 // Model: 
@@ -9,8 +9,7 @@
 
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
-
-import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergB;
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergBnew;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 public class ModelGP38dash9W extends ModelConverter //Same as Filename
 {
 	int textureX = 512;
-	int textureY = 256;
+	int textureY = 512;
 
 	public ModelGP38dash9W() //Same as Filename
 	{
@@ -185,8 +184,8 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[140] = new ModelRendererTurbo(this, 433, 57, textureX, textureY); // Box 339
 		bodyModel[141] = new ModelRendererTurbo(this, 465, 57, textureX, textureY); // Box 340
 		bodyModel[142] = new ModelRendererTurbo(this, 73, 33, textureX, textureY); // Box 341
-		bodyModel[143] = new ModelRendererTurbo(this, 441, 41, textureX, textureY); // Box 352 cull
-		bodyModel[144] = new ModelRendererTurbo(this, 57, 49, textureX, textureY); // Box 353 cull
+		bodyModel[143] = new ModelRendererTurbo(this, 441, 41, textureX, textureY, "cull"); // Box 352 cull
+		bodyModel[144] = new ModelRendererTurbo(this, 57, 49, textureX, textureY, "cull"); // Box 353 cull
 		bodyModel[145] = new ModelRendererTurbo(this, 305, 57, textureX, textureY, "lamp"); // Box 354 ditchlight rear
 		bodyModel[146] = new ModelRendererTurbo(this, 425, 65, textureX, textureY, "lamp"); // Box 355 ditchlight rear
 		bodyModel[147] = new ModelRendererTurbo(this, 505, 57, textureX, textureY); // Box 359
@@ -231,12 +230,12 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[186] = new ModelRendererTurbo(this, 1, 81, textureX, textureY); // Box 372
 		bodyModel[187] = new ModelRendererTurbo(this, 361, 57, textureX, textureY, "lamp"); // Box 376 glow
 		bodyModel[188] = new ModelRendererTurbo(this, 433, 65, textureX, textureY, "lamp"); // Box 377 glow
-		bodyModel[189] = new ModelRendererTurbo(this, 425, 73, textureX, textureY); // Box 378 cull
-		bodyModel[190] = new ModelRendererTurbo(this, 457, 73, textureX, textureY); // Box 453 cull
+		bodyModel[189] = new ModelRendererTurbo(this, 425, 73, textureX, textureY, "cull"); // Box 378 cull
+		bodyModel[190] = new ModelRendererTurbo(this, 457, 73, textureX, textureY, "cull"); // Box 453 cull
 		bodyModel[191] = new ModelRendererTurbo(this, 33, 81, textureX, textureY); // Box 454
-		bodyModel[192] = new ModelRendererTurbo(this, 33, 81, textureX, textureY); // Box 455 cull
-		bodyModel[193] = new ModelRendererTurbo(this, 65, 81, textureX, textureY); // Box 479 cull
-		bodyModel[194] = new ModelRendererTurbo(this, 121, 81, textureX, textureY); // Box 339 cull
+		bodyModel[192] = new ModelRendererTurbo(this, 33, 81, textureX, textureY, "cull"); // Box 455 cull
+		bodyModel[193] = new ModelRendererTurbo(this, 65, 81, textureX, textureY, "cull"); // Box 479 cull
+		bodyModel[194] = new ModelRendererTurbo(this, 121, 81, textureX, textureY, "cull"); // Box 339 cull
 		bodyModel[195] = new ModelRendererTurbo(this, 73, 81, textureX, textureY); // Box 448
 		bodyModel[196] = new ModelRendererTurbo(this, 161, 81, textureX, textureY); // Box 449
 		bodyModel[197] = new ModelRendererTurbo(this, 217, 81, textureX, textureY); // Box 395
@@ -311,12 +310,12 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[266] = new ModelRendererTurbo(this, 409, 89, textureX, textureY, "lamp"); // Box 251 ditchlight front
 		bodyModel[267] = new ModelRendererTurbo(this, 257, 97, textureX, textureY, "lamp"); // Box 252 ditchlight front
 		bodyModel[268] = new ModelRendererTurbo(this, 265, 97, textureX, textureY); // Box 253
-		bodyModel[269] = new ModelRendererTurbo(this, 289, 97, textureX, textureY); // Box 348 cull
+		bodyModel[269] = new ModelRendererTurbo(this, 289, 97, textureX, textureY, "cull"); // Box 348 cull
 		bodyModel[270] = new ModelRendererTurbo(this, 305, 97, textureX, textureY, "lamp"); // Box 349 ditchlight front
 		bodyModel[271] = new ModelRendererTurbo(this, 313, 97, textureX, textureY, "lamp"); // Box 350 ditchlight front
-		bodyModel[272] = new ModelRendererTurbo(this, 321, 97, textureX, textureY); // Box 351 cull
-		bodyModel[273] = new ModelRendererTurbo(this, 97, 105, textureX, textureY); // Box 450 cull
-		bodyModel[274] = new ModelRendererTurbo(this, 121, 105, textureX, textureY); // Box 451 cull
+		bodyModel[272] = new ModelRendererTurbo(this, 321, 97, textureX, textureY, "cull"); // Box 351 cull
+		bodyModel[273] = new ModelRendererTurbo(this, 97, 105, textureX, textureY, "cull"); // Box 450 cull
+		bodyModel[274] = new ModelRendererTurbo(this, 121, 105, textureX, textureY, "cull"); // Box 451 cull
 		bodyModel[275] = new ModelRendererTurbo(this, 121, 105, textureX, textureY); // Box 452
 		bodyModel[276] = new ModelRendererTurbo(this, 153, 105, textureX, textureY); // Box 446
 		bodyModel[277] = new ModelRendererTurbo(this, 177, 105, textureX, textureY); // Box 447
@@ -329,7 +328,7 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[284] = new ModelRendererTurbo(this, 361, 105, textureX, textureY); // Box 316
 		bodyModel[285] = new ModelRendererTurbo(this, 169, 105, textureX, textureY); // Box 11
 		bodyModel[286] = new ModelRendererTurbo(this, 25, 113, textureX, textureY); // Box 211
-		bodyModel[287] = new ModelRendererTurbo(this, 113, 105, textureX, textureY, "lamp"); // Box 48 lamp
+		bodyModel[287] = new ModelRendererTurbo(this, 113, 105, textureX, textureY); // Box 48 lamp
 		bodyModel[288] = new ModelRendererTurbo(this, 337, 105, textureX, textureY); // Box 43
 		bodyModel[289] = new ModelRendererTurbo(this, 489, 105, textureX, textureY); // Box 44
 		bodyModel[290] = new ModelRendererTurbo(this, 417, 65, textureX, textureY, "lamp"); // Box 117 liveryimg 2 glow
@@ -395,13 +394,13 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[1].setRotationPoint(-39F, 0F, -7F);
 
 		bodyModel[2].addBox(0F, 0F, 0F, 4, 1, 4, 0F); // Box 163
-		bodyModel[2].setRotationPoint(-23F, 3F, -2F);
+		bodyModel[2].setRotationPoint(-27F, 3F, -2F);
 
 		bodyModel[3].addBox(0F, 0F, 0F, 4, 1, 4, 0F); // Box 166
 		bodyModel[3].setRotationPoint(27F, 3F, -2F);
 
 		bodyModel[4].addShapeBox(0F, 0F, 0F, 2, 1, 21, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F); // Box 168
-		bodyModel[4].setRotationPoint(-22F, 2F, -10.5F);
+		bodyModel[4].setRotationPoint(-26F, 2F, -10.5F);
 
 		bodyModel[5].addShapeBox(0F, 0F, 0F, 2, 1, 21, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F); // Box 169
 		bodyModel[5].setRotationPoint(28F, 2F, -10.5F);
@@ -753,7 +752,7 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[119].setRotationPoint(23F, -10F, -11F);
 
 		bodyModel[120].addBox(0F, 0F, 0F, 16, 8, 0, 0F); // Box 316
-		bodyModel[120].setRotationPoint(25F, -7F, -11F);
+		bodyModel[120].setRotationPoint(25F, -8F, -11F);
 
 		bodyModel[121].addBox(0F, 0F, 0F, 4, 1, 1, 0F); // Box 327
 		bodyModel[121].setRotationPoint(22F, -22.5F, -5.5F);
@@ -1009,7 +1008,7 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[203].setRotationPoint(27.5F, 1F, -10.5F);
 
 		bodyModel[204].addBox(0F, 0F, 0F, 3, 1, 21, 0F); // Box 409
-		bodyModel[204].setRotationPoint(-22.5F, 1F, -10.5F);
+		bodyModel[204].setRotationPoint(-26.5F, 1F, -10.5F);
 
 		bodyModel[205].addBox(0F, 0F, 0F, 79, 1, 4, 0F); // Box 515
 		bodyModel[205].setRotationPoint(-39F, 0F, 7F);
@@ -1441,7 +1440,7 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 		bodyModel[344].addShapeBox(0F, 0F, 0F, 1, 4, 2, 0F,0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, 0F, 0F, 0F); // Light mount
 		bodyModel[344].setRotationPoint(-38.25F, -10.6F, -1F);
 	}
-	ModelBlombergB theTrucc = new ModelBlombergB();
+	ModelBlombergBnew theTrucc = new ModelBlombergBnew();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 345; i++) {
@@ -1458,22 +1457,22 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 			}
 		}
 
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3456 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3451 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13451 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3457 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3458 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3455) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Grey.png"));
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3456) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_Silver.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.5, 0.15, 0);
+			GL11.glTranslated(-1.55, -0.01, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 
-			GL11.glTranslated(3, 0, 0);
+			GL11.glTranslated(3.35, 0, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_Blac.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.3, 0.15, 0);
+			GL11.glTranslated(-1.55, -0.01, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 
-			GL11.glTranslated(3.15, 0, 0);
+			GL11.glTranslated(3.35, 0, 0);
 			theTrucc.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		}
@@ -1488,4 +1487,5 @@ public class ModelGP38dash9W extends ModelConverter //Same as Filename
 			}
 		};
 	}
+
 }
