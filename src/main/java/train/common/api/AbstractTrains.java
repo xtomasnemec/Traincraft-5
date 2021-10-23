@@ -21,6 +21,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import org.apache.commons.lang3.ArrayUtils;
 import train.client.render.RenderEnum;
 import train.common.Traincraft;
 import train.common.adminbook.ItemAdminBook;
@@ -177,7 +178,7 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 				trainSpec = trains;
 				if (trains.getColors() != null) {
 					for (int i = 0; i < trains.getColors().length; i++) {
-						this.acceptedColors.add(AbstractTrains.getColorFromString(trains.getColors()[i]));
+						this.acceptedColors.add((trains.getColors()[i]));
 					}
 				}
 				this.setSize(0.98f, 1.98f);
@@ -346,11 +347,20 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 	 * @see ItemRollingStock
 	 * @param color
 	 */
-	public void setColor(int color) {
+	/*public void setColor(int color) {
 		if (color==-1 && EnumTrains.getCurrentTrain(getCartItem().getItem()).getColors()!=null){
 			color = getColorFromString(EnumTrains.getCurrentTrain(getCartItem().getItem()).getColors()[0]);
 		}
 		dataWatcher.updateObject(12, color);
+	}*/
+	public void setColor(int color) {
+		if (EnumTrains.getCurrentTrain(getCartItem().getItem()).getColors()!=null){
+			if (color==-1 || !ArrayUtils.contains(EnumTrains.getCurrentTrain(getCartItem().getItem()).getColors(),(byte)color)) {
+				color = (EnumTrains.getCurrentTrain(getCartItem().getItem()).getColors()[0]);
+			}
+		}
+		dataWatcher.updateObject(12, color);
+		this.getEntityData().setInteger("color", color);
 	}
 
 	public void setRenderYaw(float yaw) {

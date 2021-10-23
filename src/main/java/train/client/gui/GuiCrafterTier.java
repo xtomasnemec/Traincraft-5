@@ -126,7 +126,8 @@ public class GuiCrafterTier extends GuiTraincraft {
 					if(color < 0)color = 0;
 					if(ticksInGui % 400 == 0)color++;
 					if(color>train.getColors().length-1)color=0;
-					if(renderEntity!=null)((AbstractTrains)renderEntity).setColor(getColorFromString(train.getColors()[color]));
+					if(renderEntity!=null)((AbstractTrains)renderEntity).setColor((train.getColors()[color]));
+					//if(renderEntity!=null)renderEntity.setColor((train.getColors()[color]));
 				}
 				float scale = train.getGuiRenderScale();
 				GL11.glScalef(-scale, scale, scale);
