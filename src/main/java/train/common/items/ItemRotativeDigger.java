@@ -1,5 +1,8 @@
 package train.common.items;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,12 +12,15 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import train.common.Traincraft;
 import train.common.entity.digger.EntityRotativeDigger;
+import train.common.library.Info;
 
 public class ItemRotativeDigger extends Item {
 
+	private String iconName = "";
+
 	public ItemRotativeDigger() {
 		super();
-		maxStackSize = 5;
+		maxStackSize = 1;
 		setCreativeTab(Traincraft.tcTab);
 	}
 
@@ -53,5 +59,10 @@ public class ItemRotativeDigger extends Item {
 			itemstack.stackSize--;
 		}
 		return itemstack;
+	}
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IIconRegister iconRegister) {
+		this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":trains/modelrotaryexcavator_icon");
 	}
 }

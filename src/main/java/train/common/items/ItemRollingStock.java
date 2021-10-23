@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import train.common.Traincraft;
@@ -388,7 +389,8 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 					if (concatColors.length() > 4) {
 						if (player != null) {
 							player.addChatMessage(new ChatComponentText("Possible colors" + concatColors));
-							player.addChatMessage(new ChatComponentText("To paint, click me with the right (vanilla) dye"));
+							player.addChatMessage(new ChatComponentText("To paint, click me with the right (vanilla) dye,"));
+							player.addChatMessage(new ChatComponentText("Or" + EnumChatFormatting.GREEN + " Shift-right click " + EnumChatFormatting.GRAY + "using the Paintbrush Item to cycle through textures"));
 						}
 					}
 				}

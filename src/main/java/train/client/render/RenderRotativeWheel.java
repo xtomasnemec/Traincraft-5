@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 import train.client.render.models.ModelRotaryExcavator_Wheel;
 import train.common.entity.digger.EntityRotativeDigger;
 import train.common.entity.digger.EntityRotativeWheel;
+import train.common.library.Info;
 
 public class RenderRotativeWheel extends Render {
 
@@ -16,6 +17,7 @@ public class RenderRotativeWheel extends Render {
 	private EntityRotativeDigger entity;
 
 	private static final ModelBase modelRotaryExcavator_Wheel = new ModelRotaryExcavator_Wheel();
+	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.trainsPrefix + "rotativeExcavatorWheel.png");
 
 	public RenderRotativeWheel() {
 		//shadowSize = 0.5F;
@@ -41,6 +43,7 @@ public class RenderRotativeWheel extends Render {
 			GL11.glRotatef((mvt + 0.4188790204786391F) * 100, 1F, 0F, 0F);
 		}
 		//loadTexture(Info.trainsPrefix + "rotativeExcavatorWheel.png");
+		bindEntityTexture(wheel);
 		modelRotaryExcavator_Wheel.render(wheel, 0.0F, +0.2F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}
@@ -52,6 +55,6 @@ public class RenderRotativeWheel extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return null;
+		return texture;
 	}
 }

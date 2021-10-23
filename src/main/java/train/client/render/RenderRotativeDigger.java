@@ -8,10 +8,15 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import train.client.render.models.ModelRotaryExcavator;
 import train.common.entity.digger.EntityRotativeDigger;
+import train.common.library.Info;
 
 public class RenderRotativeDigger extends Render {
 
 	private static final ModelBase modelRotaryExcavator = new ModelRotaryExcavator();
+	private static final ResourceLocation digger2 = new ResourceLocation(Info.resourceLocation,Info.trainsPrefix + "rotaryExcavator.png");
+	//private ResourceLocation digger = new ResourceLocation(Info.modID, "textures/trains/rotaryExcavator.png");
+	private static final ResourceLocation digger3 = new ResourceLocation(Info.resourceLocation, Info.trainsPrefix + "zeppelin_one_balloon.png");
+
 
 	public RenderRotativeDigger() {
 		shadowSize = 0.5F;
@@ -42,6 +47,7 @@ public class RenderRotativeDigger extends Render {
 
 		GL11.glTranslatef(0.0F, 0.5F, 0.0F);
 		//loadTexture(Info.trainsPrefix + "rotaryExcavator.png");
+		bindEntityTexture(digger);
 		modelRotaryExcavator.render(digger, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}
@@ -53,6 +59,6 @@ public class RenderRotativeDigger extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return null;
+		return digger2;
 	}
 }

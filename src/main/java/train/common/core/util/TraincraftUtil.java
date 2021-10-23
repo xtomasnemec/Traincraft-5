@@ -75,4 +75,72 @@ public class TraincraftUtil{
         }
     }
 
+    public static int getByteFromColor(String c){
+        if(c.equals("Black")){
+            return 0;
+        } else if (c.equals("Red")){
+            return 1;
+        } else if(c.equals("Green")){
+            return 2;
+        } else if(c.equals("Brown")){
+            return 3;
+        } else if(c.equals("Blue")){
+            return 4;
+        } else if(c.equals("Purple")){
+            return 5;
+        } else if(c.equals("Cyan")){
+            return 6;
+        } else if(c.equals("LightGrey")){
+            return 7;
+        } else if(c.equals("Grey")){
+            return 8;
+        } else if(c.equals("Magenta")){
+            return 13;
+        } else if(c.equals("Lime")){
+            return 10;
+        } else if(c.equals("Yellow")){
+            return 11;
+        } else if(c.equals("LightBlue")){
+            return 12;
+        } else if(c.equals("Pink")){
+            return 9;
+        } else if(c.equals("Orange")){
+            return 14;
+        } else if(c.equals("White")) {
+            return 15;
+        } else if (c.equals("Skin16")) {
+            return 16;
+        } else if (c.equals("Skin17")) {
+            return 17;
+        } else if (c.equals("Skin18")) {
+            return 18;
+        } else if (c.equals("Skin19")) {
+            return 19;
+        } else if (c.equals("Skin20")) {
+            return 20;
+        } else if (c.equals("Skin21")) {
+            return 21;
+        } else if (c.equals("Skin22")) {
+            return 22;
+        } else if (c.equals("Skin23")) {
+            return 23;
+        } else if (c.equals("Skin24")) {
+            return 24;
+        } else if (c.equals("Skin25")) {
+            return 25;
+        } else if(c.equals("Full")){
+            return 101;
+        } else if (c.equals("Empty")){
+            return 100;
+        }
+        return 0;
+    }
+
+    public static int[] getBytesFromColors(String[] c){
+        int[] ret = new int[c.length];
+        for(int i=0; i<c.length;i++){
+            ret[i]=getByteFromColor(c[i]);
+        }
+        return ret;
+    }
 }

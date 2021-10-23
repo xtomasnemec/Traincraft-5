@@ -184,7 +184,7 @@ public class ClientProxy extends CommonProxy {
 		case (GuiIDs.ZEPPELIN):
 			return riddenByEntity != null ? new GuiZepp(riddenByEntity.inventory, entity) : null;
 		case (GuiIDs.DIGGER):
-			return riddenByEntity != null ? new GuiBuilder(player, riddenByEntity.inventory, entity) : null;
+			return riddenByEntity != null ? new GuiRotativeDigger(riddenByEntity.inventory, entity) : null;
 		case (GuiIDs.MTC_INFO):
 			return riddenByEntity != null && Loader.isModLoaded("ComputerCraft") ? new GuiMTCInfo(player) : null;
 

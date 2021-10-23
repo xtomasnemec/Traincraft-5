@@ -115,9 +115,9 @@ public class EntityRotativeWheel extends Entity {
 
 			this.harvestBlock_do(vec);
 			//TODO how many blocks should be harvested?
-			/*for (int h = -1; h < 2; h++) { vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ + 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ + 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ + 1); this.harvestBlock_do(vec);
-			 * 
-			 * } */
+			//for (int h = -1; h < 2; h++) { vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ + 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ + 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ + 1); this.harvestBlock_do(vec);
+
+			//}
 
 		}
 		if (worldObj.isRemote) {

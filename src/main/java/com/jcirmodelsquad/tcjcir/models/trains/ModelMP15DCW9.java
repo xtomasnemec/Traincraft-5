@@ -11,6 +11,7 @@ package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is locat
 
 
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergB;
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergBnew;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelFlexicoil2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -821,6 +822,7 @@ public class ModelMP15DCW9 extends ModelConverter //Same as Filename
 	}
 	ModelFlexicoil2 theTrucks1 = new ModelFlexicoil2();
 	ModelBlombergB theTrucks2 = new ModelBlombergB();
+	ModelBlombergBnew theTrucks3 = new ModelBlombergBnew();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -858,13 +860,13 @@ public class ModelMP15DCW9 extends ModelConverter //Same as Filename
 			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_Blac.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.1, 0.0, 0);
-			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(-1.1, -0.19, 0);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(2.23, 0, 0);
-			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
+			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		}
 	}

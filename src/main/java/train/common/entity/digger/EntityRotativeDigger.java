@@ -14,6 +14,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -22,7 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import train.common.Traincraft;
 import train.common.core.handlers.ConfigHandler;
+import train.common.core.handlers.FuelHandler;
 import train.common.core.network.PacketKeyPress;
+import train.common.library.GuiIDs;
 import train.common.library.ItemIDs;
 
 import java.util.List;
@@ -237,7 +240,7 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 
 		if (i == 7 && riddenByEntity != null && riddenByEntity instanceof EntityPlayer) {
 			//TODO there is no GUI for it currently
-			//((EntityPlayer) riddenByEntity).openGui(Traincraft.instance, GuiIDs.DIGGER, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
+			((EntityPlayer) riddenByEntity).openGui(Traincraft.instance, GuiIDs.DIGGER, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
 		}
 		if (i == 9) {
 			if (start == 0) {
@@ -352,7 +355,14 @@ public class EntityRotativeDigger extends Entity implements IInventory {
 		}
 
 		//It hasn't any GUI for now
-		/*if (fuel <= 0) { if (zeppInvent[0] != null && zeppInvent[0].itemID == ItemIDs.refinedFuel.item.shiftedIndex) { fuel = ConfigHandler2.ZeppelinCoal; this.dataWatcher.updateObject(20, fuel); decrStackSize(0, 1); } } */
+		//if (fuel <= 0) { if (zeppInvent[0] != null && zeppInvent[0].itemID == ItemIDs.refinedFuel.item.shiftedIndex) { fuel = ConfigHandler2.ZeppelinCoal; this.dataWatcher.updateObject(20, fuel); decrStackSize(0, 1); } }
+		float burn = FuelHandler.steamFuelLast(zeppInvent[0])*0.05f;
+
+		if (zeppInvent[0] != null && burn >0 && burn + fuel < 1000) {
+			fuel += TileEntityFurnace.getItemBurnTime(zeppInvent[0]);
+			this.dataWatcher.updateObject(20, fuel);
+			decrStackSize(0, 1);
+		}
 
 		if (boatTimeSinceHit > 0) {
 			boatTimeSinceHit--;

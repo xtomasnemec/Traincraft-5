@@ -36,7 +36,7 @@ public class ItemStacked extends Item {
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		par3List.add("\u00a77" + "Right click on a rolling stock");
 		par3List.add("\u00a77" + " to enter attaching mode.");
-		par3List.add("\u00a77" + "Click a few time to reset links.");
+		par3List.add("\u00a77" + "Click a few times to reset links.");
 		par3List.add("\u00a77" + "Sneak+Right click on a locomotive");
 		par3List.add("\u00a77" + " to set mode: 'Can pull/Can be pulled'");
 	}
