@@ -10,6 +10,7 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruck2;
+import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruckEarly;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -499,7 +500,7 @@ public class ModelRibbedHopper extends ModelConverter //Same as Filename
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}*/
-	Model70TonTruck2 bogie = new Model70TonTruck2();
+	Model70TonTruckEarly bogie = new Model70TonTruckEarly();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -510,14 +511,14 @@ public class ModelRibbedHopper extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 		}
 
-		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
+		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Black.png"));
 
 		GL11.glPushMatrix();
-		GL11.glScalef(1,1,0.9f);
-		GL11.glTranslated(-2.13,0.5,-0.4);
+		GL11.glScalef(1,1,1f);
+		GL11.glTranslated(-2.0,-0.05,-0.0);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 
-		GL11.glTranslated(4.0,0,0.03);
+		GL11.glTranslated(4.0,0,0.00);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}

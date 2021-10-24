@@ -394,6 +394,9 @@ public enum ItemIDs {
 	minecartES44("ItemRollingStock", "es44", 8),
 
 	//ALCO//
+	minecartAlcoPA1("ItemRollingStock", "AlcoPA1Icon",5),
+	minecartAlcoPB1("ItemRollingStock", "AlcoPB1Icon",4),
+
 	minecartC415H("ItemRollingStock", "c415h", 4),
 	//minecartC415S("ItemRollingStock", "c415s", 4),
 	//minecartC415L("ItemRollingStock", "c415l", 4),
@@ -458,7 +461,7 @@ public enum ItemIDs {
 
 	minecartSkeletonLogCar("ItemRollingStock", "Skeleton", 1),
 
-	//Assenger//
+	//pAssenger//
 	minecartPCH120Commute("ItemRollingStock", "pch120", 4),
 	minecartPCH120Car("ItemRollingStock", "pch120car", 3),
 
@@ -496,6 +499,13 @@ public enum ItemIDs {
 	//testControlCar("ItemRollingStock", "test_controlcar", 100000),
 	minecartAipkitExplorer("ItemRollingStock", "explorer", 14),
 	minecartAipkitExplorer2("ItemRollingStock", "explorer2", 15),
+
+	//ah, but we, are british
+	minecartLUengine("ItemRollingStock","luengine", 3),
+	minecartLUcar("ItemRollingStock","lupassenger", 2),
+	minecartClass345engine("ItemRollingStock", "Class345Engine", 3),
+	minecartClass345car("ItemRollingStock", "Class345Coach", 2),
+
 
 	//undecided stuff//
 	//minecartBaldwinMineLoco("ItemRollingStock", "baldwinmineloco", 1),

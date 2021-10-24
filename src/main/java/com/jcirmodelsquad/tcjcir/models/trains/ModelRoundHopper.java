@@ -265,14 +265,14 @@ public class ModelRoundHopper extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 		}
 
-		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
+		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Black.png"));
 
 		GL11.glPushMatrix();
-		GL11.glScalef(1,1,0.85f);
-		GL11.glTranslated(-2.4,0.55,-0.375);
+		GL11.glScalef(1,1,1f);
+		GL11.glTranslated(-2.39,-0.02,-0.0);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 
-		GL11.glTranslated(4.73,0,0.0);
+		GL11.glTranslated(4.75,0,0.0);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}

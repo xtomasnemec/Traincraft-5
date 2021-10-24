@@ -10,6 +10,7 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeBnew;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +20,8 @@ import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
+
+import java.util.ArrayList;
 
 public class ModelC425 extends ModelConverter //Same as Filename
 {
@@ -1535,6 +1538,7 @@ public class ModelC425 extends ModelConverter //Same as Filename
 		bodyModel[366].setRotationPoint(40.25F, -4F, 3.75F);
 	}
 	ModelTypeB theTrucks = new ModelTypeB();
+	ModelTypeBnew theBetterTrucks = new ModelTypeBnew();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -1551,8 +1555,7 @@ public class ModelC425 extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 		}
-
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14768679) {
+		/*if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14768679) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_Grey.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.55, 0.25, 0);
@@ -1561,7 +1564,7 @@ public class ModelC425 extends ModelConverter //Same as Filename
 			GL11.glTranslated(2.8, 0, 0);
 			theTrucks.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
-		}/* else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 7||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 5||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13) {
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 7||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 5||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 13) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_Grey.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.28, -0.15, 0);
@@ -1580,7 +1583,7 @@ public class ModelC425 extends ModelConverter //Same as Filename
 			GL11.glTranslated(2.57, 0, 0);
 			theTrucks3.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
-		} */else {
+		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_Black.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.55, 0.25, 0);
@@ -1589,12 +1592,48 @@ public class ModelC425 extends ModelConverter //Same as Filename
 			GL11.glTranslated(2.8, 0, 0);
 			theTrucks.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
+		}*/
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/TypeB_2_Silver.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslated(-1.4, -0.03, 0);
+			theBetterTrucks.render(entity, f, f1, f2, f3, f4, f5);
+
+			GL11.glTranslated(2.8, 0, 0);
+			theBetterTrucks.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glPopMatrix();
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 15434) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_Black.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslated(-1.3, -0.01, 0);
+			theTrucks.render(entity, f, f1, f2, f3, f4, f5);
+
+			GL11.glTranslated(2.57, 0, 0);
+			theTrucks.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glPopMatrix();
+		} else {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/TypeB_2_Black.png"));
+			GL11.glPushMatrix();
+			GL11.glTranslated(-1.4, -0.03, 0);
+			theBetterTrucks.render(entity, f, f1, f2, f3, f4, f5);
+
+			GL11.glTranslated(2.8, 0, 0);
+			theBetterTrucks.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glPopMatrix();
 		}
 
 	}
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
-	{
-	}
-
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) { }
 	public ModelRendererTurbo ModelC424[];
+
+	public float[] getTrans() {
+		return new float[]{-1.4F, 0.125F, 0.00F};
+	}
+	public ArrayList<double[]> getSmokePosition() {
+		return new ArrayList<double[]>() {
+			{
+				add(new double[]{1D, 1.65D, 0.0D});
+			}
+		};
+	}
 }

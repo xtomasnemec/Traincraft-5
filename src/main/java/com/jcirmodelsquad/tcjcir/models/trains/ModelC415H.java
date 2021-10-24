@@ -4,6 +4,7 @@ package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is locat
 
 
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeBnew;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -1277,6 +1278,7 @@ public class ModelC415H extends ModelConverter //Same as Filename
 	}
 	ModelTypeB typeB = new ModelTypeB();
 	//ModelHiAd hiad = new ModelHiAd();
+	ModelTypeBnew typeB2 = new ModelTypeBnew();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 302; i++) {
@@ -1312,13 +1314,13 @@ public class ModelC415H extends ModelConverter //Same as Filename
 			typeB.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/TypeB_2_Black.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.2, 0.28, 0);
-			typeB.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(-1.2, -0.06, 0);
+			typeB2.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(2.35, 0, 0);
-			typeB.render(entity, f, f1, f2, f3, f4, f5);
+			typeB2.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		}
 
