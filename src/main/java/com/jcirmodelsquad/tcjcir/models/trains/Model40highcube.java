@@ -3,6 +3,7 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 
+import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruckEarly;
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70Truck;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -10,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
 public class Model40highcube extends ModelConverter //Same as Filename
@@ -361,6 +363,7 @@ public class Model40highcube extends ModelConverter //Same as Filename
 		bodyModel[81].setRotationPoint(28F, -8F, 11F);
 	}
 	Model70Truck bogie = new Model70Truck();
+	Model70TonTruckEarly bogie2 = new Model70TonTruckEarly();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -368,8 +371,7 @@ public class Model40highcube extends ModelConverter //Same as Filename
 		{
 			bodyModel[i].render(f5);
 		}
-
-		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
+		/*Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
 
 		GL11.glPushMatrix();
 		GL11.glScalef(1,1,0.9f);
@@ -378,7 +380,18 @@ public class Model40highcube extends ModelConverter //Same as Filename
 
 		GL11.glTranslated(2.055,0,0.03);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
-		GL11.glPopMatrix();
+		GL11.glPopMatrix();*/
+		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==3 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==8){
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Greyish.png"));
+		} else {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Black.png"));
+		}
+		GL11.glScalef(1,1,1f);
+		GL11.glTranslated(-1.0,-0.05,-0.0);
+		bogie2.render(entity,f,f1,f2,f3,f4,f5);
+
+		GL11.glTranslated(2.05,-0.0,0.00);
+		bogie2.render(entity,f,f1,f2,f3,f4,f5);
 	}
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
@@ -386,4 +399,5 @@ public class Model40highcube extends ModelConverter //Same as Filename
 	}
 
 	public ModelRendererTurbo Model40highcube[];
+	public float[] getTrans() { return new float[]{-0F, 0.1F, 0F}; }
 }

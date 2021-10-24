@@ -10,6 +10,7 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruck2;
+import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruckEarly;
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70Truck;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -241,7 +242,7 @@ public class ModelPS140 extends ModelConverter //Same as Filename
 		bodyModel[49].setRotationPoint(12F, 3F, 11F);
 	}
 	Model70Truck bogie = new Model70Truck();
-	Model70TonTruck2 bogie2 = new Model70TonTruck2();
+	Model70TonTruckEarly bogie2 = new Model70TonTruckEarly();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
