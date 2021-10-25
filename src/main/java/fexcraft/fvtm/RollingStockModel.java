@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -63,15 +63,15 @@ public class RollingStockModel extends ModelBase {
         }
 
         for(TurboList list :groups) {
-            if (list.animatedList != null) {
-                for (int i = 0; i < list.animatedList.size(); i++) {
+            if (list.namedList != null) {
+                for (int i = 0; i < list.namedList.size(); i++) {
                     if (list.displayList.size() > i && GL11.glIsList(list.displayList.get(i))) {
                         GL11.glCallList(list.displayList.get(i));
-                    } else if (list.animatedList.get(i) != null) {
+                    } else if (list.namedList.get(i) != null) {
                         list.displayList.add(GLAllocation.generateDisplayLists(1));
                         GL11.glNewList(list.displayList.get(i), GL11.GL_COMPILE);
                         GL11.glPushMatrix();
-                        list.animatedList.get(i).render();
+                        list.namedList.get(i).render();
                         GL11.glPopMatrix();
                         GL11.glEndList();
                     }
@@ -81,11 +81,10 @@ public class RollingStockModel extends ModelBase {
     }
 
     @Override
-    public List<ModelRendererTurbo> getParts(){
-        List<ModelRendererTurbo> turboList = new ArrayList<ModelRendererTurbo>();
+    public List<ModelRendererTurbo> getnamedParts(){
+        LinkedList<ModelRendererTurbo> turboList = new LinkedList<>();
         for(TurboList g: groups){
-            turboList.addAll(g.boxList);
-            turboList.addAll(g.animatedList);
+            turboList.addAll(g.getnamedParts());
         }
         return turboList;
     }

@@ -91,7 +91,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
 
     @Override
-    public boolean hasDrag(){return true;}
+    public boolean hasDrag(){return getAccelerator()==0 || Math.abs(getAccelerator())<6;}
 
     @Override
     public float getPower(){
@@ -130,80 +130,99 @@ public class EntityTrainCore extends GenericRailTransport {
      * <h2>Calculate speed increase rate</h2>
      */
     public void calculateAcceleration(){
-        if (accelerator !=0 && accelerator!=8) {
-            //speed is defined by the power in newtons divided by the weight, divided by the number of ticks in a second.
-            if(getPower() !=0) {
-                float weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
-                //update the consist if somehow it didnt get initialized.
-                if(maxPowerMicroblocks==0 || pullingWeight==0){
-                    updateConsist();
-                    weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
+        //speed is defined by the power in newtons divided by the weight, divided by the number of ticks in a second.
+        if(getPower() !=0) {
+            float weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
+            //update the consist if somehow it didnt get initialized.
+            if(maxPowerMicroblocks==0 || pullingWeight==0){
+                updateConsist();
+                weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
+            }
+            weight-=this.weightKg()-1;
+            // weight's effect on HP is generally inverse of HP itself, it can be described as
+            // 30 lbs of coal about 100 feet in one minute = 33,000 lbf for 1.01387 MHP
+            //or roughly 13.6kg over 30.48 meters in one minute = 1MHP
+            // however this is for vertical, converting to horizontal means multiplying by around 85% of gravity
+            // so say you have a train with 75mhp, that means your carrying capacity sits around
+            // 75*1.11039648 tons. (83.279)
+            //clamp to a max of the pulling power as to not generate negative pulling power
+
+            //so roughly, we divide the weight by the standard to get the idea of how much MHP is needed
+            //1814.3kg/13.6kg=133.4MHP
+            //so in this case, we need 133.4MHP to pull a load of 1814.3kg with no hinderance
+            //so we then divide the actual MHP by what's needed
+            //75*gravityZ/133.4=0.62428
+            //this end result means we now can move at 0.62428 of the speed provided by MHP
+            //0.62428*0.508=0.317 blocks per second acceleration.
+
+            //store this for later first
+            vectorCache[1][2]=vectorCache[1][0];
+
+            // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
+            // in which case we increase by around 70%
+            vectorCache[1][0] = (maxPowerMicroblocks*(maxPowerMicroblocks*0.7f));
+            //now figure out the percentage of this vs with weight subtracted
+            vectorCache[1][1]=vectorCache[1][0]-weight;
+            if(vectorCache[1][1]<1){
+                //if too much weight, you stall
+                vectorCache[1][0]=0;
+            } else {
+                //this is a mess, but it should reliably scale the speed based on weight pulled
+                vectorCache[1][0]= (vectorCache[1][0]-vectorCache[1][1])/vectorCache[1][0];
+
+                //now throw in the transport m/s acceleration, but convert m/s to m/t, (1/20)
+                //in theory anyway, but i just threw a bunch of random garbage at this and it seems fine
+                vectorCache[1][0]=(transportAcceleration()*0.0000075f)*vectorCache[1][0];
+
+                //todo: accelerator is reverse, for some reason?
+                //scale by throttle position
+                vectorCache[1][0]*=-getAcceleratiorPercentage();
+
+
+                if(CommonProxy.realSpeed){
+                    vectorCache[1][0]*=0.25f;//nerf to more realistic speeds
                 }
-                // weight's effect on HP is generally inverse of HP itself, it can be described as
-                // 30 lbs of coal about 100 feet in one minute = 33,000 lbf for 1.01387 MHP
-                //or roughly 13.6kg over 30.48 meters in one minute = 1MHP
-                // however this is for vertical, converting to horizontal means multiplying by around 85% of gravity
-                // so say you have a train with 75mhp, that means your carrying capacity sits around
-                // 75*1.11039648 tons. (83.279)
-                //clamp to a max of the pulling power as to not generate negative pulling power
 
-                //so roughly, we divide the weight by the standard to get the idea of how much MHP is needed
-                //1814.3kg/13.6kg=133.4MHP
-                //so in this case, we need 133.4MHP to pull a load of 1814.3kg with no hinderance
-                //so we then divide the actual MHP by what's needed
-                //75*gravityZ/133.4=0.62428
-                //this end result means we now can move at 0.62428 of the speed provided by MHP
-                //0.62428*0.508=0.317 blocks per second acceleration.
+                //add back the speed from last tick
+                vectorCache[1][0]+=vectorCache[1][2];
 
-                //store this for later first
-                vectorCache[1][2]=vectorCache[1][0];
-
-                // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
-                // in which case we increase by around 70%
-                vectorCache[1][0] = (maxPowerMicroblocks*(maxPowerMicroblocks*0.7f));
-                //now figure out the percentage of this vs with weight subtracted
-                vectorCache[1][1]=vectorCache[1][0]-weight;
-                if(vectorCache[1][1]<1){
-                    //if too much weight, you stall
-                    vectorCache[1][0]=0;
+                if(CommonProxy.realSpeed){
+                    //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
+                    //add a buff to max speed of 0.25
+                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.05f)*1.25f) {
+                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.05f)*1.25f;
+                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.05f)*1.25f) {
+                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.05f)*1.25f;
+                    }
                 } else {
-                    //this is a mess, but it should reliably scale the speed based on weight pulled
-                    vectorCache[1][0]= (vectorCache[1][0]-vectorCache[1][1])/vectorCache[1][0];
-
-                    //now throw in the transport m/s acceleration, but convert m/s to m/t, (1/20)
-                    //debuff by 0.02 to make it a bit less quick, otherwise it accelerates like it's in a vacuum.
-                    vectorCache[1][0]=(transportAcceleration()*0.03f)*vectorCache[1][0];
-
-                    //scale by throttle position
-                    vectorCache[1][0]*=getAcceleratiorPercentage();
-
-                    vectorCache[1][0]+=vectorCache[1][2]*0.15f;
-
-                    //scale to TC speed, basically shows higher numbers than what we're actually moving at
-                    // to make it more dramatic.
-                    if(CommonProxy.realSpeed){
-                        vectorCache[1][0]*=0.25f;//scale to TC speed
+                    DebugUtil.println(transportTopSpeed(), transportTopSpeedReverse() * (0.277778f*0.05f),
+                            -transportTopSpeed() * (0.277778f*0.075f),vectorCache[1][0]);
+                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.075f)) {
+                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.075f);
+                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.075f)) {
+                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.075f);
                     }
                 }
 
-
-
-                //-4.0880573E-7 applied MHP somehow needs to relate to a value that can move
-
-                //debuff traction for rain
-                vectorCache[1][1]=( (1.75f * (worldObj.isRaining()?0.5f:1)));
-
-                //todo rework this, the math isnt based on newtons anymore.
-                if(Math.abs(vectorCache[1][0])*-745.7>vectorCache[1][1]/7457){
-                    //todo: add sparks to animator.
-                    //DebugUtil.println("SCREECH","wheelspin: " + (vectorCache[1][0]*-745.7),
-                    //        "Grip: " + (vectorCache[1][1]/7457), "i really need to get those spark particles in..");
-                   // vectorCache[1][0] *=0.33f;
-                }
-
-            } else {
-                updateConsist();
             }
+
+
+
+            //-4.0880573E-7 applied MHP somehow needs to relate to a value that can move
+
+            //debuff traction for rain
+            //vectorCache[1][1]=( (1.75f * (worldObj.isRaining()?0.5f:1)));
+
+            //todo rework this, the math isnt based on newtons anymore.
+            if(Math.abs(vectorCache[1][0])*-745.7>vectorCache[1][1]/7457){
+                //todo: add sparks to animator.
+                //DebugUtil.println("SCREECH","wheelspin: " + (vectorCache[1][0]*-745.7),
+                //        "Grip: " + (vectorCache[1][1]/7457), "i really need to get those spark particles in..");
+               // vectorCache[1][0] *=0.33f;
+            }
+
+        } else {
+            updateConsist();
         }
     }
     /**a method to interface getting the accelerator value
@@ -237,26 +256,25 @@ public class EntityTrainCore extends GenericRailTransport {
                             calculateAcceleration();
                         }
                     } else {
-                        vectorCache[1][0] = 0;
                         accelerator = 0;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                } else if(ticksExisted % 10 == 0){
+                    //basically apply normal bogie drag to acceleration
+                    if((getVelocity()<0.3) || getBoolean(boolValues.BRAKE)) {
+                        vectorCache[1][0] *= 0.95;
+                    }
+                    vectorCache[1][0] *= 0.996;
                 }
 
                 if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
                     frontBogie.setVelocity(0,0,0);
                     backBogie.setVelocity(0,0,0);
-                } else if(accelerator!=0) {
-                    //only add velocity when it's not at max speed.
-                    if(Math.abs(frontBogie.motionX)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01 &&
-                            Math.abs(frontBogie.motionZ)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01 &&
-                            Math.abs(backBogie.motionX)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01 &&
-                            Math.abs(backBogie.motionZ)<(accelerator>0?transportTopSpeed():transportTopSpeedReverse())*0.01
-                    ){
-                        Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
-                        frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-                        backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-                    }
+                    vectorCache[1][0] = 0;
+                } else {
+                    Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
+                    frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
+                    backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
                 }
 
 
@@ -339,14 +357,15 @@ public class EntityTrainCore extends GenericRailTransport {
                     }
                     return true;
                 }case 2:{ //decrease speed
-                    if (accelerator >-6 && getBoolean(boolValues.RUNNING)) {
+                    if (getBoolean(boolValues.RUNNING)) {
+                        //if a linked transport is running, dont update
                         for(GenericRailTransport consist : getConsist()){
                             if(consist!=this && consist.getAccelerator()!=0){
                                 return true;
                             }
                         }
-                        if(accelerator>6){
-                            accelerator=6;
+                        if(accelerator<=-6){
+                            accelerator=-6;
                         } else {
                             accelerator--;
                         }
@@ -354,14 +373,15 @@ public class EntityTrainCore extends GenericRailTransport {
                     }
                     return true;
                 }case 3:{ //increase speed
-                    if (accelerator <6 && getBoolean(boolValues.RUNNING)) {
+                    if (getBoolean(boolValues.RUNNING)) {
+                        //if a linked transport is running, dont update
                         for(GenericRailTransport consist : getConsist()){
                             if(consist!=this && consist.getAccelerator()!=0){
                                 return true;
                             }
                         }
-                        if(accelerator<-6){
-                            accelerator=-6;
+                        if(accelerator>=6){
+                            accelerator=6;
                         } else {
                             accelerator++;
                         }

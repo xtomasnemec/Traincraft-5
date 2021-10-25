@@ -509,79 +509,39 @@ public class CommonUtil {
      */
 
 
-    private static LinkedList<String> OREDICT_PLANK = null;
-    private static LinkedList<String> OREDICT_LOG = null;
-    private static LinkedList<String> OREDICT_COAL = null;
-    private static LinkedList<String> OREDICT_ORES = null;
 
-    public static boolean isLog(ItemStack i){
-        if (OREDICT_LOG==null){
-            OREDICT_LOG = new LinkedList<>();
+    public static boolean oredictMatch(ItemStack input, String... ore){
+        //collect the ore ID's for all relevant ores first
+        List<Integer> ores = new ArrayList<>();
+        for(String o : ore){
+            ores.add(OreDictionary.getOreID(o));
         }
-        if (!OREDICT_LOG.contains(i.getUnlocalizedName())){
-            for (ItemStack item: OreDictionary.getOres("logWood")) {
-                if(item.getUnlocalizedName().equals(i.getUnlocalizedName())) {
-                    OREDICT_LOG.add(i.getUnlocalizedName());
+        //now itterate the integer inputs for all the oredict entries against all the
+        for(int id : OreDictionary.getOreIDs(input)){
+            for (Integer o : ores) {
+                if (id == o) {
                     return true;
                 }
             }
-        } else {
-            return true;
         }
         return false;
     }
 
+
+    public static boolean isLog(ItemStack i){
+        return oredictMatch(i, "logWood", "woodRubber");
+    }
+
     public static boolean isPlank(ItemStack i){
-        if (OREDICT_PLANK==null){
-            OREDICT_PLANK = new LinkedList<>();
-        }
-        if (!OREDICT_PLANK.contains(i.getUnlocalizedName())){
-            for (ItemStack item: OreDictionary.getOres("plankWood")) {
-                if(item.getUnlocalizedName().equals(i.getUnlocalizedName())) {
-                    OREDICT_PLANK.add(i.getUnlocalizedName());
-                    return true;
-                }
-            }
-            for (ItemStack item: OreDictionary.getOres("slabWood")) {
-                if(item.getUnlocalizedName().equals(i.getUnlocalizedName())) {
-                    OREDICT_PLANK.add(i.getUnlocalizedName());
-                    return true;
-                }
-            }
-        } else {
-            return true;
-        }
-        return OREDICT_PLANK.contains(i.getUnlocalizedName());
+        return oredictMatch(i, "plankWood", "slabWood");
     }
 
     public static boolean isCoal(ItemStack i){
-        if (OREDICT_ORES==null){
-            OREDICT_ORES = new LinkedList<>();
-        }
-        if (OREDICT_COAL == null){
-            for (ItemStack item: OreDictionary.getOres("coal")) {
-                if(item.getUnlocalizedName().equals(i.getUnlocalizedName())) {
-                    OREDICT_COAL.add(i.getUnlocalizedName());
-                    return true;
-                }
-            }
-        }
-        return OREDICT_COAL.contains(i.getUnlocalizedName());
+        return oredictMatch(i, "coal");
     }
 
     public static boolean isOre(ItemStack i){
-        if (OREDICT_ORES==null){
-            OREDICT_ORES = new LinkedList<>();
-        }
-        if (!OREDICT_ORES.contains(i.getUnlocalizedName())){
-            for(Integer ore : OreDictionary.getOreIDs(i)) {
-                if (OreDictionary.getOreName(ore).toLowerCase().startsWith("ore")){
-                    OREDICT_ORES.add(i.getUnlocalizedName());
-                    return true;
-                }
-            }
-        }
-        return OREDICT_ORES.contains(i.getUnlocalizedName());
+        return oredictMatch(i, "ore");
     }
 
 

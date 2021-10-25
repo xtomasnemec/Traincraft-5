@@ -61,7 +61,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderText(EntityTrainCore loco) {
-		double speed =(loco.getVelocity()* (CommonProxy.realSpeed ?25D:100D));
+		double speed =( Math.sqrt(loco.getVelocity()) * (CommonProxy.realSpeed?58D:58D*0.835));
 		speed*=ClientProxy.speedInKmh?1:0.621371;
 		int h;
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {

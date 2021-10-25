@@ -150,7 +150,7 @@ public class ParticleFX {
         if(physicsUpdate) {
             if (particleType == 3 || particleType == 4 || particleType == 5) {//lamps
                 shouldRender = host.getBoolean(GenericRailTransport.boolValues.LAMP);
-                pos = CommonUtil.rotatePointF(offset[0], offset[1], offset[2], 0, 0, 0);
+                pos=offset;
                 if (particleType == 5) {
                     //todo mars lamp stuff
                 }
