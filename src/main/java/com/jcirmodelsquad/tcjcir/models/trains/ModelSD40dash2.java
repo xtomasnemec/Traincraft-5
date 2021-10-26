@@ -1509,7 +1509,6 @@ public class ModelSD40dash2 extends ModelConverter //Same as Filename
 	}
 	ModelFlexicoil_C2H theTrucks = new ModelFlexicoil_C2H();
 
-
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		for (int i = 0; i < 363; i++) {

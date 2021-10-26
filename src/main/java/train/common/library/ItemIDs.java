@@ -314,6 +314,8 @@ public enum ItemIDs {
 	tcRailLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
 	tcRailVeryLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
 
+	tcRailSuperLargeTurn("ItemTCRail", "item_rail_tc_super_large_turn", 5),
+
 	//TC-JCIR
 	remoteController("ItemRemoteController", "remote_controller", 4),
 	remoteControllerModule("ItemRemoteControllerModule", "remote_controller_module", 4),
@@ -363,6 +365,12 @@ public enum ItemIDs {
 	minecartSD9("ItemRollingStock", "sd9", 4),
 	minecartSDL39("ItemRollingStock", "SDL39", 5),
 	minecartSD40dash2("ItemRollingStock", "sd40dash2", 6),
+	minecartSD40T2("ItemRollingStock", "sd40t2", 6),
+	minecartSDP40F("ItemRollingStock","sdp40f",6),
+	minecartSD45dash2("ItemRollingStock", "sd45dash2", 6),
+	minecartSD45dash2B("ItemRollingStock", "sd45dash2b", 5),
+	minecartF45("ItemRollingStock", "f45", 6),
+	minecartFP45("ItemRollingStock", "fp45", 6),
 	minecartSD70Mac("ItemRollingStock", "sd70mac", 7),
 
 	minecartSW1("ItemRollingStock","sw1", 2),
@@ -510,19 +518,13 @@ public enum ItemIDs {
 	//undecided stuff//
 	//minecartBaldwinMineLoco("ItemRollingStock", "baldwinmineloco", 1),
 	minecartHighrailTruck("ItemRollingStock", "highrail", 3),
-	minecartSD45dash2("ItemRollingStock", "sd45dash2", 14),
 	minecartFRED("ItemRollingStock", "fred", 5),
 	minecartGeGenesis("ItemRollingStock", "geGenesis", 14),
 	//minecartHuskyStackWellcar("ItemRollingStock", "huskystack", 3),
 	minecartHustler("ItemRollingStock", "hustler", 2),
 	minecartBoulderWagon("ItemRollingStock","BoulderWagon",3),
-	minecartSDP40F("ItemRollingStock","sdp40f",12),
-	minecartFP45("ItemRollingStock", "fp45", 10),
-	minecartF45("ItemRollingStock", "f45", 10),
-	minecartSD40T2("ItemRollingStock", "sd40t2", 13),
 	minecartLogcarNP( "ItemRollingStock","logcarNP",3),
 	//minecartCF7R("ItemRollingStock", "cf7r", 12),
-	minecartSD45dash2B("ItemRollingStock", "sd45dash2b", 14),
 	minecartHighrailVan("ItemRollingStock", "highrailvan", 3),
 
 	;
