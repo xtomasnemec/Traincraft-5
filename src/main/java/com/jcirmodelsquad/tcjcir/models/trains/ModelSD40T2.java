@@ -102,7 +102,7 @@ public class ModelSD40T2 extends ModelConverter //Same as Filename
 		bodyModel[59] = new ModelRendererTurbo(this, 289, 25, textureX, textureY); // Box 11
 		bodyModel[60] = new ModelRendererTurbo(this, 385, 33, textureX, textureY); // Box 210
 		bodyModel[61] = new ModelRendererTurbo(this, 297, 49, textureX, textureY); // Box 211
-		bodyModel[62] = new ModelRendererTurbo(this, 225, 25, textureX, textureY, "lamp"); // Box 48 lamp
+		bodyModel[62] = new ModelRendererTurbo(this, 225, 25, textureX, textureY); // Box 48
 		bodyModel[63] = new ModelRendererTurbo(this, 25, 49, textureX, textureY); // Box 43
 		bodyModel[64] = new ModelRendererTurbo(this, 57, 49, textureX, textureY); // Box 44
 		bodyModel[65] = new ModelRendererTurbo(this, 289, 33, textureX, textureY, "lamp"); // Box 117 liveryimg 2 glow
@@ -311,7 +311,7 @@ public class ModelSD40T2 extends ModelConverter //Same as Filename
 		bodyModel[268] = new ModelRendererTurbo(this, 305, 121, textureX, textureY); // Box 42
 		bodyModel[269] = new ModelRendererTurbo(this, 489, 121, textureX, textureY); // Box 45
 		bodyModel[270] = new ModelRendererTurbo(this, 25, 129, textureX, textureY); // Box 42
-		bodyModel[271] = new ModelRendererTurbo(this, 17, 121, textureX, textureY, "lamp"); // Box 48 lamp
+		bodyModel[271] = new ModelRendererTurbo(this, 17, 121, textureX, textureY); // Box 48
 		bodyModel[272] = new ModelRendererTurbo(this, 105, 121, textureX, textureY, "lamp"); // Box 294 lamp drgw
 		bodyModel[273] = new ModelRendererTurbo(this, 113, 121, textureX, textureY, "lamp"); // Box 295 lamp drgw
 		bodyModel[274] = new ModelRendererTurbo(this, 169, 121, textureX, textureY); // Box 296 nose cover
