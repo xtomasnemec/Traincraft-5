@@ -22,6 +22,8 @@ import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
+import java.util.ArrayList;
+
 public class ModelSD70Mac extends ModelConverter //Same as Filename
 {
 	int textureX = 512;
@@ -1026,5 +1028,12 @@ public class ModelSD70Mac extends ModelConverter //Same as Filename
 		GL11.glTranslated(-1.8F, -0.03F, 0);
 		theTrucks.render(entity, f, f1, f2, f3, f4, f5);
 		GL11.glPopMatrix();
+	}
+	public ArrayList<double[]> getSmokePosition() {
+		return new ArrayList<double[]>() {
+			{
+			add(new double[]{2.2D, 1.5D, 0.0D});
+			}
+		};
 	}
 }

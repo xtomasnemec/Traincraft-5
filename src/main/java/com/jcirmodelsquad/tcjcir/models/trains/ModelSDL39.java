@@ -14,6 +14,8 @@ import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
+import java.util.ArrayList;
+
 public class ModelSDL39 extends ModelConverter //Same as Filename
 {
 	int textureX = 512;
@@ -1029,4 +1031,11 @@ public class ModelSDL39 extends ModelConverter //Same as Filename
 	}
 
 	public ModelRendererTurbo SDL39Model[];
+	public ArrayList<double[]> getSmokePosition() {
+		return new ArrayList<double[]>() {
+			{
+				add(new double[]{1.4D, 1.3D, 0.0D});
+			}
+		};
+	}
 }
