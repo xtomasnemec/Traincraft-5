@@ -141,7 +141,7 @@ public class CustomRenderHandler {
         else if (item.getTrackType() == ItemTCRail.TrackTypes.MEDIUM_TURN
                 || item.getTrackType() == ItemTCRail.TrackTypes.LARGE_TURN
                 || item.getTrackType() == ItemTCRail.TrackTypes.VERY_LARGE_TURN
-                || item.getTrackType() == ItemTCRail.TrackTypes.SUPER_LARGE_TURN)
+                /*|| item.getTrackType() == ItemTCRail.TrackTypes.SUPER_LARGE_TURN*/)//todo when hariesh lets me
         {
             float yaw = MathHelper.wrapAngleTo180_float(player.rotationYaw);
             boolean isLeftTurn = item.getTrackOrientation( facing, yaw ).equals("left");
@@ -151,8 +151,8 @@ public class CustomRenderHandler {
                 turnSize = "large";
             else if ( item.getTrackType() == ItemTCRail.TrackTypes.VERY_LARGE_TURN )
                 turnSize = "very_large";
-            else if ( item.getTrackType() == ItemTCRail.TrackTypes.SUPER_LARGE_TURN )
-                turnSize = "super_large";
+            /*else if ( item.getTrackType() == ItemTCRail.TrackTypes.SUPER_LARGE_TURN )
+                turnSize = "super_large";*///todo when hariesh lets me
 
             if ( isLeftTurn )
             {

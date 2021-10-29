@@ -314,7 +314,7 @@ public enum ItemIDs {
 	tcRailLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
 	tcRailVeryLargeSlopeSnowGravel("ItemTCRail", "item_rail_straight_slope_snow_gravel", 3),
 
-	tcRailSuperLargeTurn("ItemTCRail", "item_rail_tc_super_large_turn", 5),
+	//tcRailSuperLargeTurn("ItemTCRail", "item_rail_tc_super_large_turn", 5),//todo when hariesh lets me
 
 	//TC-JCIR
 	remoteController("ItemRemoteController", "remote_controller", 4),

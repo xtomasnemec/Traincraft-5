@@ -65,9 +65,9 @@ public class ItemTCRail extends ItemPart {
 		LARGE_SLOPE_SNOW_GRAVEL("LARGE_SLOPE_SNOW_GRAVEL", "SLOPE", ItemIDs.tcRailLargeSlopeSnowGravel, "1x12"),
 		VERY_LARGE_SLOPE_SNOW_GRAVEL("VERY_LARGE_SLOPE_SNOW_GRAVEL", "SLOPE", ItemIDs.tcRailVeryLargeSlopeSnowGravel, "1x18"),
 
-		SUPER_LARGE_TURN("SUPER_LARGE_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, "16x16"),
-		SUPER_LARGE_LEFT_TURN("SUPER_LARGE_LEFT_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, ""),
-		SUPER_LARGE_RIGHT_TURN("SUPER_LARGE_RIGHT_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, ""),
+		//SUPER_LARGE_TURN("SUPER_LARGE_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, "16x16"),
+		//SUPER_LARGE_LEFT_TURN("SUPER_LARGE_LEFT_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, ""),//todo when hariesh lets me
+		//SUPER_LARGE_RIGHT_TURN("SUPER_LARGE_RIGHT_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, ""),
 		;
 
 		private String label;
@@ -113,8 +113,8 @@ public class ItemTCRail extends ItemPart {
 				|| tile.getType().equals(TrackTypes.VERY_LARGE_RIGHT_TURN.getLabel())
 				|| tile.getType().equals(TrackTypes.VERY_LARGE_LEFT_TURN.getLabel())
 				|| tile.getType().equals(TrackTypes.MEDIUM_LEFT_TURN.getLabel())
-				|| tile.getType().equals(TrackTypes.SUPER_LARGE_LEFT_TURN.getLabel())
-				|| tile.getType().equals(TrackTypes.SUPER_LARGE_RIGHT_TURN.getLabel());
+				/*|| tile.getType().equals(TrackTypes.SUPER_LARGE_LEFT_TURN.getLabel())*/
+				/*|| tile.getType().equals(TrackTypes.SUPER_LARGE_RIGHT_TURN.getLabel())*/;//todo when hariesh lets me
 	}
 
 	public static boolean isTCStraightTrack(TileTCRail tile) {
@@ -383,7 +383,7 @@ public class ItemTCRail extends ItemPart {
 		else if ( type == TrackTypes.LARGE_SWITCH )
 			return new int[][] { {0,0}, {1,0}, {2,0}, {3,0}, {4,0}, {5,0},
 					{2,1}, {3,1}, {4,1}, {3,2}, {4,2}, {5,2}, {4,3}, {5,3},	{5,4}, {5,5}};
-		else if (type == TrackTypes.SUPER_LARGE_TURN) {
+		/*else if (type == TrackTypes.SUPER_LARGE_TURN) {//todo when hariesh lets me
 			return new int[][]{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4},
 					{1, 1}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6},
 					{2, 5}, {2, 6}, {2, 7}, {2, 8},
@@ -400,7 +400,7 @@ public class ItemTCRail extends ItemPart {
 					{13, 14,}, {13, 15},
 					{14, 15},
 					{15, 15}};
-		}
+		}*/
 		else{
 			return null;
 		}
@@ -507,14 +507,14 @@ public class ItemTCRail extends ItemPart {
 					tempType = TrackTypes.MEDIUM_LEFT_PARALLEL_SWITCH;
 				}
 			}
-			if (type == TrackTypes.SUPER_LARGE_TURN) {
+			/*if (type == TrackTypes.SUPER_LARGE_TURN) {
 				if (getTrackOrientation(l, yaw).equals("right")) {
 					tempType = TrackTypes.SUPER_LARGE_RIGHT_TURN;
 				}
-				if (getTrackOrientation(l, yaw).equals("left")) {
+				if (getTrackOrientation(l, yaw).equals("left")) {//todo when hariesh lets me
 					tempType = TrackTypes.SUPER_LARGE_LEFT_TURN;
 				}
-			}
+			}*/
 
 			/** This code below actually places the stuff
 			 * l = direction
@@ -1279,7 +1279,7 @@ public class ItemTCRail extends ItemPart {
 				return true;
 			}
 
-			if (tempType == TrackTypes.SUPER_LARGE_RIGHT_TURN) {
+			/*if (tempType == TrackTypes.SUPER_LARGE_RIGHT_TURN) {//todo when hariesh lets me
 
 				if (l == 2) {
 					int[] xArray = {x,x ,x ,x,x, x+1,x+1,x+1,x+1,x+1,x+1,x+2,x+2,x+2,x+2,x+3,x+3,x+3,x+3,x+4,x+4,x+4, x+5,x+5,x+5, x+6,x+6,x+6, x+7,x+7,x+8,x+8,x+9,x+9,x+10,x+10,x+10,x+11,x+11,x+12,x+12,x+13,x+13,x+14,x+15};
@@ -1348,7 +1348,7 @@ public class ItemTCRail extends ItemPart {
 					--itemstack.stackSize;
 				}
 				return true;
-			}
+			}*/
 
 			if (type == TrackTypes.SLOPE_WOOD || type == TrackTypes.SLOPE_GRAVEL || type == TrackTypes.SLOPE_BALLAST
 					|| type == TrackTypes.LARGE_SLOPE_WOOD || type == TrackTypes.LARGE_SLOPE_GRAVEL
