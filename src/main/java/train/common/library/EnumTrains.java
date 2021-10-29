@@ -420,10 +420,10 @@ public enum EnumTrains {
 	HHgregg("HHgregg", DieselHHgregg.class, ItemIDs.minecartHHgregg.item, "awesome", 9932, 299, 0, 42, 0, 48, 0.9, 0.9, 7, null, 10, -2, (new String[] {"hhhgregg, Panasonic Blu-ray nintey-nine dollars, thirty-two inch LCD TV two-nintey nine, LG fourty-two inch HD TV only four eighty-nine, everything on sale during chirstmas in"})),
 
 	//dont speak americano
-	Class345("Class 345", ElectricClass345.class, ItemIDs.minecartClass345engine.item, "electric", 1500, 290, 0,6, 0, 100, 2, 1.5, 1000, null, 18, -3),
-	Class345Coach("Class345", Class345Coach.class, ItemIDs.minecartClass345car.item, "passenger", 0, 0, 1.5,0 , 0, 0, 0,0,0,null,0,0),
-	LUengine("London Underground Engine", ElectricLUengine.class, ItemIDs.minecartLUengine.item, "electric", 600, 100, 0, 10, 0, 100, 0.7, 0.8, 1000, null, 18, -2),
-	LUpassenger("London Underground Passenger Car", LUpassenger.class, ItemIDs.minecartLUcar.item, "passenger", 0.3, null, 0, 0, null),
+	//Class345("Class 345", ElectricClass345.class, ItemIDs.minecartClass345engine.item, "electric", 1500, 290, 0,6, 0, 100, 2, 1.5, 1000, null, 18, -3),
+	//Class345Coach("Class345", Class345Coach.class, ItemIDs.minecartClass345car.item, "passenger", 0, 0, 1.5,0 , 0, 0, 0,0,0,null,0,0),
+	//LUengine("London Underground Engine", ElectricLUengine.class, ItemIDs.minecartLUengine.item, "electric", 600, 100, 0, 10, 0, 100, 0.7, 0.8, 1000, null, 18, -2),
+	//LUpassenger("London Underground Passenger Car", LUpassenger.class, ItemIDs.minecartLUcar.item, "passenger", 0.3, null, 0, 0, null),
 
 	//old and extras
 	geometryCar("NXTrack Geometry Car", ExperimentalGeometryCar.class, ItemIDs.minecartGeometryCar.item, "geometry car", 0, 0, 2, 0, 0, 0, 0, 0, 0, TraincraftUtil.getBytesFromColors(new String[] {"Grey", "LightGrey"}), 18, 0, (new String[] {"Checks the railroad for things up to standard"})),

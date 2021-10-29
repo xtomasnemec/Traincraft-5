@@ -509,10 +509,10 @@ public enum ItemIDs {
 	minecartAipkitExplorer2("ItemRollingStock", "explorer2", 15),
 
 	//ah, but we, are british
-	minecartLUengine("ItemRollingStock","luengine", 3),
+	/*minecartLUengine("ItemRollingStock","luengine", 3),
 	minecartLUcar("ItemRollingStock","lupassenger", 2),
 	minecartClass345engine("ItemRollingStock", "Class345Engine", 3),
-	minecartClass345car("ItemRollingStock", "Class345Coach", 2),
+	minecartClass345car("ItemRollingStock", "Class345Coach", 2),*/
 
 
 	//undecided stuff//
