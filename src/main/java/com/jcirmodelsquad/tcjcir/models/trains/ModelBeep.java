@@ -750,17 +750,17 @@ public class ModelBeep extends ModelConverter //Same as Filename
 			}
 		}
 		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==135465){
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeAclassic_Grey.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeAclassico_Grey.png"));
 		} else {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeAclassic_Black.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeAclassico_Black.png"));
 		}
 		GL11.glPushMatrix();
-		GL11.glTranslatef(-1.10F ,-0.1F,0F);
-		theTrucks.render(entity,f,f1,f2,f3,f4,f5);
+		GL11.glTranslatef(-1.10F ,-0.13F,0F);
+		theTrucksButBetter.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 
 		GL11.glPushMatrix();
-		GL11.glTranslated(1.15F,-0.1F,0);
+		GL11.glTranslated(1.15F,-0.13F,0);
 		theTrucksButBetter.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
 	}
@@ -768,4 +768,7 @@ public class ModelBeep extends ModelConverter //Same as Filename
 	{
 	}
 	public ModelRendererTurbo ModelBeep[];
+	public float[] getTrans() {
+		return new float[]{-1.1F, 0.05F, 0F};
+	}
 }

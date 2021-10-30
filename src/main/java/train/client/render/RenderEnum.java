@@ -1027,7 +1027,7 @@ public enum RenderEnum {
 		{ }
 	}, "", null, 0, false),
 
-	HH660( DieselHH660.class,  new ModelHH660(), "hh600_", true,new float[] {-1F, -0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+	HH660( DieselHH660.class,  new ModelHH660(), "hh660_", true,new float[] {-1F, -0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{
 			add(new double[]{2.0D, 1.35D, 0D});
 		}
@@ -1043,17 +1043,17 @@ public enum RenderEnum {
 	}, "", null, 0, false),
 
 	/**BRUHWIN**/
-	VO1000( DieselVO1000.class,  new ModelVO1000(), "vo1000_", true,new float[] {-1.1F, 0.1F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+	VO1000( DieselVO1000.class,  new ModelVO1000(), "vo1000_", true,new float[] {-1.1F, 0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{
-			add(new double[]{0.40D, 1.35D, 0D});
+			add(new double[]{0.40D, 1.3D, 0D});
 		}
 	}, "", null, 0, false),
 
 	/**OTHER DIESELS**/
 	H1044( DieselH1044.class,  new ModelH1044(), "FM_H10-44_", true,new float[] {-1.1F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{
-			add(new double[]{1.9D, 1.45D, -0.16D});
-			add(new double[]{1.9D, 1.45D, 0.16D});
+			add(new double[]{1.9D, 1.35D, -0.16D});
+			add(new double[]{1.9D, 1.35D, 0.16D});
 		}
 	}, "", null, 0, false),
 	NRE3gs21b( DieselNRE3gs21b.class,  new ModelNRE3gs21b(), "3gs21b_", true,new float[] {-1.5F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
@@ -1104,6 +1104,7 @@ public enum RenderEnum {
 	Freight40highcube(Freight40highcube.class, new Model40highcube(),"40highcube_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Hicube60(Hicube60foot.class, new Modelhicube60foot(),"hicube60_", true, new float[]{0F, 0.155F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Reefer64(Reefer64Foot.class, new ModelReefer64Foot(),"reefer_64_", true, new float[]{0F, 0.155F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	FNCC50Foot(FNCC50Foot.class, new ModelFNCC50Foot(),"FNCC50Foot_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 
 	VersaLongi(VersaLongi.class, new ModelVersaLongi(),"versa_longi_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	VersaTrans(VersaTrans.class, new ModelVersaTrans(),"versa_trans_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),

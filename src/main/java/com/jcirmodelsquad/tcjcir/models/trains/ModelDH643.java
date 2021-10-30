@@ -1141,8 +1141,8 @@ public class ModelDH643 extends ModelConverter //Same as Filename
 	public ArrayList<double[]> getSmokePosition() {
 		return new ArrayList<double[]>() {
 			{
-				add(new double[]{0.4D, 1.4D, 0.0D});
-				add(new double[]{3.65D, 1.4D, 0.0D});
+				add(new double[]{0.36D, 1.4D, 0.0D});
+				add(new double[]{3.6D, 1.4D, 0.0D});
 			}
 		};
 	}

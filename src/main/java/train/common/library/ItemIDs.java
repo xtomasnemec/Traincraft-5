@@ -456,6 +456,7 @@ public enum ItemIDs {
 	minecart40highcube("ItemRollingStock", "40highcube", 3),
 	minecarthicube60foot("ItemRollingStock", "hicube60", 5),
 	minecartReefer64("ItemRollingStock", "Reefer64", 5),
+	minecartFNCC50Foot("ItemRollingStock", "FNCC50Foot", 4),
 
 	minecartVersaLongi("ItemRollingStock", "versalongi", 5),
 	minecartVersaTrans("ItemRollingStock", "versatrans", 5),
