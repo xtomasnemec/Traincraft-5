@@ -42,6 +42,13 @@ public class CommonUtil {
     private static List<String> loggedLangChecks = new ArrayList<>();
 
 
+
+    /**redirect shorthand that typecasts doubles to ints
+     * @see #isRailBlockAt(World, int, int, int) */
+    public static boolean isRailBlockAt(World world, double x, double y, double z) {
+        return isRailBlockAt(world,MathHelper.floor_double(x), MathHelper.floor_double(y),MathHelper.floor_double(z));
+    }
+
     /**
      * <h2>Vanilla Track  detection Overrrides</h2>
      * a modified version of vanilla track detection so that way it's more efficient and can support rails from other mods.
