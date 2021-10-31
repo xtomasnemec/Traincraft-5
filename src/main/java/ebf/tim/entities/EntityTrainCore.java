@@ -1,13 +1,12 @@
 package ebf.tim.entities;
 
-import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.registry.NBTKeys;
-import ebf.tim.utility.*;
+import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.FuelHandler;
+import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.Vec3d;
-import net.minecraft.block.BlockRailBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import train.library.EnumSounds;
@@ -166,7 +165,7 @@ public class EntityTrainCore extends GenericRailTransport {
             // in which case we increase by around 70%
             vectorCache[1][0] = (maxPowerMicroblocks * (maxPowerMicroblocks * 0.7f));
             //now figure out the percentage of this vs with weight subtracted
-            vectorCache[1][1] = vectorCache[1][0] - weight;
+            vectorCache[1][1] = Math.abs(vectorCache[1][0] - weight);
 
             if(vectorCache[1][1]<1){
                 //if too much weight, you stall
@@ -251,10 +250,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
             if (!worldObj.isRemote) {
                 float slip = CommonUtil.isRailBlockAt(worldObj,this.posX, this.posY, this.posZ)?-1.0f:
-                        worldObj.getBlock(
-                                MathHelper.floor_double(this.posX),
-                                MathHelper.floor_double(this.posY-1),
-                                MathHelper.floor_double(this.posZ)).slipperiness;
+                        CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
                 //twice a second, re-calculate the speed.
                 if (accelerator != 0 && ticksExisted % 10 == 0) {
                     //stop calculation if it can't move, running should be managed from the fuel handler, to be more dynamic
