@@ -387,8 +387,9 @@ public enum ItemIDs {
 
 	minecartU18B("ItemRollingStock", "U18B", 3),
 	minecartU23B("ItemRollingStock", "u23b", 4),
-	minecartSF30C("ItemRollingStock", "sf30c", 12),
-	minecartU36C( "ItemRollingStock", "u36c", 6),
+	minecartU30C("ItemRollingStock", "u30c", 5),
+	minecartSF30C("ItemRollingStock", "sf30c", 5),
+	minecartU36C( "ItemRollingStock", "u36c", 5),
 
 	minecartB23("ItemRollingStock", "b23", 5),
 
@@ -510,10 +511,10 @@ public enum ItemIDs {
 	minecartAipkitExplorer2("ItemRollingStock", "explorer2", 15),
 
 	//ah, but we, are british
-	/*minecartLUengine("ItemRollingStock","luengine", 3),
+	minecartLUengine("ItemRollingStock","luengine", 3),
 	minecartLUcar("ItemRollingStock","lupassenger", 2),
 	minecartClass345engine("ItemRollingStock", "Class345Engine", 3),
-	minecartClass345car("ItemRollingStock", "Class345Coach", 2),*/
+	minecartClass345car("ItemRollingStock", "Class345Coach", 2),
 
 
 	//undecided stuff//

@@ -12,6 +12,7 @@ package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is locat
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelBlombergBnew;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelFB2;
 import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeB;
+import com.jcirmodelsquad.tcjcir.models.trucks.ModelTypeBnew;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -1351,6 +1352,7 @@ public class ModelU18B extends ModelConverter //Same as Filename
 	ModelTypeB theTrucks1 = new ModelTypeB();
 	ModelFB2 theTrucks2 = new ModelFB2();
 	ModelBlombergBnew theTrucks3 = new ModelBlombergBnew();
+	ModelTypeBnew theTrucks4 = new ModelTypeBnew();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -1377,13 +1379,13 @@ public class ModelU18B extends ModelConverter //Same as Filename
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14321||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2436){
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/typeb_LightGrey.png"));
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/TypeB_2_Silver.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.52, 0.335, 0);
-			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
+			GL11.glTranslated(-1.52, -0.025, 0);
+			theTrucks4.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(3.05, 0, 0);
-			theTrucks1.render(entity, f, f1, f2, f3, f4, f5);
+			theTrucks4.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 4){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_Blac.png"));

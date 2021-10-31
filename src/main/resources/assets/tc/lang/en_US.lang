@@ -500,7 +500,8 @@ item.tc:minecartE8B.name=EMD E8B
 item.tc:minecartE9B.name=EMD E9B
 item.tc:minecartAlcoPA1.name=Alco PA-1
 item.tc:minecartAlcoPB1.name=Alco PB-1
-item.tc:minecartFNCC50Foot.name=Fox, North Coast & Cascades 50' Mini-Highcube Boxcar
+item.tc:minecartFNCC50Foot.name=North Fox 50' Mini-Highcube Boxcar
+item.tc:minecartU30C.name=GE U30C
 
 
 <!-- ## Achievements ## -->
@@ -953,7 +954,8 @@ entity.tc.E8B.name=EMD E8B
 entity.tc.E9B.name=EMD E9B
 entity.tc.PA1.name=Alco PA-1
 entity.tc.PB1.name=Alco PB-1
-entity.tc.FNCC50FootBoxcar.name=Fox, North Coast & Cascades 50' Mini-Highcube Boxcar
+entity.tc.FNCC50FootBoxcar.name=North Fox 50' Mini-Highcube Boxcar
+entity.tc.U30C.name=GE U30C
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

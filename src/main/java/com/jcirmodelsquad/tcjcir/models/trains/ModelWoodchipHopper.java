@@ -1,3 +1,12 @@
+//This File was created with the Minecraft-SMP Modelling Toolbox 2.3.0.0
+// Copyright (C) 2021 Minecraft-SMP.de
+// This file is for Flan's Flying Mod Version 4.0.x+
+
+// Model: 
+// Model Creator: 
+// Created on: 01.07.2020 - 00:27:17
+// Last changed on: 01.07.2020 - 00:27:17
+
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruck2;
@@ -11,7 +20,7 @@ import tmt.Tessellator;
 import train.common.api.AbstractTrains;
 import train.common.library.Info;
 
-public class ModelWoodchipHopper extends ModelConverter //Same as Filename
+public class ModelWoodchipHopper extends ModelConverter//Same as Filename
 {
 	int textureX = 512;
 	int textureY = 512;
@@ -52,16 +61,16 @@ public class ModelWoodchipHopper extends ModelConverter //Same as Filename
 		bodyModel[19] = new ModelRendererTurbo(this, 401, 25, textureX, textureY); // Box 0
 		bodyModel[20] = new ModelRendererTurbo(this, 209, 1, textureX, textureY); // Box 1
 		bodyModel[21] = new ModelRendererTurbo(this, 17, 1, textureX, textureY); // Box 1
-		bodyModel[22] = new ModelRendererTurbo(this, 265, 33, textureX, textureY); // Box 1
-		bodyModel[23] = new ModelRendererTurbo(this, 281, 33, textureX, textureY); // Box 1
-		bodyModel[24] = new ModelRendererTurbo(this, 297, 33, textureX, textureY); // Box 1
-		bodyModel[25] = new ModelRendererTurbo(this, 313, 33, textureX, textureY); // Box 1
+		bodyModel[22] = new ModelRendererTurbo(this, 265, 33, textureX, textureY, "cull"); // Box 1 cull
+		bodyModel[23] = new ModelRendererTurbo(this, 281, 33, textureX, textureY, "cull"); // Box 1 cull
+		bodyModel[24] = new ModelRendererTurbo(this, 297, 33, textureX, textureY, "cull"); // Box 1 cull
+		bodyModel[25] = new ModelRendererTurbo(this, 313, 33, textureX, textureY, "cull"); // Box 1 cull
 		bodyModel[26] = new ModelRendererTurbo(this, 385, 1, textureX, textureY); // Box 1
 		bodyModel[27] = new ModelRendererTurbo(this, 417, 1, textureX, textureY); // Box 1
 		bodyModel[28] = new ModelRendererTurbo(this, 449, 1, textureX, textureY); // Box 1
 		bodyModel[29] = new ModelRendererTurbo(this, 465, 1, textureX, textureY); // Box 1
-		bodyModel[30] = new ModelRendererTurbo(this, 481, 1, textureX, textureY); // Box 1
-		bodyModel[31] = new ModelRendererTurbo(this, 497, 1, textureX, textureY); // Box 1
+		bodyModel[30] = new ModelRendererTurbo(this, 481, 1, textureX, textureY, "cull"); // Box 1 cull
+		bodyModel[31] = new ModelRendererTurbo(this, 497, 1, textureX, textureY, "cull"); // Box 1 cull
 		bodyModel[32] = new ModelRendererTurbo(this, 425, 17, textureX, textureY); // Box 1
 		bodyModel[33] = new ModelRendererTurbo(this, 345, 25, textureX, textureY); // Box 1
 		bodyModel[34] = new ModelRendererTurbo(this, 457, 25, textureX, textureY); // Box 1
@@ -178,16 +187,16 @@ public class ModelWoodchipHopper extends ModelConverter //Same as Filename
 		bodyModel[21].addBox(0F, 0F, 0F, 1, 1, 1, 0F); // Box 1
 		bodyModel[21].setRotationPoint(-35F, -4F, 10F);
 
-		bodyModel[22].addBox(0F, 0F, 0F, 4, 22, 1, 0F); // Box 1
+		bodyModel[22].addBox(0F, 0F, 0F, 4, 22, 1, 0F); // Box 1 cull
 		bodyModel[22].setRotationPoint(-41F, -20F, 11F);
 
-		bodyModel[23].addBox(0F, 0F, 0F, 1, 22, 4, 0F); // Box 1
+		bodyModel[23].addBox(0F, 0F, 0F, 1, 22, 4, 0F); // Box 1 cull
 		bodyModel[23].setRotationPoint(-43F, -20F, 7F);
 
-		bodyModel[24].addBox(0F, 0F, 0F, 4, 22, 1, 0F); // Box 1
+		bodyModel[24].addBox(0F, 0F, 0F, 4, 22, 1, 0F); // Box 1 cull
 		bodyModel[24].setRotationPoint(37F, -20F, -12F);
 
-		bodyModel[25].addBox(0F, 0F, 0F, 1, 22, 4, 0F); // Box 1
+		bodyModel[25].addBox(0F, 0F, 0F, 1, 22, 4, 0F); // Box 1 cull
 		bodyModel[25].setRotationPoint(42F, -20F, -11F);
 
 		bodyModel[26].addBox(0F, 0F, 0F, 4, 3, 0, 0F); // Box 1
@@ -202,10 +211,10 @@ public class ModelWoodchipHopper extends ModelConverter //Same as Filename
 		bodyModel[29].addBox(0F, 0F, 0F, 4, 3, 0, 0F); // Box 1
 		bodyModel[29].setRotationPoint(37F, 2F, -11F);
 
-		bodyModel[30].addBox(0F, 0F, 0F, 4, 9, 1, 0F); // Box 1
+		bodyModel[30].addBox(0F, 0F, 0F, 4, 9, 1, 0F); // Box 1 cull
 		bodyModel[30].setRotationPoint(37F, -7F, 11F);
 
-		bodyModel[31].addBox(0F, 0F, 0F, 4, 9, 1, 0F); // Box 1
+		bodyModel[31].addBox(0F, 0F, 0F, 4, 9, 1, 0F); // Box 1 cull
 		bodyModel[31].setRotationPoint(-41F, -7F, -12F);
 
 		bodyModel[32].addBox(0F, 0F, 0F, 1, 1, 20, 0F); // Box 1
@@ -355,7 +364,7 @@ public class ModelWoodchipHopper extends ModelConverter //Same as Filename
 		bodyModel[80].addShapeBox(0F, 0F, 0F, 10, 1, 1, 0F,0F, 0F, 0F, 0.5F, 0F, 0F, 0.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0.5F, 0F, 0F, 0.5F, 0F, 0F, 0F, 0F, 0F); // Box 1
 		bodyModel[80].setRotationPoint(-41F, -13F, -11F);
 	}
-	Model70Truck bogie = new Model70Truck();
+	//Model70Truck bogie = new Model70Truck();
 	Model70TonTruck2 bogie2 = new Model70TonTruck2();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
@@ -382,21 +391,15 @@ public class ModelWoodchipHopper extends ModelConverter //Same as Filename
 					GL11.glTranslatef(0, 0.57f + ((Freight) entity).getAmmountOfCargo() * -0.013f, 0);
 					GL11.glPopMatrix(); //this is supposed to not render the load bits if it doesnt have anything in it
 				}*/
+			}else if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("cull")) {
+				GL11.glDisable(GL11.GL_CULL_FACE);
+				bodyModel[i].render(f5);
+				GL11.glEnable(GL11.GL_CULL_FACE);
 			} else
 				bodyModel[i].render(f5);
 		}
 
-		/*Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70truck_Black.png"));
-
-		GL11.glPushMatrix();
-		GL11.glScalef(1,1,0.9f);
-		GL11.glTranslated(-2.0,0.55,-0.4);
-		bogie.render(entity,f,f1,f2,f3,f4,f5);
-
-		GL11.glTranslated(3.75,0,0.03);
-		bogie.render(entity,f,f1,f2,f3,f4,f5);
-		GL11.glPopMatrix();*/
-		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==3456){
+		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Greyish.png"));
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Black.png"));
