@@ -434,7 +434,7 @@ item.tc:minecartGP30.name=EMD GP30
 item.tc:minecartVBShay2.name=2 Truck Vertical Boiler Shay
 item.tc:minecartMillGondola.name=52' Mill Gondola
 item.tc:minecartClass345engine.name=Class 345
-item.tc:minecartClass345Car.name=Class 345 Coach
+item.tc:minecartClass345car.name=Class 345 Coach
 item.tc:minecartSD70Mac.name=EMD SD70Mac
 item.tc:minecartC424.name=ALCo C424
 item.tc:minecartAmfleet2.name=Amfleet 2 Coach
@@ -967,6 +967,7 @@ item.tc:tcRailSlopeSnowGravel.name=Slope Track (Snowy Gravel)
 item.tc:tcRailLargeSlopeSnowGravel.name=Large Slope Track (Snowy Gravel)
 item.tc:tcRailVeryLargeSlopeSnowGravel.name=Very Large Slope Track (Snowy Gravel)
 tile.tc:oreTC.snowgravel.name=Snowy Gravel
+item.tc:tcRailSuperLargeTurn.name=Super Large Turn
 
 key.categories.traincraft=JCIR-Traincraft
 key.traincraft.horn=Horn/Whistle

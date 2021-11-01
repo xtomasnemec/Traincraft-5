@@ -154,14 +154,14 @@ public class RenderTCRail extends TileEntitySpecialRenderer {
 						modelVeryLargeSlope.render("snow", railTile, x, y, z);
 						break;
 					}
-					/*case SUPER_LARGE_RIGHT_TURN: {//todo when hariesh lets me
+					case SUPER_LARGE_RIGHT_TURN: {
 						modelRightTurn.render("super_large", railTile, x , y, z);
 						break;
 					}
 					case SUPER_LARGE_LEFT_TURN: {
 						modelLeftTurn.render("super_large", railTile, x , y,z);
 						break;
-					}*/
+					}
 
 				}
 

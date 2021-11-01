@@ -1723,8 +1723,8 @@ public class ModelU30C extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 		}
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 843||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1544) {
-			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb3_Grey.png"));
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1544) {
+			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb3_Silver.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.75, 0.07, 0);
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
