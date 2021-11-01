@@ -249,7 +249,7 @@ public class EntityTrainCore extends GenericRailTransport {
         if(frontBogie != null && backBogie != null) {
 
             if (!worldObj.isRemote) {
-                float slip = CommonUtil.isRailBlockAt(worldObj,this.posX, this.posY, this.posZ)?-1.0f:
+                float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
                         CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
                 //twice a second, re-calculate the speed.
                 if (accelerator != 0 && ticksExisted % 10 == 0) {

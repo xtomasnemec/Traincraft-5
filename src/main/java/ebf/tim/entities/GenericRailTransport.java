@@ -216,7 +216,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return stack.getItem().delegate.name().equals(getItem().delegate.name());
     }
 
-    public enum boolValues{BRAKE(0), LOCKED(1), LAMP(2), CREATIVE(3), COUPLINGFRONT(4), COUPLINGBACK(5), WHITELIST(6), RUNNING(7), @Deprecated DERAILED(8);
+    public enum boolValues{BRAKE(0), LOCKED(1), LAMP(2), CREATIVE(3), COUPLINGFRONT(4), COUPLINGBACK(5), WHITELIST(6), RUNNING(7), DERAILED(8);
         public int index;
         boolValues(int index){this.index = index;}
     }
@@ -885,19 +885,27 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //do scaled rail boosting but keep it capped to the max velocity of the rail
             Block b = CommonUtil.getBlockAt(worldObj,posX,posY,posZ);
-            if (b instanceof BlockRailBase && ((BlockRailBase) b).isPowered() &&
+            if (b instanceof BlockRailBase){
+                setBoolean(boolValues.DERAILED,false);
+
+                if (((BlockRailBase) b).isPowered() &&
                     //this part keeps it capped
                     getVelocity() < maxBoost(b)) {
-                float boost = CommonUtil.getMaxRailSpeed(worldObj, (BlockRailBase) b,this,posX,posY,posZ) * 0.005f;
-                frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
+                    float boost = CommonUtil.getMaxRailSpeed(worldObj, (BlockRailBase) b,this,posX,posY,posZ) * 0.005f;
+                    frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
                         Math.copySign(boost, frontBogie.motionX),
                         0,
                         Math.copySign(boost, frontBogie.motionZ));
 
-                backBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
+                    backBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
                         Math.copySign(boost, backBogie.motionX),
                         0,
                         Math.copySign(boost, backBogie.motionZ));
+                }
+            } else {
+                //set the derail state based on whether or not there's a valid rail block below.
+                //later this will add more inherent support for 3rd party mods like ZnD, right now it's just vanilla/RC/TiM
+                setBoolean(boolValues.DERAILED, !CommonUtil.isRailBlockAt(worldObj,posX,posY,posZ));
             }
 
 
@@ -1397,10 +1405,27 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
         if(getAccelerator()==0) {
-            double radian = Math.PI/180d;
-            //changes direction based on if the other entity is the front transport of this one
-            double x = ((front?norm:-norm) * Math.cos(rotationYaw * radian));
-            double z = ((front?norm:-norm) * Math.sin(rotationYaw * radian));
+            double radian = Math.PI/180d,x,z;
+            if(!getBoolean(boolValues.DERAILED)) {
+                radian*=rotationYaw;
+            } else {
+                if(frontLinkedID!=null && backLinkedID!=null){
+                    radian*=CommonUtil.atan2f(
+                            worldObj.getEntityByID(frontLinkedID).posZ - worldObj.getEntityByID(backLinkedID).posZ,
+                            worldObj.getEntityByID(frontLinkedID).posX - worldObj.getEntityByID(backLinkedID).posX);
+                } else if (frontLinkedID!=null){
+                    radian*=CommonUtil.atan2f(
+                            worldObj.getEntityByID(frontLinkedID).posZ - posZ,
+                            worldObj.getEntityByID(frontLinkedID).posX - posX);
+                } else{
+                    radian*=CommonUtil.atan2f(
+                            posZ - worldObj.getEntityByID(backLinkedID).posZ,
+                            posX - worldObj.getEntityByID(backLinkedID).posX);
+                }
+            }
+
+            x = ((front ? norm : -norm) * Math.cos(radian));
+            z = ((front ? norm : -norm) * Math.sin(radian));
 
             frontBogie.addVelocity(x,0,z);
             backBogie.addVelocity(x,0,z);
