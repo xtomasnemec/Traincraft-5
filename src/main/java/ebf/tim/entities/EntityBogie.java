@@ -46,6 +46,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     private int railMetadata;
     private Block blockNext;
     double[] movementPath, retValue;
+    float railmax;
+    double[] directionalVelocity;
     /**normally this variable exists already in 1.7, this additional declaration of it is support for 1.8.9+*/
     public float yOffset=0.425f;
 
@@ -225,17 +227,17 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
-        float max = block.getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
-        if(max!=0.4f){
-            velocity=Math.min(velocity,max);
+        railmax = block.getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
+        if(railmax!=0.4f){
+            velocity=Math.min(velocity,railmax);
         }
-        double[] vel = new double[]{velocityX,velocityZ};
+        directionalVelocity = new double[]{velocityX,velocityZ};
         railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
         //actually move
         while (velocity>0) {
-            vel=moveBogieVanilla(Math.min(0.35, velocity), vel[0], vel[1], floorX, floorY, floorZ, block);
-            motionX=vel[0];
-            motionZ=vel[1];
+            directionalVelocity=moveBogieVanilla(Math.min(0.35, velocity), directionalVelocity[0], directionalVelocity[1], floorX, floorY, floorZ, block);
+            motionX=directionalVelocity[0];
+            motionZ=directionalVelocity[1];
             velocity -= 0.35;
 
             //update the last used block to the one we just used, if it's actually different.
@@ -297,10 +299,10 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 currentMotion * (railPathZ / railPathSqrt)};
 
         //define the rail path again, to center the transport.
-        railPathX2 = Math.floor(posX) + 0.5D + martix[railMetadata][0][0] * 0.5D;
-        railPathZ2 = Math.floor(posZ) + 0.5D + martix[railMetadata][0][2] * 0.5D;
-        railPathX = (Math.floor(posX) + 0.5D + martix[railMetadata][1][0] * 0.5D) - railPathX2;
-        railPathZ = (Math.floor(posZ) + 0.5D + martix[railMetadata][1][2] * 0.5D) - railPathZ2;
+        railPathX2 = floorX + 0.5D + martix[railMetadata][0][0] * 0.5D;
+        railPathZ2 = floorZ + 0.5D + martix[railMetadata][0][2] * 0.5D;
+        railPathX = (floorX + 0.5D + martix[railMetadata][1][0] * 0.5D) - railPathX2;
+        railPathZ = (floorZ + 0.5D + martix[railMetadata][1][2] * 0.5D) - railPathZ2;
 
 
         //pick the bigger one

@@ -1526,7 +1526,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public float getVelocity(){
-        return worldObj.isRemote?dataWatcher.getWatchableObjectFloat(12):(float)(Math.abs(motionX)+Math.abs(motionZ));
+        return worldObj.isRemote?dataWatcher.getWatchableObjectFloat(12):
+                (float)(Math.abs(motionX)+Math.abs(motionZ));
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.
