@@ -346,7 +346,11 @@ public class RailVanillaShapes extends RailShapeCore{
             shape.setEnd(0.6f,-0.2f,0);
         }
         if (nearbyMeta[7]==5){
-            shape.setStart(0,0.2f,0.6f);
+            if(nearbyMeta[5]==8) {
+                shape.setStart(0.125f, 0.2f, 0.6f);
+            } else {
+                shape.setStart(0, 0.2f, 0.6f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord+1, 4)){
             shape.setStart(0,-0.2f,0.6f);
@@ -521,7 +525,11 @@ public class RailVanillaShapes extends RailShapeCore{
             shape.setStart(-0.6f,-0.2f,0f);
         }
         if(nearbyMeta[7]==5){
-            shape.setEnd(0,0.2f,0.6f);
+            if(nearbyMeta[3]==9) {
+                shape.setEnd(-0.125f, 0.2f, 0.6f);
+            } else {
+                shape.setEnd(0, 0.2f, 0.6f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord+1, 4)){
             shape.setEnd(0,-0.2f,0.6f);
@@ -627,7 +635,16 @@ public class RailVanillaShapes extends RailShapeCore{
         shape.setStart(0,0,-0.5f).setCenter(0,0.5f,0).setEnd(0,1,0.5f);
 
         if (!checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord-1,5)){
-            shape.setStart(0,0.2f,-0.4f);
+            //check for diagonals
+            if(checkBlockMeta(worldObj,xCoord, yCoord,zCoord-1,6) &&
+                    checkBlockMeta(worldObj,xCoord+1, yCoord,zCoord-1,8)){
+                shape.setStart(0.125f,0.2f,-0.4f);
+            } else if(checkBlockMeta(worldObj,xCoord, yCoord,zCoord-1,7) &&
+                    checkBlockMeta(worldObj,xCoord-1, yCoord,zCoord-1,9)){
+                shape.setStart(-0.125f,0.2f,-0.4f);
+            } else {
+                shape.setStart(0,0.2f,-0.4f);
+            }
         }
         if (!checkBlockMeta(worldObj,xCoord, yCoord+1,zCoord+1,5)){
             shape.setEnd(0,0.8f,0.4f);

@@ -208,7 +208,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     motionZ-=Math.min(0.35, motionZ);
                     velocity -= 0.35;
 
-                    if (CommonUtil.getBlockAt(worldObj, posX, posY-0.5,posZ) instanceof BlockAir) {
+                    if (CommonUtil.getBlockAt(worldObj, posX, posY,posZ) instanceof BlockAir) {
                         posY--;
                     }
                 }
