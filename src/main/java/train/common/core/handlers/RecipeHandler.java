@@ -114,6 +114,12 @@ public class RecipeHandler {
 		GameRegistry.addRecipe(new ItemStack(BlockIDs.circleSwitchStand.block, 1), " R ", " S ", " IW", Character.valueOf('R'), new ItemStack(Items.dye, 1, 1), Character.valueOf('S'), Items.stick, Character.valueOf('I'), Items.iron_ingot, Character.valueOf('W'), Blocks.planks);
 		GameRegistry.addRecipe(new ItemStack(BlockIDs.autoSwtichStand.block, 1), "   ","C  ","BIW", Character.valueOf('C'), new ItemStack(ItemIDs.electronicCircuit.item,1), Character.valueOf('B'), Blocks.iron_block, Character.valueOf('S'), Items.stick, Character.valueOf('I'), Items.iron_ingot, Character.valueOf('W'), Blocks.planks);
 
+		//vanilla track to tc track Recipe but not train workbench
+		GameRegistry.addShapelessRecipe(new ItemStack(ItemIDs.tcRailSmallStraight.item, 1), new ItemStack (Blocks.rail, 1));
+		//		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.tcRailSmallStraight.item, 1),  "   ", " R ", "   ", Character.valueOf('R'), Item.getItemFromBlock(Blocks.rail));// small straight track
+
+		GameRegistry.addShapelessRecipe(new ItemStack(ItemIDs.tcRailSuperLargeTurn.item, 1), ItemIDs.tcRailVeryLargeTurn.item, ItemIDs.tcRailVeryLargeTurn.item);
+
 		/* Recipe book */
 		GameRegistry.addRecipe(new ItemStack(ItemIDs.recipeBook.item, 1),  "TTT", "TBT", "TTT", Character.valueOf('T'), Blocks.rail, Character.valueOf('B'), Items.book );
 
@@ -195,7 +201,7 @@ public class RecipeHandler {
 		if (plastics != null && plastics.size() >= 0) {
 			for (ItemStack plastic : plastics) {
 				/* Empty canister */
-				TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.emptyCanister.item, 4),  "PPP", "P P", "PPP", Character.valueOf('P'), plastic);
+				TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.emptyCanister.item, 8),  "PPP", "P P", "PPP", Character.valueOf('P'), plastic);
 				for (ItemStack rs :redstone) {
 					/* Electronic circuit */
 					TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.electronicCircuit.item, 1), "XXX", "RPR", "XXX", Character.valueOf('X'), ItemIDs.copperWireFine.item, Character.valueOf('P'), plastic, Character.valueOf('R'), rs.getItem());

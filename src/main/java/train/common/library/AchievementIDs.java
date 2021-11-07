@@ -77,7 +77,8 @@ public enum AchievementIDs {
 			ItemIDs.minecartCabooseWork.item, ItemIDs.minecartDRGWCaboose.item, ItemIDs.minecartWVcaboose.item, ItemIDs.minecartHBC1Ccaboose.item }),
 	stockCar(new Item[] { ItemIDs.minecartStockCar.item, ItemIDs.minecartDRWGStockCar.item }),
 	distilationTower(new Item[] { Item.getItemFromBlock(BlockIDs.distilIdle.block) }),
-	cf7(new Item[]{ItemIDs.minecartCF7angle.item, ItemIDs.minecartCF7round.item}), thanos(new Item[]{ItemIDs.minecartThanos.item}),
+	cf7(new Item[]{ItemIDs.minecartCF7angle.item, ItemIDs.minecartCF7round.item}),
+	thanos(new Item[]{ItemIDs.minecartThanos.item}),
 	sd9(new Item[]{ItemIDs.minecartSD9.item}),
 	geared(new Item[] { ItemIDs.minecartVBShay2.item, ItemIDs.minecartLocoSteamVBShay.item,
 			ItemIDs.minecartLocoSteamShay.item, ItemIDs.minecartLocoSteamClimax.item,
@@ -87,7 +88,17 @@ public enum AchievementIDs {
 			ItemIDs.minecartH1044.item, ItemIDs.minecartHH660.item, ItemIDs.minecartHustler.item, ItemIDs.minecartVO1000.item, ItemIDs.minecartSW8.item,
 			ItemIDs.minecartSW1200.item, ItemIDs.minecartBeep.item, ItemIDs.minecart44Ton.item, ItemIDs.minecartNRE3gs21b.item, ItemIDs.minecartC415H.item,
 			ItemIDs.minecartILMA.item, ItemIDs.minecartILMB.item}),
-	powerful(new Item[]{ItemIDs.minecartLocoDD35A.item, ItemIDs.minecartDH643.item, ItemIDs.minecartKrautt.item});
+	powerful(new Item[]{ItemIDs.minecartLocoDD35A.item, ItemIDs.minecartDH643.item, ItemIDs.minecartKrautt.item}),
+	amfleet(new Item[]{ItemIDs.minecartAmfleet.item, ItemIDs.minecartAmfleet2.item}),
+	jenny(new Item[]{ItemIDs.minecartOreJenny.item}),
+	powerful2(new Item[]{ItemIDs.minecartGM6C.item, ItemIDs.minecartEF1.item, ItemIDs.minecartEF1B.item, ItemIDs.minecartEP1A.item}),
+	uboat(new Item[]{ItemIDs.minecartU18B.item}),
+	polar(new Item[]{ItemIDs.minecartPELocomotive.item, ItemIDs.minecartPETender.item, ItemIDs.minecartPEcooch.item, ItemIDs.minecartPEobserve.item}),
+	highcube(new Item[]{ItemIDs.minecart40highcube.item, ItemIDs.minecarthicube60foot.item, ItemIDs.minecartOWO60Verticube.item,
+			ItemIDs.minecartFNCC50Foot.item, ItemIDs.minecartReefer64.item}),
+	refined(new Item[]{ItemIDs.refinedFuel.item}),
+	skook(new Item[]{ItemIDs.minecartSkook.item}),
+	;
 
 	public Achievement	achievement;
 	protected Item[]	items;

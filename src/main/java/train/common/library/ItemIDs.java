@@ -321,8 +321,6 @@ public enum ItemIDs {
 	remoteControllerModule("ItemRemoteControllerModule", "remote_controller_module", 4),
 	//signalPairingDevice("ItemSignalPairingDevice", "signal_pairing_device", 14),
 
-
-
 	//stEAmeeee//
 	minecartClimaxNew("ItemRollingStock", "train_climax2", 5),
 	minecartVBShay2("ItemRollingStock", "vbshay2", 5),
@@ -496,7 +494,7 @@ public enum ItemIDs {
 	minecartDRGWCaboose("ItemRollingStock", "DRGW_01400_series_caboose",3),
 
 	minecartBigMeme("ItemRollingStock", "lol", 69),
-	minecartBombCart("ItemRollingStock", "payload", 7),
+	minecartBombCart("ItemRollingStock", "payload", 2),
 	minecartThanos("ItemRollingStock", "thanos", 64),
 	minecartTGVMobile("ItemRollingStock", "tgvmobile", 30),
 	minecartHHgregg("ItemRollingStock", "hhgregg", 69),
@@ -514,7 +512,7 @@ public enum ItemIDs {
 	minecartLUengine("ItemRollingStock","luengine", 3),
 	minecartLUcar("ItemRollingStock","lupassenger", 2),
 	minecartClass345engine("ItemRollingStock", "Class345Engine", 3),
-	minecartClass345car("ItemRollingStock", "Class345Coach", 2),
+	minecartClass345car("ItemRollingStock", "class345coach", 2),
 
 
 	//undecided stuff//

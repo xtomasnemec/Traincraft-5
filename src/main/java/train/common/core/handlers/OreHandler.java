@@ -28,5 +28,9 @@ public class OreHandler {
 		OreDictionary.registerOre("dustPlastic", new ItemStack(ItemIDs.rawPlastic.item));//MFR support
 		
 		OreDictionary.registerOre("dustCoal", new ItemStack(ItemIDs.coaldust.item));
+		OreDictionary.registerOre("dustSteel", new ItemStack(ItemIDs.steeldust.item));
+
+		OreDictionary.registerOre("circuitBasic", new ItemStack(ItemIDs.electronicCircuit.item));
+		OreDictionary.registerOre("wireCopper", new ItemStack(ItemIDs.copperWireFine.item));
 	}
 }

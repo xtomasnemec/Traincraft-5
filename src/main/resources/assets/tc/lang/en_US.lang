@@ -377,7 +377,7 @@ item.tc:minecartPETender.name=Polar Express Tender
 item.tc:minecartOnion.name=Onion
 item.tc:minecartOnionTender.name=Onion's Tender
 item.tc:minecartPSCenterDiner.name=Pullman Standard Center-Kitchen Dining Car
-item.tc:minecartPSFuckYouAnotherDiner.name=Pullman Standard Center-Kitchen Dining Car 2
+item.tc:minecartPSDamnitAnotherDiner.name=Pullman Standard Center-Kitchen Dining Car 2
 item.tc:minecart44Ton.name=GE 44-Tonner
 item.tc:minecartLocoC11.name=JNR C11
 item.tc:minecartClimaxNew.name=2 Truck Climax
@@ -599,7 +599,22 @@ achievement.tc:gevo=Modern Tech
 achievement.tc:gevo.desc=woo oh yeah woo its GEVO time
 achievement.tc:switchin=Switchin it Up!
 achievement.tc:switchin.desc=Time for Yard Work!
-
+achievement.tc:jenny=Ore Jenny
+achievement.tc:jenny.desc=Very Smol!
+achievement.tc:amfleet=Amfleets
+achievement.tc:amfleet.desc=Totally Tubular!
+achievement.tc:powerful2=Powerful, 2?
+achievement.tc:powerful2.desc=Who needs Diesel anyway?
+achievement.tc:uboat=Baby Boat
+achievement.tc:uboat.desc=Very Small U-Boat!
+achievement.tc:polar=Polar Express
+achievement.tc:polar.desc=Well? You coming?
+achievement.tc:highcube=Highcube
+achievement.tc:highcube.desc=I say jump, you say, how high?
+achievement.tc:refined=Refined Fuel
+achievement.tc:refined.desc=Is it really better than Diesel?
+achievement.tc:skook=Skookum
+achievement.tc:skook.desc=One-Of-A-Kind Articulated Logger!
 
 <!-- ## GUI ## -->
 builder.follow.name=Follow tracks
@@ -956,6 +971,8 @@ entity.tc.PA1.name=Alco PA-1
 entity.tc.PB1.name=Alco PB-1
 entity.tc.FNCC50FootBoxcar.name=North Fox 50' Mini-Highcube Boxcar
 entity.tc.U30C.name=GE U30C
+entity.WVBoose.name=Wide Vision Caboose
+entity.tc.gtavthing.name=GTAV Locomotive
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
