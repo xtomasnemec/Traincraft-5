@@ -1223,7 +1223,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         }
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
-                    if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0) {
+                    if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0 && getVelocity()<0.01) {
                         if  (CommonProxy.pushabletrains) {
                             double[] motion = CommonUtil.rotatePoint(0.25,0,
                                     CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));

@@ -61,22 +61,24 @@ public class CustomModelRenderer extends ModelRendererTurbo {
 	//same as super, but old models have inverse Y rotations and I don't even understand the Z rotation
 	@Override
 	public void render(float scale) {
-
 		if(!showModel){
 			return;
 		}
 		if (ignoresLighting){
 			Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 		}
+		if(noCull){
+			GL11.glDisable(GL11.GL_CULL_FACE);
+		}
 		if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
 			GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
 		}
 
+		if(rotateAngleY != 0.0F){
+			GL11.glRotatef(-rotateAngleY, 0.0F, 1.0F, 0.0F);
+		}
 		if(rotateAngleZ != 0.0F){
 			GL11.glRotatef(rotateAngleZ, 0.0F, 0.0F, 1.0F);
-		}
-		if(rotateAngleY != 0.0F){
-			GL11.glRotatef(rotateAngleY, 0.0F, 1.0F, 0.0F);
 		}
 		if(rotateAngleX != 0.0F){
 			GL11.glRotatef(rotateAngleX, 1.0F, 0.0F, 0.0F);
@@ -87,6 +89,9 @@ public class CustomModelRenderer extends ModelRendererTurbo {
 		}
 		if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
 			GL11.glTranslatef(-rotationPointX * scale, -rotationPointY * scale, -rotationPointZ * scale);
+		}
+		if(noCull){
+			GL11.glEnable(GL11.GL_CULL_FACE);
 		}
 		if (ignoresLighting){
 			Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);

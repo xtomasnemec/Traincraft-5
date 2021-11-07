@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.carts.IRoutableCart;
@@ -15,11 +16,14 @@ import mods.railcraft.api.tracks.ITrackTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
@@ -214,11 +218,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 }
                 return true;
             }
-
-            if(!isFront){
-                host.motionX=motionX;
-                host.motionZ=motionZ;
-            }
         }
         return false;
     }
@@ -281,8 +280,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     private double[] moveBogieVanilla(double currentMotion, double velocityX, double velocityZ, int floorX, int floorY, int floorZ, BlockRailBase block){
         //figure out the current rail's direction
-        railPathX = (martix[railMetadata][1][0] - martix[railMetadata][0][0]);
-        railPathZ = (martix[railMetadata][1][2] - martix[railMetadata][0][2]);
+        railPathX = (double)(martix[railMetadata][1][0] - martix[railMetadata][0][0]);
+        railPathZ = (double)(martix[railMetadata][1][2] - martix[railMetadata][0][2]);
         railPathSqrt = Math.sqrt(railPathX * railPathX + railPathZ * railPathZ);
 
         if (velocityX * railPathX + velocityZ * railPathZ < 0.0D) {
@@ -292,17 +291,25 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
         motionSqrt = Math.sqrt(velocityX * velocityX + velocityZ * velocityZ);
 
-        retValue = new double[]{motionSqrt * (railPathX / railPathSqrt),
-                motionSqrt * (railPathZ / railPathSqrt)};
 
-        movementPath = new double[]{currentMotion * (railPathX / railPathSqrt),0,
-                currentMotion * (railPathZ / railPathSqrt)};
+        if (motionSqrt > 2.0D) {
+            motionSqrt = 2.0D;
+        }
+
+        retValue = new double[]{railPathX==0.0D?0:motionSqrt * (railPathX / railPathSqrt),
+                railPathZ==0.0D?0:motionSqrt * (railPathZ / railPathSqrt)};
+
+        movementPath = new double[]{railPathX==0.0D?0:currentMotion * (railPathX / railPathSqrt),0,
+                railPathZ==0.0D?0:currentMotion * (railPathZ / railPathSqrt)};
+
 
         //define the rail path again, to center the transport.
         railPathX2 = floorX + 0.5D + martix[railMetadata][0][0] * 0.5D;
         railPathZ2 = floorZ + 0.5D + martix[railMetadata][0][2] * 0.5D;
         railPathX = (floorX + 0.5D + martix[railMetadata][1][0] * 0.5D) - railPathX2;
         railPathZ = (floorZ + 0.5D + martix[railMetadata][1][2] * 0.5D) - railPathZ2;
+
+
 
 
         //pick the bigger one
