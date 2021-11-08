@@ -155,14 +155,18 @@ public class RailShapeCore {
             t += originalT;
         }
         //add the pre-defined start and end yaw
-        points.get(0).setUV(shape.getRawStart().u, shape.getRawStart().v);
+        points.get(1).setUV(shape.getRawStart().u, shape.getRawStart().v);
         points.get(points.size()-1).setUV(shape.getRawEnd().u, shape.getRawEnd().v);
 
         //define rotations
         for (i=1; i < points.size() - 1; i++) {
-            points.get(i).addUV(0, (int)CommonUtil.atan2degreesf(
-                    points.get(i-1).zCoord - (points.get(i+1).zCoord),
-                    points.get(i-1).xCoord - (points.get(i+1).xCoord)));
+            //be sure this doesn't fire off if we're on the first point and rotation calculation for it is disabled
+            //be sure this doesn't fire off if we're on the last point and rotation calculation for it is disabled
+            if(!(i==1 && shape.isStartRotationForced()) && !(i==points.size()-1 && shape.isEndRotationForced())){
+                points.get(i).v+=(int)CommonUtil.atan2degreesf(
+                        points.get(i-1).zCoord - (points.get(i+1).zCoord),
+                        points.get(i-1).xCoord - (points.get(i+1).xCoord));
+            }
             sc.activePath.add(points.get(i));
         }
         //segment path

@@ -7,6 +7,7 @@ public class RailSimpleShape {
     private Vec6f start, center=new Vec6f(0,0,0,0,0,0), end;
     //u is roll, v is yaw, w is width
     private int tieCount=4;
+    private boolean hardStart=false,hardEnd=false;
 
     public RailSimpleShape setSleeperCount(int s){
         tieCount=s;
@@ -117,4 +118,19 @@ public class RailSimpleShape {
 
     private static Vec6f normalize(){return new Vec6f(0.5f,0,0.5f,0,0,0);}
 
+    public boolean isStartRotationForced() {
+        return hardStart;
+    }
+
+    public void forceStartRotation(boolean hardStart) {
+        this.hardStart = hardStart;
+    }
+
+    public boolean isEndRotationForced() {
+        return hardEnd;
+    }
+
+    public void forceEndRotation(boolean hardEnd) {
+        this.hardEnd = hardEnd;
+    }
 }
