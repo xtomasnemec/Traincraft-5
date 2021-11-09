@@ -122,15 +122,27 @@ public class RailSimpleShape {
         return hardStart;
     }
 
-    public void forceStartRotation(boolean hardStart) {
+    public RailSimpleShape setForcedStartRotation(boolean hardStart) {
         this.hardStart = hardStart;
+        return this;
+    }
+
+    public RailSimpleShape forceStartRotation() {
+        this.hardStart = true;
+        return this;
     }
 
     public boolean isEndRotationForced() {
         return hardEnd;
     }
 
-    public void forceEndRotation(boolean hardEnd) {
+    public RailSimpleShape setForcedEndRotation(boolean hardEnd) {
         this.hardEnd = hardEnd;
+        return this;
+    }
+
+    public RailSimpleShape forceEndRotation() {
+        this.hardEnd = true;
+        return this;
     }
 }
