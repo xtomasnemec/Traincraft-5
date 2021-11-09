@@ -156,13 +156,13 @@ public class RailShapeCore {
         }
         //add the pre-defined start and end yaw
         points.get(1).setUV(shape.getRawStart().u, shape.getRawStart().v);
-        points.get(points.size()-1).setUV(shape.getRawEnd().u, shape.getRawEnd().v);
+        points.get(points.size()-2).setUV(shape.getRawEnd().u, shape.getRawEnd().v);
 
         //define rotations
         for (i=1; i < points.size() - 1; i++) {
             //be sure this doesn't fire off if we're on the first point and rotation calculation for it is disabled
             //be sure this doesn't fire off if we're on the last point and rotation calculation for it is disabled
-            if(!(i==1 && shape.isStartRotationForced()) && !(i==points.size()-1 && shape.isEndRotationForced())){
+            if(!(i==1 && shape.isStartRotationForced()) && !(i==points.size()-2 && shape.isEndRotationForced())){
                 points.get(i).v+=(int)CommonUtil.atan2degreesf(
                         points.get(i-1).zCoord - (points.get(i+1).zCoord),
                         points.get(i-1).xCoord - (points.get(i+1).xCoord));
