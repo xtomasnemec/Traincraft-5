@@ -1392,19 +1392,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLinks(GenericRailTransport linkedTransport, boolean front) {
-        //distance
-        vectorCache[4][0]= (float)(this.posX - linkedTransport.posX);
-        vectorCache[4][2]= (float)(this.posZ - linkedTransport.posZ);
-
-        //movement length
-        float norm = MathHelper.sqrt_double(vectorCache[4][0] * vectorCache[4][0] + vectorCache[4][2] * vectorCache[4][2]);
-        norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
-
-        //scale to just a little under half since we apply it to both entities every tick
-        norm*=0.99;
-
 
         if(getAccelerator()==0) {
+            //todo: Y U NO WORK
+            //distance
+            vectorCache[4][0]= (float)(this.posX - linkedTransport.posX);
+            vectorCache[4][2]= (float)(this.posZ - linkedTransport.posZ);
+
+            //movement length
+            float norm = MathHelper.sqrt_double(vectorCache[4][0] * vectorCache[4][0] + vectorCache[4][2] * vectorCache[4][2]);
+            norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
+
+            //scale to just a little under half since we apply it to both entities every tick
+            norm*=0.99;
+
+
             double radian = Math.PI/180d,x,z;
             if(!getBoolean(boolValues.DERAILED)) {
                 radian*=rotationYaw;
