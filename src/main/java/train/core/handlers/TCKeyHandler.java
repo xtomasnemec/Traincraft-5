@@ -17,13 +17,13 @@ public class TCKeyHandler {
 	public static KeyBinding idle;
 	public static KeyBinding furnace;
 	public TCKeyHandler() {
-		up = new KeyBinding("key.traincraftzepp..up", Keyboard.KEY_Y, "key.categories.traincraft");
+		up = new KeyBinding("key.traincraft.zepp.up", Keyboard.KEY_Y, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(up);
-		down = new KeyBinding("key.traincraft.zepp.down", Keyboard.KEY_X, "key.categories.traincraft");
+		down = new KeyBinding("key.traincraft.zepp.down", Keyboard.KEY_X, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(down);
-		idle = new KeyBinding("key.traincraft.zepp.idle", Keyboard.KEY_C, "key.categories.traincraft");
+		idle = new KeyBinding("key.traincraft.zepp.idle", Keyboard.KEY_C, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(idle);
-		furnace = new KeyBinding("key.traincraft.zepp.furnace", Keyboard.KEY_F, "key.categories.traincraft");
+		furnace = new KeyBinding("key.traincraft.zepp.furnace", Keyboard.KEY_F, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(furnace);
 
 
