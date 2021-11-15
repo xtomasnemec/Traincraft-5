@@ -502,7 +502,7 @@ item.tc:minecartAlcoPA1.name=Alco PA-1
 item.tc:minecartAlcoPB1.name=Alco PB-1
 item.tc:minecartFNCC50Foot.name=North Fox 50' Mini-Highcube Boxcar
 item.tc:minecartU30C.name=GE U30C
-
+item.tc:minecartB30.name=GE B30-7
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -973,6 +973,7 @@ entity.tc.FNCC50FootBoxcar.name=North Fox 50' Mini-Highcube Boxcar
 entity.tc.U30C.name=GE U30C
 entity.WVBoose.name=Wide Vision Caboose
 entity.tc.gtavthing.name=GTAV Locomotive
+entity.tc.B30-7.name=GE B30-7
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
