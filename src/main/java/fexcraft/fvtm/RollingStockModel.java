@@ -98,7 +98,7 @@ public class RollingStockModel extends ModelBase {
             GL11.glRotatef(part.rotateAngleY, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(part.rotateAngleZ, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(part.rotateAngleX, 1.0F, 0.0F, 0.0F);
-            if (GL11.glIsList(part.glID)) {
+            if (part.glID!=null && GL11.glIsList(part.glID)) {
                 GL11.glCallList(part.glID);
             } else {
                 part.glID = GLAllocation.generateDisplayLists(1);
