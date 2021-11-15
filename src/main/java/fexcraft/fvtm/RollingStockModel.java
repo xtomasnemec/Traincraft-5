@@ -39,11 +39,17 @@ public class RollingStockModel extends ModelBase {
                 namedList.addAll(list.namedList);
             }
         }
+        //this can happen somehow
+        if(groups==null){
+            return;
+        }
 
 
         if(ClientProxy.disableCache) {
             for(TurboList list :groups) {
-                list.render(list.boxList);
+                if(list!=null) {
+                    list.render(list.boxList);
+                }
             }
         } else if(staticPartMap.get(this.getClass().getName())==null || localGLID==null) {
             if(localGLID==null && staticPartMap.get(this.getClass().getName())!=null){
