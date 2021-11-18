@@ -297,17 +297,22 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             railPathZ = -railPathZ;
         }
 
+        motionSqrt = Math.sqrt(directionX * directionX + directionZ * directionZ);
+        if(motionSqrt>2.0D){
+            motionSqrt=2.0D;
+        }
+
         //update direction for consecutive loop calls
-        velDirection[0]=railPathX==0.0D?0:Math.max(Math.sqrt(motionSqrt),2.0) * (railPathX / railPathSqrt);
-        velDirection[1]=railPathZ==0.0D?0:Math.max(Math.sqrt(motionSqrt),2.0) * (railPathZ / railPathSqrt);
+        velDirection[0]=railPathX==0.0D?0:motionSqrt * railPathX / railPathSqrt;
+        velDirection[1]=railPathZ==0.0D?0:motionSqrt * railPathZ / railPathSqrt;
 
         //handle rotating normal velocity based on track path
-        motionSqrt = Math.sqrt(motionX * motionX + railPathZ * railPathZ);
+        motionSqrt = Math.sqrt(motionX * motionX + motionZ * motionZ);
         if (motionSqrt > 2.0D) {
             motionSqrt = 2.0D;
         }
-        motionX=railPathX==0.0D?0:motionSqrt * (railPathX / railPathSqrt);
-        motionZ=railPathZ==0.0D?0:motionSqrt * (railPathZ / railPathSqrt);
+        motionX=railPathX==0.0D?0:motionSqrt * railPathX / railPathSqrt;
+        motionZ=railPathZ==0.0D?0:motionSqrt * railPathZ / railPathSqrt;
 
 
         movementPath = new double[]{railPathX==0.0D?0:currentMotion * (railPathX / railPathSqrt),0,

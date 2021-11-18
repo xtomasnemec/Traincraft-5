@@ -1394,7 +1394,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void manageLinks(GenericRailTransport linkedTransport, boolean front) {
 
-        if(getAccelerator()==0) {
+        if(getAccelerator()==0 && front) {
 
             //handle yaw changes for derail
             if(getBoolean(boolValues.DERAILED)) {
@@ -1425,9 +1425,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     (getOptimalDistance(linkedTransport)) + (linkedTransport.getOptimalDistance(this))
                     ,0,front?rotationYaw:-rotationYaw));
 
-
-            frontBogie.minecartMove(this, point.xCoord,point.zCoord);
-            backBogie.minecartMove(this, point.xCoord,point.zCoord);
+            if(Math.abs(point.xCoord)+Math.abs(point.zCoord)>1) {
+                frontBogie.minecartMove(this, point.xCoord, point.zCoord);
+                backBogie.minecartMove(this, point.xCoord, point.zCoord);
+            }
         }
     }
 
@@ -2153,7 +2154,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * example:
      * return new float[]{x,y,z};
      * may not return null*/
-    public float[] getHitboxSize(){return new float[]{3,1.5f,.21f};}
+    public float[] getHitboxSize(){return new float[]{3,1.5f,0.21f};}
 
     /**defines if the transport is immune to explosions*/
     public boolean isReinforced(){return false;}
