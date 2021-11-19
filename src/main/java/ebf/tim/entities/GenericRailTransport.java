@@ -1104,17 +1104,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 backBogie.motionZ*=0.996;
             }
 
-            //update positions related to linking, this NEEDS to come after drag
-            if(frontLinkedID!=null){
-                manageLinks((GenericRailTransport)worldObj.getEntityByID(frontLinkedID),true);
-            }
-            if(backLinkedID!=null){
-                manageLinks((GenericRailTransport)worldObj.getEntityByID(backLinkedID),false);
+
+            if(getAccelerator()==0) {
+                //update positions related to linking, this NEEDS to come after drag
+                if (frontLinkedID != null) {
+                    manageLinks((GenericRailTransport) worldObj.getEntityByID(frontLinkedID), true);
+                }
+                if (backLinkedID != null) {
+                    manageLinks((GenericRailTransport) worldObj.getEntityByID(backLinkedID), false);
+                }
             }
 
-            if(!(this instanceof EntityTrainCore)) {
-                updatePosition();
-            }
 
         }
 
@@ -1261,6 +1261,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
                 }
             }
+
+
+            if(!(this instanceof EntityTrainCore)) {
+                updatePosition();
+            }
         } else {
             //apparently to push away a player it has to happen on client
             for (Entity e : collisionHandler.getCollidingEntities(this)) {
@@ -1393,42 +1398,42 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLinks(GenericRailTransport linkedTransport, boolean front) {
-
-        if(getAccelerator()==0 && front) {
-
-            //handle yaw changes for derail
-            if(getBoolean(boolValues.DERAILED)) {
-                if(frontLinkedID!=null && backLinkedID!=null){
-                    rotationYaw=CommonUtil.atan2degreesf(
-                            worldObj.getEntityByID(frontLinkedID).posZ - worldObj.getEntityByID(backLinkedID).posZ,
-                            worldObj.getEntityByID(frontLinkedID).posX - worldObj.getEntityByID(backLinkedID).posX);
-                } else if (frontLinkedID!=null){
-                    rotationYaw=CommonUtil.atan2degreesf(
-                            worldObj.getEntityByID(frontLinkedID).posZ - posZ,
-                            worldObj.getEntityByID(frontLinkedID).posX - posX);
-                } else if (backLinkedID!=null){
-                    rotationYaw=CommonUtil.atan2degreesf(
-                            posZ - worldObj.getEntityByID(backLinkedID).posZ,
-                            posX - worldObj.getEntityByID(backLinkedID).posX);
-                }
+        //handle yaw changes for derail
+        if(getBoolean(boolValues.DERAILED)) {
+            if(frontLinkedID!=null && backLinkedID!=null){
+                rotationYaw=CommonUtil.atan2degreesf(
+                        worldObj.getEntityByID(frontLinkedID).posZ - worldObj.getEntityByID(backLinkedID).posZ,
+                        worldObj.getEntityByID(frontLinkedID).posX - worldObj.getEntityByID(backLinkedID).posX);
+            } else if (frontLinkedID!=null){
+                rotationYaw=CommonUtil.atan2degreesf(
+                        worldObj.getEntityByID(frontLinkedID).posZ - posZ,
+                        worldObj.getEntityByID(frontLinkedID).posX - posX);
+            } else if (backLinkedID!=null){
+                rotationYaw=CommonUtil.atan2degreesf(
+                        posZ - worldObj.getEntityByID(backLinkedID).posZ,
+                        posX - worldObj.getEntityByID(backLinkedID).posX);
             }
+        }
 
-            //todo: some vec2 logic could optimize this a little.
-            //set the current position
-            Vec3d point = new Vec3d(posX,posY,posZ);
-            //now subtract the other entity's position
-            point.subtractVector(linkedTransport.posX, linkedTransport.posY, linkedTransport.posZ);
-            //now add the difference between the coupler offsets.
-            //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
-            //which prevents phasing into eachother around corners.
-            point.add(CommonUtil.rotateDistance(
-                    (getOptimalDistance(linkedTransport)) + (linkedTransport.getOptimalDistance(this))
-                    ,0,front?rotationYaw:-rotationYaw));
+        //todo: some vec2 logic could optimize this a little.
+        //set the current position
+        Vec3d point = new Vec3d(posX,0,posZ);
+        //now subtract the other entity's position
+        point.subtractVector(linkedTransport.posX, 0, linkedTransport.posZ);
 
-            if(Math.abs(point.xCoord)+Math.abs(point.zCoord)>1) {
-                frontBogie.minecartMove(this, point.xCoord, point.zCoord);
-                backBogie.minecartMove(this, point.xCoord, point.zCoord);
-            }
+        //todo: this is an obscene calculation, why does it work? is it just me?
+        //now add the difference between the coupler offsets.
+        //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
+        //which prevents phasing into eachother around corners.
+        point.add(CommonUtil.rotateDistance(
+                Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5
+                ,0,front?rotationYaw:rotationYaw-180));
+        point=point.crossProduct(-1);
+
+
+        if(Math.abs(point.xCoord)+Math.abs(point.zCoord)>0.06) {
+            frontBogie.minecartMove(this, point.xCoord, point.zCoord);
+            backBogie.minecartMove(this, point.xCoord, point.zCoord);
         }
     }
 
