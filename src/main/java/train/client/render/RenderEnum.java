@@ -949,6 +949,11 @@ public enum RenderEnum {
 			add(new double[]{0.6D, 1.2D, 0.0D});
 		}
 	}, "", null, 0, false),
+	GE25Ton( DieselGE25Ton.class,  new ModelGE25Ton(), "25ton_", true,new float[] {0.0F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{
+			add(new double[]{0.6D, 1.1D, 0.0D});
+		}
+	}, "", null, 0, false),
 
 	U18B( DieselU18B.class,  new ModelU18B(), "U18B_", true,new float[] {-0F, -0.0F, 0F},  null, null, "smoke", 4,  new ArrayList<double[]>() {
 		{ }

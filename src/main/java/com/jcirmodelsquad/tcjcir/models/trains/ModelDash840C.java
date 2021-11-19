@@ -1356,4 +1356,18 @@ public class ModelDash840C extends ModelConverter //Same as Filename
 			}
 		};
 	}
+	//
+	/*public ArrayList<double[]> getSmokePosition(Entity entity) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11){
+			return new ArrayList<double[]>() {
+				{
+					add(new double[]{0.65D, 1.35D, 0.0D});
+				}
+			};
+		else {
+
+			}
+		}
+	}*/
+
 }

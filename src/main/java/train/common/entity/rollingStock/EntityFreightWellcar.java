@@ -75,7 +75,7 @@ public class EntityFreightWellcar extends Freight implements IInventory {
 	}
 	@Override
 	public String getInventoryName() {
-		return "Freight cart";
+		return "Freight Wellcar";
 	}
 
 	@Override

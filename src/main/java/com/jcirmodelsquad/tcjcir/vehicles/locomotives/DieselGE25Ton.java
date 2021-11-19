@@ -13,9 +13,9 @@ import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-public class DieselGE44Ton extends DieselTrain {
-	public DieselGE44Ton(World world) {
-		super(world, EnumTrains.GE44Ton.getTankCapacity(), LiquidManager.dieselFilter());
+public class DieselGE25Ton extends DieselTrain {
+	public DieselGE25Ton(World world) {
+		super(world, EnumTrains.GE25Ton.getTankCapacity(), LiquidManager.dieselFilter());
 		initLoco();
 	}
 
@@ -24,7 +24,7 @@ public class DieselGE44Ton extends DieselTrain {
 		locoInvent = new ItemStack[inventorySize];
 	}
 
-	public DieselGE44Ton(World world, double d, double d1, double d2) {
+	public DieselGE25Ton(World world, double d, double d1, double d2) {
 		this(world);
 		setPosition(d, d1 + yOffset, d2);
 		motionX = 0.0D;
@@ -39,8 +39,8 @@ public class DieselGE44Ton extends DieselTrain {
 	public void updateRiderPosition() {
 		if(riddenByEntity==null){return;}
 		double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-		double distance = 1.0;
-		double yOffset = 0.1;
+		double distance = 0.0;
+		double yOffset = -0.2;
 		float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
 		float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
 		if(side.isServer()){
@@ -132,7 +132,7 @@ public class DieselGE44Ton extends DieselTrain {
 
 	@Override
 	public String getInventoryName() {
-		return "GE 44 Ton Switcher";
+		return "GE 25 Ton Switcher";
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class DieselGE44Ton extends DieselTrain {
 
 	@Override
 	public float getOptimalDistance(EntityMinecart cart) {
-		return (0.75F);
+		return (0.6F);
 	}
 
 	@Override

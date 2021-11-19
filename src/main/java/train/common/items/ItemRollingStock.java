@@ -391,7 +391,7 @@ public class ItemRollingStock extends ItemMinecart implements IMinecart, IMineca
 						if (player != null) {
 							player.addChatMessage(new ChatComponentText("Possible colors" + concatColors));
 							player.addChatMessage(new ChatComponentText("To paint, click me with the right (vanilla) dye,"));
-							player.addChatMessage(new ChatComponentText("Or" + EnumChatFormatting.GREEN + " Shift-right click " + EnumChatFormatting.GRAY + "using the Paintbrush Item to cycle through textures"));
+							player.addChatMessage(new ChatComponentText("Or" + EnumChatFormatting.GREEN + " Shift-right click " + EnumChatFormatting.WHITE + "using the Paintbrush Item to cycle through textures"));
 						}
 					}
 				}

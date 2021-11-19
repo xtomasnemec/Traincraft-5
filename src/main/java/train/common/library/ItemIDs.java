@@ -380,8 +380,9 @@ public enum ItemIDs {
 	minecartBeep("ItemRollingStock", "BeepIcon", 2),
 
 	//GE//
-	minecart44Ton("ItemRollingStock", "44-tonner_icon", 4),
-	minecartBoxcab23Ton("ItemRollingStock", "boxcab", 4),
+	minecart44Ton("ItemRollingStock", "44-tonner_icon", 2),
+	minecartBoxcab23Ton("ItemRollingStock", "boxcab", 2),
+	minecart25Ton("ItemRollingStock", "25-tonner_icon", 2),
 
 	minecartU18B("ItemRollingStock", "U18B", 3),
 	minecartU23B("ItemRollingStock", "u23b", 4),
