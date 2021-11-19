@@ -471,6 +471,9 @@ public enum ItemIDs {
 
 	minecartSkeletonLogCar("ItemRollingStock", "Skeleton", 1),
 
+	minecartGunderson89ftAutorack("ItemRollingStock", "gunderson_autorack", 7),
+	minecartGunderson89ftFlat("ItemRollingStock", "gunderson_flat", 2),
+
 	//pAssenger//
 	minecartPCH120Commute("ItemRollingStock", "pch120", 4),
 	minecartPCH120Car("ItemRollingStock", "pch120car", 3),
