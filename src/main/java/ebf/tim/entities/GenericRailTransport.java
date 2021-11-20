@@ -1416,19 +1416,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //todo: some vec2 logic could optimize this a little.
-        //set the current position
-        Vec3d point = new Vec3d(posX,0,posZ);
-        //now subtract the other entity's position
-        point.subtractVector(linkedTransport.posX, 0, linkedTransport.posZ);
+        //set the target position
+        Vec3d point = new Vec3d(linkedTransport.posX, 0, linkedTransport.posZ);
+        //now subtract the current position
+        point.subtractVector(posX, 0, posZ);
 
-        //todo: this is an obscene calculation, why does it work? is it just me?
         //now add the difference between the coupler offsets.
         //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
         //which prevents phasing into eachother around corners.
         point.add(CommonUtil.rotateDistance(
                 Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5
-                ,0,front?rotationYaw:rotationYaw-180));
-        point=point.crossProduct(-1);
+                ,0,front?rotationYaw-180:rotationYaw));
 
 
         if(Math.abs(point.xCoord)+Math.abs(point.zCoord)>0.06) {

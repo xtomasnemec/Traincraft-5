@@ -14,6 +14,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import train.core.handlers.ConfigHandler;
+import train.entity.rollingStock.EntityTracksBuilder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -131,10 +132,33 @@ public class RecipeManager {
         if (empty) return null;
 
         List<ItemStack> retStacks = new ArrayList<>();
+        boolean canAdd=true;
         for(Recipe r : recipeList){
             if(r.getTier() == tier) { //compare tier first for speed (and to avoid incorrect dimensions)
                 if (r.inputMatches(Arrays.asList(recipe))) {
-                    retStacks.addAll(r.result);
+                    for(ItemStack res : r.result) {
+                        canAdd=true;
+                        if(res.getItem() instanceof ItemTransport) {
+                            if (!ConfigHandler.ENABLE_STEAM) {
+                                canAdd=!((ItemTransport)res.getItem()).types.contains(TrainsInMotion.transportTypes.STEAM);
+                            }
+                            if (!ConfigHandler.ENABLE_DIESEL) {
+                                canAdd=!((ItemTransport)res.getItem()).types.contains(TrainsInMotion.transportTypes.DIESEL);
+                            }
+                            if (!ConfigHandler.ENABLE_ELECTRIC) {
+                                canAdd=!((ItemTransport)res.getItem()).types.contains(TrainsInMotion.transportTypes.ELECTRIC);
+                            }
+                            if (!ConfigHandler.ENABLE_TENDER) {
+                                canAdd=!((ItemTransport)res.getItem()).types.contains(TrainsInMotion.transportTypes.TENDER);
+                            }
+                            if (!ConfigHandler.ENABLE_BUILDER) {
+                                canAdd=res.getItem()!=EntityTracksBuilder.thisItem;
+                            }
+                        }
+                        if(canAdd) {
+                            retStacks.add(res);
+                        }
+                    }
                 }
             }
         }
