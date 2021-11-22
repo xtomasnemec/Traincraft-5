@@ -17,20 +17,20 @@ public class TiMItems {
 
     public static Item boilerWood,boilerIron,boilerSteel,boilerCopper;
     public static Item fireboxIron, fireboxSteel;
-    public static Item petrolEngine,smallDieselEngine,mediumDieselEngine,largeDieselEngine;
-    public static Item smallElectricEngine,mediumElectricEngine,largeElectricEngine;
+    public static Item mediumDieselEngine;//,petrolEngine,smallDieselEngine,largeDieselEngine;
+    public static Item smallElectricEngine;//,mediumElectricEngine,largeElectricEngine;
 
-    public static Item seatsWooden,seatsIron,seatsPadded,seatsLuxury;
+    public static Item seatsWooden;//,seatsIron,seatsPadded,seatsLuxury;
 
-    public static Item hydraulicTransmission,pneumaticTransmission,transformer,transformerHV,electricControls;
+    public static Item hydraulicTransmission,pneumaticTransmission,transformer;//,transformerHV,electricControls;
 
-    public static Item enginePiston,cylinder,camshaft,graphite,steelPinCircuit, goldPinCircuit, connectingRod;
+    public static Item enginePiston,cylinder,camshaft,graphite,steelPinCircuit;//, goldPinCircuit, connectingRod;
 
-    public static Item copperWire,goldWire, carbonWire, steelWire, aluminiumWire, insulatedCopperWire, insulatedAluminiumWire;
+    public static Item copperWire,goldWire, carbonWire, steelWire, aluminiumWire;//, insulatedCopperWire, insulatedAluminiumWire;
 
-    public static Item controlPanel, controlStand;
+    public static Item controlPanel;//, controlStand;
 
-    public static Item walschaertsValveGear, stephensonValveGear, bakerValveGear, radialValveGear, conjugatingValveGear;
+    //public static Item walschaertsValveGear, stephensonValveGear, bakerValveGear, radialValveGear, conjugatingValveGear;
 
     public static Item railItem;
 
