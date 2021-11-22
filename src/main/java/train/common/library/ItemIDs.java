@@ -407,7 +407,7 @@ public enum ItemIDs {
 	minecartAlcoPB1("ItemRollingStock", "AlcoPB1Icon",4),
 
 	minecartC415H("ItemRollingStock", "c415h", 4),
-	//minecartC415S("ItemRollingStock", "c415s", 4),
+	minecartC415S("ItemRollingStock", "c415s", 4),
 	//minecartC415L("ItemRollingStock", "c415l", 4),
 	minecartC424("ItemRollingStock", "c424", 5),
 	minecartC425("ItemRollingStock", "c425", 5),
