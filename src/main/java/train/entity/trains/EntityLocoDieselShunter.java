@@ -79,7 +79,7 @@ public class EntityLocoDieselShunter extends EntityTrainCore {
         return new ItemStack[]{
                 new ItemStack(TiMItems.controlPanel, 1), new ItemStack(TiMItems.wheelSteel, 4), new ItemStack(TiMItems.frameSteel, 2),
                 new ItemStack(TiMOres.ingotSteel, 2), new ItemStack(TiMItems.chimneySteel, 1), new ItemStack(TiMItems.cabinSteel, 1),
-                new ItemStack(TiMItems.pneumaticTransmission, 1), new ItemStack(TiMItems.mediumDieselEngine, 3), null        };
+                new ItemStack(TiMItems.hydraulicTransmission, 1), new ItemStack(TiMItems.mediumDieselEngine, 3), null        };
     }
 
 

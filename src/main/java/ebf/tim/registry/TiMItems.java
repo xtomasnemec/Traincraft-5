@@ -22,7 +22,7 @@ public class TiMItems {
 
     public static Item seatsWooden;//,seatsIron,seatsPadded,seatsLuxury;
 
-    public static Item hydraulicTransmission,pneumaticTransmission,transformer;//,transformerHV,electricControls;
+    public static Item hydraulicTransmission,transformer;//,pneumaticTransmission,transformerHV,electricControls;
 
     public static Item enginePiston,cylinder,camshaft,graphite,steelPinCircuit;//, goldPinCircuit, connectingRod;
 

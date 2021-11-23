@@ -59,6 +59,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static ebf.tim.TrainsInMotion.transportTypes.*;
+import static ebf.tim.utility.CommonUtil.radianF;
 import static ebf.tim.utility.CommonUtil.rotatePointF;
 
 /**
@@ -1418,20 +1419,32 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //todo: some vec2 logic could optimize this a little.
         //set the target position
         Vec3d point = new Vec3d(linkedTransport.posX, 0, linkedTransport.posZ);
+        point.add(new Vec3d(linkedTransport.motionX,0,linkedTransport.motionZ));
         //now subtract the current position
-        point.subtractVector(posX, 0, posZ);
+        point=point.subtract(new Vec3d(posX, 0, posZ));
+        point=point.subtract(new Vec3d(motionX, 0, motionZ));
 
         //now add the difference between the coupler offsets.
         //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
         //which prevents phasing into eachother around corners.
-        point.add(CommonUtil.rotateDistance(
-                Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5
-                ,0,front?rotationYaw-180:rotationYaw));
 
+        //DebugUtil.println((Math.abs(point.xCoord)+ Math.abs(point.zCoord))-
+       //         (Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5));
 
-        if(Math.abs(point.xCoord)+Math.abs(point.zCoord)>0.06) {
-            frontBogie.minecartMove(this, point.xCoord, point.zCoord);
-            backBogie.minecartMove(this, point.xCoord, point.zCoord);
+        double dist = Math.max(Math.abs(point.xCoord), Math.abs(point.zCoord));
+
+        dist -=(Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5);
+
+        dist *=0.4;
+
+        point.xCoord = (dist *
+                Math.cos((front?rotationYaw+360:rotationYaw+180)*radianF));
+        point.zCoord = (dist *
+                Math.sin((front?rotationYaw+360:rotationYaw+180)*radianF));
+
+        if(Math.abs(dist)>0.06 && Math.abs(dist) < 30) {
+            frontBogie.addVelocity(point.xCoord,0, point.zCoord);
+            backBogie.addVelocity(point.xCoord,0, point.zCoord);
         }
     }
 

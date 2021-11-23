@@ -81,7 +81,7 @@ public class EntityLocoDieselKof_DB extends EntityTrainCore {
         return new ItemStack[]{
                 new ItemStack(TiMItems.controlPanel, 1), new ItemStack(TiMItems.wheelSteel, 2), new ItemStack(TiMItems.frameSteel, 1),
                 new ItemStack(TiMOres.ingotSteel, 2), new ItemStack(TiMItems.chimneySteel, 1), new ItemStack(TiMItems.cabinSteel, 1),
-                new ItemStack(TiMItems.pneumaticTransmission, 1), new ItemStack(TiMItems.mediumDieselEngine, 2), null        };
+                new ItemStack(TiMItems.hydraulicTransmission, 1), new ItemStack(TiMItems.mediumDieselEngine, 2), null        };
     }
 
 
