@@ -859,12 +859,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public void updatePosition(){
 
-        if(collisionHandler==null) {
-            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
-            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-        }
-
-
         //reposition bogies to be sure they are the right distance
         if(!worldObj.isRemote) {
 
@@ -912,37 +906,47 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
         //actually move
-        frontBogie.minecartMove(this, frontBogie.motionX,frontBogie.motionZ);
-        backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
-        motionX=(posX-prevPosX);
-        motionZ=(posZ-prevPosZ);
-        prevPosX=posX;
-        prevPosZ=posZ;
-
-            entityData.putDouble(NBTKeys.frontBogieX, frontBogie.motionX);
-            entityData.putDouble(NBTKeys.frontBogieZ, frontBogie.motionZ);
-            entityData.putDouble(NBTKeys.backBogieX, backBogie.motionX);
-            entityData.putDouble(NBTKeys.backBogieZ, backBogie.motionZ);
-            frontBogie.setVelocity(0,0,0);
-            backBogie.setVelocity(0,0,0);
+            moveBogies(null,null);
+            motionX=(posX-prevPosX);
+            motionZ=(posZ-prevPosZ);
+            prevPosX=posX;
+            prevPosZ=posZ;
+            dataWatcher.updateObject(12, getVelocity());
 
 
-        setRotation((CommonUtil.atan2degreesf(
+            setRotation((CommonUtil.atan2degreesf(
                 frontBogie.posZ - backBogie.posZ,
                 frontBogie.posX - backBogie.posX)),
                 CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+        }
+
+        if(collisionHandler==null) {
+            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        } else {
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        }
+    }
+
+    /**
+     * if X or Z is null, the bogie's existing motion velocity will be used
+     */
+    public void moveBogies(Double velocityX, Double velocityZ){
+        if(velocityX==null||velocityZ==null){
+            frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
+            backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
+            frontBogie.setVelocity(0,0,0);
+            backBogie.setVelocity(0,0,0);
+        } else {
+            frontBogie.minecartMove(this, velocityX, velocityZ);
+            backBogie.minecartMove(this, velocityX, velocityZ);
+        }
 
         vectorCache[3] = CommonUtil.rotatePointF(-rotationPoints()[0],0,0,rotationPitch, rotationYaw,0);
 
         setPosition((frontBogie.posX+vectorCache[3][0]),
                 (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
 
-            dataWatcher.updateObject(12, getVelocity());
-            for (CollisionBox box : collisionHandler.interactionBoxes) {
-                box.onUpdate();
-            }
-        }
-        collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
     }
 
     double maxBoost(Block booster){
@@ -1419,10 +1423,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //todo: some vec2 logic could optimize this a little.
         //set the target position
         Vec3d point = new Vec3d(linkedTransport.posX, 0, linkedTransport.posZ);
-        point.add(new Vec3d(linkedTransport.motionX,0,linkedTransport.motionZ));
+        if(linkedTransport.getAccelerator()!=0) {
+            point.addVector(linkedTransport.motionX, 0, linkedTransport.motionZ);
+        }
         //now subtract the current position
-        point=point.subtract(new Vec3d(posX, 0, posZ));
-        point=point.subtract(new Vec3d(motionX, 0, motionZ));
+        point.subtractVector(posX, 0, posZ);
+        //point.subtractVector(motionX, 0, motionZ);
 
         //now add the difference between the coupler offsets.
         //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
@@ -1431,7 +1437,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //DebugUtil.println((Math.abs(point.xCoord)+ Math.abs(point.zCoord))-
        //         (Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5));
 
-        double dist = Math.max(Math.abs(point.xCoord), Math.abs(point.zCoord));
+        double dist = Math.abs(point.xCoord)+ Math.abs(point.zCoord);
 
         dist -=(Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5);
 
@@ -1443,8 +1449,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 Math.sin((front?rotationYaw+360:rotationYaw+180)*radianF));
 
         if(Math.abs(dist)>0.06 && Math.abs(dist) < 30) {
-            frontBogie.addVelocity(point.xCoord,0, point.zCoord);
-            backBogie.addVelocity(point.xCoord,0, point.zCoord);
+            moveBogies(point.xCoord,point.zCoord);
         }
     }
 
