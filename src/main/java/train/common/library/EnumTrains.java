@@ -371,7 +371,7 @@ public enum EnumTrains {
 	Freight66centerbeam("66centerbeam",  Freight66centerbeam.class, ItemIDs.minecart66centerbeam.item, "freight", 6, TraincraftUtil.getBytesFromColors(new String[] {"Orange", "Cyan", "Green", "Lime", "LightBlue", "Pink", "Blue", "Yellow", "Red", "Black"}), 0, 54, (new String[] {"Cargo: Woodthings."})),
 	Freight73centerbeam("73centerbeam",  Freight73centerbeam.class, ItemIDs.minecart73centerbeam.item, "freight", 7, TraincraftUtil.getBytesFromColors(new String[] {"Pink", "Cyan", "Green", "Orange"}), 0, 54, (new String[] {"Cargo: Woodthings."})),
 
-	PS140("PS140",  PS140.class, ItemIDs.minecartPS140.item, "freight", 4, TraincraftUtil.getBytesFromColors(new String[] {"Brown", "Red", "LightBlue", "Green", "Cyan", "Skin16"}), 0, 27, (new String[] {"Cargo: Any."})),
+	PS140("PS140",  PS140.class, ItemIDs.minecartPS140.item, "freight", 4, TraincraftUtil.getBytesFromColors(new String[] {"Brown", "Red", "LightBlue", "Green", "Cyan", "Skin16", "Skin17", "Skin18", "Skin19", "Skin20", "Yellow"}), 0, 27, (new String[] {"Cargo: Any."})),
 	PS150("PS150",  PS150.class, ItemIDs.minecartPS150.item, "freight", 5, TraincraftUtil.getBytesFromColors(new String[] {"White", "Lime", "Red", "Yellow"}), 0, 36, (new String[] {"Cargo: Any."})),
 	PS160("PS160", PS160.class, ItemIDs.minecartPS160.item, "freight", 6, TraincraftUtil.getBytesFromColors(new String[] {"Blue", "Orange", "Cyan", "White"}), 0, 45, (new String[] {"Cargo: Any."})),
 	OWO60Verticube("OWO 60 Verticube", OWO60Verticube.class, ItemIDs.minecartOWO60Verticube.item, "freight", 6, TraincraftUtil.getBytesFromColors(new String[] {"Cyan", "Lime", "Green", "LightGrey", "White", "Blue"}), 0, 54, (new String[] {"Cargo: Any."})),
@@ -388,7 +388,7 @@ public enum EnumTrains {
 	OreJenny("Ore Jenny", OreJenny.class, ItemIDs.minecartOreJenny.item, "freight", 0.5, TraincraftUtil.getBytesFromColors(new String[] {"Brown", "Red", "Orange", "Pink", "Black"}), 0, 27, (new String[] {"Cargo: Ores."})),
 
 	DOT11111000( "DOT11000", DOT11111000.class, ItemIDs.minecart11000DOT111.item, "tank", 0, 0, 4, 0, 0, 0, 0, 0, 41000, TraincraftUtil.getBytesFromColors(new String[] {"Black", "LightGrey", "Grey"}), 10, 0, (new String[] {"Capacity: 41000mb."})),
-	DOT11120600( "DOT20600", DOT11120600.class, ItemIDs.minecart20600DOT111.item, "tank", 0, 0, 5, 0, 0, 0, 0, 0, 78000, TraincraftUtil.getBytesFromColors(new String[] {"Grey", "Black", "White", "Green"}), 10, 0, (new String[] {"Capacity: 78000mb."})),
+	DOT11120600( "DOT20600", DOT11120600.class, ItemIDs.minecart20600DOT111.item, "tank", 0, 0, 5, 0, 0, 0, 0, 0, 78000, TraincraftUtil.getBytesFromColors(new String[] {"Grey", "Black", "White", "Green", "LightGrey"}), 10, 0, (new String[] {"Capacity: 78000mb."})),
 	DOT11129080( "DOT29080", DOT11129080.class, ItemIDs.minecart29080DOT111.item, "tank", 0, 0, 6, 0, 0, 0, 0, 0, 110000, TraincraftUtil.getBytesFromColors(new String[] {"Black", "Orange", "LightGrey", "White"}), 10, 0, (new String[] {"Capacity: 110000mb."})),
 
 	SkeletonCar("Skeleton", SkeletonLogCar.class, ItemIDs.minecartSkeletonLogCar.item, "freight", 1.5, TraincraftUtil.getBytesFromColors(new String[]{"Black","Grey", "LightGrey"}), 18, 18, (new String[] {"Cargo: Logs."})),
