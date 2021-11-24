@@ -3,6 +3,7 @@ package train.entity.gui;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityTrainCore;
+import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ public class HUDloco extends GuiScreen {
 
 	private Minecraft game;
 	private int windowWidth, windowHeight;
+	private int lastTick=0, heat=0;
 
 	@SubscribeEvent
 	public void onGameRender(RenderGameOverlayEvent.Text event){
@@ -78,18 +80,18 @@ public class HUDloco extends GuiScreen {
 		fontRendererObj.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			fontRendererObj.drawStringWithShadow("State: " + getState(loco.fuelHandler), 50, windowHeight + 80, 0xFFFFFF);
+			fontRendererObj.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
-	private String getState(FuelHandler fuel){
-		if(fuel.burnHeat<70){
+	private String getState(GenericRailTransport loco){
+		if(getHeat(loco)<70){
 			return "cold";
-		} else if (fuel.burnHeat<100){
+		} else if (getHeat(loco)<100){
 			return "warm";
-		} else if(fuel.burnHeat<300){
+		} else if(getHeat(loco)<300){
 			return "hot";
 		} else {
 			return "very hot";
@@ -107,9 +109,14 @@ public class HUDloco extends GuiScreen {
 			l = loco.getTankInfo(null)[0] != null ? loco.getTankInfo(null)[0].fluid.amount : 1;
 			l = Math.abs(((l * 70) / (loco.getTankCapacity()[0])));
 		} else {
-			l = (int)loco.fuelHandler.burnTimeMax;
-			if(l!=0 && loco.fuelHandler.burnTime!=0){
-				l = Math.abs(((l * 70) / ((int)loco.fuelHandler.burnTime)));
+
+			if(loco.entityData.hasFloat("burnTime") && loco.entityData.hasFloat("maxBurn")) {
+				l = (int)Math.floor(loco.entityData.getFloat("maxBurn"));
+				if (l != 0 && loco.entityData.getFloat("burnTime") != 0) {
+					l = (int)Math.abs(((l * 70) / (loco.entityData.getFloat("burnTime"))));
+				}
+			}else {
+				l = 0;
 			}
 		}
 		if (l > 70) {
@@ -136,7 +143,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderWaterBar(EntityTrainCore loco) {
-		int l = loco.getTankInfo(null)[0]!=null?loco.getTankInfo(null)[0].fluid.amount:0;
+		int l = loco.getTankInfo(null)[0]!=null?loco.getTankInfo(null)[0].fluid.amount:1;
 		int l_Scaled = Math.abs((l * 49) / loco.getTankCapacity()[0]);
 		if (l_Scaled > 49) {
 			l_Scaled = 49;// to fit the 49 pixels bar
@@ -153,8 +160,19 @@ public class HUDloco extends GuiScreen {
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 		/* this is for the red overlay if you don't put water into steam trains */
-		if (l <= 1 && loco.fuelHandler.burnHeat>0) {
+		if (l <= 1 && getHeat(loco)>0) {
 			this.drawGradientRect(0, 0, windowWidth, windowHeight + 100, 1615855616, -1602211792);
+		}
+	}
+
+	public int getHeat(GenericRailTransport loco){
+		if(loco.ticksExisted>lastTick) {
+			if (loco.entityData.hasInt("burnHeat")) {
+				return heat=loco.entityData.getInt("burnHeat");
+			}
+			return 0;
+		} else {
+			return heat;
 		}
 	}
 
@@ -183,10 +201,6 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderOverheating(EntityTrainCore loco) {
-		int overheatLevel = loco.fuelHandler.burnHeat;
-		if (overheatLevel > 70) {
-			overheatLevel += 30;
-		}
 		// fontRendererObj.drawStringWithShadow("Heat:", 33, (windowHeight/2)+1, 0xFFFFFF);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
@@ -201,7 +215,12 @@ public class HUDloco extends GuiScreen {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "locohud.png"));
 		}
 
-		int overheatScaled = Math.abs((overheatLevel * 49) / (130));
+		int overheatScaled = getHeat(loco);
+		if(overheatScaled>0){
+			overheatScaled*=49;
+			overheatScaled/=130;
+			overheatScaled=Math.abs(overheatScaled);
+		}
 		if (overheatScaled > 49) {
 			overheatScaled = 49;
 		}

@@ -432,7 +432,7 @@ public class XmlBuilder {
             data.append(stringMap.get(key));
             tag(key, data);
         }
-        for(String key : intMap.keySet()){
+        for(String key : uuidMap.keySet()){
             tag(key, data, "uuid");
             data.append(uuidMap.get(key).toString());
             tag(key, data);

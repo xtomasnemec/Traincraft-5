@@ -1423,12 +1423,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //todo: some vec2 logic could optimize this a little.
         //set the target position
         Vec3d point = new Vec3d(linkedTransport.posX, 0, linkedTransport.posZ);
-        if(linkedTransport.getAccelerator()!=0) {
+        if(linkedTransport.getAccelerator()==0) {
             point.addVector(linkedTransport.motionX, 0, linkedTransport.motionZ);
         }
         //now subtract the current position
         point.subtractVector(posX, 0, posZ);
-        //point.subtractVector(motionX, 0, motionZ);
+        if(getAccelerator()==0) {
+            point.subtractVector(motionX, 0, motionZ);
+        }
 
         //now add the difference between the coupler offsets.
         //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
@@ -1437,18 +1439,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //DebugUtil.println((Math.abs(point.xCoord)+ Math.abs(point.zCoord))-
        //         (Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5));
 
-        double dist = Math.abs(point.xCoord)+ Math.abs(point.zCoord);
+        double dist = Math.max(Math.abs(point.xCoord), Math.abs(point.zCoord));
 
         dist -=(Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5);
 
-        dist *=0.4;
+        dist *=0.998;
 
         point.xCoord = (dist *
                 Math.cos((front?rotationYaw+360:rotationYaw+180)*radianF));
         point.zCoord = (dist *
                 Math.sin((front?rotationYaw+360:rotationYaw+180)*radianF));
+        //if(dist<0){
+            //dist+=0.0625;
+       // }
 
-        if(Math.abs(dist)>0.06 && Math.abs(dist) < 30) {
+        if(Math.abs(dist)>0.006 && Math.abs(dist) < 30) {
             moveBogies(point.xCoord,point.zCoord);
         }
     }

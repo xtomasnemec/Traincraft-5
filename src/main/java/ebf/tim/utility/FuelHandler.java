@@ -155,12 +155,18 @@ public class FuelHandler{
 				if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 					train.getSlotIndexByID(400).decrStackSize(1);
 				}
+				train.entityData.putFloat("burnTime", burnTime);
+				train.entityData.putFloat("maxBurn", burnTimeMax);
+				train.entityData.putInt("burnHeat", burnHeat);
 			} else {
 				burnHeat = 0;
 				burnTimeMax = 0;
+				train.entityData.putFloat("maxBurn", 0f);
+				train.entityData.putInt("burnHeat", 0);
 			}
 		} else {
 			burnTime--;
+			train.entityData.putFloat("burnTime", burnTime);
 		}
 
 		//if there's a fluid item in the slot and the train can consume the entire thing
