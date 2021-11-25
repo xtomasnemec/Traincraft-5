@@ -58,18 +58,16 @@ public class EntityTrainCore extends GenericRailTransport {
     protected void readEntityFromNBT(NBTTagCompound tag) {
         super.readEntityFromNBT(tag);
         accelerator = tag.getInteger(NBTKeys.accelerator);
-        dataWatcher.updateObject(16, tag.getFloat(NBTKeys.transportFuel));
-        vectorCache[1][0] = tag.getFloat(NBTKeys.trainSpeed);
-
+        entityData.putFloat("boilerHeat",tag.getFloat(NBTKeys.transportFuel));
 
     }
+
     /**saves the entity to server world*/
     @Override
     protected void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
         tag.setInteger(NBTKeys.accelerator, getAccelerator());
-        tag.setFloat(NBTKeys.transportFuel, dataWatcher.getWatchableObjectFloat(16));
-        tag.setFloat(NBTKeys.trainSpeed, vectorCache[1][0]);
+        tag.setFloat(NBTKeys.transportFuel, FuelHandler.getBoilerHeat(this));
 
     }
 
@@ -78,6 +76,7 @@ public class EntityTrainCore extends GenericRailTransport {
         super.entityInit();
         this.dataWatcher.addObject(18, accelerator);//accelerator
         this.updateWatchers = true;
+        vectorCache[1][0]=0;
     }
 
     @Override

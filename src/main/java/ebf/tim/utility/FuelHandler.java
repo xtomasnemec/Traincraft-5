@@ -137,6 +137,10 @@ public class FuelHandler{
 	}
 
 
+	public static float getBoilerHeat(GenericRailTransport train){
+		return (train.entityData.hasFloat("boilerHeat")?train.entityData.getFloat("boilerHeat"):0);
+	}
+
 	/**
 	 * <h2>steam management</h2>
 	 *
@@ -181,7 +185,7 @@ public class FuelHandler{
 		//manage boiler heat
 		if (burnHeat > 1) {
 			//calculate the heat increase
-			float heat = train.getDataWatcher().getWatchableObjectFloat(16);
+			float heat = getBoilerHeat(train);
 			if(heat==0){heat=1;}
 			train.getDataWatcher().updateObject(16,
 					(heat+
@@ -194,19 +198,19 @@ public class FuelHandler{
 			);
 
 			//cap the heat to the biome temp
-			if((heat >0 && train.getDataWatcher().getWatchableObjectFloat(16)>= heat*100)
-			|| (heat <0 && train.getDataWatcher().getWatchableObjectFloat(16)<= heat*100)
+			if((heat >0 && getBoilerHeat(train)>= heat*100)
+			|| (heat <0 && getBoilerHeat(train)<= heat*100)
 			){
-				train.getDataWatcher().updateObject(16, heat*100);
+				train.entityData.putFloat("boilerHeat", heat*100);
 			} else {
-				train.getDataWatcher().updateObject(16, train.getDataWatcher().getWatchableObjectFloat(16)+heat);
+				train.entityData.putFloat("boilerHeat", heat*100);
 			}
 		}
 		if(train.entityData.containsFluidStack("tanks.0")) {
 			//if the boiler temp is above the boiling point, start generating steam.
-			if (train.getDataWatcher().getWatchableObjectFloat(16) > 100) {
+			if (getBoilerHeat(train) > 100) {
 				int steam = (int) Math.floor(
-						((train.getDataWatcher().getWatchableObjectFloat(16) - 100) * 0.005f) * //calculate heat from burnHeat
+						((getBoilerHeat(train) - 100) * 0.005f) * //calculate heat from burnHeat
 								(train.entityData.getFluidStack("tanks.0").amount * 0.005f) //calculate surface area of water
 				);
 				//drain fluid
@@ -238,7 +242,7 @@ public class FuelHandler{
 
 		//update the datawatchers so client can display the info on the GUI.
 		train.getDataWatcher().updateObject(13, burnTime>0?(int)((burnTime/ burnTimeMax)*18):0);
-		train.getDataWatcher().updateObject(15, MathHelper.floor_float(train.getDataWatcher().getWatchableObjectFloat(16) * 100f));
+		train.getDataWatcher().updateObject(15, (int)(getBoilerHeat(train) * 100f));
 	}
 
 	public void manageDiesel(EntityTrainCore train){

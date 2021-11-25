@@ -87,11 +87,12 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private String getState(GenericRailTransport loco){
-		if(getHeat(loco)<70){
+		float h =loco.entityData.hasFloat("boilerHeat")?loco.entityData.getFloat("boilerHeat"):0;
+		if (h < 50) {
 			return "cold";
-		} else if (getHeat(loco)<100){
+		} else if (h < 90) {
 			return "warm";
-		} else if(getHeat(loco)<300){
+		} else if (h < 300) {
 			return "hot";
 		} else {
 			return "very hot";
@@ -160,19 +161,21 @@ public class HUDloco extends GuiScreen {
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 		/* this is for the red overlay if you don't put water into steam trains */
-		if (l <= 1 && getHeat(loco)>0) {
+		if (l <= 1 && loco.entityData.hasFloat("burnTime") && loco.entityData.getFloat("burnTime")>0) {
 			this.drawGradientRect(0, 0, windowWidth, windowHeight + 100, 1615855616, -1602211792);
 		}
 	}
 
 	public int getHeat(GenericRailTransport loco){
-		if(loco.ticksExisted>lastTick) {
-			if (loco.entityData.hasInt("burnHeat")) {
-				return heat=loco.entityData.getInt("burnHeat");
+		if(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
+			if (true || loco.ticksExisted > lastTick) {
+				int l = loco.getTankInfo(null)[1] != null ?
+						loco.getTankInfo(null)[1].fluid.amount : 1;
+				return ((l * 100) / (loco.getTankCapacity()[1]));
 			}
-			return 0;
+			return 50;
 		} else {
-			return heat;
+			return loco.getBoolean(GenericRailTransport.boolValues.RUNNING)?50:0;
 		}
 	}
 
@@ -216,19 +219,14 @@ public class HUDloco extends GuiScreen {
 		}
 
 		int overheatScaled = getHeat(loco);
-		if(overheatScaled>0){
-			overheatScaled*=49;
-			overheatScaled/=130;
-			overheatScaled=Math.abs(overheatScaled);
-		}
-		if (overheatScaled > 49) {
-			overheatScaled = 49;
+		if (overheatScaled > 0) {
+			overheatScaled=(49*overheatScaled)/100;
 		}
 		/**
 		 * Things are slightly different in Steam HUD render overheat arrow black bar for steam train
 		 */
 		if (!(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM))) {
-			drawTexturedModalRect(58, windowHeight + 37 - ( overheatScaled) + (20), 169, 158, 23, 5);
+			drawTexturedModalRect(58, windowHeight + 37 - ( overheatScaled)+20, 169, 158, 23, 5);
 		}
 		else {
 			drawTexturedModalRect(56, windowHeight + 17, 176, (169 + overheatScaled), 5, 49 - overheatScaled);

@@ -5,10 +5,7 @@ import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketInteract;
 import ebf.tim.registry.URIRegistry;
-import ebf.tim.utility.ClientUtil;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.ItemStackSlot;
-import ebf.tim.utility.TransportSlotManager;
+import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Tessellator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -345,7 +342,7 @@ public class GUITransport extends GUIContainerNoNEI {
         }
 
         drawTextOutlined(fontRendererObj, "burn time: " + transport.getDataWatcher().getWatchableObjectInt(13), 10, 70, 16777215);
-        drawTextOutlined(fontRendererObj, "boiler heat: " + transport.getDataWatcher().getWatchableObjectFloat(16), 10, 80, 16777215);
+        drawTextOutlined(fontRendererObj, "boiler heat: " + FuelHandler.getBoilerHeat(transport), 10, 80, 16777215);
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
