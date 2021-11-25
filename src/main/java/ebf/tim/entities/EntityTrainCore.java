@@ -76,7 +76,7 @@ public class EntityTrainCore extends GenericRailTransport {
         super.entityInit();
         this.dataWatcher.addObject(18, accelerator);//accelerator
         this.updateWatchers = true;
-        vectorCache[1][0]=0;
+        vectorCache[1]=new float[]{0,0,0};
     }
 
     @Override
