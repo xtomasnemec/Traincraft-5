@@ -126,6 +126,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public int forceBackupTimer =0, syncTimer=0;
     public float pullingWeight=0;
 
+    private float ticksSinceLastVelocityChange=0;
+
     private List<GenericRailTransport> consist = new ArrayList<>();
 
     //@SideOnly(Side.CLIENT)
@@ -913,17 +915,22 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         //actually move
             moveBogies(null,null);
-            motionX=(posX-prevPosX);
-            motionZ=(posZ-prevPosZ);
-            prevPosX=posX;
-            prevPosZ=posZ;
-            dataWatcher.updateObject(12, getVelocity());
+            //only update velocity if we've moved to any significance.
+            if(Math.abs(posX-prevPosX)>0.0625 || Math.abs(posZ-prevPosZ)>0.0625) {
+                motionX = (posX - prevPosX)/ticksSinceLastVelocityChange;
+                motionZ = (posZ - prevPosZ)/ticksSinceLastVelocityChange;
+                prevPosX = posX;
+                prevPosZ = posZ;
+                dataWatcher.updateObject(12, getVelocity());
 
-
-            setRotation((CommonUtil.atan2degreesf(
-                frontBogie.posZ - backBogie.posZ,
-                frontBogie.posX - backBogie.posX)),
-                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                setRotation((CommonUtil.atan2degreesf(
+                        frontBogie.posZ - backBogie.posZ,
+                        frontBogie.posX - backBogie.posX)),
+                        CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                ticksSinceLastVelocityChange=1;
+            } else {
+                ticksSinceLastVelocityChange++;
+            }
         }
 
         if(collisionHandler==null) {
