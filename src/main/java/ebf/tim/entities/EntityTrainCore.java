@@ -76,7 +76,6 @@ public class EntityTrainCore extends GenericRailTransport {
         super.entityInit();
         this.dataWatcher.addObject(18, accelerator);//accelerator
         this.updateWatchers = true;
-        vectorCache[1]=new float[]{0,0,0};
     }
 
     @Override
@@ -154,53 +153,54 @@ public class EntityTrainCore extends GenericRailTransport {
             //this end result means we now can move at 0.62428 of the speed provided by MHP
             //0.62428*0.508=0.317 blocks per second acceleration.
 
+            //x is for current, y is for previous, z is for slip
             //store this for later first
-            vectorCache[1][2] = vectorCache[1][0];
+            cachedVectors[2].yCoord = cachedVectors[1].xCoord;
 
             // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
             // in which case we increase by around 70%
-            //vectorCache[1][0] = (maxPowerMicroblocks * (maxPowerMicroblocks * 0.7f));
+            //cachedVectors[1].xCoord = (maxPowerMicroblocks * (maxPowerMicroblocks * 0.7f));
             //now figure out the percentage of this vs with weight subtracted
-            //vectorCache[1][1] = Math.abs(vectorCache[1][0] - weight);
+            //vectorCache[1][1] = Math.abs(cachedVectors[1].xCoord - weight);
 
             //convert max power from MHP to HP, and then to lbf/s
-            vectorCache[1][0]= maxPowerMicroblocks * 0.98632f * 0.001818f;
+            cachedVectors[1].xCoord= maxPowerMicroblocks * 0.98632f * 0.001818f;
 
-            if(vectorCache[1][0]<=0){
+            if(cachedVectors[1].xCoord<=0){
                 //if too much weight, or no power, you stall
-                vectorCache[1][0]=0;
+                cachedVectors[1].xCoord=0;
             } else {
                 //scale the acceleration in lbf based on itself minus the weight
                 // after weight is converted to lb and scaled to the rough friction coefficient of steel on steel.
-                vectorCache[1][0]/= vectorCache[1][0] - (weight * 2.204622621849f * 0.0015f);
+                cachedVectors[1].xCoord/= cachedVectors[1].xCoord - (weight * 2.204622621849f * 0.0015f);
                 //scale to the acceleration stat of the train.
-                vectorCache[1][0]*=transportAcceleration();
+                cachedVectors[1].xCoord*=transportAcceleration();
                 //scale further by throttle position
-                vectorCache[1][0]*=getAcceleratiorPercentage();
+                cachedVectors[1].xCoord*=getAcceleratiorPercentage();
                 //nerf to more TC-esk acceleration rates
-                vectorCache[1][0]*=0.006;
+                cachedVectors[1].xCoord*=0.006;
 
 
                 if(CommonProxy.realSpeed){
-                    vectorCache[1][0]*=0.5f;//for real speed nerf by half
+                    cachedVectors[1].xCoord*=0.5f;//for real speed nerf by half
                 }
 
                 //add back the speed from last tick
-                vectorCache[1][0]+=vectorCache[1][2];
+                cachedVectors[1].xCoord+=cachedVectors[1].yCoord;
 
                 //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
                 if(CommonProxy.realSpeed){
                     //for real speed add a buff to max speed of 1.25%
-                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.03f)*1.25f) {
-                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.03f)*1.25f;
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f;
+                    if (cachedVectors[1].xCoord < -transportTopSpeed() * (0.277778f*0.03f)*1.25f) {
+                        cachedVectors[1].xCoord = -transportTopSpeed() * (0.277778f*0.03f)*1.25f;
+                    } else if (cachedVectors[1].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f) {
+                        cachedVectors[1].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f;
                     }
                 } else {
-                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.03f)) {
-                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.03f);
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.03f)) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.03f);
+                    if (cachedVectors[1].xCoord < -transportTopSpeed() * (0.277778f*0.03f)) {
+                        cachedVectors[1].xCoord = -transportTopSpeed() * (0.277778f*0.03f);
+                    } else if (cachedVectors[1].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)) {
+                        cachedVectors[1].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f);
                     }
                 }
 
@@ -214,11 +214,11 @@ public class EntityTrainCore extends GenericRailTransport {
             //vectorCache[1][1]=( (1.75f * (worldObj.isRaining()?0.5f:1)));
 
             //todo rework this, the math isnt based on newtons anymore.
-            if(Math.abs(vectorCache[1][0])*-745.7>vectorCache[1][1]/7457){
+            if(Math.abs(cachedVectors[1].xCoord)*-745.7>cachedVectors[1].zCoord/7457){
                 //todo: add sparks to animator.
-                //DebugUtil.println("SCREECH","wheelspin: " + (vectorCache[1][0]*-745.7),
+                //DebugUtil.println("SCREECH","wheelspin: " + (cachedVectors[1].xCoord*-745.7),
                 //        "Grip: " + (vectorCache[1][1]/7457), "i really need to get those spark particles in..");
-               // vectorCache[1][0] *=0.33f;
+               // cachedVectors[1].xCoord *=0.33f;
             }
 
         } else {
@@ -258,10 +258,10 @@ public class EntityTrainCore extends GenericRailTransport {
                             if(slip>0) {
                                 rotationYaw+=accelerator*slip;
                                 if(slip<6) {
-                                    vectorCache[1][2] *= slip*0.75;
+                                    cachedVectors[1].yCoord *= slip*0.75;
                                 }
                                 calculateAcceleration();
-                                vectorCache[1][0] *= slip > 0 ? slip : 0.996;
+                                cachedVectors[1].xCoord *= slip > 0 ? slip : 0.996;
                             } else {
                                 calculateAcceleration();
                             }
@@ -273,20 +273,20 @@ public class EntityTrainCore extends GenericRailTransport {
                 } else if(ticksExisted % 10 == 0) {
                     //basically apply normal bogie drag to acceleration
                     if((getVelocity()<0.3) || getBoolean(boolValues.BRAKE)) {
-                        vectorCache[1][0] *= 0.95;
+                        cachedVectors[1].xCoord *= 0.95;
                     }
                     if(slip<6 && slip>0) {
-                        vectorCache[1][2] *= slip*0.75;
+                        cachedVectors[1].yCoord *= slip*0.75;
                     }
-                    vectorCache[1][0] *= slip > 0 ? slip : 0.996;
+                    cachedVectors[1].xCoord *= slip > 0 ? slip : 0.996;
                 }
 
                 if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
                     frontBogie.setVelocity(0,0,0);
                     backBogie.setVelocity(0,0,0);
-                    vectorCache[1][0] = 0;
+                    cachedVectors[1].xCoord = 0;
                 } else {
-                    Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
+                    Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[1].xCoord,0, rotationYaw);
                     frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
                     backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
                 }

@@ -303,8 +303,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         }
 
         //update direction for consecutive loop calls
-        velDirection[0]=railPathX==0.0D?0:motionSqrt * railPathX / railPathSqrt;
-        velDirection[1]=railPathZ==0.0D?0:motionSqrt * railPathZ / railPathSqrt;
+        velDirection[0]=railPathX==0.0D?0:motionSqrt * (railPathX / railPathSqrt);
+        velDirection[1]=railPathZ==0.0D?0:motionSqrt * (railPathZ / railPathSqrt);
 
         //handle rotating normal velocity based on track path
         motionSqrt = Math.sqrt(motionX * motionX + motionZ * motionZ);

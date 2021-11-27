@@ -24,6 +24,7 @@ import ebf.tim.render.TransportRenderData;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.Vec3d;
+import fexcraft.tmt.slim.Vec3f;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
@@ -92,8 +93,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**the destination for routing*/
     public String destination ="";
     /**used to initialize a large number of variables that are used to calculate everything from movement to linking.
-     * this is so we don't have to initialize each of these variables every tick, saves CPU.*/
-    public float[][] vectorCache = new float[7][3];
+     * this is so we don't have to initialize each of these variables every tick, saves CPU.
+     * 0 is for rider positions
+     * 1 is for bogie initialization and updating
+     * 2 is for cached locomotive velocity.
+     * */
+    public Vec3f[] cachedVectors = new Vec3f[]{
+            new Vec3f(0,0,0),new Vec3f(0,0,0),new Vec3f(0,0,0),new Vec3f(0,0,0)};
     /**the health of the entity, similar to that of EntityLiving*/
     private int health = 20;
     /**the list of items used for the inventory and crafting slots.*/
@@ -942,10 +948,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             backBogie.minecartMove(this, velocityX, velocityZ);
         }
 
-        vectorCache[3] = CommonUtil.rotatePointF(-rotationPoints()[0],0,0,rotationPitch, rotationYaw,0);
+        cachedVectors[1] = new Vec3f(-rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
 
-        setPosition((frontBogie.posX+vectorCache[3][0]),
-                (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
+        setPosition((frontBogie.posX+cachedVectors[1].xCoord),
+                (frontBogie.posY+cachedVectors[1].yCoord),(frontBogie.posZ+cachedVectors[1].zCoord));
+
+        //reset the vector when we're done so it wont break trains.
+        cachedVectors[1]= new Vec3f(0,0,0);
 
     }
 
@@ -1014,17 +1023,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //always be sure the bogies exist on client and server.
         if (!worldObj.isRemote && (frontBogie == null || backBogie == null)) {
             //spawn front bogie
-            vectorCache[0] = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0,rotationPitch, rotationYaw,0);
-            frontBogie = new EntityBogie(worldObj, posX + vectorCache[0][0], posY + vectorCache[0][1], posZ + vectorCache[0][2], getEntityId(), true);
-            if(entityData.containsDouble(NBTKeys.frontBogieX)) {
-                frontBogie.setVelocity(entityData.getDouble(NBTKeys.frontBogieX), 0, entityData.getDouble(NBTKeys.frontBogieZ));
-            }
+            cachedVectors[1] = new Vec3f(rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+            frontBogie = new EntityBogie(worldObj, posX + cachedVectors[1].xCoord, posY + cachedVectors[1].yCoord, posZ + cachedVectors[1].zCoord, getEntityId(), true);
             //spawn back bogie
-            vectorCache[0] = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw,0);
-            backBogie = new EntityBogie(worldObj, posX + vectorCache[0][0], posY + vectorCache[0][1], posZ + vectorCache[0][2], getEntityId(), false);
-            if(entityData.containsDouble(NBTKeys.backBogieX)) {
-                backBogie.setVelocity(entityData.getDouble(NBTKeys.backBogieX), 0, entityData.getDouble(NBTKeys.backBogieZ));
-            }
+            cachedVectors[1] = new Vec3f(rotationPoints()[1],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+            backBogie = new EntityBogie(worldObj, posX + cachedVectors[1].xCoord, posY + cachedVectors[1].yCoord, posZ + cachedVectors[1].zCoord, getEntityId(), false);
+
             worldObj.spawnEntityInWorld(frontBogie);
             worldObj.spawnEntityInWorld(backBogie);
 
@@ -1085,7 +1089,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          *
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
-        else if (frontBogie!=null && backBogie != null && ticksExisted>1){
+        else if (frontBogie!=null && backBogie != null && ticksExisted>0){
             //calculate for slopes
             if(Math.abs(rotationPitch)>4f){
                 double[] roll = CommonUtil.rotatePoint(new double[]{
@@ -1126,11 +1130,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //rider updating isn't called if there's no driver/conductor, so just in case of that, we reposition the seats here too.
         if (riddenByEntity == null && getRiderOffsets() != null) {
             for (int i = 0; i < seats.size(); i++) {
-                vectorCache[0] = rotatePointF(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2], rotationPitch, rotationYaw, 0f);
-                vectorCache[0][0] += posX;
-                vectorCache[0][1] += posY;
-                vectorCache[0][2] += posZ;
-                seats.get(i).setPosition(vectorCache[0][0], vectorCache[0][1], vectorCache[0][2]);
+                cachedVectors[0] = new Vec3f(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2])
+                        .rotatePoint(rotationPitch, rotationYaw, 0f);
+                cachedVectors[0].addVector(posX,posY,posZ);
+                seats.get(i).setPosition(cachedVectors[0].xCoord, cachedVectors[0].yCoord, cachedVectors[0].zCoord);
             }
         }
 
@@ -1367,16 +1370,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void updateRiderPosition() {
         if (getRiderOffsets() != null && worldObj!=null) {
             if (riddenByEntity != null) {
-                vectorCache[2] = rotatePointF(getRiderOffsets()[0][0],getRiderOffsets()[0][1],getRiderOffsets()[0][2], rotationPitch, rotationYaw, 0);
-                riddenByEntity.setPosition(vectorCache[2][0] + this.posX, vectorCache[2][1] + this.posY+(worldObj.isRemote?0:1)+(frontBogie==null?0:frontBogie.yOffset), vectorCache[2][2] + this.posZ);
+                cachedVectors[3] = new Vec3f(getRiderOffsets()[0][0],getRiderOffsets()[0][1],getRiderOffsets()[0][2])
+                        .rotatePoint(rotationPitch, rotationYaw, 0);
+                cachedVectors[3].addVector(posX,posY,posZ);
+                riddenByEntity.setPosition(cachedVectors[3].xCoord,cachedVectors[3].yCoord,cachedVectors[3].zCoord);
             }
 
-            for (int i = 0; i < seats.size(); i++) {
-                vectorCache[2] = rotatePointF(getRiderOffsets()[i][0],getRiderOffsets()[i][1],getRiderOffsets()[i][2], rotationPitch, rotationYaw, 0);
-                vectorCache[2][0] += posX;
-                vectorCache[2][1] += posY+(worldObj.isRemote?0:1)+(frontBogie==null?0:frontBogie.yOffset);
-                vectorCache[2][2] += posZ;
-                seats.get(i).setPosition(vectorCache[2][0], vectorCache[2][1], vectorCache[2][2]);
+            for (EntitySeat seat : seats) {
+                cachedVectors[3] = new Vec3f(getRiderOffsets()[0][0], getRiderOffsets()[0][1], getRiderOffsets()[0][2])
+                        .rotatePoint(rotationPitch, rotationYaw, 0);
+                cachedVectors[3].addVector(posX,
+                        posY + (worldObj.isRemote ? 0 : 1) + (frontBogie == null ? 0 : frontBogie.yOffset),
+                        posZ);
+
+                seat.setPosition(cachedVectors[3].xCoord, cachedVectors[3].yCoord, cachedVectors[3].zCoord);
             }
         }
 
