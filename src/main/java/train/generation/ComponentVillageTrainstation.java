@@ -1,11 +1,14 @@
 package train.generation;
 
+import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import train.blocks.TCBlocks;
+import train.core.util.TraincraftUtil;
+import train.entity.rollingStock.*;
 
 import java.util.List;
 import java.util.Random;
@@ -160,38 +163,45 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 
 		if (structureboundingbox.isVecInside(j1, k1, l1)) {
 			int rD = random.nextInt(8);
-			//todo:spawn in wagons when implemented
-			/*EntityRollingStock cart = new EntityCabooseLogging(world);
-			if (rD == 0)
+			GenericRailTransport cart;
+			if (rD == 0) {
 				cart = new EntityCaboose(world);
-			if (rD == 1)
+			}
+			else if (rD == 1){
 				cart = new EntityCaboose3(world);
-			if (rD == 2)
+			}
+			else if (rD == 2){
 				cart = new EntityFreightCart(world);
-			if (rD == 3)
+			}
+			else if (rD == 3){
 				cart = new EntityPassenger2(world);
-			if (rD == 4)
+			}
+			else if (rD == 4){
 				cart = new EntityStockCar(world);
-			if (rD == 5)
+			}
+			else if (rD == 5){
 				cart = new EntityBoxCartUS(world);
-			if (rD == 6)
+			}
+			else if (rD == 6) {
 				cart = new EntityFreightCartSmall(world);
+			}
+			else {
+				cart = new EntityCabooseLogging(world);
+			}
 
 			cart.setLocationAndAngles(j1 + 0.5D, k1, l1 + 0.5D, 90.0F, 0.0F);
-			cart.setTrainOwner("VillagerJoe");
-			cart.shouldChunkLoad=false;
 			if (rD == 4) {
-				cart.setColor(TraincraftUtil.getByteFromColor("Blue"));
+				cart.setSkin("Blue");
 			}
 			if (rD == 7) {
-				cart.setColor(TraincraftUtil.getByteFromColor("Red"));
+				cart.setSkin("Red");
 			}
 			if (rD == 5) {
-				cart.setColor(TraincraftUtil.getByteFromColor("Brown"));
+				cart.setSkin("Brown");
 			}
 			world.spawnEntityInWorld(cart);
-			cart.setInformation(cart.getTrainType(), "VillagerJoe", "VillagerJoe", cart.getCartItem().getItem().getItemStackDisplayName(cart.getCartItem()), -1);
-			*/
+			cart.entityData.putString("ownername","VillagerJoe");
+
 		}
 		int j2 = this.getXWithOffset(3, 8);
 		int k2 = this.getYWithOffset(1);
@@ -199,31 +209,40 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 
 		if (structureboundingbox.isVecInside(j2, k2, l2)) {
 			int rD = random.nextInt(8);
-			//todo:spawn in wagons when implemented
-			/*EntityRollingStock cart = new EntityFreightWood2(world);
-			if (rD == 0)
+			GenericRailTransport cart;
+			if (rD == 0) {
 				cart = new EntityCaboose(world);
-			if (rD == 1)
+			}
+			else if (rD == 1) {
 				cart = new EntityCaboose3(world);
-			if (rD == 2)
+			}
+			else if (rD == 2) {
 				cart = new EntityFreightCart(world);
-			if (rD == 3)
+			}
+			else if (rD == 3) {
 				cart = new EntityPassenger2(world);
-			if (rD == 4)
+			}
+			else if (rD == 4) {
 				cart = new EntityStockCar(world);
-			if (rD == 5)
+			}
+			else if (rD == 5) {
 				cart = new EntityBoxCartUS(world);
-			if (rD == 6)
+			}
+			else if (rD == 6) {
 				cart = new EntityFreightCartSmall(world);
+			}
+			else {
+				cart = new EntityFreightWood2(world);
+			}
 			cart.setLocationAndAngles(j2 + 0.5D, k2, l2 + 0.5D, 90.0F, 0.0F);
-			cart.setTrainOwner("VillagerJoe");
 			if (rD == 4) {
-				cart.setColor(TraincraftUtil.getByteFromColor("Blue"));
+				cart.setSkin("Blue");
 			}
 			if (rD == 5) {
-				cart.setColor(TraincraftUtil.getByteFromColor("Brown"));
+				cart.setSkin("Brown");
 			}
-			world.spawnEntityInWorld(cart);*/
+			world.spawnEntityInWorld(cart);
+			cart.entityData.putString("ownername","VillagerJoe");
 		}
 
 		return true;
