@@ -91,7 +91,7 @@ public class EntityLocoSteam4_4_0 extends EntityTrainCore {
      * @return the value of the max speed in km/h
      */
     @Override
-    public float transportTopSpeed(){return 150f;}
+    public float transportTopSpeed(){return 50f;}
 
     /**
      * <h2>Inventory Size</h2>

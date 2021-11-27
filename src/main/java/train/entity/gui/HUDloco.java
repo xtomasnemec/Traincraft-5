@@ -191,6 +191,7 @@ public class HUDloco extends GuiScreen {
 		/**
 		 * Things are slightly different in Steam HUD
 		 */
+		//todo make dial thing aling with gearing
 		if (!(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM))) {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "loco_hud_steam.png"));
 			drawTexturedModalRect(75, windowHeight + 32 - speed, 163, 150, 30, 5);

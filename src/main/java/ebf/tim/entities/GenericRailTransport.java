@@ -1052,6 +1052,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             openInventory();
 
             updatePosition();
+
+
+            prevPosX = posX;
+            prevPosZ = posZ;
+            motionX = 0;
+            motionZ = 0;
+            dataWatcher.updateObject(12, getVelocity());
         }
 
         //CLIENT UPDATE

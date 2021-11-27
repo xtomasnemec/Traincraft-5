@@ -76,7 +76,7 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
      * @return the value of the max speed in km/h
      */
     @Override
-    public float transportTopSpeed(){return accelerator<0?30f:50f;}
+    public float transportTopSpeed(){return 50f;}
 
     /**
      * <h2>Inventory Size</h2>

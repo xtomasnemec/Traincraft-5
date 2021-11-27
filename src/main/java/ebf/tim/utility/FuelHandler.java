@@ -188,11 +188,12 @@ public class FuelHandler{
 			float heat = getBoilerHeat(train);
 			if(heat==0){heat=1;}
 			train.entityData.putFloat("boilerHeat", heat +
-					(float) ((1f- Math.sqrt(heat/maxHeat(train))) * Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*3)
+					(float) ((1f- Math.sqrt(heat/maxHeat(train)))
+							* Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*4)
 			);
 
 		} else {//if engine is not running
-			float heat = train.entityData.containsFloat("boilerHeat")?train.entityData.getFloat("boilerHeat"):0;
+			float heat = getBoilerHeat(train);
 
 			float biomeHeat =  (((train.worldObj.getBiomeGenForCoords(train.chunkCoordX, train.chunkCoordZ).temperature -0.15f)//biome temperature with offset to compensate for freezing point
 					- (0.0014166695f * ((float)train.posY - 64f)))//temperature changes by 0.00166667 for every meter above or below sea level (64)
@@ -200,13 +201,13 @@ public class FuelHandler{
 			);
 
 			if(heat>biomeHeat){
-				heat -=biomeHeat*0.1;
+				heat -=biomeHeat*0.1f;
 			} else {
 				heat =Math.max(heat,biomeHeat);
 			}
 
 
-			train.entityData.putFloat("boilerHeat", heat*100);
+			train.entityData.putFloat("boilerHeat", heat);
 		}
 
 

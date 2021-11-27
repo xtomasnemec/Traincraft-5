@@ -262,6 +262,14 @@ public class GUITransport extends GUIContainerNoNEI {
                     }
 
                     @Override
+                    public int[] getColor(){
+                        if(transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)){
+                            return new int[]{60,255,60};
+                        }
+                        return null;
+                    }
+
+                    @Override
                     public void onClick() {
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(10, transport.getEntityId()));
                     }
