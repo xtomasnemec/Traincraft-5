@@ -126,7 +126,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public int forceBackupTimer =0, syncTimer=0;
     public float pullingWeight=0;
 
-    private float ticksSinceLastVelocityChange=0;
+    private float ticksSinceLastVelocityChange=1;
 
     private List<GenericRailTransport> consist = new ArrayList<>();
 
