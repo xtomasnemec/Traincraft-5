@@ -1372,7 +1372,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if (riddenByEntity != null) {
                 cachedVectors[3] = new Vec3f(getRiderOffsets()[0][0],getRiderOffsets()[0][1],getRiderOffsets()[0][2])
                         .rotatePoint(rotationPitch, rotationYaw, 0);
-                cachedVectors[3].addVector(posX,posY,posZ);
+                cachedVectors[3].addVector(posX,posY+frontBogie.yOffset,posZ);
                 riddenByEntity.setPosition(cachedVectors[3].xCoord,cachedVectors[3].yCoord,cachedVectors[3].zCoord);
             }
 

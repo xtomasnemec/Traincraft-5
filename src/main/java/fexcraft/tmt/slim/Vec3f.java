@@ -82,7 +82,10 @@ public class Vec3f implements Serializable {
     }
 
     public Vec3f addVector(double x, double y, double z){
-        return new Vec3f(xCoord + x,yCoord + y,zCoord + z);
+        xCoord+=x;
+        yCoord+=y;
+        zCoord+=z;
+        return this;
     }
 
     public Vec3f subtract(Vec3f vec){
