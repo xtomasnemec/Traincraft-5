@@ -187,25 +187,29 @@ public class FuelHandler{
 			//calculate the heat increase
 			float heat = getBoilerHeat(train);
 			if(heat==0){heat=1;}
-			train.getDataWatcher().updateObject(16,
-					(heat+
-							(float) ((1f- Math.sqrt(heat/maxHeat(train))) * Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*4)));
-
-		} else {//if engine is not running
-			float heat = (((train.worldObj.getBiomeGenForCoords(train.chunkCoordX, train.chunkCoordZ).temperature -0.15f)//biome temperature with offset to compensate for freezing point
-							- (0.0014166695f * ((float)train.posY - 64f)))//temperature changes by 0.00166667 for every meter above or below sea level (64)
-							*0.368f//convert to celsius*0.01
+			train.entityData.putFloat("boilerHeat", heat +
+					(float) ((1f- Math.sqrt(heat/maxHeat(train))) * Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*3)
 			);
 
-			//cap the heat to the biome temp
-			if((heat >0 && getBoilerHeat(train)>= heat*100)
-			|| (heat <0 && getBoilerHeat(train)<= heat*100)
-			){
-				train.entityData.putFloat("boilerHeat", heat*100);
+		} else {//if engine is not running
+			float heat = train.entityData.containsFloat("boilerHeat")?train.entityData.getFloat("boilerHeat"):0;
+
+			float biomeHeat =  (((train.worldObj.getBiomeGenForCoords(train.chunkCoordX, train.chunkCoordZ).temperature -0.15f)//biome temperature with offset to compensate for freezing point
+					- (0.0014166695f * ((float)train.posY - 64f)))//temperature changes by 0.00166667 for every meter above or below sea level (64)
+					*0.368f//convert to celsius*0.01
+			);
+
+			if(heat>biomeHeat){
+				heat -=biomeHeat*0.1;
 			} else {
-				train.entityData.putFloat("boilerHeat", heat*100);
+				heat =Math.max(heat,biomeHeat);
 			}
+
+
+			train.entityData.putFloat("boilerHeat", heat*100);
 		}
+
+
 		if(train.entityData.containsFluidStack("tanks.0")) {
 			//if the boiler temp is above the boiling point, start generating steam.
 			if (getBoilerHeat(train) > 100) {
