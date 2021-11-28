@@ -1,9 +1,6 @@
 package ebf.tim.blocks.rails;
 
-import ebf.tim.utility.DebugUtil;
 import net.minecraft.world.World;
-
-import java.util.Arrays;
 
 import static ebf.tim.blocks.rails.BlockRailCore.checkBlockMeta;
 import static ebf.tim.blocks.rails.BlockRailCore.getNearbyMeta;
@@ -129,24 +126,24 @@ public class RailVanillaShapes extends RailShapeCore{
 
         //slopes
         if(nearbyMeta[7]==5 && nearbyMeta[1]==4){
-            shape.setStart(0,0.2f,-0.6f).setEnd(0,0.2f,0.6f);
+            shape.setStart(0,0.25f,-0.6f).setEnd(0,0.25f,0.6f);
         }
         else if (nearbyMeta[7]==5){
-            shape.setCenter(0,0,0.2f).setEnd(0,0.2f,0.6f);
+            shape.setCenter(0,0,0.2f).setEnd(0,0.25f,0.6f);
         }
         else if (nearbyMeta[1]==4){
-            shape.setCenter(0,0,-0.2f).setStart(0,0.2f,-0.6f);
+            shape.setCenter(0,0,-0.2f).setStart(0,0.25f,-0.6f);
         }
 
         if(checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord+1, 4) &&
                 checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord-1, 5)){
-            shape.setStart(0,-0.2f,-0.6f).setEnd(0,-0.2f,0.6f);
+            shape.setStart(0,-0.2f,-0.6f).setCenter(0,0.2f,0).setEnd(0,-0.2f,0.6f);
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord+1, 4)){
-            shape.setCenter(0,0,0.2f).setEnd(0,-0.2f,0.6f);
+            shape.setCenter(0,0,0.45f).setEnd(0,-0.2f,0.6f);
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord-1, 5)){
-            shape.setCenter(0,0,-0.2f).setStart(0,-0.2f,-0.6f);
+            shape.setCenter(0,0,-0.45f).setStart(0,-0.2f,-0.6f);
         }
 
         return shape;
@@ -246,24 +243,24 @@ public class RailVanillaShapes extends RailShapeCore{
 
         //slopes
         if(nearbyMeta[3]==3 && nearbyMeta[5]==2){
-            shape.setStart(0.6f,0.2f,0).setEnd(-0.6f,0.2f,0);
+            shape.setStart(0.6f,0.25f,0).setEnd(-0.6f,0.25f,0);
         }
         else if (nearbyMeta[3]==3){
-            shape.setEnd(-0.6f,0.2f,0).setCenter(-0.4f,0,0);
+            shape.setEnd(-0.6f,0.25f,0).setCenter(-0.4f,0,0);
         }
         else if (nearbyMeta[5]==2){
-            shape.setStart(0.6f,0.2f,0).setCenter(0.4f,0,0);
+            shape.setStart(0.6f,0.25f,0).setCenter(0.4f,0,0);
         }
 
         if(checkBlockMeta(worldObj,xCoord+1, yCoord-1,zCoord,3) &&
                 checkBlockMeta(worldObj,xCoord-1, yCoord-1,zCoord,2)){
-            shape.setStart(0.6f,-0.2f,0).setEnd(-0.6f,-0.2f,0);
+            shape.setStart(0.6f,-0.2f,0).setCenter(0,0.2f,0).setEnd(-0.6f,-0.2f,0);
         }
         else if (checkBlockMeta(worldObj,xCoord+1, yCoord-1,zCoord,3)){
-            shape.setStart(0.6f,-0.2f,0).setCenter(0.4f,0,0);
+            shape.setStart(0.6f,-0.2f,0).setCenter(0.45f,0,0);
         }
         else if (checkBlockMeta(worldObj,xCoord-1, yCoord-1,zCoord,2)){
-            shape.setEnd(-0.6f,-0.2f,0).setCenter(-0.4f,0,0);
+            shape.setEnd(-0.6f,-0.2f,0).setCenter(-0.45f,0,0);
         }
 
         return shape;
@@ -343,16 +340,24 @@ public class RailVanillaShapes extends RailShapeCore{
 
         //handle slopes
         if (nearbyMeta[5]==2){
-            shape.setEnd(0.6f,0.2f,0);
+            if(nearbyMeta[7]==8){
+                shape.setEnd(0.6f, 0.25f, 0.125f,0,165,0).forceEndRotation();
+            } else {
+                shape.setEnd(0.6f,0.25f,0);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord+1, yCoord-1,zCoord,3)){
-            shape.setEnd(0.6f,-0.2f,0);
+            shape.setEnd(0.6f,-0.25f,0);
         }
         if (nearbyMeta[7]==5){
-            shape.setStart(0,0.2f,0.6f);
+            if(nearbyMeta[5]==8) {
+                shape.setStart(0.125f, 0.25f, 0.6f,0,105,0).forceStartRotation();
+            } else {
+                shape.setStart(0, 0.25f, 0.6f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord+1, 4)){
-            shape.setStart(0,-0.2f,0.6f);
+            shape.setStart(0,-0.25f,0.6f);
         }
 
         return shape;
@@ -427,16 +432,24 @@ public class RailVanillaShapes extends RailShapeCore{
 
         //slopes
         if (nearbyMeta[3]==3){
-            shape.setStart(-0.6f,0.2f,0);
+            if(nearbyMeta[1]==6) {
+                shape.setStart(-0.6f, 0.25f, -0.125f,0,155f,0).forceStartRotation();
+            } else {
+                shape.setStart(-0.6f, 0.25f, 0f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord-1, yCoord-1,zCoord,2)){
-            shape.setStart(-0.6f,-0.2f,0);
+            shape.setStart(-0.6f,-0.25f,0);
         }
         if (nearbyMeta[1]==4){
-            shape.setEnd(0,0.2f,-0.6f);
+            if(nearbyMeta[3]==6){
+                shape.setEnd(-0.125f, 0.25f, -0.6f,0,105,0).forceEndRotation();
+            } else {
+                shape.setEnd(0, 0.25f, -0.6f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord-1, 5)){
-            shape.setEnd(0,-0.2f,-0.6f);
+            shape.setEnd(0,-0.25f,-0.6f);
         }
 
 
@@ -518,13 +531,21 @@ public class RailVanillaShapes extends RailShapeCore{
 
         //slopes
         if (nearbyMeta[3]==3){
-            shape.setStart(-0.6f,0.2f,0f);
+            if(nearbyMeta[7]==9) {
+                shape.setStart(-0.6f, 0.25f, 0.125f,0,195f,0).forceStartRotation();
+            } else {
+                shape.setStart(-0.6f, 0.25f, 0f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord-1, yCoord-1,zCoord,2)){
             shape.setStart(-0.6f,-0.2f,0f);
         }
         if(nearbyMeta[7]==5){
-            shape.setEnd(0,0.2f,0.6f);
+            if(nearbyMeta[3]==9) {
+                shape.setEnd(-0.125f, 0.25f, 0.6f,0,255f,0).forceEndRotation();
+            } else {
+                shape.setEnd(0, 0.25f, 0.6f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord+1, 4)){
             shape.setEnd(0,-0.2f,0.6f);
@@ -605,16 +626,24 @@ public class RailVanillaShapes extends RailShapeCore{
 
         //slopes
         if (nearbyMeta[5]==2){
-            shape.setStart(0.6f,0.2f,0);
+            if(nearbyMeta[1]==7){
+                shape.setStart(0.6f, 0.25f, -0.125f,0,15,0).forceStartRotation();
+            } else {
+                shape.setStart(0.6f,0.25f,0);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord+1, yCoord-1,zCoord,3)){
-            shape.setStart(0.6f,-0.2f,0);
+            shape.setStart(0.6f,-0.25f,0);
         }
         if (nearbyMeta[1]==4){
-            shape.setEnd(0,0.2f,-0.6f);
+            if(nearbyMeta[5]==7){
+                shape.setEnd(0.125f, 0.25f, -0.6f,0,75,0).forceEndRotation();
+            } else {
+                shape.setEnd(0, 0.25f, -0.6f);
+            }
         }
         else if (checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord-1, 5)){
-            shape.setEnd(0,-0.2f,-0.6f);
+            shape.setEnd(0,-0.25f,-0.6f);
         }
 
         return shape;
@@ -630,7 +659,16 @@ public class RailVanillaShapes extends RailShapeCore{
         shape.setStart(0,0,-0.5f).setCenter(0,0.5f,0).setEnd(0,1,0.5f);
 
         if (!checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord-1,5)){
-            shape.setStart(0,0.2f,-0.4f);
+            //check for diagonals
+            if(checkBlockMeta(worldObj,xCoord, yCoord,zCoord-1,6) &&
+                    checkBlockMeta(worldObj,xCoord+1, yCoord,zCoord-1,8)){
+                shape.setStart(0.125f,0.25f,-0.4f,0,285,0).forceStartRotation();
+            } else if(checkBlockMeta(worldObj,xCoord, yCoord,zCoord-1,7) &&
+                    checkBlockMeta(worldObj,xCoord-1, yCoord,zCoord-1,9)){
+                shape.setStart(-0.125f,0.25f,-0.4f,0,255,0).forceStartRotation();
+            } else {
+                shape.setStart(0,0.25f,-0.4f);
+            }
         }
         if (!checkBlockMeta(worldObj,xCoord, yCoord+1,zCoord+1,5)){
             shape.setEnd(0,0.8f,0.4f);
@@ -646,7 +684,17 @@ public class RailVanillaShapes extends RailShapeCore{
 
 
         if (!checkBlockMeta(worldObj,xCoord, yCoord-1,zCoord+1,4)){
-            shape.setStart(0,0.2f,0.4f);
+            //check for diagonals
+            if(checkBlockMeta(worldObj,xCoord, yCoord,zCoord+1,9) &&
+                    checkBlockMeta(worldObj,xCoord+1, yCoord,zCoord+1,7)){
+                shape.setStart(0.125f,0.25f,0.4f,0,75,0).forceStartRotation();
+            } else if(checkBlockMeta(worldObj,xCoord, yCoord,zCoord+1,8) &&
+                    checkBlockMeta(worldObj,xCoord-1, yCoord,zCoord+1,6)){
+                shape.setStart(-0.125f,0.25f,0.4f,0,105,0).forceStartRotation();
+            } else {
+                //this is correct, the others are reversed
+                shape.setStart(0,0.25f,0.4f);
+            }
         }
         if (!checkBlockMeta(worldObj,xCoord, yCoord+1,zCoord-1,4)){
             shape.setEnd(0,0.8f,-0.4f);
@@ -662,7 +710,17 @@ public class RailVanillaShapes extends RailShapeCore{
         shape.setStart(-0.5f,0,0).setCenter(0,0.5f,0).setEnd(0.5f,1,0);
 
         if (!checkBlockMeta(worldObj,xCoord-1, yCoord-1,zCoord,2)){
-            shape.setStart(-0.4f,0.2f,0,0);
+            //check for diagonals
+            if(checkBlockMeta(worldObj,xCoord-1, yCoord,zCoord,9) &&
+                    checkBlockMeta(worldObj,xCoord-1, yCoord,zCoord-1,7)){
+                shape.setStart(-0.4f,0.25f,-0.125f,0,195,0).forceStartRotation();
+            } else if(checkBlockMeta(worldObj,xCoord-1, yCoord,zCoord,6) &&
+                    checkBlockMeta(worldObj,xCoord-1, yCoord,zCoord+1,8)){
+                shape.setStart(-0.4f,0.25f,0.125f,0,165,0).forceStartRotation();
+            } else {
+                //this is correct, the others are reversed
+                shape.setStart(-0.4f,0.25f,0,0);
+            }
         }
         if(!checkBlockMeta(worldObj,xCoord+1, yCoord+1,zCoord,2)){
             shape.setEnd(0.4f,0.8f,0,0);
@@ -681,7 +739,17 @@ public class RailVanillaShapes extends RailShapeCore{
             shape.setEnd(-0.4f,0.8f,0,0);
         }
         if(!checkBlockMeta(worldObj,xCoord+1, yCoord-1,zCoord,3)){
-            shape.setStart(0.4f,0.2f,0,0);
+            //check for diagonals
+            if(checkBlockMeta(worldObj,xCoord+1, yCoord,zCoord,8) &&
+                    checkBlockMeta(worldObj,xCoord+1, yCoord,zCoord-1,6)){
+                shape.setStart(0.4f,0.25f,-0.125f,0,335,0).forceStartRotation();
+            } else if(checkBlockMeta(worldObj,xCoord+1, yCoord,zCoord,7) &&
+                    checkBlockMeta(worldObj,xCoord+1, yCoord,zCoord+1,9)){
+                shape.setStart(0.4f,0.25f,0.125f,0,15,0).forceStartRotation();
+            } else {
+                //this is correct, the others are reversed
+                shape.setStart(0.4f,0.25f,0,0);
+            }
         }
 
         return shape;

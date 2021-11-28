@@ -137,6 +137,10 @@ public class FuelHandler{
 	}
 
 
+	public static float getBoilerHeat(GenericRailTransport train){
+		return (train.entityData.hasFloat("boilerHeat")?train.entityData.getFloat("boilerHeat"):0);
+	}
+
 	/**
 	 * <h2>steam management</h2>
 	 *
@@ -155,12 +159,18 @@ public class FuelHandler{
 				if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 					train.getSlotIndexByID(400).decrStackSize(1);
 				}
+				train.entityData.putFloat("burnTime", burnTime);
+				train.entityData.putFloat("maxBurn", burnTimeMax);
+				train.entityData.putInt("burnHeat", burnHeat);
 			} else {
 				burnHeat = 0;
 				burnTimeMax = 0;
+				train.entityData.putFloat("maxBurn", 0f);
+				train.entityData.putInt("burnHeat", 0);
 			}
 		} else {
 			burnTime--;
+			train.entityData.putFloat("burnTime", burnTime);
 		}
 
 		//if there's a fluid item in the slot and the train can consume the entire thing
@@ -175,32 +185,37 @@ public class FuelHandler{
 		//manage boiler heat
 		if (burnHeat > 1) {
 			//calculate the heat increase
-			float heat = train.getDataWatcher().getWatchableObjectFloat(16);
+			float heat = getBoilerHeat(train);
 			if(heat==0){heat=1;}
-			train.getDataWatcher().updateObject(16,
-					(heat+
-							(float) ((1f- Math.sqrt(heat/maxHeat(train))) * Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*4)));
-
-		} else {//if engine is not running
-			float heat = (((train.worldObj.getBiomeGenForCoords(train.chunkCoordX, train.chunkCoordZ).temperature -0.15f)//biome temperature with offset to compensate for freezing point
-							- (0.0014166695f * ((float)train.posY - 64f)))//temperature changes by 0.00166667 for every meter above or below sea level (64)
-							*0.368f//convert to celsius*0.01
+			train.entityData.putFloat("boilerHeat", heat +
+					(float) ((1f- Math.sqrt(heat/maxHeat(train)))
+							* Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*4)
 			);
 
-			//cap the heat to the biome temp
-			if((heat >0 && train.getDataWatcher().getWatchableObjectFloat(16)>= heat*100)
-			|| (heat <0 && train.getDataWatcher().getWatchableObjectFloat(16)<= heat*100)
-			){
-				train.getDataWatcher().updateObject(16, heat*100);
+		} else {//if engine is not running
+			float heat = getBoilerHeat(train);
+
+			float biomeHeat =  (((train.worldObj.getBiomeGenForCoords(train.chunkCoordX, train.chunkCoordZ).temperature -0.15f)//biome temperature with offset to compensate for freezing point
+					- (0.0014166695f * ((float)train.posY - 64f)))//temperature changes by 0.00166667 for every meter above or below sea level (64)
+					*0.368f//convert to celsius*0.01
+			);
+
+			if(heat>biomeHeat){
+				heat -=biomeHeat*0.1f;
 			} else {
-				train.getDataWatcher().updateObject(16, train.getDataWatcher().getWatchableObjectFloat(16)+heat);
+				heat =Math.max(heat,biomeHeat);
 			}
+
+
+			train.entityData.putFloat("boilerHeat", heat);
 		}
+
+
 		if(train.entityData.containsFluidStack("tanks.0")) {
 			//if the boiler temp is above the boiling point, start generating steam.
-			if (train.getDataWatcher().getWatchableObjectFloat(16) > 100) {
+			if (getBoilerHeat(train) > 100) {
 				int steam = (int) Math.floor(
-						((train.getDataWatcher().getWatchableObjectFloat(16) - 100) * 0.005f) * //calculate heat from burnHeat
+						((getBoilerHeat(train) - 100) * 0.005f) * //calculate heat from burnHeat
 								(train.entityData.getFluidStack("tanks.0").amount * 0.005f) //calculate surface area of water
 				);
 				//drain fluid
@@ -232,7 +247,7 @@ public class FuelHandler{
 
 		//update the datawatchers so client can display the info on the GUI.
 		train.getDataWatcher().updateObject(13, burnTime>0?(int)((burnTime/ burnTimeMax)*18):0);
-		train.getDataWatcher().updateObject(15, MathHelper.floor_float(train.getDataWatcher().getWatchableObjectFloat(16) * 100f));
+		train.getDataWatcher().updateObject(15, (int)(getBoilerHeat(train) * 100f));
 	}
 
 	public void manageDiesel(EntityTrainCore train){
@@ -262,8 +277,8 @@ public class FuelHandler{
 					train.updateConsist();
 				}
 			} else {//moving
-				if (train.drain(null, 0, MathHelper.floor_double((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), false)==0) {
-					train.drain(null, 0,  MathHelper.floor_double((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), true);
+				if (train.drain(null, 0, CommonUtil.floorDouble((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), false)==0) {
+					train.drain(null, 0,  CommonUtil.floorDouble((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), true);
 				} else {
 					train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
 					train.updateConsist();
@@ -326,7 +341,7 @@ public class FuelHandler{
 			Block b;
 			for (int i=-2; i<5;i++) {
 				if(i==1){continue;}
-				te=train.worldObj.getTileEntity(MathHelper.floor_double(train.posX), MathHelper.floor_double(train.posY + i), MathHelper.floor_double(train.posZ));
+				te=train.worldObj.getTileEntity(CommonUtil.floorDouble(train.posX), CommonUtil.floorDouble(train.posY + i), CommonUtil.floorDouble(train.posZ));
 				if (te instanceof IEnergyHandler) {
 					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
 						draw = ((IEnergyHandler) te).receiveEnergy(direction, 100, true);
@@ -338,7 +353,7 @@ public class FuelHandler{
 						}
 					}
 				} else{
-					b= train.worldObj.getBlock(MathHelper.floor_double(train.posX), MathHelper.floor_double(train.posY + i), MathHelper.floor_double(train.posZ));
+					b= CommonUtil.getBlockAt(train.worldObj, train.posX, train.posY + i, train.posZ);
 					if (b instanceof IElectricGrid && ((IElectricGrid) b).getChargeHandler().getCharge()>=100){
 						((IElectricGrid) b).getChargeHandler().removeCharge(100);
 						train.fill(null, new FluidStack(TiMFluids.fluidRedstone, 100), true);
@@ -353,8 +368,8 @@ public class FuelHandler{
 		//use stored energy
 		if (train.getBoolean(GenericRailTransport.boolValues.RUNNING)){
 			//electric trains run at a generally set rate which is multiplied at the square of speed.
-			if (train.drain(null, 0, MathHelper.floor_double((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), false)<1){
-				train.drain(null, 0, MathHelper.floor_double((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), true);
+			if (train.drain(null, 0, CommonUtil.floorDouble((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), false)<1){
+				train.drain(null, 0, CommonUtil.floorDouble((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), true);
 			} else {
 				train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
 				train.updateConsist();

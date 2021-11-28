@@ -33,6 +33,7 @@ public class ConfigHandler {
 	public static boolean RETROGEN_CHUNKS;
 	public static boolean MAKE_MODPACKS_GREAT_AGAIN;
 	public static boolean DISABLE_TRAIN_WORKBENCH;
+	public static int REMASTERS=1;
 
 	public static void init(File configFile) {
 		Configuration cf = new Configuration(configFile);
@@ -50,6 +51,8 @@ public class ConfigHandler {
 		ENABLE_BUILDER = cf.get(CATEGORY_GENERAL, "ENABLE_TRACKS_BUILDER", true).getBoolean(true);
 		ENABLE_TENDER = cf.get(CATEGORY_GENERAL, "ENABLE_TENDERS", true).getBoolean(true);
 		TRAINCRAFT_VILLAGER_ID = cf.get(CATEGORY_GENERAL, "TRAINCRAFT_VILLAGER_ID", 86).getInt();
+
+		REMASTERS = cf.get(CATEGORY_GENERAL, "ENABLE_REMASTERS", 1, "setting to 0 enables remastered trains and stock alongside the originals. 1 will disable the remasters. 2 will remove the originals.").getInt();
 
 		REAL_TRAIN_SPEED = cf.get(CATEGORY_GENERAL, "REAL_TRAIN_SPEED", false).getBoolean(false);
 		ENERGYTRACK_USES_RF = cf.getBoolean("ENERGYTRACK_USES_RF", CATEGORY_GENERAL, true, "Here you can define, if electric tracks should be powered by redstone (false) or use 'real' RF-power (true) [Default: true]");

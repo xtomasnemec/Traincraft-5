@@ -233,6 +233,10 @@ public class TiMGenericRegistry {
     }
 
 
+    public static void registerTransports(String MODID, List<GenericRailTransport> entities, Object entityRender) {
+        registerTransports(MODID,entities.toArray(new GenericRailTransport[]{}), entityRender);
+    }
+
     public static void registerTransports(String MODID, GenericRailTransport[] entities, Object entityRender) {
         if (registryPosition == -1) {
             DebugUtil.println("ERROR", "ADDING TRANSPORT REGISTRY ITEMS OUTSIDE MOD INIT", "PLEASE REGISTER YOUR ENTITIES IN THE FOLLOWING EVENT:",

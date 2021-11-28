@@ -59,11 +59,11 @@ public class ClientProxy extends CommonProxy {
     /**enables pre-render of models*/
     public static boolean preRenderModels = false;
     /**the keybind for the lamp toggle*/
-    public static KeyBinding KeyLamp = new KeyBinding("Lamp Toggle", Keyboard.KEY_L, "Trains in Motion");
+    public static KeyBinding KeyLamp;
     /**the keybind for the horn/whistle*/
-    public static KeyBinding KeyHorn = new KeyBinding("Use Horn/Whistle", Keyboard.KEY_H, "Trains in Motion");
+    public static KeyBinding KeyHorn;
     /**the keybind for opening the inventory*/
-    public static KeyBinding KeyInventory = new KeyBinding("Open Train/rollingstock GUI",  Keyboard.KEY_R, "Trains in Motion");
+    public static KeyBinding KeyInventory;
     /**the model to use for the rail*/
     public static int railSkin = 3;
     /**toggles whether to show speed in km/h or mph*/
@@ -170,7 +170,7 @@ public class ClientProxy extends CommonProxy {
                 "Pre-renders transport entity and item models during loading screen and stores them on GPU, Requires a lot of VRAM but makes the game run smoother, especially with NEI/JEI, Don't use if get the GL error 1285 (Out of memory)");
 
         disableCache = config.getBoolean("disableGLCache","Debugging and Fixes (Client only)", false,
-                "forces the render to skip model caching, this will cause significant lag, but is good for debugging, or if you get the GL error 1285 (Out of memory)");
+                "When true, forces the render to skip model caching, this will cause significant lag, but is good for debugging, or if you get the GL error 1285 (Out of memory)");
 
         ForceTextureBinding = config.getBoolean("ForceTextureBinding","Debugging and Fixes (Client only)", false,
                 "Forces textures to be bound, slows performance on some machines, speeds it up on others, and fixes a rare bug where the the texture does not get bound. So... This REALLY depends on your machine, see what works best for you.");
@@ -203,7 +203,11 @@ public class ClientProxy extends CommonProxy {
 
 
         //keybinds
+        KeyHorn = new KeyBinding("Use Horn/Whistle", Keyboard.KEY_H, "Trains in Motion");
+        ClientRegistry.registerKeyBinding(KeyHorn);
+        KeyLamp = new KeyBinding("Lamp Toggle", Keyboard.KEY_L, "Trains in Motion");
         ClientRegistry.registerKeyBinding(KeyLamp);
+        KeyInventory = new KeyBinding("Open Train/rollingstock GUI",  Keyboard.KEY_R, "Trains in Motion");
         ClientRegistry.registerKeyBinding(KeyInventory);
 
         if(DebugUtil.dev()) {

@@ -3,6 +3,7 @@ package train.core.handlers;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
+import ebf.tim.utility.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
@@ -10,22 +11,19 @@ import train.Traincraft;
 import train.core.network.PacketKeyPress;
 
 
-public class TCKeyHandler {
-	public static KeyBinding inventory;
+public class TCInputHandler {
 	public static KeyBinding up;
 	public static KeyBinding down;
 	public static KeyBinding idle;
 	public static KeyBinding furnace;
-	public TCKeyHandler() {
-		inventory = new KeyBinding("key.traincraft.zepp.inventory", Keyboard.KEY_R, "key.categories.traincraft");
-		ClientRegistry.registerKeyBinding(inventory);
-		up = new KeyBinding("key.traincraftzepp..up", Keyboard.KEY_Y, "key.categories.traincraft");
+	public TCInputHandler() {
+		up = new KeyBinding("key.traincraft.zepp.up", Keyboard.KEY_Y, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(up);
-		down = new KeyBinding("key.traincraft.zepp.down", Keyboard.KEY_X, "key.categories.traincraft");
+		down = new KeyBinding("key.traincraft.zepp.down", Keyboard.KEY_X, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(down);
-		idle = new KeyBinding("key.traincraft.zepp.idle", Keyboard.KEY_C, "key.categories.traincraft");
+		idle = new KeyBinding("key.traincraft.zepp.idle", Keyboard.KEY_C, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(idle);
-		furnace = new KeyBinding("key.traincraft.zepp.furnace", Keyboard.KEY_F, "key.categories.traincraft");
+		furnace = new KeyBinding("key.traincraft.zepp.furnace", Keyboard.KEY_F, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(furnace);
 
 
@@ -43,7 +41,7 @@ public class TCKeyHandler {
 			else if (idle.isPressed()) {
 				sendKeyControlsPacket(6);
 			}
-			else if (inventory.isPressed()) {
+			else if (ClientProxy.KeyInventory.isPressed()) {
 				sendKeyControlsPacket(7);
 			}
 			else if (furnace.isPressed()) {

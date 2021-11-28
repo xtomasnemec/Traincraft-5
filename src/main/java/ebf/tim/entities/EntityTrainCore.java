@@ -58,18 +58,16 @@ public class EntityTrainCore extends GenericRailTransport {
     protected void readEntityFromNBT(NBTTagCompound tag) {
         super.readEntityFromNBT(tag);
         accelerator = tag.getInteger(NBTKeys.accelerator);
-        dataWatcher.updateObject(16, tag.getFloat(NBTKeys.transportFuel));
-        vectorCache[1][0] = tag.getFloat(NBTKeys.trainSpeed);
-
+        entityData.putFloat("boilerHeat",tag.getFloat(NBTKeys.transportFuel));
 
     }
+
     /**saves the entity to server world*/
     @Override
     protected void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
         tag.setInteger(NBTKeys.accelerator, getAccelerator());
-        tag.setFloat(NBTKeys.transportFuel, dataWatcher.getWatchableObjectFloat(16));
-        tag.setFloat(NBTKeys.trainSpeed, vectorCache[1][0]);
+        tag.setFloat(NBTKeys.transportFuel, FuelHandler.getBoilerHeat(this));
 
     }
 
@@ -138,7 +136,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 updateConsist();
                 weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
             }
-            weight-=this.weightKg()-1;
+            weight -= this.weightKg() - 1;
             // weight's effect on HP is generally inverse of HP itself, it can be described as
             // 30 lbs of coal about 100 feet in one minute = 33,000 lbf for 1.01387 MHP
             //or roughly 13.6kg over 30.48 meters in one minute = 1MHP
@@ -155,52 +153,55 @@ public class EntityTrainCore extends GenericRailTransport {
             //this end result means we now can move at 0.62428 of the speed provided by MHP
             //0.62428*0.508=0.317 blocks per second acceleration.
 
+            //x is for current, y is for previous, z is for slip
             //store this for later first
-            vectorCache[1][2]=vectorCache[1][0];
+            cachedVectors[2].yCoord = cachedVectors[2].xCoord;
 
             // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
             // in which case we increase by around 70%
-            vectorCache[1][0] = (maxPowerMicroblocks*(maxPowerMicroblocks*0.7f));
+            //cachedVectors[2].xCoord = (maxPowerMicroblocks * (maxPowerMicroblocks * 0.7f));
             //now figure out the percentage of this vs with weight subtracted
-            vectorCache[1][1]=vectorCache[1][0]-weight;
-            if(vectorCache[1][1]<1){
-                //if too much weight, you stall
-                vectorCache[1][0]=0;
+            //vectorCache[1][1] = Math.abs(cachedVectors[2].xCoord - weight);
+
+            //convert max power from MHP to HP, and then to lbf/s
+            cachedVectors[2].xCoord= maxPowerMicroblocks * 0.98632f * 0.001818f;
+
+            if(cachedVectors[2].xCoord<=0){
+                //if too much weight, or no power, you stall
+                cachedVectors[2].xCoord=0;
             } else {
-                //this is a mess, but it should reliably scale the speed based on weight pulled
-                vectorCache[1][0]= (vectorCache[1][0]-vectorCache[1][1])/vectorCache[1][0];
-
-                //now throw in the transport m/s acceleration, but convert m/s to m/t, (1/20)
-                //in theory anyway, but i just threw a bunch of random garbage at this and it seems fine
-                vectorCache[1][0]=(transportAcceleration()*0.0000075f)*vectorCache[1][0];
-
-                //todo: accelerator is reverse, for some reason?
-                //scale by throttle position
-                vectorCache[1][0]*=-getAcceleratiorPercentage();
+                //scale the acceleration in lbf based on itself minus the weight
+                // after weight is converted to lb and scaled to the rough friction coefficient of steel on steel.
+                cachedVectors[2].xCoord/= cachedVectors[2].xCoord - (weight * 2.204622621849f * 0.0015f);
+                //scale to the acceleration stat of the train.
+                cachedVectors[2].xCoord*=transportAcceleration();
+                //scale further by throttle position
+                cachedVectors[2].xCoord*=getAcceleratiorPercentage();
+                //nerf to more TC-esk acceleration rates
+                cachedVectors[2].xCoord*=0.6;
 
 
                 if(CommonProxy.realSpeed){
-                    vectorCache[1][0]*=0.25f;//nerf to more realistic speeds
+                    cachedVectors[2].xCoord*=0.5f;//for real speed nerf by half
                 }
 
                 //add back the speed from last tick
-                vectorCache[1][0]+=vectorCache[1][2];
+                cachedVectors[2].xCoord+=cachedVectors[2].yCoord;
 
+                DebugUtil.println(cachedVectors[2].xCoord);
+                //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
                 if(CommonProxy.realSpeed){
-                    //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
-                    //add a buff to max speed of 0.25
-                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.05f)*1.25f) {
-                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.05f)*1.25f;
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.05f)*1.25f) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.05f)*1.25f;
+                    //for real speed add a buff to max speed of 1.25%
+                    if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)*1.25f) {
+                        cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f)*1.25f;
+                    } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f) {
+                        cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f;
                     }
                 } else {
-                    DebugUtil.println(transportTopSpeed(), transportTopSpeedReverse() * (0.277778f*0.05f),
-                            -transportTopSpeed() * (0.277778f*0.075f),vectorCache[1][0]);
-                    if (vectorCache[1][0] < -transportTopSpeed() * (0.277778f*0.075f)) {
-                        vectorCache[1][0] = -transportTopSpeed() * (0.277778f*0.075f);
-                    } else if (vectorCache[1][0] > transportTopSpeedReverse() * (0.277778f*0.075f)) {
-                        vectorCache[1][0] = transportTopSpeedReverse() * (0.277778f*0.075f);
+                    if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)) {
+                        cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f);
+                    } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)) {
+                        cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f);
                     }
                 }
 
@@ -214,11 +215,11 @@ public class EntityTrainCore extends GenericRailTransport {
             //vectorCache[1][1]=( (1.75f * (worldObj.isRaining()?0.5f:1)));
 
             //todo rework this, the math isnt based on newtons anymore.
-            if(Math.abs(vectorCache[1][0])*-745.7>vectorCache[1][1]/7457){
+            if(Math.abs(cachedVectors[2].xCoord)*-745.7>cachedVectors[2].zCoord/7457){
                 //todo: add sparks to animator.
-                //DebugUtil.println("SCREECH","wheelspin: " + (vectorCache[1][0]*-745.7),
+                //DebugUtil.println("SCREECH","wheelspin: " + (cachedVectors[2].xCoord*-745.7),
                 //        "Grip: " + (vectorCache[1][1]/7457), "i really need to get those spark particles in..");
-               // vectorCache[1][0] *=0.33f;
+               // cachedVectors[2].xCoord *=0.33f;
             }
 
         } else {
@@ -247,32 +248,46 @@ public class EntityTrainCore extends GenericRailTransport {
         if(frontBogie != null && backBogie != null) {
 
             if (!worldObj.isRemote) {
+                float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
+                        CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
                 //twice a second, re-calculate the speed.
                 if (accelerator != 0 && ticksExisted % 10 == 0) {
                     //stop calculation if it can't move, running should be managed from the fuel handler, to be more dynamic
                     if (getBoolean(boolValues.RUNNING)) {
                         //skip updating speed on TC style cruise control
                         if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
-                            calculateAcceleration();
+                            if(slip>0) {
+                                rotationYaw+=accelerator*slip;
+                                if(slip<6) {
+                                    cachedVectors[2].yCoord *= slip*0.75;
+                                }
+                                calculateAcceleration();
+                                cachedVectors[2].xCoord *= slip > 0 ? slip : 0.996;
+                            } else {
+                                calculateAcceleration();
+                            }
                         }
                     } else {
                         accelerator = 0;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
-                } else if(ticksExisted % 10 == 0){
+                } else if(ticksExisted % 10 == 0) {
                     //basically apply normal bogie drag to acceleration
                     if((getVelocity()<0.3) || getBoolean(boolValues.BRAKE)) {
-                        vectorCache[1][0] *= 0.95;
+                        cachedVectors[2].xCoord *= 0.95;
                     }
-                    vectorCache[1][0] *= 0.996;
+                    if(slip<6 && slip>0) {
+                        cachedVectors[2].yCoord *= slip*0.75;
+                    }
+                    cachedVectors[2].xCoord *= slip > 0 ? slip : 0.996;
                 }
 
                 if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
                     frontBogie.setVelocity(0,0,0);
                     backBogie.setVelocity(0,0,0);
-                    vectorCache[1][0] = 0;
+                    cachedVectors[2].xCoord = 0;
                 } else {
-                    Vec3d velocity = CommonUtil.rotateDistance(vectorCache[1][0],0, rotationYaw);
+                    Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord,0, rotationYaw);
                     frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
                     backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
                 }

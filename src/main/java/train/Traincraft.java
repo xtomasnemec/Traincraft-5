@@ -225,11 +225,10 @@ public class Traincraft {
 
 		/*Trainman Villager*/
 		tcLog.info("Initialize Station Chief Villager");
-		VillagerRegistry.instance().registerVillagerId(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1);
 		VillagerTraincraftHandler villageHandler = new VillagerTraincraftHandler();
-		VillagerRegistry.instance().registerVillageCreationHandler(villageHandler);
 		proxy.registerVillagerSkin(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, "station_chief.png");
 		VillagerRegistry.instance().registerVillageTradeHandler(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, villageHandler);
+		VillagerRegistry.instance().registerVillageCreationHandler(villageHandler);
 
 		
 		tcLog.info("Finished Initialization");

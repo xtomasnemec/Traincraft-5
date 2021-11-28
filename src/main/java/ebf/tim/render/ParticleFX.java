@@ -156,7 +156,7 @@ public class ParticleFX {
                 }
                 return;
             } else if (particleType == 2 && this.ticksExisted > this.lifespan) {//wheel sparks
-                if (host.vectorCache[1][1] > 0.005) {
+                if (host.cachedVectors[1].zCoord > 0.005) {
                     colorTint = (rand.nextInt(75) - 30);
                     lifespan = rand.nextInt(80) + 140;
                     ticksExisted = 0f;

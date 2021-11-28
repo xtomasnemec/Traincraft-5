@@ -3,6 +3,7 @@ package train.entity.gui;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityTrainCore;
+import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ public class HUDloco extends GuiScreen {
 
 	private Minecraft game;
 	private int windowWidth, windowHeight;
+	private int lastTick=0, heat=0;
 
 	@SubscribeEvent
 	public void onGameRender(RenderGameOverlayEvent.Text event){
@@ -61,7 +63,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderText(EntityTrainCore loco) {
-		double speed =( Math.sqrt(loco.getVelocity()) * (CommonProxy.realSpeed?58D:58D*0.835));
+		double speed =( Math.sqrt(loco.getVelocity()) * (CommonProxy.realSpeed?120D*1.25D:120D));
 		speed*=ClientProxy.speedInKmh?1:0.621371;
 		int h;
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
@@ -78,18 +80,19 @@ public class HUDloco extends GuiScreen {
 		fontRendererObj.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			fontRendererObj.drawStringWithShadow("State: " + getState(loco.fuelHandler), 50, windowHeight + 80, 0xFFFFFF);
+			fontRendererObj.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
-	private String getState(FuelHandler fuel){
-		if(fuel.burnHeat<70){
+	private String getState(GenericRailTransport loco){
+		float h =loco.entityData.hasFloat("boilerHeat")?loco.entityData.getFloat("boilerHeat"):0;
+		if (h < 50) {
 			return "cold";
-		} else if (fuel.burnHeat<100){
+		} else if (h < 90) {
 			return "warm";
-		} else if(fuel.burnHeat<300){
+		} else if (h < 300) {
 			return "hot";
 		} else {
 			return "very hot";
@@ -107,9 +110,14 @@ public class HUDloco extends GuiScreen {
 			l = loco.getTankInfo(null)[0] != null ? loco.getTankInfo(null)[0].fluid.amount : 1;
 			l = Math.abs(((l * 70) / (loco.getTankCapacity()[0])));
 		} else {
-			l = (int)loco.fuelHandler.burnTimeMax;
-			if(l!=0 && loco.fuelHandler.burnTime!=0){
-				l = Math.abs(((l * 70) / ((int)loco.fuelHandler.burnTime)));
+
+			if(loco.entityData.hasFloat("burnTime") && loco.entityData.hasFloat("maxBurn")) {
+				l = (int)Math.floor(loco.entityData.getFloat("maxBurn"));
+				if (l != 0 && loco.entityData.getFloat("burnTime") != 0) {
+					l = (int)Math.abs(((l * 70) / (loco.entityData.getFloat("burnTime"))));
+				}
+			}else {
+				l = 0;
 			}
 		}
 		if (l > 70) {
@@ -136,7 +144,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderWaterBar(EntityTrainCore loco) {
-		int l = loco.getTankInfo(null)[0]!=null?loco.getTankInfo(null)[0].fluid.amount:0;
+		int l = loco.getTankInfo(null)[0]!=null?loco.getTankInfo(null)[0].fluid.amount:1;
 		int l_Scaled = Math.abs((l * 49) / loco.getTankCapacity()[0]);
 		if (l_Scaled > 49) {
 			l_Scaled = 49;// to fit the 49 pixels bar
@@ -153,8 +161,21 @@ public class HUDloco extends GuiScreen {
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 		/* this is for the red overlay if you don't put water into steam trains */
-		if (l <= 1 && loco.fuelHandler.burnHeat>0) {
+		if (l <= 1 && loco.entityData.hasFloat("burnTime") && loco.entityData.getFloat("burnTime")>0) {
 			this.drawGradientRect(0, 0, windowWidth, windowHeight + 100, 1615855616, -1602211792);
+		}
+	}
+
+	public int getHeat(GenericRailTransport loco){
+		if(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
+			if (true || loco.ticksExisted > lastTick) {
+				int l = loco.getTankInfo(null)[1] != null ?
+						loco.getTankInfo(null)[1].fluid.amount : 1;
+				return ((l * 100) / (loco.getTankCapacity()[1]));
+			}
+			return 50;
+		} else {
+			return loco.getBoolean(GenericRailTransport.boolValues.RUNNING)?50:0;
 		}
 	}
 
@@ -170,6 +191,7 @@ public class HUDloco extends GuiScreen {
 		/**
 		 * Things are slightly different in Steam HUD
 		 */
+		//todo make dial thing aling with gearing
 		if (!(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM))) {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "loco_hud_steam.png"));
 			drawTexturedModalRect(75, windowHeight + 32 - speed, 163, 150, 30, 5);
@@ -183,10 +205,6 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderOverheating(EntityTrainCore loco) {
-		int overheatLevel = loco.fuelHandler.burnHeat;
-		if (overheatLevel > 70) {
-			overheatLevel += 30;
-		}
 		// fontRendererObj.drawStringWithShadow("Heat:", 33, (windowHeight/2)+1, 0xFFFFFF);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
@@ -201,15 +219,15 @@ public class HUDloco extends GuiScreen {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "locohud.png"));
 		}
 
-		int overheatScaled = Math.abs((overheatLevel * 49) / (130));
-		if (overheatScaled > 49) {
-			overheatScaled = 49;
+		int overheatScaled = getHeat(loco);
+		if (overheatScaled > 0) {
+			overheatScaled=(49*overheatScaled)/100;
 		}
 		/**
 		 * Things are slightly different in Steam HUD render overheat arrow black bar for steam train
 		 */
 		if (!(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM))) {
-			drawTexturedModalRect(58, windowHeight + 37 - ( overheatScaled) + (20), 169, 158, 23, 5);
+			drawTexturedModalRect(58, windowHeight + 37 - ( overheatScaled)+20, 169, 158, 23, 5);
 		}
 		else {
 			drawTexturedModalRect(56, windowHeight + 17, 176, (169 + overheatScaled), 5, 49 - overheatScaled);

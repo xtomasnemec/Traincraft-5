@@ -55,8 +55,14 @@ public class RenderWagon extends Render {
      */
     @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
-        if (entity instanceof GenericRailTransport && ((GenericRailTransport) entity).frontBogie!=null){
-            render((GenericRailTransport) entity,x,y,z, entity.prevRotationYaw + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw)*partialTick, false);
+        if (entity instanceof GenericRailTransport){
+            if(((GenericRailTransport) entity).frontBogie!=null) {
+                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                        false);
+            } else {
+                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                        true);
+            }
         }
     }
 
@@ -224,16 +230,16 @@ public class RenderWagon extends Render {
         if(!isPaintBucket) {
             GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
         }
-        GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
-        GL11.glPushMatrix();
 
-        //todo: this is jank and kinda inaccurate, but it's close.
         GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
                 Math.abs(entity.bogieLengthFromCenter()[0])+Math.abs(entity.bogieLengthFromCenter()[1]),
-                0,0), entity.rotationPitch,0,0).yCoord*2, 0);
+                0,0), entity.rotationPitch,0,0).yCoord, 0);
         if(entity.frontBogie!=null && entity.backBogie!=null){
             GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
         }
+        GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
+        GL11.glPushMatrix();
+
 
         //scale the model
         GL11.glScalef(((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1,((entity.getRenderScale()-0.0625f)*10f)+1);

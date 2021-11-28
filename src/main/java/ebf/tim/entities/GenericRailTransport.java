@@ -24,6 +24,7 @@ import ebf.tim.render.TransportRenderData;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.Vec3d;
+import fexcraft.tmt.slim.Vec3f;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
@@ -53,9 +54,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static ebf.tim.TrainsInMotion.transportTypes.*;
+import static ebf.tim.utility.CommonUtil.radianF;
 import static ebf.tim.utility.CommonUtil.rotatePointF;
 
 /**
@@ -88,8 +93,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**the destination for routing*/
     public String destination ="";
     /**used to initialize a large number of variables that are used to calculate everything from movement to linking.
-     * this is so we don't have to initialize each of these variables every tick, saves CPU.*/
-    public float[][] vectorCache = new float[7][3];
+     * this is so we don't have to initialize each of these variables every tick, saves CPU.
+     * 0 is for rider positions
+     * 1 is for bogie initialization and updating
+     * 2 is for cached locomotive velocity.
+     * */
+    public Vec3f[] cachedVectors = new Vec3f[]{
+            new Vec3f(0,0,0),new Vec3f(0,0,0),new Vec3f(0,0,0),new Vec3f(0,0,0)};
     /**the health of the entity, similar to that of EntityLiving*/
     private int health = 20;
     /**the list of items used for the inventory and crafting slots.*/
@@ -115,6 +125,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public float[] velocity=new float[]{0,0};
     public int forceBackupTimer =0, syncTimer=0;
     public float pullingWeight=0;
+
+    private float ticksSinceLastVelocityChange=1;
 
     private List<GenericRailTransport> consist = new ArrayList<>();
 
@@ -214,7 +226,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return stack.getItem().delegate.name().equals(getItem().delegate.name());
     }
 
-    public enum boolValues{BRAKE(0), LOCKED(1), LAMP(2), CREATIVE(3), COUPLINGFRONT(4), COUPLINGBACK(5), WHITELIST(6), RUNNING(7), @Deprecated DERAILED(8);
+    public enum boolValues{BRAKE(0), LOCKED(1), LAMP(2), CREATIVE(3), COUPLINGFRONT(4), COUPLINGBACK(5), WHITELIST(6), RUNNING(7), DERAILED(8);
         public int index;
         boolValues(int index){this.index = index;}
     }
@@ -855,12 +867,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public void updatePosition(){
 
-        if(collisionHandler==null) {
-            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
-            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-        }
-
-
         //reposition bogies to be sure they are the right distance
         if(!worldObj.isRemote) {
 
@@ -882,68 +888,90 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
 
             //do scaled rail boosting but keep it capped to the max velocity of the rail
-            Block b = worldObj.getBlock((int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ);
-            if (b instanceof BlockRailBase && ((BlockRailBase) b).isPowered() &&
-                    Math.abs(frontBogie.motionX) + Math.abs(frontBogie.motionZ) <//this part keeps it capped
-                            ((BlockRailBase) b).getRailMaxSpeed(worldObj, frontBogie, (int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ)) {
-                frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
-                        Math.copySign(
-                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, frontBogie, (int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ) * 0.005f,
-                                frontBogie.motionX),
+            Block b = CommonUtil.getBlockAt(worldObj,posX,posY,posZ);
+            if (b instanceof BlockRailBase){
+                setBoolean(boolValues.DERAILED,false);
+
+                if (((BlockRailBase) b).isPowered() &&
+                    //this part keeps it capped
+                    getVelocity() < maxBoost(b)) {
+                    float boost = CommonUtil.getMaxRailSpeed(worldObj, (BlockRailBase) b,this,posX,posY,posZ) * 0.005f;
+                    frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
+                        Math.copySign(boost, frontBogie.motionX),
                         0,
-                        Math.copySign(
-                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, frontBogie, (int) frontBogie.posX, (int) frontBogie.posY, (int) frontBogie.posZ) * 0.005f,
-                                frontBogie.motionZ));
-            }
-            b = worldObj.getBlock((int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ);
-            if (b instanceof BlockRailBase && ((BlockRailBase) b).isPowered() &&
-                    Math.abs(backBogie.motionX) + Math.abs(backBogie.motionZ) <
-                            ((BlockRailBase) b).getRailMaxSpeed(worldObj, backBogie, (int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ)) {
-                backBogie.addVelocity(
-                        Math.copySign(
-                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, backBogie, (int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ) * 0.005f,
-                                backBogie.motionX),
+                        Math.copySign(boost, frontBogie.motionZ));
+
+                    backBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
+                        Math.copySign(boost, backBogie.motionX),
                         0,
-                        Math.copySign(
-                                ((BlockRailBase) b).getRailMaxSpeed(worldObj, backBogie, (int) backBogie.posX, (int) backBogie.posY, (int) backBogie.posZ) * 0.005f,
-                                backBogie.motionZ));
+                        Math.copySign(boost, backBogie.motionZ));
+                }
+            } else {
+                //set the derail state based on whether or not there's a valid rail block below.
+                //later this will add more inherent support for 3rd party mods like ZnD, right now it's just vanilla/RC/TiM
+                setBoolean(boolValues.DERAILED, !CommonUtil.isRailBlockAt(worldObj,posX,posY,posZ));
             }
 
 
         //actually move
-        frontBogie.minecartMove(this, frontBogie.motionX,frontBogie.motionZ);
-        backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
-        motionX=(posX-prevPosX);
-        motionZ=(posZ-prevPosZ);
-        prevPosX=posX;
-        prevPosZ=posZ;
+            moveBogies(null,null);
+            //only update velocity if we've moved to any significance.
+            if(Math.abs(posX-prevPosX)>0.0625 || Math.abs(posZ-prevPosZ)>0.0625) {
+                motionX = (posX - prevPosX)/ticksSinceLastVelocityChange;
+                motionZ = (posZ - prevPosZ)/ticksSinceLastVelocityChange;
+                prevPosX = posX;
+                prevPosZ = posZ;
+                dataWatcher.updateObject(12, getVelocity());
 
-            entityData.putDouble(NBTKeys.frontBogieX, frontBogie.motionX);
-            entityData.putDouble(NBTKeys.frontBogieZ, frontBogie.motionZ);
-            entityData.putDouble(NBTKeys.backBogieX, backBogie.motionX);
-            entityData.putDouble(NBTKeys.backBogieZ, backBogie.motionZ);
-            frontBogie.setVelocity(0,0,0);
-            backBogie.setVelocity(0,0,0);
-
-
-        setRotation((CommonUtil.atan2degreesf(
-                frontBogie.posZ - backBogie.posZ,
-                frontBogie.posX - backBogie.posX)),
-                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
-
-        vectorCache[3] = CommonUtil.rotatePointF(-rotationPoints()[0],0,0,rotationPitch, rotationYaw,0);
-
-        setPosition((frontBogie.posX+vectorCache[3][0]),
-                (frontBogie.posY+vectorCache[3][1]),(frontBogie.posZ+vectorCache[3][2]));
-
-            dataWatcher.updateObject(12, getVelocity());
-            for (CollisionBox box : collisionHandler.interactionBoxes) {
-                box.onUpdate();
+                setRotation((CommonUtil.atan2degreesf(
+                        frontBogie.posZ - backBogie.posZ,
+                        frontBogie.posX - backBogie.posX)),
+                        CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                ticksSinceLastVelocityChange=1;
+            } else {
+                ticksSinceLastVelocityChange++;
             }
         }
-        collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+
+        if(collisionHandler==null) {
+            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        } else {
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        }
     }
 
+    /**
+     * if X or Z is null, the bogie's existing motion velocity will be used
+     */
+    public void moveBogies(Double velocityX, Double velocityZ){
+        if(velocityX==null||velocityZ==null){
+            frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
+            backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
+            frontBogie.setVelocity(0,0,0);
+            backBogie.setVelocity(0,0,0);
+        } else {
+            frontBogie.minecartMove(this, velocityX, velocityZ);
+            backBogie.minecartMove(this, velocityX, velocityZ);
+        }
+
+        cachedVectors[1] = new Vec3f(-rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+
+        setPosition((frontBogie.posX+cachedVectors[1].xCoord),
+                (frontBogie.posY+cachedVectors[1].yCoord),(frontBogie.posZ+cachedVectors[1].zCoord));
+
+        //reset the vector when we're done so it wont break trains.
+        cachedVectors[1]= new Vec3f(0,0,0);
+
+    }
+
+    double maxBoost(Block booster){
+        if(this.transportTopSpeed()>0){
+            return Math.min(transportTopSpeed(),
+                    CommonUtil.getMaxRailSpeed(worldObj, (BlockRailBase) booster,this, posX,posY,posZ));
+        }
+        return CommonUtil.getMaxRailSpeed(worldObj, (BlockRailBase) booster,this, posX,posY,posZ);
+    }
 
 
     /**
@@ -1002,17 +1030,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //always be sure the bogies exist on client and server.
         if (!worldObj.isRemote && (frontBogie == null || backBogie == null)) {
             //spawn front bogie
-            vectorCache[0] = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0,rotationPitch, rotationYaw,0);
-            frontBogie = new EntityBogie(worldObj, posX + vectorCache[0][0], posY + vectorCache[0][1], posZ + vectorCache[0][2], getEntityId(), true);
-            if(entityData.containsDouble(NBTKeys.frontBogieX)) {
-                frontBogie.setVelocity(entityData.getDouble(NBTKeys.frontBogieX), 0, entityData.getDouble(NBTKeys.frontBogieZ));
-            }
+            cachedVectors[1] = new Vec3f(rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+            frontBogie = new EntityBogie(worldObj, posX + cachedVectors[1].xCoord, posY + cachedVectors[1].yCoord, posZ + cachedVectors[1].zCoord, getEntityId(), true);
             //spawn back bogie
-            vectorCache[0] = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw,0);
-            backBogie = new EntityBogie(worldObj, posX + vectorCache[0][0], posY + vectorCache[0][1], posZ + vectorCache[0][2], getEntityId(), false);
-            if(entityData.containsDouble(NBTKeys.backBogieX)) {
-                backBogie.setVelocity(entityData.getDouble(NBTKeys.backBogieX), 0, entityData.getDouble(NBTKeys.backBogieZ));
-            }
+            cachedVectors[1] = new Vec3f(rotationPoints()[1],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+            backBogie = new EntityBogie(worldObj, posX + cachedVectors[1].xCoord, posY + cachedVectors[1].yCoord, posZ + cachedVectors[1].zCoord, getEntityId(), false);
+
             worldObj.spawnEntityInWorld(frontBogie);
             worldObj.spawnEntityInWorld(backBogie);
 
@@ -1029,6 +1052,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             openInventory();
 
             updatePosition();
+
+
+            prevPosX = posX;
+            prevPosZ = posZ;
+            motionX = 0;
+            motionZ = 0;
+            dataWatcher.updateObject(12, getVelocity());
         }
 
         //CLIENT UPDATE
@@ -1073,7 +1103,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          *
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
-        else if (frontBogie!=null && backBogie != null && ticksExisted>1){
+        else if (frontBogie!=null && backBogie != null && ticksExisted>0){
             //calculate for slopes
             if(Math.abs(rotationPitch)>4f){
                 double[] roll = CommonUtil.rotatePoint(new double[]{
@@ -1097,28 +1127,27 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 backBogie.motionZ*=0.996;
             }
 
-            //update positions related to linking, this NEEDS to come after drag
-            if(frontLinkedID!=null){
-                manageLinks((GenericRailTransport)worldObj.getEntityByID(frontLinkedID),true);
-            }
-            if(backLinkedID!=null){
-                manageLinks((GenericRailTransport)worldObj.getEntityByID(backLinkedID),false);
+
+            if(getAccelerator()==0) {
+                //update positions related to linking, this NEEDS to come after drag
+                if (frontLinkedID != null) {
+                    manageLinks((GenericRailTransport) worldObj.getEntityByID(frontLinkedID), true);
+                }
+                if (backLinkedID != null) {
+                    manageLinks((GenericRailTransport) worldObj.getEntityByID(backLinkedID), false);
+                }
             }
 
-            if(!(this instanceof EntityTrainCore)) {
-                updatePosition();
-            }
 
         }
 
         //rider updating isn't called if there's no driver/conductor, so just in case of that, we reposition the seats here too.
         if (riddenByEntity == null && getRiderOffsets() != null) {
             for (int i = 0; i < seats.size(); i++) {
-                vectorCache[0] = rotatePointF(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2], rotationPitch, rotationYaw, 0f);
-                vectorCache[0][0] += posX;
-                vectorCache[0][1] += posY;
-                vectorCache[0][2] += posZ;
-                seats.get(i).setPosition(vectorCache[0][0], vectorCache[0][1], vectorCache[0][2]);
+                cachedVectors[0] = new Vec3f(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2])
+                        .rotatePoint(rotationPitch, rotationYaw, 0f);
+                cachedVectors[0].addVector(posX,posY,posZ);
+                seats.get(i).setPosition(cachedVectors[0].xCoord, cachedVectors[0].yCoord, cachedVectors[0].zCoord);
             }
         }
 
@@ -1217,7 +1246,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         }
                     }
                 } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
-                    if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0) {
+                    if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0 && getVelocity()<0.01) {
                         if  (CommonProxy.pushabletrains) {
                             double[] motion = CommonUtil.rotatePoint(0.25,0,
                                     CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
@@ -1241,8 +1270,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                                     motion[2]=Math.min(0,distance-frontBogie.motionZ);
                                 }
                             }
-                            this.frontBogie.minecartMove(this, motion[0], motion[2]);
-                            this.backBogie.minecartMove(this,motion[0], motion[2]);
+                            this.frontBogie.addVelocity(motion[0], 0, motion[2]);
+                            this.backBogie.addVelocity(motion[0], 0, motion[2]);
                         }
 
                     }
@@ -1253,6 +1282,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                                 (float) (motionX + motionZ) * 0.1f);
                     }
                 }
+            }
+
+
+            if(!(this instanceof EntityTrainCore)) {
+                updatePosition();
             }
         } else {
             //apparently to push away a player it has to happen on client
@@ -1350,16 +1384,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void updateRiderPosition() {
         if (getRiderOffsets() != null && worldObj!=null) {
             if (riddenByEntity != null) {
-                vectorCache[2] = rotatePointF(getRiderOffsets()[0][0],getRiderOffsets()[0][1],getRiderOffsets()[0][2], rotationPitch, rotationYaw, 0);
-                riddenByEntity.setPosition(vectorCache[2][0] + this.posX, vectorCache[2][1] + this.posY+(worldObj.isRemote?0:1)+(frontBogie==null?0:frontBogie.yOffset), vectorCache[2][2] + this.posZ);
+                cachedVectors[3] = new Vec3f(getRiderOffsets()[0][0],getRiderOffsets()[0][1],getRiderOffsets()[0][2])
+                        .rotatePoint(rotationPitch, rotationYaw, 0);
+                cachedVectors[3].addVector(posX,posY+frontBogie.yOffset,posZ);
+                riddenByEntity.setPosition(cachedVectors[3].xCoord,cachedVectors[3].yCoord,cachedVectors[3].zCoord);
             }
 
-            for (int i = 0; i < seats.size(); i++) {
-                vectorCache[2] = rotatePointF(getRiderOffsets()[i][0],getRiderOffsets()[i][1],getRiderOffsets()[i][2], rotationPitch, rotationYaw, 0);
-                vectorCache[2][0] += posX;
-                vectorCache[2][1] += posY+(worldObj.isRemote?0:1)+(frontBogie==null?0:frontBogie.yOffset);
-                vectorCache[2][2] += posZ;
-                seats.get(i).setPosition(vectorCache[2][0], vectorCache[2][1], vectorCache[2][2]);
+            for (EntitySeat seat : seats) {
+                cachedVectors[3] = new Vec3f(getRiderOffsets()[0][0], getRiderOffsets()[0][1], getRiderOffsets()[0][2])
+                        .rotatePoint(rotationPitch, rotationYaw, 0);
+                cachedVectors[3].addVector(posX,
+                        posY + (worldObj.isRemote ? 0 : 1) + (frontBogie == null ? 0 : frontBogie.yOffset),
+                        posZ);
+
+                seat.setPosition(cachedVectors[3].xCoord, cachedVectors[3].yCoord, cachedVectors[3].zCoord);
             }
         }
 
@@ -1386,26 +1424,58 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLinks(GenericRailTransport linkedTransport, boolean front) {
-        //distance
-        vectorCache[4][0]= (float)(this.posX - linkedTransport.posX);
-        vectorCache[4][2]= (float)(this.posZ - linkedTransport.posZ);
+        //handle yaw changes for derail
+        if(getBoolean(boolValues.DERAILED)) {
+            if(frontLinkedID!=null && backLinkedID!=null){
+                rotationYaw=CommonUtil.atan2degreesf(
+                        worldObj.getEntityByID(frontLinkedID).posZ - worldObj.getEntityByID(backLinkedID).posZ,
+                        worldObj.getEntityByID(frontLinkedID).posX - worldObj.getEntityByID(backLinkedID).posX);
+            } else if (frontLinkedID!=null){
+                rotationYaw=CommonUtil.atan2degreesf(
+                        worldObj.getEntityByID(frontLinkedID).posZ - posZ,
+                        worldObj.getEntityByID(frontLinkedID).posX - posX);
+            } else if (backLinkedID!=null){
+                rotationYaw=CommonUtil.atan2degreesf(
+                        posZ - worldObj.getEntityByID(backLinkedID).posZ,
+                        posX - worldObj.getEntityByID(backLinkedID).posX);
+            }
+        }
 
-        //movement length
-        float norm = MathHelper.sqrt_double(vectorCache[4][0] * vectorCache[4][0] + vectorCache[4][2] * vectorCache[4][2]);
-        norm -=((this.getHitboxSize()[0]*0.5f)+(linkedTransport.getHitboxSize()[0]*0.5f));
-
-        //scale to just a little under half since we apply it to both entities every tick
-        norm*=0.99;
-
-
+        //todo: some vec2 logic could optimize this a little.
+        //set the target position
+        Vec3d point = new Vec3d(linkedTransport.posX, 0, linkedTransport.posZ);
+        if(linkedTransport.getAccelerator()==0) {
+            point.addVector(linkedTransport.motionX, 0, linkedTransport.motionZ);
+        }
+        //now subtract the current position
+        point.subtractVector(posX, 0, posZ);
         if(getAccelerator()==0) {
-            double radian = Math.PI/180d;
-            //changes direction based on if the other entity is the front transport of this one
-            double x = ((front?norm:-norm) * Math.cos(rotationYaw * radian));
-            double z = ((front?norm:-norm) * Math.sin(rotationYaw * radian));
+            point.subtractVector(motionX, 0, motionZ);
+        }
 
-            frontBogie.addVelocity(x,0,z);
-            backBogie.addVelocity(x,0,z);
+        //now add the difference between the coupler offsets.
+        //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
+        //which prevents phasing into eachother around corners.
+
+        //DebugUtil.println((Math.abs(point.xCoord)+ Math.abs(point.zCoord))-
+       //         (Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5));
+
+        double dist = Math.max(Math.abs(point.xCoord), Math.abs(point.zCoord));
+
+        dist -=(Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5);
+
+        dist *=0.998;
+
+        point.xCoord = (dist *
+                Math.cos((front?rotationYaw+360:rotationYaw+180)*radianF));
+        point.zCoord = (dist *
+                Math.sin((front?rotationYaw+360:rotationYaw+180)*radianF));
+        //if(dist<0){
+            //dist+=0.0625;
+       // }
+
+        if(Math.abs(dist)>0.006 && Math.abs(dist) < 30) {
+            moveBogies(point.xCoord,point.zCoord);
         }
     }
 
@@ -1503,7 +1573,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public float getVelocity(){
-        return worldObj.isRemote?dataWatcher.getWatchableObjectFloat(12):(float)(Math.abs(motionX)+Math.abs(motionZ));
+        return worldObj.isRemote?dataWatcher.getWatchableObjectFloat(12):
+                (float)(Math.abs(motionX)+Math.abs(motionZ));
     }
     /**
      * NOTE: lists are hash maps, their index order is different every time an entry is added or removed.
@@ -1707,7 +1778,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 i++;
             }
         }
-        return i>0?MathHelper.floor_double(((i / getSizeInventory()) *indexes)+0.5):0;
+        return i>0?(int)(((i / getSizeInventory()) *indexes)+0.5):0;
     }
 
 
@@ -2130,7 +2201,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * example:
      * return new float[]{x,y,z};
      * may not return null*/
-    public float[] getHitboxSize(){return new float[]{3,1.5f,.21f};}
+    public float[] getHitboxSize(){return new float[]{3,1.5f,0.21f};}
 
     /**defines if the transport is immune to explosions*/
     public boolean isReinforced(){return false;}

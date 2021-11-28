@@ -17,37 +17,37 @@ public class TiMItems {
 
     public static Item boilerWood,boilerIron,boilerSteel,boilerCopper;
     public static Item fireboxIron, fireboxSteel;
-    public static Item petrolEngine,smallDieselEngine,mediumDieselEngine,largeDieselEngine;
-    public static Item smallElectricEngine,mediumElectricEngine,largeElectricEngine;
+    public static Item mediumDieselEngine;//,petrolEngine,smallDieselEngine,largeDieselEngine;
+    public static Item smallElectricEngine;//,mediumElectricEngine,largeElectricEngine;
 
-    public static Item seatsWooden,seatsIron,seatsPadded,seatsLuxury;
+    public static Item seatsWooden;//,seatsIron,seatsPadded,seatsLuxury;
 
-    public static Item hydraulicTransmission,pneumaticTransmission,transformer,transformerHV,electricControls;
+    public static Item hydraulicTransmission,transformer;//,pneumaticTransmission,transformerHV,electricControls;
 
-    public static Item enginePiston,cylinder,camshaft,graphite,steelPinCircuit, goldPinCircuit, connectingRod;
+    public static Item enginePiston,cylinder,camshaft,graphite,steelPinCircuit;//, goldPinCircuit, connectingRod;
 
-    public static Item copperWire,goldWire, carbonWire, steelWire, aluminiumWire, insulatedCopperWire, insulatedAluminiumWire;
+    public static Item copperWire,goldWire, carbonWire, steelWire, aluminiumWire;//, insulatedCopperWire, insulatedAluminiumWire;
 
-    public static Item controlPanel, controlStand;
+    public static Item controlPanel;//, controlStand;
 
-    public static Item walschaertsValveGear, stephensonValveGear, bakerValveGear, radialValveGear, conjugatingValveGear;
+    //public static Item walschaertsValveGear, stephensonValveGear, bakerValveGear, radialValveGear, conjugatingValveGear;
 
     public static Item railItem;
 
     public static Item generator;
 
-    public static Item itemStake = new ItemStake();
-    public static Item recipeBook = new ItemCraftGuide();
+    public static Item itemStake = new ItemStake().setMaxStackSize(1);
+    public static Item recipeBook = new ItemCraftGuide().setMaxStackSize(1);
 
 
     public static void registerItems(){
 
         TiMGenericRegistry.RegisterItem(itemStake, TrainsInMotion.MODID, "stake",TrainsInMotion.creativeTab);
 
-        TiMGenericRegistry.RegisterItem(new ItemAdminBook(),TrainsInMotion.MODID, "adminbook", TrainsInMotion.creativeTab);
+        TiMGenericRegistry.RegisterItem(new ItemAdminBook().setMaxStackSize(1),TrainsInMotion.MODID, "adminbook", TrainsInMotion.creativeTab);
         TiMGenericRegistry.RegisterItem(recipeBook,TrainsInMotion.MODID, "craftbook", TrainsInMotion.creativeTab);
 
-        TiMGenericRegistry.RegisterItem(new ItemPaintBucket(),TrainsInMotion.MODID, "paintbucket", TrainsInMotion.creativeTab);
+        TiMGenericRegistry.RegisterItem(new ItemPaintBucket().setMaxStackSize(1),TrainsInMotion.MODID, "paintbucket", TrainsInMotion.creativeTab);
         TiMGenericRegistry.RegisterItem(new ItemKey(),TrainsInMotion.MODID,  "transportkey", TrainsInMotion.creativeTab);
         TiMGenericRegistry.RegisterItem(new ItemTicket(),TrainsInMotion.MODID,  "transportticket", TrainsInMotion.creativeTab);
 
@@ -108,26 +108,26 @@ public class TiMItems {
         fireboxSteel = createItem("firebox.steel");
 
         //Engines
-        petrolEngine = createItem("petrol.engine"); //c
-        smallDieselEngine = createItem("small.diesel.engine");
+        //petrolEngine = createItem("petrol.engine"); //c
+        //mediumDieselEngine = createItem("small.diesel.engine");
         mediumDieselEngine = createItem("medium.diesel.engine");
-        largeDieselEngine = createItem("large.diesel.engine"); //c
+        //largeDieselEngine = createItem("large.diesel.engine"); //c
         smallElectricEngine = createItem("small.electric.engine");
-        mediumElectricEngine = createItem("medium.electric.engine"); //c
-        largeElectricEngine = createItem("large.electric.engine"); //c
+        //mediumElectricEngine = createItem("medium.electric.engine"); //c
+        //largeElectricEngine = createItem("large.electric.engine"); //c
 
         //Seats
         seatsWooden = createItem("seats.wooden");
-        seatsIron = createItem("seats.iron"); //c
-        seatsPadded = createItem("seats.padded"); //c
-        seatsLuxury = createItem("seats.luxury"); //c
+        //seatsIron = createItem("seats.iron"); //c
+        //seatsPadded = createItem("seats.padded"); //c
+        //seatsLuxury = createItem("seats.luxury"); //c
 
         //Transmissions + Other
         hydraulicTransmission = createItem("hydraulic.transmission");
-        pneumaticTransmission = createItem("pneumatic.transmission");
+        //pneumaticTransmission = createItem("pneumatic.transmission");
         transformer = createItem("transformer");
-        transformerHV = createItem("transformer.hv"); //c
-        electricControls = createItem("electric.controls"); //c
+        //transformerHV = createItem("transformer.hv"); //c
+        //electricControls = createItem("electric.controls"); //c
 
         //Wires
         //TODO in future? rename to wire.material to match naming scheme
@@ -136,16 +136,16 @@ public class TiMItems {
         carbonWire = createItem("carbon.wire");
         steelWire = createItem("steel.wire");
         aluminiumWire = createItem("aluminium.wire");
-        insulatedCopperWire = createItem("insulated.copper.wire"); //c
-        insulatedAluminiumWire = createItem("insulated.aluminium.wire"); //c
+        //insulatedCopperWire = createItem("insulated.copper.wire"); //c
+        //insulatedAluminiumWire = createItem("insulated.aluminium.wire"); //c
 
         //Valve Gears
         //TODO in future? reverse order to match naming scheme
-        walschaertsValveGear = createItem("walschaerts.valve.gear"); //c
-        stephensonValveGear = createItem("stephenson.valve.gear"); //c
-        bakerValveGear = createItem("baker.valve.gear"); //c
-        radialValveGear = createItem("radial.valve.gear"); //c
-        conjugatingValveGear = createItem("conjugating.valve.gear"); //c
+        //walschaertsValveGear = createItem("walschaerts.valve.gear"); //c
+        //stephensonValveGear = createItem("stephenson.valve.gear"); //c
+        //bakerValveGear = createItem("baker.valve.gear"); //c
+        //radialValveGear = createItem("radial.valve.gear"); //c
+        //conjugatingValveGear = createItem("conjugating.valve.gear"); //c
 
         //Other
         //TODO in future? reverse order to match naming scheme
@@ -154,10 +154,10 @@ public class TiMItems {
         camshaft = createItem("camshaft");
         graphite = createItem("graphite");
         steelPinCircuit = createItem("steel.pin.circuit");
-        goldPinCircuit = createItem("gold.pin.circuit"); //c
+        //goldPinCircuit = createItem("gold.pin.circuit"); //c
         controlPanel = createItem("control.panel");
-        controlStand = createItem("control.stand"); //c
-        connectingRod = createItem("connecting.rod"); //c
+        //controlStand = createItem("control.stand"); //c
+        //connectingRod = createItem("connecting.rod"); //c
         generator = createItem("generator");
     }
 
