@@ -33,7 +33,7 @@ public class EntityTender4_4_0_Remaster extends GenericRailTransport {
 
     //main stats
     @Override
-    public String transportName(){return "Tender 4-4-0-R";}
+    public String transportName(){return "American Tender(Remastered)";}
     @Override
     public String transportcountry(){return "us";}
     @Override
@@ -55,12 +55,12 @@ public class EntityTender4_4_0_Remaster extends GenericRailTransport {
     @Override
     public Bogie[] bogies(){
         return new Bogie[]{
-                new Bogie(new train.render.models.tender.Classic440TenderStandardFront(), -2.6f),
-                new Bogie(new train.render.models.tender.Classic440TenderStandardRear(), -2.6f),
+                new Bogie(new train.render.models.tender.Classic440TenderStandardFront(), -0.845f),
+                new Bogie(new train.render.models.tender.Classic440TenderStandardRear(), 0.7f),
         };
     }
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-2.6f, worldObj==null?0.2f:0f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{-2.525f, worldObj==null?0.2f:0f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -88,9 +88,9 @@ public class EntityTender4_4_0_Remaster extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?4f:3.8f,1.6f,1.1f};}
+    public float[] getHitboxSize(){return new float[]{worldObj==null?4f:3.5f,1.6f,1.375f};}
     @Override
-    public float[] rotationPoints() {return new float[]{0.6f, -0.575f};}
+    public float[] rotationPoints() {return new float[]{0.7f, -0.845f};}
     @Override
     public int[] getTankCapacity(){return new int[]{8000};}
 

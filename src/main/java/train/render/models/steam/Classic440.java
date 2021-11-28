@@ -3,6 +3,7 @@
 package train.render.models.steam;
 
 
+import ebf.tim.render.StaticModelAnimator;
 import fexcraft.fvtm.RollingStockModel;
 import fexcraft.fvtm.TurboList;
 import fexcraft.tmt.slim.ModelRendererTurbo;
@@ -16,7 +17,7 @@ public class Classic440 extends RollingStockModel {
 
 	public Classic440(){
 		super(); textureX = 256; textureY = 128;
-		this.addToCreators("Unregistered Account");
+		this.addToCreators("Broscolotos");
 		//
 		initGroup_Universal_4_4_0();
 		initGroup_VT_12();
@@ -26,17 +27,17 @@ public class Classic440 extends RollingStockModel {
 
 	private final void initGroup_Universal_4_4_0(){
 		TurboList Universal_4_4_0 = new TurboList("Universal_4_4_0");
-		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 219, 76, textureX, textureY).addBox(0, 0, 0, 13, 13, 0)
-			.setRotationPoint(-26, -3, -6.01f).setRotationAngle(0, 0, 0).setName("Wheel0")
+		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 219, 76, textureX, textureY).addBox(-6.5f, -6.5f, 0, 13, 13, 0)
+			.setRotationPoint(-19.5f, 3.5f, -6.01f).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagWheel)
 		);
-		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 111, 74, textureX, textureY).addBox(0, 0, 0, 13, 13, 0)
-			.setRotationPoint(-5, -3, -6.01f).setRotationAngle(0, 0, 0).setName("Wheel1")
+		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 111, 74, textureX, textureY).addBox(-6.5f, -6.5f, 0, 13, 13, 0)
+			.setRotationPoint(1.5f, 3.5f, -6.01f).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagWheel)
 		);
-		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 84, 74, textureX, textureY).addBox(0, 0, 0, 13, 13, 0)
-			.setRotationPoint(-5, -3, 6.01f).setRotationAngle(0, 0, 0).setName("Wheel0")
+		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 84, 74, textureX, textureY).addBox(-6.5f, -6.5f, 0, 13, 13, 0)
+			.setRotationPoint(1.5f, 3.5f, 6.01f).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagWheel)
 		);
-		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 0, 74, textureX, textureY).addBox(0, 0, 0, 13, 13, 0)
-			.setRotationPoint(-26, -3, 6.01f).setRotationAngle(0, 0, 0).setName("Wheel1")
+		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 0, 74, textureX, textureY).addBox(-6.5f, -6.5f, 0, 13, 13, 0)
+			.setRotationPoint(-19.5f, 3.5f, 6.01f).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagWheel)
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 115, 59, textureX, textureY).addBox(0, 0, 0, 14, 13, 1)
 			.setRotationPoint(-3, -18, -11).setRotationAngle(0, 0, 0).setName("Box 41")
@@ -142,10 +143,10 @@ public class Classic440 extends RollingStockModel {
 			.setRotationPoint(-51, -1, -9).setRotationAngle(0, 0, 0).setName("Box 84")
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 99, 17, textureX, textureY).addBox(0, 0, 0, 5, 1, 1)
-			.setRotationPoint(-44, 3.5f, -8).setRotationAngle(0, 0, 0).setName("Box 85")
+			.setRotationPoint(-44, 3.5f, -8).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagAdvancedPiston)
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 0, 57, textureX, textureY).addBox(0, 0, 0, 19, 1, 1)
-			.setRotationPoint(-19, 5.5f, -7).setRotationAngle(0, 0, 0).setName("Box 86")
+			.setRotationPoint(-18.5f, 5.5f, -7).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagConnectingRodOffset(3))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 188, 56, textureX, textureY)
 			.addShapeBox(0, 0, 0, 19, 1, 1, 0, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f)
@@ -159,7 +160,7 @@ public class Classic440 extends RollingStockModel {
 			.setRotationPoint(-33, -0.5f, -5).setRotationAngle(0, 0, 0).setName("Box 90")
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 238, 61, textureX, textureY).addBox(0, 0, 0, 2, 2, 1)
-			.setRotationPoint(-21, 5, -8).setRotationAngle(0, 0, 0).setName("Box 91")
+			.setRotationPoint(-20.5f, 5, -8).setRotationAngle(0, 0, 0).setName("Box 91")
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 36, 62, textureX, textureY)
 			.addShapeBox(0, 0, 0, 1, 2, 1, 0, 0, 0, 0, -0.5f, 0, 0, -0.5f, 0, 0, 0, 0, 0, 0, 0.5f, 0, -0.5f, 0.5f, 0, -0.5f, 0.5f, 0, 0, 0.5f, 0)
@@ -191,7 +192,7 @@ public class Classic440 extends RollingStockModel {
 			.setRotationPoint(-44, 4.5f, 8).setRotationAngle(0, 0, 0).setName("Box 99")
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 0, 17, textureX, textureY).addBox(0, 0, 0, 5, 1, 1)
-			.setRotationPoint(-44, 3.5f, 7).setRotationAngle(0, 0, 0).setName("Box 104")
+			.setRotationPoint(-44, 3.5f, 7).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagAdvancedPiston)
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 54, 60, textureX, textureY).addBox(0, 0, 0, 1, 1, 2)
 			.setRotationPoint(-33, -0.5f, -7).setRotationAngle(0, 0, 0).setName("Box 105")
@@ -245,22 +246,22 @@ public class Classic440 extends RollingStockModel {
 			.setRotationPoint(-59, 3.5f, -0.5f).setRotationAngle(0, 0, 51).setName("Box 126")
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 175, 59, textureX, textureY).addBox(0, 0, 0, 2, 2, 1)
-			.setRotationPoint(-21, 5, -7).setRotationAngle(0, 0, 0).setName("Box 127")
+			.setRotationPoint(-20.5f, 5, -7).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagConnectingRodOffset(3))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 95, 55, textureX, textureY).addBox(0, 0, 0, 2, 2, 1)
-			.setRotationPoint(0, 5, -7).setRotationAngle(0, 0, 0).setName("Box 128")
+			.setRotationPoint(0.5f, 5, -7).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagConnectingRodOffset(3))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 147, 56, textureX, textureY).addBox(0, 0, 0, 19, 1, 1)
-			.setRotationPoint(-19, 5.5f, 6).setRotationAngle(0, 0, 0).setName("Box 129")
+			.setRotationPoint(-18.5f, 5.5f, 6).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagConnectingRodOffset(3))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 53, 54, textureX, textureY).addBox(0, 0, 0, 2, 2, 1)
-			.setRotationPoint(0, 5, 6).setRotationAngle(0, 0, 0).setName("Box 130")
+			.setRotationPoint(0.5f, 5, 6).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagConnectingRodOffset(3))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 95, 51, textureX, textureY).addBox(0, 0, 0, 2, 2, 1)
-			.setRotationPoint(-21, 5, 6).setRotationAngle(0, 0, 0).setName("Box 131")
+			.setRotationPoint(-20.5f, 5, 6).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagConnectingRodOffset(3))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 187, 44, textureX, textureY).addBox(0, 0, 0, 2, 2, 1)
-			.setRotationPoint(-21, 5, 7).setRotationAngle(0, 0, 0).setName("Box 132")
+			.setRotationPoint(-20.5f, 5, 7).setRotationAngle(0, 0, 0).setName("Box 132")
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 0, 54, textureX, textureY)
 			.addShapeBox(0, 0, 0, 19, 1, 1, 0, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f, 0, 0, -0.1f)
@@ -338,10 +339,10 @@ public class Classic440 extends RollingStockModel {
 			.setRotationPoint(-3, 1, -6).setRotationAngle(0, 0, 0).setName("Box 152")
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 99, 7, textureX, textureY).addBox(0, 0, 0, 47, 6, 0)
-			.setRotationPoint(-50, -14, -5).setRotationAngle(0, 0, 0).setName("Box 153")
+			.setRotationPoint(-50, -14, -5).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagAdvancedPiston)
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 99, 0, textureX, textureY).addBox(0, 0, 0, 47, 6, 0)
-			.setRotationPoint(-50, -14, 5).setRotationAngle(0, 0, 0).setName("Box 154")
+			.setRotationPoint(-50, -14, 5).setRotationAngle(0, 0, 0).setName(StaticModelAnimator.tagAdvancedPiston)
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 242, 86, textureX, textureY).addBox(0, 0, 0, 1, 13, 4)
 			.setRotationPoint(10, -18, 6).setRotationAngle(0, 0, 0).setName("Box 150")
