@@ -561,6 +561,6 @@ public class TileTCRail extends TileEntity {
 
 	@SideOnly(Side.CLIENT)
 	public double getMaxRenderDistanceSquared() {
-		return 16384.0D;
-	}
+		return 24567.0D;
+	}//originally was 16384
 }
