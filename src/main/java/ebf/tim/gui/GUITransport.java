@@ -264,7 +264,7 @@ public class GUITransport extends GUIContainerNoNEI {
                     @Override
                     public int[] getColor(){
                         if(transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)){
-                            return new int[]{60,255,60};
+                            return new int[]{150,255,150};
                         }
                         return null;
                     }
@@ -281,6 +281,14 @@ public class GUITransport extends GUIContainerNoNEI {
                     @Override
                     public String getHoverText() {
                         return "gui.running." + transport.getBoolean(GenericRailTransport.boolValues.RUNNING);
+                    }
+
+                    @Override
+                    public int[] getColor(){
+                        if(transport.getBoolean(GenericRailTransport.boolValues.RUNNING)){
+                            return new int[]{150,255,150};
+                        }
+                        return null;
                     }
 
                     @Override

@@ -34,7 +34,7 @@ configFile.withReader {
 version=config.modVersion
 tcversion=config.modVersion
 mcversion="1.7.10-10.13.4.1614-1.7.10"
-timversion ="2.4 alpha"
+timversion ="3.0 Beta"
 group="train" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Traincraft"
 
