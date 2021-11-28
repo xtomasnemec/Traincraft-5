@@ -1,8 +1,6 @@
 package ebf.tim.blocks;
 
-import java.util.Arrays;
-import java.util.Random;
-
+import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

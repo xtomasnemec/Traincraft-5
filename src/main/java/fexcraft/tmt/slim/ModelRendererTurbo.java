@@ -36,9 +36,11 @@ public class ModelRendererTurbo {
     public float rotationPointX=0,rotationPointY=0,rotationPointZ=0;
     public float width, height, depth;
     public boolean showModel; //previously known as !field_1402_i
+    public boolean noCull=false;
     public boolean ignoresLighting=false;
     public String boxName = null;
     public boolean animated=false;
+    public Integer glID=null;
 
     public static final int MR_FRONT = 0, MR_BACK = 1, MR_LEFT = 2, MR_RIGHT = 3, MR_TOP = 4, MR_BOTTOM = 5;
     public static final float pi = (float)Math.PI;
@@ -1028,7 +1030,7 @@ public class ModelRendererTurbo {
         boolean dirMirror = (baseDirection == MR_LEFT || baseDirection == MR_BOTTOM || baseDirection == MR_BACK);
         if(baseScale == 0) baseScale = 1f; if(topScale == 0) topScale = 1f;
         if(segments < 3) segments = 3; if(seglimit <= 0) seglimit = segments; boolean segl = seglimit < segments;
-        ArrayList<TexturedVertex> verts = new ArrayList<>(); ArrayList<TexturedPolygon> polis = new ArrayList<>();
+        ArrayList<TexturedPolygon> polis = new ArrayList<>();
         //Vertex
         float xLength = (dirSide ? length : 0), yLength = (dirTop ? length : 0), zLength = (dirFront ? length : 0);
         float xStart = (dirMirror ? x + xLength : x);
@@ -1075,7 +1077,6 @@ public class ModelRendererTurbo {
                     TexturedVertex copy = new TexturedVertex(verts1.get(0)); verts1.add(copy);
                 }
             }
-            verts.addAll(verts0); verts.addAll(verts1);
             if(repeat == 0){ verts2.addAll(verts0); verts2.addAll(verts1); }
             else{ verts3.addAll(verts0); verts3.addAll(verts1); }
             float xSize, ySize; float mul = repeat == 0 ? 0.5f : 1.5f;
@@ -1300,6 +1301,14 @@ public class ModelRendererTurbo {
         render(0.0625F);
     }
 
+    @Deprecated
+    //this is a lazy fix that should be replaced with the hide/show part tags when the models using it get reworked.
+    public void renderClean(){
+        GL11.glPushMatrix();
+        render(0.0625F);
+        GL11.glPopMatrix();
+    }
+
     /**
      * Renders the shape.
      * @param scale the scale of the shape. Usually is 0.0625.
@@ -1310,6 +1319,9 @@ public class ModelRendererTurbo {
         }
         if (ignoresLighting){
             Minecraft.getMinecraft().entityRenderer.disableLightmap();
+        }
+        if(noCull){
+            GL11.glDisable(GL11.GL_CULL_FACE);
         }
         if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale);
@@ -1330,6 +1342,9 @@ public class ModelRendererTurbo {
         }
         if(rotationPointX != 0.0F || rotationPointY != 0.0F || rotationPointZ != 0.0F){
             GL11.glTranslatef(-rotationPointX * scale, -rotationPointY * scale, -rotationPointZ * scale);
+        }
+        if(noCull){
+            GL11.glEnable(GL11.GL_CULL_FACE);
         }
         if (ignoresLighting){
             Minecraft.getMinecraft().entityRenderer.enableLightmap();
@@ -1373,44 +1388,6 @@ public class ModelRendererTurbo {
             d=0;
         }
         addRectShape(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], w, h, d,null);
-
-        f4 += 1; f5 += 1; f6 += 1;
-        //now do normals, this doesn't fix normals that have two nearly identical vertex points, but it does make it less bad
-        float[][] norms  = {
-                {x  - x0, y  - y0, z  - z0},
-                {f4 + x1, y  - y1, z  - z1},
-                {f4 + x5, f5 + y5, z  - z5},
-                {x  - x4, f5 + y4, z  - z4},
-                {x  - x3, y  - y3, f6 + z3},
-                {f4 + x2, y  - y2, f6 + z2},
-                {f4 + x6, f5 + y6, f6 + z6},
-                {x  - x7, f5 + y7, f6 + z7}
-        };
-        List<TexturedPolygon> poly = new ArrayList<>();
-        TexturedVertex vert0 = new TexturedVertex(norms[0][0], norms[0][1], norms[0][2]);
-        TexturedVertex vert1 = new TexturedVertex(norms[1][0], norms[1][1], norms[1][2]);
-        TexturedVertex vert2 = new TexturedVertex(norms[2][0], norms[2][1], norms[2][2]);
-        TexturedVertex vert3 = new TexturedVertex(norms[3][0], norms[3][1], norms[3][2]);
-        TexturedVertex vert4 = new TexturedVertex(norms[4][0], norms[4][1], norms[4][2]);
-        TexturedVertex vert5 = new TexturedVertex(norms[5][0], norms[5][1], norms[5][2]);
-        TexturedVertex vert6 = new TexturedVertex(norms[6][0], norms[6][1], norms[6][2]);
-        TexturedVertex vert7 = new TexturedVertex(norms[7][0], norms[7][1], norms[7][2]);
-
-
-        poly.add(addPolygonReturn(vert5, vert1, vert2, vert6, 0,0,0,0));
-        poly.add(addPolygonReturn(vert0, vert4, vert7, vert3, 0,0,0,0));
-        poly.add(addPolygonReturn(vert5, vert4, vert0, vert1, 0,0,0,0));
-        poly.add(addPolygonReturn(vert2, vert3, vert7, vert6, 0,0,0,0));
-        poly.add(addPolygonReturn(vert1, vert0, vert3, vert2, 0,0,0,0));
-        poly.add(addPolygonReturn(vert4, vert5, vert6, vert7, 0,0,0,0));
-
-
-
-        for(int i=0; i<poly.size();i++){
-            Vec3f vec0 = new Vec3f(poly.get(i).vertices.get(1).vector3F.subtract(poly.get(i).vertices.get(0).vector3F));
-            Vec3f vec1 = new Vec3f(poly.get(i).vertices.get(1).vector3F.subtract(poly.get(i).vertices.get(2).vector3F));
-            faces.get(i).normal = vec1.crossProduct(vec0).normalize();
-        }
 
         return this;
     }

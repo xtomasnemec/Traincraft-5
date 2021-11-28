@@ -99,8 +99,6 @@ public class CommonProxy implements IGuiHandler {
 		return 0;
 	}
 
-    public void registerSounds() {}
-
 	public Minecraft getMinecraft() {
 		return null;
 	}

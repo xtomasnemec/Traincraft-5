@@ -1,6 +1,8 @@
 package train.render;
 
+import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileRenderFacing;
+import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -21,8 +23,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 
 		if(tileEntity.getWorldObj()==null){
-			GL11.glTranslated( x-0.2,  y+0.1,  z);
-			GL11.glRotatef(180,0,0,1);
+			GL11.glTranslated( x+0.2,  y,  z);
 			GL11.glScalef(0.65f,0.65f,0.65f);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+0.7f,  z + 0.5);
@@ -55,11 +56,21 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 					GL11.glPopMatrix();
 				}
 			}
-		} else if (tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).isProvidingWeakPower(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0) > 0) {
+		} else if (CommonUtil.getBlockAt(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).isProvidingWeakPower(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0) > 0) {
 			TextureManager.bindTexture(texture2);
+			if(ebf.tim.utility.ClientProxy.railSkin==3){
+				GL11.glTranslatef(0, 0.09f, 0);
+			} else {
+				GL11.glTranslatef(0, 0.01875f, 0);
+			}
 			ClientProxy.modelSwitch2.render(null, 0, 0, 0, 0, 0, 0.0625f);
 		} else {
 			TextureManager.bindTexture(texture);
+			if(ebf.tim.utility.ClientProxy.railSkin==3){
+				GL11.glTranslatef(0, 0.09f, 0);
+			} else {
+				GL11.glTranslatef(0, 0.01875f, 0);
+			}
 			ClientProxy.modelSwitch.render(null, 0, 0, 0, 0, 0, 0.0625f);
 		}
 

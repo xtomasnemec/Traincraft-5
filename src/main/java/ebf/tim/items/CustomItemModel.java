@@ -7,9 +7,8 @@ import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.Vec5f;
 import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -80,8 +79,12 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
             GL11.glPushMatrix();
             GL11.glScalef(0.95f,0.95f,0.95f);
             GL11.glTranslatef(0,-0.1f,0);
-            blockTextures.get(item.getItem()).func_145828_a(null);
-
+            if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){
+                ((TileEntitySpecialRenderer)blockTextures.get(item.getItem()).host.tesr)
+                        .renderTileEntityAt(blockTextures.get(item.getItem()),0,0,0,0);
+            } else {
+                blockTextures.get(item.getItem()).func_145828_a(null);
+            }
             GL11.glPopMatrix();
 
         } else if (item.getItem() instanceof ItemTransport){
@@ -101,7 +104,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
                     break;
                 }
                 case INVENTORY: {
-                    GL11.glRotatef(180,0,1,0);
+                    GL11.glRotatef(270,0,1,0);
                     GL11.glTranslatef(0,-0.85f,0);
                     break;
                 }
@@ -123,6 +126,9 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
                     ((ItemTransport)item.getItem()).entity,0,0,0, 0, true, null);
             GL11.glPopMatrix();
         } else if (item.getItem() instanceof ItemRail){
+            if(item.getTagCompound()==null){
+                return;
+            }
             GL11.glPushMatrix();
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glEnable(GL11.GL_BLEND);

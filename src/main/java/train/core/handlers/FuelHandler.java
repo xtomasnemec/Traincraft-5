@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 import train.blocks.TCBlocks;
 
+@Deprecated //todo TiM's API should handle this for block registration
 public class FuelHandler implements IFuelHandler {
 
 	/**

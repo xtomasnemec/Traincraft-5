@@ -7,10 +7,13 @@ import ebf.tim.utility.*;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -34,13 +37,16 @@ public class GUITrainTable extends GuiContainer {
     };
 
     private String hostname;
+    /**a reference to the player that opened the GUI.*/
+    private EntityPlayer player;
 
     public GUITrainTable(InventoryPlayer inventoryPlayer, World world, int x, int y, int z) {
         super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) world.getTileEntity(x,y,z)));
-        hostname=world.getBlock(x,y,z).getUnlocalizedName();
+        hostname=CommonUtil.getBlockAt(world, x,y,z).getUnlocalizedName();
         xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.dimensionId;
+        player = inventoryPlayer.player;
 
-        if (ClientProxy.isTraincraft && !hostname.equals("tile.block.traintable")) {
+        if (CommonProxy.isTraincraft && hostname.startsWith("tile.block.traintabletier")) {
             this.ySize = 256;
         }
     }
@@ -59,27 +65,31 @@ public class GUITrainTable extends GuiContainer {
             downButtonCoord = new int[]{141, 34};
         }
 
-        this.buttonList.add(new GUIButton(guiLeft+upButtonCoord[0], guiTop+upButtonCoord[1], 18, 18,"<<"){
-            @Override
-            public String getHoverText() {
-                return "Previous Page";
-            }
-            @Override
-            public void onClick() {
-                TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(false,xCoord,yCoord,zCoord,dimension));
-            }
-        });
+        if (hostname.equals("tile.block.traintable")) {
+            this.buttonList.add(new GUIButton(guiLeft + upButtonCoord[0], guiTop + upButtonCoord[1], 18, 18, "<<") {
+                @Override
+                public String getHoverText() {
+                    return "Previous Page";
+                }
 
-        this.buttonList.add(new GUIButton(this.guiLeft + downButtonCoord[0], this.guiTop + downButtonCoord[1], 18,18, ">>") {
-            @Override
-            public String getHoverText() {
-                return "Next Page";
-            }
-            @Override
-            public void onClick() {
-                TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(true,xCoord,yCoord,zCoord,dimension));
-            }
-        });
+                @Override
+                public void onClick() {
+                    TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(false, xCoord, yCoord, zCoord, dimension));
+                }
+            });
+
+            this.buttonList.add(new GUIButton(this.guiLeft + downButtonCoord[0], this.guiTop + downButtonCoord[1], 18, 18, ">>") {
+                @Override
+                public String getHoverText() {
+                    return "Next Page";
+                }
+
+                @Override
+                public void onClick() {
+                    TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(true, xCoord, yCoord, zCoord, dimension));
+                }
+            });
+        }
     }
 
     @Override
@@ -95,12 +105,11 @@ public class GUITrainTable extends GuiContainer {
     }
 
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        if (!ClientProxy.isTraincraft || hostname.equals("tile.block.traintable")) {
+        if (!CommonProxy.isTraincraft || hostname.equals("tile.block.traintable")) {
             this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
         } else {
             if (hostname.startsWith("tile.block.traintable")) {
                 //assembly table and traincraft
-                //TODO: localize strings, edit colors if need be.
                 this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 92, 4210752);
                 this.fontRendererObj.drawString(I18n.format(hostname + ".name"), 8, 5, 12241200);
                 this.fontRendererObj.drawString(I18n.format("container.storage"), 8, 118, 4210752);
@@ -158,7 +167,7 @@ public class GUITrainTable extends GuiContainer {
             GL11.glPopMatrix();
 
         } else if (hostname.startsWith("tile.block.traintable")){
-            if (!ClientProxy.isTraincraft || hostname.equals("tile.block.traintable")) { //TiM stuff
+            if (!CommonProxy.isTraincraft || hostname.equals("tile.block.traintable")) { //TiM stuff
                 this.mc.getTextureManager().bindTexture(ClientUtil.craftingTableGuiTextures);
                 this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
@@ -236,4 +245,21 @@ public class GUITrainTable extends GuiContainer {
             ((GUIButton) button).onClick();
         }
     }
+
+
+    @Override
+    protected void handleMouseClick(Slot p_146984_1_, int p_146984_2_, int p_146984_3_, int p_146984_4_) {
+        if (p_146984_1_ != null) {
+            p_146984_2_ = p_146984_1_.slotNumber;
+        }
+
+        if (p_146984_4_ == 4){
+            p_146984_4_ = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
+                    player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
+                            (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
+                                    0;//cover everything else
+        }
+        this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, p_146984_4_, this.mc.thePlayer);
+    }
+
 }

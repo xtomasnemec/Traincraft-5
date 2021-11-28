@@ -3,14 +3,13 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.registry.TiMFluids;
-import ebf.tim.utility.ClientProxy;
+import ebf.tim.utility.CommonProxy;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -39,11 +38,17 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
 
     public int assemblyTableTier = -1; //only applies if part of assemblyTable/traintable, no need to set otherwise.
 
+    public TileEntityStorage(){}
+
     public TileEntityStorage(BlockDynamic block){
         super(block);
-        int s=400;
+        initInventoryFromBlock( block );
+        markDirty();
+    }
 
-        inventory= new ArrayList<>();
+    protected void initInventoryFromBlock( BlockDynamic block ){
+        int s=400;
+        inventory = new ArrayList<>();
         if(block.getUnlocalizedName().equals("tile.block.traintabletier1") ||
                 block.getUnlocalizedName().equals("tile.block.traintabletier2") ||
                 block.getUnlocalizedName().equals("tile.block.traintabletier3") ||
@@ -57,7 +62,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 this.assemblyTableTier = 0;
             }
 
-            if (!ClientProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
+            if (!CommonProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
                 //inventory grid (left grid)
                 for (int l = 0; l < 3; ++l) {
                     for (int i1 = 0; i1 < 3; ++i1) {
@@ -78,19 +83,20 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 inventory.add(new ItemStackSlot(this, s+0, assemblyTableTier).setCoords(25, 27).setCraftingInput(true));
                 inventory.add(new ItemStackSlot(this, s+1, assemblyTableTier).setCoords(79, 27).setCraftingInput(true));
                 inventory.add(new ItemStackSlot(this, s+2, assemblyTableTier).setCoords(115, 27).setCraftingInput(true));
-                //the following is dye slot, removed so we can have 9 crafting slots; if adding back, remember to increment everything
-                //inventory.add(new ItemStackSlot(this, s+3, assemblyTableTier).setCoords(145, 27).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+3, assemblyTableTier).setCoords(25, 61).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+4, assemblyTableTier).setCoords(79, 61).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+5, assemblyTableTier).setCoords(115, 61).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+6, assemblyTableTier).setCoords(43, 93).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+7, assemblyTableTier).setCoords(79, 93).setCraftingInput(true));
-                inventory.add(new ItemStackSlot(this, s+8, assemblyTableTier).setCoords(145, 93).setCraftingInput(true));
+                //the following is dye slot
+                inventory.add(new ItemStackSlot(this, s+3, assemblyTableTier).setCoords(145, 27).setCraftingInput(true));
+
+                inventory.add(new ItemStackSlot(this, s+4, assemblyTableTier).setCoords(25, 61).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+5, assemblyTableTier).setCoords(79, 61).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+6, assemblyTableTier).setCoords(115, 61).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+7, assemblyTableTier).setCoords(43, 93).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+8, assemblyTableTier).setCoords(79, 93).setCraftingInput(true));
+                inventory.add(new ItemStackSlot(this, s+9, assemblyTableTier).setCoords(145, 93).setCraftingInput(true));
 
                 //create the assembly table output slots (9-16)
                 for(int i = 0; i < 4; ++i){
                     for(int j = 0; j < 2; ++j){
-                        inventory.add(new ItemStackSlot(this, (s+9) + (j * 4 + i), assemblyTableTier).setCoords(92 + i * 18, (128) + j * 18).setCraftingOutput(true));
+                        inventory.add(new ItemStackSlot(this, (s+10) + (j * 4 + i), assemblyTableTier).setCoords(92 + i * 18, (128) + j * 18).setCraftingOutput(true));
                     }
                 }
 
@@ -110,14 +116,13 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
             inventory.add(new ItemStackSlot(this,402).setCoords( 30 , 37).setCraftingInput(true).setOverlay(Blocks.gravel)); //ballast
 
             inventory.add(new ItemStackSlot(this,403).setCoords( 50 , 7).setCraftingInput(true)); //wires
-            inventory.add(new ItemStackSlot(this,404).setCoords( 50 , 27).setCraftingInput(true));//augument slot
+            inventory.add(new ItemStackSlot(this,404).setCoords( 50 , 27).setCraftingInput(true));//augment slot
 
             inventory.add(new ItemStackSlot(this,405).setCoords( 124 , -2).setCraftingInput(true).setOverlay(Blocks.rail));//old shape input
 
             inventory.add(new ItemStackSlot(this,406).setCoords( 124 , 33).setCraftingOutput(true)); //output
             storageType=0;
         }
-        markDirty();
     }
 
     @Override
@@ -132,7 +137,23 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+
+        // When world load, we need to recreate TileEntity from default constructor (no args)
+        // So we need to retrieve host block from NBT data
+        if ( host == null ) {
+            String hostName = tag.getString("hostBlockName");
+            Block block = Block.getBlockFromName(hostName);
+
+            if ( block instanceof BlockDynamic )
+            {
+                host = (BlockDynamic)  block;
+                initInventoryFromBlock( host );
+            }
+        }
+
         XmlBuilder data = new XmlBuilder(tag.getString("xmlData"));
+        // Build to create itemMap
+        data.buildXML();
 
         if (getSizeInventory()>0 && !data.itemMap.isEmpty()) {
             for (int i=0;i<getSizeInventory();i++) {
@@ -158,6 +179,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
+
+        if ( host != null )
+            tag.setString( "hostBlockName", Block.blockRegistry.getNameForObject( host ) );
+
         XmlBuilder data = new XmlBuilder();
         if (inventory!=null) {
             for (int i=0;i<getSizeInventory();i++) {
@@ -173,7 +198,11 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 data.putFluidStack("tanks." + i, null);
             }
         }
-        tag.setString("xmlData",data.toXMLString());
+        //force build to be sure there's no errors
+        data.buildXML();
+        if(data.toXMLString() != null && !data.toXMLString().equals("") && data.toXMLString().length()>1) {
+            tag.setString("xmlData", data.toXMLString());
+        }
     }
 
     /**the fluidTank tank*/
@@ -416,12 +445,15 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         switch (storageType){
-            //to do prevent putting items in output (taken care of elsewhere, left here as a note)
+            //todo: prevent putting items in output (taken care of elsewhere, left here as a note)
             case 0:{
                 return true;
             }
             case 1:{
-                if(slot==0){return OreDictionary.getOres("ingot").contains(itemStack);}
+                if(slot==0){
+                    return CommonUtil.oredictMatch(itemStack, "ingot") ||
+                            itemStack.getItem() == Items.blaze_rod;
+                }
                 if(slot==1||slot==2){
                     //todo: if block.modid==chisel return false;
                     return Block.getBlockFromItem(itemStack.getItem())!=null && Block.getBlockFromItem(itemStack.getItem()).isOpaqueCube();

@@ -17,7 +17,7 @@ public class TrainCraftingManager {
 	/**
 	 * A list of all the recipes added
 	 */
-	private List recipes = new ArrayList();
+	public List recipes = new ArrayList();
 
 
 	public static final TrainCraftingManager getInstance() {
@@ -32,10 +32,10 @@ public class TrainCraftingManager {
 		int occupedSlot = 0;
 		ItemStack var3 = null;
 		ItemStack var4 = null;
-		int var5;
 
-		for (var5 = 0; var5 < inv.getSizeInventory(); ++var5) {
-			ItemStack var6 = inv.getStackInSlot(var5);
+		//what does this do? something about repairing
+		for (int i = 0; i < inv.getSizeInventory(); ++i) {
+			ItemStack var6 = inv.getStackInSlot(i);
 
 			if (var6 != null) {
 				if (occupedSlot == 0) {
@@ -49,6 +49,7 @@ public class TrainCraftingManager {
 			}
 		}
 
+		//first part also has to do with repairing
 		if (occupedSlot == 2 && var3.getItem() == var4.getItem() && var3.stackSize == 1 && var4.stackSize == 1 && var3.getItem().isRepairable()) {
 			Item var11 = var3.getItem();
 			int var10 = var11.getMaxDamage() - var3.getItemDamageForDisplay();
@@ -61,8 +62,8 @@ public class TrainCraftingManager {
 			}
 			return new ItemStack(var3.getItem(), 1, var9);
 		} else {
-			for (var5 = 0; var5 < this.recipes.size(); ++var5) {
-				ITCRecipe recipe = (ITCRecipe) this.recipes.get(var5);
+			for (int i = 0; i < this.recipes.size(); ++i) {
+				ITCRecipe recipe = (ITCRecipe) this.recipes.get(i);
 				if (recipe.matches(inv)) {
 					return recipe.getCraftingResult(inv);
 				}

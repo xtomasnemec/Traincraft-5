@@ -2,85 +2,101 @@ package ebf.tim.registry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
-import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.OreGen;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
+import ebf.tim.blocks.SimpleBlock;
+import ebf.tim.utility.CommonProxy;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 
 import static cpw.mods.fml.common.registry.GameRegistry.addRecipe;
-import static ebf.tim.registry.TiMGenericRegistry.registerBlock;
+import static cpw.mods.fml.common.registry.GameRegistry.addShapelessRecipe;
 import static ebf.tim.registry.TiMGenericRegistry.registerOreGen;
+import static net.minecraftforge.oredict.OreDictionary.registerOre;
 
 public class TiMOres {
 
-    public static Item ingotSteel, ingotCopper, ingotAluminum, dustPlastic;
+    public static Item ingotSteel, ingotCopper, ingotAluminum, dustPlastic, dustCoal;
 
-    public static BlockDynamic copperBlock = new BlockDynamic(new Material(MapColor.mapColorArray[2]), false, false);
-    public static BlockDynamic steelBlock = new BlockDynamic(new Material(MapColor.mapColorArray[6]), false, false);
-    public static BlockDynamic aluminiumBlock = new BlockDynamic(new Material(MapColor.mapColorArray[14]), false, false);
+    public static SimpleBlock blockCopper;
+    public static SimpleBlock blockAluminum;
+    public static SimpleBlock blockSteel;
 
-    public static BlockDynamic oreCopper = new BlockDynamic(new Material(MapColor.mapColorArray[11]), false, false);
-    public static BlockDynamic oreSteel = new BlockDynamic(new Material(MapColor.mapColorArray[11]), false, false);
-    public static BlockDynamic oreAluminium = new BlockDynamic(new Material(MapColor.mapColorArray[11]), false, false);
-
+    public static SimpleBlock oreCopper;
+    public static SimpleBlock oreAluminum;
+    public static SimpleBlock oreSteel;
 
 
     public static void registerOres(){
 
-        oreCopper.texture=new ResourceLocation("traincraft", "textures/blocks/ores/ore_copper.png");
-        oreAluminium.texture=new ResourceLocation(TrainsInMotion.MODID, "textures/blocks/ores/ore.aluminum.png");
-        oreSteel.texture=new ResourceLocation(TrainsInMotion.MODID, "textures/blocks/ores/ore.steel.png");
+        //create all items/blocks
 
+        blockCopper = new SimpleBlock(4.0F, 4.0F, "blockCopper", TrainsInMotion.MODID + ":ores/block.copper");
+        blockAluminum = new SimpleBlock(4.0F, 4.0F, "blockAluminum", TrainsInMotion.MODID + ":ores/block.aluminum");
+        blockSteel = new SimpleBlock(5.0F, 5.0F, "blockSteel", TrainsInMotion.MODID + ":ores/block.steel");
 
-        copperBlock.texture=new ResourceLocation(TrainsInMotion.MODID, "textures/blocks/ores/block.copper.png");
-        aluminiumBlock.texture=new ResourceLocation(TrainsInMotion.MODID, "textures/blocks/ores/block.aluminum.png");
-        steelBlock.texture=new ResourceLocation(TrainsInMotion.MODID, "textures/blocks/ores/block.steel.png");
+        oreCopper = new SimpleBlock(3.0F, 3.0F, "oreCopper", TrainsInMotion.MODID + ":ores/ore.copper");
+        oreAluminum = new SimpleBlock(3.0F, 3.0F, "oreAluminum", TrainsInMotion.MODID + ":ores/ore.aluminum");
+        oreSteel = new SimpleBlock(3.0F, 3.0F, "oreSteel", TrainsInMotion.MODID + ":ores/ore.steel");
 
         ingotSteel = createItem("ingot.steel", "ingotSteel").setTextureName(TrainsInMotion.MODID + ":materials/ingot.steel");
         dustPlastic = createItem("dust.plastic", "dustPlastic").setTextureName(TrainsInMotion.MODID + ":materials/dust.plastic");
+        dustCoal = createItem("dust.coal", "dustCoal").setTextureName(TrainsInMotion.MODID + ":materials/dust.coal");
         ingotCopper = createItem("ingot.copper", "ingotCopper").setTextureName(TrainsInMotion.MODID + ":materials/ingot.copper");
         ingotAluminum = createItem("ingot.aluminum", "ingotAluminum").setTextureName(TrainsInMotion.MODID + ":materials/ingot.aluminum");
 
-        //left these in case I f'ed something up by doing this.
-//        registerItem(dustPlastic= new Item(), "dustPlastic", TrainsInMotion.MODID).setTextureName("traincraft:textures/items/parts/item_plastic.png");
-//        registerItem(ingotCopper= new Item(), "ingotCopper", TrainsInMotion.MODID).setTextureName("traincraft:textures/items/parts/item_copper.png");
-//        registerItem(ingotSteel= new Item(), "ingotSteel", TrainsInMotion.MODID).setTextureName("traincraft:textures/items/parts/item_steel.png");
-//        registerItem(ingotAluminum= new Item(), "ingotAluminum", TrainsInMotion.MODID);
 
-        registerBlock(oreCopper, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreCopper", "oreCopper", null);
-        registerBlock(oreSteel, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreSteel", "oreSteel", null);
-        registerBlock(oreAluminium, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "oreAluminum", "oreAluminum", null);
+        //add recipes and smelting
 
+        addRecipe(new ItemStack(blockCopper), "III","III","III", 'I', ingotCopper);
+        addRecipe(new ItemStack(blockSteel), "III","III","III", 'I', ingotSteel);
+        addRecipe(new ItemStack(blockAluminum), "III","III","III", 'I', ingotAluminum);
 
-
-        addRecipe(new ItemStack(registerBlock(copperBlock, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "blockCopper", "blockCopper", null),1),
-                "III","III","III", 'I', ingotCopper);
-        addRecipe(new ItemStack(registerBlock(steelBlock, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "blockSteel", "blockSteel", null),1),
-                "III","III","III", 'I', ingotSteel);
-        addRecipe(new ItemStack(registerBlock(aluminiumBlock, TrainsInMotion.creativeTab, TrainsInMotion.MODID, "blockAluminum", "blockAluminum", null),1),
-                "III","III","III", 'I', ingotAluminum);
+        addShapelessRecipe(new ItemStack(ingotCopper, 9), blockCopper);
+        addShapelessRecipe(new ItemStack(ingotAluminum, 9), blockAluminum);
+        addShapelessRecipe(new ItemStack(ingotSteel, 9), blockSteel);
 
         GameRegistry.addSmelting(oreCopper, new ItemStack(ingotCopper), 0.7f);
         GameRegistry.addSmelting(oreSteel, new ItemStack(ingotSteel), 1.2f);
-        GameRegistry.addSmelting(oreAluminium, new ItemStack(ingotAluminum), 0.5f);
+        GameRegistry.addSmelting(oreAluminum, new ItemStack(ingotAluminum), 0.5f);
 
 
+        //register into ore dictionary
 
-        OreDictionary.registerOre("ingotCopper", new ItemStack(ingotCopper));
+        registerOre("oreCopper", new ItemStack(oreCopper));
+        registerOre("oreAluminium", new ItemStack(oreAluminum));
+        registerOre("oreAluminum", new ItemStack(oreAluminum));
+        registerOre("oreSteel", new ItemStack(oreSteel));
 
-        OreDictionary.registerOre("ingotSteel", new ItemStack(ingotSteel));
+        registerOre("blockCopper", new ItemStack(blockCopper));
+        registerOre("blockAluminium", new ItemStack(blockAluminum));
+        registerOre("blockAluminum", new ItemStack(blockAluminum));
+        registerOre("blockSteel", new ItemStack(blockSteel));
 
-        OreDictionary.registerOre("itemPlastic", new ItemStack(dustPlastic));
-        OreDictionary.registerOre("dustPlastic", new ItemStack(dustPlastic));//MFR support
+        registerOre("ingotCopper", new ItemStack(ingotCopper));
+        registerOre("ingotSteel", new ItemStack(ingotSteel));
+        registerOre("ingotAluminum", new ItemStack(ingotAluminum));
+        registerOre("ingotAluminium", new ItemStack(ingotAluminum)); //what spelling is accepted?
+
+        registerOre("itemPlastic", new ItemStack(dustPlastic));
+        registerOre("dustPlastic", new ItemStack(dustPlastic)); //MFR support
 
 
-
-        registerOreGen(0, new OreGen(oreCopper,5,50,6,4,4));
-
+        //register copper for generation
+        if (CommonProxy.doCopperGeneration) {
+            registerOreGen(3, new OreGen(oreCopper, 5, 50, 6, 4, 6));
+        }
+        if (CommonProxy.doSteelGeneration) {
+            //nether ore, lava oceans gen at y=31
+            OreGen steelGen = new OreGen(oreSteel, 31, 50, 8, 4, 5).setDimensions(new Integer[]{-1}).setFiller(Blocks.netherrack);
+            registerOreGen(5, steelGen);
+            //make steel especially common under lava. Want high generation because it is used a lot.
+            OreGen steelGen2 = new OreGen(oreSteel, 1, 30, 4, 3, 10).setDimensions(new Integer[]{-1}).setFiller(Blocks.netherrack);
+            registerOreGen(5, steelGen2);
+        }
+        if (CommonProxy.doAluminumGeneration) {
+            registerOreGen(5, new OreGen(oreAluminum, 12, 30, 6, 3, 4));
+        }
     }
 
     private static Item createItem(String unlocalizedName, String oredictName) {

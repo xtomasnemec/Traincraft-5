@@ -35,7 +35,7 @@ public class EntityLocoElectricBR185 extends EntityTrainCore {
     @Override
     public String transportName(){return "Loco Electric BR 185";}
     @Override
-    public String transportcountry(){return "german";}
+    public String transportcountry(){return "germany";}
     @Override
     public String transportYear(){return "1996";}
     @Override
@@ -119,7 +119,7 @@ public class EntityLocoElectricBR185 extends EntityTrainCore {
     public float transportTopSpeed(){return 160;}
     @Override
     public ItemStackSlot fuelSlot(){
-        return super.fuelSlot().setOverlay(Items.coal);
+        return super.fuelSlot();
     }
     public int[] getTankCapacity(){return new int[]{2250};}
 

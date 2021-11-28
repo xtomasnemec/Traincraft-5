@@ -54,7 +54,7 @@ public class EntityLocoSteamEr_Ussr extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLocoEr_Ussr()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.95f, 0.64f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.95f, 0.62f, 0.0f}};}
 @Override
     public float[][] modelRotations(){return new float[][]{{0f,180f,180f}};}
     @Override
@@ -95,7 +95,7 @@ public class EntityLocoSteamEr_Ussr extends EntityTrainCore {
     public float transportTopSpeed(){return 80;}
     @Override
     public ItemStackSlot fuelSlot(){
-        return super.fuelSlot().setOverlay(Items.coal);
+        return super.fuelSlot();
     }
     @Override
     public int[] getTankCapacity(){return new int[]{10000, 2000};}

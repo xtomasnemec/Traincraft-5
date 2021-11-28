@@ -17,20 +17,31 @@ import java.util.ArrayList;
 
 public class TileTrainWbench extends TileEntityStorage {
 
+	public TileTrainWbench(){}
+
 	public TileTrainWbench(BlockDynamic host) {
 		super(host);
+		initInventoryFromBlock( host );
+	}
+
+	protected void initInventoryFromBlock( BlockDynamic block )
+	{
+		if ( host == null )
+			super.initInventoryFromBlock( block );
+
 		inventory=new ArrayList<>();
 
-		inventory.add(new ItemStackSlot(this, 400, 124, 35));
 		int var6;
 		int var7;
 
 		for (var6 = 0; var6 < 3; ++var6) {
 			for (var7 = 0; var7 < 3; ++var7) {
-				inventory.add(new ItemStackSlot(this, 401+var7 + (var6 * 3), 30 + var7 * 18, 17 + var6 * 18));
+				inventory.add(new ItemStackSlot(this, 400+var7 + (var6 * 3), 30 + var7 * 18, 17 + var6 * 18));
 			}
 		}
 
+		//add result slot after input slots
+		inventory.add(new ItemStackSlot(this, 409, 124, 35));
 	}
 
 	@Override

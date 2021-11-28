@@ -37,17 +37,19 @@ import java.util.*;
 public class GUICraftBook extends GuiScreen {
 
     private static Map<String, List<bookPage>> infoPages=new HashMap<>();
-    public static int guiLeft=0,guiTop=0, page=0, slotTop=0, slotLeft=0;
+    public static int guiLeft=0,guiTop=0, page=0;
     private static List<Object> pageData = null;
     private static ModelBook book = new ModelBook();
-    int frame=0;
+    long frame=0;
     public static @Nullable Object getPage(int current){
         if(pageData==null) {
             List<Object> pages = new ArrayList<>();
 
-            List<String> modids = new ArrayList<>();
-            modids.addAll(CommonProxy.recipesInMods.keySet());
-            modids.addAll(infoPages.keySet());
+            Set<String> modidsSet = new HashSet<>();
+            modidsSet.addAll(CommonProxy.recipesInMods.keySet());
+            modidsSet.addAll(infoPages.keySet());
+
+            List<String> modids = new ArrayList<>(modidsSet);
             modids.remove(TrainsInMotion.MODID);
             java.util.Collections.sort(modids);
             modids.add(0,TrainsInMotion.MODID);//make sure core mod entries are at start
@@ -93,9 +95,9 @@ public class GUICraftBook extends GuiScreen {
 
         GL11.glEnable(GL11.GL_LIGHTING);
 
-        //change the item displayed every 2 seconds (120 frames)
-        frame++;
-        if(frame>120){
+        //change the item displayed every second
+        if(System.currentTimeMillis()-frame>1000){
+            frame=System.currentTimeMillis();
             if(getPage(page) instanceof Recipe) {
                 ((Recipe)getPage(page)).nextDisplayItem();
             }
@@ -109,9 +111,9 @@ public class GUICraftBook extends GuiScreen {
 
     public static int getBookSlotPlacement(boolean x, int index){
         if(x){
-            return 26* (index>8?1:index>5?index-6:index>2?index-3:index);
+            return 6* (index>8?1:index>5?index-6:index>2?index-3:index);
         } else {
-            return index>8?-26:index>5?52:index>2?26:0;
+            return index>8?-75:index>5?-40:index>2?-50:-60;
         }
     }
 
@@ -119,27 +121,30 @@ public class GUICraftBook extends GuiScreen {
         if(getPage(leftPage?page:page+1)==null){return;}
         if(getPage(leftPage?page:page+1) instanceof Recipe) {
 
+            GL11.glPushMatrix();
+            GL11.glColor4f(1,1,1,1);
             Minecraft.getMinecraft().fontRenderer.drawString(((Recipe) getPage(leftPage?page:page+1)).getresult().get(0).getDisplayName()
                     ,percentLeft(leftPage?15:55), percentTop(20), 0x000000);
+            GL11.glPopMatrix();
 
             List<ItemStack> slots = new ArrayList<>();
             List<Integer> slotx = new ArrayList<>();
             List<Integer> sloty = new ArrayList<>();
             for (int slot = 0; slot < 10; slot++) {
                 slots.add(((Recipe)getPage(leftPage?page:page+1)).getDisplayArray()[slot]);
-                slotx.add((leftPage?-32:135)+getBookSlotPlacement(true, slot));
-                sloty.add(50+getBookSlotPlacement(false, slot));
+                slotx.add(ClientUtil.percentLeft((leftPage?-80:-36)+getBookSlotPlacement(true, slot),guiLeft));
+                sloty.add(ClientUtil.percentTop(getBookSlotPlacement(false, slot),guiTop));
 
             }
             GL11.glPushMatrix();
             GL11.glColor4f(1,1,1,1);
             GL11.glDisable(GL11.GL_CULL_FACE);
-            ClientUtil.drawSlots(slots,null, slotx,sloty,mouseX,mouseY,slotLeft,slotTop,itemRender);
+            ClientUtil.drawSlots(slots,null, slotx,sloty,mouseX,mouseY,guiLeft,guiTop,itemRender);
             GL11.glPopMatrix();
         } else if(getPage(leftPage?page:page+1) instanceof bookPage){
             String[] disp = ((bookPage)getPage(leftPage?page:page+1)).text.split("\n");
             for (int i=0;i<disp.length;i++){
-                Minecraft.getMinecraft().fontRenderer.drawString(disp[i],percentLeft(leftPage?15:54), percentTop(20)+(i*12), 0x000000);
+                Minecraft.getMinecraft().fontRenderer.drawString(disp[i],percentLeft(leftPage?15:54), percentTop(19)+(i*12), 0x000000);
             }
 
             //todo: draw images from pages
@@ -153,8 +158,6 @@ public class GUICraftBook extends GuiScreen {
     @Override
     public void initGui() {
         super.initGui();
-        slotLeft = (this.width - 176) / 2;
-        slotTop = (this.height - 166) / 2;
         guiLeft=new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight).getScaledWidth();
         guiTop=new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight).getScaledHeight();
 

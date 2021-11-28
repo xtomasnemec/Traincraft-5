@@ -62,7 +62,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         //tile entity reference
         hostInventory = block;
 
-        if (block.assemblyTableTier > 0 && ClientProxy.isTraincraft) { //it is an assembly table, move slots lower. (but only for the traincraft asm tables)
+        if (block.assemblyTableTier > 0 && CommonProxy.isTraincraft) { //it is an assembly table, move slots lower. (but only for the traincraft asm tables)
             //player hotbar
             for (int iT = 0; iT < 9; iT++) {
                 addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 232));
@@ -92,7 +92,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
             addSlots(slot);
         }
 
-        onCraftMatrixChanged(hostInventory);
+        detectAndSendChanges();
     }
 
     /**
@@ -100,7 +100,10 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
      */
     @Override
     public Slot getSlot(int p_75139_1_) {
-        return getSlotByID(p_75139_1_);
+        if(p_75139_1_>99){
+            return getSlotByID(p_75139_1_);
+        }
+        return this.inventory.get(p_75139_1_);
     }
 
 
@@ -132,18 +135,16 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
     @SideOnly(Side.CLIENT)
     public void putStacksInSlots(ItemStack[] p_75131_1_) {
         for (int i = 0; i < p_75131_1_.length; ++i) {
-            if(inventory.size()>i) {
-                inventory.get(i).setStack(p_75131_1_[i]);
-            }
+            this.getSlot(i).putStack(p_75131_1_[i]);
         }
     }
 
-    @Override
+   /* @Override
     public void putStackInSlot(int slot, ItemStack stack){
         if(getSlot(slot)!=null){
             getSlot(slot).putStack(stack);
         }
-    }
+    }*/
 
 
 
@@ -169,13 +170,13 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         if (hostInventory instanceof TileEntityStorage && ((TileEntityStorage) hostInventory).assemblyTableTier >= 0) {
             this.detectAndSendChanges();
         }
-
         if (clickTypeIn == 4){
             clickTypeIn = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
                     player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
                             (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
                                     0;//cover everything else
         }
+
         ItemStack itemstack = null;
         ItemStackSlot slot = getSlotByID(slotId);
         int hostType = (hostInventory instanceof TileEntityStorage? ((TileEntityStorage) hostInventory).storageType:0);
@@ -184,12 +185,9 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                 if (slotId == -999) { //if the slot was the cursor
                     if (player.inventory.getItemStack() != null) {
                         if (dragType == 0) {
-                            if (!player.worldObj.isRemote) {
-                                player.entityDropItem(player.inventory.getItemStack(), player.inventory.getItemStack().stackSize);
-                                break;
-                            }
+                            player.entityDropItem(player.inventory.getItemStack(), player.inventory.getItemStack().stackSize);
                             player.inventory.setItemStack(null);
-                        } else if (dragType == 1 && !player.worldObj.isRemote) {
+                        } else if (dragType == 1) {
                             player.entityDropItem(player.inventory.getItemStack(), 1);
                             break;
                         }
@@ -209,10 +207,13 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
 
                                 slot.putStack(old.copy());
                                 player.inventory.setItemStack(old2.copy());
+                                this.detectAndSendChanges();
                                 break;
                             } else {
                                 if (!slot.isCraftingOutput()) {
                                     player.inventory.setItemStack(slot.mergeStack(player.inventory.getItemStack(), inventory, 1));
+                                    slot.onCrafting(hostType, inventory, 1);
+                                    slot.onCraftMatrixChanged(hostInventory, inventory);
                                 } else {
                                     //crafting output, so we should craft one more for the player.
                                     //  first check if same item (don't want to add when click on empty slot)
@@ -223,12 +224,14 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                         } else {
                                             player.inventory.setItemStack(new ItemStack(player.inventory.getItemStack().getItem(), player.inventory.getItemStack().stackSize + 1));
                                             slot.onCrafting(hostType, inventory, 1);
+                                            slot.onCraftMatrixChanged(hostInventory, inventory);
                                         }
                                     }
                                 }
+                                this.detectAndSendChanges();
                                 break;
                             }
-                        } else {
+                        } else if (slot.isItemValid(player.inventory.getItemStack().copy())) {
                             if (!slot.isCraftingOutput() && slot.getStack() ==null || (slot.getStack()!=null && slot.contentEquals(player.inventory.getItemStack()))) {
                                 ItemStack s = player.inventory.getItemStack().copy();
                                 ItemStack s2 = s.copy();
@@ -237,26 +240,30 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 s.stackSize -= 1;
                                 player.inventory.setItemStack(s);
                             }
+                            slot.onCraftMatrixChanged(hostInventory, inventory);
+                            this.detectAndSendChanges();
                         }
                         break;
                     } else if (slot.getStack()!=null){
-                        if(dragType==0) {
+                        if(dragType==0) { //todo: why does pressing q end up here and not throwing?
                             player.inventory.setItemStack(slot.getStack().copy());
                             slot.onCrafting(hostType, inventory, 1);
                             slot.setSlotContents(null, inventory);
                         } else if(dragType==1) {
-                            ItemStack stack= slot.getStack().copy();
+                            ItemStack stack = slot.getStack().copy();
                             //make it round up.
-                            if(stack.stackSize%2!=0){
-                                stack.stackSize/=2;
-                                stack.stackSize+=1;
+                            if (stack.stackSize % 2 != 0) {
+                                stack.stackSize /= 2;
+                                stack.stackSize += 1;
                             } else {
-                                stack.stackSize/=2;
+                                stack.stackSize /= 2;
                             }
                             player.inventory.setItemStack(stack);
                             slot.decrStackSize(stack.stackSize);
                             slot.onCrafting(hostType, inventory, 1);
                         }
+                        slot.onCraftMatrixChanged(hostInventory, inventory);
+                        this.detectAndSendChanges();
                     }
                     break;
                 }
@@ -273,12 +280,12 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                 }
 
                 if(slotId<36 || slotId==-999){//if the selected slot was in player inventory or on the cursor
-
                     //try the crafting slots
                     for(ItemStackSlot s : inventory){
-                        if(s.getSlotID()>399){
+                        if(s.getSlotID()>399 && !s.isCraftingOutput()){
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
                             if(slot.getStack()==null) {
+                                this.detectAndSendChanges();
                                 return null;
                             }
                         }
@@ -288,55 +295,80 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                         if(s.getSlotID()>35 && s.getSlotID()<400){
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
                             if(slot.getStack()==null) {
+                                this.detectAndSendChanges();
                                 return null;
                             }
                         }
                     }
                     //all else fails, go back to the players...
                     for(ItemStackSlot s : inventory){
-                        if(s.getSlotID()<36){
+                        if(s.getSlotID()<36 && slotId != s.getSlotID()){ //prevent slot from trying to merge into itself
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
                             if(slot.getStack()==null) {
+                                this.detectAndSendChanges();
                                 return null;
                             }
                         }
                     }
 
-                } else if(!slot.isCraftingOutput()){//if the selected slot was in transport inventory, and not a crafting slot
-                    //try the players
-                    for(ItemStackSlot s : inventory){
-                        if(s.getSlotID()<36){
-                            if(s.mergeStack(slot,inventory, hostType)==null) {
+                } else if(!slot.isCraftingOutput()){//if the selected slot is in the tileentity but not an output
+                    for (int k = 0; k < 2; k++) { //loop twice. once to combine, the next to put in any available slots
+                        for (int l = 0; l < this.inventory.size(); l++) {
+                            Slot slotToAddInto = getSlot(l);
+
+                            if (slotToAddInto instanceof ItemStackSlot && ((ItemStackSlot) slotToAddInto).isCraftingOutput()) continue;
+
+                            if (k == 0) {
+                                if (slotToAddInto != null
+                                        && slotToAddInto.getHasStack()
+                                        && canAddItemToSlot(slotToAddInto, slot.getStack())
+                                        && slotToAddInto.canTakeStack(player)
+                                        && slot != slotToAddInto) {
+                                    //if the held is combine-able with the slot in question, combine slot into canAddItemToSlot
+
+                                    int openSpace = slotToAddInto.getSlotStackLimit() - slotToAddInto.getStack().stackSize;
+                                    int amountToAdd = Math.min(slot.getStackSize(), openSpace);
+
+                                    if (amountToAdd == slot.getStackSize()) {
+                                        slot.setStack(null);
+                                        slotToAddInto.getStack().stackSize += amountToAdd;
+                                    } else {
+                                        slotToAddInto.getStack().stackSize += amountToAdd;
+                                        slot.getStack().stackSize -= amountToAdd;
+                                    }
+                                }
+                            } else {
+                                //put in any empty slot
+                                if (slotToAddInto != null && !slotToAddInto.getHasStack() && slotToAddInto.canTakeStack(player)) {
+                                    if (slot.getStackSize() <= slotToAddInto.getSlotStackLimit()) {
+                                        slotToAddInto.putStack(slot.getStack().copy());
+                                        slot.setStack(null);
+                                    } else {
+                                        //put as much as can into it.
+                                        int amountToAdd = slotToAddInto.getSlotStackLimit();
+                                        ItemStack newStack = slot.getStack().copy();
+                                        newStack.stackSize = amountToAdd;
+                                        slotToAddInto.putStack(newStack);
+                                        slot.decrStackSize(amountToAdd);
+                                    }
+                                }
+                            }
+                            if (!slot.getHasStack() || slot.getStackSize() == 0) {
                                 slot.setStack(null);
+                                this.detectAndSendChanges();
                                 return null;
                             }
                         }
                     }
-                    //try the storage
-                    for(ItemStackSlot s : inventory){
-                        if(s.getSlotID()>35){
-                            if(s.mergeStack(slot,inventory, hostType)==null) {
-                                slot.setStack(null);
-                                return null;
-                            }
-                        }
-                    }
-                    //tall else fails put it back into the crafting input slots
-                    for(ItemStackSlot s : inventory){
-                        if(s.getSlotID()>399){
-                            if(s.mergeStack(slot,inventory, hostType)==null) {
-                                slot.setStack(null);
-                                return null;
-                            }
-                        }
-                    }
-                } else {//if the selected slot was in a crafting slot
+                } else {//if the selected slot was in a crafting output slot
+                    //TODO: what happens if there are some slots to move items into but not enough for them all?
                     boolean hasStorage = false;
                     //try the players
                     for(ItemStackSlot s : inventory){
                         if(s.getSlotID()<36){
                             if(s.mergeStack(slot,inventory, hostType)==null) {
                                 slot.setStack(null);
+                                this.detectAndSendChanges();
                                 return null;
                             }
                         } else if (s.getSlotID()>35){
@@ -349,6 +381,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                             if (s.getSlotID() > 35){
                                 if(s.mergeStack(slot,inventory, hostType)==null) {
                                     slot.setStack(null);
+                                    this.detectAndSendChanges();
                                     return null;
                                 }
                             }
@@ -368,10 +401,12 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 slot.setSlotContents(null,inventory);
                             }
                         } else if (slot != null) {
-                            player.inventory.setInventorySlotContents(dragType, slot.mergeStack(itemstack.splitStack(slot.getSlotStackLimit()),inventory, hostType));
+                            int amountToShrink = Math.min(slot.getSlotStackLimit(), itemstack.stackSize);
+                            player.inventory.setInventorySlotContents(dragType, slot.mergeStack(itemstack.splitStack(amountToShrink),inventory, hostType));
                         }
                     }
                 }
+                this.detectAndSendChanges();
                 break;
             }
             case 3: { /*ClickType.CLONE (middle mouse button) */
@@ -386,7 +421,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
             case 4: { /*ClickType.THROW*/
                 if (player.inventory.getItemStack() == null && slotId >= 0 && slot != null && slot.getHasStack() && slot.canTakeStack(player)) {
                     itemstack = slot.decrStackSize(dragType == 0 ? 1 : slot.getStack().stackSize);
-                    if (!player.worldObj.isRemote) {
+                    if (!player.worldObj.isRemote && itemstack!=null) {
                         player.entityDropItem(itemstack, itemstack.stackSize);
                     }
                 }
@@ -463,6 +498,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                         this.dragSlots.clear();
                     }
                 }
+                this.detectAndSendChanges();
             case 6: { // double clicking on an item (second click, putting down item normally)
                 if (slotId >= 0) {
                     ItemStack heldStack = player.inventory.getItemStack();
@@ -476,7 +512,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                         int i = dragType == 0 ? 0 : this.inventory.size() - 1;
                         int j = dragType == 0 ? 1 : -1;
 
-                        for (int k = 0; k < 2; ++k) { //loop twice. why?
+                        for (int k = 0; k < 2; ++k) { //loop twice. once to check combining, the next to put in any available slots
                             for (int l = i; l >= 0 && l < this.inventory.size() && heldStack.stackSize < heldStack.getMaxStackSize(); l += j) {
                                 //for loop loops either backwards or forwards through all inv slots, see large comment above
 
@@ -525,9 +561,10 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
 
     /*a modified replica of the 1.12 version*/
     public static boolean canAddItemToSlot(@Nullable Slot slotIn, ItemStack stack) {
-        boolean flag = slotIn == null || !slotIn.getHasStack();
+        boolean flag = slotIn == null || stack==null || !slotIn.getHasStack();
 
-        if (!flag && stack.isItemEqual(slotIn.getStack()) && ItemStack.areItemStackTagsEqual(slotIn.getStack(), stack)) {
+        if (!flag && stack.isItemEqual(slotIn.getStack()) &&
+                ItemStack.areItemStackTagsEqual(slotIn.getStack(), stack)) {
             return slotIn.getStack().stackSize <= stack.getMaxStackSize();
         } else {
             return flag;

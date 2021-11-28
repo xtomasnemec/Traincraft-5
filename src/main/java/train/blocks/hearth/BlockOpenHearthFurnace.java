@@ -7,8 +7,11 @@
 
 package train.blocks.hearth;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
+import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -32,13 +35,14 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 
 
 	public BlockOpenHearthFurnace() {
-		super(Material.rock, true,true);
+		super(Material.rock,true);
 		//setRequiresSelfNotify();
 	}
 
 	public ResourceLocation getTexture(int x, int y, int z){
 		//todo this is inefficient, do from tile entity
-		if(Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z) instanceof TileEntityDistil){
+		if(Minecraft.getMinecraft().theWorld!=null &&
+				Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z) instanceof TileEntityDistil){
 			if(((TileEntityOpenHearthFurnace) Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z)).isBurning()){
 				return new ResourceLocation("traincraft", "textures/blocks/furnace_on.png");
 			}
@@ -51,21 +55,26 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 		return Item.getItemFromBlock(TCBlocks.blockHearthFurnace);
 	}
 
-	public static void updateHearthFurnaceBlockState(boolean flag, World world, int i, int j, int k) {
-		int l = world.getBlockMetadata(i, j, k);
-		TileEntity tileentity = world.getTileEntity(i, j, k);
-		world.setBlockMetadataWithNotify(i, j, k, l, 0);
-		if (tileentity != null) {
-			tileentity.validate();
-			world.setTileEntity(i, j, k, tileentity);
-		}
-
-		if(TrainsInMotion.proxy.isClient()) {
-			if(flag){
-				world.getBlock(i,j,k).setLightLevel(0.8F);
-			} else {
-				world.getBlock(i,j,k).setCreativeTab(Traincraft.tcTab);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
+		TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity((int) minX, (int) minY, (int) minZ);
+		if (te instanceof TileEntityDistil && ((TileEntityDistil) te).isBurning()) {
+			float var7 = (float) i + 0.5F;
+			float var9 = (float) k + 0.5F;
+			float f3 = 0.009F;
+			double gaussian = random.nextGaussian() * f3;
+			for (int t = 0; t < 50; t++) {
+				world.spawnParticle("smoke", var7, (double) j + 1.2F, var9, gaussian, gaussian * 0.002F, gaussian);
 			}
+			world.spawnParticle("flame", var7, (double) j + 1.03F, var9, 0, 0, 0);
+			world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
+			world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
+			world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
+			world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
+			CommonUtil.getBlockAt(world, i,j,k).setLightLevel(0.8F);
+		} else {
+			CommonUtil.getBlockAt(world, i,j,k).setLightLevel(0F);
 		}
 	}
 
@@ -83,32 +92,18 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 		return true;
 	}
 
-	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
-		super.onBlockAdded(world, i, j, k);
-		world.markBlockForUpdate(i, j, k);
-	}
 
 	@Override
 	public void breakBlock(World world, int i, int j, int k, Block par5, int par6) {
 		//todo:keep inventory on break?
 
 		TileEntity te = world.getTileEntity(i,j,k);
-		if(te instanceof TileEntityOpenHearthFurnace){
+		if(te instanceof TileEntityOpenHearthFurnace && world.getGameRules().getGameRuleBooleanValue("doTileDrops")){
 			((TileEntityOpenHearthFurnace) te).dropInventory();
 		}
 		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack stack) {
-		TileEntityOpenHearthFurnace te = (TileEntityOpenHearthFurnace) world.getTileEntity(i, j, k);
-		if (te != null) {
-			int dir = MathHelper.floor_double((entityliving.rotationYaw * 4F) / 360F + 0.5D) & 3;
-			te.setFacing(ForgeDirection.getOrientation(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
-			world.markBlockForUpdate(i, j, k);
-		}
-	}
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int i) {

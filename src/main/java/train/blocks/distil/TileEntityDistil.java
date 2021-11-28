@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.registry.TiMFluids;
+import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -30,9 +31,19 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 	private int updateTicks;
 	public boolean wasBurning=false;
 
+	public TileEntityDistil(){}
+
 	public TileEntityDistil(BlockDynamic host) {
 		//slots 0=input 1=fuel 3=output 2=input canister ?=filled canister
 		super(host);
+		initInventoryFromBlock( host );
+	}
+
+	protected void initInventoryFromBlock( BlockDynamic block )
+	{
+		if ( host == null )
+			super.initInventoryFromBlock( block );
+
 		distilBurnTime = 0;
 		currentItemBurnTime = 0;
 		distilCookTime = 0;
@@ -144,7 +155,6 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 				flag1 = true;
 			}
 			else {
-				flag1 = false;
 				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 			}
 
@@ -287,7 +297,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 			if (this.worldObj != null) {
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-				this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, worldObj.getBlock(xCoord, yCoord, zCoord));
+				this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, CommonUtil.getBlockAt(worldObj, xCoord, yCoord, zCoord));
 			}
 		}
 	}

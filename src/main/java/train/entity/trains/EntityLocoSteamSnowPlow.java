@@ -8,7 +8,6 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -88,14 +87,14 @@ public class EntityLocoSteamSnowPlow extends EntityTrainCore {
     public float[] rotationPoints() {return new float[]{1.5f, -1.4f};}
     //Train specific stuff
     @Override
-    public String transportFuelType(){return "steam, snow plow";}
+    public String transportFuelType(){return "steam";} //return "steam, snow plow"
     @Override
     public float transportMetricHorsePower(){return 200;}
     @Override
     public float transportTopSpeed(){return 20;}
     @Override
     public ItemStackSlot fuelSlot(){
-        return super.fuelSlot().setOverlay(Items.coal);
+        return super.fuelSlot();
     }
     @Override
     public int[] getTankCapacity(){return new int[]{6850};}

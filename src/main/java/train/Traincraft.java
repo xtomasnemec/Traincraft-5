@@ -1,13 +1,22 @@
 package train;
 
-import java.io.File;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
+import cpw.mods.fml.relauncher.Side;
+import ebf.tim.TrainsInMotion;
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.TiMTab;
 import ebf.tim.registry.TiMGenericRegistry;
+import ebf.tim.utility.JsonRecipeHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -31,11 +40,14 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import train.blocks.TCBlocks;
 import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
-import train.core.TrainModCore;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
-import train.core.handlers.PacketHandler;
 import train.core.handlers.VillagerTraincraftHandler;
+import train.core.network.PacketKeyPress;
+import train.core.network.PacketLantern;
+import train.core.network.PacketSetJukeboxStreamingUrl;
+import train.core.plugins.AssemblyTableNEIIntegration;
+import train.core.plugins.PluginRailcraft;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.generation.ComponentVillageTrainstation;
@@ -43,7 +55,12 @@ import train.items.TCItems;
 import train.library.Info;
 import train.library.TrainRegistry;
 
-@Mod(modid = Info.modID, name = Info.modName, version = Info.modVersion)
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+@Mod(modid = Info.modID, name = Info.modName, dependencies="after:"+ TrainsInMotion.MODID)
 public class Traincraft {
 
 	/* TrainCraft instance */
@@ -78,54 +95,6 @@ public class Traincraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		tcLog.info("Starting Traincraft " + Info.modVersion + "!");
-
-		GUICraftBook.addPage(Info.modID, "Traincraft\n" +
-				"Developers: \n" +
-				"Eternal Blue Flame\n" +
-				"Canitzp, ComputerButter\n\n" +
-				"Project Overseer:\nSpitfire4466\n\n" +
-				"Lead artists: \nBroscolotos, Riggs64"
-				);
-
-		GUICraftBook.addPage(Info.modID, "Honorable Mentions:\n" +
-				"Mr. Brutal,\n" +
-				"helldiver, DAYdiecast,\n" +
-				"BlockStormTwo, FriscoWolf,\n" +
-				"ChandlerBingUA, KiraKun,\n" +
-				"NitroxydeX");
-
-		GUICraftBook.addPage(Info.modID, "DISCLAIMER:\n" +
-				"All transport into including\n" +
-				"but not limited to\n" +
-				"weight, year, country, \n" +
-				"seating capacity, etc...\n" +
-				"may be inaccurate, this\n" +
-				"is written to the best of \n" +
-				"our knowledge and we\n" +
-				"encourage the community to\n" +
-				"correct us, with citation.");
-
-		GUICraftBook.addPage(Info.modID,
-				"WARNING:\nThis release is an alpha,\n" +
-						"and some features may be\n" +
-						"missing, buggy, or\n" +
-						"incomplete.\n" +
-						"We appreciate your\n" +
-						"patience and reports as\n" +
-						"we work on adding back all\n" +
-						"of the missing features,\nand many many more.");
-
-		GUICraftBook.addPage(Info.modID,
-				"I WILL STATE THIS AGAIN\n"+
-				"This release is an alpha,\n" +
-						"and some features may be\n" +
-						"missing, buggy, or\n" +
-						"incomplete.\n" +
-						"We appreciate your\n" +
-						"patience and reports as\n" +
-						"we work on adding back all\n" +
-						"of the missing features,\nand many many more.");
 
 				/* Config handler */
 		configDirectory= event.getModConfigurationDirectory();
@@ -140,7 +109,16 @@ public class Traincraft {
 		proxy.registerEvents(event);
 
 		/* Networking and Packet initialisation */
-		PacketHandler.init();
+		tcLog.info("Initialize Packets");
+		modChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.channel);
+		keyChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.keyChannel);
+		rotationChannel = NetworkRegistry.INSTANCE.newSimpleChannel(Info.rotationChannel);
+
+
+		keyChannel.registerMessage(PacketKeyPress.Handler.class, PacketKeyPress.class, 1, Side.SERVER);
+		modChannel.registerMessage(PacketSetJukeboxStreamingUrl.Handler.class,
+				PacketSetJukeboxStreamingUrl.class, 2, Side.SERVER);
+		modChannel.registerMessage(PacketLantern.Handler.class, PacketLantern.class, 3, Side.SERVER);
 
 		tcLog.info("Finished PreInitialization");
 	}
@@ -149,6 +127,54 @@ public class Traincraft {
 	public void load(FMLInitializationEvent event) {
 		tcLog.info("Start Initialization");
 
+		if(event.getSide().isClient()) {
+			GUICraftBook.addPage(Info.modID, "Traincraft\n" +
+					"Developers: \n" +
+					"Eternal Blue Flame\n" +
+					"Canitzp, ComputerButter\n\n" +
+					"Project Overseer:\nSpitfire4466\n\n" +
+					"Lead artists: \nBroscolotos, Riggs64"
+			);
+
+			GUICraftBook.addPage(Info.modID, "Honorable Mentions:\n" +
+					"Mr. Brutal,\n" +
+					"helldiver, DAYdiecast,\n" +
+					"BlockStormTwo, FriscoWolf,\n" +
+					"ChandlerBingUA, KiraKun,\n" +
+					"NitroxydeX");
+
+			GUICraftBook.addPage(Info.modID, "DISCLAIMER:\n" +
+					"All transport into including\n" +
+					"but not limited to\n" +
+					"weight, year, country, \n" +
+					"seating capacity, etc...\n" +
+					"may be inaccurate, this\n" +
+					"is written to the best of \n" +
+					"our knowledge and we\n" +
+					"encourage the community to\n" +
+					"correct us, with citation.");
+
+			GUICraftBook.addPage(Info.modID,
+					"WARNING:\nThis release is an alpha,\n" +
+							"and some features may be\n" +
+							"missing, buggy, or\n" +
+							"incomplete.\n" +
+							"We appreciate your\n" +
+							"patience and reports as\n" +
+							"we work on adding back all\n" +
+							"of the missing features,\nand many many more.");
+
+			GUICraftBook.addPage(Info.modID,
+					"I WILL STATE THIS AGAIN\n" +
+							"This release is an alpha,\n" +
+							"and some features may be\n" +
+							"missing, buggy, or\n" +
+							"incomplete.\n" +
+							"We appreciate your\n" +
+							"patience and reports as\n" +
+							"we work on adding back all\n" +
+							"of the missing features,\nand many many more.");
+		}
 		//proxy.getCape();
 
 		/* Register Items, Blocks, ... */
@@ -159,7 +185,11 @@ public class Traincraft {
 		trainCloth = proxy.addArmor("Paintable");
 		trainCompositeSuit = proxy.addArmor("CompositeSuit");
 		TCBlocks.init();
+		TCBlocks.registerRecipes();
 		TCItems.init();
+
+		//parse and register json crafting recipes
+		JsonRecipeHelper.loadRecipes(Info.modID, this.getClass());
 
 		if(ConfigHandler.ENABLE_STEAM) {
 			//the null last value defines we aren't implementing a custom entity render.
@@ -189,7 +219,6 @@ public class Traincraft {
 			TiMGenericRegistry.registryPosition++;
 		}
 
-		proxy.registerSounds();
 		proxy.setHook(); // Moved file needed to run JLayer, we need to set a hook in order to retrieve it
 
 		GameRegistry.registerFuelHandler(new FuelHandler());
@@ -208,11 +237,10 @@ public class Traincraft {
 
 		/*Trainman Villager*/
 		tcLog.info("Initialize Station Chief Villager");
-		VillagerRegistry.instance().registerVillagerId(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1);
 		VillagerTraincraftHandler villageHandler = new VillagerTraincraftHandler();
-		VillagerRegistry.instance().registerVillageCreationHandler(villageHandler);
 		proxy.registerVillagerSkin(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, "station_chief.png");
 		VillagerRegistry.instance().registerVillageTradeHandler(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, villageHandler);
+		VillagerRegistry.instance().registerVillageCreationHandler(villageHandler);
 
 		
 		tcLog.info("Finished Initialization");
@@ -226,8 +254,35 @@ public class Traincraft {
 		tcLog.info("Register ChunkHandler");
 
 		tcLog.info("Activation Mod Compatibility");
-		TrainModCore.ModsLoaded();
+		//railcraft recipe compatibility
+		if(Loader.isModLoaded("Railcraft") && !Loader.isModLoaded("tc")){
+			File file = new File("./config/railcraft/railcraft.cfg");
+			try {
+				@SuppressWarnings("resource") Scanner scanner = new Scanner(new FileInputStream(file));
+
+				while (scanner.hasNextLine()) {
+					String line = scanner.nextLine().trim();
+
+					if (line.equals("B:useAltRecipes=true")) {
+						Traincraft.tcLog.info(
+								"You've enabled vanilla rail recipes in Railcraft. Disable them to get Traincraft additional tracks");
+						break;
+					} else if (line.equals("B:useAltRecipes=false")) {
+						PluginRailcraft.init();
+						Traincraft.tcLog.info("Enabled Traincraft additional tracks for Railcraft");
+						break;
+					}
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 		LiquidManager.getLiquidsFromDictionnary();
+
+		if (Loader.isModLoaded("NotEnoughItems")) {
+			AssemblyTableNEIIntegration.setupNEIIntegration();
+		}
+
 		tcLog.info("Finished PostInitialization");
 	}
 

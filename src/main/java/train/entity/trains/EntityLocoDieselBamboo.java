@@ -8,7 +8,6 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -53,7 +52,7 @@ public class EntityLocoDieselBamboo extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelBambooTrainEngine()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, 0.14f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, worldObj==null?-0.44f:0.14f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{180.0f, 0.0f, -180.0f}};}
     @Override
@@ -102,7 +101,7 @@ public class EntityLocoDieselBamboo extends EntityTrainCore {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
-                null, null, null, null, new ItemStack(TiMItems.smallDieselEngine, 1), null        };
+                null, null, null, null, new ItemStack(TiMItems.mediumDieselEngine, 1), null        };
     }
 
 
@@ -122,7 +121,7 @@ public class EntityLocoDieselBamboo extends EntityTrainCore {
     public float transportTopSpeed(){return 20;}
     @Override
     public ItemStackSlot fuelSlot(){
-        return super.fuelSlot().setOverlay(Items.coal);
+        return super.fuelSlot();
     }
     @Override
     public int[] getTankCapacity(){return new int[]{3000};}

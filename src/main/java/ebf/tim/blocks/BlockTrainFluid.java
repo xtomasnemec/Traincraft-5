@@ -3,6 +3,7 @@ package ebf.tim.blocks;
 import java.util.Random;
 
 import ebf.tim.TrainsInMotion;
+import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -101,11 +102,11 @@ public class BlockTrainFluid extends BlockFluidClassic {
         if (fluidHeight < quantaPerBlock) {
             int y2 = /*pos.getY() -*/ densityDir;
 
-            if (world.getBlockState(pos.down(y2)).getBlock() == this ||
-                    world.getBlockState(pos.add(-1, y2, 0)).getBlock() == this ||
-                    world.getBlockState(pos.add(+1, y2, 0)).getBlock() == this ||
-                    world.getBlockState(pos.add(0, y2, -1)).getBlock() == this ||
-                    world.getBlockState(pos.add(0, y2, +1)).getBlock() == this)
+            if (world.getBlock(x,y2,z) == this ||
+                    CommonUtil.getBlockAt(world, x - 1, y2, z) == this ||
+                    CommonUtil.getBlockAt(world,x + 1, y2, z) == this ||
+                    CommonUtil.getBlockAt(world,x,y2, z - 1) == this ||
+                    CommonUtil.getBlockAt(world,x, y2, z + 1) == this)
             {
                 newHeight = quantaPerBlock - 1;
             } else {
@@ -149,7 +150,7 @@ public class BlockTrainFluid extends BlockFluidClassic {
         }
 
         if (isSourceBlock(world, x, y, z) || !isFlowingVertically(world, x, y, z)) {
-            if (world.getBlock(x, y - densityDir, z) == this) {
+            if (CommonUtil.getBlockAt(world,x, y - densityDir, z) == this) {
                 flowMeta = 1;
             }
             boolean[] flowTo = getOptimalFlowDirections(world, x, y, z);

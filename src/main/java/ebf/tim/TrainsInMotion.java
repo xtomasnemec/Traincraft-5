@@ -1,36 +1,30 @@
 package ebf.tim;
 
-import java.util.Collections;
-import java.util.List;
-
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.gui.GUICraftBook;
 import ebf.tim.items.ItemAdminBook;
 import ebf.tim.items.TiMTab;
-import ebf.tim.networking.PacketCraftingPage;
-import ebf.tim.networking.PacketInteract;
-import ebf.tim.networking.PacketPaint;
-import ebf.tim.networking.PacketRemove;
+import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
-import ebf.tim.utility.ChunkHandler;
-import ebf.tim.utility.ClientProxy;
-import ebf.tim.utility.CommonProxy;
-import net.minecraft.util.ResourceLocation;
+import ebf.tim.utility.*;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 
 /**
@@ -44,7 +38,7 @@ import net.minecraftforge.fml.relauncher.Side;
  *
  * @author Eternal Blue Flame
  */
-@Mod(modid = TrainsInMotion.MODID, version = TrainsInMotion.MOD_VERSION, name = "Trains in Motion")
+@Mod(modid = TrainsInMotion.MODID, name = "Trains in Motion")
 public class TrainsInMotion {
 
     /*
@@ -54,8 +48,6 @@ public class TrainsInMotion {
 
     /**the ID of the mod and the version displayed in game, as well as used for version check in the version.txt file*/
     public static final String MODID = "trainsinmotion";
-    /**the version identifier of the mod*/
-    public static final String MOD_VERSION="2.3 pre-alpha";
     /**an instance of the mod*/
     @Mod.Instance(MODID)
     public static TrainsInMotion instance;
@@ -74,6 +66,7 @@ public class TrainsInMotion {
      * Every wrapper runs on it's own thread, so heavy traffic should go on it's own wrapper, using channels to separate packet types.*/
     public static SimpleNetworkWrapper keyChannel;
     public static SimpleNetworkWrapper trackChannel;
+    public static SimpleNetworkWrapper updateChannel;
 
 
     /**Instance a new chunk handler, this class manages chunk loading events and functionality.*/
@@ -145,9 +138,20 @@ public class TrainsInMotion {
         //register blocks, items, fluids, etc.
         proxy.register();
 
+        //parse and register json crafting recipes
+
+        long startTime = System.nanoTime();
+        boolean suc = JsonRecipeHelper.loadRecipes(MODID, this.getClass());
+        long endTime = System.nanoTime();
+        if (!suc) {
+            //bruh it failed somehow
+            LogManager.getLogger("trainsinmotion").log(Level.ERROR, "[Trainsinmotion] *** There was a problem loading the json recipes. ***");
+        }
+        LogManager.getLogger("trainsinmotion").info("Time taken to load recipes: " + (endTime - startTime) / 1_000_000 + "ms");
+
         //loop for registering the entities. the values needed are the class, entity name, entity ID, mod instance, update range, update rate, and if it does velocity things,
-        net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(MODID, "bogie"), EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 60, 3, true);
-        net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(MODID, "seat"), EntitySeat.class, "Seat", 16, TrainsInMotion.instance, 60, 3, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityBogie.class, "Bogie", 15, TrainsInMotion.instance, 80, 3, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntitySeat.class, "Seat", 16, TrainsInMotion.instance, 80, 3, true);
 
         if(event.getSide().isClient()){
 
@@ -174,16 +178,16 @@ public class TrainsInMotion {
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[4], PacketPaint.class, 6, Side.CLIENT);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[5], PacketCraftingPage.class, 7, Side.SERVER);
         TrainsInMotion.trackChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.track");
+        TrainsInMotion.updateChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.update");
+        TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 8, Side.CLIENT);
 
 
 
         if(event.getSide().isClient()) {
             //register the event handler
-            MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
             FMLCommonHandler.instance().bus().register(ClientProxy.eventManager);
             fexcraft.tmt.slim.TextureManager.collectIngotColors();
         }
-        MinecraftForge.EVENT_BUS.register(CommonProxy.eventManagerServer);
         FMLCommonHandler.instance().bus().register(CommonProxy.eventManagerServer);
 
         //register GUI, model renders, Keybinds, client only blocks, and HUD
@@ -192,6 +196,10 @@ public class TrainsInMotion {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
+        if (Loader.isModLoaded("NotEnoughItems")) {
+            TiMTableNEIIntegration.setupNEIintegration();
+        }
+
         TiMGenericRegistry.endRegistration();
     }
 
@@ -199,6 +207,9 @@ public class TrainsInMotion {
 
     //each packet needs it's own entry in this, duplicates are not allowed, for whatever reason
     private static final IMessageHandler<IMessage, IMessage>[] HANDLERS = new IMessageHandler[]{
+            new IMessageHandler<IMessage, IMessage>() {
+                @Override public IMessage onMessage(IMessage message, MessageContext ctx) {return null;}
+            },
             new IMessageHandler<IMessage, IMessage>() {
                 @Override public IMessage onMessage(IMessage message, MessageContext ctx) {return null;}
             },

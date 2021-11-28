@@ -5,10 +5,7 @@ import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketInteract;
 import ebf.tim.registry.URIRegistry;
-import ebf.tim.utility.ClientUtil;
-import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.ItemStackSlot;
-import ebf.tim.utility.TransportSlotManager;
+import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Tessellator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -18,10 +15,12 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
@@ -81,7 +80,7 @@ public class GUITransport extends GUIContainerNoNEI {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         //draw inventory slots and whatnot
-        if (transport.inventory.size()>0){
+        if (transport.getSizeInventory()>0){
             renderFreightInventory(mc,mouseX, mouseY);
         }
         if (transport instanceof EntityTrainCore){
@@ -263,6 +262,14 @@ public class GUITransport extends GUIContainerNoNEI {
                     }
 
                     @Override
+                    public int[] getColor(){
+                        if(transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)){
+                            return new int[]{150,255,150};
+                        }
+                        return null;
+                    }
+
+                    @Override
                     public void onClick() {
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(10, transport.getEntityId()));
                     }
@@ -274,6 +281,14 @@ public class GUITransport extends GUIContainerNoNEI {
                     @Override
                     public String getHoverText() {
                         return "gui.running." + transport.getBoolean(GenericRailTransport.boolValues.RUNNING);
+                    }
+
+                    @Override
+                    public int[] getColor(){
+                        if(transport.getBoolean(GenericRailTransport.boolValues.RUNNING)){
+                            return new int[]{150,255,150};
+                        }
+                        return null;
                     }
 
                     @Override
@@ -343,7 +358,7 @@ public class GUITransport extends GUIContainerNoNEI {
         }
 
         drawTextOutlined(fontRendererObj, "burn time: " + transport.getDataWatcher().getWatchableObjectInt(13), 10, 70, 16777215);
-        drawTextOutlined(fontRendererObj, "boiler heat: " + transport.getDataWatcher().getWatchableObjectFloat(16), 10, 80, 16777215);
+        drawTextOutlined(fontRendererObj, "boiler heat: " + FuelHandler.getBoilerHeat(transport), 10, 80, 16777215);
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
@@ -531,6 +546,21 @@ public class GUITransport extends GUIContainerNoNEI {
         super.mouseMovedOrUp(p_146286_1_, p_146286_2_, p_146286_3_);
     }
 
+
+    @Override
+    protected void handleMouseClick(Slot p_146984_1_, int p_146984_2_, int p_146984_3_, int p_146984_4_) {
+        if (p_146984_1_ != null) {
+            p_146984_2_ = p_146984_1_.slotNumber;
+        }
+
+        if (p_146984_4_ == 4){
+            p_146984_4_ = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
+                    player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
+                            (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
+                                    0;//cover everything else
+        }
+        this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, p_146984_4_, this.mc.thePlayer);
+    }
 
 
 }
