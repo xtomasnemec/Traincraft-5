@@ -1,5 +1,7 @@
 package train.entity.trains;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.api.TransportSkin;
@@ -42,7 +44,7 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
 
 
     @Override
-    public String transportName(){return "Loco Steam 4-4-0-R";}
+    public String transportName(){return "American(Remastered)";}
     @Override
     public String transportcountry(){return "us";}
     @Override
@@ -59,15 +61,27 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
         String description = "description.4-4-0-loco";
         SkinRegistry.addSkin(this.getClass(),
                 new TransportSkin(Info.modID,"textures/trains/steam/4-4-0-loco_Blank.png","Blank", description));
+        SkinRegistry.addSkin(this.getClass(),
+                new TransportSkin(Info.modID,"textures/trains/steam/4-4-0-loco_119.png","UP 119", description));
 
     }
 
+    @SideOnly(Side.CLIENT)
+    public float[] getAnimationData(int id) {
+        switch (id) {
+            case 1:{return new float[]{270, 2.5f, 0};}//valve gear up position
+            case 2:{return new float[]{0, 2.5f, 0};}//valve gear back position
+            case 3:{return new float[]{90, 2.5f, 0};}//valve gear down position
+            case 4:{return new float[]{180, 2.5f, 0};}//valve gear forward position
+            default:{return new float[]{0,0,0};}
+        }
+    }
     /**
      * Defines the default skin using a ResourceLocation-esk string URI of the modid and the skin name.
      */
     @Override
     public String getDefaultSkin(){
-        return Info.modID+":Blank";
+        return Info.modID+":UP 119";
     }
 
     //
@@ -76,7 +90,7 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
      * @return the value of the max speed in km/h
      */
     @Override
-    public float transportTopSpeed(){return 50f;}
+    public float transportTopSpeed(){return accelerator>0?30f:80.4672f;}
 
     /**
      * <h2>Inventory Size</h2>
@@ -126,14 +140,15 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
      *     Each set of floats represents a different rider.
      */
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{1.0f,1.6f, 0f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{
+        2f,1.25f, -0.2f}};}
 
     /**
      * defines the size of the hitbox for processing, in order of length, height, and width.
      */
     @Override
     public float[] getHitboxSize() {
-        return new float[]{worldObj==null?5.5f:5.2f,2.7f,1.2f};
+        return new float[]{worldObj==null?5.5f:4.875f,2.7f,1.5f};
     }
 
     /**
@@ -182,7 +197,7 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
      */
     @Override
     public float[] rotationPoints() {
-        return new float[]{2f, -1.6f};
+        return new float[]{2f, -1.25f};
     }
 
     /**
@@ -215,11 +230,11 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
 
     @Override
     public Bogie[] bogies(){
-        return new Bogie[]{new Bogie(new train.render.models.steam.Classic440_Front_Truck(), 1.8f)};
+        return new Bogie[]{new Bogie(new train.render.models.steam.Classic440_Front_Truck(), -1.3f)};
     }
 
     @Override
-    public float[][] modelOffsets(){return new float[][]{{1.4f,worldObj==null?-0.6f:0.0f,0f}};}
+    public float[][] modelOffsets(){return new float[][]{{1.7f,worldObj==null?-0.6f:0.0f,0f}};}
 
     @Override
     public float[][] modelRotations(){return new float[][]{{0f,0f,0f}};}

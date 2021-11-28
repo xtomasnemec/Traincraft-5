@@ -309,7 +309,8 @@ item.Fowler4FTender.name=Fowler 4F Tender
 item.LocoSteamC410-8-0.name=C41 0-8-0
 item.LocoSteamAlcoSC4.name=Alco SC4
 item.FreightL.name=Freight Car L
-
+item.American(Remastered).name=American (Remastered)
+item.AmericanTender(Remastered).name=American Tender (Remastered)
 
 <!-- ## Achievements ## -->
 achievement.traincraft:engineer=Engineers clothes

@@ -2,6 +2,7 @@
 //Using PER-GROUP-INIT mode with limit '250'!
 package train.render.models.tender;
 
+import ebf.tim.render.GroupedModelRender;
 import fexcraft.fvtm.RollingStockModel;
 import fexcraft.fvtm.TurboList;
 import fexcraft.tmt.slim.ModelRendererTurbo;
@@ -13,9 +14,13 @@ import fexcraft.tmt.slim.Vec3f;
  */
 public class Classic440Tender extends RollingStockModel {
 
+	private static final String cargo1 = GroupedModelRender.tagRenderBlockCargo + "1";
+	private static final String cargo2 = GroupedModelRender.tagRenderBlockCargo + "2";
+	private static final String cargo3 = GroupedModelRender.tagRenderBlockCargo + "3";
+	private static final String cargo4 = GroupedModelRender.tagRenderBlockCargo + "4";
 	public Classic440Tender(){
 		super(); textureX = 256; textureY = 256;
-		this.addToCreators("Unregistered Account");
+		this.addToCreators("Broscolotos");
 		//
 		initGroup_group0();
 		initGroup_clipboard();
@@ -196,23 +201,23 @@ public class Classic440Tender extends RollingStockModel {
 		TurboList group5 = new TurboList("group5");
 		group5.add(new ModelRendererTurbo(group5, 50, 147, textureX, textureY)
 			.addShapeBox(0, 0, -6, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-			.setRotationPoint(17.5f, -1.5f, 4).setRotationAngle(0, -14, 0).setName("Wood0")
+			.setRotationPoint(17.5f, -1.5f, 4).setRotationAngle(0, -14, 0)/*.setName(cargo1)*/
 		);
 		group5.add(new ModelRendererTurbo(group5, 164, 145, textureX, textureY)
-			.addShapeBox(0, 0, 0, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-			.setRotationPoint(47, -3.5f, -4).setRotationAngle(0, 0, 0).setName("Wood1")
+				.addShapeBox(0, 0, 0, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+				.setRotationPoint(47, -3.5f, -4).setRotationAngle(0, 0, 0)/*.setName(cargo1)*/
 		);
 		group5.add(new ModelRendererTurbo(group5, 147, 145, textureX, textureY)
 			.addShapeBox(0, 0, 0, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-			.setRotationPoint(49, -3.5f, -3.5f).setRotationAngle(0, 0, 0).setName("Wood2")
+			.setRotationPoint(49, -3.5f, -3.5f).setRotationAngle(0, 0, 0)/*.setName(cargo1)*/
 		);
 		group5.add(new ModelRendererTurbo(group5, 94, 144, textureX, textureY)
 			.addShapeBox(0, 0, 0, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-			.setRotationPoint(43, -3.5f, -4).setRotationAngle(0, 0, 0).setName("Wood3")
+			.setRotationPoint(43, -3.5f, -4).setRotationAngle(0, 0, 0)/*.setName(cargo1)*/
 		);
 		group5.add(new ModelRendererTurbo(group5, 0, 144, textureX, textureY)
 			.addShapeBox(0, 0, 0, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-			.setRotationPoint(45, -3.5f, -3.5f).setRotationAngle(0, 0, 0).setName("Wood4")
+			.setRotationPoint(45, -3.5f, -3.5f).setRotationAngle(0, 0, 0)/*.setName(cargo1)*/
 		);
 		group5.add(new ModelRendererTurbo(group5, 217, 143, textureX, textureY)
 			.addShapeBox(0, 0, 0, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
