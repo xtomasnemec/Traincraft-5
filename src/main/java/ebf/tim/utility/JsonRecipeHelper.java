@@ -3,7 +3,7 @@ package ebf.tim.utility;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import cpw.mods.fml.common.registry.GameData;
+import net.minecraftforge.registries.GameData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -163,7 +163,7 @@ public class JsonRecipeHelper {
 
                         int count = getInt(jsonElement.getAsJsonObject(), "count", 1);
                         for (ItemStack itemStack : itemStacks) {
-                            itemStack.stackSize = count;
+                            itemStack.getCount() = count;
                         }
                         return itemStacks;
 

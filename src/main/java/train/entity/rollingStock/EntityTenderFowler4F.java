@@ -72,7 +72,7 @@ public class EntityTenderFowler4F extends GenericRailTransport {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 3), new ItemStack(TiMItems.frameSteel, 3),
-                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.coal, 2)        };
+                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.COAL, 2)        };
     }
 
 

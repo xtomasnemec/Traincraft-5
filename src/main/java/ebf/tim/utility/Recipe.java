@@ -215,7 +215,7 @@ public class Recipe {
         }
 
         //items not equal or stack isn't big enough, or stack not big enough
-        return OreDictionary.itemMatches(target, toCompare, false) && target.stackSize <= toCompare.stackSize;
+        return OreDictionary.itemMatches(target, toCompare, false) && target.getCount() <= toCompare.getCount();
     }
 
 

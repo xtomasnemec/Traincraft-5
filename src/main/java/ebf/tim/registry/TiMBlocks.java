@@ -8,16 +8,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import static cpw.mods.fml.common.registry.GameRegistry.addRecipe;
 import static ebf.tim.registry.TiMGenericRegistry.registerBlock;
 
 public class TiMBlocks {
 
     /**the crafting table for trains*/
-    public static BlockDynamic trainTable = new BlockDynamic(new Material(MapColor.mapColorArray[13]),true, 0); //tier 0 = "no tier"
+    public static BlockDynamic trainTable = new BlockDynamic(new Material(MapColor.WOOD),true, 0); //tier 0 = "no tier"
 
-    public static BlockDynamic railTable = new BlockDynamic(new Material(MapColor.mapColorArray[6]),true);
+    public static BlockDynamic railTable = new BlockDynamic(new Material(MapColor.IRON),true);
 
     public static BlockRailCore railBlock = new BlockRailCore(750,1f);
 
@@ -29,11 +29,11 @@ public class TiMBlocks {
         registerBlock(railBlock, null, TrainsInMotion.MODID,"block.timrail", null, TrainsInMotion.proxy.getTESR());
 
         //register the train crafting table
-        addRecipe(new ItemStack(registerBlock(trainTable, TrainsInMotion.creativeTab, TrainsInMotion.MODID,"block.traintable", null, null),1),
-                "WWW", "WIW", "WWW", 'W', Blocks.planks, 'I', Items.iron_ingot); //original
+        GameRegistry.addShapedRecipe(new ItemStack(registerBlock(trainTable, TrainsInMotion.creativeTab, TrainsInMotion.MODID,"block.traintable", null, null),1),
+                "WWW", "WIW", "WWW", 'W', Blocks.PLANKS, 'I', Items.IRON_INGOT); //original
 
-        addRecipe(new ItemStack(registerBlock(railTable, TrainsInMotion.creativeTab, TrainsInMotion.MODID,"block.railtable", null, null),1),
-                "IRI", "WCW", "WWW", 'I', Items.iron_ingot, 'W', Blocks.planks, 'C', Blocks.crafting_table, 'R', Blocks.rail);
+        GameRegistry.addShapedRecipe(new ItemStack(registerBlock(railTable, TrainsInMotion.creativeTab, TrainsInMotion.MODID,"block.railtable", null, null),1),
+                "IRI", "WCW", "WWW", 'I', Items.IRON_INGOT, 'W', Blocks.PLANKS, 'C', Blocks.CRAFTING_TABLE, 'R', Blocks.RAIL);
 
         trainTable.setHardness(3);
         railTable.setHardness(3);

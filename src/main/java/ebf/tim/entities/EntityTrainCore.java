@@ -212,7 +212,7 @@ public class EntityTrainCore extends GenericRailTransport {
             //-4.0880573E-7 applied MHP somehow needs to relate to a value that can move
 
             //debuff traction for rain
-            //vectorCache[1][1]=( (1.75f * (worldObj.isRaining()?0.5f:1)));
+            //vectorCache[1][1]=( (1.75f * (world.isRaining()?0.5f:1)));
 
             //todo rework this, the math isnt based on newtons anymore.
             if(Math.abs(cachedVectors[2].xCoord)*-745.7>cachedVectors[2].zCoord/7457){
@@ -230,7 +230,7 @@ public class EntityTrainCore extends GenericRailTransport {
      * this is intended for external use like collisions that need to see if the train is in gear from a superclass cast*/
     @Override
     public int getAccelerator(){
-        return !worldObj.isRemote?accelerator:getDataWatcher().getWatchableObjectInt(18);
+        return !world.isRemote?accelerator:getDataWatcher().getWatchableObjectInt(18);
     }
 
     /**
@@ -247,9 +247,9 @@ public class EntityTrainCore extends GenericRailTransport {
 
         if(frontBogie != null && backBogie != null) {
 
-            if (!worldObj.isRemote) {
+            if (!world.isRemote) {
                 float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
-                        CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
+                        CommonUtil.getBlockAt(world,this.posX,this.posY-1,this.posZ).slipperiness;
                 //twice a second, re-calculate the speed.
                 if (accelerator != 0 && ticksExisted % 10 == 0) {
                     //stop calculation if it can't move, running should be managed from the fuel handler, to be more dynamic
@@ -334,7 +334,7 @@ public class EntityTrainCore extends GenericRailTransport {
     public void soundHorn() {
         for (EnumSounds sounds : EnumSounds.values()) {
             if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")&& sounds.getEntityClass().equals(this.getClass()) && whistleDelay == 0) {
-                worldObj.playSoundAtEntity(this, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
+                world.playSoundAtEntity(this, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
                 whistleDelay = 65;
             }
         }
@@ -366,7 +366,7 @@ public class EntityTrainCore extends GenericRailTransport {
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
                     //the second to last value is volume, and idk what the last one is.
-                    //worldObj.playSoundEffect(posX, posY, posZ, getHorn().getResourcePath(), 1, 0.5f);
+                    //world.playSoundEffect(posX, posY, posZ, getHorn().getResourcePath(), 1, 0.5f);
                     if(whistleDelay==0){
                         soundHorn();
                     }

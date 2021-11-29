@@ -67,15 +67,15 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public ItemStack decrStackSize(int i, int j){
+    public ItemStack decrgetCount()(int i, int j){
         if (this.slots.length >= i && this.slots[i] != null) {
-            if (this.slots[i].stackSize <= j) {
+            if (this.slots[i].getCount() <= j) {
                 ItemStack itemstack = this.slots[i];
                 this.slots[i] = null;
                 return itemstack;
             }
             ItemStack itemstack1 = this.slots[i].splitStack(j);
-            if (this.slots[i].stackSize == 0) {
+            if (this.slots[i].getCount() == 0) {
                 this.slots[i] = null;
             }
             return itemstack1;
@@ -98,8 +98,8 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack){
         this.slots[slot] = stack;
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
+        if (stack != null && stack.getCount() > getInventoryStackLimit()) {
+            stack.getCount() = getInventoryStackLimit();
         }
     }
 

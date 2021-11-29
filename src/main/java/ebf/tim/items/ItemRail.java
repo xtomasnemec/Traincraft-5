@@ -1,7 +1,7 @@
 package ebf.tim.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.registry.TiMBlocks;
@@ -89,7 +89,7 @@ public class ItemRail extends Item implements ITrackItem {
             }
         }
 
-        if (!player.canPlayerEdit(x,y,z, meta, stack) || stack.stackSize==0 ||
+        if (!player.canPlayerEdit(x,y,z, meta, stack) || stack.getCount()==0 ||
         !world.getChunkProvider().chunkExists(
                 x>>4, z>>4)) {
             return false;
@@ -137,7 +137,7 @@ public class ItemRail extends Item implements ITrackItem {
 
                 world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, getPlacedBlock().stepSound.func_150496_b(), (getPlacedBlock().stepSound.getVolume() + 1.0F) / 2.0F, getPlacedBlock().stepSound.getPitch() * 0.8F);
                 getPlacedBlock().onPostBlockPlaced(world, x,y,z, i1);
-                --stack.stackSize;
+                --stack.getCount();
             }
             return true;
         }
@@ -194,7 +194,7 @@ public class ItemRail extends Item implements ITrackItem {
                 }
 
                 world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, getPlacedBlock().stepSound.func_150496_b(), (getPlacedBlock().stepSound.getVolume() + 1.0F) / 2.0F, getPlacedBlock().stepSound.getPitch() * 0.8F);
-                --stack.stackSize;
+                --stack.getCount();
             }
         }
 

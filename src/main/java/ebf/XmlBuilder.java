@@ -1,12 +1,12 @@
 package ebf;
 
-import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.GameData;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.HashMap;
@@ -185,10 +185,10 @@ public class XmlBuilder {
 
     public static ItemStack getItemStackFromStringArray(String[] data){
         if(data[0].equals("null")){return null;}
-        Item i = GameData.getItemRegistry().getObject(data[0]);
+        Item i = Item.getByNameOrId(data[0]);
         ItemStack s;
         if (i==null){
-            Block b = GameData.getBlockRegistry().getObject(data[0]);
+            Block b = Block.getBlockFromName(data[0]);
             if(b!=null) {
                 s = new ItemStack(b, Integer.parseInt(data[1]));
             } else{
@@ -307,7 +307,7 @@ public class XmlBuilder {
     static XmlBuilder convertFromNBT( NBTTagCompound nbt ){
         XmlBuilder xml = new XmlBuilder();
 
-        for( Object oKey : nbt.func_150296_c() ) // func_150296_c <=> getKeySet()
+        for( Object oKey : nbt.getKeySet() ) // func_150296_c <=> getKeySet()
         {
                 // Only deal with String keys
             if ( oKey instanceof String )
@@ -355,7 +355,9 @@ public class XmlBuilder {
                         if ( itemTag == null ) {
                             xml.putItemStack( id, null );
                         } else {
-                            xml.putItemStack( id, ItemStack.loadItemStackFromNBT( itemTag ));
+                            ItemStack stack = new ItemStack((Item)null);
+                            stack.deserializeNBT(itemTag);
+                            xml.putItemStack( id, stack);
                         }
                         break;
                     case typeFluidChar:
@@ -450,7 +452,7 @@ public class XmlBuilder {
                 ItemStack stack = itemMap.get(key);
                 data.append(stack.getItem().delegate.name());
                 data.append(",");
-                data.append(stack.stackSize);
+                data.append(stack.getCount());
                 data.append(",");
                 data.append(stack.getItemDamage());
             }

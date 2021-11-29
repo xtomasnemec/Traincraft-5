@@ -1,6 +1,7 @@
 package ebf.tim.networking;
 
 import ebf.tim.blocks.TileEntityStorage;
+import fexcraft.fcl.common.Static;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

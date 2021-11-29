@@ -1,8 +1,8 @@
 package train.items;
 
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +18,7 @@ public class ItemWrench extends ItemPart implements buildcraft.api.tools.IToolWr
 
 	public ItemWrench() {
 		super(ItemIDs.composite_wrench.iconName);
-		maxStackSize = 1;
+		maxgetCount() = 1;
 		setCreativeTab(Traincraft.tcTab);
 	}
 

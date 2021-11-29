@@ -117,8 +117,8 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
     public ItemStack getStackInSlot(int p_70301_1_) {return host.getStackInSlot(p_70301_1_);}
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        return host.decrStackSize(p_70298_1_,p_70298_2_);}
+    public ItemStack decrgetCount()(int p_70298_1_, int p_70298_2_) {
+        return host.decrgetCount()(p_70298_1_,p_70298_2_);}
 
     @Override
     public ItemStack getStackInSlotOnClosing(int p_70304_1_) {

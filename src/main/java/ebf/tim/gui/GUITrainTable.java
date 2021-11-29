@@ -43,7 +43,7 @@ public class GUITrainTable extends GuiContainer {
     public GUITrainTable(InventoryPlayer inventoryPlayer, World world, int x, int y, int z) {
         super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) world.getTileEntity(x,y,z)));
         hostname=CommonUtil.getBlockAt(world, x,y,z).getUnlocalizedName();
-        xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.dimensionId;
+        xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.getDimension();
         player = inventoryPlayer.player;
 
         if (CommonProxy.isTraincraft && hostname.startsWith("tile.block.traintabletier")) {
@@ -144,8 +144,8 @@ public class GUITrainTable extends GuiContainer {
             for (ItemStackSlot s : ((TileEntityStorage)((TransportSlotManager)this.inventorySlots).hostInventory).inventory) {
                 slots.add(s.getStack());
                 overlays.add(s.getOverlay());
-                slotx.add(s.xDisplayPosition);
-                sloty.add(s.yDisplayPosition);
+                slotx.add(s.xPos);
+                sloty.add(s.yPos);
 
             }
 
@@ -178,8 +178,8 @@ public class GUITrainTable extends GuiContainer {
                 for (ItemStackSlot s : ((TileEntityStorage) ((TransportSlotManager) this.inventorySlots).hostInventory).inventory) {
                     slots.add(s.getStack());
                     overlays.add(s.getOverlay());
-                    slotx.add(s.xDisplayPosition);
-                    sloty.add(s.yDisplayPosition);
+                    slotx.add(s.xPos);
+                    sloty.add(s.yPos);
 
                 }
 

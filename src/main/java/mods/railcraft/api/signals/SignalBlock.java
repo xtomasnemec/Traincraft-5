@@ -451,7 +451,7 @@ public abstract class SignalBlock extends AbstractPair {
             if (!world.blockExists(x, y - jj, z))
                 return Status.UNKNOWN;
             if (RailTools.isRailBlockAt(world, x, y - jj, z)) {
-                trackLocation = new WorldCoordinate(world.provider.dimensionId, x, y - jj, z);
+                trackLocation = new WorldCoordinate(world.provider.getDimension(), x, y - jj, z);
                 return Status.VALID;
             }
         }

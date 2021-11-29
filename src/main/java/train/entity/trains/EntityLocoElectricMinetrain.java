@@ -73,7 +73,7 @@ public class EntityLocoElectricMinetrain extends EntityTrainCore {
         return new ItemStack[]{
                 new ItemStack(Items.iron_ingot, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1),
                 new ItemStack(Items.iron_ingot, 1), null, new ItemStack(TiMItems.controlPanel, 1),
-                new ItemStack(TiMItems.transformer, 1), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(Items.redstone, 1)        };
+                new ItemStack(TiMItems.transformer, 1), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(Items.REDSTONE, 1)        };
     }
 
 

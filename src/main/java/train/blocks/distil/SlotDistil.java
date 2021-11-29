@@ -27,12 +27,12 @@ public class SlotDistil extends Slot {
 	 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new stack.
 	 */
 	@Override
-	public ItemStack decrStackSize(int par1) {
+	public ItemStack decrgetCount()(int par1) {
 		if (this.getHasStack()) {
-			this.amount += Math.min(par1, this.getStack().stackSize);
+			this.amount += Math.min(par1, this.getStack().getCount());
 		}
 
-		return super.decrStackSize(par1);
+		return super.decrgetCount()(par1);
 	}
 
 	@Override

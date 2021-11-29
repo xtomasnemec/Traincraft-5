@@ -3,11 +3,12 @@ package ebf.tim.utility;
 import com.google.common.collect.ListMultimap;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.entities.GenericRailTransport;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,8 @@ public class ChunkHandler implements ForgeChunkManager.LoadingCallback, ForgeChu
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void entityEnteredChunk(EntityEvent.EnteringChunk event) {
-        if(CommonProxy.enableChunkloading && event.entity instanceof GenericRailTransport && !event.entity.worldObj.isRemote) {
-            forceChunkLoading(((GenericRailTransport) event.entity), event.newChunkX, event.newChunkZ);
+        if(CommonProxy.enableChunkloading && event.getEntity() instanceof GenericRailTransport && !event.getEntity().world.isRemote) {
+            forceChunkLoading(((GenericRailTransport) event.getEntity()), event.getNewChunkX(), event.getNewChunkZ());
         }
     }
 
@@ -47,15 +48,15 @@ public class ChunkHandler implements ForgeChunkManager.LoadingCallback, ForgeChu
     private static void forceChunkLoading(GenericRailTransport transport, int newChunkX, int newChunkZ) {
         /*be sure the ticket is valid, otherwise we just crash*/
         if(transport.getChunkTicket() != null) {
-            ChunkCoordIntPair pair = null;
-            List<ChunkCoordIntPair> newChunks = new ArrayList<ChunkCoordIntPair>();
+            ChunkPos pair = null;
+            List<ChunkPos> newChunks = new ArrayList<ChunkPos>();
 
             /*get the chunks around the new chunk of the main entitiy, this should find 9 chunks (3x3 grid).
             * it would probably be a good idea to be sure the chunk limit per ticket will support at least 9 chunks
             *     if it doesn't, then the settings should change chunkloading to off and stop it before using it*/
             for(int x = newChunkX - 1; x <= newChunkX + 1; ++x) {
                 for(int z = newChunkZ - 1; z <= newChunkZ + 1; ++z) {
-                    newChunks.add(new ChunkCoordIntPair(x, z));
+                    newChunks.add(new ChunkPos(x, z));
                 }
             }
 
@@ -65,7 +66,7 @@ public class ChunkHandler implements ForgeChunkManager.LoadingCallback, ForgeChu
             *     since the user can change that value in forge, and we don't wanna try and bite off more than we can chew*/
             for(int x = transport.chunkCoordX - 1; x <= transport.chunkCoordX + 1; ++x) {
                 for(int z = transport.chunkCoordZ - 1; z <= transport.chunkCoordZ + 1; ++z) {
-                    pair = new ChunkCoordIntPair(x, z);
+                    pair = new ChunkPos(x, z);
                     if (!newChunks.contains(pair) && newChunks.size() < transport.getChunkTicket().getMaxChunkListDepth()) {
                         newChunks.add(pair);
                     }
@@ -73,12 +74,12 @@ public class ChunkHandler implements ForgeChunkManager.LoadingCallback, ForgeChu
             }
 
             /*now we take the list we generated and force the chunks to load.*/
-            for(ChunkCoordIntPair chunk : newChunks) {
+            for(ChunkPos chunk : newChunks) {
                 ForgeChunkManager.forceChunk(transport.getChunkTicket(), chunk);
                 ForgeChunkManager.reorderChunk(transport.getChunkTicket(), chunk);
             }
             /*now we go through the old list and force any chunks that were previously loaded to unload*/
-            for (ChunkCoordIntPair oldChunk : transport.chunkLocations){
+            for (ChunkPos oldChunk : transport.chunkLocations){
                 if(!newChunks.contains(oldChunk)){
                     ForgeChunkManager.unforceChunk(transport.getChunkTicket(), oldChunk);
                 }

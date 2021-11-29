@@ -1,7 +1,7 @@
 package train.blocks.hearth;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
@@ -97,7 +97,7 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 							getSlotIndexByID(402).setStack(new ItemStack(getSlotIndexByID(402).getItem().getContainerItem()));
 						}
 						else {
-							getSlotIndexByID(402).decrStackSize(1);
+							getSlotIndexByID(402).decrgetCount()(1);
 						}
 					}
 				}
@@ -156,14 +156,14 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 		else {
 			for(ItemStack s : steel){
 				if(s.getItem()==getSlotIndexByID(403).getItem()){
-					getSlotIndexByID(403).decrStackSize(-1);
+					getSlotIndexByID(403).decrgetCount()(-1);
 					break;
 				}
 			}
 		}
 
-		getSlotIndexByID(400).decrStackSize(1);
-		getSlotIndexByID(401).decrStackSize(1);
+		getSlotIndexByID(400).decrgetCount()(1);
+		getSlotIndexByID(401).decrgetCount()(1);
 
 		cookDuration = 1000;
 	}

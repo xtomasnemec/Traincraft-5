@@ -34,7 +34,7 @@
 //		ArrayList<ItemStack> dyeBlack = OreDictionary.getOres("dyeBlack");
 //		ArrayList<ItemStack> dyeWhite = OreDictionary.getOres("dyeWhite");
 //		List<ItemStack> coal = new ArrayList<ItemStack>();
-//		coal.add(new ItemStack(Items.coal));
+//		coal.add(new ItemStack(Items.COAL));
 //		coal.addAll(OreDictionary.getOres("coal"));
 //		ArrayList<ItemStack> redstone = OreDictionary.getOres("dustRedstone");
 //		ArrayList<ItemStack> waterbucket = waterContainers();

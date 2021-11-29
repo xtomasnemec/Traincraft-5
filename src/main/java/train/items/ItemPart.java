@@ -1,7 +1,7 @@
 package train.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import train.Traincraft;
@@ -17,7 +17,7 @@ public class ItemPart extends Item{
 
     public ItemPart(String iconName){
         this.iconName = iconName;
-        this.setMaxStackSize(64);
+        this.setMaxgetCount()(64);
         this.setCreativeTab(Traincraft.tcTab);
     }
 

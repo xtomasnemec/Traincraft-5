@@ -65,7 +65,7 @@ public class FuelHandler{
 		}
 
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.ELECTRIC)) {
-			if (itemStack.getItem() == Items.redstone) {
+			if (itemStack.getItem() == Items.REDSTONE) {
 				return new FluidStack(TiMFluids.fluidRedstone, 250);
 			} else if (itemStack.getItem() == Item.getItemFromBlock(Blocks.redstone_block)) {
 				return new FluidStack(TiMFluids.fluidRedstone, 2250);
@@ -157,7 +157,7 @@ public class FuelHandler{
 				burnTime = MathHelper.ceiling_double_int(burnHeat *0.1);
 				burnTimeMax = burnTime;
 				if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					train.getSlotIndexByID(400).decrStackSize(1);
+					train.getSlotIndexByID(400).decrgetCount()(1);
 				}
 				train.entityData.putFloat("burnTime", burnTime);
 				train.entityData.putFloat("maxBurn", burnTimeMax);
@@ -178,7 +178,7 @@ public class FuelHandler{
 				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==0) {
 			train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);
+				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrgetCount()(1);
 				train.addItem(new ItemStack(Items.bucket));
 			}
 		}
@@ -259,7 +259,7 @@ public class FuelHandler{
         if(getUseableFluid(400,train) !=null) {
 			if (train.fill(null, getUseableFluid(400,train))) {
 				if(!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrgetCount()(1);
 					train.addItem(new ItemStack(Items.bucket));
 				}
 			}
@@ -300,7 +300,7 @@ public class FuelHandler{
 
 			case  :
 
-			return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.coal)) * train.getEfficiency() * 0.2f;
+			return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL)) * train.getEfficiency() * 0.2f;
 				break;
 
 				default:
@@ -328,7 +328,7 @@ public class FuelHandler{
 						((IEnergyContainerItem) train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem())
 								.extractEnergy(train.getSlotIndexByID(train.fuelSlot().getSlotID()).getStack(), 250, false);
 					} else {
-						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrgetCount()(1);
 					}
 				}
 			}
@@ -387,7 +387,7 @@ public class FuelHandler{
 
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				transport.addItem(FluidContainerRegistry.drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
-				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrStackSize(1);
+				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrgetCount()(1);
 
 			}
 
@@ -402,7 +402,7 @@ public class FuelHandler{
 					transport.addItem(FluidContainerRegistry.fillFluidContainer(
 							new FluidStack(transport.entityData.getFluidStack("tanks."+i).fluid,1000)
 							, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()));
-					transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrStackSize(1);
+					transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrgetCount()(1);
 					return;
 				}
 			}
@@ -413,10 +413,10 @@ public class FuelHandler{
 			/*if (transport.getStackInSlot(1) == null && isUseableFluid(transport.getStackInSlot(0), transport) == null &&
 					transport.drain(null, 1000, false) != null && transport.drain(null, 1000, false).amount >= 1000){
 				transport.setInventorySlotContents(1, FluidContainerRegistry.fillFluidContainer(transport.drain(null, 1000, false), transport.getStackInSlot(0)));
-				if (transport.getStackInSlot(0).stackSize == 1) {
+				if (transport.getStackInSlot(0).getCount() == 1) {
 					transport.setInventorySlotContents(0, null);
 				} else {
-					transport.getStackInSlot(0).stackSize--;
+					transport.getStackInSlot(0).getCount()--;
 				}
 				if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 					transport.drain(null, 1000, true);

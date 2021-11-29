@@ -46,7 +46,7 @@ public class GUIAdminBook extends GuiScreen {
         public ItemStack getStackInSlot(int p_70301_1_) { return inventory[p_70301_1_]; }
 
         @Override
-        public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) { return null; }
+        public ItemStack decrgetCount()(int p_70298_1_, int p_70298_2_) { return null; }
 
         @Override
         public ItemStack getStackInSlotOnClosing(int p_70304_1_) { return null; }
@@ -198,9 +198,9 @@ public class GUIAdminBook extends GuiScreen {
 
         if(isTrainPage){
             for (int i = 2+(6 * page); i < Math.min(list.length, 10); i++) {//only show 6 entries per page
-                drawTextOutlined(fontRendererObj,  list[(page*i)+i],  guiLeft-70, guiTop-16 +(i*16), 16777215);
+                drawTextOutlined(fontRenderer,  list[(page*i)+i],  guiLeft-70, guiTop-16 +(i*16), 16777215);
             }
-            drawTextOutlined(fontRendererObj,I18n.format("container.inventory", new Object()),  guiLeft+80, guiTop+10, 16777215);
+            drawTextOutlined(fontRenderer,I18n.format("container.inventory", new Object()),  guiLeft+80, guiTop+10, 16777215);
             int index=0;
             for (int y =0; y<6; y++){
                 for(int x=0; x<9; x++){
@@ -218,8 +218,8 @@ public class GUIAdminBook extends GuiScreen {
     private void func_146977_a(Slot p_146977_1_) {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), p_146977_1_.getStack(), p_146977_1_.xDisplayPosition, p_146977_1_.yDisplayPosition);
-        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), p_146977_1_.getStack(), p_146977_1_.xDisplayPosition, p_146977_1_.yDisplayPosition, null);
+        itemRender.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos);
+        itemRender.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos, null);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }

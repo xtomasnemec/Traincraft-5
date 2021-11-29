@@ -1,13 +1,17 @@
 package ebf.tim.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.registry.TiMGenericRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.StatCollector;
 
 import java.util.List;
+
+import static net.minecraft.util.text.translation.I18n.translateToLocal;
 
 /**
  * <h1>Creative tab</h1>
@@ -29,7 +33,7 @@ public class TiMTab extends CreativeTabs {
     /**returns the label of the tab, this is defined in the language files,*/
     @Override
     public String getTranslatedTabLabel() {
-        return StatCollector.translateToLocal(tabItem.getUnlocalizedName());
+        return translateToLocal(tabItem.getUnlocalizedName());
     }
     /**the icon for the tab. don't override this one*/
     @Override
@@ -40,7 +44,7 @@ public class TiMTab extends CreativeTabs {
 
     /**This is used to hide items from the creative tab, but could also be used for sorting.*/
     @SideOnly(Side.CLIENT)
-    public void displayAllReleventItems(List p_78018_1_) {
-        super.displayAllReleventItems(p_78018_1_);
+    public void displayAllRelevantItems(NonNullList<ItemStack> p_78018_1_) {
+        super.displayAllRelevantItems(p_78018_1_);
     }
 }

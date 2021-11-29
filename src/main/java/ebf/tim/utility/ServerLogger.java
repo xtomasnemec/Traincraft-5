@@ -1,6 +1,6 @@
 package ebf.tim.utility;
 
-import cpw.mods.fml.common.registry.GameData;
+import net.minecraftforge.registries.GameData;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.init.Items;
@@ -126,7 +126,7 @@ public class ServerLogger {
 
 
     private static void addItemXML(StringBuilder string, ItemStack item){
-        if (item == null || item.getItem() == null || item.stackSize<=0){
+        if (item == null || item.getItem() == null || item.getCount()<=0){
             return;
         }
         string.append("        <ItemStack>\n            <ID>");
@@ -135,9 +135,9 @@ public class ServerLogger {
         string.append(item.getItem().delegate.name());
         string.append("</delegate>\n            <meta>");
         string.append(item.getItemDamage());
-        string.append("</meta>\n            <StackSize>");
-        string.append(item.stackSize);
-        string.append("</StackSize>\n        </ItemStack>\n");
+        string.append("</meta>\n            <getCount()>");
+        string.append(item.getCount());
+        string.append("</getCount()>\n        </ItemStack>\n");
     }
 
     private static void addFluidXML(StringBuilder string, FluidStack item){
@@ -149,9 +149,9 @@ public class ServerLogger {
         string.append(item.getFluidID());
         string.append("</ID>\n            <delegate>");
         string.append(FluidContainerRegistry.fillFluidContainer(item, new ItemStack(Items.bucket)).getItem().delegate.name());
-        string.append("</delegate>\n            <StackSize>");
+        string.append("</delegate>\n            <getCount()>");
         string.append((int)(item.amount*0.001));
-        string.append("</StackSize>\n    </FluidStack>\n");
+        string.append("</getCount()>\n    </FluidStack>\n");
     }
 
 
@@ -194,7 +194,7 @@ public class ServerLogger {
         try {
             ItemStack stack = new ItemStack(
                     GameData.getItemRegistry().getObject(doc.substring(doc.indexOf("<delegate>")+10, doc.indexOf("</delegate>"))),//get item by delegate name since it's static
-                    Integer.parseInt(doc.substring(doc.indexOf("<StackSize>")+11, doc.indexOf("</StackSize>")))//we always get strings so gotta parse.
+                    Integer.parseInt(doc.substring(doc.indexOf("<getCount()>")+11, doc.indexOf("</getCount()>")))//we always get strings so gotta parse.
             );
 
             stack.setItemDamage(Integer.parseInt(doc.substring(doc.indexOf("<meta>")+6, doc.indexOf("</meta>"))));

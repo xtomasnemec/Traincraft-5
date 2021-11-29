@@ -76,7 +76,7 @@ public class EntityLocoElectricTramWood extends EntityTrainCore {
         return new ItemStack[]{
                 new ItemStack(Blocks.planks, 4), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 1),
                 new ItemStack(Items.iron_ingot, 1), null, new ItemStack(TiMItems.cabinWood, 1),
-                new ItemStack(TiMItems.transformer, 1), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(Items.redstone, 4)        };
+                new ItemStack(TiMItems.transformer, 1), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(Items.REDSTONE, 4)        };
     }
 
 

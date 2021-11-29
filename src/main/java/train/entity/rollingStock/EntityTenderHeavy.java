@@ -72,7 +72,7 @@ public class EntityTenderHeavy extends GenericRailTransport {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 new ItemStack(TiMOres.ingotSteel, 4), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 4),
-                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.coal, 1)        };
+                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.COAL, 1)        };
     }
 
 

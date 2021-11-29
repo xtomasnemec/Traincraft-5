@@ -74,7 +74,7 @@ public class EntityTankWagon_DB extends GenericRailTransport {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 new ItemStack(TiMOres.ingotSteel, 5), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2),
-                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.water_bucket, 1)        };
+                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.WATER_BUCKET, 1)        };
     }
 
 

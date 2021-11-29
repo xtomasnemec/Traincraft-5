@@ -102,19 +102,19 @@ public class BlockTrainFluid extends BlockFluidClassic {
         if (fluidHeight < quantaPerBlock) {
             int y2 = /*pos.getY() -*/ densityDir;
 
-            if (world.getBlock(x,y2,z) == this ||
-                    CommonUtil.getBlockAt(world, x - 1, y2, z) == this ||
-                    CommonUtil.getBlockAt(world,x + 1, y2, z) == this ||
-                    CommonUtil.getBlockAt(world,x,y2, z - 1) == this ||
-                    CommonUtil.getBlockAt(world,x, y2, z + 1) == this)
+            if (CommonUtil.getBlockAt(world, pos.getX(),y2,pos.getZ()) == this ||
+                    CommonUtil.getBlockAt(world, pos.getX() - 1, y2, pos.getZ()) == this ||
+                    CommonUtil.getBlockAt(world,pos.getX() + 1, y2, pos.getZ()) == this ||
+                    CommonUtil.getBlockAt(world,pos.getX(),y2, pos.getZ() - 1) == this ||
+                    CommonUtil.getBlockAt(world,pos.getX(), y2, pos.getZ() + 1) == this)
             {
                 newHeight = quantaPerBlock - 1;
             } else {
                 int maxQuanta = -100;
-                maxQuanta = getLargerQuanta(world, x - 1, y, z, maxQuanta);
-                maxQuanta = getLargerQuanta(world, x + 1, y, z, maxQuanta);
-                maxQuanta = getLargerQuanta(world, x,y, z - 1, maxQuanta);
-                maxQuanta = getLargerQuanta(world, x, y, z + 1, maxQuanta);
+                maxQuanta = getLargerQuanta(world, pos.getX() - 1, pos.getY(), pos.getZ(), maxQuanta);
+                maxQuanta = getLargerQuanta(world, pos.getX() + 1, pos.getY(), pos.getZ(), maxQuanta);
+                maxQuanta = getLargerQuanta(world, pos.getX(),pos.getY(), pos.getZ() - 1, maxQuanta);
+                maxQuanta = getLargerQuanta(world, pos.getX(), pos.getY(), pos.getZ() + 1, maxQuanta);
 
                 newHeight = maxQuanta - 1;
             }

@@ -133,7 +133,7 @@ public class CommonProxy implements IGuiHandler {
 
         //loop for dimensions, even ones from mods.
         for (int w=0; w < MinecraftServer.getServer().worldServers.length; w++) {
-            if (MinecraftServer.getServer().worldServers[w] != null && dim.provider.dimensionId!=w) {
+            if (MinecraftServer.getServer().worldServers[w] != null && dim.provider.getDimension()!=w) {
                 //if the server isn't null, loop for the entities loaded in that server
                 for (i=0; i< MinecraftServer.getServer().worldServers[w].loadedEntityList.size();i++) {
                     //if it's an entity, not null, and has a matching UUID, then return it.

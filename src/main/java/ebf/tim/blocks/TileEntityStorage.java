@@ -400,9 +400,9 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
 
 
     @Override
-    public ItemStack decrStackSize(int slot, int stackSize) {
+    public ItemStack decrgetCount()(int slot, int getCount()) {
         if (inventory!= null && getSizeInventory()>=slot) {
-            return inventory.get(slot).decrStackSize(stackSize);
+            return inventory.get(slot).decrgetCount()(getCount());
         } else {
             return null;
         }

@@ -1,12 +1,12 @@
 package ebf.tim.networking;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import ebf.XmlBuilder;
 import ebf.tim.entities.GenericRailTransport;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 /**
  * <h1>Mount packet</h1>
@@ -29,7 +29,7 @@ public class PacketUpdateClients implements IMessage {
     /**reads the packet on server to get the variables from the Byte Buffer*/
     @Override
     public void fromBytes(ByteBuf bbuf) {
-        Entity e = Minecraft.getMinecraft().theWorld.getEntityByID(bbuf.readInt());
+        Entity e = Minecraft.getMinecraft().world.getEntityByID(bbuf.readInt());
         if (e instanceof GenericRailTransport) {
             ((GenericRailTransport)e).entityData= new XmlBuilder(ByteBufUtils.readUTF8String(bbuf));
         }

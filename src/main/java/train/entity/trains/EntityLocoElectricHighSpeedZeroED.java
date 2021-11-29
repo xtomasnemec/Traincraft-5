@@ -74,7 +74,7 @@ public class EntityLocoElectricHighSpeedZeroED extends EntityTrainCore {
         return new ItemStack[]{
                 new ItemStack(TiMItems.controlPanel, 2), new ItemStack(TiMItems.wheelSteel, 2), new ItemStack(TiMItems.frameSteel, 1),
                 new ItemStack(TiMOres.ingotSteel, 1), null, new ItemStack(TiMItems.cabinSteel, 1),
-                new ItemStack(TiMItems.transformer, 2), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(Items.redstone, 4)        };
+                new ItemStack(TiMItems.transformer, 2), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(Items.REDSTONE, 4)        };
     }
 
 

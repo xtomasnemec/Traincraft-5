@@ -1,7 +1,7 @@
 package train.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,7 +23,7 @@ public class ItemZeppelins extends Item {
 	private int type;
 	public ItemZeppelins(int type) {
 		super();
-		maxStackSize = 5;
+		maxgetCount() = 5;
 		setCreativeTab(Traincraft.tcTab);
 		this.type=type;
 	}
@@ -59,7 +59,7 @@ public class ItemZeppelins extends Item {
 				if(type==0)world.spawnEntityInWorld(new EntityZeppelinTwoBalloons(world, (float) i + 0.5F, (float) j + 1.5F, (float) k + 0.5F));
 				if(type==1)world.spawnEntityInWorld(new EntityZeppelinOneBalloon(world, (float) i + 0.5F, (float) j + 1.5F, (float) k + 0.5F));
 			}
-			itemstack.stackSize--;
+			itemstack.getCount()--;
 		}
 		return itemstack;
 	}

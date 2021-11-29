@@ -118,8 +118,8 @@ public class SizedRecipe extends Recipe {
 
                 //iterate through the possible recipeIngredients to find if there is match, and enough count in slots to craft.
                 for (ItemStack ingredient : recipeIngredients) {
-                    int ingSize = ingredient.stackSize;
-                    int invItemSize = invItem.stackSize;
+                    int ingSize = ingredient.getCount();
+                    int invItemSize = invItem.getCount();
                     if (OreDictionary.itemMatches(ingredient, invItem, false) && invItemSize >= ingSize) {
                         foundMatch = true;
                         break;
@@ -168,8 +168,8 @@ public class SizedRecipe extends Recipe {
                 //iterate through the possible recipeIngredients to find if there is match, and enough count in slots to craft.
                 for (ItemStack ingredient : recipeIngredients) {
                     for (ItemStack invItem : invItems) {
-                        int ingSize = ingredient.stackSize;
-                        int invItemSize = invItem.stackSize;
+                        int ingSize = ingredient.getCount();
+                        int invItemSize = invItem.getCount();
                         if (ingredient.isItemEqual(invItem) && invItemSize == ingSize) {
                             foundMatch = true;
                             break;

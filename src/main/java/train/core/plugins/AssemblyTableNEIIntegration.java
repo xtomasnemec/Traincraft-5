@@ -41,9 +41,9 @@ public class AssemblyTableNEIIntegration extends TiMTableNEIIntegration {
                 if (items.get(i) != null && items.get(i).get(0) != null) {
                     PositionedStack ps = new PositionedStack(items.get(i), inputXPos[i], inputYPos[i], true);
 
-                    int ss = items.get(i).get(0).stackSize;
+                    int ss = items.get(i).get(0).getCount();
                     for (ItemStack perm : ps.items) {
-                        perm.stackSize = ss;
+                        perm.getCount() = ss;
                     }
 
                     tempStacks.add(ps);

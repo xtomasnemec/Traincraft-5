@@ -60,7 +60,7 @@ public class LiquidManager {
 				if (itemstack.getItem() == Items.potionitem){
 					return new ItemStack(Items.glass_bottle, 1);
 				}
-				inventory.decrStackSize(inventoryIndex, 1);
+				inventory.decrgetCount()(inventoryIndex, 1);
 				return emptyItem;
 			}
 		}
@@ -71,7 +71,7 @@ public class LiquidManager {
 				FluidStack drain = tank.drain(ForgeDirection.UNKNOWN,liquid.amount, false);
 				if ((drain != null) && (drain.amount > 0)) {
 					tank.drain(ForgeDirection.UNKNOWN,liquid.amount, true);
-					inventory.decrStackSize(inventoryIndex, 1);
+					inventory.decrgetCount()(inventoryIndex, 1);
 					return filled;
 				}
 			}

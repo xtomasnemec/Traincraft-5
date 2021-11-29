@@ -67,7 +67,7 @@ public class RailTileEntity extends TileEntity {
             }
 
             Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
-            TextureManager.adjustLightFixture(worldObj,xCoord,yCoord,zCoord);
+            TextureManager.adjustLightFixture(world,pos.getX(),pos.getY(),pos.getZ());
             if(railGLID!=null && !ClientProxy.disableCache){
                 if(!org.lwjgl.opengl.GL11.glIsList(railGLID)){
                     railGLID=null;
@@ -82,11 +82,11 @@ public class RailTileEntity extends TileEntity {
                         railGLID = net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
                         org.lwjgl.opengl.GL11.glNewList(railGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
 
-                        Model1x1Rail.Model3DRail(worldObj, xCoord, yCoord, zCoord, route);
+                        Model1x1Rail.Model3DRail(world, pos.getX(), pos.getY(), pos.getZ(), route);
 
                         org.lwjgl.opengl.GL11.glEndList();
                     } else {
-                        Model1x1Rail.Model3DRail(worldObj, xCoord, yCoord, zCoord, route);
+                        Model1x1Rail.Model3DRail(world, pos.getX(), pos.getY(), pos.getZ(), route);
                     }
                 } // else {DebugUtil.println("NO DATA");}*/
             }
@@ -107,7 +107,7 @@ public class RailTileEntity extends TileEntity {
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         if (boundingBox == null) {
-            boundingBox = AxisAlignedBB.getBoundingBox(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord, zCoord+1);
+            boundingBox = new AxisAlignedBB(pos.getX()-1, pos.getY()-1, pos.getZ()-1, pos.getX()+1, pos.getY(), pos.getZ()+1);
         }
         return boundingBox;
     }
@@ -119,7 +119,7 @@ public class RailTileEntity extends TileEntity {
                 new ItemStack(TiMItems.railItem, 1), data.getItemStack("rail"),
                 data.getItemStack("ballast"), data.getItemStack("ties"), data.getItemStack("wires"));
         if(drop!=null) {
-            world.spawnEntity(new EntityItem(world, xCoord, yCoord + 0.5f, zCoord, drop));
+            world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY() + 0.5f, pos.getZ(), drop));
         }
     }
 
@@ -127,8 +127,8 @@ public class RailTileEntity extends TileEntity {
     public void markDirty() {
         super.markDirty();
         if (this.world != null) {
-            world.markBlockForUpdate(xCoord, yCoord, zCoord);
-            this.world.func_147453_f(this.xCoord, this.yCoord, this.zCoord, TiMBlocks.railBlock);
+            world.markBlockForUpdate(pos.getX(), pos.getY(), pos.getZ());
+            this.world.func_147453_f(this.pos.getX(), this.pos.getY(), this.pos.getZ(), TiMBlocks.railBlock);
             if(world.isRemote && railGLID!=null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
                 railGLID = null;

@@ -1,7 +1,7 @@
 package train.entity.zeppelin;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -198,7 +198,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 							this.worldObj.spawnEntityInWorld(entitytntprimed);
 							this.worldObj.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
 							bombTimer=100;
-							if(--this.zeppInvent[t].stackSize==0)this.zeppInvent[t]=null;
+							if(--this.zeppInvent[t].getCount()==0)this.zeppInvent[t]=null;
 							return;
 						}
 					}
@@ -346,7 +346,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 		if (zeppInvent[0] != null && burn >0 && burn + fuel < 1000) {
 			fuel += TileEntityFurnace.getItemBurnTime(zeppInvent[0]);
 			this.dataWatcher.updateObject(20, fuel);
-			decrStackSize(0, 1);
+			decrgetCount()(0, 1);
 		}
 
 		double var6;
@@ -478,7 +478,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 		this.rotationYaw = (float) (this.rotationYaw + d12);
 		this.setRotation(this.rotationYaw, this.rotationPitch);
 		if (updateTicks % 10 == 0) {
-//			Traincraft.rotationChannel.sendToAllAround(new PacketZeppelinRotation(this, rotationYaw, roll), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 400D));
+//			Traincraft.rotationChannel.sendToAllAround(new PacketZeppelinRotation(this, rotationYaw, roll), new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), posX, posY, posZ, 400D));
 			updateTicks=0;
 		}
 	}
@@ -561,15 +561,15 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	}
 
 	@Override
-	public ItemStack decrStackSize(int i, int j) {
+	public ItemStack decrgetCount()(int i, int j) {
 		if (zeppInvent[i] != null) {
-			if (zeppInvent[i].stackSize <= j) {
+			if (zeppInvent[i].getCount() <= j) {
 				ItemStack itemstack = zeppInvent[i];
 				zeppInvent[i] = null;
 				return itemstack;
 			}
 			ItemStack itemstack1 = zeppInvent[i].splitStack(j);
-			if (zeppInvent[i].stackSize == 0) {
+			if (zeppInvent[i].getCount() == 0) {
 				zeppInvent[i] = null;
 			}
 			return itemstack1;
@@ -582,8 +582,8 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		zeppInvent[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
+		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
+			itemstack.getCount() = getInventoryStackLimit();
 		}
 	}
 

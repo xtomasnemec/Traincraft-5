@@ -21,7 +21,7 @@ public class PacketRemove implements IMessage {
     public PacketRemove() {}
     public PacketRemove(int target, int sender) {
         this.entityId = target;
-        this.dimensionId= Minecraft.getMinecraft().thePlayer.worldObj.provider.dimensionId;
+        this.dimensionId= Minecraft.getMinecraft().player.world.provider.getDimension();
         this.senderID=sender;
     }
     /**reads the packet on server to get the variables from the Byte Buffer*/

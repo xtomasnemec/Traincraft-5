@@ -1,7 +1,7 @@
 package train.blocks.lantern;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;

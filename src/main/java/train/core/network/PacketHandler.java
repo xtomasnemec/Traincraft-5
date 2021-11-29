@@ -8,7 +8,7 @@
 package train.core.network;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 import train.Traincraft;
 import train.library.Info;
 

@@ -1,7 +1,7 @@
 package ebf.tim.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.CommonUtil;
@@ -135,8 +135,8 @@ public class ItemTransport extends Item {
             if(CommonUtil.placeOnRail(transport.getConstructor(UUID.class, World.class, double.class, double.class, double.class)
                     .newInstance(playerEntity.getUniqueID(), worldObj, posX + 0.5D, posY, posZ + 0.5D), playerEntity, itemStack, worldObj, posX, posY, posZ)){
                 if (!playerEntity.capabilities.isCreativeMode) {
-                    itemStack.stackSize--;
-                    if (itemStack.stackSize <= 0) {
+                    itemStack.getCount()--;
+                    if (itemStack.getCount() <= 0) {
                         itemStack = null;
                     }
                 }

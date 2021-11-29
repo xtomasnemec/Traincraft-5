@@ -75,7 +75,7 @@ public class EntityLocoSteamBR80_DB extends EntityTrainCore {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelIron, 3), new ItemStack(TiMItems.frameIron, 2),
                 new ItemStack(Items.iron_ingot, 2), new ItemStack(TiMItems.chimneyIron, 1), new ItemStack(TiMItems.cabinIron, 1),
-                new ItemStack(TiMItems.boilerIron, 2), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(Items.water_bucket, 1)        };
+                new ItemStack(TiMItems.boilerIron, 2), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(Items.WATER_BUCKET, 1)        };
     }
 
 

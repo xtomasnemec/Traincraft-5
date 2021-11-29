@@ -67,7 +67,7 @@ public class RecipesArmorDyes implements ITCRecipe {
 					}
 
 					itemstack = itemstack1.copy();
-					itemstack.stackSize = 1;
+					itemstack.getCount() = 1;
 
 					if (itemarmor.hasColor(itemstack1)) {
 						l = itemarmor.getColor(itemstack);

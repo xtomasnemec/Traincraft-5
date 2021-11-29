@@ -1,7 +1,5 @@
 package ebf.tim.networking;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.DebugUtil;
@@ -39,7 +37,7 @@ public class PacketPaint implements IMessage {
 
         try {
             Entity e=DimensionManager.getWorld(dimensionID).getEntityByID(entityId);
-            DebugUtil.println(e.worldObj.isRemote);
+            DebugUtil.println(e.world.isRemote);
             if(e instanceof GenericRailTransport) {
                 ((GenericRailTransport)DimensionManager.getWorld(dimensionID).getEntityByID(entityId)).setSkin(key);
                 ((GenericRailTransport) e).renderData.needsModelUpdate=true;

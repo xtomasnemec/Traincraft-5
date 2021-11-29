@@ -425,8 +425,8 @@ public class GUITransport extends GUIContainerNoNEI {
                 if(s.getSlotIndex()>=400) {
                     slots.add(s.getStack());
                     overlays.add(s.getOverlay());
-                    slotx.add(s.xDisplayPosition);
-                    sloty.add(s.yDisplayPosition);
+                    slotx.add(s.xPos);
+                    sloty.add(s.yPos);
                 }
 
             }

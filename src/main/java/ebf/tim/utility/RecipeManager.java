@@ -366,15 +366,15 @@ public class RecipeManager {
         }
         else if(itm instanceof String){
             String[] data = ((String) itm).split(" ");
-            int stacksize = data.length>1?Integer.parseInt(data[1].trim()):1;
+            int getCount() = data.length>1?Integer.parseInt(data[1].trim()):1;
             //cover actual items
             if(data[0].contains(":")){
-                list=ODC(GameRegistry.findItemStack(data[0].split(":")[0], data[0].split(":")[1], stacksize));
+                list=ODC(GameRegistry.findItemStack(data[0].split(":")[0], data[0].split(":")[1], getCount()));
             } else {
                 //cover ore directory values
                 list=OreDictionary.getOres(data[0]).toArray(new ItemStack[]{});
                 for(ItemStack s : list){
-                    s.stackSize=stacksize;
+                    s.getCount()=getCount();
                 }
             }
 
@@ -392,10 +392,10 @@ public class RecipeManager {
         if(s==null){
             return null;
         }
-        //cache the old size and set it to 1, the ore directory only contains entries with a stacksize of 1,
+        //cache the old size and set it to 1, the ore directory only contains entries with a getCount() of 1,
         //   anything else can break the equals check.
-        int oldSize = s.stackSize;
-        s.stackSize=1;
+        int oldSize = s.getCount();
+        s.getCount()=1;
 
         List<ItemStack> dir = new ArrayList<>();
         //create a list of ore directory entries
@@ -406,10 +406,10 @@ public class RecipeManager {
         }
         if(dir.size()>0) {
             for (ItemStack stack : dir) {
-                stack.stackSize = oldSize;
+                stack.getCount() = oldSize;
             }
         } else {
-            s.stackSize=oldSize;
+            s.getCount()=oldSize;
             dir.add(s);
         }
         return dir.toArray(new ItemStack[]{});

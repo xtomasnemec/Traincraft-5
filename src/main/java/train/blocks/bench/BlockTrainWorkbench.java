@@ -52,14 +52,14 @@ public class BlockTrainWorkbench extends BlockDynamic {
 				float f1 = distilRand.nextFloat() * 0.8F + 0.1F;
 				float f2 = distilRand.nextFloat() * 0.8F + 0.1F;
 				do {
-					if (itemstack.stackSize <= 0) {
+					if (itemstack.getCount() <= 0) {
 						continue label0;
 					}
 					int i1 = distilRand.nextInt(21) + 10;
-					if (i1 > itemstack.stackSize) {
-						i1 = itemstack.stackSize;
+					if (i1 > itemstack.getCount()) {
+						i1 = itemstack.getCount();
 					}
-					itemstack.stackSize -= i1;
+					itemstack.getCount() -= i1;
 					EntityItem entityitem = new EntityItem(world, (float) i + f, (float) j + f1, (float) k + f2, itemstack.splitStack(i1));
 					float f3 = 0.05F;
 					entityitem.motionX = (float) distilRand.nextGaussian() * f3;

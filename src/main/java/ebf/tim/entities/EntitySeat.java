@@ -2,8 +2,10 @@ package ebf.tim.entities;
 
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import fexcraft.tmt.slim.Vec3d;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -30,7 +32,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     /**used to define which index the seat is supposed to be at*/
     private int seatNumber =0;
 
-    public Vec3 rotation =null;
+    public Vec3d rotation =null;
     GenericRailTransport parent;
 
     public EntitySeat(World world) {
@@ -43,7 +45,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         this.posY = yPos;
         this.posZ = zPos;
         if (pitch!=0 || yaw !=0) {
-            rotation = Vec3.createVectorHelper(pitch, yaw, roll);
+            rotation = new Vec3d(pitch, yaw, roll);
         }
         parentId = parent;
         this.seatNumber = seatNumber;
@@ -66,15 +68,15 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     @Override
     public void onUpdate() {
         if(ticksExisted%40==0 || parent==null) {
-            if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport) {
-                if (worldObj.isRemote) {
+            if (world.getEntityByID(parentId) instanceof GenericRailTransport) {
+                if (world.isRemote) {
                     if (parent == null) {
-                        parent = (GenericRailTransport) worldObj.getEntityByID(parentId);
+                        parent = (GenericRailTransport) world.getEntityByID(parentId);
                     }
                     parent.setseats(this, seatNumber);
                 }
             } else {
-                worldObj.removeEntity(this);
+                world.removeEntity(this);
             }
         }
 

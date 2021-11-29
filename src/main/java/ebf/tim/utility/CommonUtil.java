@@ -10,9 +10,9 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.codec.binary.Base64;
@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import static net.minecraft.util.text.translation.I18n.translateToLocal;
 
 /**
  * <h1>utilities</h1>
@@ -49,15 +51,19 @@ public class CommonUtil {
     }
 
     public static Block getBlockAt(World world, double x, double y, double z){
-        return world.getBlock(floorDouble(x), floorDouble(y),floorDouble(z));
+        return world.getBlockState(new BlockPos(floorDouble(x), floorDouble(y),floorDouble(z))).getBlock();
     }
 
     public static Block getBlockAt(World world, int x, int y, int z){
-        return world.getBlock(x,y,z);
+        return world.getBlockState(new BlockPos(x,y,z)).getBlock();
+    }
+
+    public static void setBlockAt(World world, int x, int y, int z, Block block){
+        world.setBlockState(new BlockPos(x,y,z), block.getDefaultState());
     }
 
     public static float getMaxRailSpeed(World world, BlockRailBase rail, GenericRailTransport host, double x, double y, double z){
-        return (rail.getRailMaxSpeed(world, host, floorDouble(x), floorDouble(y),floorDouble(z)));
+        return (rail.getRailMaxSpeed(world, host, new BlockPos(floorDouble(x), floorDouble(y),floorDouble(z))));
     }
 
     public static int floorDouble(double value){
@@ -70,7 +76,8 @@ public class CommonUtil {
      */
     public static boolean isRailBlockAt(World world, int x, int y, int z) {
         //todo ZnD support, either by jar reference or API update
-        return (/*world.getTileEntity(x, y, z) instanceof ITrackBase ||*/ world.getBlock(x, y, z) instanceof BlockRailBase);
+        return (/*world.getTileEntity(x, y, z) instanceof ITrackBase ||*/
+                world.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof BlockRailBase);
     }
 
     public static boolean stringContains(String s1, String... s2){
@@ -115,12 +122,12 @@ public class CommonUtil {
     }
 
     public static String translate(String text){
-        if (StatCollector.translateToLocal(text).equals(text) && !loggedLangChecks.contains(text)){
+        if (translateToLocal(text).equals(text) && !loggedLangChecks.contains(text)){
             DebugUtil.println("Missing lang entry for: ",text,Thread.currentThread().getStackTrace()[2]);
             loggedLangChecks.add(text);
             return text;
         } else {
-            return StatCollector.translateToLocal(text);
+            return translateToLocal(text);
         }
     }
 
@@ -487,7 +494,7 @@ public class CommonUtil {
                 //check if the train fits on the track
                 if (!isRailBlockAt(worldObj, posX, posY, posZ + MathHelper.floor_float(entity.rotationPoints()[0]+ 1.0f ))
                         || !isRailBlockAt(worldObj, posX, posY, posZ + MathHelper.floor_float(entity.rotationPoints()[1]- 1.0f ))) {
-                    playerEntity.addChatMessage(new ChatComponentText("Place on a straight piece of track that is of sufficient length"));
+                    playerEntity.sendMessage(new TextComponentString("Place on a straight piece of track that is of sufficient length"));
                     return false;
                 }
                 //decide the rotation based on placement direction
@@ -502,7 +509,7 @@ public class CommonUtil {
                 //check if the train fits on the track
                 if (!CommonUtil.isRailBlockAt(worldObj, posX - floorDouble(entity.rotationPoints()[0]+ 1.0f ), posY, posZ)
                         || !CommonUtil.isRailBlockAt(worldObj, posX - floorDouble(entity.rotationPoints()[1]- 1.0f ), posY, posZ)) {
-                    playerEntity.addChatMessage(new ChatComponentText("Place on a straight piece of track that is of sufficient length"));
+                    playerEntity.sendMessage(new TextComponentString("Place on a straight piece of track that is of sufficient length"));
                     return false;
                 }
 
@@ -514,7 +521,7 @@ public class CommonUtil {
                 }
             }
             //actually place the entity
-            worldObj.spawnEntityInWorld(entity);
+            worldObj.spawnEntity(entity);
             entity.entityFirstInit(stack);
             return true;
         }

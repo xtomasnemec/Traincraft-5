@@ -47,11 +47,11 @@ public class TiMTableNEIIntegration extends TemplateRecipeHandler {
                     DebugUtil.println("[NEI INTEGRATION] Could not get recipe from ingredient.");
                 } else if (recipe.getTier() != 0) {
                     result = new PositionedStack(_ingredient, getOutputPosition()[0], getOutputPosition()[1]);
-                    result.setMaxSize(recipe.getresult().get(0).stackSize);
+                    result.setMaxSize(recipe.getresult().get(0).getCount());
                     ingredients = setIngredients(recipe.getRecipeItems());
                 } else {
                     result = new PositionedStack(_ingredient, getOutputPosition()[0], getOutputPosition()[1]);
-                    result.setMaxSize(recipe.getresult().get(0).stackSize);
+                    result.setMaxSize(recipe.getresult().get(0).getCount());
                     if (recipe instanceof SizedRecipe) { //sized recipe, have custom size.
                         this.ingredients = setIngredients(((SizedRecipe) recipe).getCraftWidth(), ((SizedRecipe) recipe).getCraftHeight(), recipe.getRecipeItems());
                     } else { //normal recipe class
@@ -104,9 +104,9 @@ public class TiMTableNEIIntegration extends TemplateRecipeHandler {
                     //can make a positioned stack from either a single ItemStack, array or list of ItemStacks. Here we use the list of ItemStack
                     PositionedStack stack = new PositionedStack(items.get(y * width + x), 25 + x * 18, 6 + y * 18, true);
 
-                    int ss = items.get(y * width + x).get(0).stackSize;
+                    int ss = items.get(y * width + x).get(0).getCount();
                     for (ItemStack perm : stack.items) {
-                        perm.stackSize = ss;
+                        perm.getCount() = ss;
                     }
 
                     tempIng.add(stack);

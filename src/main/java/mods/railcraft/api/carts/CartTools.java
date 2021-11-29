@@ -158,7 +158,7 @@ public abstract class CartTools {
     public static void offerOrDropItem(EntityMinecart cart, ItemStack stack) {
         stack = transferHelper.pushStack(cart, stack);
 
-        if (stack != null && stack.stackSize > 0)
+        if (stack != null && stack.getCount() > 0)
             cart.entityDropItem(stack, 1);
     }
 

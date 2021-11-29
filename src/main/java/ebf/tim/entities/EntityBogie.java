@@ -2,9 +2,9 @@ package ebf.tim.entities;
 
 
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.utility.CommonUtil;
 import io.netty.buffer.ByteBuf;
@@ -134,18 +134,18 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     public void onUpdate() {
 
         //client only, update position
-        if (this.worldObj.isRemote){
+        if (this.world.isRemote){
             super.onUpdate();
         }
 
         if(ticksExisted%40==0 || ticksExisted==0) {
             //be sure to remove this if the parent is null, or in a different castle, I mean world.
-            if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport) {
-                if (worldObj.isRemote) {
-                    ((GenericRailTransport) worldObj.getEntityByID(parentId)).setBogie(this, isFront);
+            if (world.getEntityByID(parentId) instanceof GenericRailTransport) {
+                if (world.isRemote) {
+                    ((GenericRailTransport) world.getEntityByID(parentId)).setBogie(this, isFront);
                 }
             } else {
-                worldObj.removeEntity(this);
+                world.removeEntity(this);
             }
         }
     }
@@ -176,7 +176,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
      */
     public boolean minecartMove(GenericRailTransport host, double moveX, double moveZ) {
         //server only
-        if(!worldObj.isRemote) {
+        if(!world.isRemote) {
             //define the yaw from the super
             this.setRotation(host.rotationYaw, host.rotationPitch);
 
@@ -198,7 +198,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             double velocity = moveX*moveX+moveZ*moveZ;
 
 
-            Block block = CommonUtil.getBlockAt(worldObj, floorX, floorY, floorZ);
+            Block block = CommonUtil.getBlockAt(world, floorX, floorY, floorZ);
             //todo: if (block instanceof BlockRailCore) {
             //update using spline movement
             //} else if (block instanceof BlockRailBase)
@@ -220,7 +220,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     motionZ-=Math.min(0.35, motionZ);
                     velocity -= 0.35;
 
-                    if (CommonUtil.getBlockAt(worldObj, posX, posY,posZ) instanceof BlockAir) {
+                    if (CommonUtil.getBlockAt(world, posX, posY,posZ) instanceof BlockAir) {
                         posY--;
                     }
                 }
@@ -234,12 +234,12 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
-        railmax = block.getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
+        railmax = block.getRailMaxSpeed(world,this,floorX, floorY, floorZ);
         if(railmax!=0.4f){
             velocity=Math.min(velocity,railmax);
         }
         velDirection = new double[]{velocityX,velocityZ};
-        railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
+        railMetadata = block.getBasicRailMetadata(world, this, floorX, floorY, floorZ);
         //actually move
         while (velocity>0) {
             moveBogieVanilla(Math.min(0.35, velocity), velDirection[0], velDirection[1], floorX, floorZ);
@@ -251,33 +251,33 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 floorY = CommonUtil.floorDouble(this.posY);
                 floorZ = CommonUtil.floorDouble(this.posZ);
                 //handle slope movement before other interactions
-                if(!BlockRailBase.func_150049_b_(worldObj, floorX, floorY, floorZ)){
+                if(!BlockRailBase.func_150049_b_(world, floorX, floorY, floorZ)){
                     this.prevPosY =posY;
-                    if(BlockRailBase.func_150049_b_(worldObj, floorX, floorY+1, floorZ)){
+                    if(BlockRailBase.func_150049_b_(world, floorX, floorY+1, floorZ)){
                         posY++;
-                    } else if (BlockRailBase.func_150049_b_(worldObj, floorX, floorY-1, floorZ)) {
+                    } else if (BlockRailBase.func_150049_b_(world, floorX, floorY-1, floorZ)) {
                         posY--;
                     }
                     floorY = CommonUtil.floorDouble(this.posY);
                 }
 
-                blockNext = this.worldObj.getBlock(floorX, floorY, floorZ);
+                blockNext = this.world.getBlock(floorX, floorY, floorZ);
                 //now loop this again for the next increment of movement, if there is one
                 if (blockNext instanceof BlockRailBase) {
                     block = (BlockRailBase) blockNext;
                     //do the rail functions.
                     if(shouldDoRailFunctions()) {
-                        block.onMinecartPass(worldObj, this, floorX, floorY, floorZ);
+                        block.onMinecartPass(world, this, floorX, floorY, floorZ);
                     }
                     if (block == Blocks.activator_rail) {
-                        this.onActivatorRailPass(floorX, floorY, floorZ, (worldObj.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
+                        this.onActivatorRailPass(floorX, floorY, floorZ, (world.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
                     }
                     //get the direction of the rail from it's metadata
-                    railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
+                    railMetadata = block.getBasicRailMetadata(world, this, floorX, floorY, floorZ);
                 }
                 //get the direction of the rail from it's metadata
-                else if (worldObj.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
-                    railMetadata =((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
+                else if (world.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)world.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
+                    railMetadata =((ITrackTile)world.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
                 }
             }
         }
@@ -366,18 +366,18 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**checks if the parent transport matches the filter for railcraft items, if the filter is null or the parent is null, return false.*/
     @Override
     public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
-        if (stack == null || worldObj.getEntityByID(parentId) == null) {
+        if (stack == null || world.getEntityByID(parentId) == null) {
             return false;
         } else {
-            Item cartItem = ((GenericRailTransport)worldObj.getEntityByID(parentId)).getItem();
+            Item cartItem = ((GenericRailTransport)world.getEntityByID(parentId)).getItem();
             return cartItem != null && stack.getItem() == cartItem;
         }
     }
     /**returns the gameprofile of the owner for railcraft.*/
     @Override
     public GameProfile getOwner(){
-        if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport){
-            GenericRailTransport parent = (GenericRailTransport) worldObj.getEntityByID(parentId);
+        if (world.getEntityByID(parentId) instanceof GenericRailTransport){
+            GenericRailTransport parent = (GenericRailTransport) world.getEntityByID(parentId);
             if (parent.getOwner() != null){
                 return parent.getOwner();
             }
@@ -387,8 +387,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**returns the destination of the parent for railcraft*/
     @Override
     public String getDestination() {
-        if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport){
-            GenericRailTransport parent = (GenericRailTransport) worldObj.getEntityByID(parentId);
+        if (world.getEntityByID(parentId) instanceof GenericRailTransport){
+            GenericRailTransport parent = (GenericRailTransport) world.getEntityByID(parentId);
             if (parent.getOwner() != null){
                 return parent.destination;
             }
