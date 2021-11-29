@@ -126,7 +126,7 @@ public class HitboxDynamic {
                                     continue;
                                 }
                                 if(stock.collisionHandler!=null) {
-                                    Vec3 vec;
+                                    Vec3d vec;
                                     if(host.getBoolean(GenericRailTransport.boolValues.COUPLINGFRONT)) {
                                         vec = CommonUtil.rotateDistance(longest+1.3f, host.rotationPitch, host.rotationYaw);
                                         vec.addVector(host.posX, host.posY+0.1, host.posZ);
@@ -168,7 +168,7 @@ public class HitboxDynamic {
 
     public boolean transportCollide(GenericRailTransport host, GenericRailTransport target, boolean front){
         if(front){
-            Vec3 vec = CommonUtil.rotateDistance(target.collisionHandler.longest+0.25f, target.rotationPitch, target.rotationYaw);
+            Vec3d vec = CommonUtil.rotateDistance(target.collisionHandler.longest+0.25f, target.rotationPitch, target.rotationYaw);
             vec.addVector((target).posX,(target).posY+0.3,(target).posZ);
             if(containsPoint(vec.xCoord,vec.yCoord,vec.zCoord)){
                 if(target.getBoolean(GenericRailTransport.boolValues.COUPLINGFRONT)){
@@ -198,7 +198,7 @@ public class HitboxDynamic {
                 }
             }
         } else {
-            Vec3 vec = CommonUtil.rotateDistance(target.collisionHandler.longest+0.3f, target.rotationPitch, target.rotationYaw);
+            Vec3d vec = CommonUtil.rotateDistance(target.collisionHandler.longest+0.3f, target.rotationPitch, target.rotationYaw);
             vec.addVector((target).posX,(target).posY+0.25,(target).posZ);
             if(containsPoint(vec.xCoord,vec.yCoord,vec.zCoord)){
                 if(target.getBoolean(GenericRailTransport.boolValues.COUPLINGFRONT)){
