@@ -65,15 +65,15 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergyPro
                             getTankInfo(0).fluid.fluid == stak.fluid)){
 
                         if(getSlotIndexByID(401).getStack()==null ||
-                                (getSlotIndexByID(401).getItem()== Items.bucket &&getSlotIndexByID(401).getgetCount()()< getSlotIndexByID(401).getStack().getMaxgetCount()())) {
+                                (getSlotIndexByID(401).getItem()== Items.BUCKET &&getSlotIndexByID(401).getStackSize()< getSlotIndexByID(401).getStack().getMaxStackSize())) {
 
                             if(getSlotIndexByID(401).getStack()==null){
-                                getSlotIndexByID(401).setStack(new ItemStack(Items.bucket));
+                                getSlotIndexByID(401).setStack(new ItemStack(Items.BUCKET));
                             } else {
-                                getSlotIndexByID(401).decrgetCount()(-1);
+                                getSlotIndexByID(401).decrStackSize(-1);
                             }
                             fill(ForgeDirection.UNKNOWN, stak, true);
-                            getSlotIndexByID(400).decrgetCount()(1);
+                            getSlotIndexByID(400).decrStackSize(1);
                         }
                     }
                 }
@@ -140,11 +140,11 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergyPro
                 && ItemStack.areItemStackTagsEqual(getSlotIndexByID(i).getStack(), itemstack1)){
             if(doAdd){
                 int var9 = getSlotIndexByID(i).getStack().getCount()+itemstack1.getCount();
-                if(var9 <= itemstack1.getMaxgetCount()()){
-                    getSlotIndexByID(i).getStack().getCount() = var9;
+                if(var9 <= itemstack1.getMaxStackSize()){
+                    getSlotIndexByID(i).getStack().setCount(var9);
                 }
-                else if(getSlotIndexByID(i).getStack().getCount() < itemstack1.getMaxgetCount()()){
-                    getSlotIndexByID(i).decrgetCount()(-1);
+                else if(getSlotIndexByID(i).getStack().getCount() < itemstack1.getMaxStackSize()){
+                    getSlotIndexByID(i).decrStackSize(-1);
                 }
             }
             return true;

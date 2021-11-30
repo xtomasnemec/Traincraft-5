@@ -225,7 +225,7 @@ public abstract class GUIContainerNoNEI extends GuiScreen
         itemRender.zLevel = 200.0F;
         FontRenderer font = null;
         if (p_146982_1_ != null) font = p_146982_1_.getItem().getFontRenderer(p_146982_1_);
-        if (font == null) font = fontRendererObj;
+        if (font == null) font = fontRenderer;
         itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), p_146982_1_, (int)p_146982_2_, (int)p_146982_3_);
         itemRender.renderItemOverlayIntoGUI(font, this.mc.getTextureManager(), p_146982_1_, (int)p_146982_2_, (int)p_146982_3_ - (this.draggedStack == null ? 0 : 8), p_146982_4_);
         this.zLevel = 0.0F;
@@ -253,7 +253,7 @@ public abstract class GUIContainerNoNEI extends GuiScreen
         if (p_146977_1_ == this.clickedSlot && this.draggedStack != null && this.isRightMouseClick && itemstack != null)
         {
             itemstack = itemstack.copy();
-            itemstack.getCount() /= 2;
+            itemstack.setCount(itemstack.getCount()/2);
         }
         else if (this.field_147007_t && this.field_147008_s.contains(p_146977_1_) && itemstack1 != null)
         {
@@ -268,16 +268,16 @@ public abstract class GUIContainerNoNEI extends GuiScreen
                 flag = true;
                 Container.func_94525_a(this.field_147008_s, this.field_146987_F, itemstack, p_146977_1_.getStack() == null ? 0 : p_146977_1_.getStack().getCount());
 
-                if (itemstack.getCount() > itemstack.getMaxgetCount()())
+                if (itemstack.getCount() > itemstack.getMaxStackSize())
                 {
-                    s = EnumChatFormatting.YELLOW + "" + itemstack.getMaxgetCount()();
-                    itemstack.getCount() = itemstack.getMaxgetCount()();
+                    s = EnumChatFormatting.YELLOW + "" + itemstack.getMaxStackSize();
+                    itemstack.setCount(itemstack.getMaxStackSize());
                 }
 
                 if (itemstack.getCount() > p_146977_1_.getSlotStackLimit())
                 {
                     s = EnumChatFormatting.YELLOW + "" + p_146977_1_.getSlotStackLimit();
-                    itemstack.getCount() = p_146977_1_.getSlotStackLimit();
+                    itemstack.setCount(p_146977_1_.getSlotStackLimit());
                 }
             }
             else
@@ -314,8 +314,8 @@ public abstract class GUIContainerNoNEI extends GuiScreen
             }
 
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), itemstack, i, j);
-            itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), itemstack, i, j, s);
+            itemRender.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack, i, j);
+            itemRender.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack, i, j, s);
         }
 
         itemRender.zLevel = 0.0F;
@@ -339,14 +339,14 @@ public abstract class GUIContainerNoNEI extends GuiScreen
                 i = slot.getStack() == null ? 0 : slot.getStack().getCount();
                 Container.func_94525_a(this.field_147008_s, this.field_146987_F, itemstack1, i);
 
-                if (itemstack1.getCount() > itemstack1.getMaxgetCount()())
+                if (itemstack1.getCount() > itemstack1.getMaxStackSize())
                 {
-                    itemstack1.getCount() = itemstack1.getMaxgetCount()();
+                    itemstack1.setCount(itemstack1.getMaxStackSize());
                 }
 
                 if (itemstack1.getCount() > slot.getSlotStackLimit())
                 {
-                    itemstack1.getCount() = slot.getSlotStackLimit();
+                    itemstack1.setCount(slot.getSlotStackLimit());
                 }
             }
         }

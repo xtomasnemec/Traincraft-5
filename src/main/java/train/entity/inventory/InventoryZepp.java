@@ -96,20 +96,20 @@ public class InventoryZepp extends Container {
 				if (var8 != null && var8.getItem() == par1ItemStack.getItem() && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(par1ItemStack, var8)) {
 					int var9 = var8.getCount() + par1ItemStack.getCount();
 
-					int maxSize = par1ItemStack.getMaxgetCount()();//default is item max stack size
+					int maxSize = par1ItemStack.getMaxStackSize();//default is item max stack size
 					if (!bool) {//if items are transfered to the freight inventory, otherwise use normal max size
-						if (par1ItemStack.getMaxgetCount()() < zepp.getInventoryStackLimit()) maxSize = par1ItemStack.getMaxgetCount()();//if maxStack size is lower than inventory's max then use maxgetCount() of the item
-						if (par1ItemStack.getMaxgetCount()() >= zepp.getInventoryStackLimit()) maxSize = zepp.getInventoryStackLimit();//otherwise use maxgetCount() of the inventory
+						if (par1ItemStack.getMaxStackSize() < zepp.getInventoryStackLimit()) maxSize = par1ItemStack.getMaxStackSize();//if maxStack size is lower than inventory's max then use maxgetCount() of the item
+						if (par1ItemStack.getMaxStackSize() >= zepp.getInventoryStackLimit()) maxSize = zepp.getInventoryStackLimit();//otherwise use maxgetCount() of the inventory
 					}
 					/*
 					 * This checks if there is room for the stack in the
 					 * inventory. If yes then transfer the whole stack
 					 */
-					if (var9 <= par1ItemStack.getMaxgetCount()() && var9 <= maxSize)//added max size check
+					if (var9 <= par1ItemStack.getMaxStackSize() && var9 <= maxSize)//added max size check
 					{
 
-						par1ItemStack.getCount() = 0;
-						var8.getCount() = var9;
+						par1ItemStack.setCount(0);
+						var8.setCount(var9);
 						var7.onSlotChanged();
 						var5 = true;
 					}
@@ -117,11 +117,11 @@ public class InventoryZepp extends Container {
 					 * This checks if the stack currently in inventory is lower
 					 * than maxgetCount(), if so it transfers what it can.
 					 */
-					else if (var8.getCount() < par1ItemStack.getMaxgetCount()() && var8.getCount() < maxSize)//added max size check
+					else if (var8.getCount() < par1ItemStack.getMaxStackSize() && var8.getCount() < maxSize)//added max size check
 					{
 
-						par1ItemStack.getCount() -= maxSize - var8.getCount();//getCount() will be reduced by the maxSize - what's already in the slot
-						var8.getCount() = maxSize;//???
+						par1ItemStack.setCount(par1ItemStack.getCount() - (maxSize - var8.getCount()));//stackSize will be reduced by the maxSize - what's already in the slot
+						var8.setCount(maxSize);//???
 						var7.onSlotChanged();
 						var5 = true;
 					}
@@ -150,10 +150,10 @@ public class InventoryZepp extends Container {
 
 				if (var8 == null) {
 
-					int maxSize = par1ItemStack.getMaxgetCount()();
+					int maxSize = par1ItemStack.getMaxStackSize();
 					if (!bool) {//if items are transfered to freight inventory
-						if (par1ItemStack.getMaxgetCount()() < zepp.getInventoryStackLimit()) maxSize = par1ItemStack.getMaxgetCount()();//if maxStack size is lower than inventory's max then use maxgetCount() of the item
-						if (par1ItemStack.getMaxgetCount()() >= zepp.getInventoryStackLimit()) maxSize = zepp.getInventoryStackLimit();//otherwise use maxgetCount() of the inventory
+						if (par1ItemStack.getMaxStackSize() < zepp.getInventoryStackLimit()) maxSize = par1ItemStack.getMaxStackSize();//if maxStack size is lower than inventory's max then use maxgetCount() of the item
+						if (par1ItemStack.getMaxStackSize() >= zepp.getInventoryStackLimit()) maxSize = zepp.getInventoryStackLimit();//otherwise use maxgetCount() of the inventory
 					}
 					ItemStack var9 = par1ItemStack.copy();//making a copy of the itemstack
 
@@ -161,13 +161,13 @@ public class InventoryZepp extends Container {
 					{
 						var7.putStack(var9);
 						var7.onSlotChanged();
-						par1ItemStack.getCount() = 0;
+						par1ItemStack.setCount(0);
 						var5 = true;
 						break;
 					}
 					else {
 
-						par1ItemStack.getCount() = maxSize;//getCount() will be reduced to the maxSize to fit in
+						par1ItemStack.setCount(maxSize);//getCount() will be reduced to the maxSize to fit in
 						var7.putStack(par1ItemStack.copy());//putting the stack
 						par1ItemStack.getCount() = var9.getCount() -= maxSize;//Residue stays in invent(?)
 						var7.onSlotChanged();

@@ -8,18 +8,15 @@ import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
     public GenericRailTransport host;
@@ -117,8 +114,8 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
     public ItemStack getStackInSlot(int p_70301_1_) {return host.getStackInSlot(p_70301_1_);}
 
     @Override
-    public ItemStack decrgetCount()(int p_70298_1_, int p_70298_2_) {
-        return host.decrgetCount()(p_70298_1_,p_70298_2_);}
+    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
+        return host.decrStackSize(p_70298_1_,p_70298_2_);}
 
     @Override
     public ItemStack getStackInSlotOnClosing(int p_70304_1_) {

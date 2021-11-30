@@ -67,7 +67,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public ItemStack decrgetCount()(int i, int j){
+    public ItemStack decrStackSize(int i, int j){
         if (this.slots.length >= i && this.slots[i] != null) {
             if (this.slots[i].getCount() <= j) {
                 ItemStack itemstack = this.slots[i];
@@ -99,7 +99,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     public void setInventorySlotContents(int slot, ItemStack stack){
         this.slots[slot] = stack;
         if (stack != null && stack.getCount() > getInventoryStackLimit()) {
-            stack.getCount() = getInventoryStackLimit();
+            stack.setCount(getInventoryStackLimit());
         }
     }
 

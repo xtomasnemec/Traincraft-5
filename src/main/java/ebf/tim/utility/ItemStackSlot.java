@@ -108,7 +108,7 @@ public class ItemStackSlot extends Slot {
         return getStack()!=null?getStack().writeToNBT(new NBTTagCompound()):null;
     }
 
-    public int getgetCount()(){
+    public int getStackSize(){
         return getStack()!=null?getStack().getCount():0;
     }
 
@@ -117,20 +117,20 @@ public class ItemStackSlot extends Slot {
         if (isItemValid(itemStack)) {
 
             if (!getHasStack()) {
-                onCrafting(inventoryType,hostInventory,getgetCount()());
+                onCrafting(inventoryType,hostInventory,getStackSize());
                 if(!setSlotContents(itemStack.copy(),hostInventory)){
                     return itemStack;
                 }
                 return null;
-            } else if (contentEquals(itemStack) && getgetCount()() < getStack().getMaxgetCount()()) {
-                if (itemStack.copy().getCount() + getgetCount()() <= getStack().getMaxgetCount()()) {
-                    onCrafting(inventoryType,hostInventory,getgetCount()());
-                    setSlotgetCount()(getgetCount()() +itemStack.copy().getCount());
+            } else if (contentEquals(itemStack) && getStackSize() < getStack().getMaxStackSize()) {
+                if (itemStack.copy().getCount() + getStackSize() <= getStack().getMaxStackSize()) {
+                    onCrafting(inventoryType,hostInventory,getStackSize());
+                    setSlotStackSize(getStackSize() + itemStack.copy().getCount());
                     return null;
                 } else {
-                    itemStack.getCount() -= getStack().getMaxgetCount()() - getgetCount()();
-                    setSlotgetCount()(getStack().getMaxgetCount()());
-                    onCrafting(inventoryType,hostInventory,itemStack.getMaxgetCount()()-itemStack.getCount());
+                    itemStack.setCount(itemStack.getCount() - getStack().getMaxStackSize() - getStackSize());
+                    setSlotStackSize(getStack().getMaxStackSize());
+                    onCrafting(inventoryType,hostInventory,itemStack.getMaxStackSize()-itemStack.getCount());
                     if(itemStack.getCount()==0){
                         itemStack=null;
                     }
@@ -154,7 +154,7 @@ public class ItemStackSlot extends Slot {
         if (isItemValid(itemStack.getStack())) {
 
             if (!getHasStack()) { //no stack in current slot
-                itemStack.onCrafting(storageType,hostInventory,itemStack.getgetCount()());
+                itemStack.onCrafting(storageType,hostInventory,itemStack.getStackSize());
                 if(!setSlotContents(itemStack.getStack(),hostInventory)){
                     return itemStack.getStack();
                 } else {
@@ -162,16 +162,16 @@ public class ItemStackSlot extends Slot {
                     return null;
                 }
             } else {
-                if (contentEquals(itemStack.getStack()) && getStack().getCount() < getStack().getMaxgetCount()()) {
-                    if(itemStack.getgetCount()()+getgetCount()()<=getStack().getMaxgetCount()()){
-                        itemStack.onCrafting(storageType,hostInventory,itemStack.getgetCount()());
-                        setSlotgetCount()(getStack().getCount()+itemStack.getgetCount()());
+                if (contentEquals(itemStack.getStack()) && getStack().getCount() < getStack().getMaxStackSize()) {
+                    if(itemStack.getStackSize()+getStackSize()<=getStack().getMaxStackSize()){
+                        itemStack.onCrafting(storageType,hostInventory,itemStack.getStackSize());
+                        setSlotStackSize(getStack().getCount()+itemStack.getStackSize());
                         return null;
                     } else {
-                        int difference=getStack().getMaxgetCount()()-getgetCount()();
+                        int difference=getStack().getMaxStackSize()-getStackSize();
                         itemStack.onCrafting(storageType,hostInventory,difference);
-                        itemStack.decrgetCount()(difference);
-                        setSlotgetCount()(getStack().getMaxgetCount()());
+                        itemStack.decrStackSize(difference);
+                        setSlotStackSize(getStack().getMaxStackSize());
                         return itemStack.getStack();
                     }
                 }
@@ -198,10 +198,10 @@ public class ItemStackSlot extends Slot {
                     //same as the original function's implementation
                     //  ie. out of non-zero stacks, return the size of the smallest stack
 
-                    int smallestStack = ((TileEntityStorage) hostInventory).getSlotIndexByID(400).getgetCount()();
+                    int smallestStack = ((TileEntityStorage) hostInventory).getSlotIndexByID(400).getStackSize();
                     if (smallestStack > 1) { //greater than 1 because if 1 the rest can't be smaller
                         for (int i = 0; i < 5; i++) {
-                            int sizeOfStack = ((TileEntityStorage) hostInventory).getSlotIndexByID(400 + i).getgetCount()();
+                            int sizeOfStack = ((TileEntityStorage) hostInventory).getSlotIndexByID(400 + i).getStackSize();
                             if (sizeOfStack > 0 && sizeOfStack < smallestStack) {
                                 smallestStack = sizeOfStack;
                             }
@@ -277,7 +277,7 @@ public class ItemStackSlot extends Slot {
                                 //for each ingredient, we want to see the most that can be crafted with the ingredient,
                                 //  then take the lowest number, for the stack that can craft the least of that ingredient.
                                 //  each ItemStack in the ingredient will have the same size, so we can use the first one because it's always there.
-                                int amountCanMake = ((TileEntityStorage) hostInventory).getSlotIndexByID(400 + i).getgetCount()() / recipe.getRecipeItems().get(i).get(0).getCount();
+                                int amountCanMake = ((TileEntityStorage) hostInventory).getSlotIndexByID(400 + i).getStackSize() / recipe.getRecipeItems().get(i).get(0).getCount();
                                 if (amountCanMake < largestAmountCanMake) {
                                     largestAmountCanMake = amountCanMake;
                                 }
@@ -381,7 +381,7 @@ public class ItemStackSlot extends Slot {
         }
     }
 
-    public void onCrafting(int storageType, List<ItemStackSlot> hostSlots, int getCount()){
+    public void onCrafting(int storageType, List<ItemStackSlot> hostSlots, int stackSize){
         if(!isCraftingOutput){return;}
 
         switch (storageType) {
@@ -431,12 +431,12 @@ public class ItemStackSlot extends Slot {
                             for (ItemStack ingredStack : ingredient) {
                                 //get the right host slot, compare if it matches, then subtract
                                 if (OreDictionary.itemMatches(ingredStack, itemInInv.getStack(), false)) {
-                                    int amountToSubtract = getCount() * ingredStack.getCount();
+                                    int amountToSubtract = stackSize * ingredStack.getCount();
                                     if (amountToSubtract < 1) break;
-                                    if(itemInInv.getgetCount()()-amountToSubtract<1){
+                                    if(itemInInv.getStackSize()-amountToSubtract<1){
                                         itemInInv.setStack(null);
                                     } else {
-                                        itemInInv.setSlotgetCount()(itemInInv.getgetCount()() - amountToSubtract);
+                                        itemInInv.setSlotStackSize(itemInInv.getStackSize() - amountToSubtract);
                                     }
                                     break;
                                 }
@@ -449,7 +449,7 @@ public class ItemStackSlot extends Slot {
                         if (r.input.get(i) != null) {
                             for (ItemStack s : r.input.get(i)) {
                                 if (slotMatchesItem(hostSlots, 400 + i, s)) {
-                                    shrinkStackInSlot(hostSlots, 400 + i, s == null ? 0 : getCount() * s.getCount());
+                                    shrinkStackInSlot(hostSlots, 400 + i, s == null ? 0 : stackSize * s.getCount());
                                     break;
                                 }
                             }
@@ -461,7 +461,7 @@ public class ItemStackSlot extends Slot {
             }
             case 0:{
                 for(int i=0;i<6;i++){
-                    shrinkStackInSlot(hostSlots,400+i,getCount());
+                    shrinkStackInSlot(hostSlots,400+i,stackSize);
                 }
                 break;
             }
@@ -491,10 +491,10 @@ public class ItemStackSlot extends Slot {
         if(size<1){return;}
         for(ItemStackSlot stak: hostSlots){
             if (stak.getSlotIndex() ==slot){
-                if(stak.getgetCount()()-size<1){
+                if(stak.getStackSize()-size<1){
                     stak.setStack(null);
                 } else {
-                    stak.setSlotgetCount()(stak.getgetCount()() - size);
+                    stak.setSlotStackSize(stak.getStackSize() - size);
                 }
             }
         }
@@ -533,10 +533,10 @@ public class ItemStackSlot extends Slot {
     }
 
 
-    public boolean setSlotgetCount()(int size){
+    public boolean setSlotStackSize(int size){
         if(getStack()!=null) {
             ItemStack s = getStack().copy();
-            s.getCount()=size;
+            s.setCount(size);
             setStack(s);
             inventory.setInventorySlotContents(slotNumber, s);
         }
@@ -616,7 +616,7 @@ public class ItemStackSlot extends Slot {
      */
     @Override
     public int getSlotStackLimit() {
-        return getHasStack()?getStack().getMaxgetCount()():64;
+        return getHasStack()?getStack().getMaxStackSize():64;
     }
 
     /**
@@ -624,11 +624,11 @@ public class ItemStackSlot extends Slot {
      * stack.
      */
     @Override
-    public ItemStack decrgetCount()(int p_75209_1_) {
+    public ItemStack decrStackSize(int p_75209_1_) {
         if(!getHasStack() ||p_75209_1_ >=getStack().getCount()){
             setSlotContents(null,null);
         } else {
-            getStack().getCount()-=p_75209_1_;
+            getStack().setCount(getStack().getCount() - p_75209_1_);
         }
         return getStack();
     }

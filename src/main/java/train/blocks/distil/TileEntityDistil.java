@@ -198,14 +198,14 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 		}
 		else if (getSlotIndexByID(i).getStack() != null && Item.getIdFromItem(getSlotIndexByID(i).getItem()) == Item.getIdFromItem(itemstack1.getItem()) && itemstack1.isStackable() && (!itemstack1.getHasSubtypes() || getSlotIndexByID(i).getStack().getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(getSlotIndexByID(i).getStack(), itemstack1)) {
 			int var9 = getSlotIndexByID(i).getStack().getCount() + itemstack1.getCount();
-			if (var9 <= itemstack1.getMaxgetCount()()) {
+			if (var9 <= itemstack1.getMaxStackSize()) {
 				if (doAdd)
-					getSlotIndexByID(i).setSlotgetCount()(var9);
+					getSlotIndexByID(i).setSlotStackSize(var9);
 
 			}
-			else if (getSlotIndexByID(i).getStack().getCount() < itemstack1.getMaxgetCount()()) {
+			else if (getSlotIndexByID(i).getStack().getCount() < itemstack1.getMaxStackSize()) {
 				if (doAdd)
-					getSlotIndexByID(i).setSlotgetCount()(getSlotIndexByID(i).getgetCount()()+1);
+					getSlotIndexByID(i).setSlotStackSize(getSlotIndexByID(i).getStackSize()+1);
 			}
 			return true;
 		}
@@ -214,7 +214,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 	}
 
 	private boolean canSmelt() {
-		if (getSlotIndexByID(400).getStack() == null || (getSlotIndexByID(403).getStack() != null && getSlotIndexByID(403).getgetCount()()==64) || (getSlotIndexByID(404).getStack() != null && getSlotIndexByID(404).getgetCount()()==64)) {
+		if (getSlotIndexByID(400).getStack() == null || (getSlotIndexByID(403).getStack() != null && getSlotIndexByID(403).getStackSize()==64) || (getSlotIndexByID(404).getStack() != null && getSlotIndexByID(404).getStackSize()==64)) {
 			return false;
 		}
 		ItemStack itemstack = DistilRecipes.smelting().getSmeltingResult(getSlotIndexByID(400).getStack().getItem());
@@ -254,7 +254,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 			getSlotIndexByID(400).setStack(new ItemStack(getSlotIndexByID(400).getStack().getItem().getContainerItem()));
 		}
 		else {
-			getSlotIndexByID(400).getStack().getCount()--;
+			getSlotIndexByID(400).getStack().setCount(getSlotIndexByID(400).getStack().getCount()-1);
 		}
 		if (getSlotIndexByID(400).getStack().getCount() <= 0) {
 			getSlotIndexByID(400).setStack(null);
@@ -265,12 +265,12 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 	private void outputPlastic(ItemStack plasticStack, boolean wasDeisel) {
 		if (getSlotIndexByID(403).getStack() == null) {
 			if(wasDeisel){
-				getSlotIndexByID(403).setStack(new ItemStack(Items.bucket,1));
+				getSlotIndexByID(403).setStack(new ItemStack(Items.BUCKET,1));
 			} else {
 				getSlotIndexByID(403).setStack(plasticStack.copy());
 			}
 		} else if(wasDeisel){
-			if(getSlotIndexByID(403).getStack().getItem()==Items.bucket){
+			if(getSlotIndexByID(403).getStack().getItem()==Items.BUCKET){
 				getSlotIndexByID(403).getStack().getCount() += plasticStack.getCount();
 			} else {
 				getSlotIndexByID(403).getStack().getCount() += plasticStack.getCount();

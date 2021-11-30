@@ -9,9 +9,11 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -41,8 +43,8 @@ public class GUITrainTable extends GuiContainer {
     private EntityPlayer player;
 
     public GUITrainTable(InventoryPlayer inventoryPlayer, World world, int x, int y, int z) {
-        super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) world.getTileEntity(x,y,z)));
-        hostname=CommonUtil.getBlockAt(world, x,y,z).getUnlocalizedName();
+        super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) world.getTileEntity(new BlockPos(x,y,z))));
+        hostname=CommonUtil.getBlockAt(world, x,y,z).getTranslationKey();
         xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.getDimension();
         player = inventoryPlayer.player;
 
@@ -106,14 +108,14 @@ public class GUITrainTable extends GuiContainer {
 
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
         if (!CommonProxy.isTraincraft || hostname.equals("tile.block.traintable")) {
-            this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+            this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
         } else {
             if (hostname.startsWith("tile.block.traintable")) {
                 //assembly table and traincraft
-                this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 92, 4210752);
-                this.fontRendererObj.drawString(I18n.format(hostname + ".name"), 8, 5, 12241200);
-                this.fontRendererObj.drawString(I18n.format("container.storage"), 8, 118, 4210752);
-                this.fontRendererObj.drawString(I18n.format("container.output"), 90, 118, 12241200);
+                this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 92, 4210752);
+                this.fontRenderer.drawString(I18n.format(hostname + ".name"), 8, 5, 12241200);
+                this.fontRenderer.drawString(I18n.format("container.storage"), 8, 118, 4210752);
+                this.fontRenderer.drawString(I18n.format("container.output"), 90, 118, 12241200);
             }
         }
     }
@@ -125,16 +127,16 @@ public class GUITrainTable extends GuiContainer {
 
         if(hostname.equals("tile.block.railtable")){
 
-            ClientUtil.drawTextOutlined(fontRendererObj,"Rail", guiLeft+8, guiTop+2,0xffffff);
-            ClientUtil.drawTextOutlined(fontRendererObj,"Ties", guiLeft+6, guiTop+24,0xffffff);
-            ClientUtil.drawTextOutlined(fontRendererObj,"Ballast", guiLeft-8, guiTop+41,0xffffff);
+            ClientUtil.drawTextOutlined(fontRenderer,"Rail", guiLeft+8, guiTop+2,0xffffff);
+            ClientUtil.drawTextOutlined(fontRenderer,"Ties", guiLeft+6, guiTop+24,0xffffff);
+            ClientUtil.drawTextOutlined(fontRenderer,"Ballast", guiLeft-8, guiTop+41,0xffffff);
 
-            ClientUtil.drawTextOutlined(fontRendererObj,"Old Shape", guiLeft+108, guiTop+18,0xffffff);
+            ClientUtil.drawTextOutlined(fontRenderer,"Old Shape", guiLeft+108, guiTop+18,0xffffff);
 
-            ClientUtil.drawTextOutlined(fontRendererObj,"Output", guiLeft+116, guiTop+53,0xffffff);
+            ClientUtil.drawTextOutlined(fontRenderer,"Output", guiLeft+116, guiTop+53,0xffffff);
 
-            ClientUtil.drawTextOutlined(fontRendererObj,"Unused", guiLeft+50, guiTop-4,0xffffff);
-            ClientUtil.drawTextOutlined(fontRendererObj,"Unused", guiLeft+50, guiTop+46,0xffffff);
+            ClientUtil.drawTextOutlined(fontRenderer,"Unused", guiLeft+50, guiTop-4,0xffffff);
+            ClientUtil.drawTextOutlined(fontRenderer,"Unused", guiLeft+50, guiTop+46,0xffffff);
 
 
             slots = new ArrayList<>();
@@ -248,18 +250,18 @@ public class GUITrainTable extends GuiContainer {
 
 
     @Override
-    protected void handleMouseClick(Slot p_146984_1_, int p_146984_2_, int p_146984_3_, int p_146984_4_) {
+    protected void handleMouseClick(Slot p_146984_1_, int p_146984_2_, int p_146984_3_, ClickType clickType) {
         if (p_146984_1_ != null) {
             p_146984_2_ = p_146984_1_.slotNumber;
         }
 
-        if (p_146984_4_ == 4){
-            p_146984_4_ = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
+        if (clickType == 4){ //todo: what are the 1.7.10 clicktypes
+            clickType = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
                     player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
                             (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
                                     0;//cover everything else
         }
-        this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, p_146984_4_, this.mc.thePlayer);
+        this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, clickType, this.mc.player);
     }
 
 }

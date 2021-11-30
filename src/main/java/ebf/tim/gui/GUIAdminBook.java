@@ -46,7 +46,7 @@ public class GUIAdminBook extends GuiScreen {
         public ItemStack getStackInSlot(int p_70301_1_) { return inventory[p_70301_1_]; }
 
         @Override
-        public ItemStack decrgetCount()(int p_70298_1_, int p_70298_2_) { return null; }
+        public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) { return null; }
 
         @Override
         public ItemStack getStackInSlotOnClosing(int p_70304_1_) { return null; }

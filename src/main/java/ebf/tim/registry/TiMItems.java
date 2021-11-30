@@ -36,18 +36,18 @@ public class TiMItems {
 
     public static Item generator;
 
-    public static Item itemStake = new ItemStake().setMaxgetCount()(1);
-    public static Item recipeBook = new ItemCraftGuide().setMaxgetCount()(1);
+    public static Item itemStake = new ItemStake().setMaxStackSize(1);
+    public static Item recipeBook = new ItemCraftGuide().setMaxStackSize(1);
 
 
     public static void registerItems(){
 
         TiMGenericRegistry.RegisterItem(itemStake, TrainsInMotion.MODID, "stake",TrainsInMotion.creativeTab);
 
-        TiMGenericRegistry.RegisterItem(new ItemAdminBook().setMaxgetCount()(1),TrainsInMotion.MODID, "adminbook", TrainsInMotion.creativeTab);
+        TiMGenericRegistry.RegisterItem(new ItemAdminBook().setMaxStackSize(1),TrainsInMotion.MODID, "adminbook", TrainsInMotion.creativeTab);
         TiMGenericRegistry.RegisterItem(recipeBook,TrainsInMotion.MODID, "craftbook", TrainsInMotion.creativeTab);
 
-        TiMGenericRegistry.RegisterItem(new ItemPaintBucket().setMaxgetCount()(1),TrainsInMotion.MODID, "paintbucket", TrainsInMotion.creativeTab);
+        TiMGenericRegistry.RegisterItem(new ItemPaintBucket().setMaxStackSize(1),TrainsInMotion.MODID, "paintbucket", TrainsInMotion.creativeTab);
         TiMGenericRegistry.RegisterItem(new ItemKey(),TrainsInMotion.MODID,  "transportkey", TrainsInMotion.creativeTab);
         TiMGenericRegistry.RegisterItem(new ItemTicket(),TrainsInMotion.MODID,  "transportticket", TrainsInMotion.creativeTab);
 
@@ -164,7 +164,7 @@ public class TiMItems {
     private static Item createItem(String unlocalizedName) {
         Item item = new Item();
         TiMGenericRegistry.RegisterItem(item, TrainsInMotion.MODID, unlocalizedName, TrainsInMotion.creativeTabCrafting);
-        item.setTextureName(TrainsInMotion.MODID+ ":" + "crafting/" + item.getUnlocalizedName().replace("item.", ""));
+        item.setTextureName(TrainsInMotion.MODID+ ":" + "crafting/" + item.getTranslationKey().replace("item.", ""));
         return item;
     }
 }

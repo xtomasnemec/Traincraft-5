@@ -346,7 +346,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 		if (zeppInvent[0] != null && burn >0 && burn + fuel < 1000) {
 			fuel += TileEntityFurnace.getItemBurnTime(zeppInvent[0]);
 			this.dataWatcher.updateObject(20, fuel);
-			decrgetCount()(0, 1);
+			decrStackSize(0, 1);
 		}
 
 		double var6;
@@ -561,7 +561,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	}
 
 	@Override
-	public ItemStack decrgetCount()(int i, int j) {
+	public ItemStack decrStackSize(int i, int j) {
 		if (zeppInvent[i] != null) {
 			if (zeppInvent[i].getCount() <= j) {
 				ItemStack itemstack = zeppInvent[i];
@@ -583,7 +583,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		zeppInvent[i] = itemstack;
 		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
-			itemstack.getCount() = getInventoryStackLimit();
+			itemstack.setCount(getInventoryStackLimit());
 		}
 	}
 
