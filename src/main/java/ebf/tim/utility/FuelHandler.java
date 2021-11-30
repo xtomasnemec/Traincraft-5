@@ -15,9 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -67,7 +64,7 @@ public class FuelHandler{
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.ELECTRIC)) {
 			if (itemStack.getItem() == Items.REDSTONE) {
 				return new FluidStack(TiMFluids.fluidRedstone, 250);
-			} else if (itemStack.getItem() == Item.getItemFromBlock(Blocks.redstone_block)) {
+			} else if (itemStack.getItem() == Item.getItemFromBlock(Blocks.REDSTONE_BLOCK)) {
 				return new FluidStack(TiMFluids.fluidRedstone, 2250);
 			} else if (itemStack.getItem() instanceof IEnergyContainerItem) {
 				return new FluidStack(TiMFluids.fluidRedstone, ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, 250, true));
@@ -157,7 +154,7 @@ public class FuelHandler{
 				burnTime = MathHelper.ceiling_double_int(burnHeat *0.1);
 				burnTimeMax = burnTime;
 				if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					train.getSlotIndexByID(400).decrgetCount()(1);
+					train.getSlotIndexByID(400).decrStackSize(1);
 				}
 				train.entityData.putFloat("burnTime", burnTime);
 				train.entityData.putFloat("maxBurn", burnTimeMax);
@@ -178,8 +175,8 @@ public class FuelHandler{
 				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==0) {
 			train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrgetCount()(1);
-				train.addItem(new ItemStack(Items.bucket));
+				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);
+				train.addItem(new ItemStack(Items.BUCKET));
 			}
 		}
 		//manage boiler heat
@@ -259,8 +256,8 @@ public class FuelHandler{
         if(getUseableFluid(400,train) !=null) {
 			if (train.fill(null, getUseableFluid(400,train))) {
 				if(!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrgetCount()(1);
-					train.addItem(new ItemStack(Items.bucket));
+					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+					train.addItem(new ItemStack(Items.BUCKET));
 				}
 			}
             //todo: fluid pipe support, should be able to be toggled in server settings
@@ -328,7 +325,7 @@ public class FuelHandler{
 						((IEnergyContainerItem) train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem())
 								.extractEnergy(train.getSlotIndexByID(train.fuelSlot().getSlotID()).getStack(), 250, false);
 					} else {
-						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrgetCount()(1);
+						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
 					}
 				}
 			}
@@ -387,7 +384,7 @@ public class FuelHandler{
 
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				transport.addItem(FluidContainerRegistry.drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
-				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrgetCount()(1);
+				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrStackSize(1);
 
 			}
 
@@ -402,7 +399,7 @@ public class FuelHandler{
 					transport.addItem(FluidContainerRegistry.fillFluidContainer(
 							new FluidStack(transport.entityData.getFluidStack("tanks."+i).fluid,1000)
 							, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()));
-					transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrgetCount()(1);
+					transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrStackSize(1);
 					return;
 				}
 			}

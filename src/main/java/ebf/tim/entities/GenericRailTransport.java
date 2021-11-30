@@ -1656,9 +1656,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * @return the itemstack with the decreased size. If the decreased size is equal to or less than the current stack size it returns null.
      */
     @Override
-    public ItemStack decrgetCount()(int slot, int getCount()) {
+    public ItemStack decrStackSize(int slot, int stackSize) {
         if (inventory!= null && getSizeInventory()>=slot) {
-            return inventory.get(slot).decrgetCount()(getCount());
+            return inventory.get(slot).decrStackSize(stackSize);
         } else {
             return null;
         }

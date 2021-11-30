@@ -1,6 +1,5 @@
 package ebf.tim.registry;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.OreGen;
 import ebf.tim.blocks.SimpleBlock;
@@ -8,9 +7,8 @@ import ebf.tim.utility.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import static cpw.mods.fml.common.registry.GameRegistry.addRecipe;
-import static cpw.mods.fml.common.registry.GameRegistry.addShapelessRecipe;
 import static ebf.tim.registry.TiMGenericRegistry.registerOreGen;
 import static net.minecraftforge.oredict.OreDictionary.registerOre;
 

@@ -3,6 +3,7 @@ package ebf.tim.utility;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.registries.GameData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -99,8 +100,8 @@ public class JsonRecipeHelper {
         String itemString = getString(json, "item");
 
         //NOTE: IN 1.12, this was in Traincraft/Traincraft, but also might only be for vanilla items:
-        //Item item = Item.REGISTRY.getObject(new ResourceLocation(itemString));
-        Item item = GameData.getItemRegistry().getObject(itemString);
+        Item item = Item.REGISTRY.getObject(new ResourceLocation(itemString));
+        //Item item = GameData.getItemRegistry().getObject(itemString); //1.7.10 version
 
         if (item == null) {
             throw new JsonSyntaxException("Unknown item '" + itemString + "'");
@@ -155,7 +156,7 @@ public class JsonRecipeHelper {
                 if (jsonElement.getAsJsonObject().get("type").getAsString().equals("forge:ore_dict")) {
                     if (jsonElement.getAsJsonObject().has("ore")) {
                         //find all ItemStacks for ore
-                        ArrayList<ItemStack> oresFromOreDict = OreDictionary.getOres(jsonElement.getAsJsonObject().get("ore").getAsString());
+                        NonNullList<ItemStack> oresFromOreDict = OreDictionary.getOres(jsonElement.getAsJsonObject().get("ore").getAsString());
                         ItemStack[] itemStacks = new ItemStack[oresFromOreDict.size()];
                         for (int i = 0; i < oresFromOreDict.size(); ++i) {
                             itemStacks[i] = oresFromOreDict.get(i).copy();
@@ -163,7 +164,7 @@ public class JsonRecipeHelper {
 
                         int count = getInt(jsonElement.getAsJsonObject(), "count", 1);
                         for (ItemStack itemStack : itemStacks) {
-                            itemStack.getCount() = count;
+                            itemStack.setCount(count);
                         }
                         return itemStacks;
 

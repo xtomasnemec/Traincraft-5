@@ -15,8 +15,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
@@ -49,10 +49,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     protected void initInventoryFromBlock( BlockDynamic block ){
         int s=400;
         inventory = new ArrayList<>();
-        if(block.getUnlocalizedName().equals("tile.block.traintabletier1") ||
-                block.getUnlocalizedName().equals("tile.block.traintabletier2") ||
-                block.getUnlocalizedName().equals("tile.block.traintabletier3") ||
-                block.getUnlocalizedName().equals("tile.block.traintable")) {
+        if(block.getTranslationKey().equals("tile.block.traintabletier1") ||
+                block.getTranslationKey().equals("tile.block.traintabletier2") ||
+                block.getTranslationKey().equals("tile.block.traintabletier3") ||
+                block.getTranslationKey().equals("tile.block.traintable")) {
 
             if (block.assemblyTableTier != -1) {
                 //if it's a traintable, it should be, things might break otherwise, this is temporary to see if I missed a case.
@@ -62,7 +62,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 this.assemblyTableTier = 0;
             }
 
-            if (!CommonProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
+            if (!CommonProxy.isTraincraft || block.getTranslationKey().equals("tile.block.traintable")) {
                 //inventory grid (left grid)
                 for (int l = 0; l < 3; ++l) {
                     for (int i1 = 0; i1 < 3; ++i1) {
@@ -111,14 +111,14 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
             }
             storageType=1;
         } else {
-            inventory.add(new ItemStackSlot(this,400).setCoords( 30 , -2).setCraftingInput(true).setOverlay(Items.iron_ingot)); //ingot
-            inventory.add(new ItemStackSlot(this,401).setCoords( 30 , 18).setCraftingInput(true).setOverlay(Blocks.planks)); //ties
-            inventory.add(new ItemStackSlot(this,402).setCoords( 30 , 37).setCraftingInput(true).setOverlay(Blocks.gravel)); //ballast
+            inventory.add(new ItemStackSlot(this,400).setCoords( 30 , -2).setCraftingInput(true).setOverlay(Items.IRON_INGOT)); //ingot
+            inventory.add(new ItemStackSlot(this,401).setCoords( 30 , 18).setCraftingInput(true).setOverlay(Blocks.PLANKS)); //ties
+            inventory.add(new ItemStackSlot(this,402).setCoords( 30 , 37).setCraftingInput(true).setOverlay(Blocks.GRAVEL)); //ballast
 
             inventory.add(new ItemStackSlot(this,403).setCoords( 50 , 7).setCraftingInput(true)); //wires
             inventory.add(new ItemStackSlot(this,404).setCoords( 50 , 27).setCraftingInput(true));//augment slot
 
-            inventory.add(new ItemStackSlot(this,405).setCoords( 124 , -2).setCraftingInput(true).setOverlay(Blocks.rail));//old shape input
+            inventory.add(new ItemStackSlot(this,405).setCoords( 124 , -2).setCraftingInput(true).setOverlay(Blocks.RAIL));//old shape input
 
             inventory.add(new ItemStackSlot(this,406).setCoords( 124 , 33).setCraftingOutput(true)); //output
             storageType=0;
@@ -141,8 +141,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         // When world load, we need to recreate TileEntity from default constructor (no args)
         // So we need to retrieve host block from NBT data
         if ( host == null ) {
-            String hostName = tag.getString("hostBlockName");
-            Block block = Block.getBlockFromName(hostName);
+            Block block = Block.getBlockById(tag.getInteger("hostBlockName"));
 
             if ( block instanceof BlockDynamic )
             {
@@ -181,7 +180,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         super.writeToNBT(tag);
 
         if ( host != null )
-            tag.setString( "hostBlockName", Block.blockRegistry.getNameForObject( host ) );
+            tag.setInteger( "hostBlockName", Block.getIdFromBlock( host ) );
 
         XmlBuilder data = new XmlBuilder();
         if (inventory!=null) {
@@ -400,9 +399,9 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
 
 
     @Override
-    public ItemStack decrgetCount()(int slot, int getCount()) {
+    public ItemStack decrStackSize(int slot, int stackSize) {
         if (inventory!= null && getSizeInventory()>=slot) {
-            return inventory.get(slot).decrgetCount()(getCount());
+            return inventory.get(slot).decrStackSize(stackSize);
         } else {
             return null;
         }
@@ -452,7 +451,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
             case 1:{
                 if(slot==0){
                     return CommonUtil.oredictMatch(itemStack, "ingot") ||
-                            itemStack.getItem() == Items.blaze_rod;
+                            itemStack.getItem() == Items.BLAZE_ROD;
                 }
                 if(slot==1||slot==2){
                     //todo: if block.modid==chisel return false;

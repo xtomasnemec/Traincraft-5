@@ -1,6 +1,5 @@
 package ebf.tim.utility;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.items.ItemRail;
@@ -223,8 +222,8 @@ public class RecipeManager {
     public static List<ItemStack> getAcceptedRailItems(){
         List<ItemStack> Ores=new ArrayList<>();
 
-        Ores.add(new ItemStack(Items.diamond));
-        Ores.add(new ItemStack(Items.blaze_rod));
+        Ores.add(new ItemStack(Items.DIAMOND));
+        Ores.add(new ItemStack(Items.BLAZE_ROD));
 
         for(String o: OreDictionary.getOreNames()) {
             if (o.contains("ingot") || o.contains("plank")) {
@@ -366,15 +365,15 @@ public class RecipeManager {
         }
         else if(itm instanceof String){
             String[] data = ((String) itm).split(" ");
-            int getCount() = data.length>1?Integer.parseInt(data[1].trim()):1;
+            int stackSize = data.length>1?Integer.parseInt(data[1].trim()):1;
             //cover actual items
             if(data[0].contains(":")){
-                list=ODC(GameRegistry.findItemStack(data[0].split(":")[0], data[0].split(":")[1], getCount()));
+                list=ODC(GameRegistry.findItemStack(data[0].split(":")[0], data[0].split(":")[1], stackSize));
             } else {
                 //cover ore directory values
                 list=OreDictionary.getOres(data[0]).toArray(new ItemStack[]{});
                 for(ItemStack s : list){
-                    s.getCount()=getCount();
+                    s.setCount(stackSize);
                 }
             }
 
@@ -395,7 +394,7 @@ public class RecipeManager {
         //cache the old size and set it to 1, the ore directory only contains entries with a getCount() of 1,
         //   anything else can break the equals check.
         int oldSize = s.getCount();
-        s.getCount()=1;
+        s.setCount(1);
 
         List<ItemStack> dir = new ArrayList<>();
         //create a list of ore directory entries
@@ -406,10 +405,10 @@ public class RecipeManager {
         }
         if(dir.size()>0) {
             for (ItemStack stack : dir) {
-                stack.getCount() = oldSize;
+                stack.setCount(oldSize);
             }
         } else {
-            s.getCount()=oldSize;
+            s.setCount(oldSize);
             dir.add(s);
         }
         return dir.toArray(new ItemStack[]{});

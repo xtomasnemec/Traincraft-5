@@ -23,7 +23,7 @@ public interface IBlastFurnaceRecipe
 
     public ItemStack getOutput();
 
-    int getOutputgetCount()();
+    int getOutputStackSize();
 
     boolean isRoomForOutput(ItemStack outputSlot);
 }

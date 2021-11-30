@@ -73,7 +73,7 @@ public class BlockDynamic extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
     public ResourceLocation getTexture(int x, int y, int z){
-        return new ResourceLocation(this.textureName == null ? "MISSING_ICON_BLOCK_" + getIdFromBlock(this) + "_" + this.getUnlocalizedName() :textureName);
+        return new ResourceLocation(this.textureName == null ? "MISSING_ICON_BLOCK_" + getIdFromBlock(this) + "_" + this.getTranslationKey() :textureName);
     }
 
     @SideOnly(Side.CLIENT)
