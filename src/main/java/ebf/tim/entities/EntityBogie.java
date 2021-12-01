@@ -251,11 +251,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 floorY = CommonUtil.floorDouble(this.posY);
                 floorZ = CommonUtil.floorDouble(this.posZ);
                 //handle slope movement before other interactions
-                if(!BlockRailBase.func_150049_b_(worldObj, floorX, floorY, floorZ)){
+                if(!CommonUtil.isRailBlockAt(worldObj, floorX, floorY, floorZ)){
                     this.prevPosY =posY;
-                    if(BlockRailBase.func_150049_b_(worldObj, floorX, floorY+1, floorZ)){
+                    if(CommonUtil.isRailBlockAt(worldObj, floorX, floorY+1, floorZ)){
                         posY++;
-                    } else if (BlockRailBase.func_150049_b_(worldObj, floorX, floorY-1, floorZ)) {
+                    } else if (CommonUtil.isRailBlockAt(worldObj, floorX, floorY-1, floorZ)) {
                         posY--;
                     }
                     floorY = CommonUtil.floorDouble(this.posY);
