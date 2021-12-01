@@ -8,6 +8,7 @@ import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -67,6 +68,10 @@ public class CommonUtil {
     }
     public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
         return w.getBlockMetadata(x,y,z);
+    }
+
+    public static int getRailMeta(IBlockAccess w, EntityMinecart cart, int x, int y, int z){
+        return ((BlockRailBase)w.getBlock(x,y,z)).getBasicRailMetadata(w,cart,x,y,z);
     }
 
     public static void setBlock(World w, int x, int y, int z, Block b, int meta){
@@ -496,7 +501,7 @@ public class CommonUtil {
         //be sure there is a rail at the location
         if (isRailBlockAt(worldObj, posX,posY,posZ) && !worldObj.isRemote) {
             //define the direction of the track
-            int railMeta=((BlockRailBase)getBlockAt(worldObj,posX,posY,posZ)).getBasicRailMetadata(worldObj, null,posX,posY,posZ);
+            int railMeta=CommonUtil.getRailMeta(worldObj, null,posX,posY,posZ);
             //define the angle between the player and the track.
             // this is more reliable than player direction because player goes from -360 to 360 for no real reason.
             float rotation =atan2degreesf(posX-playerEntity.posX, posZ-playerEntity.posZ);

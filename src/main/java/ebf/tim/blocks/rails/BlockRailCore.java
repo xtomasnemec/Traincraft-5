@@ -115,7 +115,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        int meta = getBasicRailMetadata(world, null, x, y, z);
+        int meta = CommonUtil.getRailMeta(world, null, x, y, z);
         if (meta >1 && meta <6) {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1f, 1.0F);
         } else {
@@ -124,7 +124,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB hitboxSelf, List p_149743_6_, Entity collidingEntity) {
-        int meta = getBasicRailMetadata(world, null, x, y, z);
+        int meta = CommonUtil.getRailMeta(world, null, x, y, z);
         if (meta > 1 && meta < 6) {
             //todo: return twi hitboxes so it can be climbed like stairs
             this.setBlockBoundsBasedOnState(world, x, y, z);
@@ -489,13 +489,13 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
     /**
      * Simplifies getting rail metadata for a block, returns -1 is the block is not a rail.
-     * in 1.8+ this will have to change to returning the expected int based on the block state, or the getBasicRailMetadata for TiM rails
+     * in 1.8+ this will have to change to returning the expected int based on the block state, or the CommonUtil.getRailMeta for TiM rails
      */
     public static int getRailMeta(IBlockAccess world, int x, int y, int z, @Nullable EntityMinecart cart){
         if(!(world.getBlock(x,y,z) instanceof BlockRailBase)){
             return -1;
         }
-        return ((BlockRailBase) world.getBlock(x,y,z)).getBasicRailMetadata(world, cart,x,y,z);
+        return CommonUtil.getRailMeta(world, cart,x,y,z);
     }
 
 

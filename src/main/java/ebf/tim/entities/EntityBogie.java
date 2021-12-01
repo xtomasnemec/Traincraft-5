@@ -239,7 +239,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             velocity=Math.min(velocity,railmax);
         }
         velDirection = new double[]{velocityX,velocityZ};
-        railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
+        railMetadata = CommonUtil.getRailMeta(worldObj, this, floorX, floorY, floorZ);
         //actually move
         while (velocity>0) {
             moveBogieVanilla(Math.min(0.35, velocity), velDirection[0], velDirection[1], floorX, floorZ);
@@ -273,11 +273,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                         this.onActivatorRailPass(floorX, floorY, floorZ, (worldObj.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
                     }
                     //get the direction of the rail from it's metadata
-                    railMetadata = block.getBasicRailMetadata(worldObj, this, floorX, floorY, floorZ);
+                    railMetadata = CommonUtil.getRailMeta(worldObj, this, floorX, floorY, floorZ);
                 }
                 //get the direction of the rail from it's metadata
                 else if (worldObj.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
-                    railMetadata =((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
+                    railMetadata = CommonUtil.getRailMeta(worldObj,this,floorX, floorY, floorZ);//railcraft support
                 }
             }
         }
