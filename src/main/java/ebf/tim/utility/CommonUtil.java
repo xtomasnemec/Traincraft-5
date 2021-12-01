@@ -1,6 +1,7 @@
 package ebf.tim.utility;
 
 
+import com.google.common.collect.ImmutableMap;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.codec.binary.Base64;
@@ -62,6 +64,9 @@ public class CommonUtil {
 
     public static void setBlockMeta(World w, int x, int y, int z, int meta){
         w.setBlockMetadataWithNotify(x,y,z,meta,2);
+    }
+    public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
+        return w.getBlockMetadata(x,y,z);
     }
 
     public static void setBlock(World w, int x, int y, int z, Block b, int meta){

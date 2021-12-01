@@ -3,25 +3,25 @@ package train.render.models.blocks;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
+import ebf.tim.utility.CommonUtil;
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
-import train.blocks.windmill.TileWindMill;
 
 @SideOnly(Side.CLIENT)
 public class ModelWindMill extends ModelBase {
-	private IModelCustom modelWindMill;
+	private ModelRendererTurbo modelWindMill;
 
 	public ModelWindMill() {
-		modelWindMill = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "wind_mill.obj"));
+		modelWindMill = new ModelRendererTurbo(this);
+		modelWindMill.addObj(Info.modelPrefix + "wind_mill.obj");
 	}
 
 	public void render() {
-		modelWindMill.renderAll();
+		modelWindMill.render();
 	}
 
 	public void render(TileEntity windMill, double x, double y, double z) {
@@ -37,7 +37,7 @@ public class ModelWindMill extends ModelBase {
 		}
 
 		// Bind the texture, so that OpenGL properly textures our block.
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "water_wheel_uv.png"));
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "water_wheel_uv.png"));
 		int j = 0x331D14;//0x1C0F0A; //0x5a3222;
 		//System.out.println(j);
 		float f1 = 1.0F;
@@ -47,7 +47,7 @@ public class ModelWindMill extends ModelBase {
 		GL11.glColor4f(f1 * f2, f1 * f3, f1 * f4, 1);
 		GL11.glScalef(0.5f, 0.5f, 0.5f);
 		if(windMill.getWorldObj()!=null) {
-			int facing = windMill.getWorldObj().getBlockMetadata(windMill.xCoord, windMill.yCoord, windMill.zCoord);
+			int facing = CommonUtil.getBlockFacing(windMill.getWorldObj(), windMill.xCoord,windMill.yCoord, windMill.zCoord);
 			if (facing == 3) {
 			}
 			if (facing == 1) {

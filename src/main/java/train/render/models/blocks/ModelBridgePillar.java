@@ -7,24 +7,24 @@
 
 package train.render.models.blocks;
 
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.Tessellator;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 
 public class ModelBridgePillar extends ModelBase {
-	private IModelCustom bridgePillar;
+	private ModelRendererTurbo bridgePillar;
 
 	public ModelBridgePillar() {
-		bridgePillar = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "bridge_block.obj"));
+		bridgePillar = new ModelRendererTurbo(this);
+		bridgePillar.addObj(Info.modelPrefix + "bridge_block.obj");
 	}
 	
 	public void render() {
-		bridgePillar.renderAll();
+		bridgePillar.render();
 	}
 	
 	public void render(TileEntity pillar, double x, double y, double z) {
