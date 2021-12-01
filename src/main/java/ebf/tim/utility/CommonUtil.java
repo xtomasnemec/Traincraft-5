@@ -56,6 +56,19 @@ public class CommonUtil {
         return world.getBlock(x,y,z);
     }
 
+    public static void setBlock(World w, int x, int y, int z, Block b){
+        w.setBlock(x,y,z,b);
+    }
+
+    public static void setBlockMeta(World w, int x, int y, int z, int meta){
+        w.setBlockMetadataWithNotify(x,y,z,meta,2);
+    }
+
+    public static void setBlock(World w, int x, int y, int z, Block b, int meta){
+        setBlock(w,x,y,z,b);
+        setBlockMeta(w,x,y,z,meta);
+    }
+
     public static float getMaxRailSpeed(World world, BlockRailBase rail, GenericRailTransport host, double x, double y, double z){
         return (rail.getRailMaxSpeed(world, host, floorDouble(x), floorDouble(y),floorDouble(z)));
     }
