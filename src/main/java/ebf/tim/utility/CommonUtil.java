@@ -66,6 +66,11 @@ public class CommonUtil {
     public static void setBlockMeta(World w, int x, int y, int z, int meta){
         w.setBlockMetadataWithNotify(x,y,z,meta,2);
     }
+
+    public static void markBlockForUpdate(World w, int x, int y, int z){
+        w.markBlockForUpdate(x,y,z);
+    }
+
     public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
         return w.getBlockMetadata(x,y,z);
     }

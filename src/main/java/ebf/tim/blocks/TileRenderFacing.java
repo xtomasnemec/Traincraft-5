@@ -137,7 +137,7 @@ public class TileRenderFacing extends TileEntity {
     public void markDirty() {
         super.markDirty();
         if(this.worldObj != null) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            CommonUtil.markBlockForUpdate(worldObj, xCoord, yCoord, zCoord);
             worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
             this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, host);
             if (worldObj.isRemote && blockGLID != null) {

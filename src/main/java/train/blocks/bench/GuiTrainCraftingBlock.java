@@ -4,7 +4,7 @@ import ebf.tim.blocks.TileEntityStorage;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import static ebf.tim.utility.CommonUtil.translate;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 
@@ -16,7 +16,7 @@ public class GuiTrainCraftingBlock extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		this.fontRendererObj.drawString("Train Workbench", 8, 6, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
