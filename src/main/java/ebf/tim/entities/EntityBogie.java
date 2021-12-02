@@ -2,6 +2,9 @@ package ebf.tim.entities;
 
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.block.BlockRailPowered;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -97,12 +100,12 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     /**plays a sound during entity movement*/
     @Override
-    protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {}
+    protected void playStepSound(BlockPos pos, Block p_145780_4_) {}
 
     /**used by the game to tell different types of minecarts from eachother, this doesnt effect us, so just use something random*/
     @Override
-    public int getMinecartType() {
-        return 10001;
+    public EntityMinecart.Type getType() {
+        return Type.RIDEABLE;
     }
     /**returns if the cart can make itself move*/
     @Override
@@ -159,11 +162,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     public void readFromNBT(NBTTagCompound tag){}
     /**disables writing to NBT, which kills the entity on game end.*/
     @Override
-    public void writeToNBT(NBTTagCompound tag){}
+    public NBTTagCompound writeToNBT(NBTTagCompound tag){return tag;}
     @Override
     public boolean writeToNBTOptional(NBTTagCompound tagCompound){return false;}
-    @Override
-    public boolean writeMountToNBT(NBTTagCompound tagCompound){return false;}
+    /*@Override
+    public boolean writeMountToNBT(NBTTagCompound tagCompound){return false;}*/
 
 
     /**
@@ -234,12 +237,12 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
-        railmax = block.getRailMaxSpeed(world,this,floorX, floorY, floorZ);
+        railmax = block.getRailMaxSpeed(world,this, new BlockPos(floorX, floorY, floorZ));
         if(railmax!=0.4f){
             velocity=Math.min(velocity,railmax);
         }
         velDirection = new double[]{velocityX,velocityZ};
-        railMetadata = block.getBasicRailMetadata(world, this, floorX, floorY, floorZ);
+        railMetadata = CommonUtil.getRailMeta(world, this, floorX, floorY, floorZ);
         //actually move
         while (velocity>0) {
             moveBogieVanilla(Math.min(0.35, velocity), velDirection[0], velDirection[1], floorX, floorZ);
@@ -251,33 +254,33 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 floorY = CommonUtil.floorDouble(this.posY);
                 floorZ = CommonUtil.floorDouble(this.posZ);
                 //handle slope movement before other interactions
-                if(!BlockRailBase.func_150049_b_(world, floorX, floorY, floorZ)){
+                if(!CommonUtil.isRailBlockAt(world, floorX, floorY, floorZ)){
                     this.prevPosY =posY;
-                    if(BlockRailBase.func_150049_b_(world, floorX, floorY+1, floorZ)){
+                    if(CommonUtil.isRailBlockAt(world, floorX, floorY+1, floorZ)){
                         posY++;
-                    } else if (BlockRailBase.func_150049_b_(world, floorX, floorY-1, floorZ)) {
+                    } else if (CommonUtil.isRailBlockAt(world, floorX, floorY-1, floorZ)) {
                         posY--;
                     }
                     floorY = CommonUtil.floorDouble(this.posY);
                 }
 
-                blockNext = this.world.getBlock(floorX, floorY, floorZ);
+                blockNext = CommonUtil.getBlockAt(world,floorX, floorY, floorZ);
                 //now loop this again for the next increment of movement, if there is one
                 if (blockNext instanceof BlockRailBase) {
                     block = (BlockRailBase) blockNext;
                     //do the rail functions.
                     if(shouldDoRailFunctions()) {
-                        block.onMinecartPass(world, this, floorX, floorY, floorZ);
+                        block.onMinecartPass(world, this, new BlockPos(floorX, floorY, floorZ));
                     }
-                    if (block == Blocks.activator_rail) {
-                        this.onActivatorRailPass(floorX, floorY, floorZ, (world.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
+                    if (block == Blocks.ACTIVATOR_RAIL) {
+                        this.onActivatorRailPass(floorX, floorY, floorZ, this.world.getBlockState(new BlockPos(floorX, floorY, floorZ)).getValue(BlockRailPowered.POWERED));
                     }
                     //get the direction of the rail from it's metadata
-                    railMetadata = block.getBasicRailMetadata(world, this, floorX, floorY, floorZ);
+                    railMetadata = CommonUtil.getRailMeta(world, this, floorX, floorY, floorZ);
                 }
                 //get the direction of the rail from it's metadata
-                else if (world.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)world.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
-                    railMetadata =((ITrackTile)world.getTileEntity(floorX, floorY, floorZ)).getTrackInstance().getBasicRailMetadata(this);//railcraft support
+                else if (world.getTileEntity(new BlockPos(floorX, floorY, floorZ)) instanceof ITrackTile && (((ITrackTile)world.getTileEntity(new BlockPos(floorX, floorY, floorZ))).getTrackInstance() instanceof ITrackSwitch)){
+                    railMetadata =CommonUtil.getRailMeta(world,this, floorX,floorY,floorZ);//railcraft support
                 }
             }
         }
@@ -409,8 +412,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**used to update positioning on client, and update the velocity multiplier*/
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int turnProgress) {
-        super.setPositionAndRotation2(x,y,z,yaw,pitch,turnProgress);
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int turnProgress, boolean teleport) {
+        super.setPositionAndRotationDirect(x,y,z,yaw,pitch,turnProgress, teleport);
     }
 
 

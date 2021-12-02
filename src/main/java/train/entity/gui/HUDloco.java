@@ -26,7 +26,7 @@ public class HUDloco extends GuiScreen {
 			renderSkillHUD(event, (EntityTrainCore) game.thePlayer.ridingEntity);
 		} else {
 			this.game = this.mc = Minecraft.getMinecraft();
-			this.fontRendererObj = this.game.fontRenderer;
+			this.fontRenderer = this.game.fontRenderer;
 		}
 	}
 
@@ -74,13 +74,13 @@ public class HUDloco extends GuiScreen {
 		}
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
-		fontRendererObj.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("  " + Math.floor(speed), 106,
+		fontRenderer.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
+		fontRenderer.drawStringWithShadow("  " + Math.floor(speed), 106,
 				windowHeight + 18 + (h), 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
+		fontRenderer.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			fontRendererObj.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
+			fontRenderer.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
@@ -138,7 +138,7 @@ public class HUDloco extends GuiScreen {
 			TextureManager.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "loco_hud_steam.png"));
 			ClientUtil.drawTexturedRect(34, windowHeight + 17, 154, 170 + l, 7, 70 - l);// l max = 70
 		}
-		// fontRendererObj.drawStringWithShadow("Fuel:", 4, (windowHeight/2)+1, 0xFFFFFF);
+		// fontRenderer.drawStringWithShadow("Fuel:", 4, (windowHeight/2)+1, 0xFFFFFF);
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
@@ -205,7 +205,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderOverheating(EntityTrainCore loco) {
-		// fontRendererObj.drawStringWithShadow("Heat:", 33, (windowHeight/2)+1, 0xFFFFFF);
+		// fontRenderer.drawStringWithShadow("Heat:", 33, (windowHeight/2)+1, 0xFFFFFF);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
 

@@ -227,7 +227,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	 * posY, posZ, yaw, pitch
 	 */
 	@Override
-	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
+	public void setPositionAndRotationDirect(double par1, double par3, double par5, float par7, float par8, int par9, boolean teleport) {
 		if (this.field_70279_a) {
 			this.boatPosRotationIncrements = par9 + 5;
 		}
@@ -620,13 +620,13 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public void closeInventory() {}
+	public void openInventory(EntityPlayer p) {}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+	public boolean isUsableByPlayer(EntityPlayer entityplayer) {
 		return !isDead && entityplayer.getDistanceSqToEntity(this) <= 64D;
 	}
 

@@ -36,9 +36,9 @@ public class SlotDistil extends Slot {
 	}
 
 	@Override
-	public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack itemstack) {
+	public void onTake(EntityPlayer par1EntityPlayer, ItemStack itemstack) {
 		this.onCrafting(itemstack);
-		super.onPickupFromSlot(par1EntityPlayer, itemstack);
+		super.onTake(par1EntityPlayer, itemstack);
 	}
 
 	/**

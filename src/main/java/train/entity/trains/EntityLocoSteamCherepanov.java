@@ -72,7 +72,7 @@ public class EntityLocoSteamCherepanov extends EntityTrainCore {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
-                new ItemStack(Items.stick, 1), new ItemStack(TiMItems.chimneyIron, 1), null, new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), null        };
+                new ItemStack(Items.STICK, 1), new ItemStack(TiMItems.chimneyIron, 1), null, new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), null        };
     }
 
 

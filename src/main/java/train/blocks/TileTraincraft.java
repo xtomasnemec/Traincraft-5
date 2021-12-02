@@ -119,17 +119,17 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player){
+    public boolean isUsableByPlayer(EntityPlayer player){
         return player.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void openInventory(){
+    public void openInventory(EntityPlayer p){
 
     }
 
     @Override
-    public void closeInventory(){
+    public void openInventory(EntityPlayer p){
 
     }
 
@@ -228,49 +228,49 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
                 case 0:
                     switch (side.ordinal()) {
                         case 0:
-                            return ForgeDirection.getOrientation(3);
+                            return EnumFacing.byHorizontalIndex(3);
                         case 1:
-                            return ForgeDirection.getOrientation(2);
+                            return EnumFacing.byHorizontalIndex(2);
                         case 2:
-                            return ForgeDirection.getOrientation(1);
+                            return EnumFacing.byHorizontalIndex(1);
                         case 3:
-                            return ForgeDirection.getOrientation(0);
+                            return EnumFacing.byHorizontalIndex(0);
                         case 4:
-                            return ForgeDirection.getOrientation(5);
+                            return EnumFacing.byHorizontalIndex(5);
                         case 5:
-                            return ForgeDirection.getOrientation(4);
+                            return EnumFacing.byHorizontalIndex(4);
                     }
 
                 case 1:
                     switch (side.ordinal()) {
                         case 0:
-                            return ForgeDirection.getOrientation(4);
+                            return EnumFacing.byHorizontalIndex(4);
                         case 1:
-                            return ForgeDirection.getOrientation(5);
+                            return EnumFacing.byHorizontalIndex(5);
                         case 2:
-                            return ForgeDirection.getOrientation(0);
+                            return EnumFacing.byHorizontalIndex(0);
                         case 3:
-                            return ForgeDirection.getOrientation(1);
+                            return EnumFacing.byHorizontalIndex(1);
                         case 4:
-                            return ForgeDirection.getOrientation(2);
+                            return EnumFacing.byHorizontalIndex(2);
                         case 5:
-                            return ForgeDirection.getOrientation(3);
+                            return EnumFacing.byHorizontalIndex(3);
                     }
 
                 case 2:
                     switch (side.ordinal()) {
                         case 0:
-                            return ForgeDirection.getOrientation(0);
+                            return EnumFacing.byHorizontalIndex(0);
                         case 1:
-                            return ForgeDirection.getOrientation(1);
+                            return EnumFacing.byHorizontalIndex(1);
                         case 2:
-                            return ForgeDirection.getOrientation(3);
+                            return EnumFacing.byHorizontalIndex(3);
                         case 3:
-                            return ForgeDirection.getOrientation(2);
+                            return EnumFacing.byHorizontalIndex(2);
                         case 4:
-                            return ForgeDirection.getOrientation(5);
+                            return EnumFacing.byHorizontalIndex(5);
                         case 5:
-                            return ForgeDirection.getOrientation(4);
+                            return EnumFacing.byHorizontalIndex(4);
                     }
 
                 case 3:
@@ -279,33 +279,33 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
                 case 4:
                     switch (side.ordinal()) {
                         case 0:
-                            return ForgeDirection.getOrientation(0);
+                            return EnumFacing.byHorizontalIndex(0);
                         case 1:
-                            return ForgeDirection.getOrientation(1);
+                            return EnumFacing.byHorizontalIndex(1);
                         case 2:
-                            return ForgeDirection.getOrientation(5);
+                            return EnumFacing.byHorizontalIndex(5);
                         case 3:
-                            return ForgeDirection.getOrientation(4);
+                            return EnumFacing.byHorizontalIndex(4);
                         case 4:
-                            return ForgeDirection.getOrientation(3);
+                            return EnumFacing.byHorizontalIndex(3);
                         case 5:
-                            return ForgeDirection.getOrientation(2);
+                            return EnumFacing.byHorizontalIndex(2);
                     }
 
                 case 5:
                     switch (side.ordinal()) {
                         case 0:
-                            return ForgeDirection.getOrientation(0);
+                            return EnumFacing.byHorizontalIndex(0);
                         case 1:
-                            return ForgeDirection.getOrientation(1);
+                            return EnumFacing.byHorizontalIndex(1);
                         case 2:
-                            return ForgeDirection.getOrientation(4);
+                            return EnumFacing.byHorizontalIndex(4);
                         case 3:
-                            return ForgeDirection.getOrientation(5);
+                            return EnumFacing.byHorizontalIndex(5);
                         case 4:
-                            return ForgeDirection.getOrientation(2);
+                            return EnumFacing.byHorizontalIndex(2);
                         case 5:
-                            return ForgeDirection.getOrientation(3);
+                            return EnumFacing.byHorizontalIndex(3);
                     }
             }
         }

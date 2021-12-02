@@ -1,5 +1,6 @@
 package train.blocks.switchstand;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
@@ -9,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import train.blocks.TCBlocks;
 
 import java.util.Random;
@@ -37,19 +38,19 @@ public class TileSwitchStand extends TileRenderFacing {
         /**
          * Remove any block on top of the wind mill
          */
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (updateTicks % 20 == 0) {
-                if (!this.worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord)) {
-                    Block block = CommonUtil.getBlockAt(worldObj, this.xCoord, this.yCoord + 1, this.zCoord);
+                if (!this.world.isAirBlock(new BlockPos(pos.getX(),pos.getY() + 1, pos.getZ()))) {
+                    Block block = CommonUtil.getBlockAt(world, pos.getX(), pos.getY() + 1, pos.getZ());
                     if (block != null) {
-                        EntityItem entityitem = new EntityItem(worldObj, this.xCoord, this.yCoord + 1, this.zCoord, new ItemStack(Item.getItemFromBlock(TCBlocks.highStarSwitch), 1));
+                        EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY() + 1, pos.getZ(), new ItemStack(Item.getItemFromBlock(TCBlocks.highStarSwitch), 1));
                         float f3 = 0.05F;
                         entityitem.motionX = (float) rand.nextGaussian() * f3;
                         entityitem.motionY = (float) rand.nextGaussian() * f3 + 0.2F;
                         entityitem.motionZ = (float) rand.nextGaussian() * f3;
-                        worldObj.spawnEntityInWorld(entityitem);
+                        world.spawnEntity(entityitem);
                     }
-                    this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+                    this.world.setBlockToAir(new BlockPos(pos.getX(),pos.getY(),pos.getZ()));
                 }
             }
         }

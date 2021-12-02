@@ -22,7 +22,7 @@ public class BlockWindMill extends BlockDynamic {
 	private IIcon texture;
 
 	public BlockWindMill() {
-		super(Material.wood,false);
+		super(Material.WOOD,false);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 2F, 1F);

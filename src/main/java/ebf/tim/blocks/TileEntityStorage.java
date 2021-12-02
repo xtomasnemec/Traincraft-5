@@ -433,7 +433,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     public int getInventoryStackLimit() {return 64;}
     /**checks if the player can interact with this container, usually used for a check if it's already in use or not*/
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {return true;}
+    public boolean isUsableByPlayer(EntityPlayer p_70300_1_) {return true;}
 
     /**
      * <h2>slot limiter</h2>
@@ -502,10 +502,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
      */
     /**for running functionality when opening the inventory, such as setting it as in use.*/
     @Override
-    public void openInventory() {}
+    public void openInventory(EntityPlayer p) {}
     /**for running functionality when closing the inventory, such as setting it as not in use.*/
     @Override
-    public void closeInventory() {}
+    public void openInventory(EntityPlayer p) {}
     @Override
     public ItemStack getStackInSlotOnClosing(int p_70304_1_) {return null;}
     @Override

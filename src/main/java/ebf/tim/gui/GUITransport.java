@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -111,8 +111,8 @@ public class GUITransport extends GUIContainerNoNEI {
 
         //draw the text that goes over everything
 
-        drawTextOutlined(fontRendererObj, CommonUtil.translate(transport.transportName()+ ".name"), 10, -30+yCenter, 16777215);
-        drawTextOutlined(fontRendererObj, I18n.format("container.inventory", new Object()), guiLeft+120, guiTop+70, 16777215);
+        drawTextOutlined(fontRenderer, CommonUtil.translate(transport.transportName()+ ".name"), 10, -30+yCenter, 16777215);
+        drawTextOutlined(fontRenderer, I18n.format("container.inventory", new Object()), guiLeft+120, guiTop+70, 16777215);
 
         //draw the buttons.
         for (GUIButton b : buttons){
@@ -357,8 +357,8 @@ public class GUITransport extends GUIContainerNoNEI {
             ClientUtil.drawTexturedRect(guiLeft + 113, guiTop + 16 - i1, 176, 14 - i1, 16, i1);
         }
 
-        drawTextOutlined(fontRendererObj, "burn time: " + transport.getDataWatcher().getWatchableObjectInt(13), 10, 70, 16777215);
-        drawTextOutlined(fontRendererObj, "boiler heat: " + FuelHandler.getBoilerHeat(transport), 10, 80, 16777215);
+        drawTextOutlined(fontRenderer, "burn time: " + transport.getDataWatcher().getWatchableObjectInt(13), 10, 70, 16777215);
+        drawTextOutlined(fontRenderer, "boiler heat: " + FuelHandler.getBoilerHeat(transport), 10, 80, 16777215);
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
@@ -473,35 +473,35 @@ public class GUITransport extends GUIContainerNoNEI {
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
+                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
                                 new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
+                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
                                 new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
+                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
                                 new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
+                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
                                 new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
+                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
                                 new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
 

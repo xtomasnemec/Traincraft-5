@@ -190,12 +190,12 @@ public class GUIPaintBucket extends GuiScreen {
         GL11.glColor4f(1F, 1F, 1F, 0.5F);
         float offsetFromScreenLeft = width * 0.5f;
 
-        int longest =fontRendererObj.getStringWidth(currentTransportSkin.getName());
+        int longest =fontRenderer.getStringWidth(currentTransportSkin.getName());
 
         if(currentTransportSkin.getDescription()!=null) {
             for (String s : currentTransportSkin.getDescription()){
-                if(fontRendererObj.getStringWidth(s)>longest){
-                    longest=fontRendererObj.getStringWidth(s);
+                if(fontRenderer.getStringWidth(s)>longest){
+                    longest=fontRenderer.getStringWidth(s);
                 }
             }
         }
@@ -203,14 +203,14 @@ public class GUIPaintBucket extends GuiScreen {
 
         EventManager.drawTooltipBox((int)(width*0.175f),(int)(height*0.56f),(int)(width*0.5525f),(int)(height*0.085f),  ClientProxy.WAILA_BGCOLOR, ClientProxy.WAILA_GRADIENT1, ClientProxy.WAILA_GRADIENT2,100);
 
-        fontRendererObj.drawString(CommonUtil.translate(currentTransportSkin.getName()),
-                (int)(offsetFromScreenLeft - fontRendererObj.getStringWidth(currentTransportSkin.getName())*0.65f),
+        fontRenderer.drawString(CommonUtil.translate(currentTransportSkin.getName()),
+                (int)(offsetFromScreenLeft - fontRenderer.getStringWidth(currentTransportSkin.getName())*0.65f),
                 (int)(height*0.59f),ClientProxy.WAILA_FONTCOLOR,false);
 
         if(currentTransportSkin.getDescription()!=null) {
             for(int i = 0; i< currentTransportSkin.getDescription().length; i++) {
-                fontRendererObj.drawString(currentTransportSkin.getDescription()[i],
-                        (int) (offsetFromScreenLeft - fontRendererObj.getStringWidth(currentTransportSkin.getDescription()[i]) * 0.5f),
+                fontRenderer.drawString(currentTransportSkin.getDescription()[i],
+                        (int) (offsetFromScreenLeft - fontRenderer.getStringWidth(currentTransportSkin.getDescription()[i]) * 0.5f),
                         (int) ((height * 0.1f) * 7)+(10*i), ClientProxy.WAILA_FONTCOLOR, false);
             }
         }

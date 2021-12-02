@@ -22,7 +22,7 @@ public class ContainerOpenHearthFurnace extends TransportSlotManager {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
-		return hostInventory.isUseableByPlayer(entityplayer);
+		return hostInventory.isUsableByPlayer(entityplayer);
 	}
 
 

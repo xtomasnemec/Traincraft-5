@@ -398,9 +398,9 @@ public class ModelWatertransp extends ModelBase {
 				(((GenericRailTransport) entity).getTankInfo(null)[0].fluid.amount) != 0) {
 			GL11.glTranslatef(0.0f,
 					((((GenericRailTransport) entity).getTankInfo(null)[0].fluid.amount/1000f)*0.03f)+0.0f, 0.0f);
-    		Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+    		Minecraft.getMinecraft().entityRenderer.disableLightmap();
     		box58.render(f5);
-    		Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+    		Minecraft.getMinecraft().entityRenderer.enableLightmap();
 		}
 		GL11.glPopMatrix();
 	}

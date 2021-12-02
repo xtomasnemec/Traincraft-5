@@ -18,6 +18,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -44,7 +45,7 @@ public class TextureManager {
 
 
     //public static ByteBuffer renderPixels = ByteBuffer.allocateDirect((4096*4096)*4);
-    private static int  skyLight;
+    private static float skyLight;
     private static Set<?> MCResourcePacks;
     public static Map<String, Integer> tmtBoundTextures = new HashMap<>();
     private static Integer currentKey;
@@ -109,10 +110,11 @@ public class TextureManager {
 
 
     /**Lighting fix*/
-    public static void adjustLightFixture(World world, int i, int j, int k) {
-        skyLight = world.getSkyBlockTypeBrightness(EnumSkyBlock.BLOCK, i, j, k);
-        skyLight=world.getSkyBlockTypeBrightness(EnumSkyBlock.SKY, i, j, k) << 20 | (skyLight<0?0:skyLight) << 4;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit,  skyLight % 65536,  skyLight * 0.00001525878f);
+    public static void adjustLightFixture(World world, int x, int y, int z) {
+        skyLight = world.getCombinedLight(new BlockPos(x,y,z), 0);
+        float j = skyLight % 65536;
+        float k = skyLight / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
         GL11.glColor4f(1, 1, 1, 1);//fixes alpha layering bugs with other mods that don't clear their GL cache
     }
 

@@ -56,7 +56,7 @@ public class TileTrainWbench extends TileEntityStorage {
 
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		if (worldObj == null || worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
 		}

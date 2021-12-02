@@ -67,13 +67,13 @@ public class GUIAdminBook extends GuiScreen {
         public void markDirty() { }
 
         @Override
-        public boolean isUseableByPlayer(EntityPlayer p_70300_1_) { return false; }
+        public boolean isUsableByPlayer(EntityPlayer p_70300_1_) { return false; }
 
         @Override
-        public void openInventory() { }
+        public void openInventory(EntityPlayer p) { }
 
         @Override
-        public void closeInventory() { }
+        public void openInventory(EntityPlayer p) { }
 
         @Override
         public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) { return false; }

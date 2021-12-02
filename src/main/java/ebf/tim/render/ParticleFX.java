@@ -297,7 +297,7 @@ public class ParticleFX {
             }
             GL11.glRotated(180f,0,1,0);
             GL11.glDisable(GL11.GL_LIGHTING);
-            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+            Minecraft.getMinecraft().entityRenderer.disableLightmap();
             GL11.glDepthMask(false);
             GL11.glDisable(GL_CULL_FACE);
             glAlphaFunc(GL_LEQUAL, 1f);
@@ -314,7 +314,7 @@ public class ParticleFX {
             GL11.glEnable(GL_TEXTURE_2D);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
-            Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+            Minecraft.getMinecraft().entityRenderer.enableLightmap();
             GL11.glDepthMask(true);
             //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -341,7 +341,7 @@ public class ParticleFX {
                     lamp.rotationPointZ-(size*0.5f));
 
             GL11.glDisable(GL11.GL_LIGHTING);
-            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+            Minecraft.getMinecraft().entityRenderer.disableLightmap();
             GL11.glDepthMask(false);
             glAlphaFunc(GL_LEQUAL, 1f);
             GL11.glDisable(GL_CULL_FACE);

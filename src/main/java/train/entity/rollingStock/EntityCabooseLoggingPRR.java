@@ -77,7 +77,7 @@ public class EntityCabooseLoggingPRR extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 new ItemStack(TiMOres.ingotSteel, 5), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2),
-                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Blocks.crafting_table, 1)        };
+                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Blocks.CRAFTING_TABLE, 1)        };
     }
 
 

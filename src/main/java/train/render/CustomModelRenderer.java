@@ -65,7 +65,7 @@ public class CustomModelRenderer extends ModelRendererTurbo {
 			return;
 		}
 		if (ignoresLighting){
-			Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+			Minecraft.getMinecraft().entityRenderer.disableLightmap();
 		}
 		if(noCull){
 			GL11.glDisable(GL11.GL_CULL_FACE);
@@ -94,7 +94,7 @@ public class CustomModelRenderer extends ModelRendererTurbo {
 			GL11.glEnable(GL11.GL_CULL_FACE);
 		}
 		if (ignoresLighting){
-			Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+			Minecraft.getMinecraft().entityRenderer.enableLightmap();
 		}
 	}
 

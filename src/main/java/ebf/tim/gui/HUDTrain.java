@@ -43,8 +43,8 @@ public class HUDTrain extends GuiScreen {
             if (Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntityTrainCore) {
                 EntityTrainCore trainEntity = (EntityTrainCore) Minecraft.getMinecraft().thePlayer.ridingEntity;
 
-                if(fontRendererObj==null){
-                    fontRendererObj=Minecraft.getMinecraft().fontRenderer;
+                if(fontRenderer==null){
+                    fontRenderer=Minecraft.getMinecraft().fontRenderer;
                 }
 
                 /**displays the debug GUI with the following information:
@@ -52,9 +52,9 @@ public class HUDTrain extends GuiScreen {
                  * Accelerator State, 
                  * speed,
                  * and if the brakes, train, and lamp are on or off*/
-                fontRendererObj.drawString("Entity name: "+StatCollector.translateToLocal(trainEntity.transportName()), 8, 8, 4210752);
-                fontRendererObj.drawString("DEBUG INFO:", 8, 18, 4210752);
-                fontRendererObj.drawString("Accelerator State: " + -trainEntity.getDataWatcher().getWatchableObjectInt(18), 8, 28, 4210752);
+                fontRenderer.drawString("Entity name: "+StatCollector.translateToLocal(trainEntity.transportName()), 8, 8, 4210752);
+                fontRenderer.drawString("DEBUG INFO:", 8, 18, 4210752);
+                fontRenderer.drawString("Accelerator State: " + -trainEntity.getDataWatcher().getWatchableObjectInt(18), 8, 28, 4210752);
                 //speed is velocity *20 to get meters per second. convert to km/h by dividing by 3.6, or mph by 2.236936293
                 double speed =( Math.sqrt(trainEntity.getVelocity()) * (CommonProxy.realSpeed?120D*1.25D:120D));
                 speed*=ClientProxy.speedInKmh?1:0.621371;
@@ -62,17 +62,17 @@ public class HUDTrain extends GuiScreen {
                 speedDisplay=speedDisplay.substring(0,4);
 
                 if(ClientProxy.speedInKmh) {
-                    fontRendererObj.drawString("speed: " + speedDisplay + "km/h", 8, 38, 4210752);
+                    fontRenderer.drawString("speed: " + speedDisplay + "km/h", 8, 38, 4210752);
                 } else {
-                    fontRendererObj.drawString("speed: " + speedDisplay + "mph", 8, 38, 4210752);
+                    fontRenderer.drawString("speed: " + speedDisplay + "mph", 8, 38, 4210752);
                 }
-                fontRendererObj.drawString( "brake is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.BRAKE))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 48, 4210752);
-                fontRendererObj.drawString( "train is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.RUNNING))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 58, 4210752);
-                fontRendererObj.drawString( "lamp is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.LAMP))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 68, 4210752);
+                fontRenderer.drawString( "brake is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.BRAKE))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 48, 4210752);
+                fontRenderer.drawString( "train is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.RUNNING))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 58, 4210752);
+                fontRenderer.drawString( "lamp is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.LAMP))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 68, 4210752);
 
                 GL11.glPushMatrix();
                 GL11.glScalef(0.75f,0.75f,0.75f);
-                fontRendererObj.drawString("This Debug GUI is a placeholder to show info of the train until a real GUI is ready", 8, 1, 0);
+                fontRenderer.drawString("This Debug GUI is a placeholder to show info of the train until a real GUI is ready", 8, 1, 0);
                 GL11.glPopMatrix();
                 //draw the gui background color
                 //GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

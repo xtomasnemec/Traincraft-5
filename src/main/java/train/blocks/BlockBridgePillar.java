@@ -29,7 +29,7 @@ public class BlockBridgePillar extends BlockDynamic {
 	private IIcon texture;
 
 	public BlockBridgePillar() {
-		super(Material.wood, false);
+		super(Material.WOOD, false);
 		setCreativeTab(Traincraft.tcTab);
 	}
 

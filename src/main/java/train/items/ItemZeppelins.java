@@ -48,7 +48,7 @@ public class ItemZeppelins extends Item {
 		MovingObjectPosition movingobjectposition = world.rayTraceBlocks(vec3d, vec3d1, true);
 		if (movingobjectposition == null) { return itemstack; }
 		if (!world.isRemote && !ConfigHandler.ENABLE_ZEPPELIN) {
-			if (entityplayer != null) entityplayer.addChatMessage(new ChatComponentText("Zeppelin has been deactivated by the OP"));
+			if (entityplayer != null) entityplayer.sendMessage(new TextComponentString("Zeppelin has been deactivated by the OP"));
 			return itemstack;
 		}
 		if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {

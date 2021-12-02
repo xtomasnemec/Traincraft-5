@@ -179,13 +179,13 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(TiMItems.chimneyIron, 1), new ItemStack(Items.stick, 2), null,
+                new ItemStack(TiMItems.chimneyIron, 1), new ItemStack(Items.STICK, 2), null,
                 new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(TiMItems.cabinWood, 1),
                 new ItemStack(TiMItems.wheelIron, 3), new ItemStack(TiMItems.frameWood, 2), null
         };
 
 //        return new ItemStack[]{
-//                new ItemStack(TiMItems.chimneyIron, 1), new ItemStack(Items.stick, 2), null,
+//                new ItemStack(TiMItems.chimneyIron, 1), new ItemStack(Items.STICK, 2), null,
 //                new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(TiMItems.cabinWood, 1),
 //                new ItemStack(TiMItems.wheelIron, 3), new ItemStack(TiMItems.frameWood, 2), null
 //        };

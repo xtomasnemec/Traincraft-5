@@ -1,5 +1,10 @@
 package train.blocks.switchstand;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
@@ -11,11 +16,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import train.Traincraft;
 
 import java.util.List;
@@ -24,17 +29,15 @@ import java.util.Random;
 public class BlockSwitchStand extends BlockDynamic {
 
 	public BlockSwitchStand() {
-		super(Material.rock,false);
+		super(Material.ROCK,false);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
 		//this.setBlockBounds(0.5F , 0.0F, 0.5F , 0.5F ,  2.0F, 0.5F);
 	}
 
-	@Override
 	public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_) {
 	}
 
-	@Override
 	public boolean hasTileEntity(int metadata) {
 		return true;
 	}
@@ -44,12 +47,10 @@ public class BlockSwitchStand extends BlockDynamic {
 		return false;
 	}
 
-	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
-	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileSwitchStand(this);
 	}
@@ -59,7 +60,6 @@ public class BlockSwitchStand extends BlockDynamic {
 		return new TileSwitchStand(this);
 	}
 
-	@Override
 	public int getRenderType() {
 		return -1;
 	}
@@ -68,22 +68,22 @@ public class BlockSwitchStand extends BlockDynamic {
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
-	@Override
+
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 
 	}
 
 
-	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack stack) {
-		super.onBlockPlacedBy(world, i, j, k, entityliving, stack);
-		TileSwitchStand te = (TileSwitchStand) world.getTileEntity(i, j, k);
+		super.onBlockPlacedBy(world, new BlockPos(i,j,k), entityliving, stack)
+		TileSwitchStand te = (TileSwitchStand) world.getTileEntity(new BlockPos(i,j,k));
 		if (te != null) {
 			int dir = CommonUtil.floorDouble((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-			te.setFacing(ForgeDirection.getOrientation(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
-			world.markBlockForUpdate(i, j, k);
+			te.setFacing(EnumFacing.getDirectionFromEntityLiving(new BlockPos(i,j,k), entityliving).getOpposite());
+			world.markBlockRangeForRenderUpdate(new BlockPos(i, j, k),new BlockPos(i, j, k));
 		}
 	}
+
 	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
 	{
 		if (p_149727_1_.isRemote)
@@ -95,91 +95,90 @@ public class BlockSwitchStand extends BlockDynamic {
 			int i1 = p_149727_1_.getBlockMetadata(p_149727_2_, p_149727_3_, p_149727_4_);
 			int j1 = i1 & 7;
 			int k1 = 8 - (i1 & 8);
-			p_149727_1_.setBlockMetadataWithNotify(p_149727_2_, p_149727_3_, p_149727_4_, j1 + k1, 3);
-			p_149727_1_.playSoundEffect((double)p_149727_2_ + 0.5D, (double)p_149727_3_ + 0.5D, (double)p_149727_4_ + 0.5D, "random.click", 0.3F, k1 > 0 ? 0.6F : 0.5F);
-			p_149727_1_.notifyBlocksOfNeighborChange(p_149727_2_, p_149727_3_, p_149727_4_, this);
+			CommonUtil.setBlockMetadata(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_, j1 + k1, 3);
+			p_149727_1_.playSound(p_149727_5_, p_149727_2_ + 0.5, p_149727_3_ + 0.5, p_149727_4_ + 0.5, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3f, k1>0?0.6f:0.5f);
+			p_149727_1_.notifyNeighborsOfStateChange(new BlockPos(p_149727_2_, p_149727_3_, p_149727_4_), this, true);
 
 			if (j1 == 1)
 			{
-				p_149727_1_.notifyBlocksOfNeighborChange(p_149727_2_ - 1, p_149727_3_, p_149727_4_, this);
+				p_149727_1_.notifyNeighborsOfStateChange(new BlockPos(p_149727_2_ - 1, p_149727_3_, p_149727_4_), this, true);
 			}
 			else if (j1 == 2)
 			{
-				p_149727_1_.notifyBlocksOfNeighborChange(p_149727_2_ + 1, p_149727_3_, p_149727_4_, this);
+				p_149727_1_.notifyNeighborsOfStateChange(new BlockPos(p_149727_2_ + 1, p_149727_3_, p_149727_4_), this, true);
 			}
 			else if (j1 == 3)
 			{
-				p_149727_1_.notifyBlocksOfNeighborChange(p_149727_2_, p_149727_3_, p_149727_4_ - 1, this);
+				p_149727_1_.notifyNeighborsOfStateChange(new BlockPos(p_149727_2_, p_149727_3_, p_149727_4_ - 1), this, true);
 			}
 			else if (j1 == 4)
 			{
-				p_149727_1_.notifyBlocksOfNeighborChange(p_149727_2_, p_149727_3_, p_149727_4_ + 1, this);
+				p_149727_1_.notifyNeighborsOfStateChange(new BlockPos(p_149727_2_, p_149727_3_, p_149727_4_ + 1), this, true);
 			}
 			else if (j1 != 5 && j1 != 6)
 			{
 				if (j1 == 0 || j1 == 7)
 				{
-					p_149727_1_.notifyBlocksOfNeighborChange(p_149727_2_, p_149727_3_ + 1, p_149727_4_, this);
+					p_149727_1_.notifyNeighborsOfStateChange(new BlockPos(p_149727_2_, p_149727_3_ + 1, p_149727_4_), this, true);
 				}
 			}
 			else
 			{
-				p_149727_1_.notifyBlocksOfNeighborChange(p_149727_2_, p_149727_3_ - 1, p_149727_4_, this);
+				p_149727_1_.notifyNeighborsOfStateChange(new BlockPos(p_149727_2_, p_149727_3_ - 1, p_149727_4_), this, true);
 			}
 
 			return true;
 		}
 	}
-
-	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		if ((p_149749_6_ & 8) > 0)
+		if (CommonUtil.getBlockFacing(world, pos.getX(), pos.getY(), pos.getZ()) > 0)
 		{
-			p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_, p_149749_3_, p_149749_4_, this);
-			int i1 = p_149749_6_ & 7;
+			world.notifyNeighborsOfStateChange(pos, this, true);
+			int i1 = CommonUtil.getBlockFacing(world, pos.getX(), pos.getY(), pos.getZ()) & 7;
 
 			if (i1 == 1)
 			{
-				p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_ - 1, p_149749_3_, p_149749_4_, this);
+				world.notifyNeighborsOfStateChange(pos, this, true);
 			}
 			else if (i1 == 2)
 			{
-				p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_ + 1, p_149749_3_, p_149749_4_, this);
+				world.notifyNeighborsOfStateChange(pos, this, true);
 			}
 			else if (i1 == 3)
 			{
-				p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_, p_149749_3_, p_149749_4_ - 1, this);
+				world.notifyNeighborsOfStateChange(pos, this, true);
 			}
 			else if (i1 == 4)
 			{
-				p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_, p_149749_3_, p_149749_4_ + 1, this);
+				world.notifyNeighborsOfStateChange(pos, this, true);
 			}
 			else if (i1 != 5 && i1 != 6)
 			{
 				if (i1 == 0 || i1 == 7)
 				{
-					p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_, p_149749_3_ + 1, p_149749_4_, this);
+					world.notifyNeighborsOfStateChange(pos, this, true);
 				}
 			}
 			else
 			{
-				p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_, p_149749_3_ - 1, p_149749_4_, this);
+				world.notifyNeighborsOfStateChange(pos, this, true);
 			}
 		}
 
-		super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+		super.breakBlock(world, pos, state);
 	}
 
 
 
 	public int isProvidingWeakPower(IBlockAccess p_149709_1_, int p_149709_2_, int p_149709_3_, int p_149709_4_, int p_149709_5_)
-	{
-		return (p_149709_1_.getBlockMetadata(p_149709_2_, p_149709_3_, p_149709_4_) & 8) > 0 ? 15 : 0;
+	{ //CommonUtil.getBlockFacing
+		return CommonUtil.getBlockFacing(p_149709_1_, p_149709_2_, p_149709_3_, p_149709_4_) > 0 ? 15 : 0;
 	}
 
 	public int isProvidingStrongPower(IBlockAccess p_149748_1_, int p_149748_2_, int p_149748_3_, int p_149748_4_, int p_149748_5_)
 	{
-		int i1 = p_149748_1_.getBlockMetadata(p_149748_2_, p_149748_3_, p_149748_4_);
+		int i1 = CommonUtil.getBlockFacing(p_149748_1_, p_149748_2_, p_149748_3_, p_149748_4_);
 
 		if ((i1 & 8) == 0)
 		{

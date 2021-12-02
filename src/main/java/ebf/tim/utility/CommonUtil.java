@@ -1,18 +1,23 @@
 package ebf.tim.utility;
 
 
+import com.google.common.collect.ImmutableMap;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockProperties;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.codec.binary.Base64;
@@ -62,12 +67,28 @@ public class CommonUtil {
         world.setBlockState(new BlockPos(x,y,z), block.getDefaultState());
     }
 
-    public static void setBlock(World w, int x, int y, int z, Block b){
+    public static void setBlock(IBlockAccess w, int x, int y, int z, Block b){
         w.setBlock(x,y,z,b);
     }
 
-    public static void setBlockMeta(World w, int x, int y, int z, int meta){
-        w.setBlockMetadataWithNotify(x,y,z,meta,2);
+    public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
+        w.setBlockMetadataWithNotify(x,y,z,meta,2); //might need one without the two at the end? check BlockSwitchStand.java Line 97
+    }
+
+    public static void markBlockForUpdate(World w, int x, int y, int z){
+        w.scheduleBlockUpdate(new BlockPos(x,y,z), w.getBlockState(new BlockPos(x,y,z)).getBlock(),0,1);
+    }
+
+    public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
+        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)).getProperties(), "facing");
+    }
+
+    public static int getRailMeta(IBlockAccess w, EntityMinecart cart, int x, int y, int z){
+        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)).getProperties(), "shape");
+    }
+
+    private static int getPropertyKeyInt(ImmutableMap<IProperty<?>, Comparable<?>> property, String key){
+        return property.containsKey(key)?(int)property.get(key):0;
     }
 
     public static void setBlock(World w, int x, int y, int z, Block b, int meta){
@@ -498,15 +519,15 @@ public class CommonUtil {
         //be sure there is a rail at the location
         if (isRailBlockAt(worldObj, posX,posY,posZ) && !worldObj.isRemote) {
             //define the direction of the track
-            int railMeta=((BlockRailBase)getBlockAt(worldObj,posX,posY,posZ)).getBasicRailMetadata(worldObj, null,posX,posY,posZ);
+            int railMeta=CommonUtil.getRailMeta(worldObj, null,posX,posY,posZ);
             //define the angle between the player and the track.
             // this is more reliable than player direction because player goes from -360 to 360 for no real reason.
             float rotation =atan2degreesf(posX-playerEntity.posX, posZ-playerEntity.posZ);
 
             if(railMeta==0){
                 //check if the train fits on the track
-                if (!isRailBlockAt(worldObj, posX, posY, posZ + MathHelper.floor_float(entity.rotationPoints()[0]+ 1.0f ))
-                        || !isRailBlockAt(worldObj, posX, posY, posZ + MathHelper.floor_float(entity.rotationPoints()[1]- 1.0f ))) {
+                if (!isRailBlockAt(worldObj, posX, posY, posZ + Math.floor(entity.rotationPoints()[0]+ 1.0f ))
+                        || !isRailBlockAt(worldObj, posX, posY, posZ + Math.floor(entity.rotationPoints()[1]- 1.0f ))) {
                     playerEntity.sendMessage(new TextComponentString("Place on a straight piece of track that is of sufficient length"));
                     return false;
                 }

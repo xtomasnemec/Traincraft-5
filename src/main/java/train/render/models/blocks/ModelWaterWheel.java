@@ -1,31 +1,32 @@
 package train.render.models.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import ebf.tim.utility.CommonUtil;
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 import train.blocks.waterwheel.TileWaterWheel;
 
 @SideOnly(Side.CLIENT)
 public class ModelWaterWheel extends ModelBase {
-	private IModelCustom modelWaterWheel;
+	private ModelRendererTurbo modelWaterWheel;
 	private long lastframe;
 	private float wheel;
 	private int l;
 	public float wheel1 = 0.4188790204786391F;
 
 	public ModelWaterWheel() {
-		modelWaterWheel = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "water_wheel.obj"));
+		modelWaterWheel = new ModelRendererTurbo(this);
+		modelWaterWheel.addObj(Info.modelPrefix + "water_wheel.obj");
 	}
 
 	public void render() {
-		modelWaterWheel.renderAll();
+		modelWaterWheel.render();
 	}
 
 	public void render(TileEntity waterWheel, double x, double y, double z) {
@@ -33,7 +34,7 @@ public class ModelWaterWheel extends ModelBase {
 		GL11.glPushMatrix();
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
-		if(waterWheel.getWorldObj()==null){
+		if(waterWheel.getWorld()==null){
 			GL11.glTranslated( x,  y+0.1f,  z);
 			GL11.glRotatef(180,0,0,1);
 			GL11.glScalef(0.25f, 0.25f, 0.5f);
@@ -51,8 +52,8 @@ public class ModelWaterWheel extends ModelBase {
 		float f4 = (float) (j & 255) / 255.0F;
 		GL11.glColor4f(f1 * f2, f1 * f3, f1 * f4, 1);
 		// Render the object, using modelTutBox.renderAll();
-		if(waterWheel.getWorldObj()!=null) {
-			int facing = waterWheel.getWorldObj().getBlockMetadata(waterWheel.xCoord, waterWheel.yCoord, waterWheel.zCoord);
+		if(waterWheel.getWorld()!=null) {
+			int facing = CommonUtil.getBlockFacing(waterWheel.getWorld(), waterWheel.getPos().getX(),waterWheel.getPos().getY(), waterWheel.getPos().getZ());
 			if (facing == 3) {
 				GL11.glScalef(0.7f, 0.5f, 0.5f);
 				GL11.glScalef(1f, 0.36f, 0.36f);

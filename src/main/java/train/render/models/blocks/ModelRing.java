@@ -7,23 +7,23 @@
 
 package train.render.models.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import net.minecraft.client.model.ModelBase;
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 
-public class ModelRing extends ModelBase  {
-private IModelCustom ring;
+public class ModelRing extends ModelBase {
+private ModelRendererTurbo ring;
 	
 	public ModelRing() {
-		ring = new AdvancedModelLoader().loadModel(new ResourceLocation(Info.modelPrefix + "ring.obj"));
+		ring = new ModelRendererTurbo(this);
+		ring.addObj(Info.modelPrefix + "ring.obj");
 	}
 	
 	public void render() {
-		ring.renderAll();
+		ring.render();
 	}
 	
 	public void render(int color) {

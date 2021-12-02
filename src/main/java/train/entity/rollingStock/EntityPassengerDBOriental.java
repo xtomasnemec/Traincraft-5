@@ -76,7 +76,7 @@ public class EntityPassengerDBOriental extends GenericRailTransport {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 new ItemStack(Blocks.planks, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2),
-                new ItemStack(Items.stick, 2), null, new ItemStack(TiMItems.cabinWood, 1),
+                new ItemStack(Items.STICK, 2), null, new ItemStack(TiMItems.cabinWood, 1),
                 null, null, new ItemStack(TiMItems.seatsWooden, 1)        };
     }
 

@@ -155,7 +155,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 				flag1 = true;
 			}
 			else {
-				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+				this.CommonUtil.markBlockForUpdate(world, this.xCoord, this.yCoord, this.zCoord);
 			}
 
 			if (getSlotIndexByID(402).getStack() != null) {
@@ -171,14 +171,14 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 						flag1 = true;
 
 						this.markDirty();
-						this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+						this.CommonUtil.markBlockForUpdate(world, this.xCoord, this.yCoord, this.zCoord);
 					}
 				}
 			}
 
 			if (updateTicks % 8 == 0){
 				this.markDirty();
-				this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+				this.CommonUtil.markBlockForUpdate(world, this.xCoord, this.yCoord, this.zCoord);
 			}
 			if (distilBurnTime > 0) {
 				distilBurnTime--;
@@ -247,7 +247,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 				outputPlastic(plasticStack, getSlotIndexByID(400).getStack().getItem() == TiMFluids.bucketDiesel);
 
 			this.markDirty();
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+			this.CommonUtil.markBlockForUpdate(world, this.xCoord, this.yCoord, this.zCoord);
 		}
 
 		if (getSlotIndexByID(400).getStack().getItem().hasContainerItem(getSlotIndexByID(400).getStack())) {
@@ -295,7 +295,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 			wasBurning=isBurning();
 		} else {
 			if (this.worldObj != null) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				CommonUtil.markBlockForUpdate(world, xCoord, yCoord, zCoord);
 				worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
 				this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, CommonUtil.getBlockAt(worldObj, xCoord, yCoord, zCoord));
 			}

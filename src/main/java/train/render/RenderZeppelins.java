@@ -3,7 +3,9 @@ package train.render;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+
+import net.minecraft.client.renderer.entity.RenderManager;
+import java.lang.Math;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import train.entity.zeppelin.AbstractZeppelin;
@@ -20,7 +22,9 @@ public class RenderZeppelins extends Render {
 	private static final ResourceLocation oneBalloon = new ResourceLocation(Info.resourceLocation, Info.zeppelinTexturePrefix + "zeppelin_one_balloon.png");
 	private static final ResourceLocation twoBalloon = new ResourceLocation(Info.resourceLocation, Info.zeppelinTexturePrefix + "zeppelin_two_balloons.png");
 
-	public RenderZeppelins() { }
+	public RenderZeppelins(RenderManager renderManager) {
+		super(renderManager);
+	}
 
 	private void func_157_a(AbstractZeppelin entityzepplin, double d, double d1, double d2, float f, float f1) {
 		GL11.glPushMatrix();
@@ -35,7 +39,7 @@ public class RenderZeppelins extends Render {
 			f3 = 0.0F;
 		}
 		if (f2 > 0.0F) {
-			GL11.glRotatef(((MathHelper.sin(f2) * f2 * f3) / 10F) * (float) entityzepplin.boatRockDirection, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef((float)((Math.sin(f2) * f2 * f3) / 10F) * (float) entityzepplin.boatRockDirection, 1.0F, 0.0F, 0.0F);
 		}
 
 		/**

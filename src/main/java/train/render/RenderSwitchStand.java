@@ -18,11 +18,11 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 	private static final ResourceLocation texture2 = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");
 
 	@Override
-	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float tick) {
+	public void render(TileEntity tileEntity, double x, double y, double z, float tick, int destroyStage, float alpha) {
 		if(tileEntity==null){return;}
 		GL11.glPushMatrix();
 
-		if(tileEntity.getWorldObj()==null){
+		if(tileEntity.getWorld()==null){
 			GL11.glTranslated( x+0.2,  y,  z);
 			GL11.glScalef(0.65f,0.65f,0.65f);
 		} else {
@@ -42,7 +42,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 			}
 		}
 
-		if(tileEntity.getWorldObj()==null) {
+		if(tileEntity.getWorld()==null) {
 			TextureManager.bindTexture(texture2);
 			//this is stupid levels of finicky
 			if(ClientProxy.modelSwitch2.bodyModel==null){
@@ -56,7 +56,8 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 					GL11.glPopMatrix();
 				}
 			}
-		} else if (CommonUtil.getBlockAt(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).isProvidingWeakPower(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0) > 0) {
+		} else if (CommonUtil.getBlockAt(tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getX())
+		.isProvidingWeakPower(tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 0) > 0) {
 			TextureManager.bindTexture(texture2);
 			if(ebf.tim.utility.ClientProxy.railSkin==3){
 				GL11.glTranslatef(0, 0.09f, 0);

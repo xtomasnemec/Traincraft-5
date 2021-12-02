@@ -8,6 +8,7 @@ import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -18,7 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
+public class CollisionBox extends MultiPartEntityPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
     public GenericRailTransport host;
     public CollisionBox(GenericRailTransport transport) {
         super(transport, HitboxDynamic.dragonBoxName, transport.getHitboxSize()[2],transport.getHitboxSize()[1]);
@@ -42,9 +43,9 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
     //check often to be sure the host actually exists and didnt somehow get deleted in such a way that would make it skip hitbox removal.
     @Override
     public void onUpdate(){
-        if(worldObj.isRemote && ticksExisted%10==0){
-            if(Minecraft.getMinecraft().thePlayer.ridingEntity instanceof GenericRailTransport ||
-                    Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySeat){
+        if(world.isRemote && ticksExisted%10==0){
+            if(Minecraft.getMinecraft().player.ridingEntity instanceof GenericRailTransport ||
+                    Minecraft.getMinecraft().player.ridingEntity instanceof EntitySeat){
                 this.boundingBox.maxX =0;
                 this.boundingBox.maxZ =0;
                 this.boundingBox.maxY =0;
@@ -55,16 +56,16 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
             }
         }
         if(ticksExisted%100==0){
-            if(!(worldObj.getEntityByID(((Entity)entityDragonObj).getEntityId()) instanceof GenericRailTransport)){
+            if(!(world.getEntityByID(((Entity)parent).getEntityId()) instanceof GenericRailTransport)){
                 this.setDead();
-                worldObj.removeEntity(this);
+                world.removeEntity(this);
             }
         }
     }
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float p_70097_2_){
-        if(worldObj.isRemote){
-            TrainsInMotion.keyChannel.sendToServer(new PacketRemove(host.getEntityId(), damageSource==null?-1:damageSource.getEntity().getEntityId()));
+        if(world.isRemote){
+            TrainsInMotion.keyChannel.sendToServer(new PacketRemove(host.getEntityId(), damageSource==null?-1:damageSource.getImmediateSource().getEntityId()));
         }
         return this.host.attackEntityFromPart(this, damageSource, p_70097_2_);
     }
@@ -138,13 +139,13 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
     public void markDirty() {host.markDirty();}
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {return host.isUseableByPlayer(p_70300_1_);}
+    public boolean isUsableByPlayer(EntityPlayer p_70300_1_) {return host.isUsableByPlayer(p_70300_1_);}
 
     @Override
-    public void openInventory() {host.openInventory();}
+    public void openInventory(EntityPlayer p) {host.openInventory(p);}
 
     @Override
-    public void closeInventory() {host.closeInventory();}
+    public void closeInventory(EntityPlayer p) {host.closeInventory(p);}
 
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {

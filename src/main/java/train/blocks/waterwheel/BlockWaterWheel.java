@@ -18,7 +18,7 @@ import java.util.Random;
 public class BlockWaterWheel extends BlockDynamic {
 
 	public BlockWaterWheel() {
-		super(Material.wood,false);
+		super(Material.WOOD,false);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1F, 1F);

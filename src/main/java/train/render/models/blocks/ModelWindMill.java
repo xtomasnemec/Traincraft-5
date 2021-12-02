@@ -1,27 +1,28 @@
 package train.render.models.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import ebf.tim.utility.CommonUtil;
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 import train.blocks.windmill.TileWindMill;
 
 @SideOnly(Side.CLIENT)
 public class ModelWindMill extends ModelBase {
-	private IModelCustom modelWindMill;
+	private ModelRendererTurbo modelWindMill;
 
 	public ModelWindMill() {
-		modelWindMill = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "wind_mill.obj"));
+		modelWindMill = new ModelRendererTurbo(this);
+		modelWindMill.addObj(Info.modelPrefix + "wind_mill.obj");
 	}
 
 	public void render() {
-		modelWindMill.renderAll();
+		modelWindMill.render();
 	}
 
 	public void render(TileEntity windMill, double x, double y, double z) {
@@ -29,7 +30,7 @@ public class ModelWindMill extends ModelBase {
 		GL11.glPushMatrix();
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
-		if(windMill.getWorldObj()==null){
+		if(windMill.getWorld()==null){
 			GL11.glTranslated( x,  y-0.25,  z);
 			GL11.glScalef(0.8f,0.8f,0.8f);
 		} else {
@@ -46,8 +47,8 @@ public class ModelWindMill extends ModelBase {
 		float f4 = (float) (j & 255) / 255.0F;
 		GL11.glColor4f(f1 * f2, f1 * f3, f1 * f4, 1);
 		GL11.glScalef(0.5f, 0.5f, 0.5f);
-		if(windMill.getWorldObj()!=null) {
-			int facing = windMill.getWorldObj().getBlockMetadata(windMill.xCoord, windMill.yCoord, windMill.zCoord);
+		if(windMill.getWorld()!=null) {
+			int facing = CommonUtil.getBlockFacing(windMill.getWorld(), windMill.getPos().getX(),windMill.getPos().getY(), windMill.getPos().getZ());
 			if (facing == 3) {
 			}
 			if (facing == 1) {

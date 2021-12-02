@@ -70,9 +70,9 @@ public class EntityGWRBrakeVan extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Blocks.crafting_table, 1), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 1),
+                new ItemStack(Blocks.CRAFTING_TABLE, 1), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 1),
                 new ItemStack(Blocks.planks, 8), null, new ItemStack(TiMItems.cabinWood, 1),
-                null, null, new ItemStack(Blocks.furnace, 1)        };
+                null, null, new ItemStack(Blocks.FURNACE, 1)        };
     }
 
 

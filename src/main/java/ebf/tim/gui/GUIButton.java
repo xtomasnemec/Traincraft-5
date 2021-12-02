@@ -60,23 +60,23 @@ public abstract class GUIButton extends GuiButton {
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY){
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks){
         if (this.visible) {
-            drawButton(mouseX, mouseY);
+            drawButton(mouseX, mouseY, partialTicks);
         }
     }
 
 
     /** draws the button*/
-    public void drawButton(int mouseX, int mouseY) {
+    public void drawButton(int mouseX, int mouseY, float partialTicks) {
         GL11.glPushMatrix();
-        TextureManager.bindTexture(buttonTextures);
+        TextureManager.bindTexture(BUTTON_TEXTURES);
         if(getColor()!=null){
             GL11.glColor4f(getColor()[0]*0.00392156862f, getColor()[1]*0.00392156862f, getColor()[2]*0.00392156862f, 1.0F);
         } else{
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.yPosition + this.height;
+        this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
         int k = hovered?2:1;
         //GL11.glEnable(GL11.GL_BLEND);
         //OpenGlHelper.glBlendFunc(770, 771, 1, 0);

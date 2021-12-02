@@ -79,7 +79,7 @@ public class EntityTenderSmall extends GenericRailTransport {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
-                new ItemStack(Items.stick, 2), null, null, null, null, new ItemStack(Items.COAL, 1)        };
+                new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(Items.COAL, 1)        };
     }
 
 

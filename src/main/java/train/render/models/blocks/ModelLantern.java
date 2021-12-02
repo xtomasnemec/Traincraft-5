@@ -1,43 +1,29 @@
 package train.render.models.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 import train.blocks.lantern.TileLantern;
 
 @SideOnly(Side.CLIENT)
 public class ModelLantern extends ModelBase {
-	private IModelCustom modelLantern;
-	private final RenderItem renderItem;
+	private ModelRendererTurbo modelLantern;
 
 	public ModelLantern() {
-		modelLantern = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "lantern.obj"));
-		renderItem = new RenderItem() {
+		modelLantern = new ModelRendererTurbo(this);
+		modelLantern.addObj(Info.modelPrefix + "lantern.obj");
 
-			@Override
-			public boolean shouldBob() {
-
-				return false;
-			};
-		};
-
-		renderItem.setRenderManager(RenderManager.instance);
+		//renderItem.setRenderManager(RenderManager.instance);
 	}
 
 	public void render() {
-		modelLantern.renderAll();
+		modelLantern.render();
 	}
 
 	public void render(TileEntity lantern, double x, double y, double z) {
@@ -45,7 +31,7 @@ public class ModelLantern extends ModelBase {
 		GL11.glPushMatrix();
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
-		if(lantern.getWorldObj()==null){
+		if(lantern.getWorld()==null){
 			GL11.glTranslated(x+0, y+0.3, z+0);
 			GL11.glScalef(0.8f, 0.8f, 0.8f);
 		} else {
@@ -71,9 +57,10 @@ public class ModelLantern extends ModelBase {
 
 		// Pop this matrix from the stack.
 		GL11.glPopMatrix();
-		if(lantern.getWorldObj()!=null) {
+		//todo: model remake include torch
+		/*if(lantern.getWorld()!=null) {
 			GL11.glPushMatrix();
-			EntityItem ghostEntityItem = new EntityItem(lantern.getWorldObj());
+			EntityItem ghostEntityItem = new EntityItem(lantern.getWorld());
 			ghostEntityItem.setEntityItemStack(new ItemStack(Blocks.torch, 1));
 			ghostEntityItem.hoverStart = 0.0F;
 
@@ -82,7 +69,7 @@ public class ModelLantern extends ModelBase {
 			renderItem.doRender(ghostEntityItem, 0, 0, 0, 0, 0);
 
 			GL11.glPopMatrix();
-		}
+		}*/
 	}
 
 }

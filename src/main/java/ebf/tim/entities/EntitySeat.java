@@ -149,7 +149,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int turnProgress) {
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int turnProgress) {
         posX = x;
         posY = y;
         posZ = z;

@@ -391,7 +391,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean canBeCollidedWith() {return true;}
     /**client only positioning of the transport, this should help to smooth the movement*/
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_) {
+    public void setPositionAndRotationDirect(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_, boolean teleport) {
         if (frontBogie!=null && backBogie!= null){
 
             setRotation((float)Math.toDegrees(CommonUtil.atan2f(
@@ -1042,7 +1042,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //initialize fluid tanks
             getTankInfo(null);
             //sync inventory on spawn
-            openInventory();
+            openInventory(p);
 
             updatePosition();
 
@@ -1704,7 +1704,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * if it's a tile entity, it's just another null check to be sure no one crashes.
      */
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {return getPermissions(p_70300_1_, false, false);}
+    public boolean isUsableByPlayer(EntityPlayer p_70300_1_) {return getPermissions(p_70300_1_, false, false);}
 
     /**
      * <h2>filter slots</h2>
@@ -1815,7 +1815,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
     /**called when the inventory GUI is opened*/
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer p) {
         if(!world.isRemote){
             entityData.buildXML();
             for(String key : entityData.itemMap.keySet()){
@@ -1825,7 +1825,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
     /**called when the inventory GUI is closed*/
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer p) {
         if(!world.isRemote) {
             markDirty();
         }

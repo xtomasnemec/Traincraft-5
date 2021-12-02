@@ -7,23 +7,23 @@
 
 package train.render.models.blocks;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import net.minecraft.client.model.ModelBase;
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 
 public class ModelPresent extends ModelBase {
-	private IModelCustom present;
+	private ModelRendererTurbo present;
 	
 	public ModelPresent() {
-		present = new AdvancedModelLoader().loadModel(new ResourceLocation(Info.modelPrefix + "present.obj"));
+		present = new ModelRendererTurbo(this);
+		present.addObj(Info.modelPrefix + "present.obj");
 	}
 	
 	public void render() {
-		present.renderAll();
+		present.render();
 	}
 
 	public void render(int color) {

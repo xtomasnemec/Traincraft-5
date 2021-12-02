@@ -1,20 +1,22 @@
 package ebf.tim.blocks;
 
+import ebf.tim.utility.CommonUtil;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import fexcraft.tmt.slim.*;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
 public class TileRenderFacing extends TileEntity {
@@ -35,7 +37,7 @@ public class TileRenderFacing extends TileEntity {
         return this;
     }
 
-    public TileRenderFacing setFacing(ForgeDirection direction){
+    public TileRenderFacing setFacing(EnumFacing direction){
         //this follows our own orders, which don't make a lot of sense, but it works.
         switch (direction){
             case SOUTH:{facing=0;break;}
@@ -49,9 +51,9 @@ public class TileRenderFacing extends TileEntity {
         return this;
     }
 
-    public ForgeDirection getFacing(){
+    public EnumFacing getFacing(){
         //1.8.9+ it's getHorizontal
-        return ForgeDirection.getOrientation((int)facing);
+        return EnumFacing.byHorizontalIndex((int)facing);
     }
 
     @Override
@@ -65,11 +67,11 @@ public class TileRenderFacing extends TileEntity {
     }
 
     @Override
-    public void func_145828_a(CrashReportCategory r){
+    public void addInfoToCrashReport(CrashReportCategory r){
         if(r==null){
-            if(host.getTexture(xCoord,yCoord,zCoord)!=null) {
+            if(host.getTexture(pos.getX(),pos.getY(),pos.getZ())!=null) {
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
-                TextureManager.bindTexture(host.getTexture(xCoord,yCoord,zCoord));
+                TextureManager.bindTexture(host.getTexture(pos.getX(),pos.getY(),pos.getZ()));
             } else {
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
             }
@@ -78,8 +80,8 @@ public class TileRenderFacing extends TileEntity {
             if(blockGLID ==null){
                 blockGLID=org.lwjgl.opengl.GL11.glGenLists(1);
                 org.lwjgl.opengl.GL11.glNewList(blockGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
-                if(worldObj==null) {
-                    Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
+                if(world==null) {
+                    Minecraft.getMinecraft().entityRenderer.disableLightmap();
                 }
                 GL11.glTranslatef(0.5f,0.5f,0.5f);
                 switch (facing){
@@ -118,29 +120,26 @@ public class TileRenderFacing extends TileEntity {
             //be sure to re-enable the texture biding, because the UI wont
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         } else{
-            super.func_145828_a(r);
+            super.addInfoToCrashReport(r);
         }
     }
 
-    @Override
-    public boolean canUpdate(){return false;}
 
+    private boolean isVanilla = getClass().getName().startsWith("net.minecraft.");
     @Override
-    public void updateEntity(){}
-
-    @Override
-    public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
-        return (newBlock != oldBlock);
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return isVanilla ? (oldState.getBlock() != newSate.getBlock()) : oldState != newSate;
     }
 
     @Override
     public void markDirty() {
         super.markDirty();
-        if(this.worldObj != null) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-            this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, host);
-            if (worldObj.isRemote && blockGLID != null) {
+        if(this.world != null) {
+            world.markBlockRangeForRenderUpdate(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), new BlockPos(pos.getX(), pos.getY(), pos.getZ()));
+            CommonUtil.markBlockForUpdate(world,pos.getX(),pos.getY(),pos.getZ());
+            this.world.updateComparatorOutputLevel(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), host); //comparator update? was func_147453_f
+            if (world.isRemote && blockGLID != null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(blockGLID, 1);
                 blockGLID = null;
             }
@@ -156,41 +155,43 @@ public class TileRenderFacing extends TileEntity {
     }
 
     @Override
-    public S35PacketUpdateTileEntity getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         writeToNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbttagcompound);
+        return new SPacketUpdateTileEntity(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), 0, nbttagcompound);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         if(pkt ==null){return;}
-        readFromNBT(pkt.func_148857_g());
+        readFromNBT(pkt.getNbtCompound());
         markDirty();
     }
 
 
     @Override
-    public void writeToNBT(NBTTagCompound tag){
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+    {
         super.writeToNBT(tag);
         tag.setByte("f", facing);
+        return tag; //might cause issues
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag){
         super.readFromNBT(tag);
         facing = tag.getByte("f");
-        if(worldObj!=null && worldObj.isRemote) {
+        if(world!=null && world.isRemote) {
             markDirty();
         }
     }
 
     public void syncTileEntity(){
-        for(Object o : this.worldObj.playerEntities){
+        for(Object o : this.world.playerEntities){
             if(o instanceof EntityPlayerMP){
                 EntityPlayerMP player = (EntityPlayerMP) o;
-                if(player.getDistance(xCoord, yCoord, zCoord) <= 64) {
-                    player.playerNetServerHandler.sendPacket(this.getDescriptionPacket());
+                if(player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 64) {
+                    player.connection.sendPacket(this.getUpdatePacket());
                 }
             }
         }

@@ -82,7 +82,7 @@ public class EntityPassengerRheingoldDining2 extends GenericRailTransport {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1),
                 null, null, new ItemStack(TiMItems.cabinSteel, 1),
-                null, null, new ItemStack(Blocks.crafting_table, 1)        };
+                null, null, new ItemStack(Blocks.CRAFTING_TABLE, 1)        };
     }
 
 

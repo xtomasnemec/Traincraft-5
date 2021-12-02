@@ -71,9 +71,9 @@ public class EntityWorkCart extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Blocks.crafting_table, 1), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
-                new ItemStack(Items.stick, 2), null, new ItemStack(TiMItems.cabinWood, 1),
-                null, null, new ItemStack(Blocks.furnace, 1)        };
+                new ItemStack(Blocks.CRAFTING_TABLE, 1), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
+                new ItemStack(Items.STICK, 2), null, new ItemStack(TiMItems.cabinWood, 1),
+                null, null, new ItemStack(Blocks.FURNACE, 1)        };
     }
 
 

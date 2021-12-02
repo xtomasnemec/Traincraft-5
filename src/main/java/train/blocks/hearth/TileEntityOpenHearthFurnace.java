@@ -198,7 +198,7 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 			wasBurning=isBurning();
 		} else {
 			if (this.worldObj != null) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				CommonUtil.markBlockForUpdate(world, xCoord, yCoord, zCoord);
 				worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
 				this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, CommonUtil.getBlockAt(worldObj, xCoord, yCoord, zCoord));
 			}

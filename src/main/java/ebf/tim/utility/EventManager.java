@@ -1,9 +1,11 @@
 package ebf.tim.utility;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraft.util.ClassInheritanceMultiMap;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
@@ -14,13 +16,11 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketInteract;
 import fexcraft.tmt.slim.Tessellator;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import org.lwjgl.input.Keyboard;
@@ -53,32 +53,32 @@ public class EventManager {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onClientKeyPress(InputEvent.KeyInputEvent event) {
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player = Minecraft.getMinecraft().player;
         if (player.ridingEntity instanceof GenericRailTransport || player.ridingEntity instanceof EntitySeat) {
             //for lamp
-            if (ClientProxy.KeyLamp.getIsKeyPressed()) {
+            if (ClientProxy.KeyLamp.isPressed()) {
                 TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0, player.ridingEntity.getEntityId()));
                 ((GenericRailTransport) player.ridingEntity).setBoolean(GenericRailTransport.boolValues.LAMP, !((GenericRailTransport) player.ridingEntity).getBoolean(GenericRailTransport.boolValues.LAMP));
             }
             //for inventory
-            if (ClientProxy.KeyInventory.getIsKeyPressed()) {
+            if (ClientProxy.KeyInventory.isPressed()) {
                 TrainsInMotion.keyChannel.sendToServer(new PacketInteract(1, player.ridingEntity.getEntityId()));
             }
             if (player.ridingEntity instanceof EntityTrainCore) {
                 //for speed change
-                if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
+                if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isPressed()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(2, player.ridingEntity.getEntityId()));
                     }
-                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
+                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isPressed()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(3, player.ridingEntity.getEntityId()));
                     }
-                } else if (ClientProxy.KeyHorn.getIsKeyPressed()){
+                } else if (ClientProxy.KeyHorn.isPressed()){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(9, player.ridingEntity.getEntityId()));
-                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.getIsKeyPressed()){
+                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.isPressed()){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, player.ridingEntity.getEntityId()));
                 }
 
@@ -88,70 +88,70 @@ public class EventManager {
                 }
             }
         } else if(DebugUtil.dev()) {
-            if (ClientProxy.raildevtoolUp.getIsKeyPressed()){
+            if (ClientProxy.raildevtoolUp.isPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]+=0.0625;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
-            } else if (ClientProxy.raildevtoolDown.getIsKeyPressed()){
+            } else if (ClientProxy.raildevtoolDown.isPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]-=0.0625;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
             }
-            if (ClientProxy.raildevtoolLeft.getIsKeyPressed()){
+            if (ClientProxy.raildevtoolLeft.isPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][2]+=0.0625;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
-            } else if (ClientProxy.raildevtoolRight.getIsKeyPressed()){
+            } else if (ClientProxy.raildevtoolRight.isPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][2]-=0.0625;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
             }
-            if (ClientProxy.raildevtoolRaise.getIsKeyPressed()){
+            if (ClientProxy.raildevtoolRaise.isPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][1]+=0.0625;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
-            } else if (ClientProxy.raildevtoolLower.getIsKeyPressed()){
+            } else if (ClientProxy.raildevtoolLower.isPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][1]-=0.0625;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
             }
 
-            if (ClientProxy.raildevtoolNextPoint.getIsKeyPressed()){
+            if (ClientProxy.raildevtoolNextPoint.isPressed()){
                 ClientProxy.devSplineCurrentPoint++;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current point is now " + ClientProxy.devSplineCurrentPoint));
-            } else if (ClientProxy.raildevtoolLastPoint.getIsKeyPressed()){
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current point is now " + ClientProxy.devSplineCurrentPoint));
+            } else if (ClientProxy.raildevtoolLastPoint.isPressed()){
                 ClientProxy.devSplineCurrentPoint--;
                 if (ClientProxy.devSplineCurrentPoint<0){
                     ClientProxy.devSplineCurrentPoint = 0;
                 }
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current point is now " + ClientProxy.devSplineCurrentPoint));
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current point is now " + ClientProxy.devSplineCurrentPoint));
             }
-            if (ClientProxy.raildevtoolQuality.getIsKeyPressed()){
+            if (ClientProxy.raildevtoolQuality.isPressed()){
                 ClientProxy.railSkin++;
                 if(ClientProxy.railSkin>3){
                     ClientProxy.railSkin=0;
                 }
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Displaying rail model " + ClientProxy.railSkin));
+                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Displaying rail model " + ClientProxy.railSkin));
 
-                for(Object te : Minecraft.getMinecraft().thePlayer.worldObj.loadedTileEntityList){
+                for(Object te : Minecraft.getMinecraft().player.world.loadedTileEntityList){
                     if(te instanceof RailTileEntity){
                         ((RailTileEntity) te).railGLID=null;
                     }
@@ -166,7 +166,7 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onClientTick(TickEvent.PlayerTickEvent event) {
         if(event.player.ridingEntity instanceof EntityTrainCore){
-            if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
+            if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isPressed()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.
                 if(ClientProxy.controls==1 && holdTimer<40){
                     holdTimer=40;
@@ -179,7 +179,7 @@ public class EventManager {
                 } else if (holdTimer<40){
                     holdTimer++;
                 }
-            } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
+            } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isPressed()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.
                 if(ClientProxy.controls==1 && holdTimer<40){
                     holdTimer=40;
@@ -194,8 +194,8 @@ public class EventManager {
                     holdTimer++;
                 }
             }
-            else if(!FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed() &&
-                    !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()){
+            else if(!FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isPressed() &&
+                    !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isPressed()){
                 if (holdTimer>40){
                     if(ClientProxy.controls!=1) {
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, event.player.ridingEntity.getEntityId()));
@@ -213,8 +213,8 @@ public class EventManager {
     public void onClientKeyPress(InputEvent.MouseInputEvent event) {
         if (Mouse.isButtonDown(1) || Mouse.isButtonDown(0)) {
             if (selected != null) {
-                (selected).interact(Minecraft.getMinecraft().thePlayer.getEntityId(), false, false, Mouse.isButtonDown(1) ? -1 : -999);
-                //MinecraftForge.EVENT_BUS.post(new EntityInteractEvent(Minecraft.getMinecraft().thePlayer, selected));
+                (selected).interact(Minecraft.getMinecraft().player.getEntityId(), false, false, Mouse.isButtonDown(1) ? -1 : -999);
+                //MinecraftForge.EVENT_BUS.post(new EntityInteractEvent(Minecraft.getMinecraft().player, selected));
             }
         }
     }
@@ -224,9 +224,9 @@ public class EventManager {
         List e = new ArrayList();
         for(int x=-1;x<=1;x++) {
             for(int z=-1;z<=1;z++) {
-                for (List l : entity.worldObj.
-                        getChunkFromChunkCoords(entity.chunkCoordX + x, entity.chunkCoordZ + z)
-                        .entityLists) {
+                for (ClassInheritanceMultiMap<Entity> l : entity.world.
+                        getChunk(entity.chunkCoordX + x, entity.chunkCoordZ + z)
+                        .getEntityLists()) {
                     e.addAll(l);
                 }
             }
@@ -265,7 +265,7 @@ public class EventManager {
             }
 
         }*/
-        for (Object te:e.getChunk().chunkTileEntityMap.entrySet()){
+        for (Object te:e.getChunk().getTileEntityMap().entrySet()){
             if(te instanceof RailTileEntity){
                 GL11.glDeleteLists(((RailTileEntity) te).railGLID,1);
                 ((RailTileEntity) te).railGLID=null;
@@ -278,8 +278,8 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onRenderTick(TickEvent.RenderTickEvent event) {
         if(event.side.isClient() && Minecraft.getMinecraft().currentScreen==null && getSelected()!=null){
-            left=new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight).getScaledWidth()/2;
-            disp=getStaticStrings(getSelected(), Minecraft.getMinecraft().thePlayer);
+            left=new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth()/2;
+            disp=getStaticStrings(getSelected(), Minecraft.getMinecraft().player);
             longest=0;
             for(String s: disp){
                 if(Minecraft.getMinecraft().fontRenderer.getStringWidth(s)>longest){
