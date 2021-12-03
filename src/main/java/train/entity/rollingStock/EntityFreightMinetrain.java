@@ -80,7 +80,7 @@ public class EntityFreightMinetrain extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?1.9f:1.4f,1.25f,1.0f};}
+    public float[] getHitboxSize(){return new float[]{world==null?1.9f:1.4f,1.25f,1.0f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.3f, -0.3f};}
 

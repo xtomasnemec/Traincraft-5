@@ -78,7 +78,7 @@ public class SlotDistil extends Slot {
 			while (var2 > 0) {
 				var4 = EntityXPOrb.getXPSplit(var2);
 				var2 -= var4;
-				this.thePlayer.worldObj.spawnEntityInWorld(new EntityXPOrb(this.thePlayer.worldObj, this.thePlayer.posX, this.thePlayer.posY + 0.5D, this.thePlayer.posZ + 0.5D, var4));
+				this.thePlayer.worldObj.spawnEntity(new EntityXPOrb(this.thePlayer.worldObj, this.thePlayer.posX, this.thePlayer.posY + 0.5D, this.thePlayer.posZ + 0.5D, var4));
 			}
 		}
 

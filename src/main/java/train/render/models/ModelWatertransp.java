@@ -393,11 +393,11 @@ public class ModelWatertransp extends ModelBase {
 		//lava	
 		//Fluid theLiquid = FluidRegistry.getFluid(((LiquidTank)entity).getLiquidName());
 		GL11.glPushMatrix();
-		if (entity.worldObj!=null && ((GenericRailTransport) entity).getTankInfo(null)[0]!=null &&
-				((GenericRailTransport) entity).getTankInfo(null)[0].fluid!=null &&
-				(((GenericRailTransport) entity).getTankInfo(null)[0].fluid.amount) != 0) {
+		if (entity.worldObj!=null && ((GenericRailTransport) entity).getTankInfo()[0]!=null &&
+				((GenericRailTransport) entity).getTankInfo()[0].fluid!=null &&
+				(((GenericRailTransport) entity).getTankInfo()[0].fluid.amount) != 0) {
 			GL11.glTranslatef(0.0f,
-					((((GenericRailTransport) entity).getTankInfo(null)[0].fluid.amount/1000f)*0.03f)+0.0f, 0.0f);
+					((((GenericRailTransport) entity).getTankInfo()[0].fluid.amount/1000f)*0.03f)+0.0f, 0.0f);
     		Minecraft.getMinecraft().entityRenderer.disableLightmap();
     		box58.render(f5);
     		Minecraft.getMinecraft().entityRenderer.enableLightmap();

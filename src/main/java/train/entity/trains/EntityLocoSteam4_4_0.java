@@ -148,7 +148,7 @@ public class EntityLocoSteam4_4_0 extends EntityTrainCore {
      */
     @Override
     public float[] getHitboxSize() {
-        return new float[]{worldObj==null?3.5f:3.2f,2.7f,1.2f};
+        return new float[]{world==null?3.5f:3.2f,2.7f,1.2f};
     }
 
     /**

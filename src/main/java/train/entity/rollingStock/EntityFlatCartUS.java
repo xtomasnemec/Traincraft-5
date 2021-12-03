@@ -71,7 +71,7 @@ public class EntityFlatCartUS extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 3), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2),
+                new ItemStack(Blocks.PLANKS, 3), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2),
                 new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, null        };
     }
 

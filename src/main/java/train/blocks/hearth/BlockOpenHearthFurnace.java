@@ -7,6 +7,9 @@
 
 package train.blocks.hearth;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
@@ -35,15 +38,15 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 
 
 	public BlockOpenHearthFurnace() {
-		super(Material.rock,true);
+		super(Material.ROCK,true);
 		//setRequiresSelfNotify();
 	}
 
 	public ResourceLocation getTexture(int x, int y, int z){
 		//todo this is inefficient, do from tile entity
-		if(Minecraft.getMinecraft().theWorld!=null &&
-				Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z) instanceof TileEntityDistil){
-			if(((TileEntityOpenHearthFurnace) Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z)).isBurning()){
+		if(Minecraft.getMinecraft().world!=null &&
+				Minecraft.getMinecraft().world.getTileEntity(x,y,z) instanceof TileEntityDistil){
+			if(((TileEntityOpenHearthFurnace) Minecraft.getMinecraft().world.getTileEntity(x,y,z)).isBurning()){
 				return new ResourceLocation("traincraft", "textures/blocks/furnace_on.png");
 			}
 		}
@@ -57,24 +60,24 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity((int) minX, (int) minY, (int) minZ);
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+		TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 		if (te instanceof TileEntityDistil && ((TileEntityDistil) te).isBurning()) {
-			float var7 = (float) i + 0.5F;
-			float var9 = (float) k + 0.5F;
+			float var7 = (float) pos.getX() + 0.5F;
+			float var9 = (float) pos.getZ() + 0.5F;
 			float f3 = 0.009F;
 			double gaussian = random.nextGaussian() * f3;
 			for (int t = 0; t < 50; t++) {
-				world.spawnParticle("smoke", var7, (double) j + 1.2F, var9, gaussian, gaussian * 0.002F, gaussian);
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, (double) pos.getY() + 1.2F, var9, gaussian, gaussian * 0.002F, gaussian);
 			}
-			world.spawnParticle("flame", var7, (double) j + 1.03F, var9, 0, 0, 0);
-			world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
-			world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
-			world.spawnParticle("flame", var7 + 0.06, (double) j + 1.03F, var9 - 0.06, 0, 0, 0);
-			world.spawnParticle("flame", var7 - 0.06, (double) j + 1.03F, var9 + 0.06, 0, 0, 0);
-			CommonUtil.getBlockAt(world, i,j,k).setLightLevel(0.8F);
+			world.spawnParticle(EnumParticleTypes.FLAME, var7, (double) pos.getY() + 1.03F, var9, 0, 0, 0);
+			world.spawnParticle(EnumParticleTypes.FLAME, var7 + 0.06, (double) pos.getY() + 1.03F, var9 + 0.06, 0, 0, 0);
+			world.spawnParticle(EnumParticleTypes.FLAME, var7 - 0.06, (double) pos.getY() + 1.03F, var9 - 0.06, 0, 0, 0);
+			world.spawnParticle(EnumParticleTypes.FLAME, var7 + 0.06, (double) pos.getY() + 1.03F, var9 - 0.06, 0, 0, 0);
+			world.spawnParticle(EnumParticleTypes.FLAME, var7 - 0.06, (double) pos.getY() + 1.03F, var9 + 0.06, 0, 0, 0);
+			CommonUtil.getBlockAt(world, pos.getX(), pos.getY(),pos.getZ()).setLightLevel(0.8F);
 		} else {
-			CommonUtil.getBlockAt(world, i,j,k).setLightLevel(0F);
+			CommonUtil.getBlockAt(world, pos.getX(), pos.getY(),pos.getZ()).setLightLevel(0F);
 		}
 	}
 
@@ -98,7 +101,7 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 		//todo:keep inventory on break?
 
 		TileEntity te = world.getTileEntity(i,j,k);
-		if(te instanceof TileEntityOpenHearthFurnace && world.getGameRules().getGameRuleBooleanValue("doTileDrops")){
+		if(te instanceof TileEntityOpenHearthFurnace && world.getGameRules().getBoolean("doTileDrops")){
 			((TileEntityOpenHearthFurnace) te).dropInventory();
 		}
 		super.breakBlock(world, i, j, k, par5, par6);

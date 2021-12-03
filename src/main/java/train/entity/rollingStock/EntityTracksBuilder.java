@@ -73,7 +73,7 @@ public class EntityTracksBuilder extends GenericRailTransport {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 new ItemStack(TiMOres.ingotSteel, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 3),
-                new ItemStack(TiMOres.ingotSteel, 1), new ItemStack(TiMItems.chimneySteel, 1), null, new ItemStack(TiMItems.boilerSteel, 1), new ItemStack(TiMItems.fireboxSteel, 1), new ItemStack(Blocks.rail, 16)        };
+                new ItemStack(TiMOres.ingotSteel, 1), new ItemStack(TiMItems.chimneySteel, 1), null, new ItemStack(TiMItems.boilerSteel, 1), new ItemStack(TiMItems.fireboxSteel, 1), new ItemStack(Blocks.RAIL, 16)        };
     }
 
 

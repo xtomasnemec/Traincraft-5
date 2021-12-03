@@ -1,9 +1,9 @@
 package ebf.tim.blocks.rails;
 
+import ebf.tim.blocks.RailTileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
-import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
@@ -87,7 +87,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
     @Override
     public int getRenderType() {
-        return Blocks.rail.getRenderType();
+        return Blocks.RAIL.getRenderType();
     }
 
     @Override
@@ -361,7 +361,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             EntityPlayer p = p_149749_1_.getClosestPlayer(p_149749_2_,p_149749_3_,p_149749_4_,6);
             if(p!=null && p.capabilities!=null && !p.capabilities.isCreativeMode) {
                 TileEntity e = p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
-                if (e instanceof RailTileEntity && p_149749_1_.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+                if (e instanceof RailTileEntity && p_149749_1_.getGameRules().getBoolean("doTileDrops")) {
                     ((RailTileEntity) e).dropItem();
                 }
             }
@@ -516,7 +516,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return Blocks.rail.getIcon(0, 0);
+        return Blocks.RAIL.getIcon(0, 0);
     }
 
 

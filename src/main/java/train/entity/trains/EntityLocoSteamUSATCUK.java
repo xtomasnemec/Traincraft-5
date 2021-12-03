@@ -76,7 +76,7 @@ public class EntityLocoSteamUSATCUK extends EntityTrainCore {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                null, new ItemStack(TiMItems.wheelIron, 3), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(Items.dye, 8),
+                null, new ItemStack(TiMItems.wheelIron, 3), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(Items.DYE, 8),
                 new ItemStack(TiMOres.ingotSteel, 2), new ItemStack(TiMItems.chimneySteel, 1), new ItemStack(TiMItems.cabinSteel, 1),
                 new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(Items.COAL, 1)        };
     }

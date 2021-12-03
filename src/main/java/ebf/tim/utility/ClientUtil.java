@@ -93,10 +93,8 @@ public class ClientUtil {
 
         if(overlay!=null && overlay.getItem()!=null) {
             //render the item and the overlay
-            itemRender.renderItemAndEffectIntoGUI(Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().getTextureManager(),
-                    overlay, (int)x, (int)y);
-            itemRender.renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().getTextureManager(),
-                    overlay, (int)x, (int)y, null);
+            itemRender.renderItemAndEffectIntoGUI(overlay, (int)x, (int)y);
+            itemRender.renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRenderer, overlay, (int)x, (int)y, "");
 
             if(mouseX>x && mouseX<x+18 && mouseY>y && mouseY<y+18){
                 GL11.glPushMatrix();
@@ -244,6 +242,7 @@ public class ClientUtil {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glShadeModel(GL11.GL_SMOOTH);
+        //todo: the MC tessellator is show, this will have to be manually drawn out through GL11. this should be copied to 1.7
         net.minecraft.client.renderer.Tessellator tessellator = net.minecraft.client.renderer.Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(f1, f2, f3, f);

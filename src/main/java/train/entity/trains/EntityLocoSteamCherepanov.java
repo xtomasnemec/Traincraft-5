@@ -80,7 +80,7 @@ public class EntityLocoSteamCherepanov extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0.85f,1.35f, 0.1f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?2.8f:2.2f,2.7f,1.1f};}
+    public float[] getHitboxSize(){return new float[]{world==null?2.8f:2.2f,2.7f,1.1f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.1f, -0.6f};}
     //Train specific stuff

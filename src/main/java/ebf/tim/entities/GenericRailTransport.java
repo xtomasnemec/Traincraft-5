@@ -6,7 +6,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -1029,18 +1031,18 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             cachedVectors[1] = new Vec3f(rotationPoints()[1],0,0).rotatePoint(rotationPitch, rotationYaw,0);
             backBogie = new EntityBogie(world, posX + cachedVectors[1].xCoord, posY + cachedVectors[1].yCoord, posZ + cachedVectors[1].zCoord, getEntityId(), false);
 
-            world.spawnEntityInWorld(frontBogie);
-            world.spawnEntityInWorld(backBogie);
+            world.spawnEntity(frontBogie);
+            world.spawnEntity(backBogie);
 
             if (getRiderOffsets() != null && getRiderOffsets().length >1 && seats.size()<getRiderOffsets().length) {
                 for (int i = 0; i < getRiderOffsets().length - 1; i++) {
                     EntitySeat seat = new EntitySeat(world, posX, posY, posZ, getRiderOffsets()[i][0], getRiderOffsets()[i][1],getRiderOffsets()[i][2], getEntityId(), i);
-                    world.spawnEntityInWorld(seat);
+                    world.spawnEntity(seat);
                     seats.add(seat);
                 }
             }
             //initialize fluid tanks
-            getTankInfo(null);
+            getTankInfo();
             //sync inventory on spawn
             openInventory(p);
 
@@ -1488,7 +1490,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //be sure operators and owners can do whatever
-        if ((player.capabilities.isCreativeMode && player.canCommandSenderUseCommand(2, ""))
+        if ((player.capabilities.isCreativeMode && player.canUseCommand(2, ""))
                 || (entityData!=null && entityData.containsString("ownername") && entityData.getString("ownername").equals(player.getDisplayName()))) {
             return true;
         }
@@ -1629,6 +1631,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return inventory==null?0:inventory.size();
     }
 
+    @Override
+    public boolean isEmpty() {
+        for (ItemStackSlot slot : inventory){
+            if(slot.getHasStack()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * <h2>get item</h2>
      * @return the item in the requested slot
@@ -1664,6 +1676,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
 
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = getStackInSlot(index).copy();
+        setInventorySlotContents(index,ItemStack.EMPTY);
+        return stack;
+    }
+
     /**
      * <h2>Set slot</h2>
      * sets the slot contents, this is a direct override so we don't have to compensate for anything.
@@ -1675,14 +1693,28 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
 
+
+    /*These seem */
+    @Override
+    public int getField(int id) {return 0;}
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount() {return 0;}
+
+    @Override
+    public void clear() {}
+
     /**
      * <h2>name and stack limit</h2>
      * These are grouped together because they are pretty self-explanatory.
      */
-    @Override
+    /*@Override
     public String getInventoryName() {return transportName() + ".storage";}
     @Override
-    public boolean hasCustomInventoryName() {return inventory != null;}
+    public boolean hasCustomInventoryName() {return inventory != null;}*/
     @Override
     public int getInventoryStackLimit() {return inventory!=null?64:0;}
     @Override
@@ -1849,51 +1881,49 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     //attempt to drain a set amount
     //todo maybe this should cover all tanks...?
     @Override
-    public FluidStack drain(@Nullable ForgeDirection from, int drain, boolean doDrain){
-        return drain(from, new FluidStack(TiMFluids.nullFluid,drain), doDrain);
+    public FluidStack drain(int drain, boolean doDrain){
+        return drain(new FluidStack(TiMFluids.nullFluid,drain), doDrain);
     }
 
 
     @Override
-    public boolean canPassFluidRequests(Fluid fluid){
-        return canDrain(null, fluid) || canFill(null, fluid);
+    public boolean canPassFluidRequests(FluidStack fluid){
+        return canDrain(fluid) || canFill(fluid.getFluid());
     }
 
     @Override
-    public boolean canAcceptPushedFluid(EntityMinecart requester, Fluid fluid){
-        return canFill(null, fluid);
+    public boolean canAcceptPushedFluid(EntityMinecart requester, FluidStack fluid){
+        return canFill(fluid.getFluid());
     }
 
     @Override
-    public boolean canProvidePulledFluid(EntityMinecart requester, Fluid fluid){
-        return canDrain(ForgeDirection.UNKNOWN, fluid);
+    public boolean canProvidePulledFluid(EntityMinecart requester, FluidStack fluid){
+        return canDrain(fluid);
     }
 
     @Override
     public void setFilling(boolean filling){}
 
     /**Returns true if the given fluid can be extracted.*/
-    @Override
-    public boolean canDrain(@Nullable ForgeDirection from, Fluid resource){
+    public boolean canDrain(FluidStack resource){
         for(int i=0;i<getTankCapacity().length;i++) {
-            if (entityData.getFluidStack("tanks."+i).amount > 0 && (resource == null || entityData.getFluidStack("tanks."+i).getFluid() == resource)) {
+            if (entityData.getFluidStack("tanks."+i).amount > 0 && (resource == null || entityData.getFluidStack("tanks."+i).getFluid() == resource.getFluid())) {
                 return true;
             }
         }
         return false;
     }
     /**Returns true if the given fluid can be inserted into the fluid tank.*/
-    @Override
     //TODO: rework this to work more similar to the fill function
-    public boolean canFill(@Nullable ForgeDirection from, Fluid resource){
+    public boolean canFill(Fluid resource){
         return true;
     }
 
     /**drain with a fluidStack, this is mostly a redirect to
-     * @see #drain(ForgeDirection, int, boolean) but with added filtering for fluid type.
+     * @see #drain(int, boolean) but with added filtering for fluid type.
      */
     @Override
-    public FluidStack drain(@Nullable ForgeDirection from, FluidStack resource, boolean doDrain){
+    public FluidStack drain(FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
         FluidStack stack;
         for(int i=0;i<getTankCapacity().length;i++) {
@@ -1918,7 +1948,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     }
 
-    public int drain(@Nullable ForgeDirection from, int tankID, int amount, boolean doDrain){
+    public int drain(int tankID, int amount, boolean doDrain){
         int leftoverDrain=amount;
         FluidStack stack = entityData.getFluidStack("tanks."+tankID);
         if (stack!=null && stack.amount > 0) {
@@ -1943,7 +1973,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**checks if the fluid can be put into the tank, and if doFill is true, will actually attempt to add the fluid to the tank.
      * @return the amount of fluid that was or could be put into the tank.*/
     @Override
-    public int fill(@Nullable ForgeDirection from, FluidStack resource, boolean doFill){
+    public int fill(FluidStack resource, boolean doFill){
         if(getTankCapacity()==null){return resource.amount;}
         int leftoverDrain=resource.amount;
         FluidStack fluid;
@@ -1997,11 +2027,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**
      * forced fill method, attempts to fill containers with the entire amount.
      * this is mainly used by the fuel handler as a shorthand but can be manually referenced by other things
-     * @param from the direction to fill from, normally doesn't make a difference, can be null
      * @param resource the fluid to fill with
      * @return true if the tank was able to fill with the entire stack, false if not.
      */
-    public boolean fill(@Nullable ForgeDirection from, FluidStack resource){
+    public boolean fill(FluidStack resource){
         if(getTankCapacity()==null || resource==null ||resource.amount<1){DebugUtil.println("no tanks?");return false;}
         for(int stack =0; stack<getTankCapacity().length;stack++) {
             if(getTankFilters()!=null && getTankFilters()[stack]!=null) {
@@ -2033,8 +2062,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     /**returns the list of fluid tanks and their capacity. READ ONLY!!!*/
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from){
+    public FluidTankInfo[] getTankInfo(){
         //todo: what the crap, this doesn't add tanks to XML. it's supposed to add tanks to XML.
         if(getTankCapacity()==null || getTankCapacity().length ==0){
             return new FluidTankInfo[]{};
@@ -2055,6 +2083,18 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             tanks[i]= new FluidTankInfo(entityData.getFluidStack("tanks."+i),getTankCapacity()[i]);
         }
         return tanks;
+    }
+
+    //rather than converting the entire system to support the new more limited format, just convert the result of the existing method.
+    @Override
+    public IFluidTankProperties[] getTankProperties(){
+        FluidTankInfo[] tanks = getTankInfo();
+
+        IFluidTankProperties[] properties = new IFluidTankProperties[tanks.length];
+        for(int i=0;i<tanks.length;i++){
+            properties[i] = new FluidTankProperties(tanks[i].fluid, tanks[i].capacity);
+        }
+        return properties;
     }
 
     /*

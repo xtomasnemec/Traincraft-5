@@ -152,22 +152,22 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
         return host.isItemValidForSlot(p_94041_1_, p_94041_2_);}
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    public int fill(FluidStack resource, boolean doFill) {
         return host.fill(from, resource, doFill);}
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
         return host.drain(from, resource, doDrain);}
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    public FluidStack drain(int maxDrain, boolean doDrain) {
         return host.drain(from, maxDrain, doDrain);}
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {return host.canFill(from, fluid);}
+    public boolean canFill(Fluid fluid) {return host.canFill(from, fluid);}
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {return host.canDrain(from, fluid);}
+    public boolean canDrain(Fluid fluid) {return host.canDrain(from, fluid);}
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {return host.getTankInfo(from);}

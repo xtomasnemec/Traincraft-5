@@ -91,7 +91,7 @@ public class EntityTender4_4_0 extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?2.8f:2.625f,1.6f,1.1f};}
+    public float[] getHitboxSize(){return new float[]{world==null?2.8f:2.625f,1.6f,1.1f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.6f, -0.575f};}
     @Override

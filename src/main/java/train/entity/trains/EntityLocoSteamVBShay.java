@@ -72,7 +72,7 @@ public class EntityLocoSteamVBShay extends EntityTrainCore {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 2),
+                new ItemStack(Blocks.PLANKS, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 2),
                 null, new ItemStack(TiMItems.chimneyIron, 1), new ItemStack(TiMItems.cabinWood, 1),
                 new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxSteel, 1), null        };
     }

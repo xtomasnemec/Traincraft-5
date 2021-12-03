@@ -94,7 +94,7 @@ public class TCBlocks {
 				"GPG", "O O", "OPO", 'O', Blocks.obsidian, 'G', Items.gold_ingot, 'P', Blocks.piston); //tier 2
 		addRecipe(new ItemStack(registerBlock(trainTableTier3, Traincraft.tcTab, Info.modID,"block.traintabletier3", null, null),1),
 				"GPG", "DLD", "OPO", 'O', Blocks.obsidian, 'G', Items.gold_ingot, 'P', Blocks.piston, 'D', Items.diamond, 'L', Blocks.glowstone); //tier 3
-		addRecipe(new ItemStack(partTable), "IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Blocks.planks, 'P', Blocks.piston); //part builder
+		addRecipe(new ItemStack(partTable), "IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Blocks.PLANKS, 'P', Blocks.piston); //part builder
 
 		registerBlock(blockDistil, Traincraft.tcTab, Info.modID,"block.distil", null, null);
 
@@ -134,7 +134,7 @@ public class TCBlocks {
 	}
 
 	public static void setHarvestLevels() {
-		Blocks.rail.setHarvestLevel("ItemStacked", 0);
+		Blocks.RAIL.setHarvestLevel("ItemStacked", 0);
 		Blocks.detector_rail.setHarvestLevel("ItemStacked", 0);
 		Blocks.golden_rail.setHarvestLevel("ItemStacked", 0);
 	}

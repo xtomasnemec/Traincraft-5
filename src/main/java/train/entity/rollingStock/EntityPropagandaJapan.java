@@ -78,8 +78,8 @@ public class EntityPropagandaJapan extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 2),
-                null, null, null, null, null, new ItemStack(Items.painting, 2)        };
+                new ItemStack(Blocks.PLANKS, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 2),
+                null, null, null, null, null, new ItemStack(Items.PAINTING, 2)        };
     }
 
 

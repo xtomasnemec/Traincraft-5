@@ -172,7 +172,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         }
         if (clickTypeIn == 4){
             clickTypeIn = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
-                    player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
+                    player.inventory.getItemStack() != ItemStack.EMPTY ? 4 : //cover if the cursor is carrying an item
                             (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
                                     0;//cover everything else
         }
@@ -183,7 +183,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         switch (clickTypeIn) {
             case 0: {/*ClickType.PICKUP    aka normal pickup and put down*/
                 if (slotId == -999) { //if the slot was the cursor
-                    if (player.inventory.getItemStack() != null) {
+                    if (player.inventory.getItemStack() != ItemStack.EMPTY) {
                         if (dragType == 0) {
                             player.entityDropItem(player.inventory.getItemStack(), player.inventory.getItemStack().getCount());
                             player.inventory.setItemStack(null);
@@ -550,7 +550,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         }
 
 
-        if (player.inventory.getItemStack() != null && player.inventory.getItemStack().getCount() ==0){
+        if (player.inventory.getItemStack() != ItemStack.EMPTY && player.inventory.getItemStack().getCount() ==0){
             player.inventory.setItemStack(null);
         }
         return itemstack;

@@ -90,7 +90,7 @@ public class EntityLocoSteamSmall extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{1.0f,1.6f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.5f:2.7f,2.6f,1.3f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.5f:2.7f,2.6f,1.3f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.775f, 0.025f};}
     //Train specific stuff

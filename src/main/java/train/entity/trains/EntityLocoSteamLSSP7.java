@@ -8,6 +8,7 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,8 +21,8 @@ import java.util.UUID;
 
 public class EntityLocoSteamLSSP7 extends EntityTrainCore {
 
-    public EntityLocoSteamLSSP7(World worldObj) {
-        super(worldObj);
+    public EntityLocoSteamLSSP7(World world) {
+        super(Entity.world);
     }
 
     public EntityLocoSteamLSSP7(UUID owner, World world, double xPos, double yPos, double zPos) {
@@ -53,7 +54,7 @@ public class EntityLocoSteamLSSP7 extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLSSP7()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.3f, worldObj==null?0.1f:0.36f, -0.825f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.3f, world==null?0.1f:0.36f, -0.825f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -81,7 +82,7 @@ public class EntityLocoSteamLSSP7 extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0.65f,1.25f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return worldObj==null?new float[]{2.8f,2.2f,1.3f}:new float[]{2.2f,2.2f,1.3f};}
+    public float[] getHitboxSize(){return world==null?new float[]{2.8f,2.2f,1.3f}:new float[]{2.2f,2.2f,1.3f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.3f, -0.55f};}
     //Train specific stuff

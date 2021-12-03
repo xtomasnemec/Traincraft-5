@@ -71,7 +71,7 @@ public class EntityCaboose extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2),
+                new ItemStack(Blocks.PLANKS, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2),
                 new ItemStack(Items.STICK, 2), null, new ItemStack(TiMItems.cabinWood, 1),
                 null, null, new ItemStack(TiMItems.seatsWooden, 1)        };
     }
@@ -81,7 +81,7 @@ public class EntityCaboose extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0,1.2f, 0f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.25f:2.53f,2.48f,1.5f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.25f:2.53f,2.48f,1.5f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.75f, -0.675f};}
 

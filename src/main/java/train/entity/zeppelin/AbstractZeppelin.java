@@ -195,7 +195,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 					for(int t=0;t<this.zeppInvent.length;t++){
 						if(this.zeppInvent[t]!=null && this.zeppInvent[t].getItem()!=null && this.zeppInvent[t].getItem() == Item.getItemFromBlock(Blocks.tnt)){
 							EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(this.worldObj, (double) ((float) posX), (double) ((float) posY -1F), (double) ((float) posZ), (EntityLivingBase) this.riddenByEntity);
-							this.worldObj.spawnEntityInWorld(entitytntprimed);
+							this.worldObj.spawnEntity(entitytntprimed);
 							this.worldObj.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
 							bombTimer=100;
 							if(--this.zeppInvent[t].getCount()==0)this.zeppInvent[t]=null;

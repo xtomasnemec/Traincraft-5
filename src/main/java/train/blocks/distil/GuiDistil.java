@@ -49,7 +49,7 @@ public class GuiDistil extends GuiContainer {
 		}
 	}
 
-	@Override
+	//@Override
 	protected void drawCreativeTabHoveringText(String str, int t, int g) {
 
 		int amount =distilInventory.getLiquid();
@@ -78,7 +78,7 @@ public class GuiDistil extends GuiContainer {
 		int amount = distilInventory.getLiquid();
 		int liqui =  Math.abs((amount * 50) / (distilInventory.getTankCapacity()[0]));
 		drawTexturedModalRect(j + 145, (k + 57) - liqui, 177, 107 - liqui, 18, liqui);
-		if (distilInventory.getFluidStack(0)!=null && distilInventory.getFluidStack(0).fluid == TiMFluids.fluidfueloil) {
+		if (distilInventory.getFluidStack(0)!=null && distilInventory.getFluidStack(0).getFluid() == TiMFluids.fluidfueloil) {
 			drawRect(j + 145, k + 57, 177, 107, 0);
 		}
 

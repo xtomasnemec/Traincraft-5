@@ -54,7 +54,7 @@ public class EntityLocoSteam040VB extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelVB040()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.7f, worldObj==null?-0.4f:0f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.7f, world==null?-0.4f:0f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -72,7 +72,7 @@ public class EntityLocoSteam040VB extends EntityTrainCore {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 4), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 1),
+                new ItemStack(Blocks.PLANKS, 4), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameWood, 1),
                 null, new ItemStack(TiMItems.chimneyIron, 1), null, new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxSteel, 1), null        };
     }
 
@@ -81,7 +81,7 @@ public class EntityLocoSteam040VB extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0.8f,1.4f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3:2.5f,2.6f,1.6f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3:2.5f,2.6f,1.6f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.55f, -0.55f};}
     //Train specific stuff

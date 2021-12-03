@@ -94,7 +94,7 @@ public class EntityFreightHopperUS extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 new ItemStack(TiMOres.ingotSteel, 5), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2),
-                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.wheat, 3)        };
+                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.WHEAT, 3)        };
     }
 
 

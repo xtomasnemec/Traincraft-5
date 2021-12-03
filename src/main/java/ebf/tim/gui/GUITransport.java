@@ -127,7 +127,7 @@ public class GUITransport extends GUIContainerNoNEI {
 
     /**
      * <h2>GUI initialization</h2>
-     * the super defines the screen size and scdrawCreativeTabHoveringText("0mb/" + transport.getTankInfo(null)[i].capacity + "mb", mouseX, mouseY);ale. beyond that we just initialize th buttons and their positions
+     * the super defines the screen size and scdrawCreativeTabHoveringText("0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX, mouseY);ale. beyond that we just initialize th buttons and their positions
      */
     @Override
     public void initGui() {
@@ -454,15 +454,15 @@ public class GUITransport extends GUIContainerNoNEI {
         if(transport.getTankCapacity()!=null){
             float liquid=0;
             for(int i=0; i<transport.getTankCapacity().length;i++) {
-                //System.out.println(transport.getTankInfo(null).length + ":" + transport.getTankCapacity().length +":" +i);
+                //System.out.println(transport.getTankInfo().length + ":" + transport.getTankCapacity().length +":" +i);
                 //draw the player inventory and toolbar background.
                 Tessellator.bindTexture(URIRegistry.GUI_PREFIX.getResource("gui.png"));
                 ClientUtil.drawTexturedRect(186, 40 + (-20 * i), 16, 0, 90, 18, 16, 16);
 
-                if (transport.getTankInfo(null)[i] != null && transport.getTankInfo(null)[i].fluid.amount > 0) {
-                    liquid = transport.getTankInfo(null)[i].fluid.amount;
+                if (transport.getTankInfo()[i] != null && transport.getTankInfo()[i].fluid.amount > 0) {
+                    liquid = transport.getTankInfo()[i].fluid.amount;
                     if (liquid != 0) {
-                        liquid /= transport.getTankInfo(null)[i].capacity;
+                        liquid /= transport.getTankInfo()[i].capacity;
                     }
                     GL11.glPushMatrix();
 
@@ -471,38 +471,38 @@ public class GUITransport extends GUIContainerNoNEI {
                     GL11.glScalef(0.125f + liquid, 1.125f, 1);
                     //render fluid overlay
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
                         RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
+                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
                         RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
+                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
                         RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
+                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
                         RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
+                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
                     GL11.glTranslatef(16, 0, 0);
                     if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
                             true, zLevel, 0, 0)) {
                         RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
+                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
                     }
 
                     GL11.glDisable(GL11.GL_LIGHTING);
@@ -514,17 +514,17 @@ public class GUITransport extends GUIContainerNoNEI {
         }
 
 
-        for(int i=0; i<transport.getTankInfo(null).length;i++) {
+        for(int i=0; i<transport.getTankInfo().length;i++) {
             if(isMouseInRect(mouseX, mouseY,(int)guiLeft+186, (int)guiTop+40+(-20*i), 90, 18)) {
-                if (transport.getTankInfo(null)[i].fluid.amount>0) {
-                    drawCreativeTabHoveringText(transport.getTankInfo(null)[i].fluid.getLocalizedName() + " " +
-                                    transport.getTankInfo(null)[i].fluid.amount+"mb/"+ transport.getTankInfo(null)[i].capacity+"mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
+                if (transport.getTankInfo()[i].fluid.amount>0) {
+                    drawCreativeTabHoveringText(transport.getTankInfo()[i].fluid.getLocalizedName() + " " +
+                                    transport.getTankInfo()[i].fluid.amount+"mb/"+ transport.getTankInfo()[i].capacity+"mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
 
                 } else {
                     if (transport.getTankFilters()!=null && transport.getTankFilters().length>i && transport.getTankFilters()[i]!=null && transport.getTankFilters()[i].length>0) {
-                        drawCreativeTabHoveringText(transport.getTankFilters()[i][0] + ", 0mb/" + transport.getTankInfo(null)[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
+                        drawCreativeTabHoveringText(transport.getTankFilters()[i][0] + ", 0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
                     }else{
-                        drawCreativeTabHoveringText(", 0mb/" + transport.getTankInfo(null)[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
+                        drawCreativeTabHoveringText(", 0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
 
                     }
                 }
@@ -555,7 +555,7 @@ public class GUITransport extends GUIContainerNoNEI {
 
         if (p_146984_4_ == 4){
             p_146984_4_ = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
-                    player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
+                    player.inventory.getItemStack() != ItemStack.EMPTY ? 4 : //cover if the cursor is carrying an item
                             (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
                                     0;//cover everything else
         }

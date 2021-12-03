@@ -66,10 +66,10 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		this.fillWithBlocks(world, structureboundingbox, 0, 2, 5, 0, 4, 5, Blocks.brick_block, Blocks.brick_block, false);
 		this.fillWithBlocks(world, structureboundingbox, 8, 2, 5, 8, 4, 5, Blocks.brick_block, Blocks.brick_block, false);
 		this.fillWithBlocks(world, structureboundingbox, 8, 2, 0, 8, 4, 0, Blocks.brick_block, Blocks.brick_block, false);
-		this.fillWithBlocks(world, structureboundingbox, 0, 2, 1, 0, 4, 4, Blocks.planks, Blocks.planks, false);
-		this.fillWithBlocks(world, structureboundingbox, 1, 2, 5, 7, 4, 5, Blocks.planks, Blocks.planks, false);
-		this.fillWithBlocks(world, structureboundingbox, 8, 2, 1, 8, 4, 4, Blocks.planks, Blocks.planks, false);
-		this.fillWithBlocks(world, structureboundingbox, 1, 2, 0, 7, 4, 0, Blocks.planks, Blocks.planks, false);
+		this.fillWithBlocks(world, structureboundingbox, 0, 2, 1, 0, 4, 4, Blocks.PLANKS, Blocks.PLANKS, false);
+		this.fillWithBlocks(world, structureboundingbox, 1, 2, 5, 7, 4, 5, Blocks.PLANKS, Blocks.PLANKS, false);
+		this.fillWithBlocks(world, structureboundingbox, 8, 2, 1, 8, 4, 4, Blocks.PLANKS, Blocks.PLANKS, false);
+		this.fillWithBlocks(world, structureboundingbox, 1, 2, 0, 7, 4, 0, Blocks.PLANKS, Blocks.PLANKS, false);
 		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 4, 2, 0, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 5, 2, 0, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 6, 2, 0, structureboundingbox);
@@ -92,7 +92,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		for (int z = 0; z < 9; z++) {
 			this.placeBlockAtCurrentPosition(world, Blocks.brick_block, 0, z, 0, 6, structureboundingbox);
 			this.placeBlockAtCurrentPosition(world, Blocks.stone_slab, 4, z, 0, 7, structureboundingbox);
-			this.placeBlockAtCurrentPosition(world, Blocks.rail, 0, z, 0, 8, structureboundingbox);
+			this.placeBlockAtCurrentPosition(world, Blocks.RAIL, 0, z, 0, 8, structureboundingbox);
 			this.placeBlockAtCurrentPosition(world, Blocks.stonebrick, 0, z, -1, 8, structureboundingbox);
 		}
 		this.placeBlockAtCurrentPosition(world, Blocks.brick_block, 0, 2, 0, 7, structureboundingbox);
@@ -114,8 +114,8 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 
 		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 5, 2, 5, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 6, 2, 5, structureboundingbox);
-		this.fillWithBlocks(world, structureboundingbox, 1, 4, 1, 7, 4, 1, Blocks.planks, Blocks.planks, false);
-		this.fillWithBlocks(world, structureboundingbox, 1, 4, 4, 7, 4, 4, Blocks.planks, Blocks.planks, false);
+		this.fillWithBlocks(world, structureboundingbox, 1, 4, 1, 7, 4, 1, Blocks.PLANKS, Blocks.PLANKS, false);
+		this.fillWithBlocks(world, structureboundingbox, 1, 4, 4, 7, 4, 4, Blocks.PLANKS, Blocks.PLANKS, false);
 		this.fillWithBlocks(world, structureboundingbox, 4, 3, 4, 7, 3, 4, Blocks.bookshelf, Blocks.bookshelf, false);
 		this.fillWithBlocks(world, structureboundingbox, 5, 3, 5, 6, 3, 5, Blocks.glass_pane, Blocks.glass_pane, false);
 		this.fillWithBlocks(world, structureboundingbox, 4, 3, 3, 7, 3, 3, Blocks.iron_bars, Blocks.iron_bars, false);
@@ -124,15 +124,15 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 
 		this.placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, 4, 2, 3, structureboundingbox);
 		this.fillWithBlocks(world, structureboundingbox, 4, 1, 3, 7, 1, 3, Blocks.iron_bars, Blocks.iron_bars, false);
-		this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 7, 1, 3, structureboundingbox);
-		this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 7, 1, 4, structureboundingbox);
-		this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 4, 1, 3, structureboundingbox);
-		this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 4, 1, 4, structureboundingbox);
+		this.placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, 7, 1, 3, structureboundingbox);
+		this.placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, 7, 1, 4, structureboundingbox);
+		this.placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, 4, 1, 3, structureboundingbox);
+		this.placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, 4, 1, 4, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, 4, 2, 3, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, 4, 2, 4, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, 7, 2, 3, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.iron_bars, 0, 7, 2, 4, structureboundingbox);
-		this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 1, 1, 4, structureboundingbox);
+		this.placeBlockAtCurrentPosition(world, Blocks.PLANKS, 0, 1, 1, 4, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, this.getMetadataWithOffset(Blocks.oak_stairs, 1), 1, 1, 3, structureboundingbox);
 		k = this.getMetadataWithOffset(Blocks.oak_stairs, 3);
 		this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, k, 3, 1, 4, structureboundingbox);
@@ -199,7 +199,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 			if (rD == 5) {
 				cart.setSkin("Brown");
 			}
-			world.spawnEntityInWorld(cart);
+			world.spawnEntity(cart);
 			cart.entityData.putString("ownername","VillagerJoe");
 
 		}
@@ -241,7 +241,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 			if (rD == 5) {
 				cart.setSkin("Brown");
 			}
-			world.spawnEntityInWorld(cart);
+			world.spawnEntity(cart);
 			cart.entityData.putString("ownername","VillagerJoe");
 		}
 

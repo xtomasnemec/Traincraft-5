@@ -80,7 +80,7 @@ public class EntityTenderCoranationClass extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?4.6f:4.35f,2.5f,1.4f};}
+    public float[] getHitboxSize(){return new float[]{world==null?4.6f:4.35f,2.5f,1.4f};}
     @Override
     public float[] rotationPoints() {return new float[]{1.15f, -1.1f};}
     @Override

@@ -70,7 +70,7 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 	@Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
     {
-        boolean flag = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4);
+        boolean flag = par1World.isBlockPowered(par2, par3, par4);
         TileGeneratorDiesel tile = (TileGeneratorDiesel)par1World.getTileEntity(par2, par3, par4);
 
         if (tile != null)
@@ -145,7 +145,7 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 			default:
 				break;
 			}
-			//world.spawnParticle("flame", d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
+			//world.spawnParticle(EnumParticleTypes.FLAME, d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
 		}
 	}
 	@Override

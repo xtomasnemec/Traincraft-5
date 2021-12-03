@@ -72,7 +72,7 @@ public class EntityStockCarDRWG extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2),
+                new ItemStack(Blocks.PLANKS, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2),
                 new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Items.leather, 1)        };
     }
 
@@ -81,7 +81,7 @@ public class EntityStockCarDRWG extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.55f:3.425f,2.125f,1.4f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.55f:3.425f,2.125f,1.4f};}
     @Override
     public float[] rotationPoints() {return new float[]{.95f, -1.0f};}
 

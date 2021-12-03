@@ -107,7 +107,7 @@ public class HUDloco extends GuiScreen {
 		 * So that the content of the tank is renderer and not the fuel currently burned
 		 */
 		if(!loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			l = loco.getTankInfo(null)[0] != null ? loco.getTankInfo(null)[0].fluid.amount : 1;
+			l = loco.getTankInfo()[0] != null ? loco.getTankInfo()[0].fluid.amount : 1;
 			l = Math.abs(((l * 70) / (loco.getTankCapacity()[0])));
 		} else {
 
@@ -144,7 +144,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderWaterBar(EntityTrainCore loco) {
-		int l = loco.getTankInfo(null)[0]!=null?loco.getTankInfo(null)[0].fluid.amount:1;
+		int l = loco.getTankInfo()[0]!=null?loco.getTankInfo()[0].fluid.amount:1;
 		int l_Scaled = Math.abs((l * 49) / loco.getTankCapacity()[0]);
 		if (l_Scaled > 49) {
 			l_Scaled = 49;// to fit the 49 pixels bar
@@ -169,8 +169,8 @@ public class HUDloco extends GuiScreen {
 	public int getHeat(GenericRailTransport loco){
 		if(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
 			if (true || loco.ticksExisted > lastTick) {
-				int l = loco.getTankInfo(null)[1] != null ?
-						loco.getTankInfo(null)[1].fluid.amount : 1;
+				int l = loco.getTankInfo()[1] != null ?
+						loco.getTankInfo()[1].fluid.amount : 1;
 				return ((l * 100) / (loco.getTankCapacity()[1]));
 			}
 			return 50;

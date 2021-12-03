@@ -92,7 +92,7 @@ public class EntityLocoElectricBR_E69 extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0,1.4f, 0f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.2f:2.9f,2.5f,1.5f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.2f:2.9f,2.5f,1.5f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.8f, -0.7f};}
     //Train specific stuff

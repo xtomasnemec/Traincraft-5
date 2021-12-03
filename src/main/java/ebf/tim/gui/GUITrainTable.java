@@ -255,11 +255,11 @@ public class GUITrainTable extends GuiContainer {
             p_146984_2_ = p_146984_1_.slotNumber;
         }
 
-        if (clickType == 4){ //todo: what are the 1.7.10 clicktypes
-            clickType = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
-                    player.inventory.getItemStack() != null ? 4 : //cover if the cursor is carrying an item
-                            (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
-                                    0;//cover everything else
+        if (clickType == ClickType.THROW){ //todo: what are the 1.7.10 clicktypes
+            clickType = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? ClickType.QUICK_MOVE ://cover shift click
+                    player.inventory.getItemStack() != ItemStack.EMPTY ? ClickType.THROW : //cover if the cursor is carrying an item
+                            (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?ClickType.CLONE://cover CTRL clicking
+                                    ClickType.PICKUP;//cover everything else
         }
         this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, clickType, this.mc.player);
     }

@@ -29,12 +29,12 @@ public class DistilRecipes {
 		//Prevent copper to be distilled is set in TileEntitydistil.
 		addSmelting(Item.getItemFromBlock(TCBlocks.orePetroleum), new ItemStack(TiMFluids.bucketDiesel, 2), 0.5F, 1,
 				new ItemStack(TiMOres.dustPlastic, 1));
-		addSmelting(Items.reeds, new ItemStack(TiMFluids.bucketDiesel), 0.2F, 4,
+		addSmelting(Items.REEDS, new ItemStack(TiMFluids.bucketDiesel), 0.2F, 4,
 				new ItemStack(TiMOres.dustPlastic, 1));
-		addSmelting(Item.getItemFromBlock(Blocks.leaves), new ItemStack(TiMFluids.bucketDiesel), 0.2F, 6,
+		addSmelting(Item.getItemFromBlock(Blocks.LEAVES), new ItemStack(TiMFluids.bucketDiesel), 0.2F, 6,
 				new ItemStack(TiMOres.dustPlastic, 2));
 		addSmelting(TiMFluids.bucketDiesel, new ItemStack(TiMFluids.bucketFuelOil), 1F, 1, new ItemStack(TiMOres.dustPlastic, 2));
-		addSmelting(Items.wheat, new ItemStack(TiMFluids.bucketDiesel), 0.2F, 4,
+		addSmelting(Items.WHEAT, new ItemStack(TiMFluids.bucketDiesel), 0.2F, 4,
 				new ItemStack(TiMOres.dustPlastic, 1));
 	}
 

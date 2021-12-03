@@ -89,7 +89,7 @@ public class EntityLocoDieselKof_DB extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{1f,1.0f, 0.35f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.25f:2.9f,1.9f,1.5f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.25f:2.9f,1.9f,1.5f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.5f, -0.65f};}
     //Train specific stuff

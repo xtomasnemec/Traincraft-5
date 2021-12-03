@@ -81,7 +81,7 @@ public class EntityLocoElectricMinetrain extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0.4f,1.225f, 0f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?2.3f:1.9f,1.6f,0.8f};}
+    public float[] getHitboxSize(){return new float[]{world==null?2.3f:1.9f,1.6f,0.8f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.05f, -0.5f};}
     //Train specific stuff

@@ -84,7 +84,7 @@ public class TileWindMill extends TileRenderFacing implements IEnergyProvider {
 						entityitem.motionX = (float) rand.nextGaussian() * f3;
 						entityitem.motionY = (float) rand.nextGaussian() * f3 + 0.2F;
 						entityitem.motionZ = (float) rand.nextGaussian() * f3;
-						worldObj.spawnEntityInWorld(entityitem);
+						worldObj.spawnEntity(entityitem);
 					}
 					this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
 				}

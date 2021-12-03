@@ -107,7 +107,7 @@ public class BlockSignal extends BlockDynamic {
 		super.onBlockAdded(world, i, j, k);
 		TileSignal te = (TileSignal) world.getTileEntity(i, j, k);
 
-		if (world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		if (world.isBlockPowered(i, j, k)) {
 
 			te.state = 1;
 		}
@@ -143,7 +143,7 @@ public class BlockSignal extends BlockDynamic {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
-	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 		updateTick(world, i, j, k, random);
 	}
 
@@ -153,10 +153,10 @@ public class BlockSignal extends BlockDynamic {
 			return;
 		//te.rot = l;
 		// int l = world.getBlockMetadata(i, j, k);
-		if (te.state == 1 && !world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		if (te.state == 1 && !world.isBlockPowered(i, j, k)) {
 			te.state = 0;
 		}
-		if (te.state == 0 && world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		if (te.state == 0 && world.isBlockPowered(i, j, k)) {
 			te.state = 1;
 		}
 	}
@@ -170,10 +170,10 @@ public class BlockSignal extends BlockDynamic {
 		TileSignal te = (TileSignal) world.getTileEntity(i, j, k);
 		if (te == null)
 			return;
-		if (te.state == 1 && !world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		if (te.state == 1 && !world.isBlockPowered(i, j, k)) {
 			world.scheduleBlockUpdate(i, j, k, this, 4);
 		}
-		else if (te.state == 0 && world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		else if (te.state == 0 && world.isBlockPowered(i, j, k)) {
 			// world.setBlockWithNotify(i, j, k,Train.ActiveSignalBlock.blockID);
 
 			te.state = 1;

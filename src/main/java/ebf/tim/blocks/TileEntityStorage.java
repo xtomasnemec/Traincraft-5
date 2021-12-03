@@ -8,15 +8,26 @@ import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAnvil;
+import net.minecraft.block.BlockWorkbench;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
@@ -125,10 +136,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         }
     }
 
-    @Override
+    /*@Override
     public String getInventoryName(){
         return storageType==0?"trainsinmotion:trackcrafter":"trainsinmotion:traincrafter";
-    }
+    }*/
 
     /**
      * <h2>Syncing</h2>
@@ -176,7 +187,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     }
     /**saves the tile entity to server world*/
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
         if ( host != null )
@@ -190,7 +201,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 }
             }
         }
-        for(int i=0; i<getTankInfo(null).length;i++){
+        for(int i=0; i<getTankInfo().length;i++){
             if(getTankInfo(i)!=null && getTankInfo(i).fluid!=null) {
                 data.putFluidStack("tanks." + i, getTankInfo(i).fluid);
             } else if(getTankInfo(i)!=null){
@@ -202,6 +213,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         if(data.toXMLString() != null && !data.toXMLString().equals("") && data.toXMLString().length()>1) {
             tag.setString("xmlData", data.toXMLString());
         }
+        return tag;
     }
 
     /**the fluidTank tank*/
@@ -225,7 +237,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
 
 
     @Override
-    public int fill(@Nullable ForgeDirection from, FluidStack resource, boolean doFill){
+    public int fill(FluidStack resource, boolean doFill){
         if(getTankCapacity()==null){return resource.amount;}
         int leftoverDrain=resource.amount;
         for(int stack =0; stack<getTankCapacity().length;stack++) {
@@ -270,7 +282,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                     leftoverDrain-=getTankInfo(stack).capacity-getTankInfo(stack).fluid.amount;
                     if(doFill){
                         fluidTank[stack] = new FluidTankInfo(
-                                new FluidStack(resource.fluid, getTankInfo(stack).capacity), getTankInfo(stack).capacity);
+                                new FluidStack(resource.getFluid(), getTankInfo(stack).capacity), getTankInfo(stack).capacity);
                     }
                 } else if (leftoverDrain+getTankInfo(stack).fluid.amount<0){
                     leftoverDrain-=getTankInfo(stack).fluid.amount-resource.amount;
@@ -281,7 +293,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 } else {
                     if(doFill){
                         fluidTank[stack] = new FluidTankInfo(
-                                new FluidStack(resource.fluid, getTankInfo(stack).fluid.amount+leftoverDrain),
+                                new FluidStack(resource.getFluid(), getTankInfo(stack).fluid.amount+leftoverDrain),
                                 getTankInfo(stack).capacity);
                     }
                     leftoverDrain=0;
@@ -295,9 +307,9 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     }
 
     @Override
-    public FluidStack drain(@Nullable ForgeDirection from, FluidStack resource, boolean doDrain){
+    public FluidStack drain(FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
-        for(FluidTankInfo stack : getTankInfo(null)) {
+        for(FluidTankInfo stack : getTankInfo()) {
             if (stack.fluid.amount > 0 && (stack.fluid.getFluid()==TiMFluids.nullFluid || stack.fluid.getFluid() == resource.getFluid())) {
                 if(leftoverDrain>stack.fluid.amount){
                     leftoverDrain-=stack.fluid.amount;
@@ -317,10 +329,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     }
 
     public FluidStack getFluidStack(int slot){
-        if(getTankInfo(null)!=null && getTankInfo(null)[slot]!=null){
+        if(getTankInfo()!=null && getTankInfo()[slot]!=null){
             return null;
         } else {
-            return getTankInfo(null)[slot].fluid;
+            return getTankInfo()[slot].fluid;
         }
     }
 
@@ -328,32 +340,15 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
      * <h1>Fluid Management</h1>
      */
     @Override
-    public FluidStack drain(@Nullable ForgeDirection from, int drain, boolean doDrain){
-        return drain(from, new FluidStack(TiMFluids.nullFluid, drain), doDrain);
-    }
-
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return getTankInfo(null)!=null;
-    }
-
-    @Override
-    public boolean canDrain(@Nullable ForgeDirection from, Fluid resource){
-        for(FluidTankInfo stack : getTankInfo(null)) {
-            if (stack.fluid.amount > 0 && (resource == null || stack.fluid.getFluid() == resource)) {
-                return true;
-            }
-        }
-        return false;
+    public FluidStack drain(int drain, boolean doDrain){
+        return drain(new FluidStack(TiMFluids.nullFluid, drain), doDrain);
     }
 
     public FluidTankInfo getTankInfo(int tank){
-        return getTankInfo(null)[tank];
+        return getTankInfo()[tank];
     }
 
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from){
+    public FluidTankInfo[] getTankInfo(){
         if(getTankCapacity()==null || getTankCapacity().length ==0){
             return new FluidTankInfo[]{};
         }
@@ -375,6 +370,18 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         return fluidTank;
     }
 
+    //rather than converting the entire system to support the new more limited format, just convert the result of the existing method.
+    @Override
+    public IFluidTankProperties[] getTankProperties(){
+        FluidTankInfo[] tanks = getTankInfo();
+
+        IFluidTankProperties[] properties = new IFluidTankProperties[tanks.length];
+        for(int i=0;i<tanks.length;i++){
+            properties[i] = new FluidTankProperties(tanks[i].fluid, tanks[i].capacity);
+        }
+        return properties;
+    }
+
 
 
     /**
@@ -384,6 +391,16 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     @Override
     public int getSizeInventory() {
         return inventory.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (ItemStackSlot slot : inventory){
+            if(slot.getHasStack()){
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -407,6 +424,18 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
         }
     }
 
+    /**
+     * Removes a stack from the given slot and returns it.
+     *
+     * @param index
+     */
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = getStackInSlot(index).copy();
+        setInventorySlotContents(index,ItemStack.EMPTY);
+        return stack;
+    }
+
 
     public ItemStackSlot getSlotIndexByID(int id){
         for(ItemStackSlot s : inventory){
@@ -425,10 +454,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     }
 
 
-    @Override
+    /*@Override
     public boolean hasCustomInventoryName() {
         return true;
-    }
+    }*/
     @Override
     public int getInventoryStackLimit() {return 64;}
     /**checks if the player can interact with this container, usually used for a check if it's already in use or not*/
@@ -455,21 +484,34 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 }
                 if(slot==1||slot==2){
                     //todo: if block.modid==chisel return false;
-                    return Block.getBlockFromItem(itemStack.getItem())!=null && Block.getBlockFromItem(itemStack.getItem()).isOpaqueCube();
+                    Block b = Block.getBlockFromItem(itemStack.getItem());
+                    return b!=null && b.isOpaqueCube(b.getDefaultState());
                 }
             }
         }
         return true;
     }
 
+    @Override
+    public int getField(int id) {return 0;}
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount() {return 0;}
+
+    @Override
+    public void clear() {}
+
     public void dropInventory(){
         EntityItem item;
         for(ItemStackSlot slots: inventory){
             if(slots!=null&&slots.getStack()!=null){
-                item= new EntityItem(worldObj);
-                item.setEntityItemStack(slots.getStack());
-                item.setPosition(xCoord,yCoord+1,zCoord);
-                worldObj.spawnEntityInWorld(item);
+                item= new EntityItem(world);
+                item.setItem(slots.getStack());
+                item.setPosition(pos.getX(),pos.getY()+1,pos.getZ());
+                world.spawnEntity(item);
             }
         }
     }
@@ -505,9 +547,68 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     public void openInventory(EntityPlayer p) {}
     /**for running functionality when closing the inventory, such as setting it as not in use.*/
     @Override
-    public void openInventory(EntityPlayer p) {}
-    @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {return null;}
+    public void closeInventory(EntityPlayer p) {}
+    /*@Override
+    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {return null;}*/
     @Override
     public void markDirty() {super.markDirty();}
+
+    /**
+     * Gets the name of this thing. This method has slightly different behavior depending on the interface (for <a
+     * href="https://github.com/ModCoderPack/MCPBot-Issues/issues/14">technical reasons</a> the same method is used for
+     * both IWorldNameable and ICommandSender):
+     *
+     * <dl>
+     * <dt>{@link net.minecraft.util.INameable#getName() INameable.getName()}</dt>
+     * <dd>Returns the name of this inventory. If this {@linkplain net.minecraft.inventory#hasCustomName() has a custom
+     * name} then this <em>should</em> be a direct string; otherwise it <em>should</em> be a valid translation
+     * string.</dd>
+     * <dd>However, note that <strong>the translation string may be invalid</strong>, as is the case for {@link
+     * TileEntityBanner TileEntityBanner} (always returns nonexistent translation code
+     * <code>banner</code> without a custom name), {@link BlockAnvil.Anvil BlockAnvil$Anvil} (always
+     * returns <code>anvil</code>), {@link BlockWorkbench.InterfaceCraftingTable
+     * BlockWorkbench$InterfaceCraftingTable} (always returns <code>crafting_table</code>), {@link
+     * InventoryCraftResult InventoryCraftResult} (always returns <code>Result</code>) and the
+     * {@link EntityMinecart EntityMinecart} family (uses the entity definition). This is not
+     * an exaustive list.</dd>
+     * <dd>In general, this method should be safe to use on tile entities that implement IInventory.</dd>
+     * <dt>{@link ICommandSender#getName() ICommandSender.getName()} and {@link
+     * Entity#getName() Entity.getName()}</dt>
+     * <dd>Returns a valid, displayable name (which may be localized). For most entities, this is the translated version
+     * of its translation string (obtained via {@link EntityList#getEntityString
+     * EntityList.getEntityString}).</dd>
+     * <dd>If this entity has a custom name set, this will return that name.</dd>
+     * <dd>For some entities, this will attempt to translate a nonexistent translation string; see <a
+     * href="https://bugs.mojang.com/browse/MC-68446">MC-68446</a>. For {@linkplain
+     * EntityPlayer#getName() players} this returns the player's name. For {@linkplain
+     * EntityOcelot ocelots} this may return the translation of
+     * <code>entity.Cat.name</code> if it is tamed. For {@linkplain EntityItem#getName() item
+     * entities}, this will attempt to return the name of the item in that item entity. In all cases other than players,
+     * the custom name will overrule this.</dd>
+     * <dd>For non-entity command senders, this will return some arbitrary name, such as "Rcon" or "Server".</dd>
+     * </dl>
+     */
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    /**
+     * Checks if this thing has a custom name. This method has slightly different behavior depending on the interface
+     * (for <a href="https://github.com/ModCoderPack/MCPBot-Issues/issues/14">technical reasons</a> the same method is
+     * used for both IWorldNameable and Entity):
+     *
+     * <dl>
+     * <dt>{@link net.minecraft.util.INameable#hasCustomName() INameable.hasCustomName()}</dt>
+     * <dd>If true, then {@link #getName()} probably returns a preformatted name; otherwise, it probably returns a
+     * translation string. However, exact behavior varies.</dd>
+     * <dt>{@link Entity#hasCustomName() Entity.hasCustomName()}</dt>
+     * <dd>If true, then {@link Entity#getCustomNameTag() Entity.getCustomNameTag()} will return a
+     * non-empty string, which will be used by {@link #getName()}.</dd>
+     * </dl>
+     */
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
 }

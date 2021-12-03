@@ -128,7 +128,7 @@ public class RailTileEntity extends TileEntity {
         super.markDirty();
         if (this.world != null) {
             world.markBlockForUpdate(pos.getX(), pos.getY(), pos.getZ());
-            this.world.func_147453_f(this.pos.getX(), this.pos.getY(), this.pos.getZ(), TiMBlocks.railBlock);
+            this.world.func_147453_f(this.pos.getX(), this.pos.getY(), this.pos.getZ(), TiMBlocks.RAILBlock);
             if(world.isRemote && railGLID!=null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
                 railGLID = null;

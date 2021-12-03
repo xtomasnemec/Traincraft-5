@@ -3,7 +3,7 @@ package ebf.tim.blocks.rails;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class RailData {
     private int xCoord;
     private int yCoord;
     private int zCoord;
-    private List<ChunkPosition> nearbyRails = new ArrayList<>();
+    private List<BlockPos> nearbyRails = new ArrayList<>();
 
     public RailData(World p_i45388_2_, int p_i45388_3_, int p_i45388_4_, int p_i45388_5_) {
         this.world = p_i45388_2_;
@@ -26,70 +26,70 @@ public class RailData {
         this.nearbyRails.clear();
         switch (BlockRailCore.getRailMeta(world, p_i45388_3_, p_i45388_4_, p_i45388_5_, null)){
             case 0: {
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord - 1));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord + 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord - 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord + 1));
                 break;
             }
             case 1: {
-                this.nearbyRails.add(new ChunkPosition(this.xCoord - 1, this.yCoord, this.zCoord));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord + 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord - 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord + 1, this.yCoord, this.zCoord));
                 break;
             }
             case 2:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord - 1, this.yCoord, this.zCoord));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord + 1, this.yCoord + 1, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord - 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord + 1, this.yCoord + 1, this.zCoord));
                 break;
             }
             case 3:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord - 1, this.yCoord + 1, this.zCoord));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord + 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord - 1, this.yCoord + 1, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord + 1, this.yCoord, this.zCoord));
                 break;
             }
             case 4:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord + 1, this.zCoord - 1));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord + 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord + 1, this.zCoord - 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord + 1));
                 break;
             }
             case 5:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord - 1));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord + 1, this.zCoord + 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord - 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord + 1, this.zCoord + 1));
                 break;
             }
             case 6:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord + 1, this.yCoord, this.zCoord));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord + 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord + 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord + 1));
                 break;
             }
             case 7:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord - 1, this.yCoord, this.zCoord));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord + 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord - 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord + 1));
                 break;
             }
             case 8:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord - 1, this.yCoord, this.zCoord));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord - 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord - 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord - 1));
                 break;
             }
             case 9:{
-                this.nearbyRails.add(new ChunkPosition(this.xCoord + 1, this.yCoord, this.zCoord));
-                this.nearbyRails.add(new ChunkPosition(this.xCoord, this.yCoord, this.zCoord - 1));
+                this.nearbyRails.add(new BlockPos(this.xCoord + 1, this.yCoord, this.zCoord));
+                this.nearbyRails.add(new BlockPos(this.xCoord, this.yCoord, this.zCoord - 1));
                 break;
             }
         }
     }
 
-    private RailData checkYpositions(ChunkPosition p_150654_1_) {
+    private RailData checkYpositions(BlockPos p_150654_1_) {
         for (int y=-1; y<2;y++){
-            if(CommonUtil.getBlockAt(world, p_150654_1_.chunkPosX, p_150654_1_.chunkPosY+y, p_150654_1_.chunkPosZ) instanceof BlockRailBase){
-                return new RailData(this.world, p_150654_1_.chunkPosX, p_150654_1_.chunkPosY+y, p_150654_1_.chunkPosZ);
+            if(CommonUtil.getBlockAt(world, p_150654_1_.getX(), p_150654_1_.getY()+y, p_150654_1_.getZ()) instanceof BlockRailBase){
+                return new RailData(this.world, p_150654_1_.getX(), p_150654_1_.getY()+y, p_150654_1_.getZ());
             }
         }
         return null;
     }
 
     private boolean nearbyContains(int p_150652_1_, int p_150652_3_) {
-        for (ChunkPosition chunkposition : this.nearbyRails) {
-            if (chunkposition.chunkPosX == p_150652_1_ && chunkposition.chunkPosZ == p_150652_3_) {
+        for (BlockPos pos : this.nearbyRails) {
+            if (pos.getX() == p_150652_1_ && pos.getZ() == p_150652_3_) {
                 return true;
             }
         }
@@ -98,7 +98,7 @@ public class RailData {
 
 
     private boolean func_150647_c(int p_150647_1_, int p_150647_2_, int p_150647_3_) {
-        RailData rail = this.checkYpositions(new ChunkPosition(p_150647_1_, p_150647_2_, p_150647_3_));
+        RailData rail = this.checkYpositions(new BlockPos(p_150647_1_, p_150647_2_, p_150647_3_));
 
         if (rail == null) {
             return false;
@@ -108,7 +108,7 @@ public class RailData {
                 otherRail = rail.checkYpositions(rail.nearbyRails.get(i));
 
                 if (otherRail != null && otherRail.nearbyContains(rail.xCoord,rail.zCoord)) {
-                    rail.nearbyRails.set(i, new ChunkPosition(otherRail.xCoord, otherRail.yCoord, otherRail.zCoord));
+                    rail.nearbyRails.set(i, new BlockPos(otherRail.xCoord, otherRail.yCoord, otherRail.zCoord));
                 } else {
                     rail.nearbyRails.remove(i--);
                 }
@@ -118,7 +118,7 @@ public class RailData {
     }
 
     public void rebuildRailMeta() {
-        if(world.getTileEntity(this.xCoord, this.yCoord, this.zCoord) instanceof RailTileEntity) {
+        if(world.getTileEntity(new BlockPos(this.xCoord, this.yCoord, this.zCoord)) instanceof RailTileEntity) {
             boolean flagzm = this.func_150647_c(this.xCoord, this.yCoord, this.zCoord - 1);
             boolean flagzp = this.func_150647_c(this.xCoord, this.yCoord, this.zCoord + 1);
             boolean flagxm = this.func_150647_c(this.xCoord - 1, this.yCoord, this.zCoord);
@@ -162,7 +162,7 @@ public class RailData {
                     meta = 1;
                 }
 
-                if (world.isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord)) {
+                if (world.isBlockPowered(new BlockPos(xCoord,yCoord,zCoord))) {
                     if (flagzp && flagxp) {
                         meta = 6;
                     }
@@ -261,7 +261,7 @@ public class RailData {
                 meta = 0;
             }
 
-            ((RailTileEntity) world.getTileEntity(this.xCoord, this.yCoord, this.zCoord)).setMeta(meta);
+            ((RailTileEntity) world.getTileEntity(new BlockPos(this.xCoord, this.yCoord, this.zCoord))).setMeta(meta);
 
         }
     }

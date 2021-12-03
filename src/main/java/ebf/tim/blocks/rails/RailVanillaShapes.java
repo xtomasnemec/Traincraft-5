@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 import static ebf.tim.blocks.rails.BlockRailCore.checkBlockMeta;
 import static ebf.tim.blocks.rails.BlockRailCore.getNearbyMeta;
 
+
 /**
  * @author Eternal Blue Flame
  */

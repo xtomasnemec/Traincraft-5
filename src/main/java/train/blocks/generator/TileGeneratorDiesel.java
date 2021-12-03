@@ -159,7 +159,7 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergyPro
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid){
+    public boolean canDrain(Fluid fluid){
         return false;
     }
 

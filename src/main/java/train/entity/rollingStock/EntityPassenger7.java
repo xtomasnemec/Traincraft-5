@@ -72,7 +72,7 @@ public class EntityPassenger7 extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2),
+                new ItemStack(Blocks.PLANKS, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2),
                 new ItemStack(Items.iron_ingot, 2), null, new ItemStack(TiMItems.cabinIron, 1),
                 null, null, new ItemStack(TiMItems.seatsWooden, 1)        };
     }
@@ -82,7 +82,7 @@ public class EntityPassenger7 extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0,1.2f, 0f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.25f:2.875f,2.2f,1.15f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.25f:2.875f,2.2f,1.15f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.725f, -0.8f};}
 

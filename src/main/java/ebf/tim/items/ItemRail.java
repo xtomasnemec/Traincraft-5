@@ -103,7 +103,7 @@ public class ItemRail extends Item implements ITrackItem {
                     //if it is replaceable, try to spawn the dropped item.
                     List<ItemStack> blockStacks = CommonUtil.getBlockAt(world, x,y,z).getDrops(world,x,y,z,world.getBlockMetadata(x,y,z),0);
                     for(ItemStack stak : blockStacks){
-                        world.spawnEntityInWorld(new EntityItem(world,x,y+0.5,z, stak));
+                        world.spawnEntity(new EntityItem(world,x,y+0.5,z, stak));
                     }
                 }
             }
@@ -148,7 +148,7 @@ public class ItemRail extends Item implements ITrackItem {
     }
 
     public net.minecraft.block.Block getPlacedBlock(){
-        return TiMBlocks.railBlock;
+        return TiMBlocks.RAILBlock;
     }
 
     public boolean placeTrack(ItemStack stack, World world, int x, int y, int z){
@@ -283,7 +283,7 @@ public class ItemRail extends Item implements ITrackItem {
         if(p_150895_1_ instanceof ItemRail) {
             for(Item ingot : new Item[]{Items.iron_ingot, Items.gold_ingot}){
                 for(Block b : new Block[]{null, Blocks.gravel, Blocks.stone}){
-                    for(Block t : new Block[]{Blocks.log, Blocks.planks, Blocks.double_stone_slab, null})
+                    for(Block t : new Block[]{Blocks.log, Blocks.PLANKS, Blocks.double_stone_slab, null})
                     tabItems.add(setStackData(new ItemStack(p_150895_1_),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));
                 }
             }

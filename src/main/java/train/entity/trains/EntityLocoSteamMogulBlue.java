@@ -92,7 +92,7 @@ public class EntityLocoSteamMogulBlue extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{1,1.6f, 0f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.5f:3.2f,2.4f,1.1f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.5f:3.2f,2.4f,1.1f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.9f, -1f};}
     //Train specific stuff

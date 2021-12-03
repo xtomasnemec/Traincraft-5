@@ -16,7 +16,7 @@ import java.util.Random;
 public class BlockLantern extends BlockDynamic {
 
 	public BlockLantern() {
-		super(Material.rock,false);
+		super(Material.ROCK,false);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
 		float f = 0.3F;
@@ -59,7 +59,7 @@ public class BlockLantern extends BlockDynamic {
 		double d3 = 0.2199999988079071D;
 
 		par1World.spawnParticle("smoke", d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
-		par1World.spawnParticle("flame", d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
+		par1World.spawnParticle(EnumParticleTypes.FLAME, d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
 
 	}
 	@Override

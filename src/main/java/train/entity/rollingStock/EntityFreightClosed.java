@@ -71,7 +71,7 @@ public class EntityFreightClosed extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Blocks.planks, 4), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 4),
+                new ItemStack(Blocks.PLANKS, 4), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 4),
                 new ItemStack(Items.iron_ingot, 2), null, null, null, null, new ItemStack(Blocks.chest, 1)        };
     }
 
@@ -80,7 +80,7 @@ public class EntityFreightClosed extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.1f:2.725f,2.125f,1.1f};}
+    public float[] getHitboxSize(){return new float[]{world==null?3.1f:2.725f,2.125f,1.1f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.725f, -0.75f};}
 

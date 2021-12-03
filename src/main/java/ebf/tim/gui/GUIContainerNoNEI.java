@@ -591,7 +591,7 @@ public abstract class GUIContainerNoNEI extends GuiScreen
                         this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, p_146286_3_, 0);
                         this.handleMouseClick(slot, j1, 0, 0);
 
-                        if (this.mc.player.inventory.getItemStack() != null) {
+                        if (this.mc.player.inventory.getItemStack() != ItemStack.EMPTY) {
                             this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, p_146286_3_, 0);
                             this.field_147011_y = p_146286_1_ - l;
                             this.field_147010_z = p_146286_2_ - i1;
@@ -626,7 +626,7 @@ public abstract class GUIContainerNoNEI extends GuiScreen
 
                 this.handleMouseClick((Slot)null, -999, Container.getQuickcraftMask(2, this.field_146987_F), 5);
             }
-            else if (this.mc.player.inventory.getItemStack() != null) {
+            else if (this.mc.player.inventory.getItemStack() != ItemStack.EMPTY) {
                 if (p_146286_3_ == this.mc.gameSettings.keyBindPickBlock.getKeyCode() + 100) {
                     this.handleMouseClick(slot, j1, p_146286_3_, 3);
                 } else {

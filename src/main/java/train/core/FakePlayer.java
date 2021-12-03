@@ -1,9 +1,7 @@
 package train.core;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
@@ -12,9 +10,7 @@ import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatBase;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.FoodStats;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import java.util.UUID;
@@ -35,7 +31,7 @@ public class FakePlayer extends EntityPlayer {
 		super(world, new GameProfile(new UUID(0,0),""));
 		inventory = new InventoryPlayer(this);
 		inventory.currentItem = 0;
-		inventory.setInventorySlotContents(0, new ItemStack(Items.diamond_pickaxe, 1, 0));
+		inventory.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE, 1, 0));
 		flyToggleTimer = 0;
 		// score = 0;
 		boolean isSwinging = false; // Maybe spawnForced ??
@@ -43,14 +39,10 @@ public class FakePlayer extends EntityPlayer {
 		timeUntilPortal = 20;
 		inPortal = false;
 		capabilities = new PlayerCapabilities();
-		speedOnGround = 0.1F;
 		speedInAir = 0.02F;
 		fishEntity = null;
 		this.inventoryContainer = new ContainerPlayer(this.inventory, !world.isRemote, this);
 		this.openContainer = this.inventoryContainer;
-		yOffset = 1.62F;
-
-		fireResistance = 20;
 	}
 
     @Override
@@ -66,15 +58,6 @@ public class FakePlayer extends EntityPlayer {
 	public void onLivingUpdate() {}
 
 
-    @Override
-	public EntityItem dropPlayerItemWithRandomChoice(ItemStack itemstack, boolean flag) {
-		return null;
-	}
-
-	@Override
-	public boolean canHarvestBlock(Block block) {
-		return true;
-	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
@@ -88,20 +71,10 @@ public class FakePlayer extends EntityPlayer {
 	}
 
 	@Override
-	public ItemStack getCurrentEquippedItem() {
-		return null;
-	}
-
-	@Override
-	public void destroyCurrentEquippedItem() {}
-
-	@Override
 	public double getYOffset() {
 		return 0;
 	}
 
-	@Override
-	public void swingItem() {}
 
 	@Override
 	public void attackTargetEntityWithCurrentItem(Entity entity) {}
@@ -118,11 +91,6 @@ public class FakePlayer extends EntityPlayer {
     @Override
 	public boolean isEntityInsideOpaqueBlock() {
 		return false;
-	}
-
-	@Override
-	public EnumStatus sleepInBedAt(int i, int j, int k) {
-		return EnumStatus.OK;
 	}
 
 	@Override
@@ -148,32 +116,18 @@ public class FakePlayer extends EntityPlayer {
 		return 0;
 	}
 
-	@Override
-	public void addChatMessage(IChatComponent chatComponent) {}
-
-	@Override
-	public void triggerAchievement(StatBase statbase) {}
 
 	@Override
 	public void addStat(StatBase statbase, int i) {}
 
-	@Override
-	public void addToPlayerScore(Entity par1Entity, int par2) {}
 
 	@Override
 	public void jump() {}
 
-	@Override
-	public void moveEntityWithHeading(float f, float f1) {}
 
 	@Override
 	public void addMovementStat(double d, double d1, double d2) {}
 
-	@Override
-	protected void fall(float f) {}
-
-	@Override
-	public void setInPortal() {}
 
 	@Override
 	public int xpBarCap() {
@@ -198,8 +152,6 @@ public class FakePlayer extends EntityPlayer {
 		return false;
 	}
 
-	@Override
-	public void setItemInUse(ItemStack itemstack, int i) {}
 
 	@Override
 	protected int getExperiencePoints(EntityPlayer entityplayer) {
@@ -211,14 +163,22 @@ public class FakePlayer extends EntityPlayer {
 		return true;
 	}
 
+	/**
+	 * Returns true if the player is in spectator mode.
+	 */
 	@Override
-	public boolean canCommandSenderUseCommand(int var1, String var2) {
+	public boolean isSpectator() {
 		return false;
 	}
 
 	@Override
-	public ChunkCoordinates getPlayerCoordinates() {
-		return null;
+	public boolean isCreative() {
+		return false;
+	}
+
+	@Override
+	public boolean canUseCommand(int var1, String var2) {
+		return false;
 	}
 
 }
