@@ -3,6 +3,7 @@ package ebf.tim.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
