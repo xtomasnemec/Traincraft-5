@@ -29,8 +29,6 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
 
     public static CustomItemModel instance = new CustomItemModel();
 
-    private static HashMap<ResourceLocation, Item> models = new HashMap<>();
-
     private static HashMap<Item, TileRenderFacing> blockTextures = new HashMap<>();
 
     public static void registerBlockTextures(Item itm, TileEntity tile){
@@ -38,21 +36,6 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
             blockTextures.put(itm, (TileRenderFacing) tile);
         }
     }
-
-    public static void registerModel(Item itm){
-        models.put(new ResourceLocation(itm.getUnlocalizedName()), itm);
-    }
-
-    //@Override
-    public boolean accepts(ResourceLocation modelLocation) {
-        return models.containsKey(modelLocation);
-    }
-
-    //@Override
-    public /*IModel*/ void loadModel(ResourceLocation modelLocation) throws Exception {
-        renderItem(null, new ItemStack(models.get(modelLocation)), null);
-    }
-
 
 
     @Override// generally useless but needs to be here
