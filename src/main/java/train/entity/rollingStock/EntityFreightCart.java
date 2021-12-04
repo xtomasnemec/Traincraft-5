@@ -72,7 +72,7 @@ public class EntityFreightCart extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 new ItemStack(Blocks.PLANKS, 6), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2),
-                new ItemStack(Items.iron_ingot, 2), null, null, null, null, new ItemStack(Blocks.chest, 2)        };
+                new ItemStack(Items.IRON_INGOT, 2), null, null, null, null, new ItemStack(Blocks.CHEST, 2)        };
     }
 
 

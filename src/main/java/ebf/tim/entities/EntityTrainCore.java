@@ -74,7 +74,7 @@ public class EntityTrainCore extends GenericRailTransport {
     @Override
     public void entityInit(){
         super.entityInit();
-        this.dataWatcher.addObject(18, accelerator);//accelerator
+        this.dataManager.set(ACCELERATOR, accelerator);//accelerator
         this.updateWatchers = true;
     }
 
@@ -230,7 +230,7 @@ public class EntityTrainCore extends GenericRailTransport {
      * this is intended for external use like collisions that need to see if the train is in gear from a superclass cast*/
     @Override
     public int getAccelerator(){
-        return !world.isRemote?accelerator:getDataWatcher().getWatchableObjectInt(18);
+        return !world.isRemote?accelerator:dataManager.get(ACCELERATOR);
     }
 
     /**
@@ -269,7 +269,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         }
                     } else {
                         accelerator = 0;
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                 } else if(ticksExisted % 10 == 0) {
                     //basically apply normal bogie drag to acceleration
@@ -334,7 +334,7 @@ public class EntityTrainCore extends GenericRailTransport {
     public void soundHorn() {
         for (EnumSounds sounds : EnumSounds.values()) {
             if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")&& sounds.getEntityClass().equals(this.getClass()) && whistleDelay == 0) {
-                world.playSoundAtEntity(this, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
+                world.playSound(this.posX, this.posY,this.posZ, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
                 whistleDelay = 65;
             }
         }
@@ -366,7 +366,7 @@ public class EntityTrainCore extends GenericRailTransport {
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
                     //the second to last value is volume, and idk what the last one is.
-                    //world.playSoundEffect(posX, posY, posZ, getHorn().getResourcePath(), 1, 0.5f);
+                    //world.playSoundEffect(posX, posY, posZ, getHorn().getPath(), 1, 0.5f);
                     if(whistleDelay==0){
                         soundHorn();
                     }
@@ -384,7 +384,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         } else {
                             accelerator--;
                         }
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }case 3:{ //increase speed
@@ -400,31 +400,31 @@ public class EntityTrainCore extends GenericRailTransport {
                         } else {
                             accelerator++;
                         }
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }case 11:{//TC control forward
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = 7;
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }case 12:{//TC control reverse
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = -7;
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }case 4: {//TC control, keep speed
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = (int)Math.copySign(8,accelerator);
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }case 14: {//TC control, keep speed
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = 0;
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }
@@ -433,8 +433,8 @@ public class EntityTrainCore extends GenericRailTransport {
         return false;
     }
 
-    @Override
-    public int getMinecartType(){return 10004;}
+    /*@Override
+    public int getMinecartType(){return 10004;}*/
 
     /*
      * <h2>Inherited variables</h2>

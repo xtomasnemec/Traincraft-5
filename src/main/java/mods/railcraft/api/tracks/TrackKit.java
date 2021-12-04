@@ -151,7 +151,7 @@ public final class TrackKit extends IForgeRegistryEntry.Impl<TrackKit> implement
     }
 
     @Override
-    public String getResourcePathSuffix() {
+    public String getPathSuffix() {
         return getName();
     }
 

@@ -13,7 +13,7 @@ public class EntityZeppelinOneBalloon extends AbstractZeppelin{
 	}
 	public EntityZeppelinOneBalloon(World world, double d, double d1, double d2) {
 		this(world);
-		setPosition(d, d1 + yOffset, d2);
+		setPosition(d, d1 + getYOffset(), d2);
 		motionX = 0.0D;
 		motionY = 0.0D;
 		motionZ = 0.0D;
@@ -34,7 +34,7 @@ public class EntityZeppelinOneBalloon extends AbstractZeppelin{
 				this.boatCurrentDamage = 1000;
 			}
 		}
-		setBeenAttacked();
+		velocityChanged=true;
 		if (boatCurrentDamage > 40) {
 			if (damagesource.getImmediateSource() instanceof EntityPlayer && !(((EntityPlayer) damagesource.getImmediateSource()).capabilities.isCreativeMode)) {
 				dropItem(ItemIDs.zeppelin.item, 1);
@@ -43,8 +43,8 @@ public class EntityZeppelinOneBalloon extends AbstractZeppelin{
 		}
 		return true;
 	}
-	@Override
+	/*@Override
 	public String getInventoryName() {
 		return "Zeppelin One Balloon";
-	}
+	}*/
 }

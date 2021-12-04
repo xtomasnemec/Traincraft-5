@@ -1,7 +1,12 @@
 package ebf.tim.entities;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.block.BlockRailPowered;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -238,7 +243,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
     public boolean getBoolean(int index){
         if(world.isRemote) {
-            return bools.getFromInt(index, this.dataWatcher.getWatchableObjectInt(17));
+            return bools.getFromInt(index, this.dataManager.set(BOOLS));
         } else {
             return bools.get(index);
         }
@@ -279,6 +284,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         initInventorySlots();
     }
 
+    public static final DataParameter<Float> VELOCITY = EntityDataManager.<Float>createKey(Entity.class, DataSerializers.FLOAT);
+    public static final DataParameter<Integer> FUEL_CONSUMPTION = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
+    public static final DataParameter<String> TANK_DATA = EntityDataManager.<String>createKey(Entity.class, DataSerializers.STRING);
+    public static final DataParameter<Integer> BOILER_HEAT = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
+    public static final DataParameter<Float> HEAT = EntityDataManager.<Float>createKey(Entity.class, DataSerializers.FLOAT);
+    public static final DataParameter<Integer> BOOLS = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
+    public static final DataParameter<Integer> FRONT_LINKED_ID = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
+    public static final DataParameter<Integer> BACK_LINKED_ID = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
+    public static final DataParameter<Integer> ACCELERATOR = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
     /**
      * <h2>Entity initialization</h2>
      * Entity init runs right before the first tick.
@@ -290,15 +304,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //0 is an integer used for the entity state, 0 is burning. 1 is sneaking. 2 is riding something. 3 is sprinting. 4. is eating
         //1 is a short used for checking if the entity is underwater and how much air is left.
         //i think 2-5 are used in 1.8.9+ for various things.
-        this.dataWatcher.addObject(12, 0.0F);//float used to show the current movement velocity.
-        this.dataWatcher.addObject(13, 0);//train fuel consumption current
-        this.dataWatcher.addObject(20, "");//fluid tank data
-        this.dataWatcher.addObject(15, 0);//train heat
-        this.dataWatcher.addObject(16, 40.0f);//train heat
-        this.dataWatcher.addObject(17, bools!=null?bools.toInt():BitList.newInt());//booleans
+        this.dataManager.set(VELOCITY, 0.0F);//float used to show the current movement velocity.
+        this.dataManager.set(FUEL_CONSUMPTION, 0);//train fuel consumption current
+        this.dataManager.set(TANK_DATA, "");//fluid tank data
+        this.dataManager.set(BOILER_HEAT, 0);//train heat
+        this.dataManager.set(HEAT, 40.0f);//train heat
+        this.dataManager.set(BOOLS, bools!=null?bools.toInt():BitList.newInt());//booleans
         //18 is an int used by EntityTrainCore for the accelerator
-        this.dataWatcher.addObject(21, 0);//front linked transport
-        this.dataWatcher.addObject(22, 0);//back linked transport
+        this.dataManager.set(FRONT_LINKED_ID, 0);//front linked transport
+        this.dataManager.set(BACK_LINKED_ID, 0);//back linked transport
 
 
         if(world!=null) {
@@ -448,7 +462,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean interact(int player, boolean isFront, boolean isBack, int key) {
         EntityPlayer p =((EntityPlayer)world.getEntityByID(player));
         if (world.isRemote) {
-            if (p.getHeldItem()!=null && p.getHeldItem().getItem() instanceof ItemPaintBucket) {
+            if (p.getHeldItem(EnumHand.MAIN_HAND)!=null && p.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemPaintBucket) {
                 p.openGui(TrainsInMotion.instance, getEntityId(), world, 0, 0, 0);
                 return true;
             }
@@ -465,17 +479,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     break;
                 }
                 case -1: {//right click
-                    if (p.getHeldItem() != null) {
-                        if (p.getHeldItem().getItem() instanceof ItemKey) {
-                            if (ItemKey.getHostList(p.getHeldItem()) !=null) {
-                                for (UUID transport : ItemKey.getHostList(p.getHeldItem())) {
+                    if (p.getHeldItem(EnumHand.MAIN_HAND) != null) {
+                        if (p.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemKey) {
+                            if (ItemKey.getHostList(p.getHeldItem(EnumHand.MAIN_HAND)) !=null) {
+                                for (UUID transport : ItemKey.getHostList(p.getHeldItem(EnumHand.MAIN_HAND))) {
                                     if (transport.equals(getPersistentID())) {
                                         return true;//end the function here if it already has the key.
                                     }
                                 }
                             }
-                            if(((ItemKey) p.getHeldItem().getItem()).selectedEntity ==null || ((ItemKey) p.getHeldItem().getItem()).selectedEntity != getEntityId()){
-                                ((ItemKey) p.getHeldItem().getItem()).selectedEntity = getEntityId();
+                            if(((ItemKey) p.getHeldItem(EnumHand.MAIN_HAND).getItem()).selectedEntity ==null || ((ItemKey) p.getHeldItem(EnumHand.MAIN_HAND).getItem()).selectedEntity != getEntityId()){
+                                ((ItemKey) p.getHeldItem(EnumHand.MAIN_HAND).getItem()).selectedEntity = getEntityId();
                                 p.sendMessage(new TextComponentString(
                                         CommonUtil.translate("Click again to add the ") + transportName() +
                                                 CommonUtil.translate(" to the Item's list.")
@@ -483,17 +497,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                                 ));
                                 return true;//end the function here if it already has the key.
                             } else {
-                                ItemKey.addHost(p.getHeldItem(), getPersistentID(), transportName());
+                                ItemKey.addHost(p.getHeldItem(EnumHand.MAIN_HAND), getPersistentID(), transportName());
                                 p.sendMessage(new TextComponentString(
                                         CommonUtil.translate("added ") + transportName() +
                                                 CommonUtil.translate(" to the Item's list.")
 
                                 ));
-                                ((ItemKey) p.getHeldItem().getItem()).selectedEntity=null;
+                                ((ItemKey) p.getHeldItem(EnumHand.MAIN_HAND).getItem()).selectedEntity=null;
                                 return true;//end the function here if it already has the key.
                             }
                         }
-                        else if (p.getHeldItem().getItem() instanceof ItemStake){
+                        else if (p.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemStake){
                             boolean toset = !getBoolean(boolValues.COUPLINGFRONT);
                             setBoolean(boolValues.COUPLINGFRONT, toset);
                             setBoolean(boolValues.COUPLINGBACK, toset);
@@ -512,17 +526,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                             }
                             return true;
                         }
-                        //TODO: else if(player.getHeldItem() instanceof stakeItem) {do linking/unlinking stuff dependant on if it was front or not;}
+                        //TODO: else if(player.getHeldItem(EnumHand.MAIN_HAND) instanceof stakeItem) {do linking/unlinking stuff dependant on if it was front or not;}
                     }
                     //be sure the player has permission to enter the transport, and that the transport has the main seat open.
                     if (getRiderOffsets() != null && riddenByEntity == null && getPermissions(p, false, true)) {
-                        p.mountEntity(this);
+                        p.startRiding(this);
                         return true;
                         //if the player had permission but the main seat isnt open, check for seat entities to mount.
                     } else {
                         for (EntitySeat seat : seats) {
                             if (seat.riddenByEntity == null && getPermissions(p, false, true)) {
-                                p.mountEntity(seat);
+                                p.startRiding(seat);
                                 return true;
                             }
                         }
@@ -816,12 +830,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     if (tag.hasKey("transportinv." + i)) {
                         invTag = tag.getCompoundTag("transportinv." + i);
                         if (invTag != null) {
-                            inventory.get(i).setSlotContents(ItemStack.loadItemStackFromNBT(invTag), inventory);
+                            inventory.get(i).setSlotContents(new ItemStack(invTag), inventory);
                         }
                     }
                 }
             }
-            closeInventory();
+            if(!world.isRemote) {
+                markDirty();
+            }
         }
         updateWatchers = true;
     }
@@ -883,14 +899,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
 
             //do scaled rail boosting but keep it capped to the max velocity of the rail
-            Block b = CommonUtil.getBlockAt(world,posX,posY,posZ);
-            if (b instanceof BlockRailBase){
+            IBlockState b = world.getBlockState(new BlockPos(posX,posY,posZ));
+            if (b.getBlock()==Blocks.GOLDEN_RAIL){
                 setBoolean(boolValues.DERAILED,false);
 
-                if (((BlockRailBase) b).isPowered() &&
+                if ((b.getValue(BlockRailPowered.POWERED)) &&
                     //this part keeps it capped
-                    getVelocity() < maxBoost(b)) {
-                    float boost = CommonUtil.getMaxRailSpeed(world, (BlockRailBase) b,this,posX,posY,posZ) * 0.005f;
+                    getVelocity() < maxBoost(b.getBlock())) {
+                    float boost = CommonUtil.getMaxRailSpeed(world, (BlockRailBase) b.getBlock(),this,posX,posY,posZ) * 0.005f;
                     frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
                         Math.copySign(boost, frontBogie.motionX),
                         0,
@@ -916,7 +932,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 motionZ = (posZ - prevPosZ)/ticksSinceLastVelocityChange;
                 prevPosX = posX;
                 prevPosZ = posZ;
-                dataWatcher.updateObject(12, getVelocity());
+                dataManager.set(VELOCITY, getVelocity());
 
                 setRotation((CommonUtil.atan2degreesf(
                         frontBogie.posZ - backBogie.posZ,
@@ -1053,7 +1069,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             prevPosZ = posZ;
             motionX = 0;
             motionZ = 0;
-            dataWatcher.updateObject(12, getVelocity());
+            dataManager.set(VELOCITY, getVelocity());
         }
 
         //CLIENT UPDATE
@@ -1183,9 +1199,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
 
             if(updateWatchers){
-                this.dataWatcher.updateObject(17, bools.toInt());
-                this.dataWatcher.updateObject(21, frontLinkedID!=null?frontLinkedID:-1);
-                this.dataWatcher.updateObject(22, backLinkedID!=null?backLinkedID:-1);
+                this.dataManager.set(BOOLS, bools.toInt());
+                this.dataManager.set(FRONT_LINKED_ID, frontLinkedID!=null?frontLinkedID:-1);
+                this.dataManager.set(BACK_LINKED_ID, backLinkedID!=null?backLinkedID:-1);
             }
         }
 
@@ -1568,7 +1584,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public float getVelocity(){
-        return world.isRemote?dataWatcher.getWatchableObjectFloat(12):
+        return world.isRemote?dataManager.set(VELOCITY):
                 (float)(Math.abs(motionX)+Math.abs(motionZ));
     }
     /**

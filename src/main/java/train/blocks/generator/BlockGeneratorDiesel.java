@@ -8,6 +8,7 @@
 package train.blocks.generator;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
@@ -124,22 +125,22 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 			switch(l){
 			case 0:
 				for(int i=0;i<40;i++){
-					world.spawnParticle("smoke", d0+0.2, par3 + d3, d2-0.42, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0+0.2, par3 + d3, d2-0.42, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			case 1:
 				for(int i=0;i<40;i++){
-					world.spawnParticle("smoke", d0+0.42, par3 + d3, d2+0.2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0+0.42, par3 + d3, d2+0.2, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			case 2:
 				for(int i=0;i<40;i++){
-					world.spawnParticle("smoke", d0-0.2, par3 + d3, d2+0.42, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0-0.2, par3 + d3, d2+0.42, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			case 3:
 				for(int i=0;i<40;i++){
-					world.spawnParticle("smoke", d0-0.42, par3 + d3, d2-0.2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0-0.42, par3 + d3, d2-0.2, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			default:

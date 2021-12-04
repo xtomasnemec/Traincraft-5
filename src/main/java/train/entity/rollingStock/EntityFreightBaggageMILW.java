@@ -71,7 +71,7 @@ public class EntityFreightBaggageMILW extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1),
-                null, null, null, null, null, new ItemStack(Blocks.chest, 2)        };
+                null, null, null, null, null, new ItemStack(Blocks.CHEST, 2)        };
     }
 
 

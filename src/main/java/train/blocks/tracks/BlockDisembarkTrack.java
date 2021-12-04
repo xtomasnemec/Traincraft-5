@@ -30,7 +30,7 @@ public class BlockDisembarkTrack extends TrackBaseTraincraft implements ITrackEm
 		!TrainsInMotion.transportTypes.isTrain(((GenericRailTransport) cart).getTypes())) {
 			if (cart.riddenByEntity == null)
 				return;
-			cart.riddenByEntity.mountEntity(cart);
+			cart.riddenByEntity.startRiding(cart);
 			cart.riddenByEntity.ridingEntity = null;
 			setTrackPowering();
 		}

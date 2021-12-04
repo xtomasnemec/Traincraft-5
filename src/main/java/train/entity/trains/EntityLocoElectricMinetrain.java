@@ -53,7 +53,7 @@ public class EntityLocoElectricMinetrain extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLocoMinetrain()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.2f, worldObj==null?0.4f:0.62f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.2f, world==null?0.4f:0.62f, 0.0f}};}
 @Override
     public float[][] modelRotations(){return new float[][]{{0f,180f,180f}};}
     @Override
@@ -71,8 +71,8 @@ public class EntityLocoElectricMinetrain extends EntityTrainCore {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Items.iron_ingot, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1),
-                new ItemStack(Items.iron_ingot, 1), null, new ItemStack(TiMItems.controlPanel, 1),
+                new ItemStack(Items.IRON_INGOT, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1),
+                new ItemStack(Items.IRON_INGOT, 1), null, new ItemStack(TiMItems.controlPanel, 1),
                 new ItemStack(TiMItems.transformer, 1), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(Items.REDSTONE, 1)        };
     }
 

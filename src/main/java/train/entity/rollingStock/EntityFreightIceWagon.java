@@ -71,7 +71,7 @@ public class EntityFreightIceWagon extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameIron, 1),
-                new ItemStack(Items.iron_ingot, 2), null, null, null, null, new ItemStack(Items.snowball, 9)        };
+                new ItemStack(Items.IRON_INGOT, 2), null, null, null, null, new ItemStack(Items.snowball, 9)        };
     }
 
 

@@ -6,6 +6,7 @@ import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.Vec5f;
 import ebf.tim.utility.Vec6f;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -31,7 +32,7 @@ public class RailShapeCore {
                                      World dimension, ItemStack track,
                                      @Nullable ItemStack trackTies, @Nullable ItemStack trackBallast,
                                      @Nullable ItemStack overheadWires){
-        if (dimension.getTileEntity(x,y,z) instanceof RailTileEntity) {
+        if (dimension.getTileEntity(new BlockPos(x,y,z)) instanceof RailTileEntity) {
             RailShapeCore shape = multiTriGenModel(coordList, mmFromCenter);
             shape.renderScale=renderScale;
             shape.rail=track;
@@ -39,14 +40,14 @@ public class RailShapeCore {
             shape.ballast=trackBallast;
             shape.wires=overheadWires;
 
-            ((RailTileEntity) dimension.getTileEntity(x, y, z)).setData(shape.toXML());
-            dimension.getTileEntity(x, y, z).markDirty();
+            ((RailTileEntity) dimension.getTileEntity(new BlockPos(x,y,z))).setData(shape.toXML());
+            dimension.getTileEntity(new BlockPos(x,y,z)).markDirty();
         }
 
     }
 
     public static void processPoints(int x, int y, int z, World dimension, RailSimpleShape coordList, XmlBuilder builder){
-        if (dimension.getTileEntity(x,y,z) instanceof RailTileEntity && builder.containsFloat("scale")) {
+        if (dimension.getTileEntity(new BlockPos(x,y,z)) instanceof RailTileEntity && builder.containsFloat("scale")) {
             RailShapeCore shape = multiTriGenModel(coordList, builder.getIntArray("gauge"));
             shape.renderScale=builder.getFloat("scale");
             shape.rail=builder.getItemStack("rail");
@@ -54,8 +55,8 @@ public class RailShapeCore {
             shape.ballast=builder.getItemStack("ballast");
             shape.wires=builder.getItemStack("wires");
 
-            ((RailTileEntity) dimension.getTileEntity(x, y, z)).setData(shape.toXML());
-            dimension.getTileEntity(x, y, z).markDirty();
+            ((RailTileEntity) dimension.getTileEntity(new BlockPos(x,y,z))).setData(shape.toXML());
+            dimension.getTileEntity(new BlockPos(x,y,z)).markDirty();
         }
 
     }

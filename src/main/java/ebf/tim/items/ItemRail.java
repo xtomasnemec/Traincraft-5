@@ -116,21 +116,21 @@ public class ItemRail extends Item implements ITrackItem {
                     ((BlockRailCore)CommonUtil.getBlockAt(world, x,y,z)).updateShape(x,y,z,world,
                             //set rail
                             stack.getTagCompound().getTag("rail")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("rail")):
-                                    new ItemStack(Items.iron_ingot),
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("rail")):
+                                    new ItemStack(Items.IRON_INGOT),
                             //set ties
                             stack.getTagCompound().getTag("ties")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ties")):
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("ties")):
                                     null,
 
                             //set ballast
                             stack.getTagCompound().getTag("ballast")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ballast")):
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("ballast")):
                                     null,
 
                             //set wires
                             stack.getTagCompound().getTag("wires")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("wires")):
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("wires")):
                                     null
                             );
                 }
@@ -174,21 +174,21 @@ public class ItemRail extends Item implements ITrackItem {
                     ((BlockRailCore) CommonUtil.getBlockAt(world, x, y, z)).updateShape(x, y, z, world,
                             //set rail
                             stack.getTagCompound().getTag("rail")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("rail")):
-                                    new ItemStack(Items.iron_ingot),
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("rail")):
+                                    new ItemStack(Items.IRON_INGOT),
                             //set ties
                             stack.getTagCompound().getTag("ties")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ties")):
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("ties")):
                                     null,
 
                             //set ballast
                             stack.getTagCompound().getTag("ballast")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ballast")):
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("ballast")):
                                     null,
 
                             //set wires
                             stack.getTagCompound().getTag("wires")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("wires")):
+                                    new ItemStack(stack.getTagCompound().getCompoundTag("wires")):
                                     null
                     );
                 }
@@ -213,25 +213,25 @@ public class ItemRail extends Item implements ITrackItem {
 
         if( stack.hasTagCompound()){
             if(stack.getTagCompound().hasKey("rail")) {
-                stringList.add(CommonUtil.translate("menu.rails") + " " + ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("rail")).getDisplayName());
+                stringList.add(CommonUtil.translate("menu.rails") + " " + new ItemStack(stack.getTagCompound().getCompoundTag("rail")).getDisplayName());
             } else {
                 stringList.add("default rails");
             }
 
             //todo: for some reason i ill never understand, the lang file returns ties and ballast backwards.
             if(stack.getTagCompound().hasKey("ballast")) {
-                stringList.add(CommonUtil.translate("menu.ballast")+ " " + ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ballast")).getDisplayName());
+                stringList.add(CommonUtil.translate("menu.ballast")+ " " + new ItemStack(stack.getTagCompound().getCompoundTag("ballast")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.noballast"));
             }
             if(stack.getTagCompound().hasKey("ties")) {
-                stringList.add(CommonUtil.translate("menu.ties")+ " " + ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ties")).getDisplayName());
+                stringList.add(CommonUtil.translate("menu.ties")+ " " + new ItemStack(stack.getTagCompound().getCompoundTag("ties")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.noties"));
             }
 
             if(stack.getTagCompound().hasKey("wires")) {
-                stringList.add(CommonUtil.translate("menu.wires") + " " +ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("wires")).getDisplayName());
+                stringList.add(CommonUtil.translate("menu.wires") + " " +new ItemStack(stack.getTagCompound().getCompoundTag("wires")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.nowires"));
             }
@@ -281,7 +281,7 @@ public class ItemRail extends Item implements ITrackItem {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List tabItems) {
         if(p_150895_1_ instanceof ItemRail) {
-            for(Item ingot : new Item[]{Items.iron_ingot, Items.gold_ingot}){
+            for(Item ingot : new Item[]{Items.IRON_INGOT, Items.gold_ingot}){
                 for(Block b : new Block[]{null, Blocks.gravel, Blocks.stone}){
                     for(Block t : new Block[]{Blocks.log, Blocks.PLANKS, Blocks.double_stone_slab, null})
                     tabItems.add(setStackData(new ItemStack(p_150895_1_),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));

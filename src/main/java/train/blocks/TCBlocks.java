@@ -89,7 +89,7 @@ public class TCBlocks {
 
 
 		addRecipe(new ItemStack(registerBlock(trainTableTier1, Traincraft.tcTab, Info.modID,"block.traintabletier1", null, null),1),
-				"IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Items.iron_ingot, 'P', Blocks.piston); //tier 1
+				"IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Items.IRON_INGOT, 'P', Blocks.piston); //tier 1
 		addRecipe(new ItemStack(registerBlock(trainTableTier2, Traincraft.tcTab, Info.modID,"block.traintabletier2", null, null),1),
 				"GPG", "O O", "OPO", 'O', Blocks.obsidian, 'G', Items.gold_ingot, 'P', Blocks.piston); //tier 2
 		addRecipe(new ItemStack(registerBlock(trainTableTier3, Traincraft.tcTab, Info.modID,"block.traintabletier3", null, null),1),
@@ -146,7 +146,7 @@ public class TCBlocks {
 				new ItemStack(blockHearthFurnace));
 
 		RecipeManager.registerRecipe(
-				new Object[]{Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,Blocks.glass_pane,Blocks.torch,Blocks.glass_pane,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+				new Object[]{Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT,Blocks.glass_pane,Blocks.torch,Blocks.glass_pane,Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT},
 				new ItemStack(lantern));
 
 		RecipeManager.registerRecipe(
@@ -158,7 +158,7 @@ public class TCBlocks {
 				new ItemStack(dieselGenerator));
 
 		RecipeManager.registerRecipe(
-				new Object[]{null, ItemIDs.propeller.item, null, null, TiMItems.generator, null, Items.iron_ingot,null, Items.iron_ingot},
+				new Object[]{null, ItemIDs.propeller.item, null, null, TiMItems.generator, null, Items.IRON_INGOT,null, Items.IRON_INGOT},
 				new ItemStack(windmill));
 
 		RecipeManager.registerRecipe(

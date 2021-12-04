@@ -1,16 +1,7 @@
 package train;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.gui.GUICraftBook;
@@ -37,6 +28,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
 import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
@@ -305,7 +298,7 @@ public class Traincraft {
 
 		public void processCommand(ICommandSender CommandSender, String[] par2ArrayOfStr) {
 			getCommandSenderAsPlayer(CommandSender).addChatMessage(
-					new ChatComponentText(
+					new TextComponentString(
 							"this command exists as a placeholder to allow admin permissions in TC via plugins and mds such as GroupManager and Forge Essentials"));
 
 		}

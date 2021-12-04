@@ -66,8 +66,8 @@ public class TextureManager {
             textureURI= new ResourceLocation(TrainsInMotion.MODID,"nullTrain");
         }
         //clean out the texture bind map when texturepacks are reloaded.
-        if(MCResourcePacks!= Minecraft.getMinecraft().getResourceManager().getResourceDomains()){
-            MCResourcePacks= Minecraft.getMinecraft().getResourceManager().getResourceDomains();
+        if(MCResourcePacks!= Minecraft.getMinecraft().getResourceManager().getNamespaces()){
+            MCResourcePacks= Minecraft.getMinecraft().getResourceManager().getNamespaces();
             tmtMap=new HashMap<>();
             tmtBoundTextures = new HashMap<>();
         }
@@ -236,8 +236,8 @@ public class TextureManager {
 
     public static void bindTexture(ResourceLocation textureURI, int[] skinColorsFrom, int[] skinColorsTo, List<Integer> colorsFrom, List<Integer> colorsTo){
             //clean out the texture bind map when texturepacks are reloaded.
-            if (MCResourcePacks != Minecraft.getMinecraft().getResourceManager().getResourceDomains()) {
-                MCResourcePacks = Minecraft.getMinecraft().getResourceManager().getResourceDomains();
+            if (MCResourcePacks != Minecraft.getMinecraft().getResourceManager().getNamespaces()) {
+                MCResourcePacks = Minecraft.getMinecraft().getResourceManager().getNamespaces();
                 tmtMap = new HashMap<>();
                 tmtBoundTextures = new HashMap<>();
             }

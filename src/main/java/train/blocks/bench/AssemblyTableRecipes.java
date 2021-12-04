@@ -54,7 +54,7 @@
 //			for (ItemStack c : coal) {
 //				cm.addRecipe(1, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(c.getItem(), 1), null, new ItemStack(ItemIDs.minecartTender.item, 1), 1);
 //			}
-//			cm.addRecipe(1, new ItemStack(Items.iron_ingot, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(Items.lava_bucket, 1), null, new ItemStack(ItemIDs.minecartWatertransp.item, 1), 1);
+//			cm.addRecipe(1, new ItemStack(Items.IRON_INGOT, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(Items.lava_bucket, 1), null, new ItemStack(ItemIDs.minecartWatertransp.item, 1), 1);
 //			for (ItemStack iron : ingotIron) {
 //				for (ItemStack dye : dyeGreen) {
 //					for (ItemStack bucketWater : waterbucket) {
@@ -120,14 +120,14 @@
 //
 //				cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, new ItemStack(TiMItems.cabinWood, 1), null, null, new ItemStack(TiMItems.seatsWooden, 1), null, new ItemStack(ItemIDs.minecartPassenger2.item, 1), 1);
 //				cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, new ItemStack(TiMItems.cabinWood, 1), null, null, new ItemStack(TiMItems.seatsWooden, 1), null, new ItemStack(ItemIDs.minecartCaboose.item, 1), 1);
-//				cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(Blocks.chest, 1), null, new ItemStack(ItemIDs.minecartFreightCartSmall.item, 1), 1);
+//				cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(Blocks.CHEST, 1), null, new ItemStack(ItemIDs.minecartFreightCartSmall.item, 1), 1);
 //				cm.addRecipe(1, new ItemStack(i.getItem(), 3, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, null, null, null, null, null, new ItemStack(ItemIDs.minecartFlatCart.item, 1), 1);
 //				for (ItemStack iron : ingotIron) {
-//					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.chest, 2), null, new ItemStack(ItemIDs.minecartChest.item, 1), 1);
-//					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.chest, 2), null, new ItemStack(ItemIDs.minecartFreightCart2.item, 1), 1);
-//					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.hopper, 2), null, new ItemStack(ItemIDs.minecartFreightCartUS.item, 1), 1);
-//					cm.addRecipe(1, new ItemStack(i.getItem(), 4, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 4), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.chest, 1), null, new ItemStack(ItemIDs.minecartFreightClosed.item, 1), 1);
-//					cm.addRecipe(1, new ItemStack(i.getItem(), 2, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.hopper, 2), null, new ItemStack(ItemIDs.minecartFreightOpen2.item, 1), 1);
+//					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.CHEST, 2), null, new ItemStack(ItemIDs.minecartChest.item, 1), 1);
+//					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.CHEST, 2), null, new ItemStack(ItemIDs.minecartFreightCart2.item, 1), 1);
+//					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.HOPPER, 2), null, new ItemStack(ItemIDs.minecartFreightCartUS.item, 1), 1);
+//					cm.addRecipe(1, new ItemStack(i.getItem(), 4, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 4), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.CHEST, 1), null, new ItemStack(ItemIDs.minecartFreightClosed.item, 1), 1);
+//					cm.addRecipe(1, new ItemStack(i.getItem(), 2, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.HOPPER, 2), null, new ItemStack(ItemIDs.minecartFreightOpen2.item, 1), 1);
 //					cm.addRecipe(1, new ItemStack(i.getItem(), 2, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, new ItemStack(TiMItems.cabinWood, 1), null, null, new ItemStack(TiMItems.seatsWooden, 1), null, new ItemStack(ItemIDs.minecartCaboose3.item, 1), 1);
 //					cm.addRecipe(1, new ItemStack(i.getItem(), 2, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2), new ItemStack(iron.getItem(), 2), null, new ItemStack(TiMItems.cabinIron, 1), null, null, new ItemStack(TiMItems.seatsWooden, 1), null, new ItemStack(ItemIDs.minecartPassenger7.item, 1), 1);
 //					for (ItemStack rs : redstone) {
@@ -152,17 +152,17 @@
 //			cm.addRecipe(1, null, new ItemStack(TiMItems.wheelIron, 3), new ItemStack(TiMItems.frameIron, 1), null, new ItemStack(ItemIDs.ironChimney.item, 1), new ItemStack(TiMItems.cabinWood, 1), new ItemStack(TiMItems.boilerSteel, 1), new ItemStack(TiMItems.fireboxSteel, 1), null, null, new ItemStack(ItemIDs.minecartLocoSteamClimax.item, 1), 1);
 //
 //			cm.addRecipe(1, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1), null, null, null, null, null, null, null, new ItemStack(ItemIDs.minecartPassengerBamboo.item, 1), 1);
-//			cm.addRecipe(1, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1), null, null, null, null, null, new ItemStack(Blocks.chest, 1), null, new ItemStack(ItemIDs.minecartFreightBamboo.item, 1), 1);
+//			cm.addRecipe(1, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1), null, null, null, null, null, new ItemStack(Blocks.CHEST, 1), null, new ItemStack(ItemIDs.minecartFreightBamboo.item, 1), 1);
 //			cm.addRecipe(1, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1), null, null, null, null, new ItemStack(TiMItems.mediumDieselEngine, 1), null, null, new ItemStack(ItemIDs.minecartTrainBamboo.item, 1), 1);
 //
 //
 //			for (ItemStack dye : dyeYellow) {
-//				cm.addRecipe(1, new ItemStack(Blocks.chest, 4), new ItemStack(TiMItems.wheelIron, 4), new ItemStack(TiMItems.frameWood, 3), null, null, new ItemStack(TiMItems.cabinWood, 3), null, null, null, dye, new ItemStack(ItemIDs.minecartDenverRioGrandeBaggage.item, 1), 1);
-//				cm.addRecipe(1, new ItemStack(Blocks.chest, 4), new ItemStack(TiMItems.wheelIron, 4), new ItemStack(TiMItems.frameWood, 3), null, null, new ItemStack(TiMItems.cabinWood, 3), null, null, new ItemStack(TiMItems.seatsWooden, 1), dye, new ItemStack(ItemIDs.minecartDenverRioGrandeCombo.item, 1), 1);
+//				cm.addRecipe(1, new ItemStack(Blocks.CHEST, 4), new ItemStack(TiMItems.wheelIron, 4), new ItemStack(TiMItems.frameWood, 3), null, null, new ItemStack(TiMItems.cabinWood, 3), null, null, null, dye, new ItemStack(ItemIDs.minecartDenverRioGrandeBaggage.item, 1), 1);
+//				cm.addRecipe(1, new ItemStack(Blocks.CHEST, 4), new ItemStack(TiMItems.wheelIron, 4), new ItemStack(TiMItems.frameWood, 3), null, null, new ItemStack(TiMItems.cabinWood, 3), null, null, new ItemStack(TiMItems.seatsWooden, 1), dye, new ItemStack(ItemIDs.minecartDenverRioGrandeCombo.item, 1), 1);
 //				cm.addRecipe(1, null, new ItemStack(TiMItems.wheelIron, 4), new ItemStack(TiMItems.frameWood, 3), null, null, new ItemStack(TiMItems.cabinWood, 3), null, null, new ItemStack(TiMItems.seatsWooden, 1), dye, new ItemStack(ItemIDs.minecartDenverRioGrandePassenger.item, 1), 1);
 //
 //				for (ItemStack iron : ingotIron) {
-//					cm.addRecipe(1, new ItemStack(iron.getItem(), 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.chest, 1), dye, new ItemStack(ItemIDs.minecartMineTrain.item, 1), 1);
+//					cm.addRecipe(1, new ItemStack(iron.getItem(), 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1), new ItemStack(iron.getItem(), 2), null, null, null, null, new ItemStack(Blocks.CHEST, 1), dye, new ItemStack(ItemIDs.minecartMineTrain.item, 1), 1);
 //					for (ItemStack rs : redstone) {
 //						cm.addRecipe(1, new ItemStack(iron.getItem(), 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1), new ItemStack(iron.getItem(), 1), null, new ItemStack(ItemIDs.controls.item, 1), new ItemStack(ItemIDs.transformer.item, 1), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(rs.getItem(), 1), dye, new ItemStack(ItemIDs.minecartLocoMineTrain.item, 1), 1);
 //					}
@@ -279,9 +279,9 @@
 //					cm.addRecipe(2, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(bucketWater.getItem(), 1), dye, new ItemStack(ItemIDs.minecartTankWagon2.item, 1), 1);
 //				}
 //			}
-//			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 2), null, new ItemStack(ItemIDs.minecartBoxCartUS.item, 1), 1);
-//			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 3), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 2), null, new ItemStack(ItemIDs.minecartBoxCartPRR.item, 1), 1);
-//			cm.addRecipe(2, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 1), null, new ItemStack(ItemIDs.minecartFreightL.item, 1), 1);
+//			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 2), null, new ItemStack(ItemIDs.minecartBoxCartUS.item, 1), 1);
+//			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 3), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 2), null, new ItemStack(ItemIDs.minecartBoxCartPRR.item, 1), 1);
+//			cm.addRecipe(2, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 1), null, new ItemStack(ItemIDs.minecartFreightL.item, 1), 1);
 //			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Items.WHEAT, 3), null, new ItemStack(ItemIDs.minecartFreightHopperUS.item, 1), 1);
 //			for (ItemStack dye : dyeWhite) {
 //				cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, dye, null, new ItemStack(ItemIDs.minecartShortCoveredHopper.item, 1), 1);
@@ -290,7 +290,7 @@
 //			for (ItemStack dye : dyeYellow) {
 //				cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, dye, null, new ItemStack(ItemIDs.minecartKClassRailBox.item, 1), 1);
 //			}
-//			cm.addRecipe(2, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 3), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.hopper, 3), null, new ItemStack(ItemIDs.minecartFreight100TonHopper.item, 1), 1);
+//			cm.addRecipe(2, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 3), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.HOPPER, 3), null, new ItemStack(ItemIDs.minecartFreight100TonHopper.item, 1), 1);
 //			for (ItemStack bucketWater : waterbucket) {
 //				cm.addRecipe(2, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(bucketWater.getItem(), 1), null, new ItemStack(ItemIDs.minecartTankWagonUS.item, 1), 1);
 //			}
@@ -301,7 +301,7 @@
 //				cm.addRecipe(2, new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, new ItemStack(TiMItems.cabinSteel, 1), null, null, new ItemStack(TiMItems.seatsWooden, 1), dye, new ItemStack(ItemIDs.minecartPassenger8_1class_DB.item, 1), 1);
 //			}
 //			{
-//			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 2), null, new ItemStack(ItemIDs.minecartFreightWagon_DB.item, 1), 1); }
+//			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 2), null, new ItemStack(ItemIDs.minecartFreightWagon_DB.item, 1), 1); }
 //			{
 //			cm.addRecipe(2, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CRAFTING_TABLE, 1), null, new ItemStack(ItemIDs.minecartMailWagon_DB.item, 1), 1); }
 //			{
@@ -330,7 +330,7 @@
 //				cm.addRecipe(2, new ItemStack(iron.getItem(), 2), new ItemStack(TiMItems.wheelIron, 3), new ItemStack(TiMItems.frameSteel, 2), null, new ItemStack(TiMItems.chimneySteel, 1), new ItemStack(TiMItems.cabinSteel, 1), new ItemStack(ItemIDs.ironBoiler.item, 2), new ItemStack(ItemIDs.ironFirebox.item, 1), null, null, new ItemStack(ItemIDs.minecartLocoA4Mallard.item, 1), 1);
 //			}
 //			for (ItemStack c : coal) {
-//				cm.addRecipe(2, null, new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(Items.iron_ingot, 1), null, null, null, null, new ItemStack(c.getItem(), 1), null, new ItemStack(ItemIDs.minecartLocoA4MallardTender.item, 1), 1);
+//				cm.addRecipe(2, null, new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(Items.IRON_INGOT, 1), null, null, null, null, new ItemStack(c.getItem(), 1), null, new ItemStack(ItemIDs.minecartLocoA4MallardTender.item, 1), 1);
 //			}
 //
 //			for (ItemStack i : s1) {
@@ -361,7 +361,7 @@
 //			for (ItemStack dye : dyeRed) {
 //				cm.addRecipe(3, new ItemStack(ItemIDs.controls.item, 1), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(TiMItems.chimneySteel, 1), new ItemStack(TiMItems.cabinSteel, 1), new ItemStack(ItemIDs.transmition.item, 1), new ItemStack(TiMItems.mediumDieselEngine, 2), null, dye, new ItemStack(ItemIDs.minecartKof_DB.item, 1), 1);
 //				cm.addRecipe(3, new ItemStack(ItemIDs.controls.item, 1), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel),null, new ItemStack(TiMItems.cabinSteel, 1), new ItemStack(ItemIDs.transmition.item, 1), new ItemStack(TiMItems.mediumDieselEngine, 3), null, dye, new ItemStack(ItemIDs.minecartV60_DB.item, 1), 1);				cm.addRecipe(3, new ItemStack(ItemIDs.controls.item,2), new ItemStack(TiMItems.wheelWood, 3), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(TiMItems.chimneySteel, 1), new ItemStack(TiMItems.cabinSteel, 1), new ItemStack(TiMItems.smallElectricEngine,6), new ItemStack(TiMItems.mediumDieselEngine, 6), new ItemStack(TiMItems.generator,4), dye, new ItemStack(ItemIDs.minecartLocoSD40.item, 1), 1);
-//				cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 2), dye, new ItemStack(ItemIDs.minecartFreightWellcar.item, 1), 1);
+//				cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 2), dye, new ItemStack(ItemIDs.minecartFreightWellcar.item, 1), 1);
 //				for (ItemStack rs : redstone) {
 //					cm.addRecipe(3, new ItemStack(ItemIDs.controls.item, 2), new ItemStack(TiMItems.wheelWood, 2),
 //							new ItemStack(TiMItems.frameSteel, 2), null, null, new ItemStack(TiMItems.cabinSteel, 1),
@@ -372,8 +372,8 @@
 //						new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null,
 //						null, null, null, new ItemStack(Blocks.CRAFTING_TABLE, 1), dye,
 //						new ItemStack(ItemIDs.minecartCabooseLoggingPRR.item, 1), 1);
-//				cm.addRecipe(3, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 2), dye, new ItemStack(ItemIDs.minecartHeavyweightMailcar.item, 1), 1);
-//				cm.addRecipe(3, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 2), dye, new ItemStack(ItemIDs.minecartHeavyweightFreight.item, 1), 1);
+//				cm.addRecipe(3, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 2), dye, new ItemStack(ItemIDs.minecartHeavyweightMailcar.item, 1), 1);
+//				cm.addRecipe(3, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 2), dye, new ItemStack(ItemIDs.minecartHeavyweightFreight.item, 1), 1);
 //			}
 //			for (ItemStack rs : redstone) {
 //				cm.addRecipe(3, new ItemStack(ItemIDs.controls.item, 2), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1), new ItemStack(itemSteel, 1, itemDamageSteel), null, new ItemStack(TiMItems.cabinSteel, 1), new ItemStack(ItemIDs.transformer.item, 2), new ItemStack(TiMItems.smallElectricEngine, 2), new ItemStack(rs.getItem(), 4), null, new ItemStack(ItemIDs.minecartLocoHighSpeedZeroED.item, 1), 1);
@@ -387,7 +387,7 @@
 //				for (ItemStack c : coal) {
 //					cm.addRecipe(3, new ItemStack(c.getItem(), 2), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1), null, null, null, null, null, null, dye, new ItemStack(ItemIDs.minecartGS4_Tender.item, 1), 1);
 //				}
-//				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,2),new ItemStack(TiMItems.frameSteel,1), null,null, null,null, null,new ItemStack(Blocks.chest,2), dye,new ItemStack(ItemIDs.minecartGS4_Baggage.item,1), 1);
+//				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,2),new ItemStack(TiMItems.frameSteel,1), null,null, null,null, null,new ItemStack(Blocks.CHEST,2), dye,new ItemStack(ItemIDs.minecartGS4_Baggage.item,1), 1);
 //				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,4),new ItemStack(TiMItems.frameSteel,1), null,new ItemStack(TiMItems.chimneySteel,1), new ItemStack(TiMItems.cabinSteel,1),new ItemStack(TiMItems.boilerSteel,4), new ItemStack(TiMItems.fireboxSteel,1),null, dye,new ItemStack(ItemIDs.minecartGS4_Loco.item,1), 1);
 //
 //				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,2),new ItemStack(TiMItems.frameSteel,1), null,null, new ItemStack(TiMItems.cabinSteel,1),null, null,new ItemStack(TiMItems.seatsWooden,1), dye,new ItemStack(ItemIDs.minecartPassengerMILW.item,1), 1);
@@ -395,7 +395,7 @@
 //				for (ItemStack c : coal) {
 //					cm.addRecipe(3, new ItemStack(c.getItem(), 2), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1), null, null, null, null, null, null, dye, new ItemStack(ItemIDs.minecartMILWTender.item, 1), 1);
 //				}
-//				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,2),new ItemStack(TiMItems.frameSteel,1), null,null, null,null, null,new ItemStack(Blocks.chest,2), dye,new ItemStack(ItemIDs.minecartBaggageMILW.item,1), 1);
+//				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,2),new ItemStack(TiMItems.frameSteel,1), null,null, null,null, null,new ItemStack(Blocks.CHEST,2), dye,new ItemStack(ItemIDs.minecartBaggageMILW.item,1), 1);
 //				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,4),new ItemStack(TiMItems.frameSteel,1), null,new ItemStack(TiMItems.chimneySteel,1), new ItemStack(TiMItems.cabinSteel,1),new ItemStack(TiMItems.boilerSteel,3), new ItemStack(TiMItems.fireboxSteel,1),null, dye,new ItemStack(ItemIDs.minecartLocoMILWClassA.item,1), 1);
 //
 //				cm.addRecipe(3,null, new ItemStack(TiMItems.wheelWood,8),new ItemStack(TiMItems.frameSteel,3), new ItemStack(itemSteel, 2, itemDamageSteel),new ItemStack(TiMItems.chimneySteel,2), new ItemStack(TiMItems.cabinSteel,1),new ItemStack(TiMItems.smallElectricEngine,8), new ItemStack(TiMItems.mediumDieselEngine,11),new ItemStack(TiMItems.generator,4), dye,new ItemStack(ItemIDs.minecartLocoDD35B.item,1), 1);
@@ -439,8 +439,8 @@
 //			for(ItemStack dye :dyeGreen){
 //				cm.addRecipe(3, new ItemStack(ItemIDs.controls.item, 2), new ItemStack(TiMItems.wheelWood, 3), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(TiMItems.chimneySteel, 1), new ItemStack(TiMItems.cabinSteel, 1), new ItemStack(ItemIDs.transformer.item, 2), new ItemStack(TiMItems.smallElectricEngine, 2), null, dye, new ItemStack(ItemIDs.minecartLocoBP4.item, 1), 1);
 //			}
-//			cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.hopper, 1), null, new ItemStack(ItemIDs.minecartOpenWagon.item, 1), 1);
-//			cm.addRecipe(3, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.hopper, 1), null, new ItemStack(ItemIDs.minecartFreightGTNG.item, 1), 1);
+//			cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.HOPPER, 1), null, new ItemStack(ItemIDs.minecartOpenWagon.item, 1), 1);
+//			cm.addRecipe(3, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.HOPPER, 1), null, new ItemStack(ItemIDs.minecartFreightGTNG.item, 1), 1);
 //			cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2),new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null,null, null, null, new ItemStack(Blocks.jukebox, 1), null, new ItemStack(ItemIDs.minecartJukeBoxCart.item, 1), 1);
 //
 //			for (ItemStack dye: dyeYellow){
@@ -467,17 +467,17 @@
 //				}
 //			}
 //			for (ItemStack dye : dyeYellow){
-//				cm.addRecipe(3, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1), null, null, new ItemStack(TiMItems.cabinSteel, 1), null, null, new ItemStack(Blocks.chest, 1), dye, new ItemStack(ItemIDs.minecartFreightGermanPost.item, 1), 1);
+//				cm.addRecipe(3, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1), null, null, new ItemStack(TiMItems.cabinSteel, 1), null, null, new ItemStack(Blocks.CHEST, 1), dye, new ItemStack(ItemIDs.minecartFreightGermanPost.item, 1), 1);
 //			}
 //			cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.RAIL, 1), null, new ItemStack(ItemIDs.minecartFlatCartRail_DB.item, 1), 1);
 //			cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, null, null, new ItemStack(ItemIDs.minecartFlatCart_DB.item, 1), 1);
 //			cm.addRecipe(3, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 4, itemDamageSteel), null, null, null, null, null, null, new ItemStack(ItemIDs.minecartBulkheadFlatCart.item, 1), 1);
 //			cm.addRecipe(3, new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 3), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, null, null, new ItemStack(ItemIDs.minecartFreightDepressedFlatbed.item, 1), 1);
-//			cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.hopper, 1), null, new ItemStack(ItemIDs.minecartFreightGondola_DB.item, 1), 1);
+//			cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.HOPPER, 1), null, new ItemStack(ItemIDs.minecartFreightGondola_DB.item, 1), 1);
 //			cm.addRecipe(3, new ItemStack(itemSteel, 4, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 6), new ItemStack(itemSteel, 4, itemDamageSteel), null, null, null, null, null, null, new ItemStack(ItemIDs.minecartASTFAutorack.item, 1), 1);
 //
 //			for (ItemStack dye : dyeLightGray) {
-//				cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.chest, 1), dye, new ItemStack(ItemIDs.minecartFreightTrailer.item, 1), 1);
+//				cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(Blocks.CHEST, 1), dye, new ItemStack(ItemIDs.minecartFreightTrailer.item, 1), 1);
 //			}
 //			for (ItemStack j : s2) {
 //				cm.addRecipe(3, new ItemStack(itemSteel, 5, itemDamageSteel), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(j.getItem(), 1, OreDictionary.WILDCARD_VALUE), null, new ItemStack(ItemIDs.minecartFlatCartLogs_DB.item, 1), 1);

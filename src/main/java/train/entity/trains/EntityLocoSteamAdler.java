@@ -73,7 +73,7 @@ public class EntityLocoSteamAdler extends EntityTrainCore {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 new ItemStack(Blocks.PLANKS, 8), new ItemStack(TiMItems.wheelWood, 3), new ItemStack(TiMItems.frameWood, 2),
-                new ItemStack(Items.iron_ingot, 2), new ItemStack(TiMItems.chimneyIron, 1), null, new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(Items.gold_ingot, 2)        };
+                new ItemStack(Items.IRON_INGOT, 2), new ItemStack(TiMItems.chimneyIron, 1), null, new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(Items.gold_ingot, 2)        };
     }
 
 

@@ -17,8 +17,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 
 //TODO Does this class even have ANY purpose? If it's supposed to identify TileEntities of this certain mod, use an interface. PLEASE. NO!
 public class TileTraincraft extends TileEntity implements ISidedInventory{
@@ -129,7 +129,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public void openInventory(EntityPlayer p){
+    public void closeInventory(EntityPlayer p){
 
     }
 
@@ -177,14 +177,14 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
                 NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
                 byte byte0 = nbttagcompound1.getByte("Slot");
                 if (byte0 >= 0 && byte0 < this.slots.length) {
-                    this.slots[byte0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                    this.slots[byte0] = new ItemStack(nbttagcompound1);
                 }
             }
         }
     }
 
     public void syncTileEntity(){
-        for(Object o : this.worldObj.playerEntities){
+        for(Object o : this.world.playerEntities){
             if(o instanceof EntityPlayerMP){
                 EntityPlayerMP player = (EntityPlayerMP) o;
                 if(player.getDistance(xCoord, yCoord, zCoord) <= 64) {
@@ -222,8 +222,8 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
      * @param side - The side you are trying to find. A number between 0 and 5.
      * @return The side relative to the facing direction.
      */
-    public static ForgeDirection getOrientationFromSide(ForgeDirection front, ForgeDirection side) {
-        if (front != ForgeDirection.UNKNOWN && side != ForgeDirection.UNKNOWN) {
+    public static EnumFacing getOrientationFromSide(EnumFacing front, EnumFacing side) {
+        if (front != EnumFacing.UNKNOWN && side != EnumFacing.UNKNOWN) {
             switch (front.ordinal()) {
                 case 0:
                     switch (side.ordinal()) {
@@ -309,6 +309,6 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
                     }
             }
         }
-        return ForgeDirection.UNKNOWN;
+        return EnumFacing.UNKNOWN;
     }
 }

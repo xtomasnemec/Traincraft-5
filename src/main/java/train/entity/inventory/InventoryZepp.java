@@ -169,7 +169,8 @@ public class InventoryZepp extends Container {
 
 						par1ItemStack.setCount(maxSize);//getCount() will be reduced to the maxSize to fit in
 						var7.putStack(par1ItemStack.copy());//putting the stack
-						par1ItemStack.getCount() = var9.getCount() -= maxSize;//Residue stays in invent(?)
+						par1ItemStack.setCount(var9.getCount() - maxSize);//Residue stays in invent(?)
+						var9.setCount(var9.getCount() - maxSize);
 						var7.onSlotChanged();
 						var5 = true;
 						break;

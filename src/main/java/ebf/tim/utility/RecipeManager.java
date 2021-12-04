@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import train.core.handlers.ConfigHandler;
 import train.entity.rollingStock.EntityTracksBuilder;
@@ -198,7 +199,7 @@ public class RecipeManager {
             return null;
         } else {
             return !hostInventory.getStackInSlot(4).getTagCompound().hasKey("ballast") ? null :
-                    ItemStack.loadItemStackFromNBT(hostInventory.getStackInSlot(4).getTagCompound().getCompoundTag("ballast"));
+                    new ItemStack(hostInventory.getStackInSlot(4).getTagCompound().getCompoundTag("ballast"));
         }
     }
     public static @Nullable ItemStack getStackTies(IInventory hostInventory){
@@ -206,7 +207,7 @@ public class RecipeManager {
             return null;
         } else {
             return !hostInventory.getStackInSlot(4).getTagCompound().hasKey("ties") ? null :
-                    ItemStack.loadItemStackFromNBT(hostInventory.getStackInSlot(4).getTagCompound().getCompoundTag("ties"));
+                    new ItemStack(hostInventory.getStackInSlot(4).getTagCompound().getCompoundTag("ties"));
         }
     }
     public static @Nullable ItemStack getStackIngot(IInventory hostInventory){
@@ -214,7 +215,7 @@ public class RecipeManager {
             return null;
         } else {
             return !hostInventory.getStackInSlot(4).getTagCompound().hasKey("ingot") ? null :
-                    ItemStack.loadItemStackFromNBT(hostInventory.getStackInSlot(4).getTagCompound().getCompoundTag("ingot"));
+                    new ItemStack(hostInventory.getStackInSlot(4).getTagCompound().getCompoundTag("ingot"));
         }
     }
 
@@ -399,7 +400,7 @@ public class RecipeManager {
         List<ItemStack> dir = new ArrayList<>();
         //create a list of ore directory entries
         for(int oreID : OreDictionary.getOreIDs(s)){
-            for (ItemStack ore : OreDictionary.getOres(oreID)) {
+            for (ItemStack ore : OreDictionary.getOres(OreDictionary.getOreName(oreID))) {
                 dir.add(ore.copy());
             }
         }

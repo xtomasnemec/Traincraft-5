@@ -1,6 +1,7 @@
 package train.entity.zeppelin;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import train.library.ItemIDs;
@@ -12,7 +13,7 @@ public class EntityZeppelinTwoBalloons extends AbstractZeppelin{
 	}
 	public EntityZeppelinTwoBalloons(World world, double d, double d1, double d2) {
 		this(world);
-		setPosition(d, d1 + yOffset, d2);
+		setPosition(d, d1 + getYOffset(), d2);
 		motionX = 0.0D;
 		motionY = 0.0D;
 		motionZ = 0.0D;
@@ -22,28 +23,28 @@ public class EntityZeppelinTwoBalloons extends AbstractZeppelin{
 	}
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (worldObj.isRemote || isDead) {
+		if (world.isRemote || isDead) {
 			return true;
 		}
 		boatRockDirection = -boatRockDirection;
 		boatTimeSinceHit = 10;
 		boatCurrentDamage += i * 10;
-		if (damagesource.getEntity() instanceof EntityPlayer) {
-			if (damagesource.getEntity() instanceof EntityPlayer && ((EntityPlayer) damagesource.getEntity()).capabilities.isCreativeMode) {
+		if (damagesource.getImmediateSource() instanceof EntityPlayer) {
+			if (damagesource.getImmediateSource() instanceof EntityPlayer && ((EntityPlayer) damagesource.getImmediateSource()).capabilities.isCreativeMode) {
 				this.boatCurrentDamage = 1000;
 			}
 		}
-		setBeenAttacked();
+		velocityChanged=true;
 		if (boatCurrentDamage > 40) {
-			if (damagesource.getEntity() instanceof EntityPlayer && !(((EntityPlayer) damagesource.getEntity()).capabilities.isCreativeMode)) {
+			if (damagesource.getImmediateSource() instanceof EntityPlayer && !(((EntityPlayer) damagesource.getImmediateSource()).capabilities.isCreativeMode)) {
 				dropItem(ItemIDs.airship.item, 1);
 			}
 			setDead();
 		}
 		return true;
 	}
-	@Override
+	/*@Override
 	public String getInventoryName() {
 		return "Zeppelin Two Balloons";
-	}
+	}*/
 }

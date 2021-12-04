@@ -76,7 +76,7 @@ public class EntityFreightGermanPost extends GenericRailTransport {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1),
                 null, null, new ItemStack(TiMItems.cabinSteel, 1),
-                null, null, new ItemStack(Blocks.chest, 1)        };
+                null, null, new ItemStack(Blocks.CHEST, 1)        };
     }
 
 

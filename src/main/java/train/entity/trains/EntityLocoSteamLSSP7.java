@@ -22,7 +22,7 @@ import java.util.UUID;
 public class EntityLocoSteamLSSP7 extends EntityTrainCore {
 
     public EntityLocoSteamLSSP7(World world) {
-        super(Entity.world);
+        super(world);
     }
 
     public EntityLocoSteamLSSP7(UUID owner, World world, double xPos, double yPos, double zPos) {

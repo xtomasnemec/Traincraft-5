@@ -54,7 +54,7 @@ public class HUDTrain extends GuiScreen {
                  * and if the brakes, train, and lamp are on or off*/
                 fontRenderer.drawString("Entity name: "+StatCollector.translateToLocal(trainEntity.transportName()), 8, 8, 4210752);
                 fontRenderer.drawString("DEBUG INFO:", 8, 18, 4210752);
-                fontRenderer.drawString("Accelerator State: " + -trainEntity.getDataWatcher().getWatchableObjectInt(18), 8, 28, 4210752);
+                fontRenderer.drawString("Accelerator State: " + -trainEntity.dataWatcher.getWatchableObjectInt(18), 8, 28, 4210752);
                 //speed is velocity *20 to get meters per second. convert to km/h by dividing by 3.6, or mph by 2.236936293
                 double speed =( Math.sqrt(trainEntity.getVelocity()) * (CommonProxy.realSpeed?120D*1.25D:120D));
                 speed*=ClientProxy.speedInKmh?1:0.621371;

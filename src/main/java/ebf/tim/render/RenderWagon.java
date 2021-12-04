@@ -279,7 +279,7 @@ public class RenderWagon extends Render {
          * In that render there is a check whether to render it as a cargo block, or use the geometry size/position/rotation to render a block similar to enderman.
          * @see net.minecraft.client.renderer.entity.RenderEnderman#renderEquippedItems(EntityEnderman, float)
          */
-        //System.out.println(entity.getTexture(0).getResourcePath() + entity.getDataWatcher().getWatchableObjectInt(24));
+        //System.out.println(entity.getTexture(0).getPath() + entity.dataWatcher.getWatchableObjectInt(24));
         TransportSkin s;
         if(!isPaintBucket && entity.worldObj!=null) {
             TextureManager.adjustLightFixture(entity.worldObj, (int) entity.posX, (int) entity.posY + 1, (int) entity.posZ);

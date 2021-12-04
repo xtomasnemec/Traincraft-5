@@ -1,6 +1,12 @@
 package train.entity.rollingStock;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
@@ -25,16 +31,19 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 	public float volume = 1.0f;
 	public MP3Player player;
 
+	public static final DataParameter<Integer> VOLUME = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
+	public static final DataParameter<String> STREAM = EntityDataManager.<String>createKey(Entity.class, DataSerializers.STRING);
+
 	public EntityJukeBoxCart(World world) {
 		super(world);
-		dataWatcher.addObject(22, streamURL);
-		dataWatcher.addObject(23, 0);
+		dataManager.set(STREAM, streamURL);
+		dataManager.set(VOLUME, 0);
 		side = FMLCommonHandler.instance().getEffectiveSide();
 	}
 
 	public EntityJukeBoxCart(World world, double d, double d1, double d2) {
 		this(world);
-		setPosition(d, d1 + yOffset, d2);
+		setPosition(d, d1 + getYOffset(), d2);
 		motionX = 0.0D;
 		motionY = 0.0D;
 		motionZ = 0.0D;
@@ -53,24 +62,24 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if (!worldObj.isRemote && this.ticksExisted % 10 == 0) {
-			this.dataWatcher.updateObject(22, streamURL);
+		if (!world.isRemote && this.ticksExisted % 10 == 0) {
+			this.dataManager.set(STREAM, streamURL);
 			if (isPlaying) {
-				this.dataWatcher.updateObject(23, 1);
+				this.dataManager.set(VOLUME, 1);
 			}
 			else {
-				this.dataWatcher.updateObject(23, 0);
+				this.dataManager.set(VOLUME, 0);
 			}
 		}
 		if (side == Side.CLIENT) {
 			
-			if (this.ticksExisted % 10 == 0 && !this.isPlaying() && this.dataWatcher.getWatchableObjectInt(23) != 0) {
-				this.streamURL = this.dataWatcher.getWatchableObjectString(22);
+			if (this.ticksExisted % 10 == 0 && !this.isPlaying() && this.dataManager.get(VOLUME) != 0) {
+				this.streamURL = this.dataManager.get(STREAM);
 				this.startStream();
 			}
-			if ((Minecraft.getMinecraft().thePlayer != null) && (this.player != null) && (!isInvalid)) {
-				float vol = (float) getDistanceSq(Minecraft.getMinecraft().thePlayer.posX,
-						Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ);
+			if ((Minecraft.getMinecraft().player != null) && (this.player != null) && (!isInvalid)) {
+				float vol = (float) getDistanceSq(Minecraft.getMinecraft().player.posX,
+						Minecraft.getMinecraft().player.posY, Minecraft.getMinecraft().player.posZ);
 				if (vol >= (volume * 1000.0F)) {
 					this.player.setVolume(0.0F);
 				} else {
@@ -93,7 +102,7 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 				}
 				if (this.isPlaying && rand.nextInt(5) == 0 && (this.player != null && this.player.isPlaying())) {
 					int random2 = rand.nextInt(24) + 1;
-					worldObj.spawnParticle("note", posX, posY + 1.2D, posZ, random2 / 24.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.NOTE, posX, posY + 1.2D, posZ, random2 / 24.0D, 0.0D, 0.0D);
 				}
 			}
 			
@@ -123,7 +132,7 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 		if (!this.isPlaying) {
 			this.isPlaying = true;
 			if (side == Side.CLIENT) {
-				this.player = new MP3Player(this.streamURL, this.worldObj, this.getEntityId());
+				this.player = new MP3Player(this.streamURL, this.world, this.getEntityId());
 				player.setVolume(0);
 				Traincraft.proxy.playerList.add(this.player);
 			}
@@ -151,10 +160,10 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 	@Override
 	public boolean interact(int player, boolean isFront, boolean isBack, int key) {
 
-		EntityPlayer p =((EntityPlayer)worldObj.getEntityByID(player));
-		if (worldObj.isRemote) {
-			if (p.getHeldItem() != null && p.getHeldItem().getItem() instanceof ItemPaintBucket) {
-				p.openGui(Traincraft.instance, GuiIDs.JUKEBOX, worldObj, this.getEntityId(), -1, (int) this.posZ);
+		EntityPlayer p =((EntityPlayer)world.getEntityByID(player));
+		if (world.isRemote) {
+			if (p.getHeldItem(EnumHand.MAIN_HAND) != null && p.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemPaintBucket) {
+				p.openGui(Traincraft.instance, GuiIDs.JUKEBOX, world, this.getEntityId(), -1, (int) this.posZ);
 			}
 			TrainsInMotion.keyChannel.sendToServer(new PacketInteract(key, getEntityId()));
 		} else {
@@ -185,11 +194,11 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 		super.readEntityFromNBT(nbttagcompound);
 		this.streamURL = nbttagcompound.getString("StreamUrl");
 		this.isPlaying = nbttagcompound.getBoolean("isPlaying");
-		this.dataWatcher.updateObject(22, streamURL);
+		this.dataManager.set(STREAM, streamURL);
 		if (isPlaying) {
-			this.dataWatcher.updateObject(23, 1);
+			this.dataManager.set(VOLUME, 1);
 		} else {
-			this.dataWatcher.updateObject(23, 0);
+			this.dataManager.set(VOLUME, 0);
 		}
 	}
 }

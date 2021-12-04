@@ -78,7 +78,7 @@ public class EntityFreight100TonHopper extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 new ItemStack(TiMOres.ingotSteel, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 3),
-                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Blocks.hopper, 3)        };
+                new ItemStack(TiMOres.ingotSteel, 2), null, null, null, null, new ItemStack(Blocks.HOPPER, 3)        };
     }
 
 

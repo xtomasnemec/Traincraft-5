@@ -101,7 +101,7 @@ public class EntityFreightBamboo extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
-                null, null, null, null, null, new ItemStack(Blocks.chest, 1)        };
+                null, null, null, null, null, new ItemStack(Blocks.CHEST, 1)        };
     }
 
 

@@ -71,8 +71,8 @@ public class EntityFreightMinetrain extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Items.iron_ingot, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1),
-                new ItemStack(Items.iron_ingot, 2), null, null, null, null, new ItemStack(Blocks.chest, 1)        };
+                new ItemStack(Items.IRON_INGOT, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 1),
+                new ItemStack(Items.IRON_INGOT, 2), null, null, null, null, new ItemStack(Blocks.CHEST, 1)        };
     }
 
 

@@ -70,8 +70,8 @@ public class EntityTenderAdler extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Items.iron_ingot, 2), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
-                new ItemStack(Items.iron_ingot, 1), null, null, null, null, new ItemStack(Items.COAL, 1)        };
+                new ItemStack(Items.IRON_INGOT, 2), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1),
+                new ItemStack(Items.IRON_INGOT, 1), null, null, null, null, new ItemStack(Items.COAL, 1)        };
     }
 
 

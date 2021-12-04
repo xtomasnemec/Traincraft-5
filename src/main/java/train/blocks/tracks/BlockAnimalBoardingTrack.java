@@ -42,7 +42,7 @@ public class BlockAnimalBoardingTrack extends TrackBaseTraincraft implements ITr
 				for (int j1 = 0; j1 < list.size(); j1++) {
 					Entity entity = (Entity) list.get(j1);
 					if ((entity instanceof EntityAnimal)) {
-						entity.mountEntity(cart);
+						entity.startRiding(cart);
 						setTrackPowering();
 					}
 				}

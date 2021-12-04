@@ -98,11 +98,6 @@ public class RailTileEntity extends TileEntity {
         return (oldBlock != newBlock) || (oldMeta != newMeta);
     }
 
-    @Override
-    public boolean canUpdate(){return false;}
-
-    @Override
-    public void updateEntity(){}
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
@@ -163,12 +158,13 @@ public class RailTileEntity extends TileEntity {
 
 
     @Override
-    public void writeToNBT(NBTTagCompound tag){
+    public NBTTagCompound writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
         tag.setInteger("meta", meta);
         if(data!=null && data.toXMLString()!=null && data.toXMLString().length()>0) {
             tag.setString("raildata", data.toXMLString());
         }
+        return tag;
     }
 
     @Override

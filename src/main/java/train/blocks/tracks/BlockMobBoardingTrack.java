@@ -42,7 +42,7 @@ public class BlockMobBoardingTrack extends TrackBaseTraincraft implements ITrack
 				for (int j1 = 0; j1 < list.size(); j1++) {
 					Entity entity = (Entity) list.get(j1);
 					if ((entity instanceof EntityCreature)) {
-						entity.mountEntity(cart);
+						entity.startRiding(cart);
 						setTrackPowering();
 					}
 				}

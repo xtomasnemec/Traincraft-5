@@ -27,6 +27,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ebf.tim.entities.GenericRailTransport.BOILER_HEAT;
+import static ebf.tim.entities.GenericRailTransport.HEAT;
 import static ebf.tim.utility.ClientUtil.drawTextOutlined;
 
 /**
@@ -116,7 +118,7 @@ public class GUITransport extends GUIContainerNoNEI {
 
         //draw the buttons.
         for (GUIButton b : buttons){
-            b.drawButton(mouseX,mouseY);
+            b.drawButton(mouseX,mouseY, par3);
         }
         //draw hover text;
         for (GUIButton b : buttons){
@@ -352,12 +354,12 @@ public class GUITransport extends GUIContainerNoNEI {
         ClientUtil.drawTexturedRect(guiLeft+113, guiTop + 1, 56, 35, 16, 16);
 
         //icon for furnace
-        int i1 = transport.getDataWatcher().getWatchableObjectInt(13);
+        int i1 = transport.getDataManager().get(BOILER_HEAT);
         if (i1>0) {
             ClientUtil.drawTexturedRect(guiLeft + 113, guiTop + 16 - i1, 176, 14 - i1, 16, i1);
         }
 
-        drawTextOutlined(fontRenderer, "burn time: " + transport.getDataWatcher().getWatchableObjectInt(13), 10, 70, 16777215);
+        drawTextOutlined(fontRenderer, "burn time: " + transport.getDataManager().get(HEAT), 10, 70, 16777215);
         drawTextOutlined(fontRenderer, "boiler heat: " + FuelHandler.getBoilerHeat(transport), 10, 80, 16777215);
         GL11.glEnable(GL11.GL_LIGHTING);
     }

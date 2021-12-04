@@ -31,7 +31,7 @@ public class BlockDistil extends BlockDynamic {
 	}
 
 	@Override
-	public Item getItemDropped(int i, Random random, int j) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(TCBlocks.blockDistil);
 	}
 
@@ -84,8 +84,8 @@ public class BlockDistil extends BlockDynamic {
 
 	public ResourceLocation getTexture(int x, int y, int z){
 		if(Minecraft.getMinecraft().world!=null &&
-				Minecraft.getMinecraft().world.getTileEntity(x,y,z) instanceof TileEntityDistil){
-			if(((TileEntityDistil) Minecraft.getMinecraft().world.getTileEntity(x,y,z)).isBurning()){
+				Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x,y,z)) instanceof TileEntityDistil){
+			if(((TileEntityDistil) Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x,y,z))).isBurning()){
 				return new ResourceLocation("traincraft", "textures/blocks/distil_on.png");
 			}
 		}

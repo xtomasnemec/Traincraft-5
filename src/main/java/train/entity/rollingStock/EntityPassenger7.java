@@ -73,7 +73,7 @@ public class EntityPassenger7 extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 new ItemStack(Blocks.PLANKS, 2), new ItemStack(TiMItems.wheelIron, 2), new ItemStack(TiMItems.frameIron, 2),
-                new ItemStack(Items.iron_ingot, 2), null, new ItemStack(TiMItems.cabinIron, 1),
+                new ItemStack(Items.IRON_INGOT, 2), null, new ItemStack(TiMItems.cabinIron, 1),
                 null, null, new ItemStack(TiMItems.seatsWooden, 1)        };
     }
 

@@ -97,10 +97,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (player != null) {
-            if(x==0&&y==0&&z==0 && player.getHeldItem()!=null) {
-                if (player.getHeldItem().getItem() instanceof ItemCraftGuide) {
+            if(x==0&&y==0&&z==0 && player.getHeldItem(EnumHand.MAIN_HAND)!=null) {
+                if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCraftGuide) {
                     return new GUICraftBook();
-                } else if (player.getHeldItem().getItem() instanceof ItemPaintBucket){
+                } else if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemPaintBucket){
                     return new GUIPaintBucket((GenericRailTransport) player.worldObj.getEntityByID(ID));
                 }
             }
@@ -259,7 +259,7 @@ public class ClientProxy extends CommonProxy {
         public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float p_147500_8_) {
             GL11.glPushMatrix();
             GL11.glTranslated(x,y, z);
-            tileEntity.func_145828_a(null);
+            tileEntity.addInfoToCrashReport(null);
             GL11.glPopMatrix();
         }
 

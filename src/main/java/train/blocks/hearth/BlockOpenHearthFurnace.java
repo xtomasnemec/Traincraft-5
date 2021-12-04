@@ -8,25 +8,22 @@
 package train.blocks.hearth;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import train.Traincraft;
 import train.blocks.TCBlocks;
 import train.blocks.distil.TileEntityDistil;
@@ -45,8 +42,8 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 	public ResourceLocation getTexture(int x, int y, int z){
 		//todo this is inefficient, do from tile entity
 		if(Minecraft.getMinecraft().world!=null &&
-				Minecraft.getMinecraft().world.getTileEntity(x,y,z) instanceof TileEntityDistil){
-			if(((TileEntityOpenHearthFurnace) Minecraft.getMinecraft().world.getTileEntity(x,y,z)).isBurning()){
+				Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x,y,z)) instanceof TileEntityDistil){
+			if(((TileEntityOpenHearthFurnace) Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x,y,z))).isBurning()){
 				return new ResourceLocation("traincraft", "textures/blocks/furnace_on.png");
 			}
 		}
@@ -54,7 +51,7 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 	}
 
 	@Override
-	public Item getItemDropped(int i, Random random, int j) {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(TCBlocks.blockHearthFurnace);
 	}
 
@@ -82,14 +79,14 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(i, j, k);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand par6, EnumFacing facing, float par7, float par8, float par9) {
+		TileEntity te = world.getTileEntity(pos);
 		if (player.isSneaking()) {
 			return false;
 		}
 		if (!world.isRemote) {
 			if (te instanceof TileEntityOpenHearthFurnace) {
-				player.openGui(Traincraft.instance, GuiIDs.OPEN_HEARTH_FURNACE, world, i, j, k);
+				player.openGui(Traincraft.instance, GuiIDs.OPEN_HEARTH_FURNACE, world, pos.getX(),pos.getY(),pos.getZ());
 			}
 		}
 		return true;
@@ -97,14 +94,14 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 
 
 	@Override
-	public void breakBlock(World world, int i, int j, int k, Block par5, int par6) {
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		//todo:keep inventory on break?
 
-		TileEntity te = world.getTileEntity(i,j,k);
+		TileEntity te = world.getTileEntity(pos);
 		if(te instanceof TileEntityOpenHearthFurnace && world.getGameRules().getBoolean("doTileDrops")){
 			((TileEntityOpenHearthFurnace) te).dropInventory();
 		}
-		super.breakBlock(world, i, j, k, par5, par6);
+		super.breakBlock(world, pos, state);
 	}
 
 

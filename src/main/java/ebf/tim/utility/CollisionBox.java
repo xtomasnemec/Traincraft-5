@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class CollisionBox extends MultiPartEntityPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
     public GenericRailTransport host;
@@ -81,6 +82,51 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     public boolean canProvidePulledFluid(EntityMinecart requester, Fluid fluid) {
         return host.canProvidePulledFluid(requester,fluid);}
 
+    /**
+     * This function controls whether a cart can pass push or pull requests.
+     * This function is only called if the cart cannot fulfill the request itself.
+     * <p/>
+     * If this interface is not implemented, a default value will be inferred based on the size of the tanks of the Minecart.
+     * Anything with eight or more buckets will be assumed to allow passage, but only if the contained fluid matches the request.
+     *
+     * @param fluid
+     * @return true if can pass push and pull requests
+     */
+    @Override
+    public boolean canPassFluidRequests(FluidStack fluid) {
+        return host.canPassFluidRequests(fluid);
+    }
+
+    /**
+     * This function controls whether a cart will accept a pushed Fluid.
+     * Even if this function returns true, there still must be a tank that accepts the Fluid in question before it can be added to the cart.
+     * <p/>
+     * If this interface is not implemented, it is assumed to be true.
+     *
+     * @param requester the EntityMinecart that initiated the action
+     * @param fluid     the Fluid
+     * @return true if cart will accept the fluid
+     */
+    @Override
+    public boolean canAcceptPushedFluid(EntityMinecart requester, FluidStack fluid) {
+        return host.canAcceptPushedFluid(requester,fluid);
+    }
+
+    /**
+     * This function controls whether a cart will fulfill a pull request for a specific Fluid.
+     * Even if this function returns true, there still must be a tank that can extract the Fluid in question before it can be removed from the cart.
+     * <p/>
+     * If this interface is not implemented, it is assumed to be true.
+     *
+     * @param requester the EntityMinecart that initiated the action
+     * @param fluid     the Fluid
+     * @return true if the cart can provide the fluid
+     */
+    @Override
+    public boolean canProvidePulledFluid(EntityMinecart requester, FluidStack fluid) {
+        return host.canProvidePulledFluid(requester,fluid);
+    }
+
     @Override
     public void setFilling(boolean filling) {host.setFilling(filling);}
 
@@ -112,11 +158,26 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     public int getSizeInventory() {return host.getSizeInventory();}
 
     @Override
+    public boolean isEmpty() {
+        return host.isEmpty();
+    }
+
+    @Override
     public ItemStack getStackInSlot(int p_70301_1_) {return host.getStackInSlot(p_70301_1_);}
 
     @Override
     public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
         return host.decrStackSize(p_70298_1_,p_70298_2_);}
+
+    /**
+     * Removes a stack from the given slot and returns it.
+     *
+     * @param index
+     */
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        return host.removeStackFromSlot(index);
+    }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
@@ -126,11 +187,11 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
         host.setInventorySlotContents(p_70299_1_,p_70299_2_);}
 
-    @Override
+    /*@Override
     public String getInventoryName() {return host.getInventoryName();}
 
     @Override
-    public boolean hasCustomInventoryName() {return host.hasCustomInventoryName();}
+    public boolean hasCustomInventoryName() {return host.hasCustomInventoryName();}*/
 
     @Override
     public int getInventoryStackLimit() {return host.getInventoryStackLimit();}
@@ -152,25 +213,56 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
         return host.isItemValidForSlot(p_94041_1_, p_94041_2_);}
 
     @Override
+    public int getField(int id) {
+        return host.getField(id);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        host.setField(id, value);
+    }
+
+    @Override
+    public int getFieldCount() {
+        return host.getFieldCount();
+    }
+
+    @Override
+    public void clear() {
+        host.clear();
+    }
+
+    /**
+     * Returns an array of objects which represent the internal tanks.
+     * These objects cannot be used to manipulate the internal tanks.
+     *
+     * @return Properties for the relevant internal tanks.
+     */
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+        return host.getTankProperties();
+    }
+
+    @Override
     public int fill(FluidStack resource, boolean doFill) {
-        return host.fill(from, resource, doFill);}
+        return host.fill(resource, doFill);}
 
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-        return host.drain(from, resource, doDrain);}
+        return host.drain(resource, doDrain);}
 
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        return host.drain(from, maxDrain, doDrain);}
+        return host.drain(maxDrain, doDrain);}
 
     @Override
-    public boolean canFill(Fluid fluid) {return host.canFill(from, fluid);}
+    public boolean canFill(Fluid fluid) {return host.canFill(fluid);}
 
     @Override
-    public boolean canDrain(Fluid fluid) {return host.canDrain(from, fluid);}
+    public boolean canDrain(Fluid fluid) {return host.canDrain(fluid);}
 
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {return host.getTankInfo(from);}
+    //@Override
+    public FluidTankInfo[] getTankInfo() {return host.getTankInfo();}
 
     @Override
     /**
