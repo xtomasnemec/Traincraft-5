@@ -26,9 +26,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -127,11 +130,13 @@ public class TiMGenericRegistry {
                 redundantTiles.add(unlocalizedName + "tile");
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
                     net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TESR);
-                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
+                    //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
+                    CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
                     CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
                 } else if (TrainsInMotion.proxy.isClient()) {
                     net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TrainsInMotion.proxy.getTESR());
-                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
+                    //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
+                    CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
                     CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
                 }
             } else {
@@ -175,11 +180,14 @@ public class TiMGenericRegistry {
             DebugUtil.println("Item missing lang entry: " + itm.getUnlocalizedName());
         }
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {
-            MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
+            //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
+            CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName));
         } else if (TrainsInMotion.proxy.isClient() && itm instanceof ItemTransport) {
-            MinecraftForgeClient.registerItemRenderer(itm, ebf.tim.items.CustomItemModel.instance);
+            //MinecraftForgeClient.registerItemRenderer(itm, ebf.tim.items.CustomItemModel.instance);
+            CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName));
+            //todo:this somehow?
             if (ClientProxy.preRenderModels) {
-                ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
+                //ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
             }
         }
         return itm;
@@ -263,7 +271,8 @@ public class TiMGenericRegistry {
                 }
             }
             if (TrainsInMotion.proxy.isClient() && ClientProxy.hdTransportItems) {
-                MinecraftForgeClient.registerItemRenderer(registry.getCartItem().getItem(), ebf.tim.items.CustomItemModel.instance);
+                //MinecraftForgeClient.registerItemRenderer(registry.getCartItem().getItem(), ebf.tim.items.CustomItemModel.instance);
+                CustomItemModel.renderItems.add(new ResourceLocation(MODID, registry.transportName().replace(" ", "") + ".entity"));
             }
             registry.registerSkins();
             if (registry.getRecipe() != null) {

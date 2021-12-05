@@ -10,6 +10,7 @@ import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.gui.*;
+import ebf.tim.items.CustomItemModel;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemPaintBucket;
 import ebf.tim.render.RenderWagon;
@@ -24,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import org.lwjgl.input.Keyboard;
@@ -200,6 +202,8 @@ public class ClientProxy extends CommonProxy {
         //player scaler
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, playerRender);
 
+        //item render
+        ModelLoaderRegistry.registerLoader(CustomItemModel.instance);
 
 
         //keybinds

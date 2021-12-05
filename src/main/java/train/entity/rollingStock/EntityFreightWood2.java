@@ -72,7 +72,7 @@ public class EntityFreightWood2 extends GenericRailTransport {
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
                 new ItemStack(Blocks.PLANKS, 3), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameIron, 1),
-                new ItemStack(Items.IRON_INGOT, 2), null, null, null, null, new ItemStack(Blocks.log, 1)        };
+                new ItemStack(Items.IRON_INGOT, 2), null, null, null, null, new ItemStack(Blocks.LOG, 1)        };
     }
 
 

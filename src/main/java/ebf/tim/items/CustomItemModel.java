@@ -1,5 +1,9 @@
 package ebf.tim.items;
 
+import net.minecraft.entity.EntityLiving;
+import org.apache.commons.lang3.tuple.Pair;
+import com.sun.istack.internal.Nullable;
+import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.render.models.ModelRail;
@@ -7,35 +11,49 @@ import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.Vec5f;
 import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ModelManager;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.model.IModelPart;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import org.lwjgl.opengl.GL11;
+import train.library.Info;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.vecmath.Matrix4f;
+import java.util.*;
+import java.util.function.Function;
 
 import static ebf.tim.render.models.Model1x1Rail.addVertexWithOffsetAndUV;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
-public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
+public class CustomItemModel implements ICustomModelLoader {
 
-    public static CustomItemModel instance = new CustomItemModel(null,null,null);
+    public static CustomItemModel instance = new CustomItemModel();
 
     private static HashMap<Item, TileRenderFacing> blockTextures = new HashMap<>();
 
+    public static List<ResourceLocation> renderItems = new ArrayList<>();
 
-    public CustomItemModel(net.minecraft.client.renderer.texture.TextureManager p_i46552_1_, ModelManager p_i46552_2_, ItemColors p_i46552_3_) {
-        super(p_i46552_1_, p_i46552_2_, p_i46552_3_);
+
+    public CustomItemModel() {
+        super();
         instance=this;
     }
 
@@ -55,15 +73,23 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
     //@Override // generally useless but needs to be here
     public void onResourceManagerReload(IResourceManager resourceManager) {}
 
+    @Override
+    public boolean accepts(ResourceLocation modelLocation) {
+        return renderItems.contains(modelLocation);
+    }
+
+    @Override
+    public IModel loadModel(ResourceLocation modelLocation) throws Exception {
+        return new Model(modelLocation);
+    }
 
 
     /*@Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return true;//models.containsKey(new ResourceLocation(item.getUnlocalizedName()));
     }*/
-    float scale;
-    @Override
-    public void renderItemModel(ItemStack item, IBakedModel bakedmodel, ItemCameraTransforms.TransformType type, boolean leftHanded) {
+    //@Override
+    public static void renderItemModel(ItemStack item, ItemCameraTransforms.TransformType type, EntityLivingBase holder) {
         if(item==null){return;}
 
         if(blockTextures.containsKey(item.getItem())) {
@@ -73,7 +99,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
             GL11.glTranslatef(0,-0.1f,0);
             if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){
                 ((TileEntitySpecialRenderer)blockTextures.get(item.getItem()).host.tesr)
-                        .render(blockTextures.get(item.getItem()),0,0,0,0);
+                        .render(blockTextures.get(item.getItem()),0,0,0,0,0,0);
             } else {
                 blockTextures.get(item.getItem()).addInfoToCrashReport(null);
             }
@@ -82,7 +108,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
         } else if (item.getItem() instanceof ItemTransport){
             GL11.glPushMatrix();
             GenericRailTransport entity = ((ItemTransport) item.getItem()).entity;
-            scale = entity.getHitboxSize()[0];
+            float scale = entity.getHitboxSize()[0];
             if(scale!=0){
                 scale = 1.3f/(scale /1.3f);
             }
@@ -242,4 +268,85 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
     }
     private static final Vec5f start = new Vec5f(0.625f, 0, 0, 0, 0), end = new Vec5f(-0.625f, 0, 0, 0, 0)
             ,tieStart = new Vec5f(0.625f*0.125f, 0, 0, 0, 0),tieEnd = new Vec5f(-0.625f*0.125f, 0, 0, 0, 0);
+
+
+
+
+    private static class Model implements IModel {
+
+        private final ResourceLocation modelloc;
+
+        private Model(ResourceLocation rs){
+            this.modelloc = rs;
+        }
+
+        @Override
+        public Collection<ResourceLocation> getDependencies(){return Collections.emptyList();}
+
+        @Override
+        public IModelState getDefaultState(){
+            return new IModelState() {
+                @Override
+                public Optional<TRSRTransformation> apply(Optional<? extends IModelPart> part) {
+                    return Optional.empty();
+                }
+            };
+        }
+
+        @Override
+        public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> func){
+            return new IBakedModel(){
+
+                private ItemStack stack;
+                private EntityLivingBase holder;
+
+                @Override @Nonnull
+                public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand){
+                    return Collections.emptyList();
+                }
+
+                @Override @Nonnull
+                public ItemCameraTransforms getItemCameraTransforms(){return ItemCameraTransforms.DEFAULT;}
+
+                @Override
+                public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType perspective){
+
+                    renderItemModel(stack, perspective, holder);
+                    return Pair.of(this, null);
+                }
+
+                @Override
+                public boolean isBuiltInRenderer(){return true;}
+
+                @Override @Nonnull
+                public TextureAtlasSprite getParticleTexture(){return ModelLoader.White.INSTANCE;}
+
+
+                @Override @Nonnull
+                public ItemOverrideList getOverrides(){
+                    return new ItemOverrideList(ItemOverrideList.NONE.getOverrides()){
+
+                        @Override
+                        public IBakedModel handleItemState(IBakedModel org_model, ItemStack itemstack, World world, EntityLivingBase entity){
+                            stack=itemstack;
+                            holder=entity;
+                            return org_model;
+                        }
+                    };
+                }
+
+                @Override
+                public boolean isGui3d(){return true;}
+
+                @Override
+                public boolean isAmbientOcclusion(){return false;}
+            };
+        }
+
+        @Override
+        public Collection<ResourceLocation> getTextures(){
+            return Collections.singleton(modelloc);
+        }
+    }
+
 }

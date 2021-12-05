@@ -89,12 +89,12 @@ public class TCBlocks {
 
 
 		addRecipe(new ItemStack(registerBlock(trainTableTier1, Traincraft.tcTab, Info.modID,"block.traintabletier1", null, null),1),
-				"IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Items.IRON_INGOT, 'P', Blocks.piston); //tier 1
+				"IPI", "S S", "SPS", 'S', Blocks.STONE, 'I', Items.IRON_INGOT, 'P', Blocks.PISTON); //tier 1
 		addRecipe(new ItemStack(registerBlock(trainTableTier2, Traincraft.tcTab, Info.modID,"block.traintabletier2", null, null),1),
-				"GPG", "O O", "OPO", 'O', Blocks.obsidian, 'G', Items.gold_ingot, 'P', Blocks.piston); //tier 2
+				"GPG", "O O", "OPO", 'O', Blocks.OBSIDIAN, 'G', Items.GOLD_INGOT, 'P', Blocks.PISTON); //tier 2
 		addRecipe(new ItemStack(registerBlock(trainTableTier3, Traincraft.tcTab, Info.modID,"block.traintabletier3", null, null),1),
-				"GPG", "DLD", "OPO", 'O', Blocks.obsidian, 'G', Items.gold_ingot, 'P', Blocks.piston, 'D', Items.diamond, 'L', Blocks.glowstone); //tier 3
-		addRecipe(new ItemStack(partTable), "IPI", "S S", "SPS", 'S', Blocks.stone, 'I', Blocks.PLANKS, 'P', Blocks.piston); //part builder
+				"GPG", "DLD", "OPO", 'O', Blocks.OBSIDIAN, 'G', Items.GOLD_INGOT, 'P', Blocks.PISTON, 'D', Items.DIAMOND, 'L', Blocks.GLOWSTONE); //tier 3
+		addRecipe(new ItemStack(partTable), "IPI", "S S", "SPS", 'S', Blocks.STONE, 'I', Blocks.PLANKS, 'P', Blocks.PISTON); //part builder
 
 		registerBlock(blockDistil, Traincraft.tcTab, Info.modID,"block.distil", null, null);
 
@@ -135,18 +135,18 @@ public class TCBlocks {
 
 	public static void setHarvestLevels() {
 		Blocks.RAIL.setHarvestLevel("ItemStacked", 0);
-		Blocks.detector_rail.setHarvestLevel("ItemStacked", 0);
-		Blocks.golden_rail.setHarvestLevel("ItemStacked", 0);
+		Blocks.DETECTOR_RAIL.setHarvestLevel("ItemStacked", 0);
+		Blocks.GOLDEN_RAIL.setHarvestLevel("ItemStacked", 0);
 	}
 
 	public static void registerRecipes(){
 
 		RecipeManager.registerRecipe(
-				new Object[]{Blocks.nether_brick,Items.lava_bucket,Blocks.nether_brick,Blocks.nether_brick,Items.bucket,Blocks.nether_brick,Blocks.nether_brick,Blocks.iron_block,Blocks.nether_brick},
+				new Object[]{Blocks.NETHER_BRICK,Items.LAVA_BUCKET,Blocks.NETHER_BRICK,Blocks.NETHER_BRICK,Items.BUCKET,Blocks.NETHER_BRICK,Blocks.NETHER_BRICK,Blocks.IRON_BLOCK,Blocks.NETHER_BRICK},
 				new ItemStack(blockHearthFurnace));
 
 		RecipeManager.registerRecipe(
-				new Object[]{Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT,Blocks.glass_pane,Blocks.torch,Blocks.glass_pane,Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT},
+				new Object[]{Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT,Blocks.GLASS_PANE,Blocks.TORCH,Blocks.GLASS_PANE,Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT},
 				new ItemStack(lantern));
 
 		RecipeManager.registerRecipe(
@@ -162,10 +162,10 @@ public class TCBlocks {
 				new ItemStack(windmill));
 
 		RecipeManager.registerRecipe(
-				new Object[]{null, Blocks.log,null,Blocks.log,TiMItems.generator,Blocks.log,null,Blocks.log,null},
+				new Object[]{null, Blocks.LOG,null,Blocks.LOG,TiMItems.generator,Blocks.LOG,null,Blocks.LOG,null},
 				new ItemStack(waterWheel));
 
-		RecipeManager.registerRecipe(new Object[]{Blocks.gravel,Items.clay_ball,Blocks.gravel,null,null,null,null,null,null},
+		RecipeManager.registerRecipe(new Object[]{Blocks.GRAVEL,Items.CLAY_BALL,Blocks.GRAVEL,null,null,null,null,null,null},
                 new ItemStack(blockBallast));
 
 	}
