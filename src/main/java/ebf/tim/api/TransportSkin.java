@@ -75,9 +75,11 @@ public class TransportSkin {
     }
     public TransportSkin setBogieTextures(ResourceLocation... textures){
         bogieTextures=textures;
-        for(int i=0;i<textures.length;i++){
-            if(!bogieTextures[i].getResourcePath().contains(".")){
-                bogieTextures[i]= new ResourceLocation(bogieTextures[i].getResourceDomain(), bogieTextures[i].getResourcePath()+".png");
+        if(bogieTextures!=null) {
+            for (int i = 0; i < textures.length; i++) {
+                if (!bogieTextures[i].getResourcePath().contains(".")) {
+                    bogieTextures[i] = new ResourceLocation(bogieTextures[i].getResourceDomain(), bogieTextures[i].getResourcePath() + ".png");
+                }
             }
         }
         return this;
@@ -88,9 +90,11 @@ public class TransportSkin {
     }
     public TransportSkin setSubBogieTextures(ResourceLocation... textures){
         subBogieTextures=textures;
-        for(int i=0;i<textures.length;i++){
-            if(!subBogieTextures[i].getResourcePath().contains(".")){
-                subBogieTextures[i]= new ResourceLocation(subBogieTextures[i].getResourceDomain(), subBogieTextures[i].getResourcePath()+".png");
+        if(subBogieTextures!=null) {
+            for (int i = 0; i < textures.length; i++) {
+                if (!subBogieTextures[i].getResourcePath().contains(".")) {
+                    subBogieTextures[i] = new ResourceLocation(subBogieTextures[i].getResourceDomain(), subBogieTextures[i].getResourcePath() + ".png");
+                }
             }
         }
         return this;
