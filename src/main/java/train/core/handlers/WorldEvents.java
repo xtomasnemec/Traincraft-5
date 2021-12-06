@@ -1,10 +1,10 @@
 package train.core.handlers;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import train.entity.ai.EntityAIFearHorn;
 import train.entity.rollingStock.EntityJukeBoxCart;
 
@@ -42,14 +42,14 @@ public class WorldEvents{
 	
 	@SubscribeEvent
 	public void entitySpawn(EntityJoinWorldEvent event) {
-		if(event.entity instanceof EntityAnimal) {
-			((EntityAnimal) event.entity).tasks.addTask(0, new EntityAIFearHorn(((EntityAnimal) event.entity)));
+		if(event.getEntity() instanceof EntityAnimal) {
+			((EntityAnimal) event.getEntity()).tasks.addTask(0, new EntityAIFearHorn(((EntityAnimal) event.getEntity())));
 		}
 	}
 
 	@SubscribeEvent
 	public void chunkUnloadEvent(ChunkEvent.Unload event){
-		for(Object o : event.getChunk().entityLists){
+		for(Object o : event.getChunk().getEntityLists()){
 			if (o instanceof EntityJukeBoxCart){
 				((EntityJukeBoxCart) o).player.setVolume(0);
 				((EntityJukeBoxCart) o).player.stop();

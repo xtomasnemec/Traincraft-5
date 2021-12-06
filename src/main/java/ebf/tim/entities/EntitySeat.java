@@ -1,17 +1,16 @@
 package ebf.tim.entities;
 
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import fexcraft.tmt.slim.Vec3d;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
@@ -34,6 +33,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     public Vec3d rotation =null;
     GenericRailTransport parent;
+    private EntityLivingBase passengerEntity=null;
 
     public EntitySeat(World world) {
         super(world);
@@ -108,15 +108,13 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     protected void writeEntityToNBT(NBTTagCompound tag) {}
     @Override
     public boolean writeToNBTOptional(NBTTagCompound tagCompound){return false;}
-    @Override
-    public boolean writeMountToNBT(NBTTagCompound tagCompound){return false;}
 
     /**plays a sound during entity movement*/
     @Override
     protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {}
 
     @Override
-    public Vec3 getLookVec() {
+    public Vec3d getLookVec() {
         return rotation;
     }
 
@@ -137,9 +135,27 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public void updateRiderPosition() {
-        if (this.riddenByEntity != null) {
-            this.riddenByEntity.setPosition(this.posX, this.posY+1, this.posZ);
+        if (this.passengerEntity != null) {
+            this.passengerEntity.setPosition(this.posX, this.posY+1, this.posZ);
         }
+    }
+
+    public EntityLivingBase getPassenger(){
+        return this.passengerEntity;
+    }
+
+    @Override
+    public void addPassenger(Entity passenger) {
+        if(passengerEntity==null && passenger instanceof EntityLivingBase) {
+            super.addPassenger(passenger);
+            this.passengerEntity=(EntityLivingBase) passenger;
+        }
+    }
+
+    @Override
+    public void removePassenger(Entity passenger){
+        super.removePassenger(passenger);
+        passengerEntity=null;
     }
 
 
