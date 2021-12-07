@@ -3,7 +3,9 @@ package ebf.tim.entities;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import train.library.EnumSounds;
@@ -338,6 +340,18 @@ public class EntityTrainCore extends GenericRailTransport {
                 whistleDelay = 65;
             }
         }
+        if(!worldObj.isRemote) {
+            List entities = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(
+                    this.posX - 20, this.posY - 5, this.posZ - 20,
+                    this.posX + 20, this.posY + 5, this.posZ + 20));
+
+            for (Object e : entities) {
+                if (e instanceof EntityAnimal) {
+                    ((EntityAnimal) e).setTarget(this.riddenByEntity==null?this.seats.get(0).getPassenger():riddenByEntity);
+                    ((EntityAnimal) e).getNavigator().setPath(null, 0);
+                }
+            }
+        }
     }
 
     @Override
@@ -365,8 +379,6 @@ public class EntityTrainCore extends GenericRailTransport {
                     updateConsist();
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
-                    //the second to last value is volume, and idk what the last one is.
-                    //worldObj.playSoundEffect(posX, posY, posZ, getHorn().getResourcePath(), 1, 0.5f);
                     if(whistleDelay==0){
                         soundHorn();
                     }

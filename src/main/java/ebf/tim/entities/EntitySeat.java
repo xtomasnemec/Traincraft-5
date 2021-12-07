@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
@@ -32,6 +33,8 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     public Vec3 rotation =null;
     GenericRailTransport parent;
+    private EntityLivingBase passengerEntity=null;
+    private boolean controller=false;
 
     public EntitySeat(World world) {
         super(world);
@@ -47,6 +50,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         }
         parentId = parent;
         this.seatNumber = seatNumber;
+        controller=seatNumber==0;
     }
 
     /** returns if this can be pushed*/
@@ -139,6 +143,28 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
             this.riddenByEntity.setPosition(this.posX, this.posY+1, this.posZ);
         }
     }
+
+    public EntityLivingBase getPassenger(){
+        return this.passengerEntity;
+    }
+
+    //@Override
+    public void addPassenger(Entity passenger) {
+        if(passengerEntity==null && passenger instanceof EntityLivingBase) {
+            //super.addPassenger(passenger);
+            this.passengerEntity=(EntityLivingBase)passenger;
+        }
+    }
+
+    //@Override
+    public void removePassenger(Entity passenger){
+        //super.removePassenger(passenger);
+        passengerEntity=null;
+    }
+
+    public boolean isControlSeat(){return controller;}
+
+    public void setControlSeat(){controller=true;}
 
 
     /**
