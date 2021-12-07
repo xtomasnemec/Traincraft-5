@@ -13,7 +13,7 @@ import train.library.Tracks;
 public class BlockDetectorFreightTrack extends BlockDetectorTrack implements ITrackEmitter {
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.DETECTOR_FREIGHT;
 	}
 

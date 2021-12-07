@@ -8,6 +8,8 @@ package train.library;
 
 import ebf.tim.registry.TiMFluids;
 import ebf.tim.registry.TiMItems;
+import mods.railcraft.api.tracks.ITrackKitInstance;
+import mods.railcraft.api.tracks.TrackKitInstance;
 import mods.railcraft.api.tracks.TrackRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -47,7 +49,7 @@ public enum Tracks{
 	private final String tag;
 	private final int recipeOutput;
 	private final int numIcons;
-	private final TrackSpec trackSpec;
+	private final ITrackKitInstance trackSpec;
 	private static final List<Tracks> creativeList;
 	public Object[] crafting = null;
 
@@ -56,7 +58,7 @@ public enum Tracks{
 		this.tag = tag;
 		this.recipeOutput = recipeOutput;
 
-		this.trackSpec = new TrackSpec((short) (ordinal() + 513), getTag(), TrackTextureLoader.INSTANCE, track,tooltip);
+		this.trackSpec = new TrackKitInstance((short) (ordinal() + 513), getTag(), TrackTextureLoader.INSTANCE, track,tooltip);
 		TrackRegistry.registerTrackSpec(this.trackSpec);
 	}
 
@@ -73,7 +75,7 @@ public enum Tracks{
 		return this.numIcons;
 	}
 
-	public TrackSpec getTrackSpec() {
+	public ITrackKitInstance getTrackSpec() {
 		return this.trackSpec;
 	}
 

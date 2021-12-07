@@ -14,7 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.Traincraft;
 import train.library.Info;
 import train.library.ItemIDs;

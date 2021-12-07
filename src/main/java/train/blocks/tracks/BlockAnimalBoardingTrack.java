@@ -7,13 +7,14 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.CommonUtil;
 import mods.railcraft.api.tracks.ITrackEmitter;
+import mods.railcraft.api.tracks.TrackType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 
 import java.io.DataInputStream;
@@ -25,7 +26,7 @@ public class BlockAnimalBoardingTrack extends TrackBaseTraincraft implements ITr
 	private byte delay = 0;
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.ANIMAL_BOARDING_TRACK;
 	}
 	@Override

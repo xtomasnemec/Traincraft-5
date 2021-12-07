@@ -3,7 +3,7 @@
  */
 package train.blocks.tracks;
 
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 
 public class BlockCopperTrack extends TrackBaseTraincraft {
@@ -12,7 +12,7 @@ public class BlockCopperTrack extends TrackBaseTraincraft {
 	}
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.COPPER_TRACK;
 	}
 	@Override

@@ -6,21 +6,22 @@
 package train.blocks.tracks;
 
 import ebf.tim.utility.CommonUtil;
-import mods.railcraft.api.tracks.ITrackEmitter;
+import mods.railcraft.api.tracks.ITrackKitEmitter;
+import mods.railcraft.api.tracks.TrackType;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class BlockDetectorTrack extends TrackBaseTraincraft implements ITrackEmitter {
+public class BlockDetectorTrack extends TrackBaseTraincraft implements ITrackKitEmitter {
 	private byte delay = 0;
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return null;
 	}
 	@Override

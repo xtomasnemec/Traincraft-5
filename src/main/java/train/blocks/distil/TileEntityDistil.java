@@ -55,7 +55,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 
 		inventory.add(new ItemStackSlot(this, 400, 56, 17).setCraftingInput(true).setOverlay(TCBlocks.orePetroleum));
 		inventory.add(new ItemStackSlot(this, 401, 56, 53).setCraftingInput(true));
-		inventory.add(new ItemStackSlot(this, 402, 123, 8).setCraftingInput(true).setOverlay(Items.bucket));
+		inventory.add(new ItemStackSlot(this, 402, 123, 8).setCraftingInput(true).setOverlay(Items.BUCKET));
 
 		inventory.add(new ItemStackSlot(this, 403, 116, 60).setCraftingOutput(true));
 		inventory.add(new ItemStackSlot(this, 404, 123, 33).setCraftingOutput(true));

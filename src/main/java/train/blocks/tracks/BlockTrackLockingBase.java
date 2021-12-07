@@ -6,7 +6,7 @@ import mods.railcraft.api.tracks.ITrackLockdown;
 import mods.railcraft.api.tracks.ITrackPowered;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.DataInputStream;

@@ -4,7 +4,7 @@ import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileRenderFacing;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 import java.util.Random;
 
@@ -46,7 +46,7 @@ public class TileLantern extends TileRenderFacing {
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		readFromNBT(pkt.func_148857_g());
 	}
 

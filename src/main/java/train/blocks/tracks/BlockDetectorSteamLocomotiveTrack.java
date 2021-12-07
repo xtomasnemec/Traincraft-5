@@ -14,7 +14,7 @@ import train.library.Tracks;
 public class BlockDetectorSteamLocomotiveTrack extends BlockDetectorTrack implements ITrackEmitter {
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.DETECTOR_STEAM_LOCOMOTIVES;
 	}
 	@Override

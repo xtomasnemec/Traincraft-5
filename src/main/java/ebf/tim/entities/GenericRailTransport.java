@@ -167,7 +167,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return false;
     }
     @Override
-    public boolean canLinkWithCart(EntityMinecart cart) {
+    public boolean canLink(EntityMinecart cart) {
         //if support is to be added a hitbox will need to be made for front and back to check if it contains the cart.
         //additionally all linking functionality will have to account for if the linked entity is instanceof EntityMinecart
         return false;
@@ -377,7 +377,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return new ItemStackSlot(this, 400,150,-8).setOverlay(Items.WATER_BUCKET);
     }
     public ItemStackSlot tankerOutputSlot(){
-        return new ItemStackSlot(this, 401,150,32).setOverlay(Items.bucket);
+        return new ItemStackSlot(this, 401,150,32).setOverlay(Items.BUCKET);
     }
 
     /**

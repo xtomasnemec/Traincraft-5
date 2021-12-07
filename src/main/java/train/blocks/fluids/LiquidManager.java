@@ -3,8 +3,8 @@ package train.blocks.fluids;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class LiquidManager {
 
@@ -54,23 +54,23 @@ public class LiquidManager {
 		FluidStack bucketLiquid = getFluidInContainer(itemstack);
 		ItemStack emptyItem = itemstack.getItem().getContainerItem(itemstack);
 		if ((bucketLiquid != null)) {
-			int used = tank.fill(ForgeDirection.UNKNOWN,bucketLiquid, false);
+			int used = tank.fill(bucketLiquid, false);
 			if (used >= bucketLiquid.amount) {
-				tank.fill(ForgeDirection.UNKNOWN,bucketLiquid, true);
-				if (itemstack.getItem() == Items.potionitem){
-					return new ItemStack(Items.glass_bottle, 1);
+				tank.fill(bucketLiquid, true);
+				if (itemstack.getItem() == Items.POTION){
+					return new ItemStack(Items.GLASS_BOTTLE, 1);
 				}
 				inventory.decrStackSize(inventoryIndex, 1);
 				return emptyItem;
 			}
 		}
 		else if ((getInstance().isEmptyContainer(itemstack))) {
-			ItemStack filled = getInstance().fillFluidContainer(tank.drain(ForgeDirection.UNKNOWN,1000,false), itemstack);
+			ItemStack filled = getInstance().fillFluidContainer(tank.drain(1000,false), itemstack);
 			if ((filled != null)) {
 				FluidStack liquid = getFluidInContainer(filled);
-				FluidStack drain = tank.drain(ForgeDirection.UNKNOWN,liquid.amount, false);
+				FluidStack drain = tank.drain(liquid.amount, false);
 				if ((drain != null) && (drain.amount > 0)) {
-					tank.drain(ForgeDirection.UNKNOWN,liquid.amount, true);
+					tank.drain(liquid.amount, true);
 					inventory.decrStackSize(inventoryIndex, 1);
 					return filled;
 				}

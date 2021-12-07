@@ -10,7 +10,7 @@ import mods.railcraft.api.carts.ILinkageManager;
 import mods.railcraft.api.tracks.ITrackPowered;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 
 import java.io.DataInputStream;
@@ -22,7 +22,7 @@ public class BlockCouplerTrack extends TrackBaseTraincraft implements ITrackPowe
 	private boolean powered = false;
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.COUPLER_TRACK;
 	}
 	@Override

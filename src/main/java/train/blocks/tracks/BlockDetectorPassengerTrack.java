@@ -8,13 +8,15 @@ package train.blocks.tracks;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import mods.railcraft.api.tracks.ITrackEmitter;
+import mods.railcraft.api.tracks.ITrackKitEmitter;
+import mods.railcraft.api.tracks.TrackType;
 import net.minecraft.entity.item.EntityMinecart;
 import train.library.Tracks;
 
-public class BlockDetectorPassengerTrack extends BlockDetectorTrack implements ITrackEmitter {
+public class BlockDetectorPassengerTrack extends BlockDetectorTrack implements ITrackKitEmitter {
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.DETECTOR_PASSENGER;
 	}
 	@Override

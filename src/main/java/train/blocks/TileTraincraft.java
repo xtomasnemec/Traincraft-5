@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
@@ -103,7 +103,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
         }
     }
 
-    @Override
+    /*@Override
     public String getInventoryName(){
         return this.invName;
     }
@@ -111,7 +111,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     @Override
     public boolean hasCustomInventoryName(){
         return false;
-    }
+    }*/
 
     @Override
     public int getInventoryStackLimit(){
@@ -120,7 +120,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
 
     @Override
     public boolean isUsableByPlayer(EntityPlayer player){
-        return player.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
+        return player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -139,9 +139,10 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public final void writeToNBT(NBTTagCompound nbt){
+    public final NBTTagCompound writeToNBT(NBTTagCompound nbt){
         super.writeToNBT(nbt);
         this.writeToNBT(nbt, false);
+        return nbt;
     }
 
     @Override
@@ -187,7 +188,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
         for(Object o : this.world.playerEntities){
             if(o instanceof EntityPlayerMP){
                 EntityPlayerMP player = (EntityPlayerMP) o;
-                if(player.getDistance(xCoord, yCoord, zCoord) <= 64) {
+                if(player.getDistance(getPos().getX(), getPos().getY(), getPos().getZ()) <= 64) {
                     player.playerNetServerHandler.sendPacket(this.getDescriptionPacket());
                 }
             }
@@ -198,11 +199,11 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     public Packet getDescriptionPacket() {
         NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt, true);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+        return new SPacketUpdateTileEntity(getPos(), 1, nbt);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt){
         if(pkt != null){
             this.readFromNBT(pkt.func_148857_g(), true);
         }

@@ -17,7 +17,7 @@ public class BlockLocomotiveHoldingTrack extends BlockTrackLockingBase implement
 	protected boolean launchForward = true;
 	protected byte reset = 0;
 
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.LOCO_HOLDING_TRACK;
 	}
 	@Override

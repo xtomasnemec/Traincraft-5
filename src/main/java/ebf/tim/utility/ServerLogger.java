@@ -148,7 +148,7 @@ public class ServerLogger {
         string.append("    <FluidStack>\n        <ID>");
         string.append(item.getFluidID());
         string.append("</ID>\n            <delegate>");
-        string.append(FluidContainerRegistry.fillFluidContainer(item, new ItemStack(Items.bucket)).getItem().delegate.name());
+        string.append(FluidContainerRegistry.fillFluidContainer(item, new ItemStack(Items.BUCKET)).getItem().delegate.name());
         string.append("</delegate>\n            <getCount()>");
         string.append((int)(item.amount*0.001));
         string.append("</getCount()>\n    </FluidStack>\n");

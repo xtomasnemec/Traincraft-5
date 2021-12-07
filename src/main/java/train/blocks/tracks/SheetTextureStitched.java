@@ -2,7 +2,7 @@ package train.blocks.tracks;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
 public class SheetTextureStitched extends TextureStitchEvent {

@@ -71,16 +71,6 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
         return this.host.attackEntityFromPart(this, damageSource, p_70097_2_);
     }
 
-    @Override
-    public boolean canPassFluidRequests(Fluid fluid) {return host.canPassFluidRequests(fluid);}
-
-    @Override
-    public boolean canAcceptPushedFluid(EntityMinecart requester, Fluid fluid) {
-        return host.canAcceptPushedFluid(requester,fluid);}
-
-    @Override
-    public boolean canProvidePulledFluid(EntityMinecart requester, Fluid fluid) {
-        return host.canProvidePulledFluid(requester,fluid);}
 
     /**
      * This function controls whether a cart can pass push or pull requests.
@@ -134,7 +124,7 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     public boolean isLinkable() {return host.isLinkable();}
 
     @Override
-    public boolean canLinkWithCart(EntityMinecart cart) {return host.canLinkWithCart(cart);}
+    public boolean canLink(EntityMinecart cart) {return host.canLinkWithCart(cart);}
 
     @Override
     public boolean hasTwoLinks() {return host.hasTwoLinks();}
@@ -255,11 +245,11 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     public FluidStack drain(int maxDrain, boolean doDrain) {
         return host.drain(maxDrain, doDrain);}
 
-    @Override
+    /*@Override
     public boolean canFill(Fluid fluid) {return host.canFill(fluid);}
 
     @Override
-    public boolean canDrain(Fluid fluid) {return host.canDrain(fluid);}
+    public boolean canDrain(Fluid fluid) {return host.canDrain(fluid);}*/
 
     //@Override
     public FluidTankInfo[] getTankInfo() {return host.getTankInfo();}

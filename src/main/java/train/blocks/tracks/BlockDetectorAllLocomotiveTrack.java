@@ -9,7 +9,9 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import mods.railcraft.api.core.items.IToolCrowbar;
-import mods.railcraft.api.tracks.ITrackEmitter;
+import mods.railcraft.api.items.IToolCrowbar;
+import mods.railcraft.api.tracks.ITrackKitEmitter;
+import mods.railcraft.api.tracks.TrackType;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,11 +24,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class BlockDetectorAllLocomotiveTrack extends BlockDetectorTrack implements ITrackEmitter {
+public class BlockDetectorAllLocomotiveTrack extends BlockDetectorTrack implements ITrackKitEmitter {
 	
 	private int	ThingToSet	= 0;
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.DETECTOR_ALL_LOCOMOTIVES;
 	}
 	
@@ -62,9 +64,9 @@ public class BlockDetectorAllLocomotiveTrack extends BlockDetectorTrack implemen
 			return false;
 		}
 		ItemStack current = player.inventory.getCurrentItem();
-		if ((current != null) && ((current.getItem() instanceof IToolCrowbar))) {
+		if ((current.getItem() instanceof IToolCrowbar)) {
 			IToolCrowbar crowbar = (IToolCrowbar) current.getItem();
-			if (crowbar.canWhack(player, current, getX(), getY(), getZ())) {
+			if (crowbar.canWhack(player, current, getPos())) {
 				if (this.ThingToSet == 9) {
 					this.ThingToSet = 0;
 				} else {
@@ -92,7 +94,7 @@ public class BlockDetectorAllLocomotiveTrack extends BlockDetectorTrack implemen
 				
 				}
 				
-				crowbar.onWhack(player, current, getX(), getY(), getZ());
+				crowbar.onWhack(player, current, getPos());
 				sendUpdateToClient();
 				return true;
 			}

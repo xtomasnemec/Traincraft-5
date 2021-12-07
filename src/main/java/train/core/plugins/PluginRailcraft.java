@@ -29,7 +29,7 @@ public class PluginRailcraft {
 		GameRegistry.addShapelessRecipe(Tracks.SNOWY_STEEL_TRACK.getOutput(), Tracks.STEEL_TRACK.getTrackSpec().getItem(1), Items.SNOWBALL);
 		GameRegistry.addShapelessRecipe(Tracks.SNOWY_COPPER_TRACK.getOutput(), Tracks.COPPER_TRACK.getTrackSpec().getItem(1), Items.SNOWBALL);
 		GameRegistry.addShapelessRecipe(Tracks.VANILLA_SNOWY_TRACK.getOutput(), Blocks.RAIL, Items.SNOWBALL);
-		ArrayList<ItemStack> copper = OreDictionary.getOres("ingotCopper");
+		NonNullList<ItemStack> copper = OreDictionary.getOres("ingotCopper");
 		if (copper != null) {
 			for(ItemStack aCopper : copper){
 				Crafters.rollingMachine().newRecipe(new ItemStack(ItemIDs.copperRail.item, 8), "XXX", "   ", "XXX", 'X', aCopper);

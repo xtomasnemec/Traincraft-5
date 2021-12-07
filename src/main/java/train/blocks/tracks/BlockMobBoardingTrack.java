@@ -13,7 +13,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 
 import java.io.DataInputStream;
@@ -25,7 +25,7 @@ public class BlockMobBoardingTrack extends TrackBaseTraincraft implements ITrack
 	private byte delay = 0;
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.MOB_BOARDING_TRACK;
 	}
 	@Override

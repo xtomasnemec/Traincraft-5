@@ -2,6 +2,7 @@ package ebf.tim.blocks;
 
 import java.util.Random;
 
+import depreciated.minecraft.util.IIcon;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;

@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import train.core.handlers.ConfigHandler;
 import train.library.Tracks;
@@ -45,7 +45,7 @@ public class BlockEnergyTrack extends TrackBaseTraincraft implements ITrackPower
 	}
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.ENERGY_TRACK;
 	}
 

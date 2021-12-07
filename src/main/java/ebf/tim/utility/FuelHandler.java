@@ -18,8 +18,14 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.ItemFluidContainer;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
 import static ebf.tim.entities.GenericRailTransport.*;
+import static net.minecraftforge.fluids.FluidUtil.getFluidHandler;
 
 /**
  * <h1>Fuel management for trains</h1>
@@ -74,41 +80,41 @@ public class FuelHandler{
 			}
 		}
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.DIESEL)){
-			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")){
+			if(getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")){
 				return new FluidStack(TiMFluids.fluidDiesel,1000);
-			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
+			} else if (getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
 				return new FluidStack(TiMFluids.fluidfueloil, 1000);
-			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("oil")) {
+			} else if (getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("oil")) {
 				return new FluidStack(TiMFluids.fluidOil,1000);
-			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fuel")) {
+			} else if (getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fuel")) {
 				return new FluidStack(TiMFluids.fluidBCFuel, 1000);
-			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("bioethanol")) {
+			} else if (getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("bioethanol")) {
 				return new FluidStack(TiMFluids.fluidEthanol, 1000);
-			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biofuel")) {
+			} else if (getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biofuel")) {
 				return new FluidStack(TiMFluids.fluidBiofuel, 1000);
-			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biodiesel")) {
+			} else if (getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biodiesel")) {
 				return new FluidStack(TiMFluids.fluidBioDiesel, 1000);
-			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biomass")) {
+			} else if (getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("biomass")) {
 				return new FluidStack(TiMFluids.fluidBiomass, 1000);
 			}
 		}
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.STEAM)){
-			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getFluid()==FluidRegistry.WATER){
+			if(getFluidForFilledItem(itemStack)!=null &&
+					getFluidForFilledItem(itemStack).getFluid()==FluidRegistry.WATER){
 				return new FluidStack(FluidRegistry.WATER,1000);
 			}
 		}
 
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.TANKER)){
-			return FluidContainerRegistry.getFluidForFilledItem(itemStack);
+			return getFluidForFilledItem(itemStack);
 		}
 
 		return null;
@@ -119,7 +125,7 @@ public class FuelHandler{
 	}
 
 	//public FluidStack getFluidForSlot(GenericRailTransport train, int slot){
-	//	return FluidContainerRegistry.getFluidForFilledItem(train.getSlotIndexByID(slot).getStack());
+	//	return getFluidForFilledItem(train.getSlotIndexByID(slot).getStack());
 	//}
 
 
@@ -257,7 +263,7 @@ public class FuelHandler{
     public static void manageDieselFuel(EntityTrainCore train){
         //add fuel to the fuel tank
         if(getUseableFluid(400,train) !=null) {
-			if (train.fill(null, getUseableFluid(400,train))) {
+			if (train.fill(getUseableFluid(400,train))) {
 				if(!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
 					train.addItem(new ItemStack(Items.BUCKET));
@@ -386,20 +392,20 @@ public class FuelHandler{
 			transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(), transport), true);
 
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-				transport.addItem(FluidContainerRegistry.drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
+				transport.addItem(drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
 				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrStackSize(1);
 
 			}
 
 		}
 		//attempt to fill any buckets in the drain slot
-		if (transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID())!=null && FluidContainerRegistry.isEmptyContainer(transport.getSlotIndexByID(401).getStack())) {
+		if (transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID())!=null && isEmptyContainer(transport.getSlotIndexByID(401).getStack())) {
 			for (int i = 0; i < transport.getTankCapacity().length; i++) {
-				if (FluidContainerRegistry.fillFluidContainer(
+				if (fillFluidContainer(
 						new FluidStack(transport.entityData.getFluidStack("tanks."+i).getFluid(),1000)
 						, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()) !=null) {
 
-					transport.addItem(FluidContainerRegistry.fillFluidContainer(
+					transport.addItem(fillFluidContainer(
 							new FluidStack(transport.entityData.getFluidStack("tanks."+i).getFluid(),1000)
 							, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()));
 					transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrStackSize(1);
@@ -412,7 +418,7 @@ public class FuelHandler{
 			//drain from top slot
 			/*if (transport.getStackInSlot(1) == null && isUseableFluid(transport.getStackInSlot(0), transport) == null &&
 					transport.drain(null, 1000, false) != null && transport.drain(null, 1000, false).amount >= 1000){
-				transport.setInventorySlotContents(1, FluidContainerRegistry.fillFluidContainer(transport.drain(null, 1000, false), transport.getStackInSlot(0)));
+				transport.setInventorySlotContents(1, fillFluidContainer(transport.drain(null, 1000, false), transport.getStackInSlot(0)));
 				if (transport.getStackInSlot(0).getCount() == 1) {
 					transport.setInventorySlotContents(0, null);
 				} else {
@@ -423,6 +429,25 @@ public class FuelHandler{
 				}
 			}
 		}*/
+	}
+
+	public static ItemStack drainFluidContainer(ItemStack item){
+		return getFluidHandler(item).getContainer();
+	}
+
+	public static ItemStack fillFluidContainer(FluidStack stack, ItemStack item){
+		return FluidUtil.getFilledBucket(stack);
+	}
+
+	public static FluidStack getFluidForFilledItem(ItemStack item){
+		FluidUtil.getFluidHandler(item).getTankProperties()[0].getContents();
+	}
+
+	public static boolean isEmptyContainer(ItemStack item){
+		return FluidUtil.getFluidHandler(item).getTankProperties()==null||
+				FluidUtil.getFluidHandler(item).getTankProperties()[0]==null ||
+				FluidUtil.getFluidHandler(item).getTankProperties()[0].getContents()==null ||
+				getFluidHandler(item).getTankProperties()[0].getContents().amount==0;
 	}
 
 } 

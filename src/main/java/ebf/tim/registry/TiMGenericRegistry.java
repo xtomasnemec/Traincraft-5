@@ -218,14 +218,14 @@ public class TiMGenericRegistry {
         fluid.setBlock(block);
 
         if (bucket == null) {
-            bucket = new ItemBucket(block).setCreativeTab(tab).setContainerItem(Items.bucket);
+            bucket = new ItemBucket(block).setCreativeTab(tab).setContainerItem(Items.BUCKET);
             if (TrainsInMotion.proxy.isClient()) {
                 bucket.setTextureName(MODID + ":bucket_" + unlocalizedName);
             }
         }
         bucket.setUnlocalizedName(unlocalizedName + ".bucket");
         GameRegistry.registerItem(bucket, "fluid." + unlocalizedName + ".bucket");
-        FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.bucket));
+        FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
 
 
         if (DebugUtil.dev() && TrainsInMotion.proxy.isClient()) {

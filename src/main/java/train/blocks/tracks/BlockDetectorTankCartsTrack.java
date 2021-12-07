@@ -14,7 +14,7 @@ import train.library.Tracks;
 public class BlockDetectorTankCartsTrack extends BlockDetectorTrack implements ITrackEmitter {
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.DETECTOR_TANK_CARTS;
 	}
 

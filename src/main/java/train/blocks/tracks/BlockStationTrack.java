@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 
 import java.io.DataInputStream;
@@ -35,7 +35,7 @@ public class BlockStationTrack extends BlockTrackLockingBase implements ITrackLo
 		}
 		return getIcon(this.mode);
 	}
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.STATION_TRACK;
 	}
 	@Override

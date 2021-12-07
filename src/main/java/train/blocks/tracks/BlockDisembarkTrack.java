@@ -10,7 +10,7 @@ import mods.railcraft.api.tracks.ITrackEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 
 import java.io.DataInputStream;
@@ -21,7 +21,7 @@ public class BlockDisembarkTrack extends TrackBaseTraincraft implements ITrackEm
 	private byte delay = 0;
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.DISEMBARK_TRACK;
 	}
 	@Override

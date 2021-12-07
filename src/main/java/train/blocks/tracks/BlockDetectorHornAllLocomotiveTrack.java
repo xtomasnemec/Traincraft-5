@@ -19,7 +19,7 @@ import java.util.List;
 public class BlockDetectorHornAllLocomotiveTrack extends BlockDetectorTrack implements ITrackEmitter {
 
 	@Override
-	public Tracks getTrackType() {
+	public TrackType getTrackType() {
 		return Tracks.HORN_ALL_LOCOMOTIVES;
 	}
 	@Override

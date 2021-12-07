@@ -6,7 +6,7 @@
  */
 package train.blocks.tracks;
 
-import mods.railcraft.api.tracks.ITrackInstance;
+import mods.railcraft.api.tracks.IOutfittedTrackTile;
 import net.minecraft.entity.item.EntityMinecart;
 
 public class SpeedController {
@@ -19,7 +19,7 @@ public class SpeedController {
 		return instance;
 	}
 
-	public float getMaxSpeed(ITrackInstance track, EntityMinecart cart) {
+	public float getMaxSpeed(IOutfittedTrackTile track, EntityMinecart cart) {
 		return 0.4F;
 	}
 

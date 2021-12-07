@@ -3,6 +3,7 @@ package ebf.tim.entities;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
@@ -89,7 +90,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     }
     /**returns the bounding box, this doesn't handle collisions, soo.. null.*/
     @Override
-    public AxisAlignedBB getBoundingBox(){
+    public AxisAlignedBB getCollisionBoundingBox(){
         return null;
     }
     /**returns the bounding box, this doesn't handle collisions, soo.. null.*/
@@ -113,7 +114,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     /**plays a sound during entity movement*/
     @Override
-    protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {}
+    protected void playStepSound(BlockPos pos, Block blockIn) {}
 
     @Override
     public Vec3d getLookVec() {
@@ -136,7 +137,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     }
 
     @Override
-    public void updateRiderPosition() {
+    public void updateRidden() {
         if (this.passengerEntity != null) {
             this.passengerEntity.setPosition(this.posX, this.posY+1, this.posZ);
         }
@@ -171,10 +172,10 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int turnProgress) {
-        posX = x;
-        posY = y;
-        posZ = z;
+    public void setPositionAndRotationDirect(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_, boolean teleport) {
+        posX = p_70056_1_;
+        posY = p_70056_3_;
+        posZ = p_70056_5_;
     }
     @Override
     public void setVelocity(double x, double y, double z) {
