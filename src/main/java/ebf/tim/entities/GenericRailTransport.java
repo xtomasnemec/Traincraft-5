@@ -420,8 +420,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             transportZ=p_70056_5_;
             tickOffset = p_70056_9_+2;
 
-            updateRiderPosition();
-
             //handle bogie rotations
             if(renderData!=null && renderData.bogies!=null){
                 for(Bogie b : renderData.bogies){
@@ -529,14 +527,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         //TODO: else if(player.getHeldItem(EnumHand.MAIN_HAND) instanceof stakeItem) {do linking/unlinking stuff dependant on if it was front or not;}
                     }
                     //be sure the player has permission to enter the transport, and that the transport has the main seat open.
-                    if (getRiderOffsets() != null && riddenByEntity == null && getPermissions(p, false, true)) {
-                        p.startRiding(this);
-                        return true;
-                        //if the player had permission but the main seat isnt open, check for seat entities to mount.
-                    } else {
+                    if (getRiderOffsets() != null && getPermissions(p, false, true)) {
                         for (EntitySeat seat : seats) {
-                            if (seat.riddenByEntity == null && getPermissions(p, false, true)) {
-                                p.startRiding(seat);
+                            if (seat.getPassenger() == null) {
+                                seat.addPassenger(p);
                                 return true;
                             }
                         }
@@ -1060,7 +1054,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //initialize fluid tanks
             getTankInfo();
             //sync inventory on spawn
-            openInventory(p);
+            openInventory();
 
             updatePosition();
 
@@ -1152,9 +1146,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         }
 
-        //rider updating isn't called if there's no driver/conductor, so just in case of that, we reposition the seats here too.
-        if (riddenByEntity == null && getRiderOffsets() != null) {
+        //reposition the seats here to force the hand rather than relying on the update rider method
+        if (getRiderOffsets() != null) {
             for (int i = 0; i < seats.size(); i++) {
+                //sometimes seats die when players log out. make new ones.
+                if(seats.get(i) ==null){
+                    seats.set(i, new EntitySeat(world, posX, posY,posZ,0,0,0,getEntityId(),i));
+                    world.spawnEntity(seats.get(i));
+                }
                 cachedVectors[0] = new Vec3f(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2])
                         .rotatePoint(rotationPitch, rotationYaw, 0f);
                 cachedVectors[0].addVector(posX,posY,posZ);
@@ -1386,34 +1385,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public float getPower(){return 0;}
 
 
-    /**
-     * <h2>Rider offset</h2>
-     * this runs every tick to be sure the riders, and seats, are in the correct positions.
-     * NOTE: this only happens while there is an entity riding this, entities riding seats do not activate this function.
-     */
-    @Override
-    public void updateRiderPosition() {
-        if (getRiderOffsets() != null && world!=null) {
-            if (riddenByEntity != null) {
-                cachedVectors[3] = new Vec3f(getRiderOffsets()[0][0],getRiderOffsets()[0][1],getRiderOffsets()[0][2])
-                        .rotatePoint(rotationPitch, rotationYaw, 0);
-                cachedVectors[3].addVector(posX,posY+frontBogie.yOffset,posZ);
-                riddenByEntity.setPosition(cachedVectors[3].xCoord,cachedVectors[3].yCoord,cachedVectors[3].zCoord);
-            }
-
-            for (EntitySeat seat : seats) {
-                cachedVectors[3] = new Vec3f(getRiderOffsets()[0][0], getRiderOffsets()[0][1], getRiderOffsets()[0][2])
-                        .rotatePoint(rotationPitch, rotationYaw, 0);
-                cachedVectors[3].addVector(posX,
-                        posY + (world.isRemote ? 0 : 1) + (frontBogie == null ? 0 : frontBogie.yOffset),
-                        posZ);
-
-                seat.setPosition(cachedVectors[3].xCoord, cachedVectors[3].yCoord, cachedVectors[3].zCoord);
-            }
-        }
-
-    }
-
 
     /**
      * used by EntitySeat to define if the rider should sit based on the seat ID
@@ -1500,9 +1471,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * @return if the player has permission to continue
      */
     public boolean getPermissions(EntityPlayer player, boolean driverOnly, boolean decreaseTicketStack) {
-        //if this requires the player to be the driver, and they aren't, just return false before we even go any further.
-        if (player ==null || (driverOnly && riddenByEntity!=null && player.getEntityId() != this.riddenByEntity.getEntityId())){
+        //make sure the player is not null, and be sure that driver only rules are applied.
+        if (player ==null){
             return false;
+        } else if (driverOnly && (!(player.getRidingEntity() instanceof EntitySeat) || ! ((EntitySeat) player.getRidingEntity()).isControlSeat())){
+                return false;
         }
 
         //be sure operators and owners can do whatever

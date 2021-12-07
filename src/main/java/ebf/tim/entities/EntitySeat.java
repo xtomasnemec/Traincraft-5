@@ -34,6 +34,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     public Vec3d rotation =null;
     GenericRailTransport parent;
     private EntityLivingBase passengerEntity=null;
+    private boolean controller=false;
 
     public EntitySeat(World world) {
         super(world);
@@ -49,6 +50,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         }
         parentId = parent;
         this.seatNumber = seatNumber;
+        controller=seatNumber==0;
     }
 
     /** returns if this can be pushed*/
@@ -157,6 +159,10 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         super.removePassenger(passenger);
         passengerEntity=null;
     }
+
+    public boolean isControlSeat(){return controller;}
+
+    public void setControlSeat(){controller=true;}
 
 
     /**

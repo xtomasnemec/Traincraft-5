@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -387,11 +388,8 @@ public class GUITransport extends GUIContainerNoNEI {
             if (i/(rows+1) >=5*(rows+1)){
                 rows++;
             }
-            if (i==0 && transport.riddenByEntity instanceof AbstractClientPlayer){
-                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.riddenByEntity).getLocationSkin());
-                ClientUtil.drawTexturedRect(guiLeft + 10 + (30*(i-(rows * 5))), guiTop + 32+(30*rows), 30, 70, 22, 22, 36, 56);
-            } else if (i>0 && transport.seats.get(i-1).riddenByEntity instanceof AbstractClientPlayer){
-                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.seats.get(i-1).riddenByEntity).getLocationSkin());
+            if (i>0 && transport.seats.get(i).getPassenger() instanceof AbstractClientPlayer){
+                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.seats.get(i).getPassenger()).getLocationSkin());
                 ClientUtil.drawTexturedRect(guiLeft + 10 + (30*(i-(rows * 5))), guiTop + 32+(30*rows), 30, 70, 22, 22, 36, 56);
             }
         }
