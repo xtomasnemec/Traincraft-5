@@ -1694,7 +1694,7 @@ public class ModelF7A extends ModelConverter //Same as Filename
 			}
 		}
 
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 3||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 11||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 16) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/blombergB_2_Silver.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-0.9, -0.01, 0);
