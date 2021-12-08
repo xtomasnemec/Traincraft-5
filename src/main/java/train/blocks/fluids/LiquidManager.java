@@ -17,8 +17,6 @@ public class LiquidManager {
 	public static Fluid bioDiesel;
 	public static Fluid bioethanol;
 
-	public static final Fluid DIESEL = new Fluid("Diesel").setUnlocalizedName("diesel.name").setDensity(860);
-
 	public static LiquidManager getInstance() {
 		if (instance == null) {
 			instance = new LiquidManager();

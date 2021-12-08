@@ -130,7 +130,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 							getSlotIndexByID(401).setStack(new ItemStack(getSlotIndexByID(401).getStack().getItem().getContainerItem()));
 						}
 						else {
-							getSlotIndexByID(401).getStack().stackSize--;
+							getSlotIndexByID(401).decrStackSize(1);
 						}
 
 						if (getSlotIndexByID(401).getStack().stackSize == 0) {

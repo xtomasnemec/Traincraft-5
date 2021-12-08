@@ -64,24 +64,24 @@ public class BlockBridgePillar extends BlockDynamic {
 	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
 		int l = CommonUtil.floorDouble((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		int i1 = par1World.getBlockMetadata(par2, par3, par4) >> 2;
+		int i1 = CommonUtil.getBlockFacing(par1World,par2, par3, par4) >> 2;
 		++l;
 		l %= 4;
 
 		if (l == 0) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(par1World,par2, par3, par4, 2 | i1 << 2);
 		}
 
 		if (l == 1) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(par1World,par2, par3, par4, 3 | i1 << 2);
 		}
 
 		if (l == 2) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(par1World,par2, par3, par4, 0 | i1 << 2);
 		}
 
 		if (l == 3) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(par1World,par2, par3, par4, 1 | i1 << 2);
 		}
 	}
 	@Override
