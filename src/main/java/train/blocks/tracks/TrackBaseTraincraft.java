@@ -78,21 +78,6 @@ public abstract class TrackBaseTraincraft extends Block implements IOutfittedTra
 	public void writePacketData(DataOutputStream data) throws IOException {}
 	public void readPacketData(DataInputStream data) throws IOException {}
 
-	public int getPowerOutput(){}
+	public int getPowerOutput(){return 0;}
 
-
-	public void setTile(TileEntity tile){
-		tile.setPos(new BlockPos(getX(),getY(),getZ()));
-		getWorld().addTileEntity(tile);
-	}
-
-	public TileEntity getTile();
-
-	public int getX();
-
-	public int getY();
-
-	public int getZ();
-
-	public World getWorld();
 }

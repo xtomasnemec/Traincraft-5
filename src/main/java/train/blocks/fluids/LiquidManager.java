@@ -1,5 +1,6 @@
 package train.blocks.fluids;
 
+import ebf.tim.utility.FuelHandler;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -16,9 +17,6 @@ public class LiquidManager {
 	public static Fluid biofuel;
 	public static Fluid bioDiesel;
 	public static Fluid bioethanol;
-
-	public static final Fluid DIESEL = new Fluid("Diesel").setUnlocalizedName("diesel.name").setDensity(860);
-
 	public static LiquidManager getInstance() {
 		if (instance == null) {
 			instance = new LiquidManager();
@@ -37,17 +35,17 @@ public class LiquidManager {
 	}
 
 	public boolean isEmptyContainer(ItemStack stack) {
-		return FluidContainerRegistry.isEmptyContainer(stack);
+		return FuelHandler.isEmptyContainer(stack);
 	}
 
 	public ItemStack fillFluidContainer(FluidStack liquid, ItemStack empty) {
 		if ((liquid == null) || (empty == null))
 			return null;
-		return FluidContainerRegistry.fillFluidContainer(liquid, empty);
+		return FuelHandler.fillFluidContainer(liquid, empty);
 	}
 
 	public FluidStack getFluidInContainer(ItemStack stack) {
-		return FluidContainerRegistry.getFluidForFilledItem(stack);
+		return FuelHandler.getFluidForFilledItem(stack);
 	}
 
 	public ItemStack processContainer(IInventory inventory, int inventoryIndex, IFluidHandler tank, ItemStack itemstack) {
@@ -57,7 +55,7 @@ public class LiquidManager {
 			int used = tank.fill(bucketLiquid, false);
 			if (used >= bucketLiquid.amount) {
 				tank.fill(bucketLiquid, true);
-				if (itemstack.getItem() == Items.POTION){
+				if (itemstack.getItem() == Items.POTIONITEM){
 					return new ItemStack(Items.GLASS_BOTTLE, 1);
 				}
 				inventory.decrStackSize(inventoryIndex, 1);

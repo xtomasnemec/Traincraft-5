@@ -2,7 +2,7 @@ package train.items;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.item.Item;
 import train.Traincraft;
 import train.library.Info;

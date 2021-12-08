@@ -111,7 +111,7 @@ public class ServerLogger {
         sb.append("/TrainsInMotion/logging/");
         sb.append(wagon.getOwner()==null || wagon.getOwner().getName()==null || wagon.getOwner().getName().equals("")?"Unknown_Player": wagon.getOwner().getName());
         sb.append("/");
-        sb.append(wagon.getInventoryName());
+        sb.append(wagon.getName());
         sb.append("_");
         sb.append(wagon.getUniqueID());
         sb.append(".txt");

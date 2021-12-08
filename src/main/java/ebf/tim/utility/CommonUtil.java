@@ -68,11 +68,11 @@ public class CommonUtil {
     }
 
     public static void setBlock(IBlockAccess w, int x, int y, int z, Block b){
-        w.setBlock(x,y,z,b);
+        ((World)w).setBlockState(new BlockPos(x,y,z),b.getDefaultState());
     }
 
     public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
-        w.setBlockMetadataWithNotify(x,y,z,meta,2); //might need one without the two at the end? check BlockSwitchStand.java Line 97
+        ((World)w).setBlockState(new BlockPos(x,y,z), w.getBlockState(new BlockPos(x,y,z)).getBlock().getStateFromMeta(meta)); //might need one without the two at the end? check BlockSwitchStand.java Line 97
     }
 
     public static void markBlockForUpdate(World w, int x, int y, int z){

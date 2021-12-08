@@ -1,13 +1,13 @@
 package train.blocks.distil;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class SlotDistil extends Slot {
 	private EntityPlayer thePlayer;
@@ -36,9 +36,9 @@ public class SlotDistil extends Slot {
 	}
 
 	@Override
-	public void onTake(EntityPlayer par1EntityPlayer, ItemStack itemstack) {
+	public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack itemstack) {
 		this.onCrafting(itemstack);
-		super.onTake(par1EntityPlayer, itemstack);
+		return super.onTake(par1EntityPlayer, itemstack);
 	}
 
 	/**
@@ -55,9 +55,9 @@ public class SlotDistil extends Slot {
 	 */
 	@Override
 	protected void onCrafting(ItemStack itemstack) {
-		itemstack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.amount);
+		itemstack.onCrafting(this.thePlayer.world, this.thePlayer, this.amount);
 
-		if (!this.thePlayer.worldObj.isRemote) {
+		if (!this.thePlayer.world.isRemote) {
 			int var2 = this.amount;
 			float var3 = DistilRecipes.smelting().getExperience(Item.getIdFromItem(itemstack.getItem()));
 			int var4;
@@ -66,9 +66,9 @@ public class SlotDistil extends Slot {
 				var2 = 0;
 			}
 			else if (var3 < 1.0F) {
-				var4 = MathHelper.floor_float((float) var2 * var3);
+				var4 = MathHelper.floor((float) var2 * var3);
 
-				if (var4 < MathHelper.ceiling_float_int((float) var2 * var3) && (float) Math.random() < (float) var2 * var3 - (float) var4) {
+				if (var4 < MathHelper.ceil((float) var2 * var3) && (float) Math.random() < (float) var2 * var3 - (float) var4) {
 					++var4;
 				}
 
@@ -78,7 +78,7 @@ public class SlotDistil extends Slot {
 			while (var2 > 0) {
 				var4 = EntityXPOrb.getXPSplit(var2);
 				var2 -= var4;
-				this.thePlayer.worldObj.spawnEntity(new EntityXPOrb(this.thePlayer.worldObj, this.thePlayer.posX, this.thePlayer.posY + 0.5D, this.thePlayer.posZ + 0.5D, var4));
+				this.thePlayer.world.spawnEntity(new EntityXPOrb(this.thePlayer.world, this.thePlayer.posX, this.thePlayer.posY + 0.5D, this.thePlayer.posZ + 0.5D, var4));
 			}
 		}
 

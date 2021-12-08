@@ -30,7 +30,7 @@ public class BlockWaterWheel extends BlockDynamic {
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
@@ -50,7 +50,7 @@ public class BlockWaterWheel extends BlockDynamic {
     }
 
 	@Override
-	public int getRenderType() {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return -1;
 	}
 

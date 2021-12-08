@@ -1700,10 +1700,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * <h2>name and stack limit</h2>
      * These are grouped together because they are pretty self-explanatory.
      */
-    /*@Override
-    public String getInventoryName() {return transportName() + ".storage";}
     @Override
-    public boolean hasCustomInventoryName() {return inventory != null;}*/
+    public String getName() {return transportName() + ".storage";}
+    @Override
+    public boolean hasCustomName() {return inventory != null;}
     @Override
     public int getInventoryStackLimit() {return inventory!=null?64:0;}
     @Override

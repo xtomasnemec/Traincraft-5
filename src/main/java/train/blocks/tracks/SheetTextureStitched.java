@@ -1,6 +1,6 @@
 package train.blocks.tracks;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.client.renderer.texture.TextureMap;
 import depreciated.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;

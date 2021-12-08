@@ -48,17 +48,17 @@ public class GUIAdminBook extends GuiScreen {
         @Override
         public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) { return null; }
 
-        @Override
-        public ItemStack getStackInSlotOnClosing(int p_70304_1_) { return null; }
+        /*@Override
+        public ItemStack getStackInSlotOnClosing(int p_70304_1_) { return null; }*/
 
         @Override
         public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) { inventory[p_70299_1_] = p_70299_2_; }
 
         @Override
-        public String getInventoryName() { return null; }
+        public String getName() { return null; }
 
         @Override
-        public boolean hasCustomInventoryName() { return false; }
+        public boolean hasCustomName() { return false; }
 
         @Override
         public int getInventoryStackLimit() { return 64; }
@@ -73,7 +73,7 @@ public class GUIAdminBook extends GuiScreen {
         public void openInventory(EntityPlayer p) { }
 
         @Override
-        public void openInventory(EntityPlayer p) { }
+        public void closeInventory(EntityPlayer p) { }
 
         @Override
         public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) { return false; }

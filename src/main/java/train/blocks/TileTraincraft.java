@@ -7,6 +7,7 @@
 
 package train.blocks;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ISidedInventory;
@@ -34,7 +35,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side){
+    public int[] getSlotsForFace(EnumFacing side){
         if(this.slots.length > 0){
             int[] theInt = new int[slots.length];
             for(int i = 0; i < theInt.length; i++){
@@ -47,12 +48,12 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side){
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction){
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side){
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction){
         return false;
     }
 
@@ -85,7 +86,6 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
         }
     }
 
-    @Override
     public ItemStack getStackInSlotOnClosing(int slot){
         if (this.slots[slot] != null) {
             ItemStack var2 = this.slots[slot];
@@ -103,15 +103,15 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
         }
     }
 
-    /*@Override
-    public String getInventoryName(){
+    @Override
+    public String getName(){
         return this.invName;
     }
 
     @Override
-    public boolean hasCustomInventoryName(){
+    public boolean hasCustomName(){
         return false;
-    }*/
+    }
 
     @Override
     public int getInventoryStackLimit(){
@@ -130,7 +130,44 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
 
     @Override
     public void closeInventory(EntityPlayer p){
+        ItemStack itm;
+        for(int i=0; i<slots.length;i++){
+            itm=getStackInSlotOnClosing(i);
 
+            if(itm!=null){
+                EntityItem ent = new EntityItem(p.world);
+                ent.setItem(itm);
+                p.world.spawnEntity(ent);
+            }
+        }
+    }
+    @Override
+    public boolean isEmpty() {
+        for (ItemStack slot : slots){
+            if(slot!=null && slot != ItemStack.EMPTY){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int getField(int id) {return 0;}
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount() {return 0;}
+
+    @Override
+    public void clear() {}
+
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack stack = getStackInSlot(index).copy();
+        setInventorySlotContents(index,ItemStack.EMPTY);
+        return stack;
     }
 
     @Override
@@ -184,19 +221,9 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
         }
     }
 
-    public void syncTileEntity(){
-        for(Object o : this.world.playerEntities){
-            if(o instanceof EntityPlayerMP){
-                EntityPlayerMP player = (EntityPlayerMP) o;
-                if(player.getDistance(getPos().getX(), getPos().getY(), getPos().getZ()) <= 64) {
-                    player.playerNetServerHandler.sendPacket(this.getDescriptionPacket());
-                }
-            }
-        }
-    }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt, true);
         return new SPacketUpdateTileEntity(getPos(), 1, nbt);
@@ -205,111 +232,7 @@ public class TileTraincraft extends TileEntity implements ISidedInventory{
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt){
         if(pkt != null){
-            this.readFromNBT(pkt.func_148857_g(), true);
+            this.readFromNBT(pkt.getNbtCompound(), true);
         }
-    }
-
-    /**
-     * Finds the side of a block depending on its facing direction from the given side. The side numbers are compatible with the function "getBlockTextureFromSideAndMetadata".<p>
-     *
-     * Bottom: 0<br>
-     * Top: 1<br>
-     * Back: 2<br>
-     * Front: 3<br>
-     * Left: 4<br>
-     * Right: 5<br>
-     *
-     * @param front - The direction in which this block is facing/front. Use a number between 0 and 5. Default is 3.
-     * @param side - The side you are trying to find. A number between 0 and 5.
-     * @return The side relative to the facing direction.
-     */
-    public static EnumFacing getOrientationFromSide(EnumFacing front, EnumFacing side) {
-        if (front != EnumFacing.UNKNOWN && side != EnumFacing.UNKNOWN) {
-            switch (front.ordinal()) {
-                case 0:
-                    switch (side.ordinal()) {
-                        case 0:
-                            return EnumFacing.byHorizontalIndex(3);
-                        case 1:
-                            return EnumFacing.byHorizontalIndex(2);
-                        case 2:
-                            return EnumFacing.byHorizontalIndex(1);
-                        case 3:
-                            return EnumFacing.byHorizontalIndex(0);
-                        case 4:
-                            return EnumFacing.byHorizontalIndex(5);
-                        case 5:
-                            return EnumFacing.byHorizontalIndex(4);
-                    }
-
-                case 1:
-                    switch (side.ordinal()) {
-                        case 0:
-                            return EnumFacing.byHorizontalIndex(4);
-                        case 1:
-                            return EnumFacing.byHorizontalIndex(5);
-                        case 2:
-                            return EnumFacing.byHorizontalIndex(0);
-                        case 3:
-                            return EnumFacing.byHorizontalIndex(1);
-                        case 4:
-                            return EnumFacing.byHorizontalIndex(2);
-                        case 5:
-                            return EnumFacing.byHorizontalIndex(3);
-                    }
-
-                case 2:
-                    switch (side.ordinal()) {
-                        case 0:
-                            return EnumFacing.byHorizontalIndex(0);
-                        case 1:
-                            return EnumFacing.byHorizontalIndex(1);
-                        case 2:
-                            return EnumFacing.byHorizontalIndex(3);
-                        case 3:
-                            return EnumFacing.byHorizontalIndex(2);
-                        case 4:
-                            return EnumFacing.byHorizontalIndex(5);
-                        case 5:
-                            return EnumFacing.byHorizontalIndex(4);
-                    }
-
-                case 3:
-                    return side;
-
-                case 4:
-                    switch (side.ordinal()) {
-                        case 0:
-                            return EnumFacing.byHorizontalIndex(0);
-                        case 1:
-                            return EnumFacing.byHorizontalIndex(1);
-                        case 2:
-                            return EnumFacing.byHorizontalIndex(5);
-                        case 3:
-                            return EnumFacing.byHorizontalIndex(4);
-                        case 4:
-                            return EnumFacing.byHorizontalIndex(3);
-                        case 5:
-                            return EnumFacing.byHorizontalIndex(2);
-                    }
-
-                case 5:
-                    switch (side.ordinal()) {
-                        case 0:
-                            return EnumFacing.byHorizontalIndex(0);
-                        case 1:
-                            return EnumFacing.byHorizontalIndex(1);
-                        case 2:
-                            return EnumFacing.byHorizontalIndex(4);
-                        case 3:
-                            return EnumFacing.byHorizontalIndex(5);
-                        case 4:
-                            return EnumFacing.byHorizontalIndex(2);
-                        case 5:
-                            return EnumFacing.byHorizontalIndex(3);
-                    }
-            }
-        }
-        return EnumFacing.UNKNOWN;
     }
 }

@@ -73,7 +73,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     public int tickRate(World world){return 40;}
 
     @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
         return false;
     }
 
@@ -86,7 +86,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     public boolean getTickRandomly(){return false;}
 
     @Override
-    public int getRenderType() {
+    public EnumBlockRenderType getRenderType(IBlockState state) {
         return Blocks.RAIL.getRenderType();
     }
 

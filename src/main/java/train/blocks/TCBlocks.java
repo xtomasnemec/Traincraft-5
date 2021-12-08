@@ -18,6 +18,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import train.Traincraft;
 import train.blocks.bench.BlockTrainWorkbench;
@@ -31,13 +33,12 @@ import train.blocks.windmill.BlockWindMill;
 import train.library.Info;
 import train.library.ItemIDs;
 
-import static cpw.mods.fml.common.registry.GameRegistry.addRecipe;
 import static ebf.tim.registry.TiMGenericRegistry.registerBlock;
 
 public class TCBlocks {
-	public static BlockDynamic trainTableTier1 = new BlockDynamic(new Material(MapColor.mapColorArray[13]),true, 1);
-	public static BlockDynamic trainTableTier2 = new BlockDynamic(new Material(MapColor.mapColorArray[13]),true, 2);
-	public static BlockDynamic trainTableTier3 = new BlockDynamic(new Material(MapColor.mapColorArray[13]),true, 3);
+	public static BlockDynamic trainTableTier1 = new BlockDynamic(new Material(MapColor.WOOD),true, 1);
+	public static BlockDynamic trainTableTier2 = new BlockDynamic(new Material(MapColor.WOOD),true, 2);
+	public static BlockDynamic trainTableTier3 = new BlockDynamic(new Material(MapColor.WOOD),true, 3);
 
 	public static SimpleBlock oilSand;
 	public static SimpleBlock orePetroleum;
@@ -88,13 +89,17 @@ public class TCBlocks {
 		partTable.setTextureName(TrainsInMotion.MODID +":textures/blocks/train_table.png");
 
 
-		addRecipe(new ItemStack(registerBlock(trainTableTier1, Traincraft.tcTab, Info.modID,"block.traintabletier1", null, null),1),
+		GameRegistry.addShapedRecipe(new ResourceLocation(Info.modID,"traintabletier1"), new ResourceLocation(Info.modID, "crafters"),
+				new ItemStack(registerBlock(trainTableTier1, Traincraft.tcTab, Info.modID,"block.traintabletier1", null, null),1),
 				"IPI", "S S", "SPS", 'S', Blocks.STONE, 'I', Items.IRON_INGOT, 'P', Blocks.PISTON); //tier 1
-		addRecipe(new ItemStack(registerBlock(trainTableTier2, Traincraft.tcTab, Info.modID,"block.traintabletier2", null, null),1),
+		GameRegistry.addShapedRecipe(new ResourceLocation(Info.modID,"traintabletier2"), new ResourceLocation(Info.modID, "crafters"),
+				new ItemStack(registerBlock(trainTableTier2, Traincraft.tcTab, Info.modID,"block.traintabletier2", null, null),1),
 				"GPG", "O O", "OPO", 'O', Blocks.OBSIDIAN, 'G', Items.GOLD_INGOT, 'P', Blocks.PISTON); //tier 2
-		addRecipe(new ItemStack(registerBlock(trainTableTier3, Traincraft.tcTab, Info.modID,"block.traintabletier3", null, null),1),
+		GameRegistry.addShapedRecipe(new ResourceLocation(Info.modID,"traintabletier3"), new ResourceLocation(Info.modID, "crafters"),
+				new ItemStack(registerBlock(trainTableTier3, Traincraft.tcTab, Info.modID,"block.traintabletier3", null, null),1),
 				"GPG", "DLD", "OPO", 'O', Blocks.OBSIDIAN, 'G', Items.GOLD_INGOT, 'P', Blocks.PISTON, 'D', Items.DIAMOND, 'L', Blocks.GLOWSTONE); //tier 3
-		addRecipe(new ItemStack(partTable), "IPI", "S S", "SPS", 'S', Blocks.STONE, 'I', Blocks.PLANKS, 'P', Blocks.PISTON); //part builder
+		GameRegistry.addShapedRecipe(new ResourceLocation(Info.modID,"parttable"), new ResourceLocation(Info.modID, "crafters"),
+	new ItemStack(partTable), "IPI", "S S", "SPS", 'S', Blocks.STONE, 'I', Blocks.PLANKS, 'P', Blocks.PISTON); //part builder
 
 		registerBlock(blockDistil, Traincraft.tcTab, Info.modID,"block.distil", null, null);
 

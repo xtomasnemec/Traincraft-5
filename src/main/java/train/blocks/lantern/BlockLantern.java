@@ -1,5 +1,13 @@
 package train.blocks.lantern;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
@@ -24,17 +32,12 @@ public class BlockLantern extends BlockDynamic {
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) {
+	public boolean hasTileEntity(IBlockState metadata) {
 		return true;
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
@@ -44,8 +47,8 @@ public class BlockLantern extends BlockDynamic {
 	}
 
 	@Override
-	public int getRenderType() {
-		return -1;
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -53,24 +56,24 @@ public class BlockLantern extends BlockDynamic {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		double d0 = (double) ((float) par2 + 0.5F);
-		double d2 = (double) ((float) par4 + 0.5F);
+	public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
+		double d0 = (double) ((float) pos.getX() + 0.5F);
+		double d2 = (double) ((float) pos.getZ() + 0.5F);
 		double d3 = 0.2199999988079071D;
 
-		par1World.spawnParticle("smoke", d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
-		par1World.spawnParticle(EnumParticleTypes.FLAME, d0, par3 + d3, d2, 0.0D, 0.0D, 0.0D);
+		world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, pos.getY() + d3, d2, 0.0D, 0.0D, 0.0D);
+		world.spawnParticle(EnumParticleTypes.FLAME, d0, pos.getY() + d3, d2, 0.0D, 0.0D, 0.0D);
 
 	}
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(i, j, k);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		TileEntity te = world.getTileEntity(pos);
 		if (player.isSneaking()) {
 			return false;
 		}
-		if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof ItemWrench)
+		if(player.getActiveItemStack()!=null && player.getActiveItemStack() != ItemStack.EMPTY && player.getActiveItemStack().getItem() instanceof ItemWrench)
 		if (te instanceof TileLantern) {
-			player.openGui(Traincraft.instance, GuiIDs.LANTERN, world, i, j, k);
+			player.openGui(Traincraft.instance, GuiIDs.LANTERN, world, pos.getX(),pos.getY(),pos.getZ());
 		}
 		return true;
 	}

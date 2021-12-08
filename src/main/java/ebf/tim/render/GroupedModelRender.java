@@ -126,7 +126,7 @@ public class GroupedModelRender {
            // GL11.glPushMatrix();
             //render a block in place of the geometry.
             // bind the texture
-            Tessellator.bindTexture(TextureMap.locationBlocksTexture);
+            Tessellator.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             for (ModelRendererTurbo block : boxRefrence) {
                 GL11.glPushMatrix();
                 //define position from model

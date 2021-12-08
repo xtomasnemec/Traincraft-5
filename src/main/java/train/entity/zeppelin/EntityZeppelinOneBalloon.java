@@ -44,7 +44,7 @@ public class EntityZeppelinOneBalloon extends AbstractZeppelin{
 		return true;
 	}
 	/*@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "Zeppelin One Balloon";
 	}*/
 }

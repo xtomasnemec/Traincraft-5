@@ -672,12 +672,12 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 
 
 	/*@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "Zeppelin";
 	}*/
 

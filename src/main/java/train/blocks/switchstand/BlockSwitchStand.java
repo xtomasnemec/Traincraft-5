@@ -3,6 +3,7 @@ package train.blocks.switchstand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,7 +44,7 @@ public class BlockSwitchStand extends BlockDynamic {
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
@@ -60,7 +61,7 @@ public class BlockSwitchStand extends BlockDynamic {
 		return new TileSwitchStand(this);
 	}
 
-	public int getRenderType() {
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return -1;
 	}
 
@@ -84,7 +85,7 @@ public class BlockSwitchStand extends BlockDynamic {
 		}
 	}
 
-	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if (p_149727_1_.isRemote)
 		{

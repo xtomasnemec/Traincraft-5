@@ -45,7 +45,7 @@ public class TileTrainWbench extends TileEntityStorage {
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 		return "TrainWorkbench";
 	}
 

@@ -3,7 +3,7 @@ package train.blocks.tracks;
 import mods.railcraft.api.core.ITextureLoader;
 import mods.railcraft.api.tracks.ITrackItemIconProvider;
 import mods.railcraft.api.tracks.TrackSpec;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.EnumBlockRenderType;
 import depreciated.minecraft.util.IIcon;
 import train.library.Tracks;
 

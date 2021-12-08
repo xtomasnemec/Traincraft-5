@@ -8,7 +8,13 @@
 package train.blocks.generator;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
@@ -20,7 +26,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import train.Traincraft;
 import train.library.GuiIDs;
@@ -30,14 +35,14 @@ import java.util.Random;
 public class BlockGeneratorDiesel extends BlockDynamic {
 
 	public BlockGeneratorDiesel() {
-		super(Material.iron, true);
+		super(Material.IRON, true);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1F, 1F);
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
@@ -47,19 +52,19 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 	}
 
 	@Override
-	public int getRenderType() {
-		return RenderingRegistry.getNextAvailableRenderId();
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(i, j, k);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand par6, EnumFacing facing, float par7, float par8, float par9) {
+		TileEntity te = world.getTileEntity(pos);
 		if (player.isSneaking()) {
 			return false;
 		}
 		if (!world.isRemote) {
 			if (te instanceof TileGeneratorDiesel) {
-				player.openGui(Traincraft.instance, GuiIDs.GENERATOR_DIESEL, world, i, j, k);
+				player.openGui(Traincraft.instance, GuiIDs.GENERATOR_DIESEL, world, pos.getX(),pos.getY(),pos.getZ());
 			}
 		}
 		return true;
@@ -81,8 +86,8 @@ public class BlockGeneratorDiesel extends BlockDynamic {
     }
 
 	@Override
-	public void onBlockPlacedBy(World world, int par2, int par3, int par4, EntityLivingBase living, ItemStack stack) {
-		TileEntity te = world.getTileEntity(par2, par3, par4);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack){
+		TileEntity te = world.getTileEntity(pos);
 		if(!(te instanceof TileRenderFacing)){
 			return;
 		}

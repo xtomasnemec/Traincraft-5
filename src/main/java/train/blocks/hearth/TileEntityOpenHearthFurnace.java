@@ -187,7 +187,7 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 
 
 	@Override
-	public String getInventoryName(){
+	public String getName(){
 		return "hearthfurnace";
 	}
 

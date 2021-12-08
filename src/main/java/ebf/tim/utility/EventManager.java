@@ -315,7 +315,7 @@ public class EventManager {
 
     private static String[] getStaticStrings(GenericRailTransport t, EntityPlayer p){
         return new String[]{
-                CommonUtil.translate(t.getInventoryName().replace(".storage","")+".name"),
+                CommonUtil.translate(t.getName().replace(".storage","")+".name"),
                 CommonUtil.translate("gui.owner") +": " + t.getOwnerName(),
                 CommonUtil.translate("gui.skin")+": " + CommonUtil.translate(t.getTexture(p).name)
         };

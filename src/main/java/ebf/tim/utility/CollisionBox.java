@@ -178,10 +178,10 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
         host.setInventorySlotContents(p_70299_1_,p_70299_2_);}
 
     /*@Override
-    public String getInventoryName() {return host.getInventoryName();}
+    public String getName() {return host.getName();}
 
     @Override
-    public boolean hasCustomInventoryName() {return host.hasCustomInventoryName();}*/
+    public boolean hasCustomName() {return host.hasCustomName();}*/
 
     @Override
     public int getInventoryStackLimit() {return host.getInventoryStackLimit();}

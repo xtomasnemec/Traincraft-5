@@ -9,7 +9,7 @@ import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -119,7 +119,7 @@ public class Model1x1Rail {
         GL11.glColor4f(1.0f,1.0f,1.0f, 1.0f);
         GL11.glPopMatrix();
 
-        Tessellator.bindTexture(TextureMap.locationBlocksTexture);
+        Tessellator.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         if(shape.ballast!=null && shape.ballast.getItem()!=null) {
             GL11.glPushMatrix();

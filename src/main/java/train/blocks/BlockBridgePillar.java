@@ -7,22 +7,20 @@
 
 package train.blocks;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import depreciated.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import train.Traincraft;
-import train.library.Info;
 
 public class BlockBridgePillar extends BlockDynamic {
 
@@ -34,18 +32,18 @@ public class BlockBridgePillar extends BlockDynamic {
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public int getRenderType() {
-		return RenderingRegistry.getNextAvailableRenderId();
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
@@ -62,33 +60,33 @@ public class BlockBridgePillar extends BlockDynamic {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
-		int l = CommonUtil.floorDouble((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		int i1 = par1World.getBlockMetadata(par2, par3, par4) >> 2;
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+		int l = CommonUtil.floorDouble((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		int i1 = CommonUtil.getBlockFacing(world,pos.getX(),pos.getY(),pos.getZ()) >> 2;
 		++l;
 		l %= 4;
 
 		if (l == 0) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 2 | i1 << 2);
 		}
 
 		if (l == 1) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 3 | i1 << 2);
 		}
 
 		if (l == 2) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 0 | i1 << 2);
 		}
 
 		if (l == 3) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | i1 << 2, 2);
+			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 1 | i1 << 2);
 		}
 	}
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_1_bottom");
-	}
+	}*/
 
 
 	public class tilePillar extends TileRenderFacing{

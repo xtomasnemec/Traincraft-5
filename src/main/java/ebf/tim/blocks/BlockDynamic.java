@@ -1,5 +1,6 @@
 package ebf.tim.blocks;
 
+import depreciated.minecraft.util.IIcon;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.ModelBase;
@@ -17,6 +18,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -77,7 +79,7 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    @Override
+    //@Override
     public IIcon getIcon(int a, int b){
         return new particleTexture(textureName,32,0,16);
     }
@@ -94,7 +96,7 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
-    public boolean renderAsNormalBlock(){
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
         return false;
     }
 
@@ -139,7 +141,7 @@ public class BlockDynamic extends BlockContainer {
 
 
 
-    public class particleTexture extends TextureAtlasSprite {
+    public class particleTexture extends IIcon {
 
 
         public particleTexture(String textureName, int xOffset, int yOffset, int scale){
