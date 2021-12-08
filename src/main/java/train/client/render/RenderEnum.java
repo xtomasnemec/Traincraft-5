@@ -682,12 +682,6 @@ public enum RenderEnum {
 
 		}
 	}, "", null, 0, false),
-	SD40T2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD40T2.class,  new ModelSD40T2(), "sd40t2_", true,new float[] {-1.9F, 0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
-		{
-			add(new double[]{2.3D, 1.5D, 0.0D});
-
-		}
-	}, "", null, 0, false),
 	SD45dash2B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2B.class,  new ModelSD45dash2B(), "sd45dash2b_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{
 			add(new double[]{2.5D, 1.5D, 0.0D});
@@ -901,6 +895,9 @@ public enum RenderEnum {
 			add(new double[]{2.3D, 1.5D, 0.0D});
 		}
 	}, "", null, 0, false),
+	SD40T2( DieselSD40T2.class,  new ModelSD40T2(), "SD40T_", true,new float[] {-0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
 	SD70Mac( DieselSD70Mac.class, new ModelSD70Mac(), "sd70mac_", true,new float[] {-2.1F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
 			//add(new double[]{2.35D, 1.5D, 0.0D});
@@ -958,6 +955,10 @@ public enum RenderEnum {
 	U18B( DieselU18B.class,  new ModelU18B(), "U18B_", true,new float[] {-0F, -0.0F, 0F},  null, null, "smoke", 4,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
+	U18BB( DieselU18BB.class,  new ModelU18BB(), "U18BB_", true,new float[] {-0F, -0.0F, 0F},  null, null, "smoke", 4,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
+
 	U23B( DieselU23B.class,  new ModelU23B(), "u23b_", true,new float[] {-0F, -0.0F, 0F},  null, null, "smoke", 4,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
