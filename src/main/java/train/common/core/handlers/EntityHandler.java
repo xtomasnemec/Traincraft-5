@@ -29,7 +29,7 @@ public class EntityHandler {
 		for(EnumTrains trains : EnumTrains.values()){
 			EntityRegistry.registerModEntity(trains.getEntityClass(), trains.getInternalName(), trainID, Traincraft.instance, 512, 1, true);
 			trainID++;
-			if(trainID== 112 || trainID==51){
+			if(trainID== 112 || trainID==51 || trainID== 116){
 				trainID++;
 			}
 		}
