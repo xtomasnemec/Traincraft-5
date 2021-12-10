@@ -38,8 +38,12 @@ repositories {
         url "http://chickenbones.net/maven/"
     }
     maven { url = "https://jitpack.io" }
-    maven { 
-        url = "http://maven.cil.li/"
+    //maven {
+    //    url = "http://maven.cil.li/"
+    //}
+    maven {
+        name "BuildCraft"
+        url = "https://mod-buildcraft.com/maven"
     }
 }
 
@@ -48,12 +52,7 @@ repositories {
 dependencies {
 	//minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2768"
 
-    //repositories {
-    //    ivy {
-    //        name "BuildCraft"
-    //        artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision](-[classifier]).[ext]"
-    //    }
-    //}
+    deobfCompile "com.mod-buildcraft:buildcraft:7.99.12"
 
     //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
 

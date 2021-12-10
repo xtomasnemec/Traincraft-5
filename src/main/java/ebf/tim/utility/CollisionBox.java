@@ -14,6 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -33,27 +37,23 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     }
 
     @Override
-    public String getCommandSenderName(){
-        return host.getCommandSenderName();
+    public String getName(){
+        return host.getName();
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer p_130002_1_) {
-        return host.interactFirst(p_130002_1_);
+    public EnumActionResult applyPlayerInteraction(EntityPlayer p_130002_1_, net.minecraft.util.math.Vec3d vec, EnumHand hand) {
+        return host.applyPlayerInteraction(p_130002_1_, vec, hand);
     }
+
     //check often to be sure the host actually exists and didnt somehow get deleted in such a way that would make it skip hitbox removal.
     @Override
     public void onUpdate(){
         if(world.isRemote && ticksExisted%10==0){
-            if(Minecraft.getMinecraft().player.ridingEntity instanceof GenericRailTransport ||
-                    Minecraft.getMinecraft().player.ridingEntity instanceof EntitySeat){
-                this.boundingBox.maxX =0;
-                this.boundingBox.maxZ =0;
-                this.boundingBox.maxY =0;
+            if(Minecraft.getMinecraft().player.getRidingEntity() instanceof EntitySeat){
+                this.getEntityBoundingBox().setMaxY(0);
             } else {
-                this.boundingBox.maxX = this.boundingBox.minX + (double)this.width;
-                this.boundingBox.maxZ = this.boundingBox.minZ + (double)this.width;
-                this.boundingBox.maxY = this.boundingBox.minY + (double)this.height;
+                this.getEntityBoundingBox().setMaxY(this.getEntityBoundingBox().minY+this.height);
             }
         }
         if(ticksExisted%100==0){
@@ -124,7 +124,7 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     public boolean isLinkable() {return host.isLinkable();}
 
     @Override
-    public boolean canLink(EntityMinecart cart) {return host.canLinkWithCart(cart);}
+    public boolean canLink(EntityMinecart cart) {return host.canLink(cart);}
 
     @Override
     public boolean hasTwoLinks() {return host.hasTwoLinks();}
@@ -169,9 +169,9 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
         return host.removeStackFromSlot(index);
     }
 
-    @Override
+    /*@Override
     public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-        return host.getStackInSlotOnClosing(p_70304_1_);}
+        return host.getStackInSlotOnClosing(p_70304_1_);}*/
 
     @Override
     public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
@@ -261,7 +261,7 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
      * @param target The full target the player is looking at
      * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
      */
-    public ItemStack getPickedResult(MovingObjectPosition target) {
+    public ItemStack getPickedResult(RayTraceResult target) {
         return host.getCartItem();
     }
 
@@ -272,8 +272,8 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
         this.posZ = p_70107_5_;
         float f = this.width / 2.0F;
         float f1 = this.height;
-        if(boundingBox.maxZ!=0) {
-            this.boundingBox.setBounds(p_70107_1_ - (double) f, p_70107_3_ - (double) this.yOffset + (double) this.ySize, p_70107_5_ - (double) f, p_70107_1_ + (double) f, p_70107_3_ - (double) this.yOffset + (double) this.ySize + (double) f1, p_70107_5_ + (double) f);
+        if(getEntityBoundingBox().maxZ!=0) {
+            this.setEntityBoundingBox(new AxisAlignedBB(p_70107_1_ - (double) f, p_70107_3_ - (double) this.getYOffset(), p_70107_5_ - (double) f, p_70107_1_ + (double) f, p_70107_3_ - (double) this.getYOffset() + (double) f1, p_70107_5_ + (double) f));
         }
     }
 }

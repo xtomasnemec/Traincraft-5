@@ -7,6 +7,8 @@ import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ClassInheritanceMultiMap;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +50,8 @@ public class HitboxDynamic {
             interactionBoxes = new ArrayList<>();
             for (float f = 0; f < depth - (width * 0.25f); f += width) {
                 CollisionBox c = new CollisionBox((entity));
-                c.boundingBox.setBounds(-width*0.5,0,-width*0.5,
-                        width*0.5,height,width*0.5);
+                c.setEntityBoundingBox(new AxisAlignedBB(-width*0.5,0,-width*0.5,
+                        width*0.5,height,width*0.5));
                 c.setPosition(entity.posX, entity.posY, entity.posZ);
                 interactionBoxes.add(c);
                 entity.world.spawnEntity(c);
@@ -91,7 +93,7 @@ public class HitboxDynamic {
      */
 
     List<Entity> arraylist = new ArrayList<>();
-    List[] entities;
+    ClassInheritanceMultiMap<Entity>[] entities;
     int i,j,k,l;
     GenericRailTransport stock;
 
@@ -107,9 +109,9 @@ public class HitboxDynamic {
 
         for (int i1 = i; i1 <= j; ++i1) {
             for (int j1 = k; j1 <= l; ++j1) {
-                if (host.world.getChunkProvider().chunkExists(i1, j1)) {
-                    entities = host.world.getChunkFromChunkCoords(i1, j1).entityLists;
-                    for (List olist: entities) {
+                if (host.world.getChunkProvider().isChunkGeneratedAt(i1, j1)) {
+                    entities = host.world.getChunk(i1, j1).getEntityLists();
+                    for (ClassInheritanceMultiMap<Entity> olist: entities) {
                         for(Object obj : olist) {
                             if(obj instanceof EntitySeat || obj instanceof EntityBogie || obj instanceof CollisionBox ||
                                     ((Entity)obj).getEntityId()==host.getEntityId()){continue;}
@@ -232,9 +234,9 @@ public class HitboxDynamic {
     }
     public boolean containsPoint(double x, double y, double z){
         for(CollisionBox box : interactionBoxes){
-            if(x>=box.boundingBox.minX && x<=box.boundingBox.maxX &&
-                    y>=box.boundingBox.minY && y<=box.boundingBox.maxY &&
-                    z>=box.boundingBox.minZ && z<=box.boundingBox.maxZ){
+            if(x>=box.getEntityBoundingBox().minX && x<=box.getEntityBoundingBox().maxX &&
+                    y>=box.getEntityBoundingBox().minY && y<=box.getEntityBoundingBox().maxY &&
+                    z>=box.getEntityBoundingBox().minZ && z<=box.getEntityBoundingBox().maxZ){
                 return true;
             }
         }
@@ -244,7 +246,7 @@ public class HitboxDynamic {
     public boolean containsEntity(Entity e){
         for(CollisionBox box : interactionBoxes){
             //check for X
-            if (e.boundingBox.intersectsWith(box.boundingBox.expand(0.2D, e instanceof EntityPlayer?1.2D:0.2D, 0.2D)))
+            if (e.getEntityBoundingBox().intersects(box.getEntityBoundingBox().expand(0.2D, e instanceof EntityPlayer?1.2D:0.2D, 0.2D)))
                 return true;
         }
         return false;

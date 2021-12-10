@@ -7,7 +7,7 @@
 
 package train.items;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
@@ -66,7 +66,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 	@SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
-        return EnumRarity.epic;
+        return EnumRarity.EPIC;
     }
 	@Override
 	public void onArmorTick(World world, EntityPlayer player,
@@ -88,7 +88,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 				PotionEffect confusion = player.getActivePotionEffect(Potion.confusion);
 				if(poison!=null){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>5) {
-						player.removePotionEffect(poison.getPotionID());
+						player.removePotionEffect(poison.getPotion());
 						armorHelmet.damageItem(5, player);
 					} else {
 						armorHelmet.damageItem(armorHelmet.getMaxDamage()-armorHelmet.getItemDamage(), player);
@@ -96,7 +96,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 				}
 				if(wither!=null){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>5) {
-						player.removePotionEffect(wither.getPotionID());
+						player.removePotionEffect(wither.getPotion());
 						armorHelmet.damageItem(5, player);
 					} else {
 						armorHelmet.damageItem(armorHelmet.getMaxDamage()-armorHelmet.getItemDamage(), player);
@@ -104,7 +104,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 				}
 				if(blindness!=null){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>5) {
-						player.removePotionEffect(blindness.getPotionID());
+						player.removePotionEffect(blindness.getPotion());
 						armorHelmet.damageItem(5, player);
 					} else {
 						armorHelmet.damageItem(armorHelmet.getMaxDamage()-armorHelmet.getItemDamage(), player);
@@ -112,7 +112,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 				}
 				if(confusion!=null){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>5) {
-						player.removePotionEffect(confusion.getPotionID());
+						player.removePotionEffect(confusion.getPotion());
 						armorHelmet.damageItem(5, player);
 					} else {
 						armorHelmet.damageItem(armorHelmet.getMaxDamage()-armorHelmet.getItemDamage(), player);
@@ -180,16 +180,15 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 	 * Initially projected to have a jump boost
 	 */
 	@SubscribeEvent
-	public void onEntityLivingJumpEvent(LivingEvent.LivingJumpEvent event)
-	{
-		if(event.entity instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer)event.entity;
+	public void onEntityLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
+		if(event.getEntity() instanceof EntityPlayer){
+			EntityPlayer player = (EntityPlayer)event.getEntity();
 			ItemStack armor = player.inventory.armorItemInSlot(1);
 			if(armor!=null && armor.getItem() instanceof ItemTCArmor && !player.isInWater()){
 				ItemTCArmor itemarmor = (ItemTCArmor)armor.getItem();
 				if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
 					if (armor.getMaxDamage()-armor.getItemDamage()>5) {
-						event.entity.motionY+=0.05;
+						event.getEntity().motionY+=0.05;
 						armor.damageItem(5, player);
 					} else {
 						armor.damageItem(armor.getMaxDamage()-armor.getItemDamage(), player);
@@ -205,13 +204,13 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 	@SubscribeEvent
 	public void onEntityLivingFallEvent(LivingFallEvent event)
 	{
-		if(event.entity instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer)event.entity;
+		if(event.getEntity() instanceof EntityPlayer){
+			EntityPlayer player = (EntityPlayer)event.getEntity();
 			ItemStack armor = player.inventory.armorItemInSlot(0);
 			if(armor!=null && armor.getItem() instanceof ItemTCCompositeSuit && !player.isInWater()){
 				ItemTCCompositeSuit itemarmor = (ItemTCCompositeSuit)armor.getItem();
 				if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
-					if(event.distance-3>0){
+					if(event.getDistance()-3>0){
 						if (armor.getMaxDamage()-armor.getItemDamage()>5) {
 							armor.damageItem(5, player);
 							event.setCanceled(true);
@@ -227,6 +226,6 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 
 	@Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return(par2ItemStack.getItem() == Items.diamond);
+		return(par2ItemStack.getItem() == Items.DIAMOND);
 	}
 }

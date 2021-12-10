@@ -453,7 +453,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     @Override
     public EnumActionResult applyPlayerInteraction(EntityPlayer p_130002_1_, net.minecraft.util.math.Vec3d vec, EnumHand hand) {
-        return world.isRemote?interact(p_130002_1_.getEntityId(),false,false, -1):super.interactFirst(p_130002_1_);
+        return world.isRemote?
+                interact(p_130002_1_.getEntityId(),false,false, -1)?EnumActionResult.SUCCESS:EnumActionResult.FAIL
+                :super.applyPlayerInteraction(p_130002_1_, vec,hand);
     }
 
     //unused IDs: 14+
