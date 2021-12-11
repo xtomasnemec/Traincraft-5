@@ -1123,8 +1123,10 @@ public enum RenderEnum {
 	DOT11111000(DOT11111000.class, new Model11000DOT111(),"dot11K_", true, new float[]{0F, 0.00F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	DOT11120600(DOT11120600.class, new Model20600DOT111(),"dot206K_", true, new float[]{0F, 0.00F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	DOT11129080(DOT11129080.class, new Model29080DOT111(),"dot290K_", true, new float[]{0F, 0.00F /*was 0.20F for height*/, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	DOT11117600(DOT11117600.class, new Model17600DOT111(),"17600galTank_", true, new float[]{0F, 0.00F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 
 	Skeleton(SkeletonLogCar.class, new ModelSkeletonLogCar(), "SkeletonLogCar_", true, new float[] { 0.0F, -0.0F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	EarlyFlat(EarlyFlat.class, new ModelEarlyFlat(), "EarlyFlatCar", false, new float[] { 0.0F, -0.0F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 
 	Gunderson89FootAutorack(Gunderson89ftAutorack.class, new ModelGunderson89FootAutorack(), "89ftAutorack_", true, new float[] { 0.0F, 0.15F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Gunderson89FootFlat(Gunderson89ftFlat.class, new ModelGunderson89FootFlat(), "89ftFlat_", true, new float[] { 0.0F, 0.15F, 0.0F }, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),

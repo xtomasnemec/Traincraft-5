@@ -391,8 +391,10 @@ public enum EnumTrains {
 	DOT11111000( "DOT11000", DOT11111000.class, ItemIDs.minecart11000DOT111.item, "tank", 0, 0, 4, 0, 0, 0, 0, 0, 41000, TraincraftUtil.getBytesFromColors(new String[] {"Black", "LightGrey", "Grey"}), 10, 0, (new String[] {"Capacity: 41000mb."})),
 	DOT11120600( "DOT20600", DOT11120600.class, ItemIDs.minecart20600DOT111.item, "tank", 0, 0, 5, 0, 0, 0, 0, 0, 78000, TraincraftUtil.getBytesFromColors(new String[] {"Grey", "Black", "White", "Green", "LightGrey"}), 10, 0, (new String[] {"Capacity: 78000mb."})),
 	DOT11129080( "DOT29080", DOT11129080.class, ItemIDs.minecart29080DOT111.item, "tank", 0, 0, 6, 0, 0, 0, 0, 0, 110000, TraincraftUtil.getBytesFromColors(new String[] {"Black", "Orange", "LightGrey", "White"}), 10, 0, (new String[] {"Capacity: 110000mb."})),
+	DOT11117600( "DOT17600", DOT11117600.class, ItemIDs.minecart17600DOT111.item, "tank", 0, 0, 4.5, 0, 0, 0, 0, 0, 67000, TraincraftUtil.getBytesFromColors(new String[] {"White"}), 10, 0, (new String[] {"Capacity: 67000mb."})),
 
 	SkeletonCar("Skeleton", SkeletonLogCar.class, ItemIDs.minecartSkeletonLogCar.item, "freight", 1.5, TraincraftUtil.getBytesFromColors(new String[]{"Black","Grey", "LightGrey"}), 18, 18, (new String[] {"Cargo: Logs."})),
+	EarlyFlat("EarlyFlat", EarlyFlat.class, ItemIDs.minecartEarlyFlat.item, "flat", 0, 0, 0.7, 0, 0, 0, 0, 0, 0, null, 18, 0),
 
 	Gunderson89FootAutorack("89ftAutorack", Gunderson89ftAutorack.class, ItemIDs.minecartGunderson89ftAutorack.item, "freight", 7, TraincraftUtil.getBytesFromColors(new String[]{"Yellow"}), 10, 54, (new String[] {"Cargo: Any"})),
 	Gunderson89FootFlat("89ftFlat", Gunderson89ftFlat.class, ItemIDs.minecartGunderson89ftFlat.item, "freight", 3, TraincraftUtil.getBytesFromColors(new String[]{"Yellow"}), 10, 54, (new String[] {"Cargo: Any"})),

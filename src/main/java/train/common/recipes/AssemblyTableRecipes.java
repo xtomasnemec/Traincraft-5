@@ -125,7 +125,8 @@ public class AssemblyTableRecipes {
 			for (ItemStack i : s1) {
 				for (ItemStack j : s2) {
 					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(ItemIDs.woodenBogie.item, 2), new ItemStack(ItemIDs.woodenFrame.item, 2), new ItemStack(Items.stick, 2), null, null, null, null, new ItemStack(j.getItem(), 1, OreDictionary.WILDCARD_VALUE), null, new ItemStack(ItemIDs.minecartWood.item, 1), 1);
-					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(ItemIDs.woodenBogie.item, 2), new ItemStack(ItemIDs.woodenFrame.item, 1), new ItemStack(Items.stick, 4), null, null, null, null, new ItemStack(j.getItem(), 2, OreDictionary.WILDCARD_VALUE), null, new ItemStack(ItemIDs.minecartSkeletonLogCar.item, 1), 1);
+					cm.addRecipe(1, new ItemStack(i.getItem(), 4, OreDictionary.WILDCARD_VALUE), new ItemStack(ItemIDs.woodenBogie.item, 2), new ItemStack(ItemIDs.woodenFrame.item, 1), new ItemStack(Items.stick, 4), null, null, null, null, new ItemStack(j.getItem(), 2, OreDictionary.WILDCARD_VALUE), null, new ItemStack(ItemIDs.minecartSkeletonLogCar.item, 1), 1);
+					cm.addRecipe(1, new ItemStack(i.getItem(), 6, OreDictionary.WILDCARD_VALUE), new ItemStack(ItemIDs.woodenBogie.item, 2), new ItemStack(ItemIDs.woodenFrame.item, 2), new ItemStack(Items.stick, 4), null, null, null, new ItemStack(i.getItem(), 2, OreDictionary.WILDCARD_VALUE), new ItemStack(j.getItem(), 2, OreDictionary.WILDCARD_VALUE), null, new ItemStack(ItemIDs.minecartEarlyFlat.item, 1), 1);
 				}
 				for (ItemStack iron : ingotIron) {
 					for (ItemStack dye : dyeGreen) {
@@ -436,6 +437,9 @@ public class AssemblyTableRecipes {
 				}
 				for (ItemStack dye : dyeBlack) {
 					cm.addRecipe(2, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, new ItemStack(bucketWater.getItem(), 1), new ItemStack(bucketWater.getItem(), 1), new ItemStack(bucketWater.getItem(), 1), dye, new ItemStack(ItemIDs.minecart29080DOT111.item, 1), 1);
+				}
+				for (ItemStack dye : dyeWhite) {
+					cm.addRecipe(2, new ItemStack(itemSteel, 6, itemDamageSteel), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.steelframe.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), null, null, null, null, new ItemStack(bucketWater.getItem(), 1), dye, new ItemStack(ItemIDs.minecart17600DOT111.item, 1), 1);
 				}
 			}
 			for (ItemStack c : coal) {

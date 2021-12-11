@@ -469,8 +469,10 @@ public enum ItemIDs {
 	minecart11000DOT111("ItemRollingStock", "11000DOT", 4),
 	minecart20600DOT111("ItemRollingStock", "20600DOT", 5),
 	minecart29080DOT111("ItemRollingStock", "29080DOT", 6),
+	minecart17600DOT111("ItemRollingStock", "17600DOT", 4),
 
 	minecartSkeletonLogCar("ItemRollingStock", "Skeleton", 1),
+	minecartEarlyFlat("ItemRollingStock", "EarlyFlat", 1),
 
 	minecartGunderson89ftAutorack("ItemRollingStock", "gunderson_autorack", 7),
 	minecartGunderson89ftFlat("ItemRollingStock", "gunderson_flat", 2),
