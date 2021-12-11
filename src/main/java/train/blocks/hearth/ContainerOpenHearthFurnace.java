@@ -1,11 +1,11 @@
 package train.blocks.hearth;
 
+import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.utility.TransportSlotManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 
 public class ContainerOpenHearthFurnace extends TransportSlotManager {
 
@@ -26,12 +26,18 @@ public class ContainerOpenHearthFurnace extends TransportSlotManager {
 	}
 
 
-	@Override
+	/*@Override //1.7 variant
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.sendProgressBarUpdate(this, 0, furnace.furnaceCookTime);
 		par1ICrafting.sendProgressBarUpdate(this, 1, furnace.furnaceBurnTime);
 		par1ICrafting.sendProgressBarUpdate(this, 2, furnace.currentItemBurnTime);
+	}*/
+
+	@Override
+	public void addListener(IContainerListener listener) {//1.12 variant
+		super.addListener(listener);
+		listener.sendAllWindowProperties(this, this.hostInventory);
 	}
 
 	/*
@@ -41,22 +47,23 @@ public class ContainerOpenHearthFurnace extends TransportSlotManager {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		if(furnace==null){return;}
-		for (Object crafter : crafters) {
-			ICrafting icrafting = (ICrafting) crafter;
-			if (cookTime != furnace.furnaceCookTime) {
-				icrafting.sendProgressBarUpdate(this, 0, furnace.furnaceCookTime);
+		for (IContainerListener icontainerlistener : this.listeners) {
+			if (this.cookTime != this.furnace.getField(2)) {
+				icontainerlistener.sendWindowProperty(this, 2, this.furnace.getField(2));
 			}
-			if (burnTime != furnace.furnaceBurnTime) {
-				icrafting.sendProgressBarUpdate(this, 1, furnace.furnaceBurnTime);
+
+			if (this.burnTime != this.furnace.getField(0)) {
+				icontainerlistener.sendWindowProperty(this, 0, this.furnace.getField(0));
 			}
-			if (itemBurnTime != furnace.currentItemBurnTime) {
-				icrafting.sendProgressBarUpdate(this, 2, furnace.currentItemBurnTime);
+
+			if (this.itemBurnTime != this.furnace.getField(1)) {
+				icontainerlistener.sendWindowProperty(this, 1, this.furnace.getField(1));
 			}
 		}
-		cookTime = furnace.furnaceCookTime;
-		burnTime = furnace.furnaceBurnTime;
-		itemBurnTime = furnace.currentItemBurnTime;
+
+		this.cookTime = this.furnace.getField(2);
+		this.burnTime = this.furnace.getField(0);
+		this.itemBurnTime = this.furnace.getField(1);
 	}
 
 	@Override

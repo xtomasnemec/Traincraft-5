@@ -369,7 +369,7 @@ public class RecipeManager {
             int stackSize = data.length>1?Integer.parseInt(data[1].trim()):1;
             //cover actual items
             if(data[0].contains(":")){
-                list=ODC(GameRegistry.findItemStack(data[0].split(":")[0], data[0].split(":")[1], stackSize));
+                list=ODC(new ItemStack(Item.getByNameOrId(data[0].split(":")[0] + ":"+ data[0].split(":")[1]), stackSize));
             } else {
                 //cover ore directory values
                 list=OreDictionary.getOres(data[0]).toArray(new ItemStack[]{});

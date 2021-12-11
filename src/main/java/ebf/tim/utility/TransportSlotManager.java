@@ -1,5 +1,6 @@
 package ebf.tim.utility;
 
+import net.minecraft.inventory.ClickType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -165,7 +166,18 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
 
     /*a heavily modified replica of the 1.12 version*/
     @Override
-    public ItemStack slotClick(int slotId, int dragType, int clickTypeIn, EntityPlayer player) {
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickType, EntityPlayer player) {
+
+        int clickTypeIn=0;
+        switch (clickType){
+            case PICKUP: {clickTypeIn=0; break;}//normal pickup and put down
+            case QUICK_MOVE: {clickTypeIn=1; break;}//shift click
+            case SWAP: {clickTypeIn=2; break;}//how does this work?
+            case CLONE: {clickTypeIn=3; break;}//middle mouse button
+            case THROW: {clickTypeIn=4; break;}//click outside GUI
+            case QUICK_CRAFT: {clickTypeIn=5; break;}//click and drag?
+            case PICKUP_ALL: {clickTypeIn=6; break;}//double-click item to pickup all
+        }
 
         if (hostInventory instanceof TileEntityStorage && ((TileEntityStorage) hostInventory).assemblyTableTier >= 0) {
             this.detectAndSendChanges();
