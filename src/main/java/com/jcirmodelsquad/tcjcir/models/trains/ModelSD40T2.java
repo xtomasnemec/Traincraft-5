@@ -1621,7 +1621,7 @@ public class ModelSD40T2 extends ModelConverter //Same as Filename
 	public ArrayList<double[]> getSmokePosition() {
 		return new ArrayList<double[]>() {
 			{
-				add(new double[]{2.3D, 1.5D, 0.0D});
+				add(new double[]{2.3D, 1.4D, 0.0D});
 			}
 		};
 	}

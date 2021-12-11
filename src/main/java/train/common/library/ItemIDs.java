@@ -428,7 +428,7 @@ public enum ItemIDs {
 	minecartgtavthing("ItemRollingStock", "gtavthing", 7),
 	minecartFOLM1B("ItemRollingStock", "folm1b", 9),
 	minecartKrautt("ItemRollingStock", "ML4000", 5),
-
+	minecartILMC("ItemRollingStock", "ILMC_ICON", 2),
 
 	//E-lect-trock//
 	minecartEF1("ItemRollingStock", "ef1", 6),

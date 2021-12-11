@@ -1083,6 +1083,9 @@ public enum RenderEnum {
 	}, "", null, 0, false),
 	Krautt(DieselKrautt.class,  new ModelKrautt(), "KM_ML4000_", true,new float[] {0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{ }}, "", null, 0, false),
+	ILMC( DieselILMC.class,  new ModelILMC(), "ILMC", false,new float[] {0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
 
 	/**ELECTRICC**/
 	EF1(ElectricEF1.class,  new ModelEF1(), "ef1_", true,new float[] {-1.60F, 0.1875F, 0F},  new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),

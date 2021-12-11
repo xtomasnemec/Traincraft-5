@@ -351,6 +351,7 @@ public enum EnumTrains {
 	gtavthing("gtavthing", Dieselgtavthing.class, ItemIDs.minecartgtavthing.item, "diesel", 1550, 110, 0, 45, 0, 160, 0.85, 0.9, 10000, TraincraftUtil.getBytesFromColors(new String[] {"Yellow"}), 10, -3.2, (new String[] {"Fictional locomotive from GTA-V"})),
 	FOLM1B("FOL-M1B", DieselFOLM1B.class, ItemIDs.minecartFOLM1B.item, "diesel", 5000, 110, 0, 10, 0, 170, 0.7, 0.965, 15000, TraincraftUtil.getBytesFromColors(new String[]{"Grey", "Blue"}), 18, -3.8, (new String[] {"Fictional B unit for the Fictional loco from Factorio"})),
 	Krautt("Krautt", DieselKrautt.class, ItemIDs.minecartKrautt.item, "diesel", 3540, 113, 0, 65, 0, 190, 0.75, 0.85, 20000, TraincraftUtil.getBytesFromColors(new String[] {"Grey", "LightGrey", "Black"}), 10, -3.3),
+	ILMC("ILMC", DieselILMC.class, ItemIDs.minecartILMC.item, "diesel", 600, 45, 0, 25, 0, 175, 0.75, 0.85, 7000, null, 10, -1),
 
 	//E-lect-trock//
 	EF1("EF1",ElectricEF1.class, ItemIDs.minecartEF1.item, "electric", 1720, 64, 0, 55, 0, 150, 0.65, 0.75, 12500, TraincraftUtil.getBytesFromColors(new String[] {"Orange", "Yellow", "Red", "Green", "Black", "Grey"}), 10, -3.4375),

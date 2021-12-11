@@ -251,6 +251,9 @@ public class AssemblyTableRecipes {
 			for (ItemStack dye : dyeBrown) {
 				cm.addRecipe(2, new ItemStack(Items.iron_ingot, 2), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.ironFrame.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.ironChimney.item,1), new ItemStack(ItemIDs.ironCab.item, 1), dye , new ItemStack(ItemIDs.dieselengine.item, 1), new ItemStack(ItemIDs.controls.item, 1), new ItemStack(Items.iron_ingot,2), new ItemStack(ItemIDs.minecart25Ton.item, 1), 1);
 			}
+			for (ItemStack dye : dyeGreen) {
+				cm.addRecipe(2, new ItemStack(Items.iron_ingot, 2), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.ironFrame.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.ironChimney.item,1), new ItemStack(ItemIDs.ironCab.item, 1), dye , new ItemStack(ItemIDs.dieselengine.item, 1), new ItemStack(ItemIDs.controls.item, 1), new ItemStack(Items.iron_ingot,2), new ItemStack(ItemIDs.minecartILMC.item, 1), 1);
+			}
 			for (ItemStack dye : dyeBlue) {
 				cm.addRecipe(2, null, new ItemStack(ItemIDs.ironBogie.item, 2), new ItemStack(ItemIDs.woodenFrame.item, 2), null, null, null, new ItemStack(Blocks.tnt, 32), new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.iron_ingot, 1), dye, new ItemStack(ItemIDs.minecartBombCart.item, 1),1);
 				cm.addRecipe(2, new ItemStack(Items.iron_ingot, 2), new ItemStack(ItemIDs.bogie.item, 2), new ItemStack(ItemIDs.ironFrame.item, 2), new ItemStack(itemSteel, 2, itemDamageSteel), new ItemStack(ItemIDs.ironChimney.item,1), new ItemStack(ItemIDs.ironCab.item, 5), dye , new ItemStack(ItemIDs.dieselengine.item, 1), new ItemStack(ItemIDs.controls.item, 1), new ItemStack(Items.iron_ingot,2), new ItemStack(ItemIDs.minecartBoxcab23Ton.item, 1), 1);
