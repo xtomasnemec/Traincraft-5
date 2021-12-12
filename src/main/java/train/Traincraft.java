@@ -19,6 +19,7 @@ import ebf.tim.registry.TiMGenericRegistry;
 import ebf.tim.utility.JsonRecipeHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -291,11 +292,12 @@ public class Traincraft {
 		public String getCommandUsage(ICommandSender CommandSender) {return "/tcadmin";}
 		public int getRequiredPermissionLevel() {return 2;}
 
-		public void processCommand(ICommandSender CommandSender, String[] par2ArrayOfStr) {
-			getCommandSenderAsPlayer(CommandSender).addChatMessage(
-					new ChatComponentText(
-							"this command exists as a placeholder to allow admin permissions in TC via plugins and mds such as GroupManager and Forge Essentials"));
-
+		public void processCommand(ICommandSender commandSender, String[] par2ArrayOfStr) {
+			if(commandSender instanceof EntityPlayer) {
+				getCommandSenderAsPlayer(commandSender).addChatMessage(
+						new ChatComponentText(
+								"this command exists as a placeholder to allow admin permissions in TC via plugins and mds such as GroupManager and Forge Essentials"));
+			}
 		}
 	}
 
