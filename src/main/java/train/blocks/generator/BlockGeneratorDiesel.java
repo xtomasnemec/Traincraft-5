@@ -7,7 +7,6 @@
 
 package train.blocks.generator;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -18,13 +17,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
-import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import train.Traincraft;
@@ -38,16 +34,10 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 		super(Material.IRON, true);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 1F, 1F);
 	}
 
 	@Override
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
 		return false;
 	}
 
@@ -74,10 +64,10 @@ public class BlockGeneratorDiesel extends BlockDynamic {
      * their own) Args: x, y, z, neighbor blockID
      */
 	@Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
+    public void neighborChanged(IBlockState state, World par1World, BlockPos pos, Block block, BlockPos otherPos)
     {
-        boolean flag = par1World.isBlockPowered(par2, par3, par4);
-        TileGeneratorDiesel tile = (TileGeneratorDiesel)par1World.getTileEntity(par2, par3, par4);
+        boolean flag = par1World.isBlockPowered(pos);
+        TileGeneratorDiesel tile = (TileGeneratorDiesel)par1World.getTileEntity(pos);
 
         if (tile != null)
         {
@@ -85,67 +75,35 @@ public class BlockGeneratorDiesel extends BlockDynamic {
         }
     }
 
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack){
-		TileEntity te = world.getTileEntity(pos);
-		if(!(te instanceof TileRenderFacing)){
-			return;
-		}
-		int var6 = CommonUtil.floorDouble((double) (living.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		int var7 = world.getBlockMetadata(par2, par3, par4) >> 2;
-		++var6;
-		var6 %= 4;
-
-		if (var6 == 0) {
-			((TileRenderFacing) te).setFacing(2 | var7 << 2);
-			 world.setBlockMetadataWithNotify(par2, par3, par4, 2 | var7 << 2, 2);
-		}
-
-		else if (var6 == 1) {
-			((TileRenderFacing) te).setFacing(3 | var7 << 2);
-			world.setBlockMetadataWithNotify(par2, par3, par4, 3 | var7 << 2, 2);
-		}
-
-		else if (var6 == 2) {
-			((TileRenderFacing) te).setFacing(0 | var7 << 2);
-			world.setBlockMetadataWithNotify(par2, par3, par4, 0 | var7 << 2, 2);
-		}
-
-		else if (var6 == 3) {
-			((TileRenderFacing) te).setFacing(1 | var7 << 2);
-			world.setBlockMetadataWithNotify(par2, par3, par4, 1 | var7 << 2, 2);
-		}
-
-	}
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(World world, int par2, int par3, int par4, Random rand) {
-		int l = world.getBlockMetadata(par2, par3, par4);
-		TileEntity tile = world.getTileEntity(par2, par3, par4);
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		int l = CommonUtil.getBlockFacing(world,pos.getX(),pos.getY(),pos.getZ());
+		TileEntity tile = world.getTileEntity(pos);
 		if(tile instanceof TileGeneratorDiesel && ((TileGeneratorDiesel)tile).currentBurnTime > 0){
-			double d0 = (double) ((float) par2 + 0.5F);
-			double d2 = (double) ((float) par4 + 0.5F);
+			double d0 = (double) ((float) pos.getX() + 0.5F);
+			double d2 = (double) ((float) pos.getZ() + 0.5F);
 			double d3 = 1.67D;
 			//System.out.println(l+" "+par1World.isRemote);
 			switch(l){
 			case 0:
 				for(int i=0;i<40;i++){
-					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0+0.2, par3 + d3, d2-0.42, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0+0.2, pos.getY() + d3, d2-0.42, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			case 1:
 				for(int i=0;i<40;i++){
-					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0+0.42, par3 + d3, d2+0.2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0+0.42, pos.getY() + d3, d2+0.2, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			case 2:
 				for(int i=0;i<40;i++){
-					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0-0.2, par3 + d3, d2+0.42, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0-0.2, pos.getY() + d3, d2+0.42, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			case 3:
 				for(int i=0;i<40;i++){
-					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0-0.42, par3 + d3, d2-0.2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0-0.42, pos.getY() + d3, d2-0.2, 0.0D, 0.0D, 0.0D);
 				}
 				break;
 			default:

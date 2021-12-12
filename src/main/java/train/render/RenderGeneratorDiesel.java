@@ -30,7 +30,7 @@ public class RenderGeneratorDiesel extends TileEntitySpecialRenderer {
 		GL11.glTranslated(x, y, z);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(texture);
 
-		if(var1.getWorldObj()==null){
+		if(var1.getWorld()==null){
 			GL11.glTranslatef(0, -0.5F, 0);
 			GL11.glScalef(0.85f,0.85f,0.85f);
 		} else {
@@ -41,7 +41,7 @@ public class RenderGeneratorDiesel extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
-		render(var1, var2, var4, var6);
+	public void render(TileEntity tileEntity, double x, double y, double z, float tick, int destroyStage, float alpha) {
+		render(tileEntity, x, y, z);
 	}
 }

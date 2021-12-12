@@ -1,10 +1,10 @@
 package train.core.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import train.entity.zeppelin.AbstractZeppelin;
 
 /**
@@ -51,7 +51,7 @@ public class PacketKeyPress implements IMessage {
 		@Override
 		public IMessage onMessage(PacketKeyPress message, MessageContext context) {
 
-			Entity ridingEntity = context.getServerHandler().playerEntity.ridingEntity;
+			Entity ridingEntity = context.getServerHandler().player.getRidingEntity();
 
 			/* "instanceof" is null-safe, but we check to avoid four unnecessary instanceof checks for when the value is null anyways. */
 			//if (ridingEntity != null) {

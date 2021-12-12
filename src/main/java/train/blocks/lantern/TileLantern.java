@@ -5,10 +5,11 @@ import ebf.tim.blocks.TileRenderFacing;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.ITickable;
 
 import java.util.Random;
 
-public class TileLantern extends TileRenderFacing {
+public class TileLantern extends TileRenderFacing implements ITickable {
 
 	/** Static instance used to access random number generation to create random colors. */
 	protected static final Random rand = new Random();
@@ -27,9 +28,10 @@ public class TileLantern extends TileRenderFacing {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setInteger("randomColor", randomColor);
+		return nbt;
 	}
 
 
@@ -47,14 +49,11 @@ public class TileLantern extends TileRenderFacing {
 
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.func_148857_g());
+		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
-	public boolean canUpdate(){return true;}
-
-	@Override
-	public void updateEntity(){
+	public void update(){
 		if (oldColor != randomColor){
 			oldColor = randomColor;
 			this.markDirty();

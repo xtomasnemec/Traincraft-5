@@ -26,13 +26,13 @@ public class GuiGeneratorDiesel extends GuiContainer{
         super.drawScreen(t, g, par3);
         //if ((LiquidManager.diesel != null && dieselInventory.getLiquidItemIDClient() == LiquidManager.diesel.itemID)) {
         if(intersectsWith(t, g)){
-            drawCreativeTabHoveringText("Diesel", t, g);
+            drawHoveringText("Diesel", t, g);
         }
         //}
     }
 
     @Override
-    protected void drawCreativeTabHoveringText(String str, int t, int g){
+    public void drawHoveringText(String str, int t, int g){
         boolean hasFluid = dieselInventory.getTankInfo(0)!=null && dieselInventory.getTankInfo(0).fluid!=null;
         int textWidth = fontRenderer.getStringWidth(!hasFluid?"0/"+dieselInventory.getTankCapacity()[0]:(dieselInventory.getTankInfo(0).fluid.amount+"/"+dieselInventory.getTankCapacity()[0]));
         int startX = t+14;

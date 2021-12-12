@@ -1,11 +1,13 @@
 package train.blocks.lantern;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,6 +21,8 @@ import train.Traincraft;
 import train.items.ItemWrench;
 import train.library.GuiIDs;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BlockLantern extends BlockDynamic {
@@ -27,8 +31,25 @@ public class BlockLantern extends BlockDynamic {
 		super(Material.ROCK,false);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
-		float f = 0.3F;
-		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 3.0F, 0.5F + f);
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.9F, 0.8F);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
+		return getBoundingBox(state,world,pos);
+	}
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+		return getBoundingBox(state,world,pos);
+	}
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, getCollisionBoundingBox(state,world, pos));
 	}
 
 	@Override

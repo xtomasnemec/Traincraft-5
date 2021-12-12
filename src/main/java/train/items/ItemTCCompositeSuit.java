@@ -7,6 +7,8 @@
 
 package train.items;
 
+import net.minecraft.init.MobEffects;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -82,10 +84,10 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 			 * and night vision
 			 */
 			if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
-				PotionEffect poison = player.getActivePotionEffect(Potion.poison);
-				PotionEffect wither = player.getActivePotionEffect(Potion.wither);
-				PotionEffect blindness = player.getActivePotionEffect(Potion.blindness);
-				PotionEffect confusion = player.getActivePotionEffect(Potion.confusion);
+				PotionEffect poison = player.getActivePotionEffect(MobEffects.POISON);
+				PotionEffect wither = player.getActivePotionEffect(MobEffects.WITHER);
+				PotionEffect blindness = player.getActivePotionEffect(MobEffects.BLINDNESS);
+				PotionEffect confusion = player.getActivePotionEffect(MobEffects.NAUSEA);
 				if(poison!=null){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>5) {
 						player.removePotionEffect(poison.getPotion());
@@ -118,19 +120,19 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 						armorHelmet.damageItem(armorHelmet.getMaxDamage()-armorHelmet.getItemDamage(), player);
 					}
 				}
-				if(player.isInWater() && player.getActivePotionEffect(Potion.waterBreathing)==null){
+				if(player.isInWater() && player.getActivePotionEffect(MobEffects.WATER_BREATHING)==null){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>1) {
-						player.addPotionEffect(new PotionEffect(Potion.waterBreathing.id, 10 * 20, 0));
+						player.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 10 * 20, 0));
 						armorHelmet.damageItem(1, player);
 					} else {
 						armorHelmet.damageItem(armorHelmet.getMaxDamage()-armorHelmet.getItemDamage(), player);
 					}
 				}
 				//System.out.println(world.getBlockLightValue((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ) +" "+world.isAirBlock((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ) +" "+world.isAnyLiquid(player.boundingBox));
-				if(!world.isRemote && world.getBlockLightValue((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ)<=4 && (world.isAirBlock((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ)||world.isAnyLiquid(player.boundingBox))){
+				if(!world.isRemote && world.getLight(new BlockPos((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ))<=4 && (world.isAirBlock(new BlockPos((int)player.posX, (int)player.posY+(int)player.getEyeHeight(), (int)player.posZ))||world.containsAnyLiquid(player.getEntityBoundingBox()))){
 					if (armorHelmet.getMaxDamage()-armorHelmet.getItemDamage()>1) {
-						if (player.getActivePotionEffect(Potion.nightVision) ==null || player.getActivePotionEffect(Potion.nightVision).getDuration()<220) {
-							player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 820, 0, true));
+						if (player.getActivePotionEffect(MobEffects.NIGHT_VISION) ==null || player.getActivePotionEffect(MobEffects.NIGHT_VISION).getDuration()<220) {
+							player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 820, 0,true,false));
 							armorHelmet.damageItem(1, player);
 						}
 					} else {

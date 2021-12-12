@@ -1,97 +1,64 @@
 package train.blocks.waterwheel;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
 import ebf.tim.blocks.BlockDynamic;
-import ebf.tim.blocks.TileRenderFacing;
-import ebf.tim.utility.CommonUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.energy.EnergyStorage;
+import train.blocks.generator.TileGeneratorDiesel;
 
-public class TileWaterWheel extends TileRenderFacing implements IEnergyProvider {
-	public EnergyStorage energy = new EnergyStorage(3000,80); //core energy value the first value is max storage and the second is transfer max.
-	private ForgeDirection[] sides = new ForgeDirection[]{}; //defines supported sides
-
+public class TileWaterWheel extends TileGeneratorDiesel {
 	public TileWaterWheel(BlockDynamic host) {
-		super(host);
-		setSides(new ForgeDirection[]{ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.SOUTH});
-
-		this.energy.setCapacity(80);
-		this.energy.setMaxTransfer(80);
+		super();
+		this.energy=new EnergyStorage(80,80);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtTag){
-		super.readFromNBT(nbtTag);
-		this.energy.readFromNBT(nbtTag);
-	}
+	public void update() {
+		if(!world.isRemote) {
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbtTag){
-		super.writeToNBT(nbtTag);
-		this.energy.writeToNBT(nbtTag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g());
-	}
-
-	@Override
-	public boolean canUpdate(){return true;}
-
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
-
-		if(!worldObj.isRemote) {
-
-			Block blockXP = CommonUtil.getBlockAt(worldObj, xCoord+1, yCoord, zCoord);
-			Block blockXN = CommonUtil.getBlockAt(worldObj, xCoord-1, yCoord, zCoord);
-			Block blockZP = CommonUtil.getBlockAt(worldObj, xCoord, yCoord, zCoord+1);
-			Block blockZN = CommonUtil.getBlockAt(worldObj, xCoord, yCoord, zCoord-1);
-			Block blockTop = CommonUtil.getBlockAt(worldObj, xCoord, yCoord+1, zCoord);
-			Block blockBottom = CommonUtil.getBlockAt(worldObj, xCoord, yCoord-1, zCoord);
+			IBlockState blockXN = world.getBlockState(pos.add(1,0,0));
+			IBlockState blockXP = world.getBlockState(pos.add(-1,0,0));
+			IBlockState blockZN = world.getBlockState(pos.add(0,0,1));
+			IBlockState blockZP = world.getBlockState(pos.add(0,0,-1));
+			IBlockState blockTop = world.getBlockState(pos.add(0,1,0));
+			IBlockState blockBottom = world.getBlockState(pos.add(0,-1,0));
 
 
-			if (blockXP instanceof BlockLiquid && blockXP.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord + 1, yCoord, zCoord) != 0
-					&& blockXP.getMaterial() != Material.lava) {
+			if (blockXP.getBlock() instanceof BlockLiquid && blockXP.getMaterial().isLiquid()
+					&& blockXP.getValue(BlockLiquid.LEVEL)<8
+					&& blockXP.getMaterial() != Material.LAVA) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 2, 2);
-			} else if (blockXN instanceof BlockLiquid && blockXN.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord - 1, yCoord, zCoord) != 0
-					&& blockXN.getMaterial() != Material.lava) {
+				setFacing(2);
+			} else if (blockXN.getBlock() instanceof BlockLiquid && blockXN.getMaterial().isLiquid()
+					&& blockZN.getValue(BlockLiquid.LEVEL)<8
+					&& blockXN.getMaterial() != Material.LAVA) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 2);
-			} else if (blockZN instanceof BlockLiquid && blockZN.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 1) != 0
-					&& blockZN.getMaterial() != Material.lava) {
+				setFacing(0);
+			} else if (blockZN.getBlock() instanceof BlockLiquid && blockZN.getMaterial().isLiquid()
+					&& blockZN.getValue(BlockLiquid.LEVEL)<8
+					&& blockZN.getMaterial() != Material.LAVA) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, 2);
-			} else if (blockZP instanceof BlockLiquid && blockZP.getMaterial().isLiquid()
-					&& worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 1) != 0
-					&& blockZP.getMaterial() != Material.lava) {
+				setFacing(1);
+			} else if (blockZP.getBlock() instanceof BlockLiquid && blockZP.getMaterial().isLiquid()
+					&& blockZP.getValue(BlockLiquid.LEVEL)<8
+					&& blockZP.getMaterial() != Material.LAVA) {
 				this.energy.receiveEnergy(5, false);
-				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 3, 2);
-			}else if(blockTop instanceof BlockLiquid && blockTop.getMaterial().isLiquid()&&worldObj.getBlockMetadata(xCoord, yCoord+1, zCoord)!= 0 && blockTop.getMaterial() != Material.lava){
+				setFacing(3);
+			}else if(blockTop.getBlock() instanceof BlockLiquid && blockTop.getMaterial().isLiquid()
+					&& blockTop.getValue(BlockLiquid.LEVEL)<8
+					&& blockTop.getMaterial() != Material.LAVA){
 				this.energy.receiveEnergy(5, false);
-			}else if(blockBottom instanceof BlockLiquid && blockBottom.getMaterial().isLiquid() &&worldObj.getBlockMetadata(xCoord, yCoord-1, zCoord)!= 0 && blockBottom.getMaterial() != Material.lava){
+			}else if(blockBottom.getBlock() instanceof BlockLiquid && blockBottom.getMaterial().isLiquid()
+					&& blockBottom.getValue(BlockLiquid.LEVEL)<8
+					&& blockBottom.getMaterial() != Material.LAVA){
 				this.energy.receiveEnergy(5, false);
 			} else {
-				setWaterDir(-1);
+				setFacing(-1);
 			}
 
 			if (this.energy.getEnergyStored() >0) {
-				pushEnergy(worldObj, this.xCoord, this.yCoord, this.zCoord, this.energy);
+				pushEnergy(world, this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.energy);
 			}
 
 			this.markDirty();
@@ -99,56 +66,9 @@ public class TileWaterWheel extends TileRenderFacing implements IEnergyProvider 
 		}
 
 	}
-	
-	private void setWaterDir(int i) {
-		setFacing(i);
-		
-	}
-
-	public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){
-		for (ForgeDirection side : getSides()) {
-			TileEntity tile = world.getTileEntity(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
-			if (tile instanceof IEnergyReceiver && storage.getEnergyStored() > 0) {
-				if (((IEnergyReceiver) tile).canConnectEnergy(side.getOpposite())) {
-					int receive = ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(), Math.min(storage.getMaxExtract(), storage.getEnergyStored()), false);
-					storage.extractEnergy(receive, false);
-				}
-			}
-		}
-	}
 
 	public int getWaterDir() {
 		return facing;
 	}
 
-	@Override
-	public boolean canConnectEnergy(ForgeDirection direction){
-		if((this.getBlockMetadata()==1||this.getBlockMetadata()==3) && (direction == ForgeDirection.WEST||direction == ForgeDirection.EAST)) {
-			return true;
-		}else if((this.getBlockMetadata()==0||this.getBlockMetadata()==2) && (direction == ForgeDirection.NORTH||direction == ForgeDirection.SOUTH)){
-			return true;
-		} else {return false;}
-	}
-
-
-	public void setSides(ForgeDirection[] listOfSides){
-		this.sides = listOfSides;
-	}
-	public ForgeDirection[] getSides(){
-		return this.sides;
-	}
-
-	//RF Overrides
-	@Override
-	public int extractEnergy(ForgeDirection dir, int amount, boolean simulate) {
-		return energy.extractEnergy(amount, simulate);
-	}
-	@Override
-	public int getEnergyStored(ForgeDirection dir) {
-		return energy.getEnergyStored();
-	}
-	@Override
-	public int getMaxEnergyStored(ForgeDirection dir) {
-		return this.energy.getMaxEnergyStored();
-	}
 }

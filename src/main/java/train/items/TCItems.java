@@ -7,7 +7,7 @@
 
 package train.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import ebf.tim.registry.TiMGenericRegistry;
 import train.Traincraft;
 import train.library.Info;
 import train.library.ItemIDs;
@@ -170,8 +170,7 @@ public class TCItems {
 	private static void registerItems() {
 		for (ItemIDs items : ItemIDs.values()) {
 			if (items.item != null) {
-				items.item.setUnlocalizedName(Info.modID + ":" + items.name());
-				GameRegistry.registerItem(items.item, items.name());
+				TiMGenericRegistry.RegisterItem(items.item,Info.modID,items.name(),Traincraft.tcTab);
 			}
 		}
 	}

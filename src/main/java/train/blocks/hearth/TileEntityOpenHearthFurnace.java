@@ -1,5 +1,7 @@
 package train.blocks.hearth;
 
+import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
@@ -19,7 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TileEntityOpenHearthFurnace extends TileEntityStorage {
+public class TileEntityOpenHearthFurnace extends TileEntityStorage implements ITickable {
 
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
@@ -77,17 +79,14 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 	}
 
 	@Override
-	public boolean canUpdate(){return true;}
-
-	@Override
-	public void updateEntity() {
+	public void update() {
 		boolean flag = furnaceBurnTime > 0;
 		boolean flag1 = false;
 
 		if (furnaceBurnTime > 0) {
 			furnaceBurnTime--;
 		}
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			if (furnaceBurnTime == 0 && canSmelt()) {
 				if (getSlotIndexByID(402) != null) {
 					currentItemBurnTime = furnaceBurnTime = TileEntityFurnace.getItemBurnTime(getSlotIndexByID(402).getStack());
@@ -128,7 +127,7 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 		//be sure slot 1 is some form of iron
 		boolean fail=true;
 		if(getSlotIndexByID(400).getStack() != null){
-			ArrayList<ItemStack> iron = OreDictionary.getOres("ingotIron");
+			NonNullList<ItemStack> iron = OreDictionary.getOres("ingotIron");
 			for(ItemStack i : iron){
 				if(i.getItem()==getSlotIndexByID(400).getItem()){
 					fail=false;
@@ -147,7 +146,7 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 			return;
 		}
 
-		ArrayList<ItemStack> steel = OreDictionary.getOres("ingotSteel");
+		NonNullList<ItemStack> steel = OreDictionary.getOres("ingotSteel");
 
 		if (getSlotIndexByID(403).getStack() == null) {
 			getSlotIndexByID(403).setStack(new ItemStack(steel.get(0).getItem(),1));
@@ -170,11 +169,12 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt){
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
 		super.writeToNBT(nbt);
 		nbt.setShort("BurnTime", (short) furnaceBurnTime);
 		nbt.setShort("CookTime", (short) furnaceCookTime);
 		nbt.setShort("ItemBurnTime", (short) currentItemBurnTime);
+		return nbt;
 	}
 
 	@Override
@@ -197,10 +197,10 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 			super.markDirty();
 			wasBurning=isBurning();
 		} else {
-			if (this.worldObj != null) {
-				CommonUtil.markBlockForUpdate(world, xCoord, yCoord, zCoord);
-				worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-				this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, CommonUtil.getBlockAt(worldObj, xCoord, yCoord, zCoord));
+			if (this.world != null) {
+				CommonUtil.markBlockForUpdate(world, pos.getX(),pos.getY(),pos.getZ());
+				world.markChunkDirty(pos, this);
+				this.world.updateComparatorOutputLevel(this.pos, CommonUtil.getBlockAt(world, pos.getX(), pos.getY(), pos.getZ()));
 			}
 		}
 	}

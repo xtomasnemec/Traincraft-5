@@ -1,5 +1,6 @@
 package train.blocks.switchstand;
 
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,7 +16,7 @@ import train.blocks.TCBlocks;
 
 import java.util.Random;
 
-public class TileSwitchStand extends TileRenderFacing {
+public class TileSwitchStand extends TileRenderFacing implements ITickable {
 
     private int updateTicks = 0;
     private static Random rand = new Random();
@@ -29,11 +30,7 @@ public class TileSwitchStand extends TileRenderFacing {
     }
 
     @Override
-    public boolean canUpdate(){return true;}
-
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
         updateTicks++;
         /**
          * Remove any block on top of the wind mill
@@ -60,7 +57,7 @@ public class TileSwitchStand extends TileRenderFacing {
     @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(xCoord-1, yCoord-1, zCoord-1, xCoord + 2, yCoord + 2, zCoord + 2);
+        return new AxisAlignedBB(pos.getX()-1, pos.getY()-1, pos.getZ()-1, pos.getX() + 2, pos.getY() + 2, pos.getZ() + 2);
     }
 
 }

@@ -393,7 +393,7 @@ public class ModelWatertransp extends ModelBase {
 		//lava	
 		//Fluid theLiquid = FluidRegistry.getFluid(((LiquidTank)entity).getLiquidName());
 		GL11.glPushMatrix();
-		if (entity.worldObj!=null && ((GenericRailTransport) entity).getTankInfo()[0]!=null &&
+		if (entity.world!=null && ((GenericRailTransport) entity).getTankInfo()[0]!=null &&
 				((GenericRailTransport) entity).getTankInfo()[0].fluid!=null &&
 				(((GenericRailTransport) entity).getTankInfo()[0].fluid.amount) != 0) {
 			GL11.glTranslatef(0.0f,

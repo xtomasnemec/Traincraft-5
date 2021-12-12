@@ -1,53 +1,52 @@
 package train.blocks.windmill;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
-import ebf.tim.utility.CommonUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import depreciated.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import train.Traincraft;
-import train.library.Info;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BlockWindMill extends BlockDynamic {
-	private IIcon texture;
 
 	public BlockWindMill() {
 		super(Material.WOOD,false);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1F, 2F, 1F);
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) {
-		return true;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1F, 2F, 1F);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return false;
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
+		return getBoundingBox(state,world,pos);
 	}
-
 	@Override
-	public boolean isOpaqueCube() {
-		return false;
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+		return getBoundingBox(state,world,pos);
 	}
-
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		return new TileWindMill(this);
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, getCollisionBoundingBox(state,world, pos));
 	}
-
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return new TileWindMill(this);
@@ -55,67 +54,20 @@ public class BlockWindMill extends BlockDynamic {
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return -1;
+		return EnumBlockRenderType.MODEL;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
+	public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
+		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileWindMill && ((TileWindMill) tile).windClient > 0) {
-			if (par5Random.nextInt(20) == 0) {
-				par1World.playSound(par2, par3, par4, "minecart.inside", par5Random.nextFloat() * 0.25F + 0.1F, par5Random.nextFloat() * 1F - 0.6F, true);
+			if (rand.nextInt(20) == 0) {
+				world.playSound(world.getClosestPlayer(pos.getX(),pos.getY(),pos.getZ(),16,false)
+						,pos, SoundEvents.ENTITY_MINECART_INSIDE, SoundCategory.BLOCKS,
+						rand.nextFloat() * 0.25F + 0.75F, rand.nextFloat() * 1F + 0.1F);
 			}
 		}
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
-	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLiving, ItemStack par6ItemStack) {
-		int l = CommonUtil.floorDouble((double) (par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		int i1 = par1World.getBlockMetadata(par2, par3, par4) >> 2;
-		++l;
-		l %= 4;
-
-		if (l == 0) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2 | i1 << 2, 2);
-		}
-
-		if (l == 1) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3 | i1 << 2, 2);
-		}
-
-		if (l == 2) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0 | i1 << 2, 2);
-		}
-
-		if (l == 3) {
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1 | i1 << 2, 2);
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":wind_mill");
-	}
-
-	@Override
-	public IIcon getIcon(int i, int j) {
-		return texture;
-	}
-
-	/**
-	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-	 */
-	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
-		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
-		if (tile instanceof TileWindMill) {
-			tile.onChunkUnload();
-		}
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
-	}
 }

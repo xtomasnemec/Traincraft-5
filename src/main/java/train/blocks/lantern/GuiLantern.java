@@ -11,6 +11,8 @@ import org.lwjgl.input.Keyboard;
 import train.Traincraft;
 import train.core.network.PacketLantern;
 
+import java.io.IOException;
+
 @SideOnly(Side.CLIENT)
 public class GuiLantern extends GuiScreen {
 	/** The player editing the gui */
@@ -37,7 +39,7 @@ public class GuiLantern extends GuiScreen {
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.add(this.doneBtn = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "Done"));
 		this.buttonList.add(this.cancelBtn = new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, "Cancel"));
-		this.colorTextField = new GuiTextField(this.fontRenderer, this.width / 2 - 150, 60, 300, 20);
+		this.colorTextField = new GuiTextField(2,this.fontRenderer, this.width / 2 - 150, 60, 300, 20);
 		this.colorTextField.setMaxStringLength(32767);
 		this.colorTextField.setFocused(true);
 		this.colorTextField.setText(this.lanternBlock.getColor());
@@ -59,9 +61,11 @@ public class GuiLantern extends GuiScreen {
 					colorString = colorString.substring(0, 6);//remove additionnal characters
 					if(colorString.length()==6 &&tryParse(colorString)!=null){//if parse is possible (if string can be converted to an int)
 						int color = tryParse(colorString);//parse the string as a 16 int	
-						Traincraft.modChannel.sendToServer(new PacketLantern(color, lanternBlock.xCoord,
-								lanternBlock.yCoord, lanternBlock.zCoord));
-						Minecraft.getMinecraft().renderGlobal.markBlockForRenderUpdate(lanternBlock.xCoord, lanternBlock.yCoord, lanternBlock.zCoord); //TODO marks block as dirty, but it's only actually re-renders when chunk is loaded, but we need the re-render after it has been changed.
+						Traincraft.modChannel.sendToServer(new PacketLantern(color, lanternBlock.getPos().getX(),
+								lanternBlock.getPos().getY(), lanternBlock.getPos().getZ()));
+						Minecraft.getMinecraft().renderGlobal.markBlockRangeForRenderUpdate(
+								lanternBlock.getPos().getX(), lanternBlock.getPos().getY(), lanternBlock.getPos().getZ(),
+								lanternBlock.getPos().getX(), lanternBlock.getPos().getY(), lanternBlock.getPos().getZ());
 					}
 				}
 				this.mc.displayGuiScreen((GuiScreen)null);
@@ -105,7 +109,7 @@ public class GuiLantern extends GuiScreen {
 	 * Called when the mouse is clicked.
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3) {
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
 		super.mouseClicked(par1, par2, par3);
 		this.colorTextField.mouseClicked(par1, par2, par3);
 	}

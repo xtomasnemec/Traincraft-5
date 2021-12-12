@@ -7,6 +7,7 @@ import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import train.core.ClientProxy;
@@ -57,7 +58,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 				}
 			}
 		} else if (CommonUtil.getBlockAt(tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getX())
-		.isProvidingWeakPower(tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 0) > 0) {
+		.getWeakPower(tileEntity.getWorld().getBlockState(tileEntity.getPos()),tileEntity.getWorld(), tileEntity.getPos(), EnumFacing.UP) > 0) {
 			TextureManager.bindTexture(texture2);
 			if(ebf.tim.utility.ClientProxy.railSkin==3){
 				GL11.glTranslatef(0, 0.09f, 0);

@@ -1,5 +1,9 @@
 package train;
 
+import net.minecraft.command.CommandException;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +44,6 @@ import train.core.network.PacketKeyPress;
 import train.core.network.PacketLantern;
 import train.core.network.PacketSetJukeboxStreamingUrl;
 import train.core.plugins.AssemblyTableNEIIntegration;
-import train.core.plugins.PluginRailcraft;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.generation.ComponentVillageTrainstation;
@@ -261,7 +264,6 @@ public class Traincraft {
 								"You've enabled vanilla rail recipes in Railcraft. Disable them to get Traincraft additional tracks");
 						break;
 					} else if (line.equals("B:useAltRecipes=false")) {
-						PluginRailcraft.init();
 						Traincraft.tcLog.info("Enabled Traincraft additional tracks for Railcraft");
 						break;
 					}
@@ -292,15 +294,18 @@ public class Traincraft {
 
 
 	public class tcAdminPerm extends CommandBase {
-		public String getCommandName() {return "tc.admin";}
-		public String getCommandUsage(ICommandSender CommandSender) {return "/tcadmin";}
+		public String getName() {return "tc.admin";}
+		public String getUsage(ICommandSender CommandSender) {return "/tcadmin";}
+
+
 		public int getRequiredPermissionLevel() {return 2;}
 
-		public void processCommand(ICommandSender CommandSender, String[] par2ArrayOfStr) {
-			getCommandSenderAsPlayer(CommandSender).addChatMessage(
-					new TextComponentString(
-							"this command exists as a placeholder to allow admin permissions in TC via plugins and mds such as GroupManager and Forge Essentials"));
-
+		public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) throws CommandException {
+			if(commandSender instanceof EntityPlayer) {
+				((EntityPlayer) getCommandSenderAsPlayer(commandSender)).sendMessage(
+						new TextComponentString(
+								"this command exists as a placeholder to allow admin permissions in TC via plugins and mds such as GroupManager and Forge Essentials"));
+			}
 		}
 	}
 
