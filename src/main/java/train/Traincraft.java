@@ -164,7 +164,6 @@ public class Traincraft {
 							"we work on adding back all\n" +
 							"of the missing features,\nand many many more.");
 		}
-		//proxy.getCape();
 
 		/* Register Items, Blocks, ... */
 		tcLog.info("Initialize Blocks, Items, ...");

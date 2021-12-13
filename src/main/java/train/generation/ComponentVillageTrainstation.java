@@ -1,6 +1,7 @@
 package train.generation;
 
 import ebf.tim.entities.GenericRailTransport;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -151,7 +152,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		for (l = 0; l < 6; ++l) {
 			for (int i1 = 0; i1 < 9; ++i1) {
 				this.clearCurrentPositionBlocksUpwards(world, i1, 9, l, structureboundingbox);
-				this.func_151554_b(world, Blocks.brick_block, 0, i1, -1, l, structureboundingbox);
+				this.placeBlockByBiome(world, Blocks.brick_block, 0, i1, -1, l, structureboundingbox);
 			}
 		}
 
@@ -254,5 +255,37 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 	@Override
 	protected int getVillagerType(int par1) {
 		return 86;
+	}
+
+	protected void placeBlockByBiome(World p_151554_1_, Block p_151554_2_, int p_151554_3_, int p_151554_4_, int p_151554_5_, int p_151554_6_, StructureBoundingBox p_151554_7_) {
+		Block block1 = this.biomeBlock(p_151554_1_,p_151554_4_, p_151554_5_, p_151554_6_,p_151554_2_);
+		int i1 = this.biomeID(p_151554_1_,p_151554_4_, p_151554_5_, p_151554_6_,p_151554_2_, p_151554_3_);
+		placeBlockAtCurrentPosition(p_151554_1_, block1, i1, p_151554_4_, p_151554_5_, p_151554_6_, p_151554_7_);
+	}
+
+	private Block biomeBlock(World world, int x, int y, int z, Block block) {
+		if (world.getBiomeGenForCoords(x,z).topBlock==Blocks.sand) {
+			if (block == Blocks.log || block == Blocks.log2
+					|| block == Blocks.cobblestone || block == Blocks.planks || block == Blocks.gravel) {
+				return Blocks.sandstone;
+			}
+			else if (block == Blocks.oak_stairs || block == Blocks.stone_stairs) {
+				return Blocks.sandstone_stairs;
+			}
+		}
+
+		return block;
+	}
+
+	private int biomeID(World world, int x, int y, int z, Block p_151557_1_, int p_151557_2_) {
+		if (world.getBiomeGenForCoords(x,z).topBlock==Blocks.sand) {
+			if (p_151557_1_ == Blocks.log || p_151557_1_ == Blocks.log2 || p_151557_1_== Blocks.cobblestone) {
+				return 0;
+			} else if (p_151557_1_ == Blocks.planks) {
+				return 2;
+			}
+		}
+
+		return p_151557_2_;
 	}
 }

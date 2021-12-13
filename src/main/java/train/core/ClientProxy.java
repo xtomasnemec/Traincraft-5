@@ -70,11 +70,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity te = world.getTileEntity(x, y, z);
-		EntityPlayer riddenByEntity = null;
 		Entity entity = player.ridingEntity;
-		if (player.ridingEntity != null) {
-			riddenByEntity = (EntityPlayer) entity.riddenByEntity;
-		}
 
 		Entity entity1 = null;
 		if (y == -1) {
@@ -93,7 +89,7 @@ public class ClientProxy extends CommonProxy {
 		case GuiIDs.TRAIN_WORKBENCH:
 			return te instanceof TileTrainWbench ? new GuiTrainCraftingBlock(player.inventory, (TileTrainWbench) te) : null;
 		case (GuiIDs.ZEPPELIN):
-			return riddenByEntity != null ? new GuiZepp(riddenByEntity.inventory, entity) : null;
+			return player != null ? new GuiZepp(player.inventory, entity) : null;
 			//Stationary entities while player is not riding.
 		/*case (GuiIDs.RECIPE_BOOK2):
 			return te != null && te instanceof TileBook ? new GuiRecipeBook2(player, player.getCurrentEquippedItem()) : new GuiRecipeBook2(player, player.getCurrentEquippedItem());*/

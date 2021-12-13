@@ -2,6 +2,7 @@ package train.entity.gui;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.*;
@@ -22,8 +23,10 @@ public class HUDloco extends GuiScreen {
 
 	@SubscribeEvent
 	public void onGameRender(RenderGameOverlayEvent.Text event){
-		if (game != null && game.thePlayer != null && game.thePlayer.ridingEntity instanceof EntityTrainCore && Minecraft.isGuiEnabled() && game.currentScreen == null) {
-			renderSkillHUD(event, (EntityTrainCore) game.thePlayer.ridingEntity);
+		if (game != null && game.thePlayer != null && game.thePlayer.ridingEntity instanceof EntitySeat && Minecraft.isGuiEnabled() && game.currentScreen == null) {
+			if(((EntitySeat)game.thePlayer.ridingEntity).isLocoControlSeat()) {
+				renderSkillHUD(event, (EntityTrainCore) game.thePlayer.ridingEntity);
+			}
 		} else {
 			this.game = this.mc = Minecraft.getMinecraft();
 			this.fontRendererObj = this.game.fontRenderer;

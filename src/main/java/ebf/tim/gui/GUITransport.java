@@ -470,40 +470,21 @@ public class GUITransport extends GUIContainerNoNEI {
                     GL11.glTranslatef(186, 40 + (-20 * i), 0);
                     GL11.glScalef(0.125f + liquid, 1.125f, 1);
                     //render fluid overlay
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(fontRendererObj, Minecraft.getMinecraft().getTextureManager(),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(fontRendererObj, Minecraft.getMinecraft().getTextureManager(),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(fontRendererObj, Minecraft.getMinecraft().getTextureManager(),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(fontRendererObj, Minecraft.getMinecraft().getTextureManager(),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRendererObj, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(fontRendererObj, Minecraft.getMinecraft().getTextureManager(),
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo(null)[i].fluid.getFluid().getBlock())),0,0);
+
 
                     GL11.glDisable(GL11.GL_LIGHTING);
                     GL11.glColor4f(1, 1, 1, 1);
