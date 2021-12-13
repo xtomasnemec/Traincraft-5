@@ -57,11 +57,11 @@ public class TileTrainWbench extends TileEntityStorage {
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer player) {
-		if (worldObj == null || worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
+		if (world == null || world.getTileEntity(pos) != this) {
 			return false;
 		}
 
-		return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
+		return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override

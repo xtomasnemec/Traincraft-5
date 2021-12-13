@@ -11,7 +11,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import train.blocks.bench.GuiTrainCraftingBlock;
 import train.blocks.bench.TileTrainWbench;
 import train.blocks.distil.GuiDistil;
@@ -62,19 +68,15 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderInformation() {
 		FMLCommonHandler.instance().bus().register(new ClientTickHandler());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinTwoBalloons.class, new RenderZeppelins());
-		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinOneBalloon.class, new RenderZeppelins());
+		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinTwoBalloons.class, new RenderZeppelins(Minecraft.getMinecraft().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityZeppelinOneBalloon.class, new RenderZeppelins(Minecraft.getMinecraft().getRenderManager()));
 
 	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
-		EntityPlayer riddenByEntity = null;
-		Entity entity = player.ridingEntity;
-		if (player.ridingEntity != null) {
-			riddenByEntity = (EntityPlayer) entity.riddenByEntity;
-		}
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		Entity entity = player.getRidingEntity();
 
 		Entity entity1 = null;
 		if (y == -1) {
@@ -93,7 +95,7 @@ public class ClientProxy extends CommonProxy {
 		case GuiIDs.TRAIN_WORKBENCH:
 			return te instanceof TileTrainWbench ? new GuiTrainCraftingBlock(player.inventory, (TileTrainWbench) te) : null;
 		case (GuiIDs.ZEPPELIN):
-			return riddenByEntity != null ? new GuiZepp(riddenByEntity.inventory, entity) : null;
+			return player != null ? new GuiZepp(player.inventory, entity) : null;
 			//Stationary entities while player is not riding.
 		/*case (GuiIDs.RECIPE_BOOK2):
 			return te != null && te instanceof TileBook ? new GuiRecipeBook2(player, player.getCurrentEquippedItem()) : new GuiRecipeBook2(player, player.getCurrentEquippedItem());*/
@@ -113,7 +115,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerVillagerSkin(int villagerId, String textureName) {
-		VillagerRegistry.instance().registerVillagerSkin(villagerId, new ResourceLocation(Info.resourceLocation,Info.villagerPrefix + textureName));
+		//VillagerRegistry.instance().registerVillagerSkin(villagerId, new ResourceLocation(Info.resourceLocation,Info.villagerPrefix + textureName));
 	}
 
 	@Override
@@ -123,7 +125,7 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public EntityPlayer getPlayer() {
-		return getMinecraft().thePlayer;
+		return getMinecraft().player;
 	}
 
 	

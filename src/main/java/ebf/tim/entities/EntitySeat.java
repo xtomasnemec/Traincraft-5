@@ -35,13 +35,13 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     public Vec3d rotation =null;
     GenericRailTransport parent;
     private EntityLivingBase passengerEntity=null;
-    private boolean controller=false;
+    private boolean controller=false, locomotive=false;
 
     public EntitySeat(World world) {
         super(world);
     }
 
-    public EntitySeat(World world, double xPos, double yPos, double zPos, double pitch, double yaw, double roll, int parent, int seatNumber) {
+    public EntitySeat(World world, double xPos, double yPos, double zPos, double pitch, double yaw, double roll, GenericRailTransport parent, int seatNumber) {
         super(world);
         this.posX = xPos;
         this.posY = yPos;
@@ -49,9 +49,10 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         if (pitch!=0 || yaw !=0) {
             rotation = new Vec3d(pitch, yaw, roll);
         }
-        parentId = parent;
+        parentId = parent.getEntityId();
         this.seatNumber = seatNumber;
         controller=seatNumber==0;
+        locomotive=parent instanceof EntityTrainCore;
     }
 
     /** returns if this can be pushed*/
@@ -162,6 +163,8 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     }
 
     public boolean isControlSeat(){return controller;}
+    public boolean isLocoControlSeat(){return controller && locomotive;}
+    public boolean isLocoSeat(){return locomotive;}
 
     public void setControlSeat(){controller=true;}
 

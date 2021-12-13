@@ -1,11 +1,11 @@
 package train.blocks.distil;
 
+import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.utility.TransportSlotManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 
 public class ContainerDistil extends TransportSlotManager {
 
@@ -22,12 +22,18 @@ public class ContainerDistil extends TransportSlotManager {
 		distil = tileentitydistil;
 	}
 
-	@Override
+	/*@Override//1.7 variant
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.sendProgressBarUpdate(this, 0, distil.distilCookTime);
 		par1ICrafting.sendProgressBarUpdate(this, 1, distil.distilBurnTime);
 		par1ICrafting.sendProgressBarUpdate(this, 2, distil.currentItemBurnTime);
+	}*/
+
+	@Override//1.12 replacement
+	public void addListener(IContainerListener listener) {//1.12 variant
+		super.addListener(listener);
+		listener.sendAllWindowProperties(this, this.hostInventory);
 	}
 
 	/*
@@ -38,21 +44,24 @@ public class ContainerDistil extends TransportSlotManager {
 		super.detectAndSendChanges();
 
 		if(distil==null){return;}
-		for (Object crafter : crafters) {
-			ICrafting icrafting = (ICrafting) crafter;
-			if (cookTime != distil.distilCookTime) {
-				icrafting.sendProgressBarUpdate(this, 0, distil.distilCookTime);
+
+		for (IContainerListener icontainerlistener : this.listeners) {
+			if (this.cookTime != this.distil.getField(2)) {
+				icontainerlistener.sendWindowProperty(this, 2, this.distil.getField(2));
 			}
-			if (burnTime != distil.distilBurnTime) {
-				icrafting.sendProgressBarUpdate(this, 1, distil.distilBurnTime);
+
+			if (this.burnTime != this.distil.getField(0)) {
+				icontainerlistener.sendWindowProperty(this, 0, this.distil.getField(0));
 			}
-			if (itemBurnTime != distil.currentItemBurnTime) {
-				icrafting.sendProgressBarUpdate(this, 2, distil.currentItemBurnTime);
+
+			if (this.itemBurnTime != this.distil.getField(1)) {
+				icontainerlistener.sendWindowProperty(this, 1, this.distil.getField(1));
 			}
 		}
-		cookTime = distil.distilCookTime;
-		burnTime = distil.distilBurnTime;
-		itemBurnTime = distil.currentItemBurnTime;
+
+		this.cookTime = this.distil.getField(2);
+		this.burnTime = this.distil.getField(0);
+		this.itemBurnTime = this.distil.getField(1);
 	}
 
 	@Override

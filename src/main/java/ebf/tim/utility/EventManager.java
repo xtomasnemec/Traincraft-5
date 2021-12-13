@@ -311,7 +311,7 @@ public class EventManager {
 
     private static int left=0,longest;
     private static String[] disp;
-    private static RenderItem itemRender = new RenderItem();
+    public static RenderItem itemRender = new RenderItem();
 
     private static String[] getStaticStrings(GenericRailTransport t, EntityPlayer p){
         return new String[]{

@@ -1,19 +1,17 @@
 package train.generation;
 
 import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.BiomeEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import train.blocks.TCBlocks;
-import train.core.util.TraincraftUtil;
 import train.entity.rollingStock.*;
 
 import java.util.List;
@@ -25,13 +23,13 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 
 	public ComponentVillageTrainstation() {}
 	
-	public ComponentVillageTrainstation(StructureVillagePieces.Start par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5) {
+	public ComponentVillageTrainstation(StructureVillagePieces.Start par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, EnumFacing par5) {
 		super(par1ComponentVillageStartPiece, par2);
-		this.coordBaseMode = par5;
+		this.setCoordBaseMode(par5);
 		this.boundingBox = par4StructureBoundingBox;
 	}
 
-	public static ComponentVillageTrainstation buildComponent(StructureVillagePieces.Start par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7) {
+	public static ComponentVillageTrainstation buildComponent(StructureVillagePieces.Start par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6, int par7) {
 		StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 9, 9, 10, par6);
 		return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageTrainstation(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
 	}
@@ -148,16 +146,16 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		this.placeBlockAtCurrentPosition(world, TCBlocks.partTable, 0, 7, 1, 1, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 1, 1, 0, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 1, 2, 0, structureboundingbox);
-		this.placeDoorAtCurrentPosition(world, structureboundingbox, random, 1, 1, 0, this.getMetadataWithOffset(Blocks.OAK_DOOR, 1));
+		this.createVillageDoor(world, structureboundingbox, random, 1, 1, 0, EnumFacing.byIndex(this.getMetadataWithOffset(Blocks.OAK_DOOR, 1)));
 
-		if (this.getBlockAtCurrentPosition(world, 1, 0, -1, structureboundingbox) == Blocks.AIR && this.getBlockAtCurrentPosition(world, 1, -1, -1, structureboundingbox) != Blocks.AIR) {
+		if (this.getBlockStateFromPos(world, 1, 0, -1, structureboundingbox).getBlock() == Blocks.AIR && this.getBlockStateFromPos(world, 1, -1, -1, structureboundingbox).getBlock() != Blocks.AIR) {
 			this.placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 4, 1, 0, -1, structureboundingbox);
 		}
 
 		for (l = 0; l < 6; ++l) {
 			for (int i1 = 0; i1 < 9; ++i1) {
 				this.clearCurrentPositionBlocksUpwards(world, i1, 9, l, structureboundingbox);
-				this.func_151554_b(world, Blocks.BRICK_BLOCK, 0, i1, -1, l, structureboundingbox);
+				this.placeBlockByBiome(world, Blocks.BRICK_BLOCK, 0, i1, -1, l, structureboundingbox);
 			}
 		}
 
@@ -167,7 +165,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		int k1 = this.getYWithOffset(1);
 		int l1 = this.getZWithOffset(6, 8);
 
-		if (structureboundingbox.isVecInside(j1, k1, l1)) {
+		if (structureboundingbox.isVecInside(new Vec3i(j1, k1, l1))) {
 			int rD = random.nextInt(8);
 			GenericRailTransport cart;
 			if (rD == 0) {
@@ -213,7 +211,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		int k2 = this.getYWithOffset(1);
 		int l2 = this.getZWithOffset(3, 8);
 
-		if (structureboundingbox.isVecInside(j2, k2, l2)) {
+		if (structureboundingbox.isVecInside(new Vec3i(j2, k2, l2))) {
 			int rD = random.nextInt(8);
 			GenericRailTransport cart;
 			if (rD == 0) {
@@ -256,11 +254,11 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 
 	/**
 	 * Returns the villager type to spawn in this component, based on the number of villagers already spawned.
-	 */
+	 *
 	@Override
 	protected int getVillagerType(int par1) {
 		return 86;
-	}
+	}*/
 
 
 	public void placeBlockAtCurrentPosition(World world, Block b, int meta, int x, int y, int z, StructureBoundingBox box) {
@@ -269,4 +267,82 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		super.setBlockState(world, block1,x,y,z,box);
 	}
 
+	//BS what the vanilla code did in 1.7
+	int getMetadataWithOffset(Block p_151555_1_, int p_151555_2_) {
+		if (p_151555_1_ != Blocks.OAK_DOOR) {
+			if (this.getCoordBaseMode() == EnumFacing.byIndex(0)) {
+				if (p_151555_2_ == 2) {
+					return 3;
+				} else if (p_151555_2_ == 3) {
+					return 2;
+				}
+			} else if (this.getCoordBaseMode() == EnumFacing.byIndex(1)) {
+				switch (p_151555_2_){
+					case 0: return 2;
+					case 1: return 3;
+					case 2: return 0;
+					case 3: return 1;
+				}
+			}
+			else if (this.getCoordBaseMode() == EnumFacing.byIndex(3)) {
+				switch (p_151555_2_){
+					case 0: return 2;
+					case 1: return 3;
+					case 2: return 1;
+					case 3: return 0;
+				}
+			}
+		}
+
+		else if (this.getCoordBaseMode() == EnumFacing.byIndex(0)) {
+			if (p_151555_2_ == 0) {
+				return 2;
+			} else if (p_151555_2_ == 2) {
+				return 0;
+			}
+		} else {
+			if (this.getCoordBaseMode() == EnumFacing.byIndex(1)) {
+				return p_151555_2_ + 1 & 3;
+			}
+
+			if (this.getCoordBaseMode() == EnumFacing.byIndex(3)) {
+				return p_151555_2_ + 3 & 3;
+			}
+		}
+
+		return p_151555_2_;
+	}
+
+
+	protected void placeBlockByBiome(World p_151554_1_, Block p_151554_2_, int p_151554_3_, int p_151554_4_, int p_151554_5_, int p_151554_6_, StructureBoundingBox p_151554_7_) {
+		Block block1 = this.biomeBlock(p_151554_1_,p_151554_4_, p_151554_5_, p_151554_6_,p_151554_2_);
+		int i1 = this.biomeID(p_151554_1_,p_151554_4_, p_151554_5_, p_151554_6_,p_151554_2_, p_151554_3_);
+		placeBlockAtCurrentPosition(p_151554_1_, block1, i1, p_151554_4_, p_151554_5_, p_151554_6_, p_151554_7_);
+	}
+
+	private Block biomeBlock(World world, int x, int y, int z, Block block) {
+		if (world.getBiome(new BlockPos(x,y,z)).topBlock.getBlock()==Blocks.SAND) {
+			if (block == Blocks.LOG || block == Blocks.LOG2
+			|| block == Blocks.COBBLESTONE || block == Blocks.PLANKS || block == Blocks.GRAVEL) {
+				return Blocks.SANDSTONE;
+			}
+			else if (block == Blocks.OAK_STAIRS || block == Blocks.STONE_STAIRS) {
+				return Blocks.SANDSTONE_STAIRS;
+			}
+		}
+
+		return block;
+	}
+
+	private int biomeID(World world, int x, int y, int z, Block p_151557_1_, int p_151557_2_) {
+		if (world.getBiome(new BlockPos(x,y,z)).topBlock.getBlock()==Blocks.SAND) {
+			if (p_151557_1_ == Blocks.LOG || p_151557_1_ == Blocks.LOG2 || p_151557_1_== Blocks.COBBLESTONE) {
+				return 0;
+			} else if (p_151557_1_ == Blocks.PLANKS) {
+				return 2;
+			}
+		}
+
+		return p_151557_2_;
+	}
 }

@@ -10,17 +10,13 @@ import fexcraft.tmt.slim.Tessellator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -130,7 +126,7 @@ public class GUITransport extends GUIContainerNoNEI {
 
     /**
      * <h2>GUI initialization</h2>
-     * the super defines the screen size and scdrawCreativeTabHoveringText("0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX, mouseY);ale. beyond that we just initialize th buttons and their positions
+     * the super defines the screen size and scdrawHoveringText("0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX, mouseY);ale. beyond that we just initialize th buttons and their positions
      */
     @Override
     public void initGui() {
@@ -470,40 +466,21 @@ public class GUITransport extends GUIContainerNoNEI {
                     GL11.glTranslatef(186, 40 + (-20 * i), 0);
                     GL11.glScalef(0.125f + liquid, 1.125f, 1);
                     //render fluid overlay
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    if (!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), mc.renderEngine,
-                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),
-                            true, zLevel, 0, 0)) {
-                        RenderItem.getInstance().renderItemIntoGUI(fontRenderer, mc.renderEngine,
-                                new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())), 0, 0, true);
-                    }
+                    EventManager.itemRender.renderItemIntoGUI(
+                            new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
+
 
                     GL11.glDisable(GL11.GL_LIGHTING);
                     GL11.glColor4f(1, 1, 1, 1);
@@ -517,14 +494,14 @@ public class GUITransport extends GUIContainerNoNEI {
         for(int i=0; i<transport.getTankInfo().length;i++) {
             if(isMouseInRect(mouseX, mouseY,(int)guiLeft+186, (int)guiTop+40+(-20*i), 90, 18)) {
                 if (transport.getTankInfo()[i].fluid.amount>0) {
-                    drawCreativeTabHoveringText(transport.getTankInfo()[i].fluid.getLocalizedName() + " " +
+                    drawHoveringText(transport.getTankInfo()[i].fluid.getLocalizedName() + " " +
                                     transport.getTankInfo()[i].fluid.amount+"mb/"+ transport.getTankInfo()[i].capacity+"mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
 
                 } else {
                     if (transport.getTankFilters()!=null && transport.getTankFilters().length>i && transport.getTankFilters()[i]!=null && transport.getTankFilters()[i].length>0) {
-                        drawCreativeTabHoveringText(transport.getTankFilters()[i][0] + ", 0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
+                        drawHoveringText(transport.getTankFilters()[i][0] + ", 0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
                     }else{
-                        drawCreativeTabHoveringText(", 0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
+                        drawHoveringText(", 0mb/" + transport.getTankInfo()[i].capacity + "mb", mouseX-(int)guiLeft, mouseY-(int)guiTop);
 
                     }
                 }
@@ -559,7 +536,7 @@ public class GUITransport extends GUIContainerNoNEI {
                             (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
                                     0;//cover everything else
         }
-        this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, p_146984_4_, this.mc.thePlayer);
+        this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, p_146984_4_, this.mc.player);
     }
 
 

@@ -1,7 +1,7 @@
 package train.entity.gui;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.*;
@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 
@@ -22,8 +23,10 @@ public class HUDloco extends GuiScreen {
 
 	@SubscribeEvent
 	public void onGameRender(RenderGameOverlayEvent.Text event){
-		if (game != null && game.thePlayer != null && game.thePlayer.ridingEntity instanceof EntityTrainCore && Minecraft.isGuiEnabled() && game.currentScreen == null) {
-			renderSkillHUD(event, (EntityTrainCore) game.thePlayer.ridingEntity);
+		if (game != null && game.player != null && game.player.getRidingEntity() instanceof EntitySeat && Minecraft.isGuiEnabled() && game.currentScreen == null) {
+			if(((EntitySeat)game.player.getRidingEntity()).isLocoControlSeat()) {
+				renderSkillHUD(event, (EntityTrainCore) game.player.getRidingEntity());
+			}
 		} else {
 			this.game = this.mc = Minecraft.getMinecraft();
 			this.fontRenderer = this.game.fontRenderer;
@@ -31,8 +34,8 @@ public class HUDloco extends GuiScreen {
 	}
 
 	public void renderSkillHUD(RenderGameOverlayEvent event, EntityTrainCore rcCar) {
-		windowWidth = event.resolution.getScaledWidth();
-		windowHeight = event.resolution.getScaledHeight() - 100;
+		windowWidth = event.getResolution().getScaledWidth();
+		windowHeight = event.getResolution().getScaledHeight() - 100;
 		GL11.glColor4f(255, 255, 255, 255);
 		renderBG(rcCar);
 		/**

@@ -3,6 +3,7 @@ package train.blocks.bench;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import train.core.interfaces.ITCRecipe;
 import train.items.ItemTCArmor;
@@ -67,7 +68,7 @@ public class RecipesArmorDyes implements ITCRecipe {
 					}
 
 					itemstack = itemstack1.copy();
-					itemstack.getCount() = 1;
+					itemstack.setCount(1);
 
 					if (itemarmor.hasColor(itemstack1)) {
 						l = itemarmor.getColor(itemstack);
@@ -86,7 +87,7 @@ public class RecipesArmorDyes implements ITCRecipe {
 						return null;
 					}
 
-					float[] afloat = EntitySheep.fleeceColorTable[itemstack1.getItemDamage()];
+					float[] afloat = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(itemstack1.getItemDamage()));
 
 					int j1 = (int) (afloat[0] * 255.0F);
 					int k1 = (int) (afloat[1] * 255.0F);

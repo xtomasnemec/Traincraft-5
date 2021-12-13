@@ -52,8 +52,8 @@ public class TrainCraftingManager {
 		//first part also has to do with repairing
 		if (occupedSlot == 2 && var3.getItem() == var4.getItem() && var3.getCount() == 1 && var4.getCount() == 1 && var3.getItem().isRepairable()) {
 			Item var11 = var3.getItem();
-			int var10 = var11.getMaxDamage() - var3.getItemDamageForDisplay();
-			int var7 = var11.getMaxDamage() - var4.getItemDamageForDisplay();
+			int var10 = var11.getMaxDamage() - var3.getItemDamage();
+			int var7 = var11.getMaxDamage() - var4.getItemDamage();
 			int var8 = var10 + var7 + var11.getMaxDamage() * 10 / 100;
 			int var9 = var11.getMaxDamage() - var8;
 

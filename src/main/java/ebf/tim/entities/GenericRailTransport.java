@@ -1048,7 +1048,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             if (getRiderOffsets() != null && getRiderOffsets().length >1 && seats.size()<getRiderOffsets().length) {
                 for (int i = 0; i < getRiderOffsets().length - 1; i++) {
-                    EntitySeat seat = new EntitySeat(world, posX, posY, posZ, getRiderOffsets()[i][0], getRiderOffsets()[i][1],getRiderOffsets()[i][2], getEntityId(), i);
+                    EntitySeat seat = new EntitySeat(world, posX, posY, posZ, getRiderOffsets()[i][0], getRiderOffsets()[i][1],getRiderOffsets()[i][2], this, i);
                     world.spawnEntity(seat);
                     seats.add(seat);
                 }
@@ -1153,7 +1153,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             for (int i = 0; i < seats.size(); i++) {
                 //sometimes seats die when players log out. make new ones.
                 if(seats.get(i) ==null){
-                    seats.set(i, new EntitySeat(world, posX, posY,posZ,0,0,0,getEntityId(),i));
+                    seats.set(i, new EntitySeat(world, posX, posY,posZ,0,0,0,this,i));
                     world.spawnEntity(seats.get(i));
                 }
                 cachedVectors[0] = new Vec3f(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2])

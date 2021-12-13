@@ -7,11 +7,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.registry.TiMGenericRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.util.StatCollector;
-
-import java.util.List;
-
-import static net.minecraft.util.text.translation.I18n.translateToLocal;
 
 /**
  * <h1>Creative tab</h1>
@@ -30,14 +25,14 @@ public class TiMTab extends CreativeTabs {
         super(CreativeTabs.getNextID(), name);
         this.tabItem= tabItem;
     }
-    /**returns the label of the tab, this is defined in the language files,*/
+    /**returns the label of the tab, this is defined in the language files,
     @Override
     public String getTranslatedTabLabel() {
         return translateToLocal(tabItem.getUnlocalizedName());
-    }
+    }*/
     /**the icon for the tab. don't override this one*/
     @Override
-    public Item getTabIconItem(){return getTabItem();}
+    public ItemStack createIcon(){return new ItemStack(getTabItem());}
 
     /**the icon for the tab. override this one*/
     public Item getTabItem(){return tabItem;}

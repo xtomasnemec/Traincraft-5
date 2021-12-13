@@ -5,7 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.gui.GUICraftBook;
@@ -32,6 +34,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
@@ -44,6 +47,7 @@ import train.core.network.PacketKeyPress;
 import train.core.network.PacketLantern;
 import train.core.network.PacketSetJukeboxStreamingUrl;
 import train.core.plugins.AssemblyTableNEIIntegration;
+import train.entity.trains.EntityLocoSteamBR80_DB;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.generation.ComponentVillageTrainstation;
@@ -171,12 +175,10 @@ public class Traincraft {
 							"we work on adding back all\n" +
 							"of the missing features,\nand many many more.");
 		}
-		//proxy.getCape();
 
 		/* Register Items, Blocks, ... */
 		tcLog.info("Initialize Blocks, Items, ...");
-		tcTab = new TiMTab("Traincraft", Info.modID, "key.categories.traincraft");
-		tcTab.getTabItem().setTextureName(Info.modID+":"+"transports/item.train_br80");
+		tcTab = new TiMTab("Traincraft", EntityLocoSteamBR80_DB.thisItem);
 		trainArmor = proxy.addArmor("armor");
 		trainCloth = proxy.addArmor("Paintable");
 		trainCompositeSuit = proxy.addArmor("CompositeSuit");
@@ -220,7 +222,7 @@ public class Traincraft {
 		GameRegistry.registerFuelHandler(new FuelHandler());
 
 
-		MapGenStructureIO.registerStructure(ComponentVillageTrainstation.class, "Trainstation");
+		MapGenStructureIO.registerStructureComponent(ComponentVillageTrainstation.class, "Trainstation");
 
 		/* GUI handler initiation */
 		tcLog.info("Initialize Gui");
@@ -234,14 +236,24 @@ public class Traincraft {
 		/*Trainman Villager*/
 		tcLog.info("Initialize Station Chief Villager");
 		VillagerTraincraftHandler villageHandler = new VillagerTraincraftHandler();
-		proxy.registerVillagerSkin(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, "station_chief.png");
-		VillagerRegistry.instance().registerVillageTradeHandler(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, villageHandler);
+		//1.12 handles these as an event, done below.
+		//proxy.registerVillagerSkin(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, "station_chief.png");
+		//VillagerRegistry.instance().registerVillageTradeHandler(ConfigHandler.TRAINCRAFT_VILLAGER_ID+1, villageHandler);
 		VillagerRegistry.instance().registerVillageCreationHandler(villageHandler);
 
 		
 		tcLog.info("Finished Initialization");
 
 
+	}
+
+	@SubscribeEvent
+	public static void onEvent(final RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
+		VillagerRegistry.VillagerProfession stationChef = new VillagerRegistry.VillagerProfession(
+				Info.modID+"station_manager", "station_chief.png",Info.modID+"station_zombie"
+		);
+		stationChef.getCareer(0).addTrade(1,new VillagerTraincraftHandler());
+		event.getRegistry().register(stationChef);
 	}
 
 	@EventHandler
