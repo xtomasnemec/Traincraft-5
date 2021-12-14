@@ -7,8 +7,8 @@ import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class ParticleFX {
     /*the offset to tint the particle color*/
     private int colorTint;
     /*the bounding box of the particle to use for rendering and collision, if it's null we render it as a static particle*/
-    private final AxisAlignedBB boundingBox;
+    private AxisAlignedBB boundingBox;
     /*the motion of the particle*/
     private float motionX=0, motionY=0, motionZ=0;
     /*a random to use for variable generating*/
@@ -65,7 +65,7 @@ public class ParticleFX {
                 motionY = particleType==0?0.15f:0.0005f;
                 motionZ = (rand.nextInt(40) - 20) * 0.001f;
 
-                this.boundingBox = AxisAlignedBB.getBoundingBox(pos[0] + transport.posX - 0.1, pos[1] + transport.posY - 0.1, pos[2] + transport.posZ - 0.1, pos[0] + transport.posX + 0.1, pos[1] + transport.posY + 0.1, pos[2] + transport.posZ + 0.1);
+                this.boundingBox = new AxisAlignedBB(pos[0] + transport.posX - 0.1, pos[1] + transport.posY - 0.1, pos[2] + transport.posZ - 0.1, pos[0] + transport.posX + 0.1, pos[1] + transport.posY + 0.1, pos[2] + transport.posZ + 0.1);
                 break;
             }case 2:{//sparks
                 motionX = (rand.nextInt(40) - 20) * 0.0005f;
@@ -73,7 +73,7 @@ public class ParticleFX {
                 motionZ = (rand.nextInt(40) - 20) * 0.0005f;
 
 
-                this.boundingBox = AxisAlignedBB.getBoundingBox(pos[0] + transport.posX - 0.05, pos[1] + transport.posY - 0.05, pos[2] + transport.posZ - 0.05, pos[0] + transport.posX + 0.05, pos[1] + transport.posY + 0.05, pos[2] + transport.posZ + 0.05);
+                this.boundingBox = new AxisAlignedBB(pos[0] + transport.posX - 0.05, pos[1] + transport.posY - 0.05, pos[2] + transport.posZ - 0.05, pos[0] + transport.posX + 0.05, pos[1] + transport.posY + 0.05, pos[2] + transport.posZ + 0.05);
                 break;
             }
             case 3:case 4:case 5:case 6:case 7: default:{
@@ -142,7 +142,7 @@ public class ParticleFX {
         } else if (ticksExisted<=1){
             ticksExisted++;
             return;
-        } else if ((!shouldRender && !physicsUpdate) || host==null || host.worldObj==null){
+        } else if ((!shouldRender && !physicsUpdate) || host==null || host.world==null){
             return;
         }
 
@@ -162,7 +162,7 @@ public class ParticleFX {
                     ticksExisted = 0f;
                     //recalculating it throws away the rotation value, but that's only used for the cone lamp, which doesn't even run this, so we don't need it anyway.
                     pos = CommonUtil.rotatePointF(offset[0], offset[1], offset[2], host.rotationPitch, host.rotationYaw, 0);
-                    this.boundingBox.setBounds(host.posX + pos[0] - 0.05, host.posY + pos[1] - 0.05, host.posZ + pos[2] - 0.05, host.posX + pos[0] + 0.05, host.posY + pos[1] + 0.05, host.posZ + pos[2] + 0.05);
+                    this.boundingBox = new AxisAlignedBB(host.posX + pos[0] - 0.05, host.posY + pos[1] - 0.05, host.posZ + pos[2] - 0.05, host.posX + pos[0] + 0.05, host.posY + pos[1] + 0.05, host.posZ + pos[2] + 0.05);
                     motionX = (rand.nextInt(40) - 20) * 0.00033f;
                     motionY = rand.nextInt(15) * -0.001f;
                     motionZ = (rand.nextInt(40) - 20) * 0.00033f;
@@ -176,7 +176,7 @@ public class ParticleFX {
                 ticksExisted = 0f;
                 //recalculating it throws away the rotation value, but that's only used for the cone lamp, which doesn't even run this, so we don't need it anyway.
                 pos = CommonUtil.rotatePointF(offset[0] * 0.0625f, offset[1] * -0.0625f, offset[2] * 0.0625f, host.rotationPitch, host.rotationYaw, 0);
-                this.boundingBox.setBounds(host.posX + pos[0] - 0.1, host.posY + pos[1] - 0.1, host.posZ + pos[2] - 0.1, host.posX + pos[0] + 0.1, host.posY + pos[1] + 0.1, host.posZ + pos[2] + 0.1);
+                this.boundingBox= new AxisAlignedBB(host.posX + pos[0] - 0.1, host.posY + pos[1] - 0.1, host.posZ + pos[2] - 0.1, host.posX + pos[0] + 0.1, host.posY + pos[1] + 0.1, host.posZ + pos[2] + 0.1);
                 motionX = (rand.nextInt(40) - 20) * 0.00033f;
                 if (particleType == 0) {
                     motionY = rand.nextInt(15) * 0.001f;
@@ -187,7 +187,7 @@ public class ParticleFX {
                 shouldRender = true;
             } else if (this.ticksExisted > this.lifespan) {//smoke and steam while train is off
                 //if the transport isn't running and this has finished it's movement, set it' position to the transport and set that it shouldn't render.
-                this.boundingBox.setBounds(host.posX, host.posY, host.posZ, host.posX, host.posY, host.posZ);
+                this.boundingBox= new AxisAlignedBB(host.posX, host.posY, host.posZ, host.posX, host.posY, host.posZ);
                 shouldRender = false;
                 return;
             }
@@ -217,7 +217,7 @@ public class ParticleFX {
         AxisAlignedBB box;
 
         //todo: should be able to just check movement and replicate bounding box functions without bounding box, use pos for the temp
-        list = host.worldObj.getCollidingBoundingBoxes(host, this.boundingBox.addCoord(motionX, motionY, motionZ));
+        list = host.world.getCollisionBoxes(host, this.boundingBox.expand(motionX, motionY, motionZ));
         //iterate the list and check for collisions
         for (Object obj : list) {
             box = ((AxisAlignedBB) obj);
@@ -303,7 +303,7 @@ public class ParticleFX {
             glAlphaFunc(GL_LEQUAL, 1f);
            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            if(Minecraft.getMinecraft().theWorld.isRaining()){
+            if(Minecraft.getMinecraft().world.isRaining()){
                 TextureManager.bindTexture(new ResourceLocation(TrainsInMotion.MODID, "textures/effects/lamp_bright.png"));
             } else {
                 TextureManager.bindTexture(new ResourceLocation(TrainsInMotion.MODID, "textures/effects/lamp_low.png"));

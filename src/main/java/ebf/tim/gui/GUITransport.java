@@ -10,9 +10,11 @@ import fexcraft.tmt.slim.Tessellator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,7 @@ import static ebf.tim.utility.ClientUtil.drawTextOutlined;
  * used to draw the GUI for trains and rollingstock (the menu with the inventory).
  * @author Eternal Blue Flame
  */
-public class GUITransport extends GUIContainerNoNEI {
+public class GUITransport extends GuiContainer {
 
     /**a reference to the host entity that this GUI is for.*/
     private static GenericRailTransport transport;
@@ -325,7 +328,7 @@ public class GUITransport extends GUIContainerNoNEI {
     public void actionPerformed(GuiButton button) {}
 
     @Override
-    public void mouseClicked(int mouseButton, int mouseX, int mouseY){
+    public void mouseClicked(int mouseButton, int mouseX, int mouseY) throws IOException {
         for(GUIButton b :buttons){
             if(b.getMouseHover()){
                 b.onClick();
@@ -466,19 +469,19 @@ public class GUITransport extends GUIContainerNoNEI {
                     GL11.glTranslatef(186, 40 + (-20 * i), 0);
                     GL11.glScalef(0.125f + liquid, 1.125f, 1);
                     //render fluid overlay
-                    EventManager.itemRender.renderItemIntoGUI(
+                    EventManager.getItemRender().renderItemIntoGUI(
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    EventManager.itemRender.renderItemIntoGUI(
+                    EventManager.getItemRender().renderItemIntoGUI(
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    EventManager.itemRender.renderItemIntoGUI(
+                    EventManager.getItemRender().renderItemIntoGUI(
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    EventManager.itemRender.renderItemIntoGUI(
+                    EventManager.getItemRender().renderItemIntoGUI(
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
                     GL11.glTranslatef(16, 0, 0);
-                    EventManager.itemRender.renderItemIntoGUI(
+                    EventManager.getItemRender().renderItemIntoGUI(
                             new ItemStack(Item.getItemFromBlock(transport.getTankInfo()[i].fluid.getFluid().getBlock())),0,0);
 
 
@@ -518,23 +521,18 @@ public class GUITransport extends GUIContainerNoNEI {
         return (mouseY >= y && mouseY <= y+height) && (mouseX >= x && mouseX <= x+width);
     }
 
-    /** call super method for when the mouse is moved up or down */
-    protected void mouseMovedOrUp(int p_146286_1_, int p_146286_2_, int p_146286_3_) {
-        super.mouseMovedOrUp(p_146286_1_, p_146286_2_, p_146286_3_);
-    }
-
 
     @Override
-    protected void handleMouseClick(Slot p_146984_1_, int p_146984_2_, int p_146984_3_, int p_146984_4_) {
+    protected void handleMouseClick(Slot p_146984_1_, int p_146984_2_, int p_146984_3_, ClickType p_146984_4_) {
         if (p_146984_1_ != null) {
             p_146984_2_ = p_146984_1_.slotNumber;
         }
 
-        if (p_146984_4_ == 4){
-            p_146984_4_ = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
-                    player.inventory.getItemStack() != ItemStack.EMPTY ? 4 : //cover if the cursor is carrying an item
-                            (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))?3://cover CTRL clicking
-                                    0;//cover everything else
+        if (p_146984_4_ == ClickType.THROW){
+            p_146984_4_ = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? ClickType.QUICK_MOVE ://cover shift click
+                    player.inventory.getItemStack() != ItemStack.EMPTY ? ClickType.THROW : //cover if the cursor is carrying an item
+                            (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))? ClickType.CLONE://cover CTRL clicking
+                                    ClickType.PICKUP;//cover everything else
         }
         this.mc.playerController.windowClick(this.inventorySlots.windowId, p_146984_2_, p_146984_3_, p_146984_4_, this.mc.player);
     }

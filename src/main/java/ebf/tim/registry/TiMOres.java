@@ -37,11 +37,11 @@ public class TiMOres {
         oreAluminum = new SimpleBlock(3.0F, 3.0F, "oreAluminum", TrainsInMotion.MODID + ":ores/ore.aluminum");
         oreSteel = new SimpleBlock(3.0F, 3.0F, "oreSteel", TrainsInMotion.MODID + ":ores/ore.steel");
 
-        ingotSteel = createItem("ingot.steel", "ingotSteel").setTextureName(TrainsInMotion.MODID + ":materials/ingot.steel");
-        dustPlastic = createItem("dust.plastic", "dustPlastic").setTextureName(TrainsInMotion.MODID + ":materials/dust.plastic");
-        dustCoal = createItem("dust.coal", "dustCoal").setTextureName(TrainsInMotion.MODID + ":materials/dust.coal");
-        ingotCopper = createItem("ingot.copper", "ingotCopper").setTextureName(TrainsInMotion.MODID + ":materials/ingot.copper");
-        ingotAluminum = createItem("ingot.aluminum", "ingotAluminum").setTextureName(TrainsInMotion.MODID + ":materials/ingot.aluminum");
+        ingotSteel = createItem("ingot.steel", "ingotSteel");//.setTextureName(TrainsInMotion.MODID + ":materials/ingot.steel");
+        dustPlastic = createItem("dust.plastic", "dustPlastic");//.setTextureName(TrainsInMotion.MODID + ":materials/dust.plastic");
+        dustCoal = createItem("dust.coal", "dustCoal");//.setTextureName(TrainsInMotion.MODID + ":materials/dust.coal");
+        ingotCopper = createItem("ingot.copper", "ingotCopper");//.setTextureName(TrainsInMotion.MODID + ":materials/ingot.copper");
+        ingotAluminum = createItem("ingot.aluminum", "ingotAluminum");//.setTextureName(TrainsInMotion.MODID + ":materials/ingot.aluminum");
 
 
         //add recipes and smelting

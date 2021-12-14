@@ -1,6 +1,13 @@
 package ebf.tim.blocks.rails;
 
 import ebf.tim.blocks.RailTileEntity;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
@@ -18,9 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import depreciated.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -64,10 +69,6 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         this.renderScale=renderScale;
     }
 
-    @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
-    }
 
     @Override
     public int tickRate(World world){return 40;}
@@ -78,7 +79,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
@@ -87,51 +88,44 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return Blocks.RAIL.getRenderType();
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
-    public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z){return true;}
+    public boolean isFlexibleRail(IBlockAccess world, BlockPos pos){return true;}
 
     @Override
-    public float getRailMaxSpeed(World world, EntityMinecart cart, int y, int x, int z){
+    public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos p){
         return 0.4f;//getTile(world, x, y, z)!=null?getTile(world, x, y, z).getRailSpeed():0.4f;
     }
 
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_) {
-        return super.colorMultiplier(p_149720_1_, p_149720_2_, p_149720_3_, p_149720_4_);
-    }
-
     @Override
-    public boolean canCollideCheck(int p_149678_1_, boolean p_149678_2_){
-        return true;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox((double)x + this.minX, (double)y + this.minY, (double)z + this.minZ, (double)x + this.maxX, (double)y + this.maxY, (double)z + this.maxZ);
-    }
-
-
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        int meta = CommonUtil.getRailMeta(world, null, x, y, z);
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        int meta = CommonUtil.getRailMeta(world, null, pos.getX(),pos.getY(),pos.getZ());
         if (meta >1 && meta <6) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1f, 1.0F);
+            return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1f, 1.0F);
         } else {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
+            return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
         }
     }
 
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB hitboxSelf, List p_149743_6_, Entity collidingEntity) {
-        int meta = CommonUtil.getRailMeta(world, null, x, y, z);
+    @SideOnly(Side.CLIENT)
+    @Override
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
+        return getBoundingBox(state,world,pos);
+    }
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+        return getBoundingBox(state,world,pos);
+    }
+
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+        int meta = CommonUtil.getRailMeta(world, null,pos.getX(),pos.getY(),pos.getZ());
         if (meta > 1 && meta < 6) {
             //todo: return twi hitboxes so it can be climbed like stairs
-            this.setBlockBoundsBasedOnState(world, x, y, z);
-            super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
+            super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entityIn, isActualState);
         } else {
-            this.setBlockBoundsBasedOnState(world, x, y, z);
-            super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
+            super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entityIn, isActualState);
         }
 
     }
@@ -146,30 +140,28 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         return new RailTileEntity();
     }
 
-    @Override
-    public TileEntity createTileEntity(World world, int metadata){
-        return createNewTileEntity(world,metadata);
-    }
-
 
 
     @Override
-    public int getBasicRailMetadata(IBlockAccess world, EntityMinecart cart, int x, int y, int z) {
-        if(!(world.getTileEntity(x,y,z) instanceof RailTileEntity)){
-            return 0;
+    public EnumRailDirection getRailDirection(IBlockAccess world, BlockPos pos, IBlockState state, EntityMinecart cart) {
+
+        int x = pos.getX(), y=pos.getY(),z=pos.getZ();
+
+        if(!(getTileEntity(world,x,y,z) instanceof RailTileEntity)){
+            return EnumRailDirection.byMetadata(0);
         }
-        int meta = ((RailTileEntity) world.getTileEntity(x,y,z)).getMeta();
-        if(isPowered()) {
+        int meta = ((RailTileEntity) getTileEntity(world,x,y,z)).getMeta();
+        if(isPowered) {
             meta = meta & 7;
         }
 
         if (cart == null || cart.getEntityData() == null){
-                return meta;
+                return EnumRailDirection.byMetadata(meta);
             }
         //first be sure the key exists, and create it if it doesn't, that way we be sure we don't crash. Also if it doesn't exist we can just return the base meta unchanged.
         if (!cart.getEntityData().hasKey("tim.lastusedrail.meta")){
             cart.getEntityData().setInteger("tim.lastusedrail.meta",meta);
-            return meta;
+            return EnumRailDirection.byMetadata(meta);
         }
         boolean changed = false;
         switch (meta) {
@@ -191,20 +183,20 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             }
             case 6:{
                 if(getTileEntityMeta(world,x+1,y,z)==9 && cart.motionZ>0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==0){
-                    return 0;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(0);//this already worked fine, but make it smoother
                 } else if(getTileEntityMeta(world,x+1,y,z)==7){
                     if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==0) {
-                        return 0;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(0);//cover parallel entering from wrong end on straight
                     } else if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==7){
-                        return 9;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(9);//cover parallel off shape
                     }
                 } else if(getTileEntityMeta(world,x,y,z+1)==8 && cart.motionX>0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==1){
-                    return 1;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(1);//this already worked fine, but make it smoother
                 } else if (getTileEntityMeta(world,x,y,z+1)==9) {
                     if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 1) {
-                        return 1;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(1);//cover parallel entering from wrong end on straight
                     } else if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 9) {
-                        return 7;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(7);//cover parallel off shape
                     }
                 }
                 changed = true;
@@ -212,26 +204,26 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             }
             case 7:{
                 if(getTileEntityMeta(world,x-1,y,z)==9 && cart.motionX>0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==0){
-                    return 0;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(0);//this already worked fine, but make it smoother
                 } else if(getTileEntityMeta(world,x-1,y,z)==8){
                     if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==0) {
-                        return 0;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(0);//cover parallel entering from wrong end on straight
                     } else if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==9){
-                        return 6;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(6);//cover parallel off shape
                     }
                 } else if(getTileEntityMeta(world,x,y,z+1)==9 && cart.motionX<0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==1){
-                    return 1;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(1);//this already worked fine, but make it smoother
                 } else if (getTileEntityMeta(world,x,y,z+1)==8) {
                     if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 1) {
-                        return 1;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(1);//cover parallel entering from wrong end on straight
                     } else if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 7) {
-                        return 6;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(6);//cover parallel off shape
                     }
                 } else if(getTileEntityMeta(world,x-1,y,z)==6) {
                     if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 0) {
-                        return 0;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(0);//cover parallel entering from wrong end on straight
                     } else if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 6) {
-                        return 8;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(8);//cover parallel off shape
                     }
                 }
                 changed = true;
@@ -239,20 +231,20 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             }
             case 8:{
                 if(getTileEntityMeta(world,x-1,y,z)==6 && cart.motionZ<0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==0){
-                    return 0;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(0);//this already worked fine, but make it smoother
                 } else if(getTileEntityMeta(world,x-1,y,z)==9){
                     if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==0) {
-                        return 0;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(0);//cover parallel entering from wrong end on straight
                     } else if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==9){
-                        return 7;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(7);//cover parallel off shape
                     }
                 } else if(getTileEntityMeta(world,x,y,z-1)==6 && cart.motionX<0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==1){
-                    return 1;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(1);//this already worked fine, but make it smoother
                 } else if (getTileEntityMeta(world,x,y,z-1)==7) {
                     if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 1) {
-                        return 1;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(1);//cover parallel entering from wrong end on straight
                     } else if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 7) {
-                        return 9;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(9);//cover parallel off shape
                     }
                 }
                 changed = true;
@@ -260,26 +252,26 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             }
             case 9:{
                 if(getTileEntityMeta(world,x+1,y,z)==6 && cart.motionZ>0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==0){
-                    return 0;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(0);//this already worked fine, but make it smoother
                 } else if(getTileEntityMeta(world,x+1,y,z)==7){
                     if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==0 && cart.motionZ<0) {
-                        return 0;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(0);//cover parallel entering from wrong end on straight
                     } else if(cart.getEntityData().getInteger("tim.lastusedrail.meta")==8){
-                        return 6;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(6);//cover parallel off shape
                     }
                 } else if(getTileEntityMeta(world,x,y,z-1)==7 && cart.motionX>0 && cart.getEntityData().getInteger("tim.lastusedrail.meta")==1){
-                    return 1;//this already worked fine, but make it smoother
+                    return EnumRailDirection.byMetadata(1);//this already worked fine, but make it smoother
                 } else if (getTileEntityMeta(world,x,y,z-1)==6) {
                     if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 1) {
-                        return 1;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(1);//cover parallel entering from wrong end on straight
                     } else if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 6) {
-                        return 8;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(8);//cover parallel off shape
                     }
                 } else if(getTileEntityMeta(world,x+1,y,z)==8 && getTileEntityMeta(world,x+1,y,z-1)==6) {
                     if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 0) {
-                        return 0;//cover parallel entering from wrong end on straight
+                        return EnumRailDirection.byMetadata(0);//cover parallel entering from wrong end on straight
                     } else if (cart.getEntityData().getInteger("tim.lastusedrail.meta") == 9) {
-                        return 6;//cover parallel off shape
+                        return EnumRailDirection.byMetadata(6);//cover parallel off shape
                     }
                 }
                 changed = true;
@@ -295,45 +287,41 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             cart.getEntityData().setInteger("tim.lastusedrail.x",x);
             cart.getEntityData().setInteger("tim.lastusedrail.z",z);
         }
-        return meta;
+        return EnumRailDirection.byMetadata(meta);
     }
 
     public int getTileEntityMeta(IBlockAccess w, int x, int y, int z){
-        if(w.getTileEntity(x,y,z) instanceof RailTileEntity){
-            return ((RailTileEntity) w.getTileEntity(x,y,z)).getMeta();
+        if(getTileEntity(w,x,y,z) instanceof RailTileEntity){
+            return ((RailTileEntity) getTileEntity(w,x,y,z)).getMeta();
         }
         return -1;
     }
 
     @Override
-    public void onBlockAdded(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_) {
-        updateNearbyShapes(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_);
+    public void onBlockAdded(World p_149726_1_, BlockPos pos, IBlockState state) {
+        updateNearbyShapes(p_149726_1_, pos.getX(),pos.getY(),pos.getZ());
 
-        if (this.field_150053_a) {
-            this.onNeighborBlockChange(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_, this);
+        if (this.isPowered) {
+            this.updateNearbyShapes(p_149726_1_, pos.getX(),pos.getY(),pos.getZ());
         }
     }
 
 
     @Override
-    public Material getMaterial(){
-        return Blocks.iron_block.getMaterial();
+    public Material getMaterial(IBlockState state){
+        return Blocks.IRON_BLOCK.getMaterial(Blocks.IRON_BLOCK.getDefaultState());
     }
 
 
     @Override
-    public boolean canPlaceBlockAt(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_) {
+    public boolean canPlaceBlockAt(World p_149742_1_, BlockPos pos) {
         return true;
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
-        return getPickBlock(target, world, x, y, z);
-    }
-    @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-        if(world.getTileEntity(x,y,z) instanceof RailTileEntity) {
-            XmlBuilder xml =((RailTileEntity) world.getTileEntity(x,y,z)).getData();
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        if(world.getTileEntity(pos) instanceof RailTileEntity) {
+            XmlBuilder xml =((RailTileEntity) world.getTileEntity(pos)).getData();
             return ItemRail.setStackData(
                     new ItemStack(TiMItems.railItem, 1), xml.getItemStack("rail"),
                     xml.getItemStack("ballast"), xml.getItemStack("ties"), xml.getItemStack("wires"));
@@ -343,39 +331,32 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return new ArrayList<>();
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
     }
 
 
 
     @Override
-    public void onNeighborBlockChange(World worldObj, int x, int y, int z, Block b) {
-        updateNearbyShapes(worldObj,x,y,z);
+    public void onNeighborChange(IBlockAccess worldObj, BlockPos block, BlockPos other) {
+        updateNearbyShapes((World) worldObj,block.getX(),block.getY(),block.getZ());
     }
 
 
     @Override
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
+    public void breakBlock(World p_149749_1_, BlockPos pos, IBlockState state) {
         if(p_149749_1_!=null && !p_149749_1_.isRemote){
-            EntityPlayer p = p_149749_1_.getClosestPlayer(p_149749_2_,p_149749_3_,p_149749_4_,6);
+            EntityPlayer p = p_149749_1_.getClosestPlayer(pos.getX(),pos.getY(),pos.getZ(),6, false);
             if(p!=null && p.capabilities!=null && !p.capabilities.isCreativeMode) {
-                TileEntity e = p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+                TileEntity e = p_149749_1_.getTileEntity(pos);
                 if (e instanceof RailTileEntity && p_149749_1_.getGameRules().getBoolean("doTileDrops")) {
                     ((RailTileEntity) e).dropItem();
                 }
             }
         }
         if(p_149749_1_!=null) {
-            p_149749_1_.getChunkFromChunkCoords(p_149749_2_ >> 4, p_149749_4_ >> 4)
-                    .removeTileEntity(p_149749_2_ & 15, p_149749_3_, p_149749_4_ & 15);
+            p_149749_1_.getChunk(pos.getX() >> 4, pos.getZ() >> 4)
+                    .removeTileEntity(new BlockPos(pos.getX() & 15, pos.getY(), pos.getZ() & 15));
         }
-    }
-
-    @Override
-    public int onBlockPlaced(World p_149660_1_, int p_149660_2_, int p_149660_3_, int p_149660_4_, int p_149660_5_, float p_149660_6_, float p_149660_7_, float p_149660_8_, int p_149660_9_) {
-        //updateNearbyShapes(p_149660_1_, p_149660_2_, p_149660_3_, p_149660_4_);
-        return p_149660_9_;
     }
 
     public void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
@@ -396,7 +377,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         for(int x : updateMatrix){
             for(int z : updateMatrix){
                 for(int y : updateMatrix){
-                    te=world.getTileEntity(x+xCoord,y+yCoord,z+zCoord);
+                    te=getTileEntity(world,x+xCoord,y+yCoord,z+zCoord);
                     if(te instanceof RailTileEntity && ((RailTileEntity) te).getData()!=null){
                         RailShapeCore.processPoints(x+xCoord,y+yCoord, z+zCoord,world,
                                 getShape(world, x+xCoord,y+yCoord, z+zCoord),
@@ -418,12 +399,10 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         if(!(CommonUtil.getBlockAt(worldObj, xPos,yPos,zPos) instanceof BlockRailCore)){
             return null;
         }
-        TileEntity te= worldObj.getTileEntity(xPos, yPos, zPos);
+        TileEntity te= worldObj.getTileEntity(new BlockPos(xPos,yPos,zPos));
         if(!(te instanceof RailTileEntity)){
             te = new RailTileEntity();
-            te.xCoord=xPos;
-            te.yCoord=yPos;
-            te.zCoord=zPos;
+            te.setPos(new BlockPos(xPos,yPos,zPos));
         }
         switch (((RailTileEntity)te).getMeta()){
             //Z straight
@@ -473,7 +452,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
      * @return boolean for if the shape can be made
      */
     public static boolean checkBlockMeta(World world, int xCoord, int yCoord, int zCoord, int ... meta){
-        if (!world.getChunkProvider().chunkExists(xCoord/16, zCoord/16) ||
+        if (!world.getChunkProvider().isChunkGeneratedAt(xCoord/16, zCoord/16) ||
                 !(CommonUtil.getBlockAt(world, xCoord,yCoord,zCoord) instanceof BlockRailBase)){
             return false;
         }else {
@@ -492,7 +471,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
      * in 1.8+ this will have to change to returning the expected int based on the block state, or the getBasicRailMetadata for TiM rails
      */
     public static int getRailMeta(IBlockAccess world, int x, int y, int z, @Nullable EntityMinecart cart){
-        if(!(world.getBlock(x,y,z) instanceof BlockRailBase)){
+        if(!(CommonUtil.getBlockAt((World) world,x,y,z) instanceof BlockRailBase)){
             return -1;
         }
         return CommonUtil.getRailMeta(world, cart,x,y,z);
@@ -511,25 +490,18 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         return meta;
     }
 
+    @Deprecated //this was a quick lazy way to do this, should replace with a more proper thing later.
+    private static TileEntity getTileEntity(IBlockAccess world, int x, int y, int z){
+        return world.getTileEntity(new BlockPos(x,y,z));
+    }
 
 
-    @Override
+
+    /*@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
         return Blocks.RAIL.getIcon(0, 0);
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int p_149646_5_) {
-        return false;
-    }
-
-    @Override
-    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-        return 0;
-    }
+    }*/
 
 
     @SideOnly(Side.CLIENT)
