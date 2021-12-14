@@ -98,11 +98,6 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         return 0.4f;//getTile(world, x, y, z)!=null?getTile(world, x, y, z).getRailSpeed():0.4f;
     }
 
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_) {
-        return super.colorMultiplier(p_149720_1_, p_149720_2_, p_149720_3_, p_149720_4_);
-    }
-
     @Override
     public boolean canCollideCheck(int p_149678_1_, boolean p_149678_2_){
         return true;
@@ -124,15 +119,8 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB hitboxSelf, List p_149743_6_, Entity collidingEntity) {
-        int meta = CommonUtil.getRailMeta(world, null, x, y, z);
-        if (meta > 1 && meta < 6) {
-            //todo: return twi hitboxes so it can be climbed like stairs
-            this.setBlockBoundsBasedOnState(world, x, y, z);
-            super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
-        } else {
-            this.setBlockBoundsBasedOnState(world, x, y, z);
-            super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
-        }
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        super.addCollisionBoxesToList(world, x, y, z, hitboxSelf, p_149743_6_, collidingEntity);
 
     }
 
@@ -309,7 +297,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     public void onBlockAdded(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_) {
         updateNearbyShapes(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_);
 
-        if (this.field_150053_a) {
+        if (this.isPowered()) {
             this.onNeighborBlockChange(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_, this);
         }
     }
@@ -370,12 +358,6 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             p_149749_1_.getChunkFromChunkCoords(p_149749_2_ >> 4, p_149749_4_ >> 4)
                     .removeTileEntity(p_149749_2_ & 15, p_149749_3_, p_149749_4_ & 15);
         }
-    }
-
-    @Override
-    public int onBlockPlaced(World p_149660_1_, int p_149660_2_, int p_149660_3_, int p_149660_4_, int p_149660_5_, float p_149660_6_, float p_149660_7_, float p_149660_8_, int p_149660_9_) {
-        //updateNearbyShapes(p_149660_1_, p_149660_2_, p_149660_3_, p_149660_4_);
-        return p_149660_9_;
     }
 
     public void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
@@ -517,18 +499,6 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
         return Blocks.rail.getIcon(0, 0);
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int p_149646_5_) {
-        return false;
-    }
-
-    @Override
-    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-        return 0;
     }
 
 
