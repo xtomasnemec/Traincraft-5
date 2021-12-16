@@ -21,18 +21,18 @@ public class TCItems {
 		registerItems();
 
 		/* Clothes
-		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.overalls.item, 1),  " # ", "X$X", "X X", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('$'), Items.leather_leggings, Character.valueOf('#'), new ItemStack(Items.DYE, 1, 1) );
-		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.jacket.item, 1),  "X X", "X$X", "X#X", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 14), Character.valueOf('$'), Items.leather_chestplate, Character.valueOf('#'), Items.string );
-		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.hat.item, 1),  " X ", "X$X", "#X#", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('$'), Items.leather_helmet, Character.valueOf('#'), Items.string );
+		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.overalls.item, 1),  " # ", "X$X", "X X", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('$'), Items.LEATHER_leggings, Character.valueOf('#'), new ItemStack(Items.DYE, 1, 1) );
+		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.jacket.item, 1),  "X X", "X$X", "X#X", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 14), Character.valueOf('$'), Items.LEATHER_chestplate, Character.valueOf('#'), Items.string );
+		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.hat.item, 1),  " X ", "X$X", "#X#", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('$'), Items.LEATHER_helmet, Character.valueOf('#'), Items.string );
 
 		/* Driver Clothes
-		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.pants_driver_paintable.item, 1),  "XXX", "XLX", "X$X", Character.valueOf('L'), Items.leather_leggings,Character.valueOf('$'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('X'), Items.string);
-		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.jacket_driver_paintable.item, 1),  "X X", "XRX", "XPX", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('P'), Items.leather_chestplate,Character.valueOf('R'),  new ItemStack(Items.DYE, 1, 1) );
+		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.pants_driver_paintable.item, 1),  "XXX", "XLX", "X$X", Character.valueOf('L'), Items.LEATHER_leggings,Character.valueOf('$'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('X'), Items.string);
+		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.jacket_driver_paintable.item, 1),  "X X", "XRX", "XPX", Character.valueOf('X'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('P'), Items.LEATHER_chestplate,Character.valueOf('R'),  new ItemStack(Items.DYE, 1, 1) );
 		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.hat_driver_paintable.item, 1), "#$#", "# #", Character.valueOf('$'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('#'), Items.string );
 
 		/* Ticket Man Clothes
-		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.pants_ticketMan_paintable.item, 1),  "XXX", "XLX", "X$X", Character.valueOf('L'), Items.leather_leggings,Character.valueOf('$'), new ItemStack(Items.DYE, 1, 8), Character.valueOf('X'), Items.string);
-		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.jacket_ticketMan_paintable.item, 1),  "X X", "XPX", "X#X", Character.valueOf('P'), Items.leather_chestplate, Character.valueOf('#'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('X'), Items.string);
+		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.pants_ticketMan_paintable.item, 1),  "XXX", "XLX", "X$X", Character.valueOf('L'), Items.LEATHER_leggings,Character.valueOf('$'), new ItemStack(Items.DYE, 1, 8), Character.valueOf('X'), Items.string);
+		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.jacket_ticketMan_paintable.item, 1),  "X X", "XPX", "X#X", Character.valueOf('P'), Items.LEATHER_chestplate, Character.valueOf('#'), new ItemStack(Items.DYE, 1, 4), Character.valueOf('X'), Items.string);
 		TrainCraftingManager.instance.addRecipe(new ItemStack(ItemIDs.hat_ticketMan_paintable.item, 1), "#$#", "# #", Character.valueOf('$'), new ItemStack(Items.DYE, 1, 0), Character.valueOf('#'), Items.string );
 
 		/* Composite Suit

@@ -2335,7 +2335,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     /**defines the recipe in order from topleft to bottom right.
      * example:
-     * return new ItemStack[]{new ItemStack(Blocks.dirt, 2), new ItemStack(Blocks.glass,1), etc};
+     * return new ItemStack[]{new ItemStack(Blocks.dirt, 2), new ItemStack(Blocks.GLASS,1), etc};
      * array must contain 9 values. may not return null.*/
     public ItemStack[] getRecipe(){return getRecipie();}
 

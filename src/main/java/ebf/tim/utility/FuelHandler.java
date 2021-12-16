@@ -1,13 +1,13 @@
 package ebf.tim.utility;
 
 
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyHandler;
+import mods.railcraft.api.carts.IEnergyTransfer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.energy.IEnergyStorage;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.registry.TiMFluids;
-import mods.railcraft.api.electricity.IElectricGrid;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,10 +19,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.ItemFluidContainer;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 
 import static ebf.tim.entities.GenericRailTransport.*;
 import static net.minecraftforge.fluids.FluidUtil.getFluidHandler;
@@ -75,8 +71,8 @@ public class FuelHandler{
 				return new FluidStack(TiMFluids.fluidRedstone, 250);
 			} else if (itemStack.getItem() == Item.getItemFromBlock(Blocks.REDSTONE_BLOCK)) {
 				return new FluidStack(TiMFluids.fluidRedstone, 2250);
-			} else if (itemStack.getItem() instanceof IEnergyContainerItem) {
-				return new FluidStack(TiMFluids.fluidRedstone, ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, 250, true));
+			} else if (itemStack.getItem() instanceof IEnergyStorage) {
+				return new FluidStack(TiMFluids.fluidRedstone, ((IEnergyStorage) itemStack.getItem()).extractEnergy(250, true));
 			}
 		}
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.DIESEL)){
@@ -132,7 +128,7 @@ public class FuelHandler{
     //adds burn times for items that aren't normally registered to minecraft's burnable system.
     public static int itemBurnTime(ItemStackSlot slotId) {
 		if(slotId !=null && slotId.getStack() !=null) {
-			switch (slotId.getItem().delegate.name()) {
+			switch (slotId.getItem().delegate.name().getNamespace()) {
 
 				//case "modid:Item":{ return 20;}
 				default:{return TileEntityFurnace.getItemBurnTime(slotId.getStack());}
@@ -201,7 +197,7 @@ public class FuelHandler{
 		} else {//if engine is not running
 			float heat = getBoilerHeat(train);
 
-			float biomeHeat =  (((train.world.getBiomeGenForCoords(train.chunkCoordX, train.chunkCoordZ).temperature -0.15f)//biome temperature with offset to compensate for freezing point
+			float biomeHeat =  (((train.world.getBiomeForCoordsBody(new BlockPos(train.chunkCoordX, train.posY, train.chunkCoordZ)).getDefaultTemperature() -0.15f)//biome temperature with offset to compensate for freezing point
 					- (0.0014166695f * ((float)train.posY - 64f)))//temperature changes by 0.00166667 for every meter above or below sea level (64)
 					*0.368f//convert to celsius*0.01
 			);
@@ -330,9 +326,9 @@ public class FuelHandler{
 				train.fill(getUseableFluid(train.fuelSlot().getSlotID(),train),true);
 
 				if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					if (train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem() instanceof IEnergyContainerItem) {
-						((IEnergyContainerItem) train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem())
-								.extractEnergy(train.getSlotIndexByID(train.fuelSlot().getSlotID()).getStack(), 250, false);
+					if (train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem() instanceof IEnergyStorage) {
+						((IEnergyStorage) train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem())
+								.extractEnergy(250, false);
 					} else {
 						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
 					}
@@ -347,22 +343,15 @@ public class FuelHandler{
 			Block b;
 			for (int i=-2; i<5;i++) {
 				if(i==1){continue;}
-				te=train.world.getTileEntity(CommonUtil.floorDouble(train.posX), CommonUtil.floorDouble(train.posY + i), CommonUtil.floorDouble(train.posZ));
-				if (te instanceof IEnergyHandler) {
-					for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-						draw = ((IEnergyHandler) te).receiveEnergy(direction, 100, true);
+				te=train.world.getTileEntity(
+						new BlockPos(CommonUtil.floorDouble(train.posX), CommonUtil.floorDouble(train.posY + i), CommonUtil.floorDouble(train.posZ)));
+				if (te instanceof IEnergyStorage) {
+					draw = ((IEnergyStorage) te).extractEnergy(100, true);
 
-						if (draw != 0) {
-							((IEnergyHandler) te).receiveEnergy(direction, 100, false);
-							train.fill(new FluidStack(TiMFluids.fluidRedstone, 100), true);
-							break;
-						}
-					}
-				} else{
-					b= CommonUtil.getBlockAt(train.world, train.posX, train.posY + i, train.posZ);
-					if (b instanceof IElectricGrid && ((IElectricGrid) b).getChargeHandler().getCharge()>=100){
-						((IElectricGrid) b).getChargeHandler().removeCharge(100);
+					if (draw ==100) {
+						((IEnergyStorage) te).receiveEnergy(100, false);
 						train.fill(new FluidStack(TiMFluids.fluidRedstone, 100), true);
+						break;
 					}
 				}
 				if (draw != 0) {
@@ -440,7 +429,7 @@ public class FuelHandler{
 	}
 
 	public static FluidStack getFluidForFilledItem(ItemStack item){
-		FluidUtil.getFluidHandler(item).getTankProperties()[0].getContents();
+		return FluidUtil.getFluidHandler(item).getTankProperties()[0].getContents();
 	}
 
 	public static boolean isEmptyContainer(ItemStack item){

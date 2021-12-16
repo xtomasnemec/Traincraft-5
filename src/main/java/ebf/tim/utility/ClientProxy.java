@@ -1,10 +1,6 @@
 package ebf.tim.utility;
 
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
@@ -23,11 +19,17 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -103,15 +105,15 @@ public class ClientProxy extends CommonProxy {
                 if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCraftGuide) {
                     return new GUICraftBook();
                 } else if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemPaintBucket){
-                    return new GUIPaintBucket((GenericRailTransport) player.worldObj.getEntityByID(ID));
+                    return new GUIPaintBucket((GenericRailTransport) player.world.getEntityByID(ID));
                 }
             }
             //Trains
-            if (player.worldObj.getEntityByID(ID) instanceof GenericRailTransport && !((GenericRailTransport) player.worldObj.getEntityByID(ID)).hasCustomGUI()) {
-                return new GUITransport(player.inventory, (GenericRailTransport) player.worldObj.getEntityByID(ID));
+            if (player.world.getEntityByID(ID) instanceof GenericRailTransport && !((GenericRailTransport) player.world.getEntityByID(ID)).hasCustomGUI()) {
+                return new GUITransport(player.inventory, (GenericRailTransport) player.world.getEntityByID(ID));
                 //tile entities
-            } else if (player.worldObj.getTileEntity(x,y,z) instanceof TileEntityStorage) {
-                return new GUITrainTable(player.inventory, player.worldObj, x, y, z);
+            } else if (player.world.getTileEntity(new BlockPos(x,y,z)) instanceof TileEntityStorage) {
+                return new GUITrainTable(player.inventory, player.world, x, y, z);
             }
         }
         return null;
@@ -260,7 +262,7 @@ public class ClientProxy extends CommonProxy {
 
     public static final TileEntitySpecialRenderer specialRenderer = new TileEntitySpecialRenderer() {
         @Override
-        public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float p_147500_8_) {
+        public void render(TileEntity tileEntity, double x, double y, double z, float p_147500_8_, int destroyStage, float alpha) {
             GL11.glPushMatrix();
             GL11.glTranslated(x,y, z);
             tileEntity.addInfoToCrashReport(null);
@@ -278,7 +280,7 @@ public class ClientProxy extends CommonProxy {
      * <h3>null render</h3>
      * this is just a simple render that never draws anything, since its static it only ever needs to exist once, which makes it lighter on the render.
      */
-    private static final Render nullRender = new Render() {
+    private static final Render nullRender = new Render(Minecraft.getMinecraft().getRenderManager()) {
         @Override
         public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
 
@@ -288,25 +290,25 @@ public class ClientProxy extends CommonProxy {
         }
     };
 
-    private static final RenderPlayer playerRender= new RenderPlayer(){
+    private static final RenderPlayer playerRender= new RenderPlayer(Minecraft.getMinecraft().getRenderManager()){
         GenericRailTransport t;
         @Override
         public void doRender(AbstractClientPlayer p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_){
-            if (p_76986_1_.ridingEntity instanceof GenericRailTransport) {
-                t=(GenericRailTransport) p_76986_1_.ridingEntity;
+            if (p_76986_1_.getRidingEntity() instanceof GenericRailTransport) {
+                t=(GenericRailTransport) p_76986_1_.getRidingEntity();
                 GL11.glPushMatrix();
                 GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
                 super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
                 GL11.glPopMatrix();
 
-            } else if (p_76986_1_.ridingEntity instanceof EntitySeat){
-                t=(GenericRailTransport) p_76986_1_.worldObj.getEntityByID(((EntitySeat) p_76986_1_.ridingEntity).parentId);
+            } else if (p_76986_1_.getRidingEntity() instanceof EntitySeat){
+                t=(GenericRailTransport) p_76986_1_.world.getEntityByID(((EntitySeat) p_76986_1_.getRidingEntity()).parentId);
                 GL11.glPushMatrix();
                 GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
-                if(p_76986_1_.ridingEntity.getLookVec() !=null) {
-                    GL11.glRotated(p_76986_1_.ridingEntity.getLookVec().xCoord, 0, 1, 0);
-                    GL11.glRotated(p_76986_1_.ridingEntity.getLookVec().yCoord, 0, 0, 1);
-                    GL11.glRotated(p_76986_1_.ridingEntity.getLookVec().zCoord, 1, 0, 0);
+                if(p_76986_1_.getRidingEntity().getLookVec() !=null) {
+                    GL11.glRotated(p_76986_1_.getRidingEntity().getLookVec().x, 0, 1, 0);
+                    GL11.glRotated(p_76986_1_.getRidingEntity().getLookVec().y, 0, 0, 1);
+                    GL11.glRotated(p_76986_1_.getRidingEntity().getLookVec().z, 1, 0, 0);
                 }
                 super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
                 GL11.glPopMatrix();

@@ -72,7 +72,7 @@ public class EntityPassengerRheingoldPanorama extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
-                new ItemStack(Blocks.glass, 1), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1),
+                new ItemStack(Blocks.GLASS, 1), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameSteel, 1),
                 null, null, new ItemStack(TiMItems.cabinSteel, 1),
                 null, null, new ItemStack(TiMItems.seatsWooden, 1)        };
     }

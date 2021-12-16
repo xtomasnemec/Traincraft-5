@@ -1,12 +1,20 @@
 package ebf.tim.items;
 
+import com.sun.istack.internal.Nullable;
+import mods.railcraft.api.items.ITrackItem;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.registry.TiMBlocks;
 import ebf.tim.utility.CommonUtil;
-import mods.railcraft.api.core.items.ITrackItem;
 import net.minecraft.block.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -17,7 +25,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
@@ -38,11 +45,14 @@ public class ItemRail extends Item implements ITrackItem {
      */
     @Deprecated
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int meta, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-        if(world.isRemote){return true;}
-        net.minecraft.block.Block block = CommonUtil.getBlockAt(world, x, y, z);
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(world.isRemote){return EnumActionResult.PASS;}
+        net.minecraft.block.Block block = CommonUtil.getBlockAt(world, pos.getX(), pos.getY(),pos.getZ());
+        int x = pos.getX(), y=pos.getY(),z=pos.getZ();
+        ItemStack stack = player.getHeldItem(hand);
 
-        if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush) {
+        int meta = facing.getIndex();
+        if (block != Blocks.VINE && block != Blocks.TALLGRASS && block != Blocks.DEADBUSH){
             switch (meta) {
                 case 0:{--y;break;}
                 case 1:{++y;break;}
@@ -55,63 +65,63 @@ public class ItemRail extends Item implements ITrackItem {
 
         if(block instanceof BlockRailBase){
             if(meta==0) {
-                return false;
+                return EnumActionResult.FAIL;
             } else if (meta==1){
                 y--;
-                int rotation = MathHelper.floor_double((player!=null?player.rotationYawHead:p_77648_10_) * 4.0F / 360.0F + 0.5D) & 3;
+                int rotation = MathHelper.floor((player!=null?player.rotationYawHead:hitZ) * 4.0F / 360.0F + 0.5D) & 3;
                 switch (rotation){
                     case 0:{z++;
                     if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){z++;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){z++;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){z++;}
-                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return false;}
+                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return EnumActionResult.FAIL;}
                         break;
                     }//south
                     case 1:{x--;
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){x--;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){x--;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){x--;}
-                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return false;}}//west
+                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return EnumActionResult.FAIL;}}//west
                     break;
                     case 2:{z--;
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){z--;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){z--;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){z--;}
-                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return false;}}//north
+                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return EnumActionResult.FAIL;}}//north
                     break;
                     case 3:{x++;
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){x++;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){x++;}
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){x++;}
-                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return false;}}//east
+                        if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return EnumActionResult.FAIL;}}//east
                 }
 
             }
         }
 
-        if (!player.canPlayerEdit(x,y,z, meta, stack) || stack.getCount()==0 ||
-        !world.getChunkProvider().chunkExists(
+        if (!player.canPlayerEdit(new BlockPos(x,y,z), facing, stack) || stack.getCount()==0 ||
+        !world.getChunkProvider().isChunkGeneratedAt(
                 x>>4, z>>4)) {
-            return false;
+            return EnumActionResult.FAIL;
         } else {
             if(!(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockAir)){
                 //replaceable covers things like fluids, IPlantable and IGrowable cover things like grass and flowers
-                if(!CommonUtil.getBlockAt(world, x,y,z).isReplaceable(world,x,y,z)
+                if(!CommonUtil.getBlockAt(world, x,y,z).isReplaceable(world,new BlockPos(x,y,z))
                         && !(block instanceof IPlantable) && !(block instanceof IGrowable)){
-                    return false;
-                } else {
+                    return EnumActionResult.FAIL;
+                } else if (block != Blocks.VINE && block != Blocks.TALLGRASS && block != Blocks.DEADBUSH) {
                     //if it is replaceable, try to spawn the dropped item.
-                    List<ItemStack> blockStacks = CommonUtil.getBlockAt(world, x,y,z).getDrops(world,x,y,z,world.getBlockMetadata(x,y,z),0);
+                    List<ItemStack> blockStacks = CommonUtil.getBlockAt(world, x,y,z).getDrops(world,new BlockPos(x,y,z),world.getBlockState(new BlockPos(x,y,z)),0);
                     for(ItemStack stak : blockStacks){
                         world.spawnEntity(new EntityItem(world,x,y+0.5,z, stak));
                     }
                 }
             }
 
-            if (world.setBlock(x,y,z, getPlacedBlock(), 0, 3)) {
-                int i1 = getPlacedBlock().onBlockPlaced(world, x,y,z, meta, p_77648_8_, p_77648_9_, p_77648_10_, 0);
+            if (CommonUtil.setBlock(world,x,y,z, getPlacedBlock(), 0)) {
+                getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x,y,z), world.getBlockState(new BlockPos(x,y,z)), player, stack);
                 if (CommonUtil.getBlockAt(world, x,y,z) == getPlacedBlock()) {
-                    getPlacedBlock().onBlockPlacedBy(world, x,y,z, player, stack);
+                    getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x,y,z),world.getBlockState(new BlockPos(x,y,z)), player, stack);
 
                     ((BlockRailCore)CommonUtil.getBlockAt(world, x,y,z)).updateShape(x,y,z,world,
                             //set rail
@@ -135,11 +145,10 @@ public class ItemRail extends Item implements ITrackItem {
                             );
                 }
 
-                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, getPlacedBlock().stepSound.func_150496_b(), (getPlacedBlock().stepSound.getVolume() + 1.0F) / 2.0F, getPlacedBlock().stepSound.getPitch() * 0.8F);
-                getPlacedBlock().onPostBlockPlaced(world, x,y,z, i1);
-                --stack.getCount();
+                world.playSound(player,x + 0.5F, y + 0.5F, z + 0.5F, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, (getPlacedBlock().getSoundType().getVolume() + 1.0F) / 2.0F, getPlacedBlock().getSoundType().getPitch() * 0.8F);
+                stack.setCount(stack.getCount()-1);
             }
-            return true;
+            return EnumActionResult.SUCCESS;
         }
     }
 
@@ -148,29 +157,30 @@ public class ItemRail extends Item implements ITrackItem {
     }
 
     public net.minecraft.block.Block getPlacedBlock(){
-        return TiMBlocks.RAILBlock;
+        return TiMBlocks.railBlock;
     }
 
-    public boolean placeTrack(ItemStack stack, World world, int x, int y, int z){
+
+    public boolean placeTrack(ItemStack stack, @Nullable EntityPlayer player, World world, BlockPos pos, @Nullable BlockRailBase.EnumRailDirection trackShape){
         if(world.isRemote){return true;}
+
+        int x = pos.getX(), y=pos.getY(),z=pos.getZ();
         net.minecraft.block.Block block = CommonUtil.getBlockAt(world, x, y, z);
 
-        if (!(World.doesBlockHaveSolidTopSurface(world ,x, y, z))){
+        if (!(world.isSideSolid(new BlockPos(x, y, z),EnumFacing.UP))){
             return false;
         }
 
-        if(block.isReplaceable(world, x, y+1, z) || block instanceof BlockFlower || block == Blocks.double_plant || block instanceof BlockMushroom){
-            block.dropBlockAsItem(world, x, y+1, z, world.getBlockMetadata(x, y+1, z), 0);
+        if(block.isReplaceable(world, new BlockPos(x, y+1, z)) || block instanceof BlockFlower || block == Blocks.DOUBLE_PLANT || block instanceof BlockMushroom){
+            block.dropBlockAsItem(world, new BlockPos(x, y+1, z), world.getBlockState(new BlockPos(x, y+1, z)), 0);
         }
 
-        int meta=world.getBlockMetadata(x,y,z);
 
-        if (world.canPlaceEntityOnSide(getPlacedBlock(),x,y,z, false, meta, null, stack)) {
-            int i1 = getPlacedBlock().onBlockPlaced(world, x, y, z, meta, 0, 0, 0, 0);
+        if (world.mayPlace(getPlacedBlock(),new BlockPos(x,y,z), false, EnumFacing.UP, player)) {
+            getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x, y, z), block.getDefaultState(), player,stack);
 
-            if (world.setBlock(x, y, z, getPlacedBlock(), 0, 3)) {
+            if (CommonUtil.setBlock(world,x, y, z, getPlacedBlock(), 0)) {
                 if (CommonUtil.getBlockAt(world, x, y, z) == getPlacedBlock()) {
-                    getPlacedBlock().onPostBlockPlaced(world, x, y, z, i1);
                     ((BlockRailCore) CommonUtil.getBlockAt(world, x, y, z)).updateShape(x, y, z, world,
                             //set rail
                             stack.getTagCompound().getTag("rail")!=null?
@@ -193,8 +203,8 @@ public class ItemRail extends Item implements ITrackItem {
                     );
                 }
 
-                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, getPlacedBlock().stepSound.func_150496_b(), (getPlacedBlock().stepSound.getVolume() + 1.0F) / 2.0F, getPlacedBlock().stepSound.getPitch() * 0.8F);
-                --stack.getCount();
+                world.playSound(player,x + 0.5F, y + 0.5F, z + 0.5F, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, (getPlacedBlock().getSoundType().getVolume() + 1.0F) / 2.0F, getPlacedBlock().getSoundType().getPitch() * 0.8F);
+                stack.setCount(stack.getCount()-1);
             }
         }
 
@@ -274,7 +284,7 @@ public class ItemRail extends Item implements ITrackItem {
     }
 
     public static boolean isItemBanned(ItemStack s){
-        return CommonUtil.stringContains(s.getItem().delegate.name(),"chisel") || Block.getBlockFromItem(s.getItem()).hasTileEntity(s.getItemDamage());
+        return CommonUtil.stringContains(s.getItem().delegate.name().getNamespace(),"chisel") || Block.getBlockFromItem(s.getItem()).hasTileEntity();
     }
 
     //adds custom versions of this to the creative menu, with the necessary NBT and metadata

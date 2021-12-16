@@ -67,8 +67,8 @@ public class CommonUtil {
         world.setBlockState(new BlockPos(x,y,z), block.getDefaultState());
     }
 
-    public static void setBlock(IBlockAccess w, int x, int y, int z, Block b){
-        ((World)w).setBlockState(new BlockPos(x,y,z),b.getDefaultState());
+    public static boolean setBlock(IBlockAccess w, int x, int y, int z, Block b){
+        return ((World)w).setBlockState(new BlockPos(x,y,z),b.getDefaultState());
     }
 
     public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
@@ -91,9 +91,12 @@ public class CommonUtil {
         return property.containsKey(key)?(int)property.get(key):0;
     }
 
-    public static void setBlock(World w, int x, int y, int z, Block b, int meta){
-        setBlock(w,x,y,z,b);
-        setBlockMeta(w,x,y,z,meta);
+    public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){
+        boolean set =setBlock(w,x,y,z,b);
+        if(set) {
+            setBlockMeta(w, x, y, z, meta);
+        }
+        return set;
     }
 
     public static float getMaxRailSpeed(World world, BlockRailBase rail, GenericRailTransport host, double x, double y, double z){
