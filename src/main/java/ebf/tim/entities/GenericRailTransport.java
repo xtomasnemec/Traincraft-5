@@ -1046,8 +1046,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             world.spawnEntity(frontBogie);
             world.spawnEntity(backBogie);
 
-            if (getRiderOffsets() != null && getRiderOffsets().length >1 && seats.size()<getRiderOffsets().length) {
-                for (int i = 0; i < getRiderOffsets().length - 1; i++) {
+            if (getRiderOffsets() != null && getRiderOffsets().length >0 && seats.size()<getRiderOffsets().length) {
+                for (int i = 0; i < getRiderOffsets().length; i++) {
                     EntitySeat seat = new EntitySeat(world, posX, posY, posZ, getRiderOffsets()[i][0], getRiderOffsets()[i][1],getRiderOffsets()[i][2], this, i);
                     world.spawnEntity(seat);
                     seats.add(seat);

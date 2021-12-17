@@ -82,6 +82,8 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
             } else {
                 world.removeEntity(this);
             }
+        } else if (parent!=null && passengerEntity!=null && passengerEntity.getRidingEntity()!=this){
+            passengerEntity=null;
         }
 
     }
@@ -139,8 +141,8 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public void updateRidden() {
-        if (this.passengerEntity != null) {
-            this.passengerEntity.setPosition(this.posX, this.posY+1, this.posZ);
+        if (this.getPassenger() != null) {
+            this.getPassenger().setPosition(this.posX, this.posY+0.4, this.posZ);
         }
     }
 
