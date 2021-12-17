@@ -4,6 +4,7 @@ package ebf.tim.entities;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ebf.tim.utility.DebugUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -62,7 +63,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     /**returns if the rider can interact, it shouldn't be necessary, but we'll leave it true just in case*/
     @Override
     public boolean canRiderInteract() {
-        return true;
+        return false;
     }
     /**actually useless for this entity*/
     @Override
@@ -81,6 +82,9 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
             } else {
                 worldObj.removeEntity(this);
             }
+        } else if (parent!=null && passengerEntity!=null && passengerEntity.ridingEntity!=this){
+            passengerEntity=null;
+            riddenByEntity=null;
         }
 
     }
@@ -140,20 +144,23 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public void updateRiderPosition() {
-        if (this.riddenByEntity != null) {
-            this.riddenByEntity.setPosition(this.posX, this.posY+1, this.posZ);
+        if (this.getPassenger() != null) {
+            this.getPassenger().setPosition(this.posX, this.posY+0.4, this.posZ);
         }
     }
 
     public EntityLivingBase getPassenger(){
-        return this.passengerEntity;
+        return (EntityLivingBase) this.riddenByEntity;
     }
 
     //@Override
     public void addPassenger(Entity passenger) {
         if(passengerEntity==null && passenger instanceof EntityLivingBase) {
             //super.addPassenger(passenger);
-            this.passengerEntity=(EntityLivingBase)passenger;
+            this.riddenByEntity=passenger;
+            this.passengerEntity=(EntityLivingBase)riddenByEntity;
+            passenger.ridingEntity=this;
+            passenger.mountEntity(this);
         }
     }
 
@@ -161,6 +168,8 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     public void removePassenger(Entity passenger){
         //super.removePassenger(passenger);
         passengerEntity=null;
+        this.riddenByEntity=null;
+        passenger.ridingEntity=null;
     }
 
     public boolean isControlSeat(){return controller;}
