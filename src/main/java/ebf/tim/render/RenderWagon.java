@@ -104,7 +104,7 @@ public class RenderWagon extends Render {
             entity.renderData.bogies = entity.bogies();
 
             //cache animating parts
-            if (entity.worldObj!=null && ClientProxy.EnableAnimations && entity.renderData.needsModelUpdate) {
+            if (entity.world!=null && ClientProxy.EnableAnimations && entity.renderData.needsModelUpdate) {
                 boolean isAdded;
                 int m=0;
                 for (ModelBase part : entity.renderData.modelList) {
@@ -249,7 +249,7 @@ public class RenderWagon extends Render {
          * Be sure animations are enabled in user settings, then check of there is something to animate.
          * if there is, then calculate the vectors and apply the animations
          */
-        if (entity.worldObj!=null && !Minecraft.getMinecraft().isGamePaused()) {
+        if (entity.world!=null && !Minecraft.getMinecraft().isGamePaused()) {
             //cap the pitch value so we don't exceed values accepted by an integer.
             if(entity.renderData.wheelPitch>Math.PI*10000 ||entity.renderData.wheelPitch<Math.PI*-10000){
                 entity.renderData.wheelPitch -= Math.copySign(Math.PI*10000, entity.renderData.wheelPitch);
@@ -281,13 +281,13 @@ public class RenderWagon extends Render {
          */
         //System.out.println(entity.getTexture(0).getPath() + entity.dataWatcher.getWatchableObjectInt(24));
         TransportSkin s;
-        if(!isPaintBucket && entity.worldObj!=null) {
-            TextureManager.adjustLightFixture(entity.worldObj, (int) entity.posX, (int) entity.posY + 1, (int) entity.posZ);
-            s=entity.getTexture(Minecraft.getMinecraft().thePlayer);
+        if(!isPaintBucket && entity.world!=null) {
+            TextureManager.adjustLightFixture(entity.world, (int) entity.posX, (int) entity.posY + 1, (int) entity.posZ);
+            s=entity.getTexture(Minecraft.getMinecraft().player);
         } else if (textureURI!=null){
             s=textureURI;
         } else {
-            s=entity.getTextureByID(Minecraft.getMinecraft().thePlayer,false, entity.getDefaultSkin());
+            s=entity.getTextureByID(Minecraft.getMinecraft().player,false, entity.getDefaultSkin());
         }
 
         for(i=0; i< entity.renderData.modelList.length;i++) {
@@ -309,7 +309,7 @@ public class RenderWagon extends Render {
 
         //todo add support for model offsets by making this a list like for bogies.
         //render the particles, if there are any.
-        if(entity.worldObj!=null && !isPaintBucket) {
+        if(entity.world!=null && !isPaintBucket) {
             for (ParticleFX particle : entity.renderData.particles) {
                 ParticleFX.doRender(particle, entity.getRenderScale(), yaw);
             }
@@ -357,7 +357,7 @@ public class RenderWagon extends Render {
                 b.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
 
                 //render the particles, if there are any. do this _after_ the normal render because it breaks texture bind
-                if(!isPaintBucket && entity.worldObj!=null && entity.renderData.bogieParticles.size()>0) {
+                if(!isPaintBucket && entity.world!=null && entity.renderData.bogieParticles.size()>0) {
                     for (ParticleFX p : entity.renderData.bogieParticles.get(ii)) {
                         ParticleFX.doRender(p, entity.getRenderScale(), yaw);
                     }
@@ -391,7 +391,7 @@ public class RenderWagon extends Render {
         }
 
         GL11.glPopMatrix();
-        if(entity.worldObj==null || isPaintBucket){return;}
+        if(entity.world==null || isPaintBucket){return;}
         //render the smoke and steam particles, if there are any.
         //this has to render seperate from the rest of the train as it's position is intended to be independant outside of spawn position
         for (ParticleFX particle : entity.renderData.particles) {
@@ -400,7 +400,7 @@ public class RenderWagon extends Render {
 
 
         //render hitboxes
-        if(RenderManager.debugBoundingBox && entity.collisionHandler!=null /*&& entity.collisionHandler.renderShape !=null*/) {
+        if(Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox() && entity.collisionHandler!=null /*&& entity.collisionHandler.renderShape !=null*/) {
             //GL11.glDepthMask(false);
             /* see HitboxDynamic
             GL11.glPushMatrix();
@@ -458,7 +458,7 @@ public class RenderWagon extends Render {
             GL11.glColor4f(1,0,1,1);
 
             if(entity.frontLinkedID!=null) {
-                Entity e = entity.worldObj.getEntityByID(entity.frontLinkedID);
+                Entity e = entity.world.getEntityByID(entity.frontLinkedID);
                 if(e instanceof GenericRailTransport) {
                     Vec3d rotated = CommonUtil.rotateDistance(entity.getHitboxSize()[0] * 0.5f,
                             0, CommonUtil.atan2degreesf(
@@ -474,7 +474,7 @@ public class RenderWagon extends Render {
 
 
             if(entity.backLinkedID!=null) {
-                Entity e = entity.worldObj.getEntityByID(entity.backLinkedID);
+                Entity e = entity.world.getEntityByID(entity.backLinkedID);
                 if(e instanceof GenericRailTransport) {
 
                     Vec3d rotated = CommonUtil.rotateDistance(entity.getHitboxSize()[0] * 0.5f,

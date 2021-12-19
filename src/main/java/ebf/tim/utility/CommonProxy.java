@@ -16,8 +16,10 @@ import ebf.tim.registry.TiMFluids;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
 import fexcraft.fcl.common.Static;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
@@ -132,10 +134,10 @@ public class CommonProxy implements IGuiHandler {
         }
 
         //loop for dimensions, even ones from mods.
-        for (int w=0; w < MinecraftServer.getServer().worldServers.length; w++) {
-            if (MinecraftServer.getServer().worldServers[w] != null && dim.provider.getDimension()!=w) {
+        for (int w = 0; w < Minecraft.getMinecraft().getIntegratedServer().getServer().worlds.length; w++) {
+            if (Minecraft.getMinecraft().getIntegratedServer().getServer().worlds[w] != null && dim.provider.getDimension()!=w) {
                 //if the server isn't null, loop for the entities loaded in that server
-                for (i=0; i< MinecraftServer.getServer().worldServers[w].loadedEntityList.size();i++) {
+                for (i=0; i< Minecraft.getMinecraft().getIntegratedServer().getServer().worlds[w].loadedEntityList.size();i++) {
                     //if it's an entity, not null, and has a matching UUID, then return it.
                     if (Static.getServer().worlds[w].loadedEntityList.get(i) instanceof Entity &&
                             ((Entity) Static.getServer().worlds[w].loadedEntityList.get(i)).getUniqueID().equals(uuid)) {

@@ -54,8 +54,8 @@ public class GUIPaintBucket extends GuiScreen {
         super.initGui();
         if(entity !=null && skinList.size()==0) {
             skinList = new ArrayList<>();
-            if(entity.getSkinList(Minecraft.getMinecraft().thePlayer, true)!=null) {
-                List<TransportSkin> TransportSkins = new ArrayList<>(entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).values());
+            if(entity.getSkinList(Minecraft.getMinecraft().player, true)!=null) {
+                List<TransportSkin> TransportSkins = new ArrayList<>(entity.getSkinList(Minecraft.getMinecraft().player, true).values());
                 Collections.sort(TransportSkins, new Comparator<TransportSkin>() {
                     @Override
                     public int compare(TransportSkin o1, TransportSkin o2) {
@@ -82,13 +82,13 @@ public class GUIPaintBucket extends GuiScreen {
     @Override
     public void drawScreen(int parWidth, int parHeight, float p_73863_3_) {
         super.drawScreen(parWidth, parHeight, p_73863_3_);
-        guiLeft=new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight).getScaledWidth();
-        guiTop=new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight).getScaledHeight();
+        guiLeft=new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth();
+        guiTop=new ScaledResolution(Minecraft.getMinecraft()).getScaledHeight();
 
         if (skinList==null || skinList.size()==0){
             return;
         }
-        currentTransportSkin = entity.getTextureByID(Minecraft.getMinecraft().thePlayer,true, skinList.get(page));
+        currentTransportSkin = entity.getTextureByID(Minecraft.getMinecraft().player,true, skinList.get(page));
 
         if(currentTransportSkin ==null){return;}
 
@@ -122,8 +122,8 @@ public class GUIPaintBucket extends GuiScreen {
                         }
                         @Override
                         public void onClick() {
-                            page = (page <= 0 ? entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).keySet().size() -1: page - 1);
-                            currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).get(skinList.get(page));
+                            page = (page <= 0 ? entity.getSkinList(Minecraft.getMinecraft().player, true).keySet().size() -1: page - 1);
+                            currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().player, true).get(skinList.get(page));
                         }
                     }
                 );
@@ -136,8 +136,8 @@ public class GUIPaintBucket extends GuiScreen {
                             }
                             @Override
                             public void onClick() {
-                                page = (page+1 >= entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).keySet().size() ? 0 : page + 1);
-                                currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).get(skinList.get(page));
+                                page = (page+1 >= entity.getSkinList(Minecraft.getMinecraft().player, true).keySet().size() ? 0 : page + 1);
+                                currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().player, true).get(skinList.get(page));
                             }
                         }
                 );

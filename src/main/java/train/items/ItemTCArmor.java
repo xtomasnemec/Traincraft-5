@@ -7,6 +7,7 @@
 
 package train.items;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.util.EnumBlockRenderType;
@@ -25,7 +26,7 @@ public class ItemTCArmor extends ItemArmor {
 	public int updateTicks=0;
 	private String iconName = "";
 	
-	public ItemTCArmor(String iconName, ArmorMaterial material, int par3, int par4, int color) {
+	public ItemTCArmor(String iconName, ArmorMaterial material, int par3, EntityEquipmentSlot par4, int color) {
 		super(material, par3, par4);
 		setCreativeTab(Traincraft.tcTab);
 		this.color = color;
@@ -46,7 +47,7 @@ public class ItemTCArmor extends ItemArmor {
      * @return Path of texture to bind, or null to use default
      */
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type){
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type){
 		if (stack.getItem() == ItemIDs.overalls.item) {
 			return Info.resourceLocation+":"+Info.armorPrefix + "blue_overalls.png";
 		}
@@ -81,11 +82,11 @@ public class ItemTCArmor extends ItemArmor {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean requiresMultipleRenderPasses() {
+	public boolean hasOverlay(ItemStack i) {
 		return color!=0;
 	}
 
-	@SideOnly(Side.CLIENT)
+	/*@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
 		return par2 == 1 ? this.iconOverlay : super.getIconFromDamageForRenderPass(par1, par2);
@@ -98,10 +99,10 @@ public class ItemTCArmor extends ItemArmor {
 		if(color!=0){
 			this.iconOverlay = iconRegister.registerIcon(Info.modID.toLowerCase() + ":armour/" + this.iconName + "_overlay");
 		}
-	}
+	}*/
 
 	@Override
-	public void func_82813_b(ItemStack par1ItemStack, int par2)
+	public void setColor(ItemStack par1ItemStack, int par2)
 	{
 		if (color==0)
 		{
@@ -184,25 +185,4 @@ public class ItemTCArmor extends ItemArmor {
 			}
 		}
 	}
-	@SideOnly(Side.CLIENT)
-	@Override
-    public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
-    {
-		if(color==0)return 16777215;
-        if (par2 > 0)
-        {
-            return 16777215;
-        }
-        else
-        {
-            int j = this.getColor(par1ItemStack);
-
-            if (j < 0)
-            {
-                j = color;
-            }
-
-            return j;
-        }
-    }
 }

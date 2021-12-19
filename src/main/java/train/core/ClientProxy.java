@@ -1,12 +1,7 @@
 package train.core;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import javazoom.jl.decoder.JavaLayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -110,7 +105,8 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public int addArmor(String armor) {
-		return RenderingRegistry.addNewArmourRendererPrefix(armor);
+    	//in 1.12 this is for the render index, which is always 0;
+		return 0;// RenderingRegistry.addNewArmourRendererPrefix(armor);
 	}
 
 	@Override

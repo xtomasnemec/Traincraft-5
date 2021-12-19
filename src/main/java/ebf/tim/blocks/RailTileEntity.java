@@ -2,6 +2,7 @@ package ebf.tim.blocks;
 
 import javax.annotation.Nullable;
 
+import ebf.tim.utility.CommonUtil;
 import org.lwjgl.opengl.GL11;
 
 import ebf.XmlBuilder;
@@ -44,8 +45,7 @@ public class RailTileEntity extends TileEntity {
     public void setMeta(int i){
         meta=i;
         if(world!=null) {
-        	world.setBlockMetadataWithNotify(pos, meta, 2);
-        	//TODO >> world.setBlockState(pos, state, 2); ?
+            CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(),meta);
         }
         markDirty();
     }
@@ -66,7 +66,7 @@ public class RailTileEntity extends TileEntity {
                 return;
             }
 
-            Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
+            Minecraft.getMinecraft().entityRenderer.enableLightmap();
             TextureManager.adjustLightFixture(world,pos.getX(),pos.getY(),pos.getZ());
             if(railGLID!=null && !ClientProxy.disableCache){
                 if(!org.lwjgl.opengl.GL11.glIsList(railGLID)){
@@ -123,7 +123,7 @@ public class RailTileEntity extends TileEntity {
         super.markDirty();
         if (this.world != null) {
             world.markBlockForUpdate(pos.getX(), pos.getY(), pos.getZ());
-            this.world.func_147453_f(this.pos.getX(), this.pos.getY(), this.pos.getZ(), TiMBlocks.RAILBlock);
+            this.world.func_147453_f(this.pos.getX(), this.pos.getY(), this.pos.getZ(), TiMBlocks.railBlock);
             if(world.isRemote && railGLID!=null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
                 railGLID = null;

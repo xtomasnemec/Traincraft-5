@@ -54,7 +54,7 @@
 //			for (ItemStack c : coal) {
 //				cm.addRecipe(1, null, new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(c.getItem(), 1), null, new ItemStack(ItemIDs.minecartTender.item, 1), 1);
 //			}
-//			cm.addRecipe(1, new ItemStack(Items.IRON_INGOT, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(Items.lava_bucket, 1), null, new ItemStack(ItemIDs.minecartWatertransp.item, 1), 1);
+//			cm.addRecipe(1, new ItemStack(Items.IRON_INGOT, 6), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 2), new ItemStack(Items.STICK, 2), null, null, null, null, new ItemStack(Items.LAVA_BUCKET, 1), null, new ItemStack(ItemIDs.minecartWatertransp.item, 1), 1);
 //			for (ItemStack iron : ingotIron) {
 //				for (ItemStack dye : dyeGreen) {
 //					for (ItemStack bucketWater : waterbucket) {

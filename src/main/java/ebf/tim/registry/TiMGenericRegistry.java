@@ -2,8 +2,6 @@ package ebf.tim.registry;
 
 
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.BlockTrainFluid;
@@ -14,7 +12,6 @@ import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
-import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
@@ -27,13 +24,7 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -113,7 +104,7 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getUnlocalizedName().equals(StatCollector.translateToLocal(block.getUnlocalizedName()))) {
+        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getTranslationKey().equals(CommonUtil.translate(block.getTranslationKey()))) {
             DebugUtil.println("Block missing lang entry: " + block.getUnlocalizedName());
         }
         if (block instanceof BlockDynamic) {
@@ -163,7 +154,7 @@ public class TiMGenericRegistry {
             itm.setContainerItem(container);
         }
         if (!unlocalizedName.equals("")) {
-            itm.setUnlocalizedName(unlocalizedName);
+            itm.setTranslationKey(unlocalizedName);
             usedNames.add(unlocalizedName);
         } else {
             DebugUtil.println("ERROR: ", "attempted to register Item with no unlocalizedName");
@@ -176,8 +167,8 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getUnlocalizedName().equals(StatCollector.translateToLocal(itm.getUnlocalizedName()))) {
-            DebugUtil.println("Item missing lang entry: " + itm.getUnlocalizedName());
+        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()))) {
+            DebugUtil.println("Item missing lang entry: " + itm.getTranslationKey());
         }
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {
             //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
@@ -209,7 +200,9 @@ public class TiMGenericRegistry {
         fluid.setGaseous(isGaseous).setDensity(density);
         FluidRegistry.registerFluid(fluid);
 
-        Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color)).setBlockName("block." + unlocalizedName.replace(".item", "")).setBlockTextureName(MODID + ":block_" + unlocalizedName);
+        Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color))
+                .getBlockState().getBlock().setTranslationKey("block." + unlocalizedName.replace(".item", ""))
+                .setBlockTextureName(MODID + ":block_" + unlocalizedName);
         ((BlockTrainFluid) block).setModID(MODID);
         GameRegistry.registerBlock(block, "block." + unlocalizedName);
         if (TrainsInMotion.proxy.isClient()) {
@@ -220,23 +213,23 @@ public class TiMGenericRegistry {
         if (bucket == null) {
             bucket = new ItemBucket(block).setCreativeTab(tab).setContainerItem(Items.BUCKET);
             if (TrainsInMotion.proxy.isClient()) {
-                bucket.setTextureName(MODID + ":bucket_" + unlocalizedName);
+                bucket.setTranslationKey(MODID + ":bucket_" + unlocalizedName);
             }
         }
-        bucket.setUnlocalizedName(unlocalizedName + ".bucket");
+        bucket.setTranslationKey(unlocalizedName + ".bucket");
         GameRegistry.registerItem(bucket, "fluid." + unlocalizedName + ".bucket");
         FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
 
 
         if (DebugUtil.dev() && TrainsInMotion.proxy.isClient()) {
-            if (fluid.getUnlocalizedName().equals(StatCollector.translateToLocal(fluid.getUnlocalizedName()))) {
+            if (fluid.getUnlocalizedName().equals(CommonUtil.translate(fluid.getUnlocalizedName()))) {
                 DebugUtil.println("Fluid missing lang entry: " + fluid.getUnlocalizedName());
             }
-            if (bucket.getUnlocalizedName().equals(StatCollector.translateToLocal(block.getUnlocalizedName()))) {
-                DebugUtil.println("Item missing lang entry: " + bucket.getUnlocalizedName());
+            if (bucket.getTranslationKey().equals(block.getLocalizedName())) {
+                DebugUtil.println("Item missing lang entry: " + bucket.getTranslationKey());
             }
-            if (block.getUnlocalizedName().equals(StatCollector.translateToLocal(block.getUnlocalizedName()))) {
-                DebugUtil.println("Block missing lang entry: " + block.getUnlocalizedName());
+            if (block.getTranslationKey().equals(block.getLocalizedName())) {
+                DebugUtil.println("Block missing lang entry: " + block.getTranslationKey());
             }
 
         }
@@ -257,11 +250,12 @@ public class TiMGenericRegistry {
                 DebugUtil.println(registry.getClass().getName(), "is trying to register under the name", usedNames.contains(registry.transportName()), "which is already used");
                 DebugUtil.throwStackTrace();
             }
-            cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(
+            net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(
+                    new ResourceLocation(MODID,registry.transportName().replace(" ", "") + ".entity"),
                     registry.getClass(),
                     registry.transportName().replace(" ", "") + ".entity",
                     registryPosition, TrainsInMotion.instance, 1600, 3, true);
-            GameRegistry.registerItem(registry.getCartItem().getItem(), registry.getCartItem().getItem().getUnlocalizedName());
+            GameRegistry.registerItem(registry.getCartItem().getItem(), registry.getCartItem().getItem().getTranslationKey());
             if (registry.getRecipe() != null) {
                 if (CommonProxy.recipesInMods.containsKey(MODID)) {
                     CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
@@ -322,9 +316,9 @@ public class TiMGenericRegistry {
         BuildcraftFuelRegistry.fuel.addFuel(f, powerPerCycle, totalBurningTime);
     }
 
-    @Optional.Method(modid = "Railcraft")
+    /*@Optional.Method(modid = "Railcraft")
     static void registerRCFluid(Fluid f, int totalBurningTime) {
         FuelManager.addBoilerFuel(f, totalBurningTime);
-    }
+    }*/
 
 }

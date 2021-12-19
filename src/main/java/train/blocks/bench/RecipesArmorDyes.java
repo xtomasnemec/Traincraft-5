@@ -115,7 +115,7 @@ public class RecipesArmorDyes implements ITCRecipe {
 			l = (int) ((float) l * f / f1);
 			i1 = (k << 8) + l1;
 			i1 = (i1 << 8) + l;
-			itemarmor.func_82813_b(itemstack, i1);
+			itemarmor.setColor(itemstack,i1);
 			return itemstack;
 		}
 	}

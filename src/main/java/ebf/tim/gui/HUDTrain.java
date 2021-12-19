@@ -1,15 +1,16 @@
 package ebf.tim.gui;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.CommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -39,10 +40,10 @@ public class HUDTrain extends GuiScreen {
     /**checks if minecraft and the player is loaded, if true it checks if the player is in a locomotive, if true, it displays the debug GUI*/
     public void onRenderExperienceBar(RenderGameOverlayEvent event) {
         if(!ClientProxy.debugHUD){return;}
-        if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().thePlayer != null) {
-            if (Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntityTrainCore) {
-                EntityTrainCore trainEntity = (EntityTrainCore) Minecraft.getMinecraft().thePlayer.ridingEntity;
-
+        if (Minecraft.getMinecraft() != null && Minecraft.getMinecraft().player != null) {
+            if (Minecraft.getMinecraft().player.getRidingEntity() instanceof EntitySeat &&
+                    ((EntitySeat) Minecraft.getMinecraft().player.getRidingEntity()).isLocoSeat()) {
+                EntityTrainCore trainEntity = (EntityTrainCore) Minecraft.getMinecraft().world.getEntityByID(((EntitySeat) Minecraft.getMinecraft().player.getRidingEntity()).parentId);
                 if(fontRenderer==null){
                     fontRenderer=Minecraft.getMinecraft().fontRenderer;
                 }
@@ -52,9 +53,9 @@ public class HUDTrain extends GuiScreen {
                  * Accelerator State, 
                  * speed,
                  * and if the brakes, train, and lamp are on or off*/
-                fontRenderer.drawString("Entity name: "+StatCollector.translateToLocal(trainEntity.transportName()), 8, 8, 4210752);
+                fontRenderer.drawString("Entity name: "+ CommonUtil.translate(trainEntity.transportName()), 8, 8, 4210752);
                 fontRenderer.drawString("DEBUG INFO:", 8, 18, 4210752);
-                fontRenderer.drawString("Accelerator State: " + -trainEntity.dataWatcher.getWatchableObjectInt(18), 8, 28, 4210752);
+                fontRenderer.drawString("Accelerator State: " + -trainEntity.getAccelerator(), 8, 28, 4210752);
                 //speed is velocity *20 to get meters per second. convert to km/h by dividing by 3.6, or mph by 2.236936293
                 double speed =( Math.sqrt(trainEntity.getVelocity()) * (CommonProxy.realSpeed?120D*1.25D:120D));
                 speed*=ClientProxy.speedInKmh?1:0.621371;
@@ -66,9 +67,9 @@ public class HUDTrain extends GuiScreen {
                 } else {
                     fontRenderer.drawString("speed: " + speedDisplay + "mph", 8, 38, 4210752);
                 }
-                fontRenderer.drawString( "brake is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.BRAKE))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 48, 4210752);
-                fontRenderer.drawString( "train is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.RUNNING))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 58, 4210752);
-                fontRenderer.drawString( "lamp is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.LAMP))?StatCollector.translateToLocal("gui.on"):StatCollector.translateToLocal("gui.off"))), 8, 68, 4210752);
+                fontRenderer.drawString( "brake is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.BRAKE))?CommonUtil.translate("gui.on"):CommonUtil.translate("gui.off"))), 8, 48, 4210752);
+                fontRenderer.drawString( "train is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.RUNNING))?CommonUtil.translate("gui.on"):CommonUtil.translate("gui.off"))), 8, 58, 4210752);
+                fontRenderer.drawString( "lamp is " +  (((trainEntity.getBoolean(GenericRailTransport.boolValues.LAMP))?CommonUtil.translate("gui.on"):CommonUtil.translate("gui.off"))), 8, 68, 4210752);
 
                 GL11.glPushMatrix();
                 GL11.glScalef(0.75f,0.75f,0.75f);

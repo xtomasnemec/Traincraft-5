@@ -234,7 +234,7 @@ public class EntityLocoSteam4_4_0_Remaster extends EntityTrainCore {
     }
 
     @Override
-    public float[][] modelOffsets(){return new float[][]{{1.7f,worldObj==null?-0.6f:0.0f,0f}};}
+    public float[][] modelOffsets(){return new float[][]{{1.7f,world==null?-0.6f:0.0f,0f}};}
 
     @Override
     public float[][] modelRotations(){return new float[][]{{0f,0f,0f}};}

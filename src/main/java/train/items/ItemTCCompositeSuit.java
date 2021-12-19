@@ -8,6 +8,7 @@
 package train.items;
 
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,7 +28,7 @@ import train.library.Info;
 import train.library.ItemIDs;
 
 public class ItemTCCompositeSuit extends ItemTCArmor {
-	public ItemTCCompositeSuit(String iconName, ArmorMaterial material, int par3, int par4, int color) {
+	public ItemTCCompositeSuit(String iconName, ArmorMaterial material, int par3, EntityEquipmentSlot par4, int color) {
 		super(iconName, material, par3, par4,color);
 		setCreativeTab(Traincraft.tcTab);
 		this.color = color;

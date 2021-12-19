@@ -53,7 +53,7 @@ public class EntityFreightWood2 extends GenericRailTransport {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelFreightWood()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, worldObj==null?0.3f:0.63f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, world==null?0.3f:0.63f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, -90.0f, -180.0f}};}
     @Override

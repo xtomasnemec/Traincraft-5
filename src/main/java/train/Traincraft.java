@@ -3,6 +3,7 @@ package train;
 import net.minecraft.command.CommandException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.RegistryEvent;
@@ -85,9 +86,9 @@ public class Traincraft {
 	/* Creative tab for Traincraft */
 	public static TiMTab tcTab;
 
-	public ArmorMaterial armor = EnumHelper.addArmorMaterial("Armor", 5, new int[] { 1, 2, 2, 1 }, 25);
-	public ArmorMaterial armorCloth = EnumHelper.addArmorMaterial("TCcloth", 5, new int[] {1, 2, 2, 1}, 25);
-	public ArmorMaterial armorCompositeSuit = EnumHelper.addArmorMaterial("TCsuit", 70, new int[] {2, 6, 5, 2}, 50);
+	public ArmorMaterial armor = EnumHelper.addArmorMaterial("Armor", "blue_overalls", 5, new int[] { 1, 2, 2, 1 }, 25, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,20);
+	public ArmorMaterial armorCloth = EnumHelper.addArmorMaterial("TCcloth", "ticket_man_1",5, new int[] {1, 2, 2, 1}, 25, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,10);
+	public ArmorMaterial armorCompositeSuit = EnumHelper.addArmorMaterial("TCsuit", "composite_suit_1", 70, new int[] {2, 6, 5, 2}, 50, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,20);
 	public static int trainArmor;
 	public static int trainCloth;
 	public static int trainCompositeSuit;

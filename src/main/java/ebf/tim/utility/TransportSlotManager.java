@@ -433,7 +433,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
             case 4: { /*ClickType.THROW*/
                 if (player.inventory.getItemStack() == null && slotId >= 0 && slot != null && slot.getHasStack() && slot.canTakeStack(player)) {
                     itemstack = slot.decrStackSize(dragType == 0 ? 1 : slot.getStack().getCount());
-                    if (!player.worldObj.isRemote && itemstack!=null) {
+                    if (!player.world.isRemote && itemstack!=null) {
                         player.entityDropItem(itemstack, itemstack.getCount());
                     }
                 }

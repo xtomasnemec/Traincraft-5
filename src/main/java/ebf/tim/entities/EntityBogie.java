@@ -13,8 +13,6 @@ import ebf.tim.utility.CommonUtil;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IMinecart;
 import mods.railcraft.api.carts.IRoutableCart;
-import mods.railcraft.api.tracks.ITrackSwitch;
-import mods.railcraft.api.tracks.ITrackTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockRailBase;
@@ -279,9 +277,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     railMetadata = CommonUtil.getRailMeta(world, this, floorX, floorY, floorZ);
                 }
                 //get the direction of the rail from it's metadata
-                else if (world.getTileEntity(new BlockPos(floorX, floorY, floorZ)) instanceof ITrackTile && (((ITrackTile)world.getTileEntity(new BlockPos(floorX, floorY, floorZ))).getTrackInstance() instanceof ITrackSwitch)){
+                /*else if (world.getTileEntity(new BlockPos(floorX, floorY, floorZ)) instanceof ITrackTile && (((ITrackTile)world.getTileEntity(new BlockPos(floorX, floorY, floorZ))).getTrackInstance() instanceof ITrackSwitch)){
                     railMetadata =CommonUtil.getRailMeta(world,this, floorX,floorY,floorZ);//railcraft support
-                }
+                }*/
             }
         }
     }

@@ -4,9 +4,13 @@ import ebf.tim.registry.NBTKeys;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import train.library.EnumSounds;
 import train.library.Info;
@@ -336,7 +340,7 @@ public class EntityTrainCore extends GenericRailTransport {
     public void soundHorn() {
         for (EnumSounds sounds : EnumSounds.values()) {
             if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")&& sounds.getEntityClass().equals(this.getClass()) && whistleDelay == 0) {
-                world.playSound(this.posX, this.posY,this.posZ, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
+                world.playSound(null, this.posX, this.posY,this.posZ, new SoundEvent(new ResourceLocation(Info.resourceLocation, sounds.getHornString())), SoundCategory.NEUTRAL, sounds.getHornVolume(), 1.0F);
                 whistleDelay = 65;
             }
         }

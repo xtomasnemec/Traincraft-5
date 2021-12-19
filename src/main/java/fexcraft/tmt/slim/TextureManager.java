@@ -18,6 +18,11 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.entity.RenderEntityItem;
+import net.minecraft.client.renderer.texture.*;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -30,11 +35,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -66,8 +66,8 @@ public class TextureManager {
             textureURI= new ResourceLocation(TrainsInMotion.MODID,"nullTrain");
         }
         //clean out the texture bind map when texturepacks are reloaded.
-        if(MCResourcePacks!= Minecraft.getMinecraft().getResourceManager().getNamespaces()){
-            MCResourcePacks= Minecraft.getMinecraft().getResourceManager().getNamespaces();
+        if(MCResourcePacks!= Minecraft.getMinecraft().getResourceManager().getResourceDomains()){
+            MCResourcePacks= Minecraft.getMinecraft().getResourceManager().getResourceDomains();
             tmtMap=new HashMap<>();
             tmtBoundTextures = new HashMap<>();
         }
@@ -163,8 +163,10 @@ public class TextureManager {
 
             texture=null;
             red =0;green=0;blue=0;divisor=0;
-            Item item = s.getItem();
-            String textureName = item.getIcon(s,0)!=null?item.getIcon(s,0).getIconName():null;
+            //todo: this may not work? this is how it's supposed to work, buildcraft does it.
+            // but i know better than to blindly trust this game.
+            //Item item = s.getItem();
+            String textureName = TextureMap.LOCATION_BLOCKS_TEXTURE.toString();// item.getIcon(s,0)!=null?item.getIcon(s,0).getIconName():null;
             if(textureName != null){
                 if(textureName.split(":").length == 1){
                     textureName = "minecraft:" + textureName;
@@ -199,13 +201,19 @@ public class TextureManager {
 
 
     public static TextureAtlasSprite bindBlockTextureFromSide(int side, ItemStack b){
-        if (RenderBlocks.getInstance().hasOverrideBlockTexture()) {
-            return (TextureAtlasSprite)RenderBlocks.getInstance().overrideBlockTexture;
-        }
-        return (TextureAtlasSprite) RenderBlocks.getInstance().getBlockIconFromSideAndMetadata(Block.getBlockFromItem(b.getItem()), side,b.getItemDamage());
-        //1.8.9+ version:
-        //IBlockState state = Block.getBlockFromItem(b.getItem()).getDefaultState();
-        //Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getQuads(state,side,0l).get(0).getSprite()
+        //override texture should be pre-determined on init in 1.8+
+        //if (RenderBlocks.getInstance().hasOverrideBlockTexture()) {
+        //    return (TextureAtlasSprite)RenderBlocks.getInstance().overrideBlockTexture;
+        //}
+        IBlockState state = Block.getBlockFromItem(b.getItem()).getDefaultState();
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getQuads(state, EnumFacing.byIndex(side),0l).get(0).getSprite();
+
+        /* backup plan
+        TextureMap texturemap = Minecraft.getMinecraft().getTextureMapBlocks();
+        TextureAtlasSprite textureatlassprite = texturemap.getAtlasSprite("minecraft:blocks/fire_layer_0");
+        TextureAtlasSprite textureatlassprite1 = texturemap.getAtlasSprite("minecraft:blocks/fire_layer_1");
+
+         */
     }
 
     public static int[] hexTorgba(int hex){
@@ -236,8 +244,8 @@ public class TextureManager {
 
     public static void bindTexture(ResourceLocation textureURI, int[] skinColorsFrom, int[] skinColorsTo, List<Integer> colorsFrom, List<Integer> colorsTo){
             //clean out the texture bind map when texturepacks are reloaded.
-            if (MCResourcePacks != Minecraft.getMinecraft().getResourceManager().getNamespaces()) {
-                MCResourcePacks = Minecraft.getMinecraft().getResourceManager().getNamespaces();
+            if (MCResourcePacks != Minecraft.getMinecraft().getResourceManager().getResourceDomains()) {
+                MCResourcePacks = Minecraft.getMinecraft().getResourceManager().getResourceDomains();
                 tmtMap = new HashMap<>();
                 tmtBoundTextures = new HashMap<>();
             }

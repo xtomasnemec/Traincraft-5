@@ -7,6 +7,8 @@ import ebf.tim.utility.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import static ebf.tim.registry.TiMGenericRegistry.registerOreGen;
@@ -46,13 +48,25 @@ public class TiMOres {
 
         //add recipes and smelting
 
-        addRecipe(new ItemStack(blockCopper), "III","III","III", 'I', ingotCopper);
-        addRecipe(new ItemStack(blockSteel), "III","III","III", 'I', ingotSteel);
-        addRecipe(new ItemStack(blockAluminum), "III","III","III", 'I', ingotAluminum);
+        GameRegistry.addShapedRecipe(
+                new ResourceLocation(TrainsInMotion.MODID,"block_copper"),new ResourceLocation(TrainsInMotion.MODID,"ores"),
+                new ItemStack(blockCopper), "III","III","III", 'I', ingotCopper);
+        GameRegistry.addShapedRecipe(
+                new ResourceLocation(TrainsInMotion.MODID,"block_steel"),new ResourceLocation(TrainsInMotion.MODID,"ores"),
+                new ItemStack(blockSteel), "III","III","III", 'I', ingotSteel);
+        GameRegistry.addShapedRecipe(
+                new ResourceLocation(TrainsInMotion.MODID,"block_aluminium"),new ResourceLocation(TrainsInMotion.MODID,"ores"),
+                new ItemStack(blockAluminum), "III","III","III", 'I', ingotAluminum);
 
-        addShapelessRecipe(new ItemStack(ingotCopper, 9), blockCopper);
-        addShapelessRecipe(new ItemStack(ingotAluminum, 9), blockAluminum);
-        addShapelessRecipe(new ItemStack(ingotSteel, 9), blockSteel);
+        GameRegistry.addShapelessRecipe(
+                new ResourceLocation(TrainsInMotion.MODID,"ingot_copper"),new ResourceLocation(TrainsInMotion.MODID,"ores"),
+                new ItemStack(ingotCopper, 9), Ingredient.fromItem(Item.getItemFromBlock(blockCopper)));
+        GameRegistry.addShapelessRecipe(
+                new ResourceLocation(TrainsInMotion.MODID,"ingot_aluminium"),new ResourceLocation(TrainsInMotion.MODID,"ores"),
+                new ItemStack(ingotAluminum, 9), Ingredient.fromItem(Item.getItemFromBlock(blockAluminum)));
+        GameRegistry.addShapelessRecipe(
+                new ResourceLocation(TrainsInMotion.MODID,"ingot_steel"),new ResourceLocation(TrainsInMotion.MODID,"ores"),
+                new ItemStack(ingotSteel, 9), Ingredient.fromItem(Item.getItemFromBlock(blockSteel)));
 
         GameRegistry.addSmelting(oreCopper, new ItemStack(ingotCopper), 0.7f);
         GameRegistry.addSmelting(oreSteel, new ItemStack(ingotSteel), 1.2f);
@@ -86,10 +100,10 @@ public class TiMOres {
         }
         if (CommonProxy.doSteelGeneration) {
             //nether ore, lava oceans gen at y=31
-            OreGen steelGen = new OreGen(oreSteel, 31, 50, 8, 4, 5).setDimensions(new Integer[]{-1}).setFiller(Blocks.netherrack);
+            OreGen steelGen = new OreGen(oreSteel, 31, 50, 8, 4, 5).setDimensions(new Integer[]{-1}).setFiller(Blocks.NETHERRACK);
             registerOreGen(5, steelGen);
             //make steel especially common under lava. Want high generation because it is used a lot.
-            OreGen steelGen2 = new OreGen(oreSteel, 1, 30, 4, 3, 10).setDimensions(new Integer[]{-1}).setFiller(Blocks.netherrack);
+            OreGen steelGen2 = new OreGen(oreSteel, 1, 30, 4, 3, 10).setDimensions(new Integer[]{-1}).setFiller(Blocks.NETHERRACK);
             registerOreGen(5, steelGen2);
         }
         if (CommonProxy.doAluminumGeneration) {
