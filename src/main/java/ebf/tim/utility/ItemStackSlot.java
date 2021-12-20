@@ -638,8 +638,8 @@ public class ItemStackSlot extends Slot {
      */
     @Override
     @Deprecated
-    public boolean isSlotInInventory(IInventory p_75217_1_, int p_75217_2_) {
-        return inventory.getClass() == p_75217_1_.getClass();
+    public boolean isSameInventory(Slot other) {
+        return inventory == other.inventory;
     }
 
     /**
@@ -669,7 +669,7 @@ public class ItemStackSlot extends Slot {
      * @return boolean for if it should draw highlight
      */
     @Override
-    public boolean func_111238_b() {
+    public boolean isEnabled() {
         //if the java ap exam taught me anything, it's short-circuit evaluation.
         if (inventory instanceof TileEntityStorage && ((TileEntityStorage) inventory).pages > 1) {
             if (tierIn > 0 && (slotID == 415 || slotID == 416)) {
