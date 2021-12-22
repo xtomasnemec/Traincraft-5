@@ -1290,7 +1290,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         } else {
             //apparently to push away a player it has to happen on client
             for (Entity e : collisionHandler.getCollidingEntities(this)) {
-                if (e.ridingEntity == null && e instanceof EntityPlayer) {
+                if (e instanceof EntityPlayer && !(e.ridingEntity instanceof EntitySeat)) {
 
                     double d0 = e.posX - this.posX;
                     double d1 = e.posZ - this.posZ;
@@ -1396,6 +1396,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLinks(GenericRailTransport linkedTransport, boolean front) {
+        if(linkedTransport==null){return;}
         //handle yaw changes for derail
         if(getBoolean(boolValues.DERAILED)) {
             if(frontLinkedID!=null && backLinkedID!=null){

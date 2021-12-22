@@ -1,7 +1,7 @@
 package ebf.tim.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.registry.TiMGenericRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -15,7 +15,6 @@ public class SimpleBlock extends Block {
         setBlockTextureName(texture);
         setHarvestLevel("pickaxe", 2); //iron pick for all blocks
 
-        setCreativeTab(TrainsInMotion.creativeTab);
-        GameRegistry.registerBlock(this, unlocalizedName);
+        TiMGenericRegistry.registerBlock(this, TrainsInMotion.creativeTab,TrainsInMotion.MODID,unlocalizedName,null,null);
     }
 }
