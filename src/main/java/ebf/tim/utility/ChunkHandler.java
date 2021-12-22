@@ -1,7 +1,6 @@
 package ebf.tim.utility;
 
 import com.google.common.collect.ListMultimap;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;

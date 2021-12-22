@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -24,17 +25,24 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static ebf.tim.utility.RecipeManager.getRecipeWithTier;
+import static net.minecraftforge.registries.GameData.BLOCKS;
+import static net.minecraftforge.registries.GameData.ITEMS;
 
 /**
  * <h1>Train registry</h1>
@@ -90,8 +98,9 @@ public class TiMGenericRegistry {
             block.setCreativeTab(tab);
         }
         if (unlocalizedName.length() > 0) {
-            block.setBlockName(unlocalizedName);
-            GameRegistry.registerBlock(block, unlocalizedName);
+            block.setTranslationKey(unlocalizedName);
+            ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))
+            .register(block.setRegistryName(MODID,unlocalizedName));
             usedNames.add(unlocalizedName);
         } else {
             DebugUtil.println("ERROR: ", "attempted to register Block with no unlocalizedName");
@@ -99,13 +108,14 @@ public class TiMGenericRegistry {
         }
 
         if (TrainsInMotion.proxy.isClient() && MODID != null) {
-            block.setBlockTextureName(MODID + ":" + unlocalizedName);
+            //todo: block textures aren't this configurable anymore
+            //block.setBlockTextureName(MODID + ":" + unlocalizedName);
         }
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
         }
         if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getTranslationKey().equals(CommonUtil.translate(block.getTranslationKey()))) {
-            DebugUtil.println("Block missing lang entry: " + block.getUnlocalizedName());
+            DebugUtil.println("Block missing lang entry: " + block.getTranslationKey());
         }
         if (block instanceof BlockDynamic) {
             if (model != null) {
@@ -161,9 +171,12 @@ public class TiMGenericRegistry {
             DebugUtil.throwStackTrace();
         }
         if (TrainsInMotion.proxy.isClient()) {
-            itm.setTextureName(MODID + ":" + unlocalizedName);
+            //todo: item textures aren't this configurable anymore
+            //itm.setTextureName(MODID + ":" + unlocalizedName);
         }
-        GameRegistry.registerItem(itm, unlocalizedName);
+
+        ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
+                .register(itm.setRegistryName(MODID,unlocalizedName));
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
         }
@@ -201,12 +214,16 @@ public class TiMGenericRegistry {
         FluidRegistry.registerFluid(fluid);
 
         Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color))
-                .getBlockState().getBlock().setTranslationKey("block." + unlocalizedName.replace(".item", ""))
-                .setBlockTextureName(MODID + ":block_" + unlocalizedName);
+                .getBlockState().getBlock().setTranslationKey("block." + unlocalizedName.replace(".item", ""));
+                //todo: block textures aren't this configurable anymore
+                //.setBlockTextureName(MODID + ":block_" + unlocalizedName);
         ((BlockTrainFluid) block).setModID(MODID);
-        GameRegistry.registerBlock(block, "block." + unlocalizedName);
+
+        ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))
+                .register(block.setRegistryName(MODID,"block." + unlocalizedName));
         if (TrainsInMotion.proxy.isClient()) {
-            block.setBlockTextureName(MODID + ":" + unlocalizedName);
+            //todo: block textures aren't this configurable anymore
+            //block.setBlockTextureName(MODID + ":" + unlocalizedName);
         }
         fluid.setBlock(block);
 
@@ -217,8 +234,10 @@ public class TiMGenericRegistry {
             }
         }
         bucket.setTranslationKey(unlocalizedName + ".bucket");
-        GameRegistry.registerItem(bucket, "fluid." + unlocalizedName + ".bucket");
-        FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
+        ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
+                .register(bucket.setRegistryName(MODID,"fluid." +unlocalizedName + ".bucket"));
+        //todo: 1.12 uses instanceof stuff, so this _shouldn't_ be needed?
+        //FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
 
 
         if (DebugUtil.dev() && TrainsInMotion.proxy.isClient()) {
@@ -255,7 +274,9 @@ public class TiMGenericRegistry {
                     registry.getClass(),
                     registry.transportName().replace(" ", "") + ".entity",
                     registryPosition, TrainsInMotion.instance, 1600, 3, true);
-            GameRegistry.registerItem(registry.getCartItem().getItem(), registry.getCartItem().getItem().getTranslationKey());
+
+            ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
+                    .register(registry.getCartItem().getItem().setRegistryName(MODID,registry.getCartItem().getItem().getTranslationKey()));
             if (registry.getRecipe() != null) {
                 if (CommonProxy.recipesInMods.containsKey(MODID)) {
                     CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
@@ -286,7 +307,7 @@ public class TiMGenericRegistry {
                     }
                 }
                 if (ClientProxy.preRenderModels && ClientProxy.hdTransportItems) {
-                    ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, registry.getCartItem());
+                    ebf.tim.items.CustomItemModel.instance.renderItemModel(registry.getCartItem(), ItemCameraTransforms.TransformType.GUI,null);
                 }
             }
             usedNames.add(registry.transportName());

@@ -1,13 +1,12 @@
 package ebf.tim.utility;
 
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.registries.GameData;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
@@ -48,7 +47,7 @@ public class ServerLogger {
             if (!new File(sb.toString()).exists()){
                 new File(sb.toString()).mkdir();
             }
-            sb.append(wagon.getItem().delegate.name().replace(":", "~"));
+            sb.append(wagon.getItem().delegate.name().toString().replace(":", "~"));
             sb.append("_");
             sb.append(wagon.getUniqueID());
             sb.append(".txt");
@@ -83,7 +82,7 @@ public class ServerLogger {
                 sb.append("</fuel>");
             } else {
                 sb.append("N/A</fuel>\n   <fluids>");
-                for(FluidTankInfo tank : wagon.getTankInfo(ForgeDirection.UNKNOWN)) {
+                for(FluidTankInfo tank : wagon.getTankInfo()) {
                     addFluidXML(sb, tank.fluid);
                 }
                 sb.append("</fluids>\n");
@@ -146,9 +145,9 @@ public class ServerLogger {
         }
 
         string.append("    <FluidStack>\n        <ID>");
-        string.append(item.getFluidID());
+        string.append(FluidRegistry.getFluidName(item.getFluid()));
         string.append("</ID>\n            <delegate>");
-        string.append(FluidContainerRegistry.fillFluidContainer(item, new ItemStack(Items.BUCKET)).getItem().delegate.name());
+        string.append(FuelHandler.fillFluidContainer(item, new ItemStack(Items.BUCKET)).getItem().delegate.name());
         string.append("</delegate>\n            <getCount()>");
         string.append((int)(item.amount*0.001));
         string.append("</getCount()>\n    </FluidStack>\n");
@@ -193,7 +192,7 @@ public class ServerLogger {
     public static ItemStack parseItemFromXML(String doc){
         try {
             ItemStack stack = new ItemStack(
-                    GameData.getItemRegistry().getObject(doc.substring(doc.indexOf("<delegate>")+10, doc.indexOf("</delegate>"))),//get item by delegate name since it's static
+                    Item.getByNameOrId(doc.substring(doc.indexOf("<delegate>")+10, doc.indexOf("</delegate>"))),//get item by delegate name since it's static
                     Integer.parseInt(doc.substring(doc.indexOf("<getCount()>")+11, doc.indexOf("</getCount()>")))//we always get strings so gotta parse.
             );
 

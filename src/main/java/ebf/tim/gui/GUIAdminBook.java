@@ -7,10 +7,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -43,10 +47,23 @@ public class GUIAdminBook extends GuiScreen {
         }
 
         @Override
+        public boolean isEmpty() {
+            for (ItemStack i : inventory){
+                if(i!=null && i != ItemStack.EMPTY){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
         public ItemStack getStackInSlot(int p_70301_1_) { return inventory[p_70301_1_]; }
 
         @Override
         public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) { return null; }
+
+        @Override
+        public ItemStack removeStackFromSlot(int index) {setInventorySlotContents(index,null); return ItemStack.EMPTY;}
 
         /*@Override
         public ItemStack getStackInSlotOnClosing(int p_70304_1_) { return null; }*/
@@ -59,6 +76,9 @@ public class GUIAdminBook extends GuiScreen {
 
         @Override
         public boolean hasCustomName() { return false; }
+
+        @Override
+        public ITextComponent getDisplayName() {return null;}
 
         @Override
         public int getInventoryStackLimit() { return 64; }
@@ -77,6 +97,18 @@ public class GUIAdminBook extends GuiScreen {
 
         @Override
         public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) { return false; }
+
+        @Override
+        public int getField(int id) {return 0;}
+
+        @Override
+        public void setField(int id, int value) {}
+
+        @Override
+        public int getFieldCount() {return 0;}
+
+        @Override
+        public void clear() {}
     };
 
     public GUIAdminBook(String csv){
@@ -218,8 +250,8 @@ public class GUIAdminBook extends GuiScreen {
     private void func_146977_a(Slot p_146977_1_) {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
-        itemRender.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos);
-        itemRender.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos, null);
+        itemRender.renderItemAndEffectIntoGUI(this.mc.player, p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos);
+        itemRender.renderItemOverlayIntoGUI(this.fontRenderer, p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos, null);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }

@@ -7,7 +7,7 @@ import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.Tessellator;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -106,15 +106,11 @@ public class GroupedModelRender {
     /**
      * used to actually render the models in this group, either as actual blocks, or as a part of the host model.
      * if you wanna change this stuff in your own mod you'll have to make you're own render that extends our RenderWagon.
-     * @param field_147909_c the RenderBlocks variable from the render class, since it's private.
      * @param blockStack the Itemstack to render as a block.
      * @param render the render class used for binding the texture.
      * @param entityRenderScale the scale to render at.
      */
-    public void doRender(RenderBlocks field_147909_c, ItemStack blockStack, RenderWagon render, float entityRenderScale, GenericRailTransport transport){
-        if(field_147909_c==null){
-            return;
-        }
+    public void doRender(ItemStack blockStack, RenderWagon render, float entityRenderScale, GenericRailTransport transport){
         if (isBlock) {
             float yScale=1;
             if(isScaled){
@@ -140,7 +136,7 @@ public class GroupedModelRender {
                 //define scale based on the model
                 GL11.glScaled(0.0625f*block.width, (0.0625f*block.height)*yScale, (0.0625f*block.depth));
                 //now actually render the block.
-                field_147909_c.renderBlockAsItem( Block.getBlockFromItem(blockStack.getItem()), blockStack.getItemDamage(), 1.0f);
+                Minecraft.getMinecraft().entityRenderer.itemRenderer.renderItem(Minecraft.getMinecraft().player,new ItemStack(Block.getBlockFromItem(blockStack.getItem())), ItemCameraTransforms.TransformType.GUI);
                 GL11.glPopMatrix();
             }
            // GL11.glPopMatrix();

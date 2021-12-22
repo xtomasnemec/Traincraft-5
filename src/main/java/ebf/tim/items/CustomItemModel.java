@@ -140,7 +140,7 @@ public class CustomItemModel implements ICustomModelLoader {
                 }
 
             }
-            ClientProxy.transportRenderer.render(
+            ClientProxy.getTransportRenderer().render(
                     ((ItemTransport)item.getItem()).entity,0,0,0, 0, true, null);
             GL11.glPopMatrix();
         } else if (item.getItem() instanceof ItemRail){

@@ -1,18 +1,19 @@
 package ebf.tim.utility;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class EventManagerServer {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void playerQuitEvent(PlayerEvent.PlayerLoggedOutEvent event){
-        if (event.player.ridingEntity instanceof GenericRailTransport || event.player.ridingEntity instanceof EntitySeat){
-            event.player.disstartRiding(event.player.ridingEntity);
+        if (event.player.getRidingEntity() instanceof EntitySeat){
+            ((EntitySeat) event.player.getRidingEntity()).removePassenger(event.player);
+            event.player.dismountEntity(event.player.getRidingEntity());
         }
     }
 
@@ -20,7 +21,7 @@ public class EventManagerServer {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void entityStruckByLightningEvent(EntityStruckByLightningEvent event) {
-        if (event.entity instanceof GenericRailTransport){
+        if (event.getEntity() instanceof GenericRailTransport){
             event.setCanceled(true);
         }
     }

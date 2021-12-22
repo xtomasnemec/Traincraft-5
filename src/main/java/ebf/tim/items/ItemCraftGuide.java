@@ -5,6 +5,8 @@ import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -22,7 +24,7 @@ public class ItemCraftGuide extends Item {
                 e.printStackTrace();
                 continue;
             }
-            key=itm.getItem().delegate.name().split(":")[0];
+            key=itm.getItem().delegate.name().getNamespace();
             if(!processedTransports.containsKey(key)){
                 processedTransports.put(key,new ArrayList<GenericRailTransport>());
                 processedTransports.get(key).add(itm);
@@ -33,11 +35,11 @@ public class ItemCraftGuide extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         if(world.isRemote){
             player.openGui(TrainsInMotion.MODID, -1, world,0,0,0);
         }
-        return stack;
+        return super.onItemRightClick(world,player,hand);
     }
 
     //modid, then info page

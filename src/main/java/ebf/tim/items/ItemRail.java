@@ -146,7 +146,7 @@ public class ItemRail extends Item implements ITrackItem {
                 }
 
                 world.playSound(player,x + 0.5F, y + 0.5F, z + 0.5F, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, (getPlacedBlock().getSoundType().getVolume() + 1.0F) / 2.0F, getPlacedBlock().getSoundType().getPitch() * 0.8F);
-                stack.setCount(stack.getCount()-1);
+                stack.shrink(1);
             }
             return EnumActionResult.SUCCESS;
         }
@@ -204,7 +204,7 @@ public class ItemRail extends Item implements ITrackItem {
                 }
 
                 world.playSound(player,x + 0.5F, y + 0.5F, z + 0.5F, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, (getPlacedBlock().getSoundType().getVolume() + 1.0F) / 2.0F, getPlacedBlock().getSoundType().getPitch() * 0.8F);
-                stack.setCount(stack.getCount()-1);
+                stack.shrink(1);
             }
         }
 

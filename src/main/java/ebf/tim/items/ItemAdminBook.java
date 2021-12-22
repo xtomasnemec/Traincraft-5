@@ -18,6 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -48,12 +50,12 @@ public class ItemAdminBook extends Item{
         stringList.add("- Lock or unlock trains/rollingstock");
     }
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World worldObj, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World worldObj, EntityPlayer player, EnumHand hand) {
         try {
             if (worldObj.isRemote) {
-                return itemStack;
+                return super.onItemRightClick(worldObj, player,hand);
             } else if (!player.canUseCommand(2, "")) {
-                return itemStack;
+                return super.onItemRightClick(worldObj, player,hand);
             }
 
             if (new File(CommonProxy.configDirectory + "/TrainsInMotion/logging/").exists()) {
@@ -71,14 +73,12 @@ public class ItemAdminBook extends Item{
                     //wrong player or something....?
                     TrainsInMotion.keyChannel.sendTo(new PacketAdminBook(sb.toString()), (EntityPlayerMP) player);
                 }
-                return itemStack;
-            } else {
-                return itemStack;
+                return super.onItemRightClick(worldObj, player,hand);
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return super.onItemRightClick(itemStack, worldObj, player);
+        return super.onItemRightClick(worldObj, player,hand);
     }
 
 

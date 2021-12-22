@@ -8,12 +8,10 @@ import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -33,15 +31,17 @@ public class RenderWagon extends Render {
 
     private static double railOffset = 0.34f;
     private static int i=0, ii=0, iii=0;
-    public static RenderWagon instance = new RenderWagon();
-    public static RenderBlocks renderBlocks;
+
+    public RenderWagon(RenderManager renderManager) {
+        super(renderManager);
+    }
 
     //public RenderWagon() {}
 
     /**
      * <h3>overall texture</h3>
      * returns the texture for this entity, required by the super, we use it so we have access to the texture from outside this class, for example
-     * @see GroupedModelRender#doRender(RenderBlocks, ItemStack, RenderWagon, float, GenericRailTransport)
+     * @see GroupedModelRender#doRender(ItemStack, RenderWagon, float, GenericRailTransport)
      */
     public ResourceLocation getEntityTexture(Entity entity){
         return null;
@@ -57,23 +57,21 @@ public class RenderWagon extends Render {
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
         if (entity instanceof GenericRailTransport){
             if(((GenericRailTransport) entity).frontBogie!=null) {
-                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
                         false);
             } else {
-                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
                         true);
             }
         }
     }
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket) {
-        renderBlocks=field_147909_c;
         doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, null, this);
     }
 
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket, TransportSkin textureURI) {
-        renderBlocks=field_147909_c;
         doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, textureURI, this);
     }
 
@@ -319,7 +317,7 @@ public class RenderWagon extends Render {
 
         //loop for the groups of cargo
         for (i = 0; i< entity.renderData.blockCargoRenders.size() && i < entity.calculatePercentageOfSlotsUsed(entity.renderData.blockCargoRenders.size()); i++) {
-            entity.renderData.blockCargoRenders.get(i).doRender(renderBlocks, entity.getFirstBlock(i), renderInstance, entity.getRenderScale(), entity);
+            entity.renderData.blockCargoRenders.get(i).doRender(entity.getFirstBlock(i), renderInstance, entity.getRenderScale(), entity);
         }
 
         GL11.glPopMatrix();

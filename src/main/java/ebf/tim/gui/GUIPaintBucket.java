@@ -257,7 +257,7 @@ public class GUIPaintBucket extends GuiScreen {
         }
         GL11.glScalef(scale,scale,scale);
 
-        ClientProxy.transportRenderer.render(entity,0,0,0,0, true,
+        ClientProxy.getTransportRenderer().render(entity,0,0,0,0, true,
                 currentTransportSkin);
         RenderHelper.disableStandardItemLighting();
         GL11.glPopMatrix();

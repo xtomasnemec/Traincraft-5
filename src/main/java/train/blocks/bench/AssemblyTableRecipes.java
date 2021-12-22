@@ -108,7 +108,7 @@
 //				}
 //				for (ItemStack iron : ingotIron) {
 //					for (ItemStack dye : dyeGreen) {
-//						cm.addRecipe(1, new ItemStack(i.getItem(), 8, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelWood, 3), new ItemStack(TiMItems.frameWood, 2), new ItemStack(iron.getItem(), 2), new ItemStack(ItemIDs.ironChimney.item, 1), null, new ItemStack(ItemIDs.ironBoiler.item, 1), new ItemStack(ItemIDs.ironFirebox.item, 1), new ItemStack(Items.gold_ingot, 2), dye, new ItemStack(ItemIDs.minecartLocoSteamAdler.item, 1), 1);
+//						cm.addRecipe(1, new ItemStack(i.getItem(), 8, OreDictionary.WILDCARD_VALUE), new ItemStack(TiMItems.wheelWood, 3), new ItemStack(TiMItems.frameWood, 2), new ItemStack(iron.getItem(), 2), new ItemStack(ItemIDs.ironChimney.item, 1), null, new ItemStack(ItemIDs.ironBoiler.item, 1), new ItemStack(ItemIDs.ironFirebox.item, 1), new ItemStack(Items.GOLD_INGOT, 2), dye, new ItemStack(ItemIDs.minecartLocoSteamAdler.item, 1), 1);
 //						for (ItemStack c : coal) {
 //							cm.addRecipe(1, new ItemStack(iron.getItem(), 2), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameWood, 1), new ItemStack(iron.getItem(), 1), null, null, null, null, new ItemStack(c.getItem(), 1), dye, new ItemStack(ItemIDs.minecartTenderAdler.item, 1), 1);
 //						}

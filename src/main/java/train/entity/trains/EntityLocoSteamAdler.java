@@ -54,7 +54,7 @@ public class EntityLocoSteamAdler extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLocoSteamAdler()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.1f, worldObj==null?-1.2f:-0.9f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.1f, world==null?-1.2f:-0.9f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, -90.0f, 0.0f}};}
     @Override
@@ -73,7 +73,7 @@ public class EntityLocoSteamAdler extends EntityTrainCore {
     public ItemStack[] getRecipe() {
         return new ItemStack[]{
                 new ItemStack(Blocks.PLANKS, 8), new ItemStack(TiMItems.wheelWood, 3), new ItemStack(TiMItems.frameWood, 2),
-                new ItemStack(Items.IRON_INGOT, 2), new ItemStack(TiMItems.chimneyIron, 1), null, new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(Items.gold_ingot, 2)        };
+                new ItemStack(Items.IRON_INGOT, 2), new ItemStack(TiMItems.chimneyIron, 1), null, new ItemStack(TiMItems.boilerIron, 1), new ItemStack(TiMItems.fireboxIron, 1), new ItemStack(Items.GOLD_INGOT, 2)        };
     }
 
 

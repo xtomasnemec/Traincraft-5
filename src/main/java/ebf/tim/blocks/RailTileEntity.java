@@ -3,6 +3,8 @@ package ebf.tim.blocks;
 import javax.annotation.Nullable;
 
 import ebf.tim.utility.CommonUtil;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
 import ebf.XmlBuilder;
@@ -94,8 +96,9 @@ public class RailTileEntity extends TileEntity {
     }
 
     @Override
-    public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
-        return (oldBlock != newBlock) || (oldMeta != newMeta);
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return (oldState.getBlock() != newSate.getBlock()) ||
+                (oldState.getBlock().getMetaFromState(oldState) != newSate.getBlock().getMetaFromState(newSate));
     }
 
 
@@ -122,8 +125,8 @@ public class RailTileEntity extends TileEntity {
     public void markDirty() {
         super.markDirty();
         if (this.world != null) {
-            world.markBlockForUpdate(pos.getX(), pos.getY(), pos.getZ());
-            this.world.func_147453_f(this.pos.getX(), this.pos.getY(), this.pos.getZ(), TiMBlocks.railBlock);
+            world.markChunkDirty(pos, world.getTileEntity(pos));
+            this.world.notifyNeighborsOfStateChange(this.pos, TiMBlocks.railBlock,true);
             if(world.isRemote && railGLID!=null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
                 railGLID = null;

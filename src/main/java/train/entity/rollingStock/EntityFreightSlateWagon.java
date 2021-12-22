@@ -52,7 +52,7 @@ public class EntityFreightSlateWagon extends GenericRailTransport {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelSlateWagon()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, worldObj==null?-0.5f:0.0f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, world==null?-0.5f:0.0f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -79,7 +79,7 @@ public class EntityFreightSlateWagon extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return worldObj==null?new float[]{2f,1.4f,1.1f}:new float[]{1.75f,1.1f,1.0f};}
+    public float[] getHitboxSize(){return world==null?new float[]{2f,1.4f,1.1f}:new float[]{1.75f,1.1f,1.0f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.325f, -0.285f};}
 

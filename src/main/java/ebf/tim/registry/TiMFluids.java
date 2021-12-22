@@ -5,6 +5,7 @@ import ebf.tim.blocks.OreGen;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
@@ -16,22 +17,22 @@ public class TiMFluids {
 
 
     /**the oil fluid*/
-    public static Fluid fluidOil = new Fluid("Oil");
+    public static Fluid fluidOil = makeFluid("Oil");
     public static Item bucketOil;
     /**the diesel fluid*/
-    public static Fluid fluidDiesel = new Fluid("Diesel");
+    public static Fluid fluidDiesel = makeFluid("Diesel");
     public static Item bucketDiesel;
     /**the fuel oil fluid*/
-    public static Fluid fluidfueloil = new Fluid("FuelOil");
+    public static Fluid fluidfueloil = makeFluid("FuelOil");
     public static Item bucketFuelOil;
     /**the steam fluid*/
-    public static Fluid fluidSteam = new Fluid("Steam");
+    public static Fluid fluidSteam = makeFluid("Steam");
     public static Item bucketSteam;
     /**the heavy steam fluid*/
-    public static Fluid fluidHeavySteam = new Fluid("HeavySteam");
+    public static Fluid fluidHeavySteam = makeFluid("HeavySteam");
     public static Item bucketHeavySteam;
     /**the RF fluid*/
-    public static Fluid fluidRedstone = new Fluid("Redstone");
+    public static Fluid fluidRedstone = makeFluid("Redstone");
     public static Item bucketRedstone;
 
     public static Fluid fluidBCFuel = FluidRegistry.getFluid("fuel");
@@ -40,22 +41,25 @@ public class TiMFluids {
     public static Fluid fluidBioDiesel = FluidRegistry.getFluid("biodiesel");
     public static Fluid fluidBiomass = FluidRegistry.getFluid("biomass");
 
-    public static Fluid nullFluid = new Fluid("nullFluid");
+    public static Fluid nullFluid = makeFluid("nullFluid");
 
 
+    private static Fluid makeFluid(String name){
+        return new Fluid(name,new ResourceLocation(TrainsInMotion.MODID,name+".still"),new ResourceLocation(TrainsInMotion.MODID,name+".flowing"));
+    }
 
 
 
 
     public static void registerFluids(){
 
-        RegisterFluid(fluidOil, bucketOil, TrainsInMotion.MODID, "oil", false, 700, MapColor.blackColor, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidDiesel, bucketDiesel, TrainsInMotion.MODID, "diesel", false, 500, MapColor.sandColor, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidSteam, bucketSteam, TrainsInMotion.MODID, "steam", true, 200, MapColor.snowColor, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidHeavySteam, bucketHeavySteam, TrainsInMotion.MODID, "heavysteam", true, 600, MapColor.snowColor, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidfueloil, bucketFuelOil, TrainsInMotion.MODID, "fueloil", false, 600, MapColor.brownColor, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidRedstone, bucketRedstone, TrainsInMotion.MODID, "redstone", false, 100, MapColor.redColor, TrainsInMotion.creativeTab);
-        RegisterFluid(nullFluid, null, TrainsInMotion.MODID, "nullFluid", false, 100, MapColor.pinkColor, null);
+        RegisterFluid(fluidOil, bucketOil, TrainsInMotion.MODID, "oil", false, 700, MapColor.BLACK, TrainsInMotion.creativeTab);
+        RegisterFluid(fluidDiesel, bucketDiesel, TrainsInMotion.MODID, "diesel", false, 500, MapColor.SAND, TrainsInMotion.creativeTab);
+        RegisterFluid(fluidSteam, bucketSteam, TrainsInMotion.MODID, "steam", true, 200, MapColor.SNOW, TrainsInMotion.creativeTab);
+        RegisterFluid(fluidHeavySteam, bucketHeavySteam, TrainsInMotion.MODID, "heavysteam", true, 600, MapColor.SNOW, TrainsInMotion.creativeTab);
+        RegisterFluid(fluidfueloil, bucketFuelOil, TrainsInMotion.MODID, "fueloil", false, 600, MapColor.BROWN, TrainsInMotion.creativeTab);
+        RegisterFluid(fluidRedstone, bucketRedstone, TrainsInMotion.MODID, "redstone", false, 100, MapColor.RED, TrainsInMotion.creativeTab);
+        RegisterFluid(nullFluid, null, TrainsInMotion.MODID, "nullFluid", false, 100, MapColor.PINK, null);
 
 
         //oil spawn at surface for deserts
@@ -74,11 +78,11 @@ public class TiMFluids {
             TiMGenericRegistry.registerBCFluid(TiMFluids.fluidfueloil, 5000,25000);
 
         }
-        if (Loader.isModLoaded("Railcraft")){
+        /*if (Loader.isModLoaded("Railcraft")){//todo: need to rework RC integration, if it's even needed anymore
             TiMGenericRegistry.registerRCFluid(TiMFluids.fluidfueloil,2500);
             TiMGenericRegistry.registerRCFluid(TiMFluids.fluidOil,5000);
             TiMGenericRegistry.registerRCFluid(TiMFluids.fluidDiesel, 10000);
-        }
+        }*/
         if (Loader.isModLoaded("Forestry")){
 
         }

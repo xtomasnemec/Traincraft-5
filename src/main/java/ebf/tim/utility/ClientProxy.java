@@ -274,7 +274,15 @@ public class ClientProxy extends CommonProxy {
     };
 
 
-    public static final RenderWagon transportRenderer = new RenderWagon();
+    private static RenderWagon transportRenderer=null;
+
+    public static RenderWagon getTransportRenderer(){
+        if(transportRenderer==null){
+            transportRenderer=new RenderWagon(Minecraft.getMinecraft().getRenderManager());
+        }
+        return transportRenderer;
+    }
+
 
     /**
      * <h3>null render</h3>
@@ -294,14 +302,7 @@ public class ClientProxy extends CommonProxy {
         GenericRailTransport t;
         @Override
         public void doRender(AbstractClientPlayer p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_){
-            if (p_76986_1_.getRidingEntity() instanceof GenericRailTransport) {
-                t=(GenericRailTransport) p_76986_1_.getRidingEntity();
-                GL11.glPushMatrix();
-                GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
-                super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-                GL11.glPopMatrix();
-
-            } else if (p_76986_1_.getRidingEntity() instanceof EntitySeat){
+            if (p_76986_1_.getRidingEntity() instanceof EntitySeat){
                 t=(GenericRailTransport) p_76986_1_.world.getEntityByID(((EntitySeat) p_76986_1_.getRidingEntity()).parentId);
                 GL11.glPushMatrix();
                 GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());

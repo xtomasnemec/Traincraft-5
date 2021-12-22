@@ -62,7 +62,8 @@ public class OreGen implements IWorldGenerator{
         //be sure it's the correct dimension
         if ((dimensions==null || Arrays.asList(dimensions).contains(world.provider.getDimension()))
                 //be sure it's the correct biome
-                && (biomes==null || Arrays.asList(biomes).contains(world.getBiomeGenForCoords(chunkX,chunkZ).biomeName))) {
+                && (biomes==null || Arrays.asList(biomes).contains(
+                        world.getBiomeProvider().getBiome(new BlockPos(chunkX*16,minY+maxY/2,chunkZ*16)).getBiomeName()))) {
             //define the vein data
             WorldGenMinable vein = new WorldGenMinable(ore.getDefaultState(), Math.max(minOres,random.nextInt(veinSize)), pre -> pre.getBlock() != ore);
             //TODO see if default state is correct/good, else convert this class into using blockstates

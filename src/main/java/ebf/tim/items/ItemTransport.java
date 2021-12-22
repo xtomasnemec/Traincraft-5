@@ -1,5 +1,11 @@
 package ebf.tim.items;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
@@ -10,7 +16,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -35,23 +40,23 @@ public class ItemTransport extends Item {
      * @param cart the class for the entity*/
     public ItemTransport(GenericRailTransport cart, String MODID, CreativeTabs tabs) {
         super();
-        setUnlocalizedName(cart.transportName().replace(" ",""));
+        setTranslationKey(cart.transportName().replace(" ",""));
         if(cart.transportYear()!=null) {
-            subtext.add(EnumChatFormatting.GRAY + t("menu.item.year") + ": " + cart.transportYear());
+            subtext.add(ChatFormatting.GRAY + t("menu.item.year") + ": " + cart.transportYear());
         }
         if(cart.transportcountry()!=null) {
-            subtext.add(EnumChatFormatting.GRAY + t("menu.item.country") + ": " +
+            subtext.add(ChatFormatting.GRAY + t("menu.item.country") + ": " +
                     t("menu.item." + cart.transportcountry().toLowerCase()));
         }
 
         if(cart.transportFuelType()!=null && !cart.transportFuelType().equals("")) {
-            subtext.add(EnumChatFormatting.RED + t("menu.item.fueltype") + ": " +
+            subtext.add(ChatFormatting.RED + t("menu.item.fueltype") + ": " +
                     t("menu.item."+cart.transportFuelType().toLowerCase()));
         }
         if(cart.getTypes()!=null && cart.getTypes().size()>0){
             types=cart.getTypes();
             StringBuilder s = new StringBuilder();
-            subtext.add(EnumChatFormatting.RED + t("menu.item.types")+":");
+            subtext.add(ChatFormatting.RED + t("menu.item.types")+":");
             boolean b=false;
             for(TrainsInMotion.transportTypes type : cart.getTypes()){
                 if(type.isTrain()) {
@@ -72,38 +77,39 @@ public class ItemTransport extends Item {
             }
             s.delete(s.lastIndexOf(", "),s.length());
 
-            subtext.add(EnumChatFormatting.RED +s.toString());
+            subtext.add(ChatFormatting.RED +s.toString());
         }
-        subtext.add(EnumChatFormatting.GREEN + t("menu.item.weight") +": " + cart.weightKg() + "kg");
+        subtext.add(ChatFormatting.GREEN + t("menu.item.weight") +": " + cart.weightKg() + "kg");
         if (cart.transportTopSpeed()!=0){
-            subtext.add(EnumChatFormatting.GREEN + t("menu.item.speed") +": " + cart.transportTopSpeed() +" km/h");
+            subtext.add(ChatFormatting.GREEN + t("menu.item.speed") +": " + cart.transportTopSpeed() +" km/h");
 
             if (cart.transportMetricHorsePower() !=0){
-                subtext.add(EnumChatFormatting.GREEN +t("menu.item.mhp") +": " + cart.transportMetricHorsePower());
+                subtext.add(ChatFormatting.GREEN +t("menu.item.mhp") +": " + cart.transportMetricHorsePower());
             }
             if (cart.transportTractiveEffort() != 0){
-                subtext.add(EnumChatFormatting.GREEN + t("menu.item.tractiveeffort") +": " + cart.transportTractiveEffort() + " lbf");
+                subtext.add(ChatFormatting.GREEN + t("menu.item.tractiveeffort") +": " + cart.transportTractiveEffort() + " lbf");
             }
         }
         if(cart.getInventoryRows()>0){
-            subtext.add(EnumChatFormatting.BLUE +t("menu.item.isizeof")+ ": " + (cart.getInventoryRows()*9) + " " + t("menu.item.slots"));
+            subtext.add(ChatFormatting.BLUE +t("menu.item.isizeof")+ ": " + (cart.getInventoryRows()*9) + " " + t("menu.item.slots"));
         }
         if(cart.getRiderOffsets()!=null){
-            subtext.add(EnumChatFormatting.BLUE +t("menu.item.seats")+ ": " + cart.getRiderOffsets().length);
+            subtext.add(ChatFormatting.BLUE +t("menu.item.seats")+ ": " + cart.getRiderOffsets().length);
         }
         if (cart.isFictional()){
-            subtext.add(EnumChatFormatting.WHITE +t("menu.item.fictional"));
+            subtext.add(ChatFormatting.WHITE +t("menu.item.fictional"));
         }
 
         if (cart.additionalItemText()!=null){
             for (String s : cart.additionalItemText()) {
                 if(!s.equals("")) {
-                    subtext.add(EnumChatFormatting.LIGHT_PURPLE + s);
+                    subtext.add(ChatFormatting.LIGHT_PURPLE + s);
                 }
             }
         }
         transport=cart.getClass();
-        setTextureName(MODID+":transports/"+getUnlocalizedName());
+        //todo: texture names aren't that simple in 1.12
+        //setTextureName(MODID+":transports/"+getTranslationKey());
         setCreativeTab(tabs);
         if(TrainsInMotion.proxy.isClient()){
             entity=cart;
@@ -120,7 +126,7 @@ public class ItemTransport extends Item {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack par1ItemStack, World w,List<String> par3List, ITooltipFlag par4) {
         par3List.addAll(subtext);
     }
 
@@ -130,26 +136,26 @@ public class ItemTransport extends Item {
      * on the off chance the transport failed to cast to the proper class it will be printed to the log, the issue should ALWAYS be the fault of the transport's class.
      */
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer playerEntity, World worldObj, int posX, int posY, int posZ, int blockSide, float pointToRayX, float pointToRayY, float pointToRayZ) {
+    public EnumActionResult onItemUseFirst(EntityPlayer playerEntity, World worldObj, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         try {
             if(CommonUtil.placeOnRail(transport.getConstructor(UUID.class, World.class, double.class, double.class, double.class)
-                    .newInstance(playerEntity.getUniqueID(), worldObj, posX + 0.5D, posY, posZ + 0.5D), playerEntity, itemStack, worldObj, posX, posY, posZ)){
+                    .newInstance(playerEntity.getUniqueID(), worldObj, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D), playerEntity, playerEntity.getHeldItem(hand), worldObj, pos.getX(),pos.getY(),pos.getZ())){
                 if (!playerEntity.capabilities.isCreativeMode) {
-                    itemStack.getCount()--;
-                    if (itemStack.getCount() <= 0) {
-                        itemStack = null;
+                    playerEntity.getHeldItem(hand).shrink(1);
+                    if (playerEntity.getHeldItem(hand).getCount() <= 0) {
+                        playerEntity.setHeldItem(hand, ItemStack.EMPTY);
                     }
                 }
-                return true;
+                return EnumActionResult.SUCCESS;
             }
-            return false;
+            return EnumActionResult.FAIL;
         } catch (Exception e){
         	if(DebugUtil.dev()){
             	e.printStackTrace();
         	}
         	DebugUtil.log("Failed to cast : " + transport.toString() + "to a new generic transport entity");
         }
-        return true;
+        return EnumActionResult.SUCCESS;
     }
 
     private static String t(String translate){

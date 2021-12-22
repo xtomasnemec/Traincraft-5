@@ -522,7 +522,7 @@ public class CommonUtil {
             input += 360.0d;
         }
 
-        return input;
+        return (float)input;
     }
 
     /**

@@ -628,7 +628,7 @@ public class ItemStackSlot extends Slot {
         if(!getHasStack() ||p_75209_1_ >=getStack().getCount()){
             setSlotContents(null,null);
         } else {
-            getStack().setCount(getStack().getCount() - p_75209_1_);
+            getStack().shrink(p_75209_1_);
         }
         return getStack();
     }

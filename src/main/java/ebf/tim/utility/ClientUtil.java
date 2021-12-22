@@ -243,15 +243,14 @@ public class ClientUtil {
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         //todo: the MC tessellator is show, this will have to be manually drawn out through GL11. this should be copied to 1.7
-        net.minecraft.client.renderer.Tessellator tessellator = net.minecraft.client.renderer.Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(f1, f2, f3, f);
-        tessellator.addVertex(p_73733_3_, p_73733_2_, 300);
-        tessellator.addVertex(p_73733_1_, p_73733_2_, 300);
-        tessellator.setColorRGBA_F(f5, f6, f7, f4);
-        tessellator.addVertex(p_73733_1_, p_73733_4_, 300);
-        tessellator.addVertex(p_73733_3_, p_73733_4_, 300);
-        tessellator.draw();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex3i(p_73733_3_, p_73733_2_, 300);
+        GL11.glVertex3i(p_73733_1_, p_73733_2_, 300);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex3i(p_73733_1_, p_73733_4_, 300);
+        GL11.glVertex3i(p_73733_3_, p_73733_4_, 300);
+        GL11.glEnd();
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);

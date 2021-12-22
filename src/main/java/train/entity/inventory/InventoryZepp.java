@@ -120,7 +120,7 @@ public class InventoryZepp extends Container {
 					else if (var8.getCount() < par1ItemStack.getMaxStackSize() && var8.getCount() < maxSize)//added max size check
 					{
 
-						par1ItemStack.setCount(par1ItemStack.getCount() - (maxSize - var8.getCount()));//stackSize will be reduced by the maxSize - what's already in the slot
+						par1ItemStack.shrink(maxSize - var8.getCount());//stackSize will be reduced by the maxSize - what's already in the slot
 						var8.setCount(maxSize);//???
 						var7.onSlotChanged();
 						var5 = true;
