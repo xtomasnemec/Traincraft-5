@@ -243,7 +243,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
     public boolean getBoolean(int index){
         if(world.isRemote) {
-            return bools.getFromInt(index, this.dataManager.set(BOOLS));
+            return bools.getFromInt(index, this.dataManager.get(BOOLS));
         } else {
             return bools.get(index);
         }
@@ -443,6 +443,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }else {
             this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
         }
+    }
+
+    @Override
+    public Type getType() {
+        return Type.CHEST;
     }
 
     @Override
@@ -1560,7 +1565,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public float getVelocity(){
-        return world.isRemote?dataManager.set(VELOCITY):
+        return world.isRemote?dataManager.get(VELOCITY):
                 (float)(Math.abs(motionX)+Math.abs(motionZ));
     }
     /**
@@ -1819,7 +1824,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * we have to initialize these values, but due to the design of the entity we don't actually use them.
      */
     /**used to sync the inventory on close.*/
-    @Override
+    //@Override
     public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
         return inventory==null || inventory.size()<p_70304_1_?null:inventory.get(p_70304_1_).getStack();
     }

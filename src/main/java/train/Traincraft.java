@@ -2,7 +2,6 @@ package train;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
@@ -35,7 +34,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
@@ -47,7 +45,6 @@ import train.core.handlers.VillagerTraincraftHandler;
 import train.core.network.PacketKeyPress;
 import train.core.network.PacketLantern;
 import train.core.network.PacketSetJukeboxStreamingUrl;
-import train.core.plugins.AssemblyTableNEIIntegration;
 import train.entity.trains.EntityLocoSteamBR80_DB;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
@@ -286,10 +283,6 @@ public class Traincraft {
 			}
 		}
 		LiquidManager.getLiquidsFromDictionnary();
-
-		if (Loader.isModLoaded("NotEnoughItems")) {
-			AssemblyTableNEIIntegration.setupNEIIntegration();
-		}
 
 		tcLog.info("Finished PostInitialization");
 	}

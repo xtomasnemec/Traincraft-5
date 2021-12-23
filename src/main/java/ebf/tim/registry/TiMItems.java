@@ -164,7 +164,7 @@ public class TiMItems {
     private static Item createItem(String unlocalizedName) {
         Item item = new Item();
         TiMGenericRegistry.RegisterItem(item, TrainsInMotion.MODID, unlocalizedName, TrainsInMotion.creativeTabCrafting);
-        item.setTextureName(TrainsInMotion.MODID+ ":" + "crafting/" + item.getTranslationKey().replace("item.", ""));
+        //item.setTextureName(TrainsInMotion.MODID+ ":" + "crafting/" + item.getTranslationKey().replace("item.", ""));
         return item;
     }
 }

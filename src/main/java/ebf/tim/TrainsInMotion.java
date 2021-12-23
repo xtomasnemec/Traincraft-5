@@ -201,10 +201,6 @@ public class TrainsInMotion {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
-        if (Loader.isModLoaded("NotEnoughItems")) {
-            TiMTableNEIIntegration.setupNEIintegration();
-        }
-
         TiMGenericRegistry.endRegistration();
     }
 

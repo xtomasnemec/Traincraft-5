@@ -49,7 +49,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
      * @return Path of texture to bind, or null to use default
      */
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type){
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type){
 		if(stack.getItem() == ItemIDs.helmet_suit_paintable.item || stack.getItem() == ItemIDs.jacket_suit_paintable.item || stack.getItem() == ItemIDs.boots_suit_paintable.item){
 			if(type!=null)return Info.resourceLocation+":"+Info.armorPrefix+"composite_suit_"+2+".png";
 			return Info.resourceLocation+":"+Info.armorPrefix+"composite_suit_"+1+".png";

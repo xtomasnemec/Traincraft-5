@@ -43,13 +43,13 @@ public class BlockTrainFluid extends BlockFluidClassic {
      * <h3>define texture</h3>
      * uses the sidedTexture to define the texture for the block.
      */
-    @Override
+    /*@Override
     public IIcon getIcon(int side, int meta) {
         if (this.sidedTexture == null){
             return null;
         }
         return side != 0 && side != 1 ? this.sidedTexture[1] : this.sidedTexture[0];
-    }
+    }*/
 
     public void setModID(String id){
         modID=id;
@@ -59,11 +59,11 @@ public class BlockTrainFluid extends BlockFluidClassic {
      * <h3>Register iicon</h3>
      * used to register the icon for the block.
      */
-    @Override
+    /*@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
         this.sidedTexture = new IIcon[]{iconRegister.registerIcon(modID+":fluids/"+fluidName), iconRegister.registerIcon(modID+":fluids/"+fluidName +"_flow")};
-    }
+    }*/
 
     /**
      * <h3>flammability</h3>
@@ -112,10 +112,10 @@ public class BlockTrainFluid extends BlockFluidClassic {
                 newHeight = quantaPerBlock - 1;
             } else {
                 int maxQuanta = -100;
-                maxQuanta = getLargerQuanta(world, pos.getX() - 1, pos.getY(), pos.getZ(), maxQuanta);
-                maxQuanta = getLargerQuanta(world, pos.getX() + 1, pos.getY(), pos.getZ(), maxQuanta);
-                maxQuanta = getLargerQuanta(world, pos.getX(),pos.getY(), pos.getZ() - 1, maxQuanta);
-                maxQuanta = getLargerQuanta(world, pos.getX(), pos.getY(), pos.getZ() + 1, maxQuanta);
+                maxQuanta = getLargerQuanta(world, new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ()), maxQuanta);
+                maxQuanta = getLargerQuanta(world, new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ()), maxQuanta);
+                maxQuanta = getLargerQuanta(world, new BlockPos(pos.getX(),pos.getY(), pos.getZ() - 1), maxQuanta);
+                maxQuanta = getLargerQuanta(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1), maxQuanta);
 
                 newHeight = maxQuanta - 1;
             }
@@ -125,22 +125,24 @@ public class BlockTrainFluid extends BlockFluidClassic {
                 fluidHeight = newHeight;
 
                 if (newHeight <= 0) {
-                    CommonUtil.setBlock(world, x, y, z, Blocks.air);
+                    CommonUtil.setBlock(world, pos.getX(), pos.getY(), pos.getZ(), Blocks.AIR);
                 } else {
-                    world.setBlockMetadataWithNotify(x, y, z, quantaPerBlock - newHeight, 3);
-                    world.scheduleBlockUpdate(x, y, z, this, tickRate);
-                    world.notifyBlocksOfNeighborChange(x, y, z, this);
+                    CommonUtil.setBlockMeta(world, pos.getX(), pos.getY(), pos.getZ(), quantaPerBlock - newHeight);
+                    world.scheduleBlockUpdate(pos, this, tickRate,3);
+                    world.notifyNeighborsOfStateChange(pos, this, true);
                 }
             }
         }
         // This is a "source" block, set meta to zero, and send a server only update
         else if (fluidHeight != quantaPerBlock) {
-            world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+            CommonUtil.setBlockMeta(world, pos.getX(), pos.getY(), pos.getZ(), quantaPerBlock - newHeight);
+            world.scheduleBlockUpdate(pos, this, tickRate,2);
+            world.notifyNeighborsOfStateChange(pos, this, true);
         }
 
         // Flow vertically if possible
-        if (canDisplace(world, x, y + densityDir, z)) {
-            flowIntoBlock(world, x, y + densityDir, z, 1);
+        if (canDisplace(world, new BlockPos(pos.getX(), pos.getY() + densityDir, pos.getZ()))) {
+            flowIntoBlock(world, new BlockPos(pos.getX(), pos.getY() + densityDir, pos.getZ()), 1);
             return;
         }
 
@@ -150,28 +152,28 @@ public class BlockTrainFluid extends BlockFluidClassic {
             return;
         }
 
-        if (isSourceBlock(world, x, y, z) || !isFlowingVertically(world, x, y, z)) {
-            if (CommonUtil.getBlockAt(world,x, y - densityDir, z) == this) {
+        if (isSourceBlock(world, pos) || !isFlowingVertically(world, pos)) {
+            if (CommonUtil.getBlockAt(world,pos.getX(), pos.getY() + densityDir, pos.getZ()) == this) {
                 flowMeta = 1;
             }
-            boolean[] flowTo = getOptimalFlowDirections(world, x, y, z);
+            boolean[] flowTo = getOptimalFlowDirections(world, pos);
 
-            if (flowTo[0]) flowIntoBlock(world, x - 1, y, z,flowMeta);
-            if (flowTo[1]) flowIntoBlock(world, x + 1, y, z,flowMeta);
-            if (flowTo[2]) flowIntoBlock(world, x,y, z - 1, flowMeta);
-            if (flowTo[3]) flowIntoBlock(world, x,y, z + 1, flowMeta);
+            if (flowTo[0]) flowIntoBlock(world, new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ()),flowMeta);
+            if (flowTo[1]) flowIntoBlock(world, new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ()),flowMeta);
+            if (flowTo[2]) flowIntoBlock(world, new BlockPos(pos.getX(),pos.getY(), pos.getZ() - 1), flowMeta);
+            if (flowTo[3]) flowIntoBlock(world, new BlockPos(pos.getX(),pos.getY(), pos.getZ() + 1), flowMeta);
         }
 
     }
 
     @Override
-    protected boolean[] getOptimalFlowDirections(World world, int x, int y, int z) {
+    protected boolean[] getOptimalFlowDirections(World world, BlockPos pos) {
         int x2,z2;
         for (int side = 0; side < 4; side++) {
             flowCost[side] = 1000;
 
-            x2 = x;
-            z2 = z;
+            x2 = pos.getX();
+            z2 = pos.getZ();
 
             switch (side) {
                 case 0: --x2; break;
@@ -180,15 +182,15 @@ public class BlockTrainFluid extends BlockFluidClassic {
                 case 3: ++z2; break;
             }
 
-            if (!canFlowInto(world, x2, y, z2) || isSourceBlock(world, x2, y, z2)) {
+            if (!canFlowInto(world, new BlockPos(x2, pos.getY(), z2)) || isSourceBlock(world, new BlockPos(x2, pos.getY(), z2))) {
                 continue;
             }
 
-            if (canFlowInto(world, x2, y + densityDir, z2)) {
+            if (canFlowInto(world, new BlockPos(x2, pos.getY() + densityDir, z2))) {
                 flowCost[side] = 0;
             }
             else {
-                flowCost[side] = calculateFlowCost(world, x2, y, z2, 1, side);
+                flowCost[side] = calculateFlowCost(world, new BlockPos(x2, pos.getY(), z2), 1, side);
             }
         }
 
@@ -200,7 +202,7 @@ public class BlockTrainFluid extends BlockFluidClassic {
     }
 
     @Override
-    protected int calculateFlowCost(World world, int x, int y, int z, int recurseDepth, int side) {
+    protected int calculateFlowCost(World world, BlockPos pos, int recurseDepth, int side) {
         int cost = 1000, x2, z2;
         for (int adjSide = 0; adjSide < 4; adjSide++) {
             if ((adjSide == 0 && side == 1) ||
@@ -210,8 +212,8 @@ public class BlockTrainFluid extends BlockFluidClassic {
                 continue;
             }
 
-            x2 = x;
-            z2 = z;
+            x2 = pos.getX();
+            z2 = pos.getZ();
 
             switch (adjSide) {
                 case 0: --x2; break;
@@ -220,11 +222,11 @@ public class BlockTrainFluid extends BlockFluidClassic {
                 case 3: ++z2; break;
             }
 
-            if (!canFlowInto(world, x2, y, z2) || isSourceBlock(world, x2, y, z2)) {
+            if (!canFlowInto(world, new BlockPos(x2, pos.getY(), z2)) || isSourceBlock(world, new BlockPos(x2, pos.getY(), z2))) {
                 continue;
             }
 
-            if (canFlowInto(world, x2, y + densityDir, z2)) {
+            if (canFlowInto(world, new BlockPos(x2, pos.getY() + densityDir, z2))) {
                 return recurseDepth;
             }
 
@@ -232,44 +234,44 @@ public class BlockTrainFluid extends BlockFluidClassic {
                 continue;
             }
 
-            cost=Math.min(cost, calculateFlowCost(world, x2, y, z2, recurseDepth + 1, adjSide));
+            cost=Math.min(cost, calculateFlowCost(world, new BlockPos(x2, pos.getY(), z2), recurseDepth + 1, adjSide));
         }
         return cost;
     }
 
     @Override
-    protected void flowIntoBlock(World world, int x, int y, int z, int meta) {
-        if (meta>=0 && displaceIfPossible(world, x, y, z)) {
-            CommonUtil.setBlock(world, x, y, z, this, meta);
+    protected void flowIntoBlock(World world, BlockPos pos, int meta) {
+        if (meta>=0 && displaceIfPossible(world, pos)) {
+            CommonUtil.setBlock(world, pos.getX(), pos.getY(), pos.getZ(), this, meta);
         }
     }
 
     @Override
-    protected boolean canFlowInto(IBlockAccess world, int x, int y, int z) {
-        Block block = world.getBlock(x, y, z);
-        if (block.isAir(world, x, y, z) || block == this){
+    protected boolean canFlowInto(IBlockAccess world, BlockPos pos) {
+        IBlockState block = world.getBlockState(pos);
+        if (block.getBlock().isAir(block,world,pos) || block.getBlock() == this){
             return true;
-        } else if (displacements.containsKey(block)) {
-            return displacements.get(block);
+        } else if (displacements.containsKey(block.getBlock())) {
+            return displacements.get(block.getBlock());
         } else if (block.getMaterial().blocksMovement()  ||
-                block.getMaterial() == Material.water ||
-                block.getMaterial() == Material.lava  ||
-                block.getMaterial() == Material.portal)
+                block.getMaterial() == Material.WATER ||
+                block.getMaterial() == Material.LAVA  ||
+                block.getMaterial() == Material.PORTAL)
         {
             return false;
         }
 
-        int density = getDensity(world, x, y, z);
+        int density = getDensity(world, pos);
 
         return density == Integer.MAX_VALUE || this.density > density;
     }
 
     @Override
-    protected int getLargerQuanta(IBlockAccess world, int x, int y, int z, int compare) {
-        if (world.isAirBlock(x, y, z) || world.getBlock(x, y, z) != this){
+    protected int getLargerQuanta(IBlockAccess world, BlockPos pos, int compare) {
+        if (world.isAirBlock(pos) || world.getBlockState(pos).getBlock() != this){
             return compare;
         } else {
-            return Math.max(quantaPerBlock - world.getBlockMetadata(x, y, z), compare);
+            return Math.max(quantaPerBlock - world.getBlockState(pos).getValue(LEVEL), compare);
         }
     }
 
