@@ -1548,7 +1548,7 @@ public class ModelC415H extends ModelConverter //Same as Filename
 		} else {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/TypeB_2_Black.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.2, -0.06, 0);
+			GL11.glTranslated(-1.2, -0.01, 0);
 			typeB2.render(entity, f, f1, f2, f3, f4, f5);
 
 			GL11.glTranslated(2.35, 0, 0);
