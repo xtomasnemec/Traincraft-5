@@ -3,6 +3,7 @@ package ebf.tim.utility;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
+import net.minecraft.block.Block;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.registries.GameData;
 import net.minecraft.item.Item;
@@ -101,6 +102,9 @@ public class JsonRecipeHelper {
 
         //NOTE: IN 1.12, this was in Traincraft/Traincraft, but also might only be for vanilla items:
         Item item = Item.REGISTRY.getObject(new ResourceLocation(itemString));
+        if(item==null){
+            item= Item.getItemFromBlock(Block.REGISTRY.getObject(new ResourceLocation(itemString)));
+        }
         //Item item = GameData.getItemRegistry().getObject(itemString); //1.7.10 version
 
         if (item == null) {

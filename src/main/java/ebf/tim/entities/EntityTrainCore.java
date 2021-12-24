@@ -80,8 +80,11 @@ public class EntityTrainCore extends GenericRailTransport {
     @Override
     public void entityInit(){
         super.entityInit();
-        this.dataManager.set(ACCELERATOR, accelerator);//accelerator
-        this.updateWatchers = true;
+
+        if(world!=null) {
+            this.dataManager.register(ACCELERATOR, accelerator);//accelerator
+            this.updateWatchers = true;
+        }
     }
 
     @Override

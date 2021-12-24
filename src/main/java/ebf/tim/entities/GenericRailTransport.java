@@ -301,21 +301,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public void entityInit(){
-        //0 is an integer used for the entity state, 0 is burning. 1 is sneaking. 2 is riding something. 3 is sprinting. 4. is eating
-        //1 is a short used for checking if the entity is underwater and how much air is left.
-        //i think 2-5 are used in 1.8.9+ for various things.
-        this.dataManager.set(VELOCITY, 0.0F);//float used to show the current movement velocity.
-        this.dataManager.set(FUEL_CONSUMPTION, 0);//train fuel consumption current
-        this.dataManager.set(TANK_DATA, "");//fluid tank data
-        this.dataManager.set(BOILER_HEAT, 0);//train heat
-        this.dataManager.set(HEAT, 40.0f);//train heat
-        this.dataManager.set(BOOLS, bools!=null?bools.toInt():BitList.newInt());//booleans
-        //18 is an int used by EntityTrainCore for the accelerator
-        this.dataManager.set(FRONT_LINKED_ID, 0);//front linked transport
-        this.dataManager.set(BACK_LINKED_ID, 0);//back linked transport
-
-
         if(world!=null) {
+            //0 is an integer used for the entity state, 0 is burning. 1 is sneaking. 2 is riding something. 3 is sprinting. 4. is eating
+            //1 is a short used for checking if the entity is underwater and how much air is left.
+            //i think 2-5 are used in 1.8.9+ for various things.
+            this.dataManager.register(VELOCITY, 0.0F);//float used to show the current movement velocity.
+            this.dataManager.register(FUEL_CONSUMPTION, 0);//train fuel consumption current
+            this.dataManager.register(TANK_DATA, "");//fluid tank data
+            this.dataManager.register(BOILER_HEAT, 0);//train heat
+            this.dataManager.register(HEAT, 40.0f);//train heat
+            this.dataManager.register(BOOLS, bools!=null?bools.toInt():BitList.newInt());//booleans
+            //18 is an int used by EntityTrainCore for the accelerator
+            this.dataManager.register(FRONT_LINKED_ID, 0);//front linked transport
+            this.dataManager.register(BACK_LINKED_ID, 0);//back linked transport
+
+
             collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }

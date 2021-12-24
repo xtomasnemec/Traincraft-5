@@ -115,7 +115,7 @@ public class TiMGenericRegistry {
             OreDictionary.registerOre(oreDictionaryName, block);
         }
         if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getTranslationKey().equals(CommonUtil.translate(block.getTranslationKey()))) {
-            DebugUtil.println("Block missing lang entry: " + block.getTranslationKey());
+            DebugUtil.println("Block missing lang entry: " + block.getTranslationKey() + " : " + unlocalizedName);
         }
         if (block instanceof BlockDynamic) {
             if (model != null) {
@@ -126,9 +126,9 @@ public class TiMGenericRegistry {
         }
         if (block instanceof ITileEntityProvider) {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
-            if (!redundantTiles.contains(unlocalizedName + "tile")) {
-                GameRegistry.registerTileEntity(tile, unlocalizedName + "tile");
-                redundantTiles.add(unlocalizedName + "tile");
+            if (!redundantTiles.contains(tile.getName())) {
+                GameRegistry.registerTileEntity(tile, new ResourceLocation(MODID,unlocalizedName + "tile"));
+                redundantTiles.add(tile.getName());
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
                     net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TESR);
                     //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);

@@ -1,5 +1,11 @@
 package ebf.tim.registry;
 
+import com.google.gson.JsonObject;
+import ebf.tim.utility.JsonRecipeHelper;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.crafting.IRecipeFactory;
+import net.minecraftforge.common.crafting.JsonContext;
+
 /**
  * Recipe parser as required for 1.12 and onwards json recipes. Pretty much just a wrapper for our actual recipe parsing
  * system. This was written while developing 1.7.10 version, and almost definitely is incorrect in one way or another.
@@ -8,13 +14,12 @@ package ebf.tim.registry;
  * @author PseudonymPatel
  * @since 2-10-2021
  */
-public class craftTableRecipeFactory /*implements IRecipeFactory*/ {
-
-//    @Override
-//    public IRecipe parse(JsonContext context, JsonObject json) {
-//        JsonRecipeHelper.parseAndAddRecipe(json);
-//        return null; //idk, this is a placeholder until we get to 1.12
-//        //what does forge do with the recipe? It might be better to not give it that, because our system is
-//        //  entirely custom already.
-//    }
+public class craftTableRecipeFactory implements IRecipeFactory {
+    @Override
+    public IRecipe parse(JsonContext context, JsonObject json) {
+        JsonRecipeHelper.parseAndAddRecipe(json);
+        return null; //idk, this is a placeholder until we get to 1.12
+        //what does forge do with the recipe? It might be better to not give it that, because our system is
+        //  entirely custom already.
+    }
 }
