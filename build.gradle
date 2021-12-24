@@ -2,16 +2,16 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net/' }
 	jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
         
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -23,10 +23,10 @@ archivesBaseName = "Traincraft"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
-    mappings = "stable_39";
+    //version = "1.12.2-14.23.5.2859"
+    mappings channel: 'snapshot', version: '20171003-1.12'
     
-    runDir = "run"
+    //runDir = "run"
     //replaceIn "Info.java"
     //replace "@VERSION1@", config.modVersion.toString()
 }
@@ -41,19 +41,19 @@ repositories {
     //maven {
     //    url = "http://maven.cil.li/"
     //}
-    maven {
+    ivy {
         name "BuildCraft"
-        url = "https://mod-buildcraft.com/maven"
+        artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/7.99.24.7/buildcraft-all-7.99.24.7.jar"
     }
 }
 
 
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2768'
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
 	//minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2768"
 
-    deobfCompile "com.mod-buildcraft:buildcraft:7.99.12"
+    compile name: "buildcraft", version: "7.0.7", classifier: "dev"
 
     //compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
 
@@ -72,7 +72,7 @@ processResources
 {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "mcversion", "1.12.2-14.23.5.2859"
 
     // quality of life line to simplify importing jars for experimental testing
     //compile fileTree(dir: 'libs', include: ['*.jar'])
