@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * This immutable class represents a point in the Minecraft world, while taking

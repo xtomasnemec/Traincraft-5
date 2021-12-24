@@ -24,7 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.Arrays;
 

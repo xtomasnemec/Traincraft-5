@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.Optional;
 import java.util.function.Predicate;

@@ -2,7 +2,7 @@ package ebf.tim.items;
 
 import net.minecraft.entity.EntityLiving;
 import org.apache.commons.lang3.tuple.Pair;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.entities.GenericRailTransport;

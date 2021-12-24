@@ -11,7 +11,7 @@ import mods.railcraft.api.tracks.TrackToolsAPI;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * Created by CovertJaguar on 7/9/2017 for Railcraft.

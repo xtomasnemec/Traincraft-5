@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * Created by CovertJaguar on 8/10/2016 for Railcraft.

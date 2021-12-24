@@ -20,7 +20,7 @@ import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.message.MessageFormatMessage;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.*;
 

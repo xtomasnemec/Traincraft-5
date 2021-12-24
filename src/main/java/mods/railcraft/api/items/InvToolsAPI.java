@@ -11,7 +11,7 @@ import mods.railcraft.api.core.RailcraftConstantsAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.Optional;
 

@@ -9,7 +9,7 @@ package mods.railcraft.api.tracks;
 
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.IStringSerializable;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.Locale;
 

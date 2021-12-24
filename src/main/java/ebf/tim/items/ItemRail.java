@@ -1,6 +1,6 @@
 package ebf.tim.items;
 
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 import mods.railcraft.api.items.ITrackItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumActionResult;

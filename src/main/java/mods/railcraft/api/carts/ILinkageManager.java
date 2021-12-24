@@ -8,7 +8,7 @@
 package mods.railcraft.api.carts;
 
 import net.minecraft.entity.item.EntityMinecart;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.stream.Stream;
 

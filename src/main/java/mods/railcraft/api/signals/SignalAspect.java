@@ -8,7 +8,7 @@
 package mods.railcraft.api.signals;
 
 import net.minecraft.nbt.NBTTagCompound;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.Locale;
 

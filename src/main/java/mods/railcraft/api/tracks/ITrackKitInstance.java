@@ -21,7 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.DataInputStream;

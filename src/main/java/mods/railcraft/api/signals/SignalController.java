@@ -8,7 +8,7 @@ package mods.railcraft.api.signals;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info>

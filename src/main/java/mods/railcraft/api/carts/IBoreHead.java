@@ -8,7 +8,7 @@
 package mods.railcraft.api.carts;
 
 import com.google.common.collect.Sets;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

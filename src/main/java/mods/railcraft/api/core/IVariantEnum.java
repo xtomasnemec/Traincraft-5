@@ -10,7 +10,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.oredict.OreIngredient;
 import org.apache.logging.log4j.util.Strings;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * @author CovertJaguar <http://www.railcraft.info/>

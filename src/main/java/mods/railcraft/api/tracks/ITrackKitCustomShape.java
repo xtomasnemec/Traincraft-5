@@ -11,7 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * Used by rails that modify the bounding boxes.

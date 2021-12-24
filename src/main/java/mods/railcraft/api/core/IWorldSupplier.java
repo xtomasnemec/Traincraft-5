@@ -8,7 +8,7 @@
 package mods.railcraft.api.core;
 
 import net.minecraft.world.World;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.Objects;
 

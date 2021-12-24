@@ -9,7 +9,7 @@ package mods.railcraft.api.core;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import com.sun.istack.internal.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * An interface for containers that can provide ingredients.
