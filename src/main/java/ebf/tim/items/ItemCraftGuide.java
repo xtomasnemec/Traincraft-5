@@ -24,7 +24,7 @@ public class ItemCraftGuide extends Item {
                 e.printStackTrace();
                 continue;
             }
-            key=itm.getItem().delegate.name().getNamespace();
+            key=itm.getItem().delegate.name().getResourceDomain();
             if(!processedTransports.containsKey(key)){
                 processedTransports.put(key,new ArrayList<GenericRailTransport>());
                 processedTransports.get(key).add(itm);

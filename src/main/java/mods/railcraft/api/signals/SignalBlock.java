@@ -148,7 +148,7 @@ public abstract class SignalBlock extends AbstractPair {
 //            logTrace(DEBUG_LEVEL, 10, "Signal Block code Path");
 
             Block block = tile.getWorld().getBlockState(other).getBlock();
-            log(DEBUG_LEVEL, "Signal Block target block [{0}, {1}, {2}] = {3}, {4}", other, block.getClass(), block.getTranslationKey());
+            log(DEBUG_LEVEL, "Signal Block target block [{0}, {1}, {2}] = {3}, {4}", other, block.getClass(), block.getUnlocalizedName());
             TileEntity t = tile.getWorld().getTileEntity(other);
             if (t != null)
                 log(DEBUG_LEVEL, "Signal Block target tile [{0}] = {1}", t.getPos(), t.getClass());

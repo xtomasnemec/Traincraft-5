@@ -354,7 +354,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             }
         }
         if(p_149749_1_!=null) {
-            p_149749_1_.getChunk(pos.getX() >> 4, pos.getZ() >> 4)
+            p_149749_1_.getChunkFromChunkCoords(pos.getX() >> 4, pos.getZ() >> 4)
                     .removeTileEntity(new BlockPos(pos.getX() & 15, pos.getY(), pos.getZ() & 15));
         }
     }

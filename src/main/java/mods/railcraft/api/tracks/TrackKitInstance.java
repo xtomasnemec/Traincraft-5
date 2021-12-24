@@ -136,7 +136,7 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
             return;
         World world = theWorldAsserted();
         ITrackKitPowered r = (ITrackKitPowered) this;
-        boolean powered = world.getRedstonePowerFromNeighbors(getPos()) > 0 || testPowerPropagation(world, getPos(), getTrackKit(), state, r.getPowerPropagation());
+        boolean powered = world.getStrongPower(getPos()) > 0 || testPowerPropagation(world, getPos(), getTrackKit(), state, r.getPowerPropagation());
         if (powered != r.isPowered()) {
             r.setPowered(powered);
             Block blockTrack = getBlock();

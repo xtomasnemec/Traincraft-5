@@ -46,7 +46,7 @@ public class ItemZeppelins extends Item {
 		float f7 = f4 * f5;
 		float f9 = f3 * f5;
 		double d3 = 5D;
-		Vec3d vec3d1 = vec3d.add((double) f7 * d3, (double) f6 * d3, (double) f9 * d3);
+		Vec3d vec3d1 = vec3d.addVector((double) f7 * d3, (double) f6 * d3, (double) f9 * d3);
 		RayTraceResult movingobjectposition = world.rayTraceBlocks(vec3d, vec3d1, true);
 		if (movingobjectposition == null) { return super.onItemRightClick(world,entityplayer,hand); }
 		if (!world.isRemote && !ConfigHandler.ENABLE_ZEPPELIN) {

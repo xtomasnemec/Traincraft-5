@@ -127,7 +127,7 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergySto
 
     public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){
         for (EnumFacing side : EnumFacing.HORIZONTALS) {
-            TileEntity tile = world.getTileEntity(new BlockPos(x + side.getXOffset(), y + side.getYOffset(), z + side.getZOffset()));
+            TileEntity tile = world.getTileEntity(new BlockPos(x + side.getFrontOffsetX(), y + side.getFrontOffsetY(), z + side.getFrontOffsetZ()));
             if (tile instanceof IEnergyStorage && storage.getEnergyStored() > 0) {
                 if (((IEnergyStorage) tile).canReceive()) {
                     int receive = ((IEnergyStorage) tile).receiveEnergy(Math.min(storage.getMaxEnergyStored(), storage.getEnergyStored()), false);

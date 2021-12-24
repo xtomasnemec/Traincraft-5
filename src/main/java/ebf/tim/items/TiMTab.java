@@ -32,7 +32,7 @@ public class TiMTab extends CreativeTabs {
     }*/
     /**the icon for the tab. don't override this one*/
     @Override
-    public ItemStack createIcon(){return new ItemStack(getTabItem());}
+    public ItemStack getTabIconItem(){return new ItemStack(getTabItem());}
 
     /**the icon for the tab. override this one*/
     public Item getTabItem(){return tabItem;}

@@ -77,8 +77,8 @@ public class TransportSkin {
         bogieTextures=textures;
         if(bogieTextures!=null) {
             for (int i = 0; i < textures.length; i++) {
-                if (!bogieTextures[i].getPath().contains(".")) {
-                    bogieTextures[i] = new ResourceLocation(bogieTextures[i].getNamespace(), bogieTextures[i].getPath() + ".png");
+                if (!bogieTextures[i].getResourcePath().contains(".")) {
+                    bogieTextures[i] = new ResourceLocation(bogieTextures[i].getResourceDomain(), bogieTextures[i].getResourcePath() + ".png");
                 }
             }
         }
@@ -92,8 +92,8 @@ public class TransportSkin {
         subBogieTextures=textures;
         if(subBogieTextures!=null) {
             for (int i = 0; i < textures.length; i++) {
-                if (!subBogieTextures[i].getPath().contains(".")) {
-                    subBogieTextures[i] = new ResourceLocation(subBogieTextures[i].getNamespace(), subBogieTextures[i].getPath() + ".png");
+                if (!subBogieTextures[i].getResourcePath().contains(".")) {
+                    subBogieTextures[i] = new ResourceLocation(subBogieTextures[i].getResourceDomain(), subBogieTextures[i].getResourcePath() + ".png");
                 }
             }
         }

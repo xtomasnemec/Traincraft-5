@@ -284,7 +284,7 @@ public class ItemRail extends Item implements ITrackItem {
     }
 
     public static boolean isItemBanned(ItemStack s){
-        return CommonUtil.stringContains(s.getItem().delegate.name().getNamespace(),"chisel") || Block.getBlockFromItem(s.getItem()).hasTileEntity();
+        return CommonUtil.stringContains(s.getItem().delegate.name().getResourcePath(),"chisel") || Block.getBlockFromItem(s.getItem()).hasTileEntity();
     }
 
     //adds custom versions of this to the creative menu, with the necessary NBT and metadata

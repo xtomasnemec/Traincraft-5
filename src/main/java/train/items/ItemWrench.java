@@ -48,11 +48,11 @@ public class ItemWrench extends ItemPart implements buildcraft.api.tools.IToolWr
 
 	@Optional.Method(modid = "BuildCraft|Core")
 	@Override
-	public boolean canWrench(EntityPlayer entityPlayer, EnumHand enumHand, ItemStack itemStack, RayTraceResult rayTraceResult) {
+	public boolean canWrench(EntityPlayer entityPlayer, int x, int y, int z) {
 		return !entityPlayer.isSneaking();
 	}
 
 	@Optional.Method(modid = "BuildCraft|Core")
 	@Override
-	public void wrenchUsed(EntityPlayer entityPlayer, EnumHand enumHand, ItemStack itemStack, RayTraceResult rayTraceResult) { }
+	public void wrenchUsed(EntityPlayer entityPlayer, int x, int y, int z) { }
 }

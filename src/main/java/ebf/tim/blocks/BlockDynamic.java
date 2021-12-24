@@ -64,7 +64,7 @@ public class BlockDynamic extends BlockContainer {
     @Override
     public void breakBlock(World w, BlockPos pos, IBlockState state) {
         //super.breakBlock(w, x, y, z, b, meta);
-        w.getChunk(pos.getX() >> 4, pos.getZ() >> 4)
+        w.getChunkFromChunkCoords(pos.getX() >> 4, pos.getZ() >> 4)
                 .removeTileEntity(new BlockPos(pos.getX() & 15, pos.getY(), pos.getZ() & 15));
     }
 
@@ -75,7 +75,7 @@ public class BlockDynamic extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
     public ResourceLocation getTexture(int x, int y, int z){
-        return new ResourceLocation(this.textureName == null ? "MISSING_ICON_BLOCK_" + getIdFromBlock(this) + "_" + this.getTranslationKey() :textureName);
+        return new ResourceLocation(this.textureName == null ? "MISSING_ICON_BLOCK_" + getIdFromBlock(this) + "_" + this.getUnlocalizedName() :textureName);
     }
 
     @SideOnly(Side.CLIENT)

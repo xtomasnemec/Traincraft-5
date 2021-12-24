@@ -7,13 +7,18 @@ import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLever;
+import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockProperties;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
@@ -46,7 +51,7 @@ public class CommonUtil {
     public static final double degreesD = 180.0d / Math.PI;
     public static final float degreesF = (float) (180.0d / Math.PI);
     private static List<String> loggedLangChecks = new ArrayList<>();
-
+    public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing>create("facing", EnumFacing.class);
 
 
     /**redirect shorthand that typecasts doubles to ints
@@ -72,7 +77,8 @@ public class CommonUtil {
     }
 
     public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
-        ((World)w).setBlockState(new BlockPos(x,y,z), w.getBlockState(new BlockPos(x,y,z)).getBlock().getStateFromMeta(meta)); //might need one without the two at the end? check BlockSwitchStand.java Line 97
+        ((World)w).setBlockState(new BlockPos(x,y,z),
+                w.getBlockState(new BlockPos(x,y,z)).withProperty(FACING,EnumFacing.getHorizontal(meta))); //might need one without the two at the end? check BlockSwitchStand.java Line 97
     }
 
     public static void markBlockForUpdate(World w, int x, int y, int z){
@@ -80,15 +86,15 @@ public class CommonUtil {
     }
 
     public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
-        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)).getProperties(), "facing");
+        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)), FACING);
     }
 
     public static int getRailMeta(IBlockAccess w, EntityMinecart cart, int x, int y, int z){
-        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)).getProperties(), "shape");
+        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)), BlockRail.SHAPE);
     }
 
-    private static int getPropertyKeyInt(ImmutableMap<IProperty<?>, Comparable<?>> property, String key){
-        return property.containsKey(key)?(int)property.get(key):0;
+    private static int getPropertyKeyInt(IBlockState state, PropertyEnum<?> key){
+        return state.getProperties().containsKey(key)?(int)(Comparable<Integer>)state.getProperties().get(key):0;
     }
 
     public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){

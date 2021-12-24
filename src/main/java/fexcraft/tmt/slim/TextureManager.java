@@ -206,7 +206,7 @@ public class TextureManager {
         //    return (TextureAtlasSprite)RenderBlocks.getInstance().overrideBlockTexture;
         //}
         IBlockState state = Block.getBlockFromItem(b.getItem()).getDefaultState();
-        return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getQuads(state, EnumFacing.byIndex(side),0l).get(0).getSprite();
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getQuads(state, EnumFacing.getFront(side),0l).get(0).getSprite();
 
         /* backup plan
         TextureMap texturemap = Minecraft.getMinecraft().getTextureMapBlocks();
@@ -428,9 +428,9 @@ public class TextureManager {
     }
 
     private static String resourceLocation(ResourceLocation res){
-        return (res.getNamespace() + "/"
-                +res.getPath().
-                substring(0, res.getPath().lastIndexOf(".")));
+        return (res.getResourceDomain() + "/"
+                +res.getResourcePath().
+                substring(0, res.getResourcePath().lastIndexOf(".")));
     }
 
 }

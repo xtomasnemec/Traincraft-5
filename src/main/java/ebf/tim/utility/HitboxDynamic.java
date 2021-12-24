@@ -110,7 +110,7 @@ public class HitboxDynamic {
         for (int i1 = i; i1 <= j; ++i1) {
             for (int j1 = k; j1 <= l; ++j1) {
                 if (host.world.getChunkProvider().isChunkGeneratedAt(i1, j1)) {
-                    entities = host.world.getChunk(i1, j1).getEntityLists();
+                    entities = host.world.getChunkFromChunkCoords(i1, j1).getEntityLists();
                     for (ClassInheritanceMultiMap<Entity> olist: entities) {
                         for(Object obj : olist) {
                             if(obj instanceof EntitySeat || obj instanceof EntityBogie || obj instanceof CollisionBox ||
