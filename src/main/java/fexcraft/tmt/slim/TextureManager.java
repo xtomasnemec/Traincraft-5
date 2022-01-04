@@ -171,7 +171,7 @@ public class TextureManager {
                 if(textureName.split(":").length == 1){
                     textureName = "minecraft:" + textureName;
                 }
-                texture = new ResourceLocation(textureName.split(":")[0], "textures/items/" + textureName.split(":")[1] + ".png");
+                texture = new ResourceLocation(textureName.split(":")[0], "textures/items/" + textureName.split(":")[1]);
             }
 
             if(texture != null){

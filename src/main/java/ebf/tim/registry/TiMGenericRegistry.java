@@ -8,6 +8,7 @@ import ebf.tim.blocks.BlockTrainFluid;
 import ebf.tim.blocks.OreGen;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.CustomItemModel;
+import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.utility.*;
@@ -34,6 +35,8 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.GameData;
+import net.minecraftforge.registries.ObjectHolderRegistry;
 import net.minecraftforge.registries.RegistryManager;
 
 import javax.annotation.Nullable;
@@ -100,7 +103,12 @@ public class TiMGenericRegistry {
         if (unlocalizedName.length() > 0) {
             block.setTranslationKey(unlocalizedName);
             ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))
-            .register(block.setRegistryName(MODID,unlocalizedName));
+                    .register(block.setRegistryName(MODID,unlocalizedName));
+            if(model!=null) {
+                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName + ".item", oreDictionaryName + ".item", tab, null, ebf.tim.items.CustomItemModel.instance);
+            } else {
+                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName + ".item", oreDictionaryName + ".item", tab, null, null);
+            }
             usedNames.add(unlocalizedName);
         } else {
             DebugUtil.println("ERROR: ", "attempted to register Block with no unlocalizedName");
@@ -145,6 +153,7 @@ public class TiMGenericRegistry {
                 DebugUtil.printStackTrace();
             }
         }
+
         return block;
     }
 

@@ -65,6 +65,20 @@ public class RenderWagon extends Render {
             }
         }
     }
+
+
+    public void doRender(GenericRailTransport entity, double x, double y, double z, float yaw, float partialTick){
+        if (entity !=null){
+            if(entity.frontBogie!=null) {
+                render(entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                        false);
+            } else {
+                render(entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                        true);
+            }
+        }
+    }
+
     @Override
     public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks)
     {}

@@ -1,6 +1,8 @@
 package ebf.tim;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -8,6 +10,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -27,6 +30,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import train.library.Info;
 
 import java.util.Collections;
 import java.util.List;
@@ -190,10 +194,10 @@ public class TrainsInMotion {
 
         if(event.getSide().isClient()) {
             //register the event handler
-            FMLCommonHandler.instance().bus().register(ClientProxy.eventManager);
+            MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
             fexcraft.tmt.slim.TextureManager.collectIngotColors();
         }
-        FMLCommonHandler.instance().bus().register(CommonProxy.eventManagerServer);
+        MinecraftForge.EVENT_BUS.register(CommonProxy.eventManagerServer);
 
         //register GUI, model renders, Keybinds, client only blocks, and HUD
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);

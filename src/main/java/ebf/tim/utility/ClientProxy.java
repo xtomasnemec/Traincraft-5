@@ -12,6 +12,7 @@ import ebf.tim.items.ItemPaintBucket;
 import ebf.tim.render.RenderWagon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -291,11 +292,16 @@ public class ClientProxy extends CommonProxy {
     private static final Render nullRender = new Render(Minecraft.getMinecraft().getRenderManager()) {
         @Override
         public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
+        public void doRender(EntitySeat p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
+        public void doRender(EntityBogie p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
 
         @Override
         protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
             return null;
         }
+
+        @Override
+        public boolean shouldRender(Entity livingEntity, ICamera camera, double camX, double camY, double camZ){return false;}
 
         public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
     };
