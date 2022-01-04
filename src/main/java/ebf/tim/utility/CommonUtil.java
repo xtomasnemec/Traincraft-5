@@ -24,6 +24,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -78,7 +79,7 @@ public class CommonUtil {
 
     public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
         ((World)w).setBlockState(new BlockPos(x,y,z),
-                w.getBlockState(new BlockPos(x,y,z)).withProperty(FACING,EnumFacing.getHorizontal(meta))); //might need one without the two at the end? check BlockSwitchStand.java Line 97
+                w.getBlockState(new BlockPos(x,y,z)).withProperty(FACING,EnumFacing.byHorizontalIndex(meta))); //might need one without the two at the end? check BlockSwitchStand.java Line 97
     }
 
     public static void markBlockForUpdate(World w, int x, int y, int z){
@@ -86,15 +87,17 @@ public class CommonUtil {
     }
 
     public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
-        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)), FACING);
+        return getPropertyFacingInt(w.getBlockState(new BlockPos(x,y,z)), FACING);
+    }
+    private static int getPropertyFacingInt(IBlockState state, PropertyEnum<?> key){
+        return state.getProperties().containsKey(key)?((EnumFacing)state.getProperties().get(key)).getIndex():0;
     }
 
     public static int getRailMeta(IBlockAccess w, EntityMinecart cart, int x, int y, int z){
-        return getPropertyKeyInt(w.getBlockState(new BlockPos(x,y,z)), BlockRail.SHAPE);
+        return getPropertyShapeInt(w.getBlockState(new BlockPos(x,y,z)), BlockRail.SHAPE);
     }
-
-    private static int getPropertyKeyInt(IBlockState state, PropertyEnum<?> key){
-        return state.getProperties().containsKey(key)?(int)(Comparable<Integer>)state.getProperties().get(key):0;
+    private static int getPropertyShapeInt(IBlockState state, PropertyEnum<?> key){
+        return state.getProperties().containsKey(key)?((BlockRailBase.EnumRailDirection)state.getProperties().get(key)).getMetadata():0;
     }
 
     public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){

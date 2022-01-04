@@ -65,6 +65,9 @@ public class RenderWagon extends Render {
             }
         }
     }
+    @Override
+    public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks)
+    {}
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket) {
         doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, null, this);

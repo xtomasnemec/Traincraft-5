@@ -146,7 +146,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 		this.placeBlockAtCurrentPosition(world, TCBlocks.partTable, 0, 7, 1, 1, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 1, 1, 0, structureboundingbox);
 		this.placeBlockAtCurrentPosition(world, Blocks.AIR, 0, 1, 2, 0, structureboundingbox);
-		this.createVillageDoor(world, structureboundingbox, random, 1, 1, 0, EnumFacing.getFront(this.getMetadataWithOffset(Blocks.OAK_DOOR, 1)));
+		this.createVillageDoor(world, structureboundingbox, random, 1, 1, 0, EnumFacing.byIndex(this.getMetadataWithOffset(Blocks.OAK_DOOR, 1)));
 
 		if (this.getBlockStateFromPos(world, 1, 0, -1, structureboundingbox).getBlock() == Blocks.AIR && this.getBlockStateFromPos(world, 1, -1, -1, structureboundingbox).getBlock() != Blocks.AIR) {
 			this.placeBlockAtCurrentPosition(world, Blocks.STONE_SLAB, 4, 1, 0, -1, structureboundingbox);
@@ -270,13 +270,13 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 	//BS what the vanilla code did in 1.7
 	int getMetadataWithOffset(Block p_151555_1_, int p_151555_2_) {
 		if (p_151555_1_ != Blocks.OAK_DOOR) {
-			if (this.getCoordBaseMode() == EnumFacing.getFront(0)) {
+			if (this.getCoordBaseMode() == EnumFacing.byIndex(0)) {
 				if (p_151555_2_ == 2) {
 					return 3;
 				} else if (p_151555_2_ == 3) {
 					return 2;
 				}
-			} else if (this.getCoordBaseMode() == EnumFacing.getFront(1)) {
+			} else if (this.getCoordBaseMode() == EnumFacing.byIndex(1)) {
 				switch (p_151555_2_){
 					case 0: return 2;
 					case 1: return 3;
@@ -284,7 +284,7 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 					case 3: return 1;
 				}
 			}
-			else if (this.getCoordBaseMode() == EnumFacing.getFront(3)) {
+			else if (this.getCoordBaseMode() == EnumFacing.byIndex(3)) {
 				switch (p_151555_2_){
 					case 0: return 2;
 					case 1: return 3;
@@ -294,18 +294,18 @@ public class ComponentVillageTrainstation extends StructureVillagePieces.Village
 			}
 		}
 
-		else if (this.getCoordBaseMode() == EnumFacing.getFront(0)) {
+		else if (this.getCoordBaseMode() == EnumFacing.byIndex(0)) {
 			if (p_151555_2_ == 0) {
 				return 2;
 			} else if (p_151555_2_ == 2) {
 				return 0;
 			}
 		} else {
-			if (this.getCoordBaseMode() == EnumFacing.getFront(1)) {
+			if (this.getCoordBaseMode() == EnumFacing.byIndex(1)) {
 				return p_151555_2_ + 1 & 3;
 			}
 
-			if (this.getCoordBaseMode() == EnumFacing.getFront(3)) {
+			if (this.getCoordBaseMode() == EnumFacing.byIndex(3)) {
 				return p_151555_2_ + 3 & 3;
 			}
 		}

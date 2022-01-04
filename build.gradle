@@ -75,7 +75,7 @@ processResources
 {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
-    inputs.property "mcversion", "1.12.2-14.23.5.2859"
+    inputs.property "mcversion", "1.12.2-14.23.4.2705"
 
     // quality of life line to simplify importing jars for experimental testing
     //compile fileTree(dir: 'libs', include: ['*.jar'])

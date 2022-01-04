@@ -11,7 +11,7 @@ public class SimpleBlock extends Block {
 
         setHardness(hardness);
         setResistance(resistance);
-        setUnlocalizedName(unlocalizedName);
+        setTranslationKey(unlocalizedName);
         //setBlockTextureName(texture);
         setHarvestLevel("pickaxe", 2); //iron pick for all blocks
 

@@ -53,7 +53,7 @@ public class TileRenderFacing extends TileEntity {
 
     public EnumFacing getFacing(){
         //1.8.9+ it's getHorizontal
-        return EnumFacing.getHorizontal((int)facing);
+        return EnumFacing.byHorizontalIndex((int)facing);
     }
 
     @Override

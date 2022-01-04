@@ -98,7 +98,7 @@ public class TiMGenericRegistry {
             block.setCreativeTab(tab);
         }
         if (unlocalizedName.length() > 0) {
-            block.setUnlocalizedName(unlocalizedName);
+            block.setTranslationKey(unlocalizedName);
             ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))
             .register(block.setRegistryName(MODID,unlocalizedName));
             usedNames.add(unlocalizedName);
@@ -114,8 +114,8 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getUnlocalizedName().equals(CommonUtil.translate(block.getUnlocalizedName()))) {
-            DebugUtil.println("Block missing lang entry: " + block.getUnlocalizedName() + " : " + unlocalizedName);
+        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getTranslationKey().equals(CommonUtil.translate(block.getTranslationKey()))) {
+            DebugUtil.println("Block missing lang entry: " + block.getTranslationKey() + " : " + unlocalizedName);
         }
         if (block instanceof BlockDynamic) {
             if (model != null) {
@@ -164,7 +164,7 @@ public class TiMGenericRegistry {
             itm.setContainerItem(container);
         }
         if (!unlocalizedName.equals("")) {
-            itm.setUnlocalizedName(unlocalizedName);
+            itm.setTranslationKey(unlocalizedName);
             usedNames.add(unlocalizedName);
         } else {
             DebugUtil.println("ERROR: ", "attempted to register Item with no unlocalizedName");
@@ -180,8 +180,8 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getUnlocalizedName().equals(CommonUtil.translate(itm.getUnlocalizedName()))) {
-            DebugUtil.println("Item missing lang entry: " + itm.getUnlocalizedName());
+        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()))) {
+            DebugUtil.println("Item missing lang entry: " + itm.getTranslationKey());
         }
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {
             //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
@@ -214,7 +214,7 @@ public class TiMGenericRegistry {
         FluidRegistry.registerFluid(fluid);
 
         Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color))
-                .getBlockState().getBlock().setUnlocalizedName("block." + unlocalizedName.replace(".item", ""));
+                .getBlockState().getBlock().setTranslationKey("block." + unlocalizedName.replace(".item", ""));
                 //todo: block textures aren't this configurable anymore
                 //.setBlockTextureName(MODID + ":block_" + unlocalizedName);
         ((BlockTrainFluid) block).setModID(MODID);
@@ -230,10 +230,10 @@ public class TiMGenericRegistry {
         if (bucket == null) {
             bucket = new ItemBucket(block).setCreativeTab(tab).setContainerItem(Items.BUCKET);
             if (TrainsInMotion.proxy.isClient()) {
-                bucket.setUnlocalizedName(MODID + ":bucket_" + unlocalizedName);
+                bucket.setTranslationKey(MODID + ":bucket_" + unlocalizedName);
             }
         }
-        bucket.setUnlocalizedName(unlocalizedName + ".bucket");
+        bucket.setTranslationKey(unlocalizedName + ".bucket");
         ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
                 .register(bucket.setRegistryName(MODID,"fluid." +unlocalizedName + ".bucket"));
         //todo: 1.12 uses instanceof stuff, so this _shouldn't_ be needed?
@@ -244,11 +244,11 @@ public class TiMGenericRegistry {
             if (fluid.getUnlocalizedName().equals(CommonUtil.translate(fluid.getUnlocalizedName()))) {
                 DebugUtil.println("Fluid missing lang entry: " + fluid.getUnlocalizedName());
             }
-            if (bucket.getUnlocalizedName().equals(block.getLocalizedName())) {
-                DebugUtil.println("Item missing lang entry: " + bucket.getUnlocalizedName());
+            if (bucket.getTranslationKey().equals(block.getLocalizedName())) {
+                DebugUtil.println("Item missing lang entry: " + bucket.getTranslationKey());
             }
-            if (block.getUnlocalizedName().equals(block.getLocalizedName())) {
-                DebugUtil.println("Block missing lang entry: " + block.getUnlocalizedName());
+            if (block.getTranslationKey().equals(block.getLocalizedName())) {
+                DebugUtil.println("Block missing lang entry: " + block.getTranslationKey());
             }
 
         }
@@ -276,7 +276,7 @@ public class TiMGenericRegistry {
                     registryPosition, TrainsInMotion.instance, 1600, 3, true);
 
             ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
-                    .register(registry.getCartItem().getItem().setRegistryName(MODID,registry.getCartItem().getItem().getUnlocalizedName()));
+                    .register(registry.getCartItem().getItem().setRegistryName(MODID,registry.getCartItem().getItem().getTranslationKey()));
             if (registry.getRecipe() != null) {
                 if (CommonProxy.recipesInMods.containsKey(MODID)) {
                     CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));

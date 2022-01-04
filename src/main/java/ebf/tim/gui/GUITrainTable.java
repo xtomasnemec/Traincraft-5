@@ -44,7 +44,7 @@ public class GUITrainTable extends GuiContainer {
 
     public GUITrainTable(InventoryPlayer inventoryPlayer, World world, int x, int y, int z) {
         super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) world.getTileEntity(new BlockPos(x,y,z))));
-        hostname=CommonUtil.getBlockAt(world, x,y,z).getUnlocalizedName();
+        hostname=CommonUtil.getBlockAt(world, x,y,z).getTranslationKey();
         xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.getDimension();
         player = inventoryPlayer.player;
 

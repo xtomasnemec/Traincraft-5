@@ -16,7 +16,7 @@ public class TileLantern extends TileRenderFacing implements ITickable {
 
 	private int randomColor = (rand.nextInt() * 0xFFFFFF);
 	private int oldColor = 0;
-
+	public TileLantern(){super();}
 	public TileLantern(BlockDynamic block) {
 		super(block);
 	}

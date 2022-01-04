@@ -40,7 +40,7 @@ public class ItemTransport extends Item {
      * @param cart the class for the entity*/
     public ItemTransport(GenericRailTransport cart, String MODID, CreativeTabs tabs) {
         super();
-        setUnlocalizedName(cart.transportName().replace(" ",""));
+        setTranslationKey(cart.transportName().replace(" ",""));
         if(cart.transportYear()!=null) {
             subtext.add(ChatFormatting.GRAY + t("menu.item.year") + ": " + cart.transportYear());
         }

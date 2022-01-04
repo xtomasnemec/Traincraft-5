@@ -225,7 +225,7 @@ public class EventManager {
         for(int x=-1;x<=1;x++) {
             for(int z=-1;z<=1;z++) {
                 for (ClassInheritanceMultiMap<Entity> l : entity.world.
-                        getChunkFromChunkCoords(entity.chunkCoordX + x, entity.chunkCoordZ + z)
+                        getChunk(entity.chunkCoordX + x, entity.chunkCoordZ + z)
                         .getEntityLists()) {
                     e.addAll(l);
                 }

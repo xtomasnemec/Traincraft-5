@@ -153,6 +153,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     @Override
     public void addPassenger(Entity passenger) {
         if(passengerEntity==null && passenger instanceof EntityLivingBase) {
+            passenger.startRiding(this);
             super.addPassenger(passenger);
             this.passengerEntity=(EntityLivingBase) passenger;
         }
@@ -160,6 +161,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public void removePassenger(Entity passenger){
+        passenger.dismountRidingEntity();
         super.removePassenger(passenger);
         passengerEntity=null;
     }

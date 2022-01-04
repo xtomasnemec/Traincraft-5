@@ -414,6 +414,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         super.setPositionAndRotationDirect(x,y,z,yaw,pitch,turnProgress, teleport);
     }
 
+    @Override
+    public int getRollingAmplitude(){return 0;}
+    @Override
+    public float getDamage(){return 0;}
+
 
     @Override
     public void setVelocity(double x, double y, double z) {

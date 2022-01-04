@@ -60,10 +60,10 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     protected void initInventoryFromBlock( BlockDynamic block ){
         int s=400;
         inventory = new ArrayList<>();
-        if(block.getUnlocalizedName().equals("tile.block.traintabletier1") ||
-                block.getUnlocalizedName().equals("tile.block.traintabletier2") ||
-                block.getUnlocalizedName().equals("tile.block.traintabletier3") ||
-                block.getUnlocalizedName().equals("tile.block.traintable")) {
+        if(block.getTranslationKey().equals("tile.block.traintabletier1") ||
+                block.getTranslationKey().equals("tile.block.traintabletier2") ||
+                block.getTranslationKey().equals("tile.block.traintabletier3") ||
+                block.getTranslationKey().equals("tile.block.traintable")) {
 
             if (block.assemblyTableTier != -1) {
                 //if it's a traintable, it should be, things might break otherwise, this is temporary to see if I missed a case.
@@ -73,7 +73,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 this.assemblyTableTier = 0;
             }
 
-            if (!CommonProxy.isTraincraft || block.getUnlocalizedName().equals("tile.block.traintable")) {
+            if (!CommonProxy.isTraincraft || block.getTranslationKey().equals("tile.block.traintable")) {
                 //inventory grid (left grid)
                 for (int l = 0; l < 3; ++l) {
                     for (int i1 = 0; i1 < 3; ++i1) {

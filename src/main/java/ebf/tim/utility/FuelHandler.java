@@ -128,7 +128,7 @@ public class FuelHandler{
     //adds burn times for items that aren't normally registered to minecraft's burnable system.
     public static int itemBurnTime(ItemStackSlot slotId) {
 		if(slotId !=null && slotId.getStack() !=null) {
-			switch (slotId.getItem().delegate.name().getResourceDomain()) {
+			switch (slotId.getItem().delegate.name().getNamespace()) {
 
 				//case "modid:Item":{ return 20;}
 				default:{return TileEntityFurnace.getItemBurnTime(slotId.getStack());}

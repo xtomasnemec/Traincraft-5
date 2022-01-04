@@ -1611,6 +1611,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return p_70112_1_ > 1D;
     }
 
+    @Override
+    public int getRollingAmplitude(){return 0;}
+    @Override
+    public float getDamage(){return 0;}
 
     /*
      * <h1>Inventory management</h1>

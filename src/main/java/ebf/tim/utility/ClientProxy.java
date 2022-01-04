@@ -296,6 +296,8 @@ public class ClientProxy extends CommonProxy {
         protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
             return null;
         }
+
+        public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
     };
 
     private static final RenderPlayer playerRender= new RenderPlayer(Minecraft.getMinecraft().getRenderManager()){
