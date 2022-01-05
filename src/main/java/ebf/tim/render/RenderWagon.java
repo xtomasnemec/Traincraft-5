@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -27,10 +28,12 @@ import static org.lwjgl.opengl.GL11.*;
  * all the variables have to be stored outside this class because it's assigned to the entity class, not it's instances.
  * @author Eternal Blue Flame
  */
-public class RenderWagon extends Render {
+public class RenderWagon extends Render<GenericRailTransport> implements IRenderFactory<GenericRailTransport> {
 
     private static double railOffset = 0.34f;
     private static int i=0, ii=0, iii=0;
+
+    public static RenderWagon INSTANCE=new RenderWagon(null);
 
     public RenderWagon(RenderManager renderManager) {
         super(renderManager);
@@ -43,7 +46,7 @@ public class RenderWagon extends Render {
      * returns the texture for this entity, required by the super, we use it so we have access to the texture from outside this class, for example
      * @see GroupedModelRender#doRender(ItemStack, RenderWagon, float, GenericRailTransport)
      */
-    public ResourceLocation getEntityTexture(Entity entity){
+    public ResourceLocation getEntityTexture(GenericRailTransport entity){
         return null;
     }
 
@@ -53,7 +56,7 @@ public class RenderWagon extends Render {
      * This is just to do typecasting and a few calculations beforehand so we only need to do them once per render.
      * todo: 1.9+ should support Entity<t zextends GenericRailTransport> so this typecasting method should be completely useless then.
      */
-    @Override
+    /*@Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
         if (entity instanceof GenericRailTransport){
             if(((GenericRailTransport) entity).frontBogie!=null) {
@@ -64,7 +67,7 @@ public class RenderWagon extends Render {
                         true);
             }
         }
-    }
+    }*/
 
 
     public void doRender(GenericRailTransport entity, double x, double y, double z, float yaw, float partialTick){
@@ -588,5 +591,10 @@ public class RenderWagon extends Render {
         } else {
             return input;
         }
+    }
+
+    @Override
+    public Render<? super GenericRailTransport> createRenderFor(RenderManager manager) {
+        return this;
     }
 }

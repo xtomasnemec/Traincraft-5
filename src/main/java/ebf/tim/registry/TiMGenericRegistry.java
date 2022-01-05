@@ -11,6 +11,7 @@ import ebf.tim.items.CustomItemModel;
 import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemTransport;
+import ebf.tim.render.RenderWagon;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
@@ -18,6 +19,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -320,14 +322,14 @@ public class TiMGenericRegistry {
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {
                 if (entityRender == null) {
-                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render) TrainsInMotion.proxy.getEntityRender());
+                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>)RenderWagon.INSTANCE);
                     if (ClientProxy.preRenderModels) {
-                        ((net.minecraft.client.renderer.entity.Render) TrainsInMotion.proxy.getEntityRender()).doRender(registry, 0, 0, 0, 0, 0);
+                        //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) TrainsInMotion.proxy.getEntityRender()).ren(registry, 0, 0, 0, 0, 0);
                     }
                 } else {
-                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render) entityRender);
+                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) entityRender);
                     if (ClientProxy.preRenderModels) {
-                        ((net.minecraft.client.renderer.entity.Render) entityRender).doRender(registry, 0, 0, 0, 0, 0);
+                        //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) entityRender).doRender(registry, 0, 0, 0, 0, 0);
                     }
                 }
                 if (ClientProxy.preRenderModels && ClientProxy.hdTransportItems) {
