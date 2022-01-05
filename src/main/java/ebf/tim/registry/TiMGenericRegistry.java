@@ -26,6 +26,7 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -195,9 +196,13 @@ public class TiMGenericRegistry {
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {
             //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
             CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName));
+            ModelLoader.setCustomModelResourceLocation(itm,0,
+                    new net.minecraft.client.renderer.block.model.ModelResourceLocation(MODID, unlocalizedName));
         } else if (TrainsInMotion.proxy.isClient() && itm instanceof ItemTransport) {
             //MinecraftForgeClient.registerItemRenderer(itm, ebf.tim.items.CustomItemModel.instance);
             CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName));
+            ModelLoader.setCustomModelResourceLocation(itm,0,
+                    new net.minecraft.client.renderer.block.model.ModelResourceLocation(MODID, unlocalizedName));
             //todo:this somehow?
             if (ClientProxy.preRenderModels) {
                 //ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
