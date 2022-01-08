@@ -45,17 +45,12 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 public class CustomItemModel implements ICustomModelLoader {
 
-    public static CustomItemModel instance = new CustomItemModel();
+    public static final CustomItemModel instance = new CustomItemModel();
 
     private static HashMap<Item, TileRenderFacing> blockTextures = new HashMap<>();
 
     public static List<ResourceLocation> renderItems = new ArrayList<>();
 
-
-    public CustomItemModel() {
-        super();
-        instance=this;
-    }
 
     public static void registerBlockTextures(Item itm, TileEntity tile){
         if(tile instanceof TileRenderFacing) {

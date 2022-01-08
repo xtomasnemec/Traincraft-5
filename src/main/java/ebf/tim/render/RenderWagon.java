@@ -28,7 +28,7 @@ import static org.lwjgl.opengl.GL11.*;
  * all the variables have to be stored outside this class because it's assigned to the entity class, not it's instances.
  * @author Eternal Blue Flame
  */
-public class RenderWagon extends Render<GenericRailTransport> implements IRenderFactory<GenericRailTransport> {
+public class RenderWagon extends Render<GenericRailTransport> {
 
     private static double railOffset = 0.34f;
     private static int i=0, ii=0, iii=0;
@@ -591,10 +591,5 @@ public class RenderWagon extends Render<GenericRailTransport> implements IRender
         } else {
             return input;
         }
-    }
-
-    @Override
-    public Render<? super GenericRailTransport> createRenderFor(RenderManager manager) {
-        return this;
     }
 }

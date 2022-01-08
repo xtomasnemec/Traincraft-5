@@ -62,7 +62,9 @@ public class TransportSkin {
         return translated;
     }
 
-    public ResourceLocation getTexture(int id){return new ResourceLocation(modid,id>=texture.length?texture[0]:texture[id]);}
+    public ResourceLocation getTexture(int id){
+        return new ResourceLocation(modid,id>=texture.length?texture[0]:texture[id]);
+    }
 
     public TransportSkin setBogieTextures(String texture){
         bogieTextures=resourceList(modid,new String[]{texture.contains(".")?texture:texture+".png"});
@@ -161,4 +163,5 @@ public class TransportSkin {
         }
         return value;
     }
+
 }

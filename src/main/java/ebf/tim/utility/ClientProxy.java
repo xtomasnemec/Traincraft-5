@@ -206,7 +206,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, playerRender);
 
         //item render
-        ModelLoaderRegistry.registerLoader(CustomItemModel.instance);
+        //ModelLoaderRegistry.registerLoader(CustomItemModel.instance);
 
 
         //keybinds

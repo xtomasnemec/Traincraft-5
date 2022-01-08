@@ -322,12 +322,12 @@ public class TiMGenericRegistry {
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {
                 if (entityRender == null) {
-                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>)RenderWagon.INSTANCE);
+                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), RenderWagon.INSTANCE);
                     if (ClientProxy.preRenderModels) {
                         //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) TrainsInMotion.proxy.getEntityRender()).ren(registry, 0, 0, 0, 0, 0);
                     }
                 } else {
-                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) entityRender);
+                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render<GenericRailTransport>) entityRender);
                     if (ClientProxy.preRenderModels) {
                         //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) entityRender).doRender(registry, 0, 0, 0, 0, 0);
                     }
