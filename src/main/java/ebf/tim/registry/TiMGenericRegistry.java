@@ -18,8 +18,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ModelManager;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -29,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.animation.AnimationTESR;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -197,25 +202,14 @@ public class TiMGenericRegistry {
         }
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {
             //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
-            CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName));
-            ModelLoader.setCustomMeshDefinition(itm, new net.minecraft.client.renderer.ItemMeshDefinition(){
-                @Override
-                public net.minecraft.client.renderer.block.model.ModelResourceLocation getModelLocation(ItemStack stack) {
-                    return new net.minecraft.client.renderer.block.model.ModelResourceLocation(MODID, unlocalizedName);
-                }
-            });
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0, new net.minecraft.client.renderer.block.model.ModelResourceLocation(MODID, unlocalizedName));
+            CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
+            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,unlocalizedName),""));
+
         } else if (TrainsInMotion.proxy.isClient() && itm instanceof ItemTransport) {
-            //MinecraftForgeClient.registerItemRenderer(itm, ebf.tim.items.CustomItemModel.instance);
-            CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName));
-            ModelLoader.setCustomMeshDefinition(itm, new net.minecraft.client.renderer.ItemMeshDefinition(){
-                @Override
-                public net.minecraft.client.renderer.block.model.ModelResourceLocation getModelLocation(ItemStack stack) {
-                    return new net.minecraft.client.renderer.block.model.ModelResourceLocation(MODID, unlocalizedName);
-                }
-            });
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0, new net.minecraft.client.renderer.block.model.ModelResourceLocation(MODID, unlocalizedName));
-            //todo:this somehow?
+            CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
+            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,unlocalizedName),""));
+
+            //todo:this somehow? actually it might just be forced in 1.8+
             if (ClientProxy.preRenderModels) {
                 //ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
             }
@@ -301,23 +295,19 @@ public class TiMGenericRegistry {
                     registry.transportName().replace(" ", "") + ".entity",
                     registryPosition, TrainsInMotion.instance, 1600, 3, true);
 
-            ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
-                    .register(registry.getCartItem().getItem().setRegistryName(MODID,registry.getCartItem().getItem().getTranslationKey()));
+            RegisterItem(registry.getCartItem().getItem(),MODID,registry.transportName()+".item",
+                    null,registry.getItem().getCreativeTab(),null,null);
             if (registry.getRecipe() != null) {
                 if (CommonProxy.recipesInMods.containsKey(MODID)) {
-                    CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
+                  //  CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
                 } else {
-                    CommonProxy.recipesInMods.put(MODID, new ArrayList<Recipe>());
-                    CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
+                  //  CommonProxy.recipesInMods.put(MODID, new ArrayList<Recipe>());
+                 //   CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
                 }
-            }
-            if (TrainsInMotion.proxy.isClient() && ClientProxy.hdTransportItems) {
-                //MinecraftForgeClient.registerItemRenderer(registry.getCartItem().getItem(), ebf.tim.items.CustomItemModel.instance);
-                CustomItemModel.renderItems.add(new ResourceLocation(MODID, registry.transportName().replace(" ", "") + ".entity"));
             }
             registry.registerSkins();
             if (registry.getRecipe() != null) {
-                RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getTier());
+               // RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getTier());
             }
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {

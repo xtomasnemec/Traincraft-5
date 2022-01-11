@@ -1,7 +1,13 @@
 package ebf.tim.utility;
 
+import ebf.tim.items.CustomItemModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ClassInheritanceMultiMap;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -36,7 +42,6 @@ import java.util.List;
  * used to manage specific events that can't be predicted, like player key presses.
  * @author Eternal Blue Flame
  */
-@Mod.EventBusSubscriber
 public class EventManager {
 
     private static List<GenericRailTransport> stock;
@@ -364,9 +369,25 @@ public class EventManager {
     /**
      * <h2>join world</h2>
      * This event is called when a player joins the world, we use this to display the alpha notice, and check for new mod versions, this is only displayed on the client side, but can be used for server..
-     */
+     *
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void entityJoinWorldEvent(EntityJoinWorldEvent event) {
+    }*/
+
+    @SubscribeEvent
+    public static void onModelBakeEvent(ModelBakeEvent event) {
+        for(ModelResourceLocation res :event.getModelRegistry().getKeys()){
+            DebugUtil.println(res.getPath(),res.getNamespace());
+            if(CustomItemModel.instance.accepts(new ResourceLocation(res.getNamespace(),res.getPath()))){
+                try {
+                    IModel model = CustomItemModel.instance.loadModel(res);
+                    event.getModelRegistry().putObject(res,
+                            model.bake(model.getDefaultState(), new VertexFormat(),null));
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

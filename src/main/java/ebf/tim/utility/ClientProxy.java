@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -31,8 +32,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 /**
  * <h1>client proxy</h1>
@@ -206,7 +211,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, playerRender);
 
         //item render
-        //ModelLoaderRegistry.registerLoader(CustomItemModel.instance);
+        ModelLoaderRegistry.registerLoader(CustomItemModel.instance);
 
 
         //keybinds

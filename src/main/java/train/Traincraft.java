@@ -119,6 +119,40 @@ public class Traincraft {
 		modChannel.registerMessage(PacketLantern.Handler.class, PacketLantern.class, 3, Side.SERVER);
 
 		tcLog.info("Finished PreInitialization");
+
+
+
+		tcTab = new TiMTab("Traincraft", Info.modID, "logoBR80_DB");
+		TCBlocks.init();
+		TCItems.init();
+
+		if(ConfigHandler.ENABLE_STEAM) {
+			//the null last value defines we aren't implementing a custom entity render.
+			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listSteam(),null);
+		}
+		if(ConfigHandler.ENABLE_DIESEL) {
+			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listDiesel(),null);
+		}
+		if(ConfigHandler.ENABLE_ELECTRIC) {
+			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listElectric(),null);
+		}
+		if(ConfigHandler.ENABLE_TENDER) {
+			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listTender(),null);
+		}
+
+		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listPassenger(),null);
+		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listFreight(),null);
+		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listWorkCart(),null);
+		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listTanker(),null);
+		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listSpecial(),null);
+
+		if(ConfigHandler.ENABLE_ZEPPELIN) {
+			//TiM doesn't have a generic entity registration yet, so these will likely have to remain as-is for now.
+			EntityRegistry.registerModEntity(new ResourceLocation(Info.modID, "zeppelin"), EntityZeppelinTwoBalloons.class, "zeppelin", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin
+			TiMGenericRegistry.registryPosition++;
+			EntityRegistry.registerModEntity(new ResourceLocation(Info.modID, "zeppelin_big"), EntityZeppelinOneBalloon.class, "zeppelin big", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin big
+			TiMGenericRegistry.registryPosition++;
+		}
 	}
 
 	@EventHandler
@@ -176,44 +210,15 @@ public class Traincraft {
 
 		/* Register Items, Blocks, ... */
 		tcLog.info("Initialize Blocks, Items, ...");
-		tcTab = new TiMTab("Traincraft", Info.modID, "logoBR80_DB");
 		trainArmor = proxy.addArmor("armor");
 		trainCloth = proxy.addArmor("Paintable");
 		trainCompositeSuit = proxy.addArmor("CompositeSuit");
-		TCBlocks.init();
 		TCBlocks.registerRecipes();
-		TCItems.init();
 
 		//parse and register json crafting recipes
 		JsonRecipeHelper.loadRecipes(Info.modID, this.getClass());
 
-		if(ConfigHandler.ENABLE_STEAM) {
-			//the null last value defines we aren't implementing a custom entity render.
-			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listSteam(),null);
-		}
-		if(ConfigHandler.ENABLE_DIESEL) {
-			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listDiesel(),null);
-		}
-		if(ConfigHandler.ENABLE_ELECTRIC) {
-			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listElectric(),null);
-		}
-		if(ConfigHandler.ENABLE_TENDER) {
-			TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listTender(),null);
-		}
 
-		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listPassenger(),null);
-		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listFreight(),null);
-		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listWorkCart(),null);
-		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listTanker(),null);
-		TiMGenericRegistry.registerTransports(Info.modID, TrainRegistry.listSpecial(),null);
-
-		if(ConfigHandler.ENABLE_ZEPPELIN) {
-			//TiM doesn't have a generic entity registration yet, so these will likely have to remain as-is for now.
-			EntityRegistry.registerModEntity(new ResourceLocation(Info.modID, "zeppelin"), EntityZeppelinTwoBalloons.class, "zeppelin", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin
-			TiMGenericRegistry.registryPosition++;
-			EntityRegistry.registerModEntity(new ResourceLocation(Info.modID, "zeppelin_big"), EntityZeppelinOneBalloon.class, "zeppelin big", TiMGenericRegistry.registryPosition, Traincraft.instance, 512, 3, true);//zepplin big
-			TiMGenericRegistry.registryPosition++;
-		}
 
 		proxy.setHook(); // Moved file needed to run JLayer, we need to set a hook in order to retrieve it
 

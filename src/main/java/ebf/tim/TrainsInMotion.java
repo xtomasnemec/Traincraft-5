@@ -130,8 +130,10 @@ public class TrainsInMotion {
         creativeTab=new TiMTab("Trains in Motion", MODID, "TiM");
         creativeTabCrafting=new TiMTab("Trains in Motion Crafting", creativeTab.getTabItem());
 
+        MinecraftForge.EVENT_BUS.register(EventManagerServer.class);
+
         if(event.getSide().isClient()){
-            net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(ebf.tim.items.CustomItemModel.instance);
+            MinecraftForge.EVENT_BUS.register(EventManager.class);
         }
     }
 
