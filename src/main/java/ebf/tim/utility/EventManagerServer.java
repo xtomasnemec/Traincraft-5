@@ -12,7 +12,6 @@ public class EventManagerServer {
     @SuppressWarnings("unused")
     public void playerQuitEvent(PlayerEvent.PlayerLoggedOutEvent event){
         if (event.player.getRidingEntity() instanceof EntitySeat){
-            ((EntitySeat) event.player.getRidingEntity()).removePassenger(event.player);
             event.player.dismountEntity(event.player.getRidingEntity());
         }
     }

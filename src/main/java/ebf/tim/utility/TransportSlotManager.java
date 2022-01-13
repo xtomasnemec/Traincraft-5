@@ -31,7 +31,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
     public void addSlots(ItemStackSlot slot){
         this.inventory.add(slot);
         this.inventorySlots.add(slot);
-        this.inventoryItemStacks.add(slot.getStack());
+        this.inventoryItemStacks.add(slot.getStack()==null?ItemStack.EMPTY:slot.getStack());
     }
 
     /**

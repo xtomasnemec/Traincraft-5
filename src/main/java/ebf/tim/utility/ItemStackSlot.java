@@ -585,7 +585,7 @@ public class ItemStackSlot extends Slot {
     public ItemStack getStack() {
         return inventory instanceof GenericRailTransport || inventory instanceof TileEntityStorage ?stack:
                 inventory!=null && inventory.getSizeInventory()>slotNumber?
-                        inventory.getStackInSlot(slotNumber):null;
+                        inventory.getStackInSlot(slotNumber):ItemStack.EMPTY;
     }
 
     /**

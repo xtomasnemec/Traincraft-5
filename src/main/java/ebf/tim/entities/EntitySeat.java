@@ -1,6 +1,7 @@
 package ebf.tim.entities;
 
 
+import ebf.tim.utility.DebugUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +35,6 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     public Vec3d rotation =null;
     GenericRailTransport parent;
-    private EntityLivingBase passengerEntity=null;
     private boolean controller=false, locomotive=false;
 
     public EntitySeat(World world) {
@@ -82,8 +82,6 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
             } else {
                 world.removeEntity(this);
             }
-        } else if (parent!=null && passengerEntity!=null && passengerEntity.getRidingEntity()!=this){
-            passengerEntity=null;
         }
 
     }
@@ -141,30 +139,19 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public void updateRidden() {
-        if (this.getPassenger() != null) {
-            this.getPassenger().setPosition(this.posX, this.posY+0.4, this.posZ);
-        }
+        super.updateRidden();
     }
 
     public EntityLivingBase getPassenger(){
-        return this.passengerEntity;
+        return this.getPassengers().size()>0 && this.getPassengers().get(0) instanceof EntityLivingBase?
+                (EntityLivingBase) this.getPassengers().get(0):null;
     }
 
     @Override
     public void addPassenger(Entity passenger) {
-        if(passengerEntity==null && passenger instanceof EntityLivingBase) {
-            passenger.startRiding(this);
-            super.addPassenger(passenger);
-            this.passengerEntity=(EntityLivingBase) passenger;
-        }
+        super.addPassenger(passenger);
     }
 
-    @Override
-    public void removePassenger(Entity passenger){
-        passenger.dismountRidingEntity();
-        super.removePassenger(passenger);
-        passengerEntity=null;
-    }
 
     public boolean isControlSeat(){return controller;}
     public boolean isLocoControlSeat(){return controller && locomotive;}

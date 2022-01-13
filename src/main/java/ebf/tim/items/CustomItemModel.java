@@ -305,7 +305,6 @@ public class CustomItemModel implements ICustomModelLoader {
 
                 @Override
                 public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType perspective){
-
                     renderItemModel(stack, perspective, holder);
                     return Pair.of(this, null);
                 }

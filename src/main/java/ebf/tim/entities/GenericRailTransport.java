@@ -536,8 +536,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //be sure the player has permission to enter the transport, and that the transport has the main seat open.
                     if (getRiderOffsets() != null && getPermissions(p, false, true)) {
                         for (EntitySeat seat : seats) {
-                            if (seat.getPassenger() == null) {
-                                seat.addPassenger(p);
+                            if (seat.getPassenger() == null && !world.isRemote) {
+                                p.startRiding(seat);
                                 return true;
                             }
                         }
@@ -1649,9 +1649,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public ItemStack getStackInSlot(int slot) {
         if (inventory == null || slot <0 || slot >= inventory.size()){
-            return null;
+            return ItemStack.EMPTY;
         } else {
-            return inventory.get(slot).getStack();
+            return inventory.get(slot).getStack()==null?ItemStack.EMPTY:inventory.get(slot).getStack();
         }
     }
 
@@ -1673,7 +1673,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if (inventory!= null && getSizeInventory()>=slot) {
             return inventory.get(slot).decrStackSize(stackSize);
         } else {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
