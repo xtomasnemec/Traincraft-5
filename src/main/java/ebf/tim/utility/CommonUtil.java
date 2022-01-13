@@ -24,6 +24,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.codec.binary.Base64;
@@ -78,8 +79,14 @@ public class CommonUtil {
     }
 
     public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
-        ((World)w).setBlockState(new BlockPos(x,y,z),
-                w.getBlockState(new BlockPos(x,y,z)).withProperty(FACING,EnumFacing.byHorizontalIndex(meta))); //might need one without the two at the end? check BlockSwitchStand.java Line 97
+        Block b = w.getBlockState(new BlockPos(x,y,z)).getBlock();
+        if(b instanceof BlockRailBase){
+            w.getBlockState(new BlockPos(x, y, z)).withProperty(BlockRail.SHAPE,BlockRailBase.EnumRailDirection.byMetadata(meta));
+        } else if(b instanceof BlockFluidClassic) {
+            w.getBlockState(new BlockPos(x, y, z)).withProperty(BlockFluidBase.LEVEL,meta);
+        }else {
+            w.getBlockState(new BlockPos(x, y, z)).withProperty(FACING,EnumFacing.byHorizontalIndex(meta));
+        }  //might need one without the two at the end? check BlockSwitchStand.java Line 97
     }
 
     public static void markBlockForUpdate(World w, int x, int y, int z){

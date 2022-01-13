@@ -18,12 +18,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -32,24 +28,19 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.animation.AnimationTESR;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.capability.ItemFluidContainer;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.GameData;
-import net.minecraftforge.registries.ObjectHolderRegistry;
 import net.minecraftforge.registries.RegistryManager;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static ebf.tim.utility.RecipeManager.getRecipeWithTier;
 import static net.minecraftforge.registries.GameData.BLOCKS;
@@ -298,12 +289,7 @@ public class TiMGenericRegistry {
             RegisterItem(registry.getCartItem().getItem(),MODID,registry.transportName()+".item",
                     null,registry.getItem().getCreativeTab(),null,null);
             if (registry.getRecipe() != null) {
-                if (CommonProxy.recipesInMods.containsKey(MODID)) {
-                  //  CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
-                } else {
-                  //  CommonProxy.recipesInMods.put(MODID, new ArrayList<Recipe>());
-                 //   CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
-                }
+                    tempReipes.put(MODID, new recipePreReg(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
             }
             registry.registerSkins();
             if (registry.getRecipe() != null) {
@@ -339,12 +325,32 @@ public class TiMGenericRegistry {
     }
 
 
+
     public static void endRegistration() {
+
+        for(String key : tempReipes.keySet()){
+            if (!CommonProxy.recipesInMods.containsKey(key)) {
+                CommonProxy.recipesInMods.put(key, new ArrayList<Recipe>());
+            }
+            CommonProxy.recipesInMods.get(key).add(getRecipeWithTier(tempReipes.get(key).inputs, tempReipes.get(key).result, tempReipes.get(key).tier));
+            RecipeManager.registerRecipe(tempReipes.get(key).inputs, tempReipes.get(key).result, tempReipes.get(key).tier);
+        }
+
         usedNames = null;
         registryPosition = -1;
         redundantTiles = null;
     }
 
+    private static Map<String, recipePreReg> tempReipes = new HashMap<>();
+    private static class recipePreReg {
+        int tier;ItemStack result;ItemStack[] inputs;
+
+        public recipePreReg(ItemStack[] i, ItemStack r, int t) {
+            this.inputs=i;
+            this.result = r;
+            this.tier=t;
+        }
+    }
 
     //todo:add support for buildcraft/railcraft burnable fluids
 

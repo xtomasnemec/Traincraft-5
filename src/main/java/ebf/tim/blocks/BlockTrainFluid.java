@@ -93,7 +93,7 @@ public class BlockTrainFluid extends BlockFluidClassic {
 
     /**
      * disable host tick system
-     */
+     *
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         int fluidHeight = quantaPerBlock - this.getMetaFromState(state);
@@ -101,7 +101,7 @@ public class BlockTrainFluid extends BlockFluidClassic {
 
         // check adjacent block levels if non-source
         if (fluidHeight < quantaPerBlock) {
-            int y2 = /*pos.getY() -*/ densityDir;
+            int y2 =  densityDir;
 
             if (CommonUtil.getBlockAt(world, pos.getX(),y2,pos.getZ()) == this ||
                     CommonUtil.getBlockAt(world, pos.getX() - 1, y2, pos.getZ()) == this ||
@@ -273,7 +273,7 @@ public class BlockTrainFluid extends BlockFluidClassic {
         } else {
             return Math.max(quantaPerBlock - world.getBlockState(pos).getValue(LEVEL), compare);
         }
-    }
+    }*/
 
 
 }

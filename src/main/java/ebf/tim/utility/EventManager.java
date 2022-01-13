@@ -378,7 +378,6 @@ public class EventManager {
     @SubscribeEvent
     public static void onModelBakeEvent(ModelBakeEvent event) {
         for(ModelResourceLocation res :event.getModelRegistry().getKeys()){
-            DebugUtil.println(res.getPath(),res.getNamespace());
             if(CustomItemModel.instance.accepts(new ResourceLocation(res.getNamespace(),res.getPath()))){
                 try {
                     IModel model = CustomItemModel.instance.loadModel(res);

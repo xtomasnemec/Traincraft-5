@@ -348,7 +348,7 @@ public class RecipeManager {
     }
 
     public static ItemStack[] getItem(Object itm){
-        ItemStack[] list = new ItemStack[1];
+        ItemStack[] list = new ItemStack[]{ItemStack.EMPTY};
         if(itm==null){
             return list;
         }
@@ -379,6 +379,9 @@ public class RecipeManager {
             }
 
         }
+        if(list==null){
+            list=new ItemStack[]{ItemStack.EMPTY};
+        }
         return list;
     }
 
@@ -389,13 +392,17 @@ public class RecipeManager {
      * todo: update this to not use depreciated func, make more robust/efficient
      */
     public static ItemStack[] ODC(ItemStack s){
-        if(s==null){
+        if(s==null || s== ItemStack.EMPTY){
             return null;
         }
         //cache the old size and set it to 1, the ore directory only contains entries with a getCount() of 1,
         //   anything else can break the equals check.
         int oldSize = s.getCount();
         s.setCount(1);
+
+        if(s.isEmpty()){
+            return null;
+        }
 
         List<ItemStack> dir = new ArrayList<>();
         //create a list of ore directory entries
