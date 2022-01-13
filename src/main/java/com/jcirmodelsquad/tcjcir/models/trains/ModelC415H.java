@@ -1555,17 +1555,31 @@ public class ModelC415H extends ModelConverter //Same as Filename
 			typeB2.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		}
-		}
+	}
 
 	public float[] getTrans() {
 		return new float[]{-1.2F, 0.15F, 0.00F};
 	}
 
 	public ArrayList<double[]> getSmokePosition() {
+
 		return new ArrayList<double[]>() {
 			{
 				add(new double[]{1.75D, 1.55D, 0.0D});
 			}
 		};
 	}
+	/*public ArrayList<double[]> getSmokePosition(Entity entity) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 135461){
+			return new ArrayList<double[]>() {
+				{
+					add(new double[]{1.75D, 1.55D, 0.0D});
+				}
+			}else{
+				{
+					add(new double[]{1.75D, 1.55D, 0.0D});
+				}
+			}
+		};
+	}*/
 }

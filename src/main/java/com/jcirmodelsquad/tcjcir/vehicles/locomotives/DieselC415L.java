@@ -15,7 +15,7 @@ import train.common.library.GuiIDs;
 
 public class DieselC415L extends DieselTrain {
     public DieselC415L(World world) {
-        super(world, EnumTrains.C424.getTankCapacity(), LiquidManager.dieselFilter());
+        super(world, EnumTrains.C415L.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
 
     }
@@ -40,7 +40,7 @@ public class DieselC415L extends DieselTrain {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
         double distance = 0.95;
-        double yOffset = 0.4;
+        double yOffset = 0.35;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
         if(side.isServer()){

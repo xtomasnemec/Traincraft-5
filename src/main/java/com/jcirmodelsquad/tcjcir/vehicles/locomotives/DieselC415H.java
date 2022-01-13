@@ -15,7 +15,7 @@ import train.common.library.GuiIDs;
 
 public class DieselC415H extends DieselTrain {
     public DieselC415H(World world) {
-        super(world, EnumTrains.C424.getTankCapacity(), LiquidManager.dieselFilter());
+        super(world, EnumTrains.C415H.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
 
     }
