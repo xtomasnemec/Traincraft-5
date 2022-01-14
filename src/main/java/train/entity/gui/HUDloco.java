@@ -26,7 +26,6 @@ public class HUDloco {
 	public void onGameRender(RenderGameOverlayEvent.Post event){
 		if (game != null && game.player != null && game.player.getRidingEntity() instanceof EntitySeat && Minecraft.isGuiEnabled() && game.currentScreen == null) {
 			if(((EntitySeat)game.player.getRidingEntity()).isLocoControlSeat()) {
-				DebugUtil.println("PASS");
 				renderSkillHUD(event, (EntityTrainCore) game.world.getEntityByID(((EntitySeat) game.player.getRidingEntity()).parentId));
 			}
 		} else {

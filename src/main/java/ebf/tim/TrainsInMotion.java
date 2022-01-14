@@ -123,6 +123,9 @@ public class TrainsInMotion {
      */
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        if(event.getSide().isClient()){
+            proxy=new ClientProxy();
+        }
 
         proxy.loadConfig(event);
         ForgeChunkManager.setForcedChunkLoadingCallback(TrainsInMotion.instance, chunkHandler);

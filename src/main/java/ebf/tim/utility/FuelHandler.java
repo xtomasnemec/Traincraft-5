@@ -62,7 +62,7 @@ public class FuelHandler{
 	 */
 	@Deprecated
 	public static FluidStack getUseableFluid(ItemStack itemStack, GenericRailTransport transport){
-		if(itemStack==null || itemStack.getItem()==null){
+		if(itemStack==null || itemStack==ItemStack.EMPTY || itemStack.getItem()==null){
 			return null;
 		}
 

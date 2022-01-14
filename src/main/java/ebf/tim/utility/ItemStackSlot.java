@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class ItemStackSlot extends Slot {
 
-    private ItemStack stack = null, overlay = null;
+    private ItemStack stack = ItemStack.EMPTY, overlay = null;
     private int slotID;
     private boolean isCraftingOutput = false, isCraftingInput = false;
     private int tierIn = 0; //The tier of assemblytable this slot is in, if applicable. Ignore if not applicable.
@@ -309,14 +309,14 @@ public class ItemStackSlot extends Slot {
         if (tierIn > 0) startSlot = 410; //start one slot later for TC assemblytable
         if(slots==null){
             for (int i = 0; i < numberSlots; i++) {
-                putStackInSlot(hostSlots,startSlot + i, null);
+                putStackInSlot(hostSlots,startSlot + i, ItemStack.EMPTY);
             }
             ((TileEntityStorage) hostInventory).pages = 1;
             ((TileEntityStorage) hostInventory).outputPage = 1;
         } else {
             if(slots.size() <= numberSlots) {
                 for (int i = 0; i < numberSlots; i++) {
-                    putStackInSlot(hostSlots,startSlot + i, i >= slots.size() ?null: slots.get(i));
+                    putStackInSlot(hostSlots,startSlot + i, i >= slots.size() ?ItemStack.EMPTY: slots.get(i));
                 }
                 ((TileEntityStorage)hostInventory).pages = 1;
                 ((TileEntityStorage)hostInventory).outputPage = 1;
@@ -334,7 +334,7 @@ public class ItemStackSlot extends Slot {
                     int slotIncrementor = 409;
                     for (int i = 0; i < 7; i++) {
                         if (slotIncrementor == 412 || slotIncrementor == 414) { //skip these slots, fill with null
-                            putStackInSlot(hostSlots, slotIncrementor, null);
+                            putStackInSlot(hostSlots, slotIncrementor, ItemStack.EMPTY);
                             slotIncrementor++;
                         }
                         if ((i + 7 * (page - 1)) < slots.size()) {
@@ -449,7 +449,7 @@ public class ItemStackSlot extends Slot {
                         if (r.input.get(i) != null) {
                             for (ItemStack s : r.input.get(i)) {
                                 if (slotMatchesItem(hostSlots, 400 + i, s)) {
-                                    shrinkStackInSlot(hostSlots, 400 + i, s == null ? 0 : stackSize * s.getCount());
+                                    shrinkStackInSlot(hostSlots, 400 + i, s == null || s == ItemStack.EMPTY ? 0 : stackSize * s.getCount());
                                     break;
                                 }
                             }
@@ -477,13 +477,15 @@ public class ItemStackSlot extends Slot {
             }
         }
         if (stackSlot!=null) {
-            if(stackSlot.getStack()==null || stack==null) {
+            if(stackSlot.getStack()==ItemStack.EMPTY || stack==ItemStack.EMPTY) {
+                return stackSlot.getStack() == ItemStack.EMPTY && stack == ItemStack.EMPTY;
+            } else if(stackSlot.getStack()==null || stack==null) {
                 return stackSlot.getStack() == null && stack == null;
             } else {
                 return stack.getItem()==stackSlot.getStack().getItem();
             }
         } else {
-            return stack==null;
+            return stack==ItemStack.EMPTY;
         }
     }
 
@@ -492,7 +494,7 @@ public class ItemStackSlot extends Slot {
         for(ItemStackSlot stak: hostSlots){
             if (stak.getSlotIndex() ==slot){
                 if(stak.getStackSize()-size<1){
-                    stak.setStack(null);
+                    stak.setStack(ItemStack.EMPTY);
                 } else {
                     stak.setSlotStackSize(stak.getStackSize() - size);
                 }
@@ -519,9 +521,9 @@ public class ItemStackSlot extends Slot {
     public boolean setSlotContents(@Nullable ItemStack stack, List<ItemStackSlot> hostInventory){
         if (isItemValid(stack) || stack == null) {
             if (!(inventory instanceof GenericRailTransport) && !(inventory instanceof TileEntityStorage)) {
-                    inventory.setInventorySlotContents(slotNumber, stack==null?null:stack.copy());
+                    inventory.setInventorySlotContents(slotNumber, stack==ItemStack.EMPTY ||stack==null?ItemStack.EMPTY:stack.copy());
             } else {
-                this.stack = stack==null?null:stack.copy();
+                this.stack = stack==ItemStack.EMPTY || stack ==null?ItemStack.EMPTY:stack.copy();
             }
             this.onSlotChanged();
             if(hostInventory!=null) {

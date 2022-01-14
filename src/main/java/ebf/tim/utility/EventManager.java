@@ -64,29 +64,29 @@ public class EventManager {
         EntityPlayer player = Minecraft.getMinecraft().player;
         if (player.getRidingEntity() instanceof EntitySeat) {
             //for lamp
-            if (ClientProxy.KeyLamp.isPressed()) {
+            if (ClientProxy.KeyLamp.isKeyDown()) {
                 TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0, ((EntitySeat) player.getRidingEntity()).parentId));
                 ((GenericRailTransport) player.world.getEntityByID(((EntitySeat) player.getRidingEntity()).parentId)).setBoolean(GenericRailTransport.boolValues.LAMP, !((GenericRailTransport) player.getRidingEntity()).getBoolean(GenericRailTransport.boolValues.LAMP));
             }
             //for inventory
-            if (ClientProxy.KeyInventory.isPressed()) {
+            if (ClientProxy.KeyInventory.isKeyDown()) {
                 TrainsInMotion.keyChannel.sendToServer(new PacketInteract(1, ((EntitySeat) player.getRidingEntity()).parentId));
             }
             if (((EntitySeat) player.getRidingEntity()).isLocoSeat()) {
                 //for speed change
-                if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isPressed()) {
+                if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isKeyDown()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(2, ((EntitySeat) player.getRidingEntity()).parentId));
                     }
-                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isPressed()) {
+                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isKeyDown()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(3, ((EntitySeat) player.getRidingEntity()).parentId));
                     }
-                } else if (ClientProxy.KeyHorn.isPressed()){
+                } else if (ClientProxy.KeyHorn.isKeyDown()){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(9, ((EntitySeat) player.getRidingEntity()).parentId));
-                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.isPressed()){
+                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.isKeyDown()){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.getRidingEntity()).parentId));
                 }
 
@@ -96,14 +96,14 @@ public class EventManager {
                 }
             }
         } else if(DebugUtil.dev()) {
-            if (ClientProxy.raildevtoolUp.isPressed()){
+            if (ClientProxy.raildevtoolUp.isKeyDown()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]+=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
-            } else if (ClientProxy.raildevtoolDown.isPressed()){
+            } else if (ClientProxy.raildevtoolDown.isKeyDown()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]-=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
@@ -111,14 +111,14 @@ public class EventManager {
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
             }
-            if (ClientProxy.raildevtoolLeft.isPressed()){
+            if (ClientProxy.raildevtoolLeft.isKeyDown()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][2]+=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
-            } else if (ClientProxy.raildevtoolRight.isPressed()){
+            } else if (ClientProxy.raildevtoolRight.isKeyDown()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][2]-=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
@@ -126,14 +126,14 @@ public class EventManager {
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
             }
-            if (ClientProxy.raildevtoolRaise.isPressed()){
+            if (ClientProxy.raildevtoolRaise.isKeyDown()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][1]+=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
                         ClientProxy.devSplineModification[1][0] + "," + ClientProxy.devSplineModification[1][1] +"," + ClientProxy.devSplineModification[1][2] +" : " +
                         ClientProxy.devSplineModification[2][0] + "," + ClientProxy.devSplineModification[2][1] +"," + ClientProxy.devSplineModification[2][2] +" : " +
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
-            } else if (ClientProxy.raildevtoolLower.isPressed()){
+            } else if (ClientProxy.raildevtoolLower.isKeyDown()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][1]-=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
@@ -142,17 +142,17 @@ public class EventManager {
                         ClientProxy.devSplineModification[3][0] + "," + ClientProxy.devSplineModification[3][1] +"," + ClientProxy.devSplineModification[3][2]));
             }
 
-            if (ClientProxy.raildevtoolNextPoint.isPressed()){
+            if (ClientProxy.raildevtoolNextPoint.isKeyDown()){
                 ClientProxy.devSplineCurrentPoint++;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current point is now " + ClientProxy.devSplineCurrentPoint));
-            } else if (ClientProxy.raildevtoolLastPoint.isPressed()){
+            } else if (ClientProxy.raildevtoolLastPoint.isKeyDown()){
                 ClientProxy.devSplineCurrentPoint--;
                 if (ClientProxy.devSplineCurrentPoint<0){
                     ClientProxy.devSplineCurrentPoint = 0;
                 }
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current point is now " + ClientProxy.devSplineCurrentPoint));
             }
-            if (ClientProxy.raildevtoolQuality.isPressed()){
+            if (ClientProxy.raildevtoolQuality.isKeyDown()){
                 ClientProxy.railSkin++;
                 if(ClientProxy.railSkin>3){
                     ClientProxy.railSkin=0;
@@ -174,7 +174,7 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onClientTick(TickEvent.PlayerTickEvent event) {
         if(event.player.getRidingEntity() instanceof EntityTrainCore){
-            if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isPressed()) {
+            if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isKeyDown()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.
                 if(ClientProxy.controls==1 && holdTimer<40){
                     holdTimer=40;
@@ -187,7 +187,7 @@ public class EventManager {
                 } else if (holdTimer<40){
                     holdTimer++;
                 }
-            } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isPressed()) {
+            } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isKeyDown()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.
                 if(ClientProxy.controls==1 && holdTimer<40){
                     holdTimer=40;
@@ -202,8 +202,8 @@ public class EventManager {
                     holdTimer++;
                 }
             }
-            else if(!FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isPressed() &&
-                    !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isPressed()){
+            else if(!FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isKeyDown() &&
+                    !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isKeyDown()){
                 if (holdTimer>40){
                     if(ClientProxy.controls!=1) {
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, ((EntitySeat) event.player.getRidingEntity()).parentId));
