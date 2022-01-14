@@ -285,21 +285,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public void entityInit(){
-        //0 is an integer used for the entity state, 0 is burning. 1 is sneaking. 2 is riding something. 3 is sprinting. 4. is eating
-        //1 is a short used for checking if the entity is underwater and how much air is left.
-        //i think 2-5 are used in 1.8.9+ for various things.
-        this.dataWatcher.addObject(12, 0.0F);//float used to show the current movement velocity.
-        this.dataWatcher.addObject(13, 0);//train fuel consumption current
-        this.dataWatcher.addObject(20, "");//fluid tank data
-        this.dataWatcher.addObject(15, 0);//train heat
-        this.dataWatcher.addObject(16, 40.0f);//train heat
-        this.dataWatcher.addObject(17, bools!=null?bools.toInt():BitList.newInt());//booleans
-        //18 is an int used by EntityTrainCore for the accelerator
-        this.dataWatcher.addObject(21, 0);//front linked transport
-        this.dataWatcher.addObject(22, 0);//back linked transport
-
-
         if(worldObj!=null) {
+            //0 is an integer used for the entity state, 0 is burning. 1 is sneaking. 2 is riding something. 3 is sprinting. 4. is eating
+            //1 is a short used for checking if the entity is underwater and how much air is left.
+            //i think 2-5 are used in 1.8.9+ for various things.
+            this.dataWatcher.addObject(12, 0.0F);//float used to show the current movement velocity.
+            this.dataWatcher.addObject(13, 0);//train fuel consumption current
+            this.dataWatcher.addObject(20, "");//fluid tank data
+            this.dataWatcher.addObject(15, 0);//train heat
+            this.dataWatcher.addObject(16, 40.0f);//train heat
+            this.dataWatcher.addObject(17, bools!=null?bools.toInt():BitList.newInt());//booleans
+            //18 is an int used by EntityTrainCore for the accelerator
+            this.dataWatcher.addObject(21, 0);//front linked transport
+            this.dataWatcher.addObject(22, 0);//back linked transport
+
+
             collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
@@ -1036,6 +1036,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if (getRiderOffsets() != null && getRiderOffsets().length >0 && seats.size()<getRiderOffsets().length) {
                 for (int i = 0; i < getRiderOffsets().length; i++) {
                     EntitySeat seat = new EntitySeat(worldObj, posX, posY, posZ, getRiderOffsets()[i][0], getRiderOffsets()[i][1],getRiderOffsets()[i][2], this, i);
+                    if(i==0){
+                        seat.setControlSeat();
+                    }
                     worldObj.spawnEntityInWorld(seat);
                     seats.add(seat);
                 }
@@ -1141,6 +1144,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 //sometimes seats die when players log out. make new ones.
                 if(seats.get(i) ==null){
                     seats.set(i, new EntitySeat(worldObj, posX, posY,posZ,0,0,0, this,i));
+                    if(i==0){
+                        seats.get(i).setControlSeat();
+                    }
                     worldObj.spawnEntityInWorld(seats.get(i));
                 }
                 cachedVectors[0] = new Vec3f(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2])

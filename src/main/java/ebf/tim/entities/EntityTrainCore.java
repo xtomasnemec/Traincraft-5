@@ -76,8 +76,11 @@ public class EntityTrainCore extends GenericRailTransport {
     @Override
     public void entityInit(){
         super.entityInit();
-        this.dataWatcher.addObject(18, accelerator);//accelerator
-        this.updateWatchers = true;
+
+        if(worldObj!=null) {
+            this.dataWatcher.addObject(18, accelerator);//accelerator
+            this.updateWatchers = true;
+        }
     }
 
     @Override

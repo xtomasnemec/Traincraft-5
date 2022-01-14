@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import cpw.mods.fml.common.registry.GameData;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -101,6 +102,10 @@ public class JsonRecipeHelper {
         //NOTE: IN 1.12, this was in Traincraft/Traincraft, but also might only be for vanilla items:
         //Item item = Item.REGISTRY.getObject(new ResourceLocation(itemString));
         Item item = GameData.getItemRegistry().getObject(itemString);
+
+        if(item==null){
+            item= Item.getItemFromBlock(GameData.getBlockRegistry().getObject(itemString));
+        }
 
         if (item == null) {
             throw new JsonSyntaxException("Unknown item '" + itemString + "'");
