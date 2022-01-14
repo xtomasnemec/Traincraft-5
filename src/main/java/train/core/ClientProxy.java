@@ -1,5 +1,6 @@
 package train.core;
 
+import ebf.tim.utility.DebugUtil;
 import javazoom.jl.decoder.JavaLayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -9,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -55,7 +57,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerEvents(FMLPreInitializationEvent event) {
 		super.registerEvents(event);
 		registerEvent(new ClientTickHandler());
-		registerEvent(new HUDloco());
+		MinecraftForge.EVENT_BUS.register(HUDloco.INSTANCE);
 	}
 
 	@Deprecated //TESR should be handled as noted in TCBlocks.init()

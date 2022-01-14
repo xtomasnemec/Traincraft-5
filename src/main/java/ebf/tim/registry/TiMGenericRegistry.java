@@ -137,6 +137,8 @@ public class TiMGenericRegistry {
                 GameRegistry.registerTileEntity(tile, new ResourceLocation(MODID,unlocalizedName + "tile"));
                 redundantTiles.add(tile.getName());
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
+
+                    CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
                     net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TESR);
                     //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
                     CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));

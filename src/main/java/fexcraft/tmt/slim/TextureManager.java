@@ -18,6 +18,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import ebf.tim.utility.ClientUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.texture.*;
@@ -171,7 +172,8 @@ public class TextureManager {
                 if(textureName.split(":").length == 1){
                     textureName = "minecraft:" + textureName;
                 }
-                texture = new ResourceLocation(textureName.split(":")[0], "textures/items/" + textureName.split(":")[1]);
+                texture = ClientUtil.TEXTURE_MAP_ICONS;//in theory this should fix it since we're only looking for item textures.
+                        //new ResourceLocation(textureName.split(":")[0], "textures/items/" + textureName.split(":")[1]);
             }
 
             if(texture != null){

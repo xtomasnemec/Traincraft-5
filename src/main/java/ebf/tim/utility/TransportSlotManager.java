@@ -1,6 +1,7 @@
 package ebf.tim.utility;
 
 import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -570,6 +571,30 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
     }
 
 
+    @Override
+    public void detectAndSendChanges() {
+        for (int i = 0; i < this.inventorySlots.size(); ++i) {
+            ItemStack itemstack = (this.inventorySlots.get(i)).getStack();
+            ItemStack itemstack1 = this.inventoryItemStacks.get(i);
+            if(itemstack==null){
+                itemstack=ItemStack.EMPTY;
+            }
+            if(itemstack1==null){
+                itemstack1=ItemStack.EMPTY;
+            }
+
+            if (!ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
+                boolean clientStackChanged = !ItemStack.areItemStacksEqualUsingNBTShareTag(itemstack1, itemstack);
+                itemstack1 = itemstack.isEmpty() ? ItemStack.EMPTY : itemstack.copy();
+                this.inventoryItemStacks.set(i, itemstack1);
+
+                if (clientStackChanged)
+                    for (IContainerListener listener : this.listeners) {
+                        listener.sendSlotContents(this, i, itemstack1);
+                    }
+            }
+        }
+    }
 
     /*a modified replica of the 1.12 version*/
     public static boolean canAddItemToSlot(@Nullable Slot slotIn, ItemStack stack) {

@@ -1,5 +1,8 @@
 package ebf.tim.items;
 
+import ebf.tim.utility.ClientUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.entity.EntityLiving;
 import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nullable;
@@ -101,12 +104,12 @@ public class CustomItemModel implements ICustomModelLoader {
             GL11.glPopMatrix();
 
         } else if (item.getItem() instanceof ItemTransport){
-            GL11.glPushMatrix();
             GenericRailTransport entity = ((ItemTransport) item.getItem()).entity;
             float scale = entity.getHitboxSize()[0];
             if(scale!=0){
                 scale = 1.3f/(scale /1.3f);
             }
+            GL11.glPushMatrix();
             GL11.glScalef(scale,scale,scale);
             switch (type){
                 case FIRST_PERSON_RIGHT_HAND: case FIRST_PERSON_LEFT_HAND:{
@@ -137,6 +140,7 @@ public class CustomItemModel implements ICustomModelLoader {
             }
             ClientProxy.getTransportRenderer().render(
                     ((ItemTransport)item.getItem()).entity,0,0,0, 0, true, null);
+            Minecraft.getMinecraft().getTextureManager().bindTexture(ClientUtil.TEXTURE_MAP_ICONS);
             GL11.glPopMatrix();
         } else if (item.getItem() instanceof ItemRail){
             if(item.getTagCompound()==null){

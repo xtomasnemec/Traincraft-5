@@ -37,6 +37,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -294,7 +295,7 @@ public class ClientProxy extends CommonProxy {
      * <h3>null render</h3>
      * this is just a simple render that never draws anything, since its static it only ever needs to exist once, which makes it lighter on the render.
      */
-    private static final Render nullRender = new Render(Minecraft.getMinecraft().getRenderManager()) {
+    private static Render nullRender = new Render(null) {
         @Override
         public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
         public void doRender(EntitySeat p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
@@ -311,10 +312,11 @@ public class ClientProxy extends CommonProxy {
         public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
     };
 
-    private static final RenderPlayer playerRender= new RenderPlayer(Minecraft.getMinecraft().getRenderManager()){
+    private static Render<EntityPlayer> playerRender= new Render<EntityPlayer>(null){
         GenericRailTransport t;
         @Override
-        public void doRender(AbstractClientPlayer p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_){
+        public void doRender(EntityPlayer p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_){
+            DebugUtil.println("RANDAR");
             if (p_76986_1_.getRidingEntity() instanceof EntitySeat){
                 t=(GenericRailTransport) p_76986_1_.world.getEntityByID(((EntitySeat) p_76986_1_.getRidingEntity()).parentId);
                 GL11.glPushMatrix();
@@ -330,6 +332,11 @@ public class ClientProxy extends CommonProxy {
             } else {
                 super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
             }
+        }
+        @Nullable
+        @Override
+        protected ResourceLocation getEntityTexture(EntityPlayer entity) {
+            return null;
         }
     };
 }

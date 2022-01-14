@@ -130,16 +130,21 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     public void readSpawnData(ByteBuf additionalData) {
         parentId = additionalData.readInt();
         seatNumber = additionalData.readInt();
+        locomotive = additionalData.readBoolean();
+        controller=seatNumber==0;
     }
     @Override
     public void writeSpawnData(ByteBuf buffer) {
         buffer.writeInt(parentId);
         buffer.writeInt(seatNumber);
+        buffer.writeBoolean(locomotive);
     }
 
     @Override
-    public void updateRidden() {
-        super.updateRidden();
+    public void updatePassenger(Entity passenger) {
+        if (this.isPassenger(passenger)) {
+            passenger.setPosition(this.posX, this.posY-1, this.posZ);
+        }
     }
 
     public EntityLivingBase getPassenger(){

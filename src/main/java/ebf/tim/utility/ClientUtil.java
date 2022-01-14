@@ -28,6 +28,9 @@ public class ClientUtil {
             ClientProxy.useVanillaInventoryTextures?new ResourceLocation("textures/gui/container/generic_54.png"):
                     new ResourceLocation(TrainsInMotion.MODID, "textures/gui/chest.png");
 
+    //steals the texture atlas of items to re-bind when we are done rendering inventory stuff
+    public static final ResourceLocation TEXTURE_MAP_ICONS = new ResourceLocation("textures/map/map_icons.png");
+
     private static Minecraft getMC(){return Minecraft.getMinecraft();}
 
     public static int percentTop(int value, float guiTop){return (int)(guiTop*(value*0.01f));}
