@@ -1565,21 +1565,23 @@ public class ModelC415H extends ModelConverter //Same as Filename
 
 		return new ArrayList<double[]>() {
 			{
-				add(new double[]{1.75D, 1.55D, 0.0D});
+				add(new double[]{1.77D, 1.55D, 0.0D});
 			}
 		};
 	}
 	/*public ArrayList<double[]> getSmokePosition(Entity entity) {
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 135461){
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 1){
+			return new ArrayList<double[]>() {
+				{
+					add(new double[]{1.15D, 1.55D, 0.0D});
+				}
+			};
+		}else{
 			return new ArrayList<double[]>() {
 				{
 					add(new double[]{1.75D, 1.55D, 0.0D});
 				}
-			}else{
-				{
-					add(new double[]{1.75D, 1.55D, 0.0D});
-				}
-			}
-		};
+			};
+		}
 	}*/
 }
