@@ -78,7 +78,7 @@ public class OreGen implements IWorldGenerator{
             if(heightOffset==1){
                 spawnHeightOffset=63;//defined in ChunkProvider around the use of BlockWater, seems hardcoded to 63
             } else if (heightOffset==2){
-                spawnHeightOffset= world.getChunk(chunkX,chunkZ).getLowestHeight();
+                spawnHeightOffset= world.getChunk(chunkX,chunkZ).getLowestHeight()-1;
             }
             for(int i=0; i<maxVeins;i++) {
                 //actually generate the vein

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,18 +122,18 @@ public class ItemStackSlot extends Slot {
                 if(!setSlotContents(itemStack.copy(),hostInventory)){
                     return itemStack;
                 }
-                return null;
+                return ItemStack.EMPTY;
             } else if (contentEquals(itemStack) && getStackSize() < getStack().getMaxStackSize()) {
                 if (itemStack.copy().getCount() + getStackSize() <= getStack().getMaxStackSize()) {
                     onCrafting(inventoryType,hostInventory,getStackSize());
                     setSlotStackSize(getStackSize() + itemStack.copy().getCount());
-                    return null;
+                    return ItemStack.EMPTY;
                 } else {
                     itemStack.setCount(itemStack.getCount() - getStack().getMaxStackSize() - getStackSize());
                     setSlotStackSize(getStack().getMaxStackSize());
                     onCrafting(inventoryType,hostInventory,itemStack.getMaxStackSize()-itemStack.getCount());
                     if(itemStack.getCount()==0){
-                        itemStack=null;
+                        itemStack=ItemStack.EMPTY;
                     }
                     return itemStack;
                 }
@@ -518,12 +519,12 @@ public class ItemStackSlot extends Slot {
         }
     }
 
-    public boolean setSlotContents(@Nullable ItemStack stack, List<ItemStackSlot> hostInventory){
-        if (isItemValid(stack) || stack == null) {
+    public boolean setSlotContents(@Nonnull ItemStack stack, List<ItemStackSlot> hostInventory){
+        if (isItemValid(stack) || stack == ItemStack.EMPTY) {
             if (!(inventory instanceof GenericRailTransport) && !(inventory instanceof TileEntityStorage)) {
-                    inventory.setInventorySlotContents(slotNumber, stack==ItemStack.EMPTY ||stack==null?ItemStack.EMPTY:stack.copy());
+                    inventory.setInventorySlotContents(slotNumber, stack==ItemStack.EMPTY?ItemStack.EMPTY:stack.copy());
             } else {
-                this.stack = stack==ItemStack.EMPTY || stack ==null?ItemStack.EMPTY:stack.copy();
+                this.stack = stack==ItemStack.EMPTY?ItemStack.EMPTY:stack.copy();
             }
             this.onSlotChanged();
             if(hostInventory!=null) {
@@ -628,7 +629,7 @@ public class ItemStackSlot extends Slot {
     @Override
     public ItemStack decrStackSize(int p_75209_1_) {
         if(!getHasStack() ||p_75209_1_ >=getStack().getCount()){
-            setSlotContents(null,null);
+            setSlotContents(ItemStack.EMPTY,null);
         } else {
             getStack().shrink(p_75209_1_);
         }

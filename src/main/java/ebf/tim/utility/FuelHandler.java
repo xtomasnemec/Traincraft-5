@@ -127,7 +127,7 @@ public class FuelHandler{
 
     //adds burn times for items that aren't normally registered to minecraft's burnable system.
     public static int itemBurnTime(ItemStackSlot slotId) {
-		if(slotId !=null && slotId.getStack() !=null) {
+		if(slotId !=null && slotId.getStack() !=null && slotId.getStack()!=ItemStack.EMPTY) {
 			switch (slotId.getItem().delegate.name().getNamespace()) {
 
 				//case "modid:Item":{ return 20;}
@@ -392,7 +392,7 @@ public class FuelHandler{
 			for (int i = 0; i < transport.getTankCapacity().length; i++) {
 				if (fillFluidContainer(
 						new FluidStack(transport.entityData.getFluidStack("tanks."+i).getFluid(),1000)
-						, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()) !=null) {
+						, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()) !=ItemStack.EMPTY) {
 
 					transport.addItem(fillFluidContainer(
 							new FluidStack(transport.entityData.getFluidStack("tanks."+i).getFluid(),1000)

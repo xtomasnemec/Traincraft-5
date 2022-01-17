@@ -1876,7 +1876,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             for (ItemStackSlot slot : inventory) {
                 if (slot.getStack() != null) {
                     this.entityDropItem(slot.getStack(), 1);
-                    slot.setSlotContents(null,null);
+                    slot.setSlotContents(ItemStack.EMPTY,null);
                 }
             }
         }

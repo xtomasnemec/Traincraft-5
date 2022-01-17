@@ -20,6 +20,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -108,7 +109,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (player != null) {
-            if(x==0&&y==0&&z==0 && player.getHeldItem(EnumHand.MAIN_HAND)!=null) {
+            if(x==0&&y==0&&z==0 && player.getHeldItem(EnumHand.MAIN_HAND)!= ItemStack.EMPTY) {
                 if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCraftGuide) {
                     return new GUICraftBook();
                 } else if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemPaintBucket){
