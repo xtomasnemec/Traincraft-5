@@ -1,19 +1,29 @@
 package train.common.entity.digger;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockTorch;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import train.common.core.FakePlayer;
+import train.common.core.TrainModBlockUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityRotativeWheel extends Entity {
@@ -74,7 +84,7 @@ public class EntityRotativeWheel extends Entity {
 		return !isDead;
 	}
 	@Override
-	public void onUpdate() {
+	public void onUpdate() {//int i, int j, int k
 
 		if (entity != null && entity instanceof EntityRotativeDigger) {
 			startWheel = ((EntityRotativeDigger) entity).getStart();
@@ -108,17 +118,46 @@ public class EntityRotativeWheel extends Entity {
 
 			}
 		}
-		if (entity != null && entity instanceof EntityRotativeDigger && ((EntityRotativeDigger) entity).getFuel() > 0) {//TODO should only dig when rotative digger has fuel and dig mode is on, doesn't work yet
+
+		int i = MathHelper.floor_double(posX);
+		int j = MathHelper.floor_double(posY);
+		int k = MathHelper.floor_double(posZ);
+
+		if (/*entity != null &&*/ entity instanceof EntityRotativeDigger && ((EntityRotativeDigger) entity).getFuel() > 0) {//TODO should only dig when rotative digger has fuel and dig mode is on, doesn't work yet
 			Vec3 vec = null;
 
-			vec = Vec3.createVectorHelper(posX - 0.5, posY, posZ - 0.5);
+			/*vec = */ //Vec3.createVectorHelper(posX - 0.5, posY, posZ - 0.5);
 
-			this.harvestBlock_do(vec);
+			this.harvestBlock_do(Vec3.createVectorHelper(posX - 0.5, posY, posZ - 0.5));
 			//TODO how many blocks should be harvested?
-			//for (int h = -1; h < 2; h++) { vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ + 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ + 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ - 1); this.harvestBlock_do(vec); vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ + 1); this.harvestBlock_do(vec);
+			for (int h = -1; h < 2; h++) {
+			// vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ - 1); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX, posY + h, posZ + 1); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ - 1); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ + 1); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX - 1, posY + h, posZ - 1); this.harvestBlock_do(vec);
+			// vec = Vec3.vec3dPool.getVecFromPool(posX + 1, posY + h, posZ + 1); this.harvestBlock_do(vec);
 
 			//}
+			/*getBlockList(worldObj, i, j + hY, k);
+			getBlockList(worldObj, i + 1, j + hY, k);
+			getBlockList(worldObj, i - 1, j + hY, k);*/
 
+			getBlockList(worldObj, i, j, k);
+
+			this.harvestBlock_do(Vec3.createVectorHelper(posX, posY + h, posZ));//which blocks to actually break
+			this.harvestBlock_do(Vec3.createVectorHelper(posX + 1, posY + h, posZ));
+			this.harvestBlock_do(Vec3.createVectorHelper(posX - 1, posY + h, posZ));
+			this.harvestBlock_do(Vec3.createVectorHelper(posX, posY + h, posZ - 1));
+			this.harvestBlock_do(Vec3.createVectorHelper(posX, posY + h, posZ + 1));
+			this.harvestBlock_do(Vec3.createVectorHelper(posX + 1, posY + h, posZ - 1));
+			this.harvestBlock_do(Vec3.createVectorHelper(posX - 1, posY + h, posZ + 1));
+			this.harvestBlock_do(Vec3.createVectorHelper(posX - 1, posY + h, posZ - 1));
+			this.harvestBlock_do(Vec3.createVectorHelper(posX + 1, posY + h, posZ + 1));
+			}
 		}
 		if (worldObj.isRemote) {
 			if (field_9394_d > 0) {
@@ -151,6 +190,19 @@ public class EntityRotativeWheel extends Entity {
 			return;
 		}
 	}
+	public void getBlockList(World worldObj, int i, int j, int k) {
+		if ((Block.getIdFromBlock(worldObj.getBlock(i, j, k)) != 0)) {
+			ArrayList<ItemStack> stacks = new ArrayList<ItemStack>(TrainModBlockUtil.getItemStackFromBlock(worldObj, i, j, k));//underBlockStack.getItem().getMetadata(underBlockStack.getItemDamage())
+			/*for (ItemStack s : stacks) {
+				if( (BlockRailBase.func_150051_a(Block.getBlockFromItem(s.getItem()))))return;
+				if (Item.getIdFromItem(s.getItem()) != 0 && (s.getItem() != Item.getItemFromBlock(Block.getBlockFromName("glass"))) && (Item.getIdFromItem(s.getItem())) != Item.getIdFromItem(tunnelBlockStack.getItem())) {// && (isBlockInteresting(s))) {// can't spawn rails or air blocks or glass blocks
+					if (Block.getIdFromBlock(worldObj.getBlock(i, j, k))) {
+						putInInvent(s);
+					}
+				}
+			}*/
+		}
+	}
 
 	/**
 	 * Perform block harvesting, drop the item, remove block and play sound.
@@ -158,7 +210,7 @@ public class EntityRotativeWheel extends Entity {
 	 * @param pos
 	 */
 
-	private void harvestBlock_do(Vec3 pos) {
+	/*private void harvestBlock_do(Vec3 pos) {//original
 		if (pos == null)
 			return;
 
@@ -179,6 +231,51 @@ public class EntityRotativeWheel extends Entity {
 			}
 		}
 
+	}*/
+	/*private void harvestBlock_do(Vec3 pos) {//breaks blocks client side and not server side
+		if (pos == null) {
+			return;
+		}
+		Block id = worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+		int id2 = Block.getIdFromBlock(worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord));
+		int meta = worldObj.getBlockMetadata((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+		if (Block.getBlockById(id2) != null && id2 != 0 && !worldObj.isRemote) {
+			this.playMiningEffect(pos, id);
+		}
+
+		if (!shouldIgnoreBlockForHarvesting(pos, id)) {
+			if (Block.getBlockById(id2) != null) {
+				//System.out.println("Removed block at:"+ (int) pos.xCoord +":"+ (int)pos.yCoord +":"+ (int)pos.zCoord);
+				//worldObj.setBlockMetadataWithNotify((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, 0, 0);
+				worldObj.setBlockToAir((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+				worldObj.playAuxSFX(2001, (int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, id2 + (meta << 12));
+				if (!worldObj.isRemote) {
+					this.playMiningEffect(pos, id);
+				}
+			}
+		}
+	}*/
+	private void harvestBlock_do(Vec3 pos) {
+		if (pos == null) {
+			return;
+		}
+		int id = Block.getIdFromBlock(worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord));
+		int meta = worldObj.getBlockMetadata((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+		if (Block.getBlockById(id) != null && id != 0 && !worldObj.isRemote) {
+			this.playMiningEffect(pos, id);
+		}
+
+		if (!shouldIgnoreBlockForHarvesting(pos, id)) {
+			if (Block.getBlockById(id) != null) {
+				//System.out.println("Removed block at:"+ (int) pos.xCoord +":"+ (int)pos.yCoord +":"+ (int)pos.zCoord);
+				//worldObj.setBlockMetadataWithNotify((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, 0, 0);
+				worldObj.setBlockToAir((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+				worldObj.playAuxSFX(2001, (int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, id + (meta << 12));
+				if (!worldObj.isRemote) {
+					this.playMiningEffect(pos, id);
+				}
+			}
+		}
 	}
 
 	/**
@@ -188,7 +285,7 @@ public class EntityRotativeWheel extends Entity {
 	 * @param id block id
 	 * @return is not harvested
 	 */
-	private boolean shouldIgnoreBlockForHarvesting(Vec3 pos, Block id) {
+	/*private boolean shouldIgnoreBlockForHarvesting(Vec3 pos, Block id) {
 
 		if (id == null || id instanceof BlockTorch || id == Block.getBlockFromName("bedrock") || id == Block.getBlockFromName("fire") || id == Block.getBlockFromName("portal") || id == Block.getBlockFromName("endPortal") || id instanceof BlockLiquid || Block.getIdFromBlock(id) == 55 || Block.getIdFromBlock(id) == 70 || Block.getIdFromBlock(id) == 72) {
 			return true;
@@ -202,6 +299,9 @@ public class EntityRotativeWheel extends Entity {
 
 		return false;
 
+	}*/
+	private boolean shouldIgnoreBlockForHarvesting(Vec3 pos, int id) {
+		return(id == 0 || Block.getBlockById(id) == null || id == Block.getIdFromBlock(Blocks.bedrock) || id == Block.getIdFromBlock(Blocks.fire) || id == Block.getIdFromBlock(Blocks.portal) || id == Block.getIdFromBlock(Blocks.end_portal) || Block.getBlockById(id) instanceof BlockLiquid || id == 55 || id == 70 || id == 72);
 	}
 
 	public int getStartWheel() {
@@ -216,12 +316,25 @@ public class EntityRotativeWheel extends Entity {
 	 */
 	private int miningTickCounter = 0;
 
-	@SideOnly(Side.CLIENT)
+	/*@SideOnly(Side.CLIENT)
 	private void playMiningEffect(Vec3 pos, Block block_index) {
 
 		miningTickCounter++;
 		Block id = worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
 		Block block = id;
+	}*/
+	private void playMiningEffect(Vec3 pos, int block_index) {
+		miningTickCounter++;
+
+		if (!FMLCommonHandler.instance().getMinecraftServerInstance().isDedicatedServer() && pos != null && worldObj !=null) {
+			Block block = worldObj.getBlock((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord);
+			if (miningTickCounter % 8 == 0 && block != null && !worldObj.isRemote && Minecraft.getMinecraft() != null) {
+				this.worldObj.playSound((int) pos.xCoord + 0.5F, (int) pos.yCoord + 0.5F, (int) pos.zCoord + 0.5F, block.stepSound.getBreakSound(), 1.0F, block.stepSound.getPitch() * 0.5F, true);
+			}
+			if (miningTickCounter % 8 == 0 && block_index != 0 && block != null && FMLClientHandler.instance().getClient() != null ) {
+				FMLClientHandler.instance().getClient().effectRenderer.addBlockHitEffects((int) pos.xCoord, (int) pos.yCoord, (int) pos.zCoord, block_index < 4 ? getSideFromYaw() : (block_index < 6 ? 1 : 0));
+			}
+		}
 	}
 
 	/**

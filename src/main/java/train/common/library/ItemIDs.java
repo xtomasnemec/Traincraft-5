@@ -349,15 +349,17 @@ public enum ItemIDs {
 	minecartE9A( "ItemRollingStock", "e9a", 5),
 	minecartE9B( "ItemRollingStock", "e9b", 5),
 
-	minecartGP7("ItemRollingStock", "gp7", 4),
-	minecartGP7b("ItemRollingStock", "gp7b", 4),
-	minecartGP7u("ItemRollingStock", "gp7u", 4),
-	minecartGP9("ItemRollingStock", "gp9", 4),
-	minecartGP13("ItemRollingStock", "gp13", 9),
-	minecartGP15("ItemRollingStock", "gp15", 4),
-	minecartGP30("ItemRollingStock", "gp30", 5),
-	minecartGP38dash2("ItemRollingStock", "gp38dash2", 5),
+	minecartGP7("ItemRollingStock", "gp7", 3),
+	minecartGP7b("ItemRollingStock", "gp7b", 3),
+	minecartGP7u("ItemRollingStock", "gp7u", 3),
+	minecartGP9("ItemRollingStock", "gp9", 3),
+	minecartGP13("ItemRollingStock", "gp13", 3),
+	minecartGP15("ItemRollingStock", "gp15", 3),
+	minecartGP30("ItemRollingStock", "gp30", 4),
+	minecartGP38dash2("ItemRollingStock", "gp38dash2", 4),
 	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 3),
+	minecartGP38h3("ItemRollingStock", "gp38h3icon", 4),
+	minecartGP40tc("ItemRollingStock", "gp40tcicon", 4),
 	minecartGP49("ItemRollingStock", "gp49", 5),
 
 	minecartSD9("ItemRollingStock", "sd9", 4),
@@ -476,6 +478,7 @@ public enum ItemIDs {
 
 	minecartGunderson89ftAutorack("ItemRollingStock", "gunderson_autorack", 7),
 	minecartGunderson89ftFlat("ItemRollingStock", "gunderson_flat", 2),
+	minecartStampedeRack("ItemRollingStock", "stampede", 3),
 
 	//pAssenger//
 	minecartPCH120Commute("ItemRollingStock", "pch120", 4),

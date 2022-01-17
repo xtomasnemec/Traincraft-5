@@ -510,6 +510,9 @@ item.tc:minecartGunderson89ftAutorack.name=Gunderson 89' Enclosed Autorack
 item.tc:minecartGunderson89ftFlat.name=Gunderson 89' Lowbody Flat Car
 item.tc:minecartEarlyFlat.name=Early Flatcar
 item.tc:minecartILMC.name=I.L.M.C
+item.tc:minecartStampedeRack.name=CSWR Stampede Rack
+item.tc:minecartGP38h3.name=EMD GP38H3
+item.tc:minecartGP40tc.name=EMD GP40TC
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -988,6 +991,9 @@ entity.tc.89ftAutorack.name=Gunderson 89' Enclosed Autorack
 entity.tc.89ftFlat.name=Gunderson 89' Lowbody Flat Car
 entity.tc.EarlyFlat.name=Early Flatcar
 entity.tc.ILMC.name=I.L.M.C
+entity.tc.StampedeRacl.name=CSWR Stampede Rack
+entity.tc.GP38h3.name=EMD GP38H3
+entity.tc.GP40tc.name=EMD GP40TC
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
