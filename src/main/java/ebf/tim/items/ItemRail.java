@@ -3,10 +3,7 @@ package ebf.tim.items;
 import javax.annotation.Nullable;
 import mods.railcraft.api.items.ITrackItem;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -181,26 +178,33 @@ public class ItemRail extends Item implements ITrackItem {
 
             if (CommonUtil.setBlock(world,x, y, z, getPlacedBlock(), 0)) {
                 if (CommonUtil.getBlockAt(world, x, y, z) == getPlacedBlock()) {
-                    ((BlockRailCore) CommonUtil.getBlockAt(world, x, y, z)).updateShape(x, y, z, world,
-                            //set rail
-                            stack.getTagCompound().getTag("rail")!=null?
-                                    new ItemStack(stack.getTagCompound().getCompoundTag("rail")):
-                                    new ItemStack(Items.IRON_INGOT),
-                            //set ties
-                            stack.getTagCompound().getTag("ties")!=null?
-                                    new ItemStack(stack.getTagCompound().getCompoundTag("ties")):
-                                    null,
+                    //if you got the item with a null NBT, you messed up,
+                    // but thanks to forge/mojank we gotta compensate for what was impossible in 1.7.
+                    if(stack.getTagCompound()==null){
+                        ((BlockRailCore) CommonUtil.getBlockAt(world, x, y, z)).updateShape(x, y, z, world,
+                                new ItemStack(Items.IRON_INGOT),null,null,null);
+                    } else {
+                        ((BlockRailCore) CommonUtil.getBlockAt(world, x, y, z)).updateShape(x, y, z, world,
+                                //set rail
+                                stack.getTagCompound().getTag("rail") != null ?
+                                        new ItemStack(stack.getTagCompound().getCompoundTag("rail")) :
+                                        new ItemStack(Items.IRON_INGOT),
+                                //set ties
+                                stack.getTagCompound().getTag("ties") != null ?
+                                        new ItemStack(stack.getTagCompound().getCompoundTag("ties")) :
+                                        null,
 
-                            //set ballast
-                            stack.getTagCompound().getTag("ballast")!=null?
-                                    new ItemStack(stack.getTagCompound().getCompoundTag("ballast")):
-                                    null,
+                                //set ballast
+                                stack.getTagCompound().getTag("ballast") != null ?
+                                        new ItemStack(stack.getTagCompound().getCompoundTag("ballast")) :
+                                        null,
 
-                            //set wires
-                            stack.getTagCompound().getTag("wires")!=null?
-                                    new ItemStack(stack.getTagCompound().getCompoundTag("wires")):
-                                    null
-                    );
+                                //set wires
+                                stack.getTagCompound().getTag("wires") != null ?
+                                        new ItemStack(stack.getTagCompound().getCompoundTag("wires")) :
+                                        null
+                        );
+                    }
                 }
 
                 world.playSound(player,x + 0.5F, y + 0.5F, z + 0.5F, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, (getPlacedBlock().getSoundType().getVolume() + 1.0F) / 2.0F, getPlacedBlock().getSoundType().getPitch() * 0.8F);
@@ -289,16 +293,13 @@ public class ItemRail extends Item implements ITrackItem {
 
     //adds custom versions of this to the creative menu, with the necessary NBT and metadata
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List tabItems) {
-        if(p_150895_1_ instanceof ItemRail) {
-            for(Item ingot : new Item[]{Items.IRON_INGOT, Items.GOLD_INGOT}){
-                for(Block b : new Block[]{null, Blocks.GRAVEL, Blocks.STONE}){
-                    for(Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.DOUBLE_STONE_SLAB, null})
-                    tabItems.add(setStackData(new ItemStack(p_150895_1_),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));
-                }
+    @Override
+    public void getSubItems(CreativeTabs p_150895_2_, NonNullList<ItemStack> tabItems) {
+        for(Item ingot : new Item[]{Items.IRON_INGOT, Items.GOLD_INGOT}){
+            for(Block b : new Block[]{null, Blocks.GRAVEL, Blocks.STONE}){
+                for(Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.DOUBLE_STONE_SLAB, null})
+                tabItems.add(setStackData(new ItemStack(TiMBlocks.railBlock),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));
             }
-        } else {
-            tabItems.add(new ItemStack(p_150895_1_));
         }
     }
 }

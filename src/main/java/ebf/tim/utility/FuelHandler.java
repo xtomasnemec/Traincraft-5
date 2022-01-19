@@ -429,7 +429,7 @@ public class FuelHandler{
 	}
 
 	public static FluidStack getFluidForFilledItem(ItemStack item){
-		return FluidUtil.getFluidHandler(item).getTankProperties()[0].getContents();
+		return FluidUtil.getFluidHandler(item)==null?null:FluidUtil.getFluidHandler(item).getTankProperties()[0].getContents();
 	}
 
 	public static boolean isEmptyContainer(ItemStack item){

@@ -1,6 +1,7 @@
 package ebf.tim.items;
 
 import ebf.tim.utility.ClientUtil;
+import ebf.tim.utility.DebugUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.entity.EntityLiving;
@@ -73,6 +74,7 @@ public class CustomItemModel implements ICustomModelLoader {
 
     @Override
     public boolean accepts(ResourceLocation modelLocation) {
+        DebugUtil.println(modelLocation.getNamespace(),modelLocation.getPath());
         return renderItems.contains(modelLocation);
     }
 
@@ -112,23 +114,42 @@ public class CustomItemModel implements ICustomModelLoader {
             GL11.glPushMatrix();
             GL11.glScalef(scale,scale,scale);
             switch (type){
-                case FIRST_PERSON_RIGHT_HAND: case FIRST_PERSON_LEFT_HAND:{
+                case FIRST_PERSON_RIGHT_HAND:{
                     GL11.glRotatef(270+(1*entity.getHitboxSize()[0]),0,1,0);
                     GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
-                    GL11.glTranslatef(1f,0.4f*(entity.getHitboxSize()[0]),0.75f);
+                    GL11.glTranslatef(1f,0.1f*(entity.getHitboxSize()[0]),0.1f*(entity.getHitboxSize()[0]));
+                    break;
+                }
+                case FIRST_PERSON_LEFT_HAND:{
+                    GL11.glRotatef(270+(1*entity.getHitboxSize()[0]),0,1,0);
+                    GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
+                    GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
+                    GL11.glTranslatef(1f,0.1f*(entity.getHitboxSize()[0]),0.7f*(entity.getHitboxSize()[0]));
                     break;
                 }
                 case GUI: {
-                    GL11.glRotatef(270,0,1,0);
-                    GL11.glTranslatef(0,-0.85f,0);
+                    GL11.glRotatef(225,0,1,0);
+                    GL11.glRotatef(-5,0,0,1);
+                    GL11.glRotatef(-5,1,0,0);
+                    GL11.glScalef(0.6f,0.6f,0.6f);
+                    GL11.glTranslatef(0,-0.95f,0);
                     break;
                 }
-                case THIRD_PERSON_RIGHT_HAND:case THIRD_PERSON_LEFT_HAND:{
-                    GL11.glRotatef(0+(1*entity.getHitboxSize()[0]),0,1,0);
-                    GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
+                case THIRD_PERSON_RIGHT_HAND:{
+                    GL11.glRotatef(90+(0*entity.getHitboxSize()[0]),0,1,0);
+                    GL11.glRotatef(80+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
-                    GL11.glTranslatef(0.5f*(entity.getHitboxSize()[0]),0.15f*(entity.getHitboxSize()[0]),0.5f*(entity.getHitboxSize()[0]));
+                    GL11.glTranslatef(0.35f*(entity.getHitboxSize()[0]),-0.05f*(entity.getHitboxSize()[0]),
+                            0.1f*(entity.getHitboxSize()[0]));
+                    break;
+                }
+                case THIRD_PERSON_LEFT_HAND:{
+                    GL11.glRotatef(90+(0*entity.getHitboxSize()[0]),0,1,0);
+                    GL11.glRotatef(80+(-1*entity.getHitboxSize()[0]),0,0,1);
+                    GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
+                    GL11.glTranslatef(0.35f*(entity.getHitboxSize()[0]),-0.05f*(entity.getHitboxSize()[0]),
+                            -0.5f*(entity.getHitboxSize()[0]));
                     break;
                 }
                 default:{//item frame case

@@ -139,6 +139,7 @@ public class TiMGenericRegistry {
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
 
                     CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
+                    CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName+".item"));
                     net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TESR);
                     //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
                     CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
@@ -147,6 +148,7 @@ public class TiMGenericRegistry {
                     net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TrainsInMotion.proxy.getTESR());
                     //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
                     CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
+                    CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName+".item"));
                     CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
                 }
             } else {
@@ -288,7 +290,7 @@ public class TiMGenericRegistry {
                     registry.transportName().replace(" ", "") + ".entity",
                     registryPosition, TrainsInMotion.instance, 1600, 3, true);
 
-            RegisterItem(registry.getCartItem().getItem(),MODID,registry.transportName()+".item",
+            RegisterItem(registry.getCartItem().getItem(),MODID,registry.transportName().replace(" ", "")+".item",
                     null,registry.getItem().getCreativeTab(),null,null);
             if (registry.getRecipe() != null) {
                     tempReipes.put(MODID, new recipePreReg(registry.getRecipe(), registry.getCartItem(), registry.getTier()));

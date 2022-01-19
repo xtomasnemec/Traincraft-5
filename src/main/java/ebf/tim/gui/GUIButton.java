@@ -150,7 +150,7 @@ public abstract class GUIButton extends GuiButton {
             this.drawGradientRect(j2 - 3, k2 - 3, j2 + k + 3, k2 - 3 + 1, k1, k1);
             this.drawGradientRect(j2 - 3, k2 + i1 + 2, j2 + k + 3, k2 + i1 + 3, l1, l1);
 
-            font.drawStringWithShadow(p_146283_1_, j2, k2, -1);
+            font.drawStringWithShadow(p_146283_1_, j2, k2, 0xffffffff);
 
 
             this.zLevel = 0.0F;
