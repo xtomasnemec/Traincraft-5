@@ -26,7 +26,7 @@ public class StampedeRack extends EntityRollingStock implements IPassenger {
 
 	@Override
 	public void updateRiderPosition() {
-		riddenByEntity.setPosition(posX, posY + getMountedYOffset() + riddenByEntity.getYOffset() + 0.2F, posZ);
+		riddenByEntity.setPosition(posX, posY + getMountedYOffset() + riddenByEntity.getYOffset() + 0.1F, posZ);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class StampedeRack extends EntityRollingStock implements IPassenger {
 
 			NBTTagCompound c = new NBTTagCompound();
 			if(riddenByEntity.writeMountToNBT(c)) {
-				nbttagcompound.setTag("mob", c);
+				nbttagcompound.setTag("mob2", c);
 			}
 		}
 	}
@@ -94,8 +94,8 @@ public class StampedeRack extends EntityRollingStock implements IPassenger {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
 		super.readEntityFromNBT(nbttagcompound);
-		if(nbttagcompound.hasKey("mob")){
-			readEntityFromNBT(nbttagcompound.getCompoundTag("mob"));
+		if(nbttagcompound.hasKey("mob2")){
+			readEntityFromNBT(nbttagcompound.getCompoundTag("mob2"));
 		}
 	}
 
