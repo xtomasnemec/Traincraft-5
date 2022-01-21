@@ -1,23 +1,5 @@
 package ebf.tim;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.gui.GUICraftBook;
@@ -26,11 +8,23 @@ import ebf.tim.items.TiMTab;
 import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
 import ebf.tim.utility.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import train.library.Info;
 
 import java.util.Collections;
 import java.util.List;
@@ -123,13 +117,11 @@ public class TrainsInMotion {
      */
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        if(event.getSide().isClient()){
-            proxy=new ClientProxy();
-        }
 
         proxy.loadConfig(event);
         ForgeChunkManager.setForcedChunkLoadingCallback(TrainsInMotion.instance, chunkHandler);
         MinecraftForge.EVENT_BUS.register(chunkHandler);
+
         creativeTab=new TiMTab("Trains in Motion", MODID, "TiM");
         creativeTabCrafting=new TiMTab("Trains in Motion Crafting", creativeTab.getTabItem());
 
@@ -200,11 +192,11 @@ public class TrainsInMotion {
 
 
 
-        if(event.getSide().isClient()) {
+       /* if(event.getSide().isClient()) {
             //register the event handler
             MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
             fexcraft.tmt.slim.TextureManager.collectIngotColors();
-        }
+        }*/
         MinecraftForge.EVENT_BUS.register(CommonProxy.eventManagerServer);
 
         //register GUI, model renders, Keybinds, client only blocks, and HUD

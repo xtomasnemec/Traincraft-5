@@ -10,7 +10,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import train.library.Info;
 
 import static ebf.tim.registry.TiMGenericRegistry.registerBlock;
 

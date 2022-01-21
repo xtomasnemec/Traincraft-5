@@ -2,7 +2,6 @@ package train.blocks.bench;
 
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.utility.CommonUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;

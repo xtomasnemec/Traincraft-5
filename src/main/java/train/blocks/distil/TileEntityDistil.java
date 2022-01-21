@@ -1,14 +1,10 @@
 package train.blocks.distil;
 
-import ebf.tim.utility.FuelHandler;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.registry.TiMFluids;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.FuelHandler;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,7 +12,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.blocks.TCBlocks;
 import train.blocks.fluids.LiquidManager;
 

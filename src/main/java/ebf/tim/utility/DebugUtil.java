@@ -1,9 +1,9 @@
 package ebf.tim.utility;
 
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.launchwrapper.Launch;
 
 /**
  * @author Ferdinand

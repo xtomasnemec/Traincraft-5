@@ -1,12 +1,5 @@
 package ebf.tim.blocks;
 
-import javax.annotation.Nullable;
-
-import ebf.tim.utility.CommonUtil;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
-import org.lwjgl.opengl.GL11;
-
 import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.rails.RailShapeCore;
@@ -15,8 +8,9 @@ import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.render.models.Model1x1Rail;
 import ebf.tim.utility.ClientProxy;
+import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.TextureManager;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.item.EntityItem;
@@ -26,7 +20,10 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 
 public class RailTileEntity extends TileEntity {

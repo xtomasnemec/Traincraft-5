@@ -1,8 +1,5 @@
 package ebf.tim.api;
 
-import java.util.List;
-import java.util.UUID;
-
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityRollingStockCore;
 import ebf.tim.entities.EntityTrainCore;
@@ -13,6 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Eternal Blue Flame

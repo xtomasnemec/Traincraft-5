@@ -21,12 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import train.blocks.TCBlocks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TileGeneratorDiesel extends TileEntityStorage implements IEnergyStorage, ITickable {
 

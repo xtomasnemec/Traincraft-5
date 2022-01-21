@@ -7,10 +7,10 @@
 
 package train.render;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import train.blocks.generator.TileGeneratorDiesel;
 import train.library.Info;

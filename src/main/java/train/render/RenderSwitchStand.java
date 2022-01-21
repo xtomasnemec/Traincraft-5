@@ -1,6 +1,5 @@
 package train.render;
 
-import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.ModelRendererTurbo;

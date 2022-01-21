@@ -1,10 +1,10 @@
 package train.render.models;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import train.library.Info;
 import train.render.CustomModelRenderer;
 

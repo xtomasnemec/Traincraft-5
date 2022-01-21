@@ -1,14 +1,13 @@
 package ebf.tim.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.DebugUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Loader;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SkinRegistry {
 

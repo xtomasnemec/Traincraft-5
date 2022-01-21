@@ -1,12 +1,12 @@
 package train.render.models;
 
-import net.minecraftforge.fml.client.FMLClientHandler;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import train.core.ClientProxy;
 import train.library.Info;

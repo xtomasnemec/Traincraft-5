@@ -8,12 +8,12 @@ import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -28,7 +28,8 @@ import static org.lwjgl.opengl.GL11.*;
  * all the variables have to be stored outside this class because it's assigned to the entity class, not it's instances.
  * @author Eternal Blue Flame
  */
-public class RenderWagon extends Render<GenericRailTransport> {
+@SideOnly(Side.CLIENT)
+public class RenderWagon extends net.minecraft.client.renderer.entity.Render<GenericRailTransport> {
 
     private static double railOffset = 0.34f;
     private static int i=0, ii=0, iii=0;

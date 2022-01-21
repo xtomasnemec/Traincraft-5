@@ -1,9 +1,9 @@
 package train.core.handlers;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraft.client.Minecraft;
 import train.Traincraft;
 import train.core.util.MP3Player;
 

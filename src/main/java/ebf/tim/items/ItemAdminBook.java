@@ -1,12 +1,5 @@
 package ebf.tim.items;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonProxy;
 import ebf.tim.utility.CommonUtil;
@@ -27,6 +20,13 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * <h1>Key Item</h1>

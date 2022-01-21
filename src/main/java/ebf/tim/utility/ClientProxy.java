@@ -11,15 +11,11 @@ import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemPaintBucket;
 import ebf.tim.render.RenderWagon;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
@@ -33,13 +29,10 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 /**
  * <h1>client proxy</h1>
@@ -263,7 +256,7 @@ public class ClientProxy extends CommonProxy {
     public Object getTESR(){return specialRenderer;}
 
     @Override
-    public Render getEntityRender(){return transportRenderer;}
+    public net.minecraft.client.renderer.entity.Render getEntityRender(){return transportRenderer;}
     @Override
     public Object getNullRender(){return nullRender;}
 
@@ -296,7 +289,7 @@ public class ClientProxy extends CommonProxy {
      * <h3>null render</h3>
      * this is just a simple render that never draws anything, since its static it only ever needs to exist once, which makes it lighter on the render.
      */
-    private static Render nullRender = new Render(null) {
+    private static net.minecraft.client.renderer.entity.Render nullRender = new net.minecraft.client.renderer.entity.Render(null) {
         @Override
         public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
         public void doRender(EntitySeat p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {}
@@ -313,7 +306,7 @@ public class ClientProxy extends CommonProxy {
         public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
     };
 
-    private static Render<EntityPlayer> playerRender= new Render<EntityPlayer>(null){
+    private static net.minecraft.client.renderer.entity.Render<EntityPlayer> playerRender= new net.minecraft.client.renderer.entity.Render<EntityPlayer>(null){
         GenericRailTransport t;
         @Override
         public void doRender(EntityPlayer p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_){

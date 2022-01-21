@@ -1,9 +1,6 @@
 package ebf.tim.utility;
 
 
-import mods.railcraft.api.carts.IEnergyTransfer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.energy.IEnergyStorage;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
@@ -15,12 +12,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 
-import static ebf.tim.entities.GenericRailTransport.*;
+import static ebf.tim.entities.GenericRailTransport.BOILER_HEAT;
+import static ebf.tim.entities.GenericRailTransport.FUEL_CONSUMPTION;
 import static net.minecraftforge.fluids.FluidUtil.getFluidHandler;
 
 /**

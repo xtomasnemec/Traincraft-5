@@ -6,7 +6,6 @@ import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
-import depreciated.minecraft.util.IIcon;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 

@@ -1,20 +1,19 @@
 package train.blocks.windmill;
 
+import ebf.tim.blocks.BlockDynamic;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ebf.tim.blocks.BlockDynamic;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.tileentity.TileEntity;
-import depreciated.minecraft.util.IIcon;
-import net.minecraft.world.World;
 import train.Traincraft;
 
 import javax.annotation.Nullable;

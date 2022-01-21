@@ -2,9 +2,7 @@ package train.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
-import train.blocks.BlockBridgePillar;
 import train.render.models.blocks.ModelBridgePillar;
 
 public class RenderBridgePillar extends TileEntitySpecialRenderer {

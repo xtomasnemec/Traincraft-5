@@ -1,8 +1,5 @@
 package train.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +26,9 @@ import train.entity.inventory.InventoryZepp;
 import train.entity.rollingStock.EntityJukeBoxCart;
 import train.entity.zeppelin.AbstractZeppelin;
 import train.library.GuiIDs;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 	public static List<MP3Player> playerList = new ArrayList<MP3Player>();

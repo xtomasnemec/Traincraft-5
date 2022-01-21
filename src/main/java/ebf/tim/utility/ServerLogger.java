@@ -1,12 +1,11 @@
 package ebf.tim.utility;
 
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.registries.GameData;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 

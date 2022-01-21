@@ -9,8 +9,8 @@ package train.render.models.blocks;
 
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.ModelRendererTurbo;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 

@@ -1,12 +1,11 @@
 package train.render;
 
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-
 import net.minecraft.client.renderer.entity.RenderManager;
-import java.lang.Math;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import train.entity.zeppelin.AbstractZeppelin;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
@@ -14,7 +13,8 @@ import train.library.Info;
 import train.render.models.ModelZeppelinOneBalloon;
 import train.render.models.ModelZeppelinTwoBalloons;
 
-public class RenderZeppelins extends Render {
+@SideOnly(Side.CLIENT)
+public class RenderZeppelins extends net.minecraft.client.renderer.entity.Render {
 
 	private static final ModelBase modelZeppelinTwoBalloons = new ModelZeppelinTwoBalloons();
 	private static final ModelBase modelZeppelinOneBalloon = new ModelZeppelinOneBalloon();

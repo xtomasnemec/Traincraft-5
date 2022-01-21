@@ -1,12 +1,12 @@
 package ebf.tim.items;
 
+import ebf.tim.registry.TiMGenericRegistry;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ebf.tim.registry.TiMGenericRegistry;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 
 /**
  * <h1>Creative tab</h1>
