@@ -2267,6 +2267,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     /**
+     * returns an array of strings to define particles from the entity class.
+     * an example is: "smoke,0,24,55.5,12,0,0,0,"
+     * each value is separated by commas.
+     * the first part is the tag
+     * @see ebf.tim.render.AnimList
+     * the second is a number that defines the part it will be relative to,
+     *     with 0 being the main model, and each one after that representing the bogies in order that they are defined.
+     * the rest are the position data with optional decimal values, the order is
+     * X,Y,Z, Pitch, Yaw, Roll
+     */
+    @SideOnly(Side.CLIENT)
+    public String[] setParticles(){return null;}
+
+    /**
      * returns an array of floats for animations with offsets:
      * the first is direction in degrees on the X/Y axis from center.
      * the second is distance on the X axis in microblocks from center.
