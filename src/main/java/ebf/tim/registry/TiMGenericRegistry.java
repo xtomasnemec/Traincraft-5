@@ -92,7 +92,7 @@ public class TiMGenericRegistry {
             DebugUtil.println("ERROR: ", "attempted to register Block with a used unlocalizedName", unlocalizedName);
             DebugUtil.throwStackTrace();
         }
-        if (tab != null) {
+        if (TrainsInMotion.proxy.isClient() && tab != null) {
             block.setCreativeTab(tab);
         }
         if (unlocalizedName.length() > 0) {
@@ -165,7 +165,7 @@ public class TiMGenericRegistry {
             DebugUtil.println("ERROR: ", "attempted to register Item with a used unlocalizedName", unlocalizedName);
             DebugUtil.throwStackTrace();
         }
-        if (tab != null) {
+        if (TrainsInMotion.proxy.isClient() && tab != null) {
             itm.setCreativeTab(tab);
         }
         if (container != null) {

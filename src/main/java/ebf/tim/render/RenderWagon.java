@@ -218,6 +218,31 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
                     }
                 }
             }
+
+            if(entity.setParticles()!=null) {
+                String[] parse;
+                for(String value : entity.setParticles()) {
+                    parse=value.split(",");
+                    if (ParticleFX.parseData(parse[0], entity.getClass()) != null) {
+                        int id= Integer.parseInt(parse[1]);
+                        if(id==0) {
+                            entity.renderData.particles.addAll(ParticleFX.newParticleItterator(parse[0],
+                                    Float.parseFloat(parse[2]) + (entity.modelOffsets()[0][0] * 16),
+                                    Float.parseFloat(parse[3]) + (entity.modelOffsets()[0][1] * 16),
+                                    Float.parseFloat(parse[4]) + (entity.modelOffsets()[0][2] * 16),
+                                    Float.parseFloat(parse[5]), Float.parseFloat(parse[6]), Float.parseFloat(parse[7]),
+                                    entity));
+                        } else {
+                            entity.renderData.bogieParticles.get(id).addAll(ParticleFX.newParticleItterator(parse[0],
+                                    Float.parseFloat(parse[2]) + entity.renderData.bogies[id].offset[0],
+                                    Float.parseFloat(parse[3]) + entity.renderData.bogies[id].offset[1],
+                                    Float.parseFloat(parse[4]) + entity.renderData.bogies[id].offset[2],
+                                    Float.parseFloat(parse[5]), Float.parseFloat(parse[6]), Float.parseFloat(parse[7]),
+                                    entity));
+                        }
+                    }
+                }
+            }
             entity.renderData.needsModelUpdate=false;
         }
 

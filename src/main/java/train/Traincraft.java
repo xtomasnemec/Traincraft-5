@@ -117,7 +117,9 @@ public class Traincraft {
 
 
 
-		tcTab = new TiMTab("Traincraft", Info.modID, "logoBR80_DB");
+		if(event.getSide().isClient()) {
+			tcTab = new TiMTab("Traincraft", Info.modID, "logoBR80_DB");
+		}
 		TCBlocks.init();
 		TCItems.init();
 

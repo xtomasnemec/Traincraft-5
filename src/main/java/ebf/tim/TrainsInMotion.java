@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
@@ -122,8 +123,10 @@ public class TrainsInMotion {
         ForgeChunkManager.setForcedChunkLoadingCallback(TrainsInMotion.instance, chunkHandler);
         MinecraftForge.EVENT_BUS.register(chunkHandler);
 
-        creativeTab=new TiMTab("Trains in Motion", MODID, "TiM");
-        creativeTabCrafting=new TiMTab("Trains in Motion Crafting", creativeTab.getTabItem());
+        if(event.getSide().isClient()) {
+            creativeTab = new TiMTab("Trains in Motion", MODID, "TiM");
+            creativeTabCrafting = new TiMTab("Trains in Motion Crafting", creativeTab.getTabItem());
+        }
 
         MinecraftForge.EVENT_BUS.register(EventManagerServer.class);
 
