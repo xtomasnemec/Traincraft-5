@@ -3,6 +3,7 @@ package ebf.tim.render;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.TextureManager;
@@ -110,22 +111,24 @@ public class ParticleFX {
 
     public static int[] parseData(String s, Class host){
         if (CommonUtil.stringContains(s,"smoke")) {
-            return new int[]{CommonUtil.parseInt(s.split(" ")[2], host), 0};
+            DebugUtil.println(s.replace(" ", "."),
+                    s.substring(s.indexOf("smoke")+6).replace(" ", "."));
+            return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("smoke")+6).substring(0,s.indexOf(" ")+1), host), 0};
         } else if (CommonUtil.stringContains(s,"steam")) {
-            return new int[]{CommonUtil.parseInt(s.split(" ")[2], host), 1};
+            return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("steam")+6).substring(0,s.indexOf(" ")+1), host), 1};
         }  else if (CommonUtil.stringContains(s,"wheel")){
             return new int[]{0, 2};
         } else if (CommonUtil.stringContains(s,"lamp")){
             if(CommonUtil.stringContains(s,"cone")){
-                return new int[]{CommonUtil.parseInt(s.split(" ")[3], host), 3};
+                return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("lamp")+5).split(" ")[1], host), 3};
             }else if(CommonUtil.stringContains(s,"sphere")) {
-                return new int[]{CommonUtil.parseInt(s.split(" ")[3], host), 4};
+                return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("lamp")+5).split(" ")[1], host), 4};
             }else if(CommonUtil.stringContains(s,"mars")) {
-                return new int[]{CommonUtil.parseInt(s.split(" ")[3], host), 5};
+                return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("lamp")+5).split(" ")[1], host), 5};
             }else if(CommonUtil.stringContains(s,"siren")) {
-                return new int[]{CommonUtil.parseInt(s.split(" ")[3], host), 6};
+                return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("lamp")+5).split(" ")[1], host), 6};
             }else if(CommonUtil.stringContains(s,"glare")) {
-                return new int[]{CommonUtil.parseInt(s.split(" ")[3], host), 7};
+                return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("lamp")+5).split(" ")[1], host), 7};
             }
         }
         return null;//this states the box is not a supported particle
