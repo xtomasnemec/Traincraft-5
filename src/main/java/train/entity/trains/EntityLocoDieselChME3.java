@@ -98,6 +98,10 @@ public class EntityLocoDieselChME3 extends EntityTrainCore {
     @Override
     public int[] getTankCapacity(){return new int[]{5000};}
 
+    public String[] setParticles(){return new String[]{
+            "smoke 0,0,0.6,1.55,0,0,0,0"
+    };}
+
 
 
     //these only change in very specific use cases.
