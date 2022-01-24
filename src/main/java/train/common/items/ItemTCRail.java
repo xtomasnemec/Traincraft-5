@@ -64,6 +64,9 @@ public class ItemTCRail extends ItemPart {
 		SLOPE_SNOW_GRAVEL("SLOPE_SNOW_GRAVEL", "SLOPE", ItemIDs.tcRailSlopeSnowGravel, "1x6"),
 		LARGE_SLOPE_SNOW_GRAVEL("LARGE_SLOPE_SNOW_GRAVEL", "SLOPE", ItemIDs.tcRailLargeSlopeSnowGravel, "1x12"),
 		VERY_LARGE_SLOPE_SNOW_GRAVEL("VERY_LARGE_SLOPE_SNOW_GRAVEL", "SLOPE", ItemIDs.tcRailVeryLargeSlopeSnowGravel, "1x18"),
+		SLOPE_PEA_GRAVEL("SLOPE_PEA_GRAVEL", "SLOPE", ItemIDs.tcRailSlopePeaGravel, "1x6"),
+		LARGE_SLOPE_PEA_GRAVEL("LARGE_SLOPE_PEA_GRAVEL", "SLOPE", ItemIDs.tcRailLargeSlopePeaGravel, "1x12"),
+		VERY_LARGE_SLOPE_PEA_GRAVEL("VERY_LARGE_SLOPE_PEA_GRAVEL", "SLOPE", ItemIDs.tcRailVeryLargeSlopePeaGravel, "1x18"),
 
 		SUPER_LARGE_TURN("SUPER_LARGE_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, "16x16"),
 		SUPER_LARGE_LEFT_TURN("SUPER_LARGE_LEFT_TURN", "TURN", ItemIDs.tcRailSuperLargeTurn, ""),
@@ -156,6 +159,9 @@ public class ItemTCRail extends ItemPart {
 				|| tile.getType().equals(TrackTypes.SLOPE_SNOW_GRAVEL.getLabel())
 				|| tile.getType().equals(TrackTypes.LARGE_SLOPE_SNOW_GRAVEL.getLabel())
 				|| tile.getType().equals(TrackTypes.VERY_LARGE_SLOPE_SNOW_GRAVEL.getLabel())
+				|| tile.getType().equals(TrackTypes.SLOPE_PEA_GRAVEL.getLabel())
+				|| tile.getType().equals(TrackTypes.LARGE_SLOPE_PEA_GRAVEL.getLabel())
+				|| tile.getType().equals(TrackTypes.VERY_LARGE_SLOPE_PEA_GRAVEL.getLabel())
 		;
 	}
 
@@ -1355,7 +1361,8 @@ public class ItemTCRail extends ItemPart {
 					|| type == TrackTypes.LARGE_SLOPE_BALLAST || type == TrackTypes.VERY_LARGE_SLOPE_WOOD
 					|| type == TrackTypes.VERY_LARGE_SLOPE_GRAVEL || type == TrackTypes.VERY_LARGE_SLOPE_BALLAST
 					|| type == TrackTypes.LARGE_SLOPE_SNOW_GRAVEL || type == TrackTypes.SLOPE_SNOW_GRAVEL
-					|| type == TrackTypes.VERY_LARGE_SLOPE_SNOW_GRAVEL
+					|| type == TrackTypes.VERY_LARGE_SLOPE_SNOW_GRAVEL || type == TrackTypes.SLOPE_PEA_GRAVEL
+					|| type == TrackTypes.LARGE_SLOPE_PEA_GRAVEL|| type == TrackTypes.VERY_LARGE_SLOPE_PEA_GRAVEL
 			) {
 				if (!canPlaceTrack(player, world, x, y + 1, z)) {
 					return false;
@@ -1368,19 +1375,22 @@ public class ItemTCRail extends ItemPart {
 				 * against TCs own brain. you need to devide 100 by (gagEnd+1)
 				 **/
 				if (type == TrackTypes.SLOPE_WOOD || type == TrackTypes.SLOPE_GRAVEL
-						|| type == TrackTypes.SLOPE_BALLAST || type == TrackTypes.SLOPE_SNOW_GRAVEL) {
+						|| type == TrackTypes.SLOPE_BALLAST || type == TrackTypes.SLOPE_SNOW_GRAVEL
+						|| type == TrackTypes.SLOPE_PEA_GRAVEL) {
 					gagEnd = 5;
 					slopeAngle = 0.13;
 				}
 				
 				if (type == TrackTypes.LARGE_SLOPE_WOOD || type == TrackTypes.LARGE_SLOPE_GRAVEL
-						|| type == TrackTypes.LARGE_SLOPE_BALLAST || type == TrackTypes.LARGE_SLOPE_SNOW_GRAVEL) {
+						|| type == TrackTypes.LARGE_SLOPE_BALLAST || type == TrackTypes.LARGE_SLOPE_SNOW_GRAVEL
+						|| type == TrackTypes.LARGE_SLOPE_PEA_GRAVEL) {
 					gagEnd = 11;
 					slopeAngle = 0.0666;
 				}
 				
 				if (type == TrackTypes.VERY_LARGE_SLOPE_WOOD || type == TrackTypes.VERY_LARGE_SLOPE_GRAVEL
-						|| type == TrackTypes.VERY_LARGE_SLOPE_BALLAST || type == TrackTypes.VERY_LARGE_SLOPE_SNOW_GRAVEL) {
+						|| type == TrackTypes.VERY_LARGE_SLOPE_BALLAST || type == TrackTypes.VERY_LARGE_SLOPE_SNOW_GRAVEL
+						|| type == TrackTypes.VERY_LARGE_SLOPE_PEA_GRAVEL) {
 					gagEnd = 17;
 					slopeAngle = 0.0444;
 				}

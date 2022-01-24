@@ -96,6 +96,9 @@ public class TCItems {
 		ItemIDs.tcRailSlopeSnowGravel.item = new ItemTCRail(ItemTCRail.TrackTypes.SLOPE_SNOW_GRAVEL);
 		ItemIDs.tcRailLargeSlopeSnowGravel.item = new ItemTCRail(ItemTCRail.TrackTypes.LARGE_SLOPE_SNOW_GRAVEL);
 		ItemIDs.tcRailVeryLargeSlopeSnowGravel.item = new ItemTCRail(ItemTCRail.TrackTypes.VERY_LARGE_SLOPE_SNOW_GRAVEL);
+		ItemIDs.tcRailSlopePeaGravel.item = new ItemTCRail(ItemTCRail.TrackTypes.SLOPE_PEA_GRAVEL);
+		ItemIDs.tcRailLargeSlopePeaGravel.item = new ItemTCRail(ItemTCRail.TrackTypes.LARGE_SLOPE_PEA_GRAVEL);
+		ItemIDs.tcRailVeryLargeSlopePeaGravel.item = new ItemTCRail(ItemTCRail.TrackTypes.VERY_LARGE_SLOPE_PEA_GRAVEL);
 
 		ItemIDs.tcRailSuperLargeTurn.item = new ItemTCRail(ItemTCRail.TrackTypes.SUPER_LARGE_TURN);
 

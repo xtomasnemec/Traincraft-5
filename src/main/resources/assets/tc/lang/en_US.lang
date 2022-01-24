@@ -1006,6 +1006,9 @@ item.tc:tcRailLargeSlopeSnowGravel.name=Large Slope Track (Snowy Gravel)
 item.tc:tcRailVeryLargeSlopeSnowGravel.name=Very Large Slope Track (Snowy Gravel)
 tile.tc:oreTC.snowgravel.name=Snowy Gravel
 item.tc:tcRailSuperLargeTurn.name=Super Large Turn
+item.tc:tcRailSlopePeaGravel.name=Slope Track (Pea Gravel)
+item.tc:tcRailLargeSlopePeaGravel.name=Large Slope Track (Pea Gravel)
+item.tc:tcRailVeryLargeSlopePeaGravel.name=Very Large Slope Track (Pea Gravel)
 
 key.categories.traincraft=JCIR-Traincraft
 key.traincraft.horn=Horn/Whistle

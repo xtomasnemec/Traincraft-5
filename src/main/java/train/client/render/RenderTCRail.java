@@ -162,6 +162,18 @@ public class RenderTCRail extends TileEntitySpecialRenderer {
 						modelLeftTurn.render("super_large", railTile, x , y,z);
 						break;
 					}
+					case SLOPE_PEA_GRAVEL: {
+						modelSlope.render("peagravel", railTile, x, y, z);
+						break;
+					}
+					case LARGE_SLOPE_PEA_GRAVEL: {
+						modelLargeSlope.render("peagravel", railTile, x, y, z);
+						break;
+					}
+					case VERY_LARGE_SLOPE_PEA_GRAVEL: {
+						modelVeryLargeSlope.render("peagravel", railTile, x, y, z);
+						break;
+					}
 
 				}
 
