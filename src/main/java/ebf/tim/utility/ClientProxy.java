@@ -80,8 +80,8 @@ public class ClientProxy extends CommonProxy {
             raildevtoolLeft, raildevtoolRight, raildevtoolRaise, raildevtoolLower;
 
     public static KeyBinding raildevtoolNextPoint, raildevtoolLastPoint;
-
     public static KeyBinding raildevtoolQuality;
+    public static KeyBinding modeldevtoolReloadAll;
 
     /**
      * <h2> Client GUI Redirect </h2>
@@ -223,6 +223,8 @@ public class ClientProxy extends CommonProxy {
 
             raildevtoolQuality = new KeyBinding("Track Model Quality", Keyboard.KEY_DIVIDE, "Trains in Motion Dev");
 
+            modeldevtoolReloadAll = new KeyBinding("Entity Model Reload", Keyboard.KEY_APOSTROPHE, "Trains in Motion Dev");
+
 
             ClientRegistry.registerKeyBinding(raildevtoolUp);
             ClientRegistry.registerKeyBinding(raildevtoolDown);
@@ -233,6 +235,7 @@ public class ClientProxy extends CommonProxy {
             ClientRegistry.registerKeyBinding(raildevtoolNextPoint);
             ClientRegistry.registerKeyBinding(raildevtoolLastPoint);
             ClientRegistry.registerKeyBinding(raildevtoolQuality);
+            ClientRegistry.registerKeyBinding(modeldevtoolReloadAll);
         }
 
 

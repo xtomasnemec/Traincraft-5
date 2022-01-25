@@ -98,6 +98,11 @@ public class RenderWagon extends Render {
 
         if(entity==null){return;}
 
+        if(ClientProxy.modeldevtoolReloadAll.getIsKeyPressed()){
+            entity.renderData.needsModelUpdate=true;
+            return;
+        }
+
         if (entity.renderData.modelList == null || entity.renderData.needsModelUpdate) {
             entity.renderData = new TransportRenderData();
             entity.renderData.modelList = entity.getModel();
