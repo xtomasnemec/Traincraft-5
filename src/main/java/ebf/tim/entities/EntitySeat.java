@@ -34,8 +34,9 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     public Vec3 rotation =null;
     GenericRailTransport parent;
-    private EntityLivingBase passengerEntity=null;
+    //private EntityLivingBase passengerEntity=null;
     private boolean controller=false, locomotive=false;
+    private int movementTicks=0;
 
     public EntitySeat(World world) {
         super(world);
@@ -71,6 +72,15 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     /**actually useless for this entity*/
     @Override
     public void onUpdate() {
+        if(worldObj.isRemote && movementTicks!=0){
+            setPosition(
+                    this.posX + (this.prevPosX - this.posX) / (double)this.movementTicks,
+                    this.posY + (this.prevPosY - this.posY) / (double)this.movementTicks,
+                    this.posZ + (this.prevPosZ - this.posZ) / (double)this.movementTicks
+            );
+
+            --this.movementTicks;
+        }
         if(ticksExisted%40==0 || parent==null) {
             if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport) {
                 if (worldObj.isRemote) {
@@ -82,9 +92,6 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
             } else {
                 worldObj.removeEntity(this);
             }
-        } else if (parent!=null && passengerEntity!=null && passengerEntity.ridingEntity!=this){
-            passengerEntity=null;
-            riddenByEntity=null;
         }
 
     }
@@ -158,10 +165,10 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     //@Override
     public void addPassenger(Entity passenger) {
-        if(passengerEntity==null && passenger instanceof EntityLivingBase) {
+//        DebugUtil.println(passengerEntity==null, passengerEntity.ridingEntity==null, passenger instanceof EntityLivingBase);
+        if(riddenByEntity==null && passenger instanceof EntityLivingBase) {
             //super.addPassenger(passenger);
             this.riddenByEntity=passenger;
-            this.passengerEntity=(EntityLivingBase)riddenByEntity;
             passenger.ridingEntity=this;
             passenger.mountEntity(this);
         }
@@ -170,7 +177,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     //@Override
     public void removePassenger(Entity passenger){
         //super.removePassenger(passenger);
-        passengerEntity=null;
+        //passengerEntity=null;
         this.riddenByEntity=null;
         passenger.ridingEntity=null;
     }
@@ -189,9 +196,11 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     @Override
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int turnProgress) {
-        posX = x;
-        posY = y;
-        posZ = z;
+        this.prevPosX=x;
+        this.prevPosY=y;
+        this.prevPosZ=z;
+        movementTicks+=2;
+
     }
     @Override
     public void setVelocity(double x, double y, double z) {
@@ -200,4 +209,12 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         motionZ = z;
     }
 
+    public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_) {
+        this.posX = p_70107_1_;
+        this.posY = p_70107_3_;
+        this.posZ = p_70107_5_;
+        float f = this.width / 2.0F;
+        float f1 = this.height;
+        this.boundingBox.setBounds(p_70107_1_ - (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize, p_70107_5_ - (double)f, p_70107_1_ + (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize + (double)f1, p_70107_5_ + (double)f);
+    }
 }
