@@ -44,3 +44,13 @@ src/main/java/train/common/api/TrainsOnClick.java
 .project
 
 usercache.json
+
+banned-ips.json
+
+banned-players.json
+
+eula.txt
+
+server.properties
+
+ops.json

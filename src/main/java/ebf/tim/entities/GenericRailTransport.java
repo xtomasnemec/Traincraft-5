@@ -2338,6 +2338,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * each value is separated by commas.
      * the first part is the tag
      * @see ebf.tim.render.AnimList
+     * do NOT reference AnimList directly from inside the entity class.
      * the second is a number that defines the part it will be relative to,
      *     with 0 being the main model, and each one after that representing the bogies in order that they are defined.
      * the rest are the position data with optional decimal values, the order is

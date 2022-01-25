@@ -117,6 +117,11 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
 
         if(entity==null){return;}
 
+        if(ClientProxy.modeldevtoolReloadAll.isKeyDown()){
+            entity.renderData.needsModelUpdate=true;
+            return;
+        }
+
         if (entity.renderData.modelList == null || entity.renderData.needsModelUpdate) {
             entity.renderData = new TransportRenderData();
             entity.renderData.modelList = entity.getModel();
