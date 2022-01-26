@@ -171,7 +171,7 @@ public class EntityTrainCore extends GenericRailTransport {
             //vectorCache[1][1] = Math.abs(cachedVectors[2].xCoord - weight);
 
             //convert max power from MHP to HP, and then to lbf/s
-            cachedVectors[2].xCoord= maxPowerMicroblocks * 0.98632f * 0.001818f;
+            cachedVectors[2].xCoord= (maxPowerMicroblocks * 0.98632f) * 0.001818f;
 
             if(cachedVectors[2].xCoord<=0){
                 //if too much weight, or no power, you stall
@@ -185,7 +185,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 //scale further by throttle position
                 cachedVectors[2].xCoord*=getAcceleratiorPercentage();
                 //nerf to more TC-esk acceleration rates
-                cachedVectors[2].xCoord*=0.6;
+                cachedVectors[2].xCoord*=0.0006;
 
 
                 if(CommonProxy.realSpeed){
