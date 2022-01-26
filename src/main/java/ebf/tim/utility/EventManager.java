@@ -165,7 +165,7 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onClientTick(TickEvent.PlayerTickEvent event) {
-        if(event.player.ridingEntity instanceof EntityTrainCore){
+        if(event.player.ridingEntity instanceof EntitySeat){
             if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.
                 if(ClientProxy.controls==1 && holdTimer<40){
