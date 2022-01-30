@@ -98,7 +98,7 @@ public class RenderWagon extends Render {
 
         if(entity==null){return;}
 
-        if(ClientProxy.modeldevtoolReloadAll.getIsKeyPressed()){
+        if(ClientProxy.modeldevtoolReloadAll!=null && ClientProxy.modeldevtoolReloadAll.getIsKeyPressed()){
             entity.renderData.needsModelUpdate=true;
             return;
         }
