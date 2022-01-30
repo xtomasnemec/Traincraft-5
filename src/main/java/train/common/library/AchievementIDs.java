@@ -87,7 +87,7 @@ public enum AchievementIDs {
 	switchin(new Item[]{ItemIDs.minecartSW1.item, ItemIDs.minecartSW1500.item, ItemIDs.minecartS2.item, ItemIDs.minecartBoxcab23Ton.item,
 			ItemIDs.minecartH1044.item, ItemIDs.minecartHH660.item, ItemIDs.minecartHustler.item, ItemIDs.minecartVO1000.item, ItemIDs.minecartSW8.item,
 			ItemIDs.minecartSW1200.item, ItemIDs.minecartBeep.item, ItemIDs.minecart44Ton.item, ItemIDs.minecartNRE3gs21b.item, ItemIDs.minecartC415H.item,
-			ItemIDs.minecartILMA.item, ItemIDs.minecartILMB.item}),
+			ItemIDs.minecartILMA.item, ItemIDs.minecartILMB.item, ItemIDs.minecartSB23R.item, ItemIDs.minecartC415S.item, ItemIDs.minecartC415L.item,}),
 	powerful(new Item[]{ItemIDs.minecartLocoDD35A.item, ItemIDs.minecartDH643.item, ItemIDs.minecartKrautt.item}),
 	amfleet(new Item[]{ItemIDs.minecartAmfleet.item, ItemIDs.minecartAmfleet2.item}),
 	jenny(new Item[]{ItemIDs.minecartOreJenny.item}),

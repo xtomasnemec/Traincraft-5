@@ -369,6 +369,8 @@ public enum ItemIDs {
 	minecartSDL39("ItemRollingStock", "SDL39", 5),
 	minecartSD40dash2("ItemRollingStock", "sd40dash2", 5),
 	minecartSD40T2("ItemRollingStock", "sd40t2", 5),
+	minecartSD40dash2B("ItemRollingStock", "sd40dash2b", 5),
+	minecartSDP40("ItemRollingStock", "sdp40icon", 5),
 	minecartSDP40F("ItemRollingStock","sdp40f",5),
 	minecartSD45dash2("ItemRollingStock", "sd45dash2", 5),
 	minecartSD45dash2B("ItemRollingStock", "sd45dash2b", 5),
@@ -391,12 +393,14 @@ public enum ItemIDs {
 
 	minecartU18B("ItemRollingStock", "U18B", 3),
 	minecartU18BB("ItemRollingStock", "U18BB", 3),
+	minecartU18BW("ItemRollingStock", "U18BW", 3),
 	minecartU23B("ItemRollingStock", "u23b", 4),
 	minecartU30C("ItemRollingStock", "u30c", 5),
 	minecartSF30C("ItemRollingStock", "sf30c", 5),
 	minecartU36C( "ItemRollingStock", "u36c", 5),
 
 	minecartB23("ItemRollingStock", "b23", 5),
+	minecartSB23R("ItemRollingStock", "sb23r", 5),
 	minecartB30("ItemRollingStock", "b30", 5),
 
 	minecartDash840B("ItemRollingStock", "B40-8", 4),
@@ -454,6 +458,8 @@ public enum ItemIDs {
 	minecart60centerbeam("ItemRollingStock", "60centerbeam", 3),
 	minecart66centerbeam("ItemRollingStock", "66centerbeam", 3),
 	minecart73centerbeam("ItemRollingStock", "73centerbeam", 4),
+	minecartGSI60FootBulkhead("ItemRollingStock", "gsi_bulky", 4),
+	minecartGSC60FootFlatcar("ItemRollingStock", "gsc_flatass", 3),
 
 	minecartPS140("ItemRollingStock", "ps140", 3),
 	minecartPS150("ItemRollingStock", "ps150", 4),

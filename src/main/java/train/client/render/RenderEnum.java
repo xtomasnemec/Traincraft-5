@@ -633,12 +633,6 @@ public enum RenderEnum {
 			add(new double[]{-0.3D, -0.4D, 0.2D});
 		}
 	}, "", null, 0, false),
-	SD45dash2( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2.class,  new ModelSD45dash2(), "sd45dash2_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
-		{
-			add(new double[]{2.5D, 1.5D, 0.0D});
-
-		}
-	}, "", null, 0, false),
 	FRED(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.FRED.class, new ModelFRED(),"fred", false, new float[]{0F, 0.05F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	/*CF7R( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselCF7R.class,  new ModelCF7R(), "cf7r_", true,new float[] {-1.5F, -0.16F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
 		{
@@ -666,28 +660,6 @@ public enum RenderEnum {
 	Class345Coach( com.jcirmodelsquad.tcjcir.vehicles.rollingstock.Class345Coach.class, new ModelClass345Coach(),"class345coach", false, new float[] {0F, 0F, 0F},  new float[] { 0F, 180F, 180F },null, "", 0, null, "", null, 0, false),
 	BoulderWagon(com.jcirmodelsquad.tcjcir.vehicles.rollingstock.BoulderWagon.class, new ModelBoulderWagon(),"BoulderWagon_",true, new float[]{0F,0.2F,0F}, new float[] { 0F, 180F, 180F },null, "",0,null,  "",null, 0,false),
 	Hustler(com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHustler.class, new ModelHustler(), "hustler_", true, new float[]{-1F, 0.2F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	SDP40F( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSDP40F.class,  new ModelSDP40F(), "sdp40f_", true,new float[] {-2F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
-		{
-			add(new double[]{2.55D, 1.5D, 0.0D});
-		}
-	},"", null, 0, false),
-	FP45( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselFP45.class,  new ModelFP45(), "fp45_", true,new float[] {-2F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
-		{
-			add(new double[]{2.55D, 1.5D, 0.0D});
-		}
-	},"", null, 0, false),
-	F45( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselF45.class,  new ModelF45(), "f45_", true,new float[] {-1.75F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
-		{
-			add(new double[]{2.25D, 1.5D, 0.0D});
-
-		}
-	}, "", null, 0, false),
-	SD45dash2B( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselSD45dash2B.class,  new ModelSD45dash2B(), "sd45dash2b_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
-		{
-			add(new double[]{2.5D, 1.5D, 0.0D});
-
-		}
-	}, "", null, 0, false),
 	HighrailVan( com.jcirmodelsquad.tcjcir.vehicles.locomotives.DieselHighrailVan.class,  new ModelHighrailVan(), "highrailvan_", true,new float[] {-1.5F, 0.2F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 1,  new ArrayList<double[]>() {
 		{
 			add(new double[]{-0.3D, -0.4D, 0.2D});
@@ -896,13 +868,40 @@ public enum RenderEnum {
 			//add(new double[]{1.5D, 1.5D, 0.0D});
 		}
 	}, "", null, 0, false),
-	SD40dash2(DieselSD40dash2.class, new ModelSD40dash2(), "sd40dash2_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
-		{
-			add(new double[]{2.3D, 1.5D, 0.0D});
-		}
+	SD40dash2(DieselSD40dash2.class, new ModelSD40dash2(), "sd40dash2_", true,new float[] {-0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{ }
 	}, "", null, 0, false),
 	SD40T2( DieselSD40T2.class,  new ModelSD40T2(), "SD40T_", true,new float[] {-0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
 		{ }
+	}, "", null, 0, false),
+	SD40dash2B(DieselSD40dash2B.class, new ModelSD40dash2B(), "sd40dash2b_", true,new float[] {-0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
+	SDP40(DieselSDP40.class, new ModelSD40dash2(), "sdp40_", true,new float[] {-0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
+	SDP40F( DieselSDP40F.class,  new ModelSDP40F(), "sdp40f_", true,new float[] {-2F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.55D, 1.5D, 0.0D});
+		}
+	},"", null, 0, false),
+	SD45dash2(DieselSD45dash2.class,  new ModelSD45dash2(), "sd45_", true,new float[] {-0F, -0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
+	SD45dash2B( DieselSD45dash2B.class,  new ModelSD45dash2B(), "sd45dash2b_", true,new float[] {-1.9F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.5D, 1.5D, 0.0D});
+		}
+	}, "", null, 0, false),
+	FP45( DieselFP45.class,  new ModelFP45(), "fp45_", true,new float[] {-2F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.55D, 1.5D, 0.0D});
+		}
+	},"", null, 0, false),
+	F45( DieselF45.class,  new ModelF45(), "f45_", true,new float[] {-1.75F, -0.14F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 6,  new ArrayList<double[]>() {
+		{
+			add(new double[]{2.25D, 1.5D, 0.0D});
+		}
 	}, "", null, 0, false),
 	SD70Mac( DieselSD70Mac.class, new ModelSD70Mac(), "sd70mac_", true,new float[] {-2.1F, 0.15F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{
@@ -964,7 +963,9 @@ public enum RenderEnum {
 	U18BB( DieselU18BB.class,  new ModelU18BB(), "U18BB_", true,new float[] {-0F, -0.0F, 0F},  null, null, "smoke", 4,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
-
+	U18BW( DieselU18BW.class,  new ModelU18BW(), "U18BW_", true,new float[] {-0F, -0.0F, 0F},  null, null, "smoke", 4,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
 	U23B( DieselU23B.class,  new ModelU23B(), "u23b_", true,new float[] {-0F, -0.0F, 0F},  null, null, "smoke", 4,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
@@ -983,6 +984,9 @@ public enum RenderEnum {
 	}, "", null, 0, false),
 
 	B23( DieselB23.class,  new ModelB23(), "b23_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
+	SB23R( DieselSB23R.class,  new ModelSB23R(), "sb23r_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
 	B30( DieselB30.class,  new ModelB30(), "b30_", true,new float[] {-1.7F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 4,  new ArrayList<double[]>() {
@@ -1112,6 +1116,8 @@ public enum RenderEnum {
 	Freight60centerbeam(Freight60centerbeam.class, new Model60centerbeam(),"60ftcb_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Freight66centerbeam(Freight66centerbeam.class, new Model66centerbeam(),"66ftcb_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Freight73centerbeam(Freight73centerbeam.class, new Model73centerbeam(),"73ftcb_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	GSI60FootBulkhead(GSI60FootBulkhead.class, new ModelGSI60FootBulkheadFlat(),"gsi_60bulk_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	GSC60FootFlat(GSC60FootFlat.class, new ModelGSI60FootBulkheadFlat(),"gsc_60flat_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 
 	PS140(PS140.class, new ModelPS140(),"ps140_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	PS150(PS150.class, new ModelPS150(),"ps150_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
