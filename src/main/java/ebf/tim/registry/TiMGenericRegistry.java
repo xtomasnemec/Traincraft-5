@@ -4,6 +4,8 @@ package ebf.tim.registry;
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.BlockTrainFluid;
@@ -111,26 +113,13 @@ public class TiMGenericRegistry {
         if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getUnlocalizedName().equals(StatCollector.translateToLocal(block.getUnlocalizedName()))) {
             DebugUtil.println("Block missing lang entry: " + block.getUnlocalizedName());
         }
-        if (block instanceof BlockDynamic) {
-            if (model != null) {
-                ((BlockDynamic) block).setModel(model);
-            } else if (TESR != null) {
-                ((BlockDynamic) block).setTESR(TESR);
-            }
-        }
         if (block instanceof ITileEntityProvider) {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
             if (!redundantTiles.contains(unlocalizedName + "tile")) {
                 GameRegistry.registerTileEntity(tile, unlocalizedName + "tile");
                 redundantTiles.add(unlocalizedName + "tile");
-                if (TrainsInMotion.proxy.isClient() && TESR != null) {
-                    cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TESR);
-                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
-                    CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
-                } else if (TrainsInMotion.proxy.isClient()) {
-                    cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TrainsInMotion.proxy.getTESR());
-                    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
-                    CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
+                if (TrainsInMotion.proxy.isClient()) {
+                    regTileRender(MODID,unlocalizedName,block,tile,model,TESR);
                 }
             } else {
                 DebugUtil.println("redundant tile name found", unlocalizedName + "tile");
@@ -260,38 +249,67 @@ public class TiMGenericRegistry {
                     CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
                 }
             }
-            if (TrainsInMotion.proxy.isClient() && ClientProxy.hdTransportItems) {
-                MinecraftForgeClient.registerItemRenderer(registry.getCartItem().getItem(), ebf.tim.items.CustomItemModel.instance);
-            }
             registry.registerSkins();
             if (registry.getRecipe() != null) {
                 RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getTier());
             }
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {
-                if (entityRender == null) {
-                    cpw.mods.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render) TrainsInMotion.proxy.getEntityRender());
-                    if (ClientProxy.preRenderModels) {
-                        ((net.minecraft.client.renderer.entity.Render) TrainsInMotion.proxy.getEntityRender()).doRender(registry, 0, 0, 0, 0, 0);
-                    }
-                } else {
-                    cpw.mods.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render) entityRender);
-                    if (ClientProxy.preRenderModels) {
-                        ((net.minecraft.client.renderer.entity.Render) entityRender).doRender(registry, 0, 0, 0, 0, 0);
-                    }
-                }
-                if (ClientProxy.preRenderModels && ClientProxy.hdTransportItems) {
-                    ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, registry.getCartItem());
-                }
+                regEntityRender(registry, entityRender);
             }
             usedNames.add(registry.transportName());
             registryPosition++;
         }
     }
 
-    /**
-     * @param priority the priority to generate, higher numbers tend to generate after other mods.
-     */
+    @SideOnly(Side.CLIENT)
+    private static void regEntityRender(GenericRailTransport registry, Object entityRender){
+
+        if (ClientProxy.hdTransportItems) {
+            MinecraftForgeClient.registerItemRenderer(registry.getCartItem().getItem(), ebf.tim.items.CustomItemModel.instance);
+        }
+
+        if (entityRender == null) {
+            cpw.mods.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render) TrainsInMotion.proxy.getEntityRender());
+            if (ClientProxy.preRenderModels) {
+                ((net.minecraft.client.renderer.entity.Render) TrainsInMotion.proxy.getEntityRender()).doRender(registry, 0, 0, 0, 0, 0);
+            }
+        } else {
+            cpw.mods.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render) entityRender);
+            if (ClientProxy.preRenderModels) {
+                ((net.minecraft.client.renderer.entity.Render) entityRender).doRender(registry, 0, 0, 0, 0, 0);
+            }
+        }
+        if (ClientProxy.preRenderModels && ClientProxy.hdTransportItems) {
+            ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, registry.getCartItem());
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void regTileRender(String MODID, String unlocalizedName, Block block, Class<? extends TileEntity> tile, ModelBase model, Object TESR) {
+
+        if (block instanceof BlockDynamic) {
+            if (model != null) {
+                ((BlockDynamic) block).setModel(model);
+            } else if (TESR != null) {
+                ((BlockDynamic) block).setTESR(TESR);
+            }
+        }
+        if (TESR != null) {
+            cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TESR);
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
+            CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
+        } else {
+            cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TrainsInMotion.proxy.getTESR());
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
+            CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
+        }
+    }
+
+
+        /**
+         * @param priority the priority to generate, higher numbers tend to generate after other mods.
+         */
     public static void registerOreGen(int priority, OreGen veinConfig) {
         GameRegistry.registerWorldGenerator(veinConfig, priority);
     }
