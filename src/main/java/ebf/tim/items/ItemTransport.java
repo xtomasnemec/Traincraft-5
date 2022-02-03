@@ -41,6 +41,18 @@ public class ItemTransport extends Item {
     public ItemTransport(GenericRailTransport cart, String MODID, CreativeTabs tabs) {
         super();
         setTranslationKey(cart.transportName().replace(" ",""));
+        setItemLore(cart);
+        transport=cart.getClass();
+        //todo: texture names aren't that simple in 1.12
+        //setTextureName(MODID+":transports/"+getTranslationKey());
+        setCreativeTab(tabs);
+        if(TrainsInMotion.proxy.isClient()){
+            entity=cart;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setItemLore(GenericRailTransport cart){
         if(cart.transportYear()!=null) {
             subtext.add(ChatFormatting.GRAY + t("menu.item.year") + ": " + cart.transportYear());
         }
@@ -106,13 +118,6 @@ public class ItemTransport extends Item {
                     subtext.add(ChatFormatting.LIGHT_PURPLE + s);
                 }
             }
-        }
-        transport=cart.getClass();
-        //todo: texture names aren't that simple in 1.12
-        //setTextureName(MODID+":transports/"+getTranslationKey());
-        setCreativeTab(tabs);
-        if(TrainsInMotion.proxy.isClient()){
-            entity=cart;
         }
     }
 
