@@ -118,9 +118,9 @@ public class CommonUtil {
     }
 
     public static int parseInt(String str, Class host) throws NumberFormatException{
-        if (str == null || str.length()==0) {
+        /*if (str == null || str.length()==0) {
             throw new NumberFormatException("the string: \"" + str + "\" was not a number, please check " + host.getName());
-        }
+        }*/
 
         int result = 0;
         boolean negative = false;
@@ -137,6 +137,8 @@ public class CommonUtil {
                 case '7':{result = (result * 10)+7;break;}
                 case '8':{result = (result * 10)+8;break;}
                 case '9':{result = (result * 10)+9;break;}
+                case ' ':{break;}
+                default:{throw new NumberFormatException("the string: \"" + str + "\" was not a number, please check " + host.getName());}
             }
         }
         return negative?-result:result;

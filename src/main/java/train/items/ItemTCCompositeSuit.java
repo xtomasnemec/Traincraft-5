@@ -73,8 +73,13 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 			ItemStack stack) {
 		super.onArmorTick(world, player, stack);
 		updateTicks++;
-		ItemStack armorHelmet = player.inventory.armorItemInSlot(3);
-		if(armorHelmet!=null && armorHelmet.getItem() instanceof ItemTCCompositeSuit){
+		ItemStack armorHelmet=null;
+		for (ItemStack s : player.inventory.armorInventory){
+			if (s.getItem() == ItemIDs.helmet_suit_paintable.item){
+				armorHelmet=s; break;
+			}
+		}
+		if(armorHelmet!=null){
 			ItemTCCompositeSuit itemarmor = (ItemTCCompositeSuit)armorHelmet.getItem();
 			/**
 			 * Helmet cures poison blindness, confusion
@@ -142,8 +147,13 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 		/**
 		 * Chest heals half a heart every 100 ticks
 		 */
-		ItemStack armorChest = player.inventory.armorItemInSlot(2);
-		if(armorChest!=null && armorChest.getItem() instanceof ItemTCCompositeSuit){
+		ItemStack armorChest=null;
+		for (ItemStack s : player.inventory.armorInventory){
+			if (s.getItem() == ItemIDs.jacket_suit_paintable.item){
+				armorChest=s; break;
+			}
+		}
+		if(armorChest!=null){
 			ItemTCCompositeSuit itemarmor = (ItemTCCompositeSuit)armorChest.getItem();
 			if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
 				if(player.getHealth()<player.getMaxHealth() && updateTicks%100==0){
@@ -159,8 +169,14 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 		/**
 		 * pants are fire resistant
 		 */
-		ItemStack armorPants = player.inventory.armorItemInSlot(1);
-		if(armorPants!=null && armorPants.getItem() instanceof ItemTCCompositeSuit){
+
+		ItemStack armorPants=null;
+		for (ItemStack s : player.inventory.armorInventory){
+			if (s.getItem() == ItemIDs.pants_suit_paintable.item){
+				armorPants=s; break;
+			}
+		}
+		if(armorPants!=null){
 			if(player.isBurning()){
 				if (armorPants.getMaxDamage()-armorPants.getItemDamage()>1) {
 					player.extinguish();
@@ -180,11 +196,15 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 	 * Initially projected to have a jump boost
 	 */
 	@SubscribeEvent
-	public void onEntityLivingJumpEvent(LivingEvent.LivingJumpEvent event)
-	{
+	public void onEntityLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
 		if(event.entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)event.entity;
-			ItemStack armor = player.inventory.armorItemInSlot(1);
+			ItemStack armor=null;
+			for (ItemStack s : player.inventory.armorInventory){
+				if (s.getItem() == ItemIDs.boots_suit_paintable.item){
+					armor=s; break;
+				}
+			}
 			if(armor!=null && armor.getItem() instanceof ItemTCArmor && !player.isInWater()){
 				ItemTCArmor itemarmor = (ItemTCArmor)armor.getItem();
 				if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
@@ -203,12 +223,16 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 	 * Boots protect against fall damage
 	 */
 	@SubscribeEvent
-	public void onEntityLivingFallEvent(LivingFallEvent event)
-	{
+	public void onEntityLivingFallEvent(LivingFallEvent event) {
 		if(event.entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)event.entity;
-			ItemStack armor = player.inventory.armorItemInSlot(0);
-			if(armor!=null && armor.getItem() instanceof ItemTCCompositeSuit && !player.isInWater()){
+			ItemStack armor=null;
+			for (ItemStack s : player.inventory.armorInventory){
+				if (s.getItem() == ItemIDs.boots_suit_paintable.item){
+					armor=s; break;
+				}
+			}
+			if(armor!=null && !player.isInWater()){
 				ItemTCCompositeSuit itemarmor = (ItemTCCompositeSuit)armor.getItem();
 				if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
 					if(event.distance-3>0){
