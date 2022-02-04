@@ -118,9 +118,9 @@ public class CommonUtil {
     }
 
     public static int parseInt(String str, Class host) throws NumberFormatException{
-        /*if (str == null || str.length()==0) {
-            throw new NumberFormatException("the string: \"" + str + "\" was not a number, please check " + host.getName());
-        }*/
+        if (str == null || str.length()==0) {
+            return 0;
+        }
 
         int result = 0;
         boolean negative = false;
