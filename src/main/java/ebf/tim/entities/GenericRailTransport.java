@@ -1068,6 +1068,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
                         this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
                 );
+
+                for(int i=0;i<seats.size();i++){
+                    if(seats.get(i)!=null) {
+                        cachedVectors[0] = new Vec3f(getRiderOffsets()[i][0], getRiderOffsets()[i][1], getRiderOffsets()[i][2])
+                                .rotatePoint(rotationPitch, rotationYaw, 0f);
+                        cachedVectors[0].addVector(posX, posY, posZ);
+                        seats.get(i).setPosition(cachedVectors[0].xCoord, cachedVectors[0].yCoord, cachedVectors[0].zCoord);
+                    }
+                }
+
                 velocity[1] = (float) ((Math.abs(posX) - Math.abs(prevPosX)) + (Math.abs(posZ) - Math.abs(prevPosZ)));
                 if (frontBogie != null && backBogie != null) {
                     frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
