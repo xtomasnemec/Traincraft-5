@@ -35,7 +35,6 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     public Vec3d rotation =null;
     GenericRailTransport parent;
     private boolean controller=false, locomotive=false;
-    private int movementTicks=0;
 
     public EntitySeat(World world) {
         super(world);
@@ -71,15 +70,6 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     /**actually useless for this entity*/
     @Override
     public void onUpdate() {
-        if(world.isRemote && movementTicks!=0){
-            setPosition(
-                    this.posX + (this.prevPosX - this.posX) / (double)this.movementTicks,
-                    this.posY + (this.prevPosY - this.posY) / (double)this.movementTicks,
-                    this.posZ + (this.prevPosZ - this.posZ) / (double)this.movementTicks
-            );
-
-            --this.movementTicks;
-        }
         if(ticksExisted%40==0 || parent==null) {
             if (world.getEntityByID(parentId) instanceof GenericRailTransport) {
                 if (world.isRemote) {
@@ -176,15 +166,11 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
 
     /**
      * <h2>Client Movement code</h2>
-     * this is mostly used to sync and smooth movement between client and server.
+     * handle this from host entity
      */
     @Override
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float p_70056_7_, float p_70056_8_, int p_70056_9_, boolean teleport) {
-        this.prevPosX=x;
-        this.prevPosY=y;
-        this.prevPosZ=z;
-        movementTicks+=2;
     }
     @Override
     public void setVelocity(double x, double y, double z) {
