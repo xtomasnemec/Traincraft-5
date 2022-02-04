@@ -41,7 +41,9 @@ public class ItemTransport extends Item {
     public ItemTransport(GenericRailTransport cart, String MODID, CreativeTabs tabs) {
         super();
         setTranslationKey(cart.transportName().replace(" ",""));
-        setItemLore(cart);
+        if(TrainsInMotion.proxy.isClient()) {
+            setItemLore(cart);
+        }
         transport=cart.getClass();
         //todo: texture names aren't that simple in 1.12
         //setTextureName(MODID+":transports/"+getTranslationKey());
