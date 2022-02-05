@@ -75,7 +75,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 		updateTicks++;
 		ItemStack armorHelmet=null;
 		for (ItemStack s : player.inventory.armorInventory){
-			if (s.getItem() == ItemIDs.helmet_suit_paintable.item){
+			if (s!=null && s.getItem() == ItemIDs.helmet_suit_paintable.item){
 				armorHelmet=s; break;
 			}
 		}
@@ -149,7 +149,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 		 */
 		ItemStack armorChest=null;
 		for (ItemStack s : player.inventory.armorInventory){
-			if (s.getItem() == ItemIDs.jacket_suit_paintable.item){
+			if (s!=null && s.getItem() == ItemIDs.jacket_suit_paintable.item){
 				armorChest=s; break;
 			}
 		}
@@ -172,7 +172,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 
 		ItemStack armorPants=null;
 		for (ItemStack s : player.inventory.armorInventory){
-			if (s.getItem() == ItemIDs.pants_suit_paintable.item){
+			if (s!=null && s.getItem() == ItemIDs.pants_suit_paintable.item){
 				armorPants=s; break;
 			}
 		}
@@ -201,7 +201,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 			EntityPlayer player = (EntityPlayer)event.entity;
 			ItemStack armor=null;
 			for (ItemStack s : player.inventory.armorInventory){
-				if (s.getItem() == ItemIDs.boots_suit_paintable.item){
+				if (s!=null && s.getItem() == ItemIDs.boots_suit_paintable.item){
 					armor=s; break;
 				}
 			}
@@ -228,7 +228,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 			EntityPlayer player = (EntityPlayer)event.entity;
 			ItemStack armor=null;
 			for (ItemStack s : player.inventory.armorInventory){
-				if (s.getItem() == ItemIDs.boots_suit_paintable.item){
+				if (s!=null && s.getItem() == ItemIDs.boots_suit_paintable.item){
 					armor=s; break;
 				}
 			}

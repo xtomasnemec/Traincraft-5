@@ -111,8 +111,6 @@ public class ParticleFX {
 
     public static int[] parseData(String s, Class host){
         if (CommonUtil.stringContains(s,"smoke")) {
-            DebugUtil.println(s.replace(" ", "."),
-                    s.substring(s.indexOf("smoke")+6).replace(" ", "."));
             return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("smoke")+6).substring(0,s.indexOf(" ")+1), host), 0};
         } else if (CommonUtil.stringContains(s,"steam")) {
             return new int[]{CommonUtil.parseInt(s.substring(s.indexOf("steam")+6).substring(0,s.indexOf(" ")+1), host), 1};

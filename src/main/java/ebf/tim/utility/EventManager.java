@@ -21,6 +21,8 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import org.lwjgl.input.Keyboard;
@@ -354,6 +356,30 @@ public class EventManager {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onPreRenderEvent(RenderLivingEvent.Pre event){
+        if (event.entity.ridingEntity instanceof EntitySeat) {
+            GenericRailTransport t;
+            GL11.glPushMatrix();
+            t = (GenericRailTransport) event.entity.worldObj.getEntityByID(((EntitySeat) event.entity.ridingEntity).parentId);
+            GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
+            if (event.entity.ridingEntity.getLookVec() != null) {
+                GL11.glRotated(event.entity.ridingEntity.getLookVec().xCoord, 0, 1, 0);
+                GL11.glRotated(event.entity.ridingEntity.getLookVec().yCoord, 0, 0, 1);
+                GL11.glRotated(event.entity.ridingEntity.getLookVec().zCoord, 1, 0, 0);
+            }
+        }
+    }
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onPostRenderEvent(RenderLivingEvent.Post event){
+        if (event.entity.ridingEntity instanceof EntitySeat) {
+            GL11.glPopMatrix();
+        }
     }
 
     /**
