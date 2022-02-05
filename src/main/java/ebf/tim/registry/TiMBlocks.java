@@ -27,7 +27,7 @@ public class TiMBlocks {
         trainTable.setTextureName(TrainsInMotion.MODID +":textures/blocks/train_table.png");
         railTable.setTextureName(TrainsInMotion.MODID +":textures/blocks/rail_table.png");
 
-        registerBlock(railBlock, null, TrainsInMotion.MODID,"block.timrail", null, TrainsInMotion.proxy.getTESR());
+        registerBlock(railBlock, null, TrainsInMotion.MODID,"block.timrail", null, TrainsInMotion.proxy.getRailTESR());
 
         //register the train crafting table
         GameRegistry.addShapedRecipe(new ResourceLocation(TrainsInMotion.MODID,"traintable"), new ResourceLocation(TrainsInMotion.MODID, "crafters"),

@@ -158,7 +158,7 @@ public class CommonProxy implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {return null;}
 
 
-    public Object getTESR(){return null;}
+    public Object getRailTESR(){return null;}
     public Object getEntityRender(){return null;}
     public Object getNullRender(){return null;}
 

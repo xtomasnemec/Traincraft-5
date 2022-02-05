@@ -84,7 +84,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
@@ -510,6 +510,5 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     protected String getTextureName() {
         Blocks.flowing_water.getTextureName();
     }*/
-
 
 }

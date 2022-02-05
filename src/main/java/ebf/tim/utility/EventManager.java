@@ -20,6 +20,7 @@ import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -364,6 +365,33 @@ public class EventManager {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
+
+
+
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onPreRenderEvent(RenderLivingEvent.Pre event){
+        if (event.getEntity().getRidingEntity() instanceof EntitySeat) {
+            GenericRailTransport t;
+            GL11.glPushMatrix();
+            t = (GenericRailTransport) event.getEntity().world.getEntityByID(((EntitySeat) event.getEntity().getRidingEntity()).parentId);
+            GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
+            if (event.getEntity().getRidingEntity().getLookVec() != null) {
+                GL11.glRotated(event.getEntity().getRidingEntity().getLookVec().x, 0, 1, 0);
+                GL11.glRotated(event.getEntity().getRidingEntity().getLookVec().y, 0, 0, 1);
+                GL11.glRotated(event.getEntity().getRidingEntity().getLookVec().z, 1, 0, 0);
+            }
+        }
+    }
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onPostRenderEvent(RenderLivingEvent.Post event){
+        if (event.getEntity().getRidingEntity() instanceof EntitySeat) {
+            GL11.glPopMatrix();
+        }
+    }
+
 
     /**
      * <h2>join world</h2>

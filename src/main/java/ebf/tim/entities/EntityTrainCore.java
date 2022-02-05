@@ -195,7 +195,6 @@ public class EntityTrainCore extends GenericRailTransport {
                 //add back the speed from last tick
                 cachedVectors[2].xCoord+=cachedVectors[2].yCoord;
 
-                DebugUtil.println(cachedVectors[2].xCoord);
                 //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
                 if(CommonProxy.realSpeed){
                     //for real speed add a buff to max speed of 1.25%
