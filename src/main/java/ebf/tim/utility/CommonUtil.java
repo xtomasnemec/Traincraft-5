@@ -10,6 +10,7 @@ import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -173,12 +174,12 @@ public class CommonUtil {
     }
 
     public static String translate(String text){
-        if (translateToLocal(text).equals(text) && !loggedLangChecks.contains(text)){
+        if (I18n.format(text).equals(text) && !loggedLangChecks.contains(text)){
             DebugUtil.println("Missing lang entry for: ",text,Thread.currentThread().getStackTrace()[2]);
             loggedLangChecks.add(text);
             return text;
         } else {
-            return translateToLocal(text);
+            return I18n.format(text);
         }
     }
 

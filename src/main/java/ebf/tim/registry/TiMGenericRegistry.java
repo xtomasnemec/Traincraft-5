@@ -167,7 +167,7 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()))) {
+        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()+".name"))) {
             DebugUtil.println("Item missing lang entry: " + itm.getTranslationKey());
         }
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {

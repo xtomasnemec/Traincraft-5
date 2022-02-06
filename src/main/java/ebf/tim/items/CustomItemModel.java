@@ -72,7 +72,6 @@ public class CustomItemModel implements ICustomModelLoader {
 
     @Override
     public boolean accepts(ResourceLocation modelLocation) {
-        DebugUtil.println(modelLocation.getNamespace(),modelLocation.getPath());
         return renderItems.contains(modelLocation);
     }
 

@@ -1,9 +1,9 @@
-<!-- ## This is a comment, do no remove or modify these! ## -->http://jabelarminecraft.blogspot.com/p/minecraft-modding-localization.html
-<!-- ## Only replace the words on the right side of "=" ## -->
+## This is a comment, do no remove or modify these! ##http://jabelarminecraft.blogspot.com/p/minecraft-modding-localization.html
+## Only replace the words on the right side of "=" ##
 
-<!-- ## Credit to Eternal Blue Flame ## -->
+## Credit to Eternal Blue Flame ##
 
-<!-- ## GUI ## -->
+## GUI ##
 gui.waterboiler=Water Boiler
 gui.creativemode=Creative Mode is 
 gui.brake.false=Brakes Are Disabled.
@@ -89,7 +89,7 @@ menu.rails=Rails:
 item.TiM=Trains in Motion
 item.tab.timsquared.name=Tim Squared
 
-<!-- ## Countries ## -->
+## Countries ##
 menu.item.us=USA
 menu.item.germany=Germany
 menu.item.japan=Japan
@@ -127,7 +127,7 @@ menu.item.sweden=Sweden
 
 
 
-<!-- ## Items ## -->
+## Items ##
 item.oil.bucket.name=Oil bucket
 item.diesel.bucket.name=Diesel bucket
 item.adminbook.name=Admin Book
@@ -146,7 +146,7 @@ item.ingot.copper.name=Copper Ingot
 item.dust.plastic.name=Plastic Dust
 item.dust.coal.name=Coal Dust
 
-<!-- ## Crafting Items ## -->
+## Crafting Items ##
 item.cabin.wood.name=Wood Cabin
 item.cabin.aluminium.name=Aluminium Cabin
 item.cabin.copper.name=Copper Cabin
@@ -219,7 +219,7 @@ item.conjugating.valve.gear.name=Conjugating Valve Gear
 item.firebox.iron.name=Iron Firebox
 item.firebox.steel.name=Steel Firebox
 
-<!-- ## Blocks ## -->
+## Blocks ##
 fluid.oil=Oil
 tile.block.traintable.name=Train Crafting Table
 Track Crafting Table.name=Track Crafting Table
@@ -238,7 +238,7 @@ tile.blockSteel.name=Steel Block
 tile.blockCopper.name=Copper Block
 tile.blockAluminum.name=Aluminum Block
 
-<!-- ## Item Lore ## -->
+## Item Lore ##
 menu.item.stake.lore1=Use on a transport to toggle linking.
 menu.item.stake.lore2=Use while sneaking to unlink.
 menu.item.ticket.lore1=This ticket is for:
@@ -246,7 +246,7 @@ menu.item.key.lore1=This key unlocks:
 
 
 
-<!-- ## Chat messages ## -->
+## Chat messages ##
 message.linking=Couplers are now open.
 message.notlinking=Couplers are now closed.
 message.unlinked=Links removed.
