@@ -49,7 +49,6 @@ public class CommonUtil {
     /**converts a radians double to degrees*/
     public static final double degreesD = 180.0d / Math.PI;
     public static final float degreesF = (float) (180.0d / Math.PI);
-    private static List<String> loggedLangChecks = new ArrayList<>();
     public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing>create("facing", EnumFacing.class);
 
 
@@ -174,13 +173,10 @@ public class CommonUtil {
     }
 
     public static String translate(String text){
-        if (I18n.format(text).equals(text) && !loggedLangChecks.contains(text)){
-            DebugUtil.println("Missing lang entry for: ",text,Thread.currentThread().getStackTrace()[2]);
-            loggedLangChecks.add(text);
-            return text;
-        } else {
-            return I18n.format(text);
+        if(TrainsInMotion.proxy.isClient()){
+            return ClientUtil.translate(text);
         }
+        return text;
     }
 
     public static String[]multiTranslate(String[] s){
