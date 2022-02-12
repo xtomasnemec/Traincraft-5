@@ -50,12 +50,12 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         }
         //player toolbar
         for (int iT = 0; iT < 9; iT++) {
-            addSlots(new ItemStackSlot(iinventory, iT).setCoords( 113 + (iT * 18), 142));
+            addSlots(new ItemStackSlot(iinventory, iT).setCoords( 113 + (iT * 18), 142).setPlayerSlot());
         }
         //player inventory
         for (int ic = 0; ic < 9; ic++) {
             for (int ir = 0; ir < 3; ir++) {
-                addSlots(new ItemStackSlot(iinventory, ((ir * 9) + ic) + 9, 113 + (ic * 18), 84 + (ir * 18)));
+                addSlots(new ItemStackSlot(iinventory, ((ir * 9) + ic) + 9, 113 + (ic * 18), 84 + (ir * 18)).setPlayerSlot());
             }
         }
     }
@@ -67,25 +67,25 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         if (block.assemblyTableTier > 0 && CommonProxy.isTraincraft) { //it is an assembly table, move slots lower. (but only for the traincraft asm tables)
             //player hotbar
             for (int iT = 0; iT < 9; iT++) {
-                addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 232));
+                addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 232).setPlayerSlot());
             }
 
             //player inventory
             for (int ir = 0; ir < 3; ir++) {
                 for (int ic = 0; ic < 9; ic++) {
-                    addSlots(new ItemStackSlot(iinventory, ((ir * 9) + ic) + 9, 8 + (ic * 18), 174 + (ir * 18)));
+                    addSlots(new ItemStackSlot(iinventory, ((ir * 9) + ic) + 9, 8 + (ic * 18), 174 + (ir * 18)).setPlayerSlot());
                 }
             }
         } else {
             //player toolbar
             for (int iT = 0; iT < 9; iT++) {
-                addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 142));
+                addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 142).setPlayerSlot());
             }
 
             //player inventory
             for (int ir = 0; ir < 3; ir++) {
                 for (int ic = 0; ic < 9; ic++) {
-                    addSlots(new ItemStackSlot(iinventory, ((ir * 9) + ic) + 9, 8 + (ic * 18), 84 + (ir * 18)));
+                    addSlots(new ItemStackSlot(iinventory, ((ir * 9) + ic) + 9, 8 + (ic * 18), 84 + (ir * 18)).setPlayerSlot());
                 }
             }
         }
@@ -325,13 +325,19 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     }
 
                 } else if(!slot.isCraftingOutput()){//if the selected slot is in the tileentity but not an output
-                    for (int k = 0; k < 2; k++) { //loop twice. once to combine, the next to put in any available slots
+                    for (int k = 0; k < 4; k++) { //loop twice. once to combine, the next to put in any available slots
                         for (int l = 0; l < this.inventory.size(); l++) {
                             Slot slotToAddInto = getSlot(l);
 
                             if (slotToAddInto instanceof ItemStackSlot && ((ItemStackSlot) slotToAddInto).isCraftingOutput()) continue;
 
-                            if (k == 0) {
+                            //if the slots are in the same inventory during the first two loops, skip the slot
+                            //for the last two loops we let it merge into the same inventory because there's nowhere else to go.
+                            if(k<2 && slotToAddInto instanceof ItemStackSlot
+                                    && slot.isPlayerSlot()==((ItemStackSlot)slotToAddInto).isPlayerSlot()){continue;}
+
+                            //during the first and third loop, see if there's an existing stack we can merge with.
+                            if (k == 0 || k==2) {
                                 if (slotToAddInto != null
                                         && slotToAddInto.getHasStack()
                                         && canAddItemToSlot(slotToAddInto, slot.getStack())
@@ -345,6 +351,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                     if (amountToAdd == slot.getStackSize()) {
                                         slot.setStack(ItemStack.EMPTY);
                                         slotToAddInto.getStack().setCount(slotToAddInto.getStack().getCount() + amountToAdd);
+                                        k=3;
                                     } else {
                                         slotToAddInto.getStack().setCount(slotToAddInto.getStack().getCount() + amountToAdd);
                                         slot.getStack().setCount(slot.getStack().getCount() - amountToAdd);

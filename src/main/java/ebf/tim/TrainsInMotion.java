@@ -131,7 +131,7 @@ public class TrainsInMotion {
         MinecraftForge.EVENT_BUS.register(EventManagerServer.class);
 
         if(event.getSide().isClient()){
-            MinecraftForge.EVENT_BUS.register(EventManager.class);
+            MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
         }
     }
 
