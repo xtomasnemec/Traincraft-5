@@ -23,7 +23,7 @@ public class ItemStackSlot extends Slot {
 
     private ItemStack stack = null, overlay = null;
     private int slotID;
-    private boolean isCraftingOutput = false, isCraftingInput = false;
+    private boolean isCraftingOutput = false, isCraftingInput = false, playerInventory=false;
     private int tierIn = 0; //The tier of assemblytable this slot is in, if applicable. Ignore if not applicable.
 
     public ItemStackSlot(IInventory host, int slot, int tier){
@@ -41,7 +41,18 @@ public class ItemStackSlot extends Slot {
 
     public ItemStackSlot setCraftingOutput(boolean craft){
         isCraftingOutput =craft;
+        if(craft) {
+            playerInventory = false;
+        }
         return this;
+    }
+
+    public ItemStackSlot setPlayerSlot(){
+        playerInventory=true;
+        return this;
+    }
+    public boolean isPlayerSlot(){
+        return playerInventory;
     }
 
     public boolean isCraftingOutput() {

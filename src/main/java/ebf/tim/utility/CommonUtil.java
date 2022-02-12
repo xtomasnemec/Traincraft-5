@@ -145,13 +145,10 @@ public class CommonUtil {
     }
 
     public static String translate(String text){
-        if (StatCollector.translateToLocal(text).equals(text) && !loggedLangChecks.contains(text)){
-            DebugUtil.println("Missing lang entry for: ",text,Thread.currentThread().getStackTrace()[2]);
-            loggedLangChecks.add(text);
-            return text;
-        } else {
-            return StatCollector.translateToLocal(text);
+        if(TrainsInMotion.proxy.isClient()){
+            return ClientUtil.translate(text);
         }
+        return text;
     }
 
     public static String[]multiTranslate(String[] s){
