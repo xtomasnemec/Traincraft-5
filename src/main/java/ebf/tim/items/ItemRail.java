@@ -240,32 +240,32 @@ public class ItemRail extends Item implements ITrackItem {
 
     public static ItemStack setStackData(ItemStack stack, ItemStack ingot, ItemStack ballast, ItemStack ties, ItemStack wires){
         //init stack NBT
-        stack.setTagCompound(new NBTTagCompound());
-        //add a tag for the stack then put the stack in it.
+        NBTTagCompound stackTag = new NBTTagCompound();
+        //make a blank tag, write the item to it, then put it into the stack tag
         if(ingot!=null && ingot.getItem()!=null) {
-            stack.getTagCompound().setTag("rail", new NBTTagCompound());
-            ingot.writeToNBT(stack.getTagCompound().getCompoundTag("rail"));
+            NBTTagCompound r =new NBTTagCompound();
+            ingot.writeToNBT(r);
+            stackTag.setTag("rail", r);
         }
 
         //rinse and repeat
         if(ties!=null && ties.getItem()!=null && !isItemBanned(ties)) {
-            stack.getTagCompound().setTag("ties",new NBTTagCompound());
-            ties.writeToNBT(stack.getTagCompound().getCompoundTag("ties"));
-        } else if(ties!=null && ties.getItem()!=null){
-            return null;
+            NBTTagCompound t =new NBTTagCompound();
+            ties.writeToNBT(t);
+            stackTag.setTag("ties", t);
         }
         if(ballast!=null && ballast.getItem()!=null && !isItemBanned(ballast)) {
-            stack.getTagCompound().setTag("ballast",new NBTTagCompound());
-            ballast.writeToNBT(stack.getTagCompound().getCompoundTag("ballast"));
-        } else if(ballast!=null && ballast.getItem()!=null){
-            return null;
+            NBTTagCompound b =new NBTTagCompound();
+            ballast.writeToNBT(b);
+            stackTag.setTag("ballast", b);
         }
         if(wires!=null && wires.getItem()!=null && !isItemWires(wires)) {
-            stack.getTagCompound().setTag("wires",new NBTTagCompound());
-            wires.writeToNBT(stack.getTagCompound().getCompoundTag("wires"));
-        } else if(wires!=null && wires.getItem()!=null){
-            return null;
+            NBTTagCompound w =new NBTTagCompound();
+            wires.writeToNBT(w);
+            stackTag.setTag("wires", w);
         }
+        //set the stack tag to the actual stack
+        stack.setTagCompound(stackTag);
         return stack;
     }
 
