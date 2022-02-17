@@ -42,6 +42,7 @@ public class RailTileEntity extends TileEntity {
         return meta;
     }
     public void setMeta(int i){
+        if(meta==i){return;}
         meta=i;
         if(world!=null) {
             CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(),meta);

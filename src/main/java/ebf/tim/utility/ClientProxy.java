@@ -264,9 +264,9 @@ public class ClientProxy extends CommonProxy {
     public Object getNullRender(){return nullRender;}
 
 
-    public static final TileEntitySpecialRenderer<RailTileEntity> railSpecialRenderer = new TileEntitySpecialRenderer<RailTileEntity>() {
+    public static final TileEntitySpecialRenderer railSpecialRenderer = new TileEntitySpecialRenderer() {
         @Override
-        public void render(RailTileEntity tileEntity, double x, double y, double z, float p_147500_8_, int destroyStage, float alpha) {
+        public void render(TileEntity tileEntity, double x, double y, double z, float p_147500_8_, int destroyStage, float alpha) {
             GL11.glPushMatrix();
             GL11.glTranslated(x,y, z);
             tileEntity.addInfoToCrashReport(null);

@@ -130,7 +130,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
 
     @Override
     public String getName(){
-        return storageType==0?"trainsinmotion:trackcrafter":"trainsinmotion:traincrafter";
+        return "TileEntityStorage";
     }
 
     /**

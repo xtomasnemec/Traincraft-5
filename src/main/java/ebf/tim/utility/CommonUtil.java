@@ -105,6 +105,9 @@ public class CommonUtil {
 
     public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){
         boolean set =setBlock(w,x,y,z,b);
+        if(!TrainsInMotion.proxy.isClient()){
+            set=w.getBlockState(new BlockPos(x,y,z)).getBlock()==b;
+        }
         if(set) {
             setBlockMeta(w, x, y, z, meta);
         }

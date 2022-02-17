@@ -24,6 +24,7 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Optional;
@@ -121,7 +122,7 @@ public class TiMGenericRegistry {
         if (block instanceof ITileEntityProvider) {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
             if (!redundantTiles.contains(tile.getName())) {
-                GameRegistry.registerTileEntity(tile, new ResourceLocation(MODID,unlocalizedName + "tile"));
+                GameRegistry.registerTileEntity(tile, new ResourceLocation(MODID,unlocalizedName + ".tile"));
                 redundantTiles.add(tile.getName());
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
                     regTileRender(MODID,unlocalizedName,block, tile, model, TESR);
@@ -310,9 +311,9 @@ public class TiMGenericRegistry {
         }
         ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
         ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName+".item"));
-        net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer<TileEntity>) TESR);
+        net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer) TESR);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
-        ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
+        //ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
         ebf.tim.items.CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
 
     }

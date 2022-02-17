@@ -11,6 +11,7 @@ import ebf.tim.utility.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -132,6 +133,7 @@ public class TrainsInMotion {
 
         if(event.getSide().isClient()){
             MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
+            MinecraftForge.EVENT_BUS.register(EventManager.class);
         }
     }
 
