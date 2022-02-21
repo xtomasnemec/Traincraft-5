@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import train.blocks.bench.GuiTrainCraftingBlock;
 import train.blocks.bench.TileTrainWbench;
 import train.blocks.distil.GuiDistil;
@@ -129,8 +130,9 @@ public class ClientProxy extends CommonProxy {
 	}
 	@Override
 	public void registerKeyBindingHandler() {
-		FMLCommonHandler.instance().bus().register(new TCInputHandler());
-	}
+            FMLCommonHandler.instance().bus().register(TCInputHandler.instance);
+            MinecraftForge.EVENT_BUS.register(TCInputHandler.instance);
+    }
 	
 	@Override
 	public void setHook() {
