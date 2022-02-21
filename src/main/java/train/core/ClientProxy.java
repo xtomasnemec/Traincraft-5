@@ -1,5 +1,6 @@
 package train.core;
 
+import ebf.tim.utility.EventManager;
 import javazoom.jl.decoder.JavaLayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -129,7 +130,8 @@ public class ClientProxy extends CommonProxy {
 	}
 	@Override
 	public void registerKeyBindingHandler() {
-		FMLCommonHandler.instance().bus().register(new TCInputHandler());
+		MinecraftForge.EVENT_BUS.register(TCInputHandler.instance);
+		MinecraftForge.EVENT_BUS.register(TCInputHandler.class);
 	}
 	
 	@Override
