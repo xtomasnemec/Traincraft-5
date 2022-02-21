@@ -1,6 +1,7 @@
 package train.common.tile;
 
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -59,5 +60,10 @@ public class TileTCRailGag extends TileEntity {
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
 		this.readFromNBT(pkt.func_148857_g());
 		super.onDataPacket(net, pkt);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public double getMaxRenderDistanceSquared() {
+		return 24567.0D;
 	}
 }
