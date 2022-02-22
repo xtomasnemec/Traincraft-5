@@ -168,13 +168,14 @@ public class ItemRail extends Item implements ITrackItem {
         if (!(world.isSideSolid(new BlockPos(x, y, z),EnumFacing.UP))){
             return false;
         }
+        y++;
 
-        if(block.isReplaceable(world, new BlockPos(x, y+1, z)) || block instanceof BlockFlower || block == Blocks.DOUBLE_PLANT || block instanceof BlockMushroom){
-            block.dropBlockAsItem(world, new BlockPos(x, y+1, z), world.getBlockState(new BlockPos(x, y+1, z)), 0);
+        if(block instanceof BlockFlower || block == Blocks.DOUBLE_PLANT || block instanceof BlockMushroom){
+            block.dropBlockAsItem(world, new BlockPos(x, y, z), world.getBlockState(new BlockPos(x, y+1, z)), 0);
         }
 
 
-        if (false && world.mayPlace(getPlacedBlock(),new BlockPos(x,y,z), false, EnumFacing.UP, player)) {
+        if (world.mayPlace(getPlacedBlock(),new BlockPos(x,y,z), false, EnumFacing.UP, player)) {
             getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x, y, z), block.getDefaultState(), player,stack);
 
             if (CommonUtil.setBlock(world,x, y, z, getPlacedBlock(), 0)) {

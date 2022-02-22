@@ -210,6 +210,9 @@ public class TrainsInMotion {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
+        if(event.getSide().isClient()) {
+            fexcraft.tmt.slim.TextureManager.collectIngotColors();
+        }
         TiMGenericRegistry.endRegistration();
     }
 
