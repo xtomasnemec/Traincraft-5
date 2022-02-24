@@ -20,10 +20,14 @@ import javax.imageio.ImageIO;
 
 import ebf.tim.utility.ClientUtil;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -207,8 +211,15 @@ public class TextureManager {
         //if (RenderBlocks.getInstance().hasOverrideBlockTexture()) {
         //    return (TextureAtlasSprite)RenderBlocks.getInstance().overrideBlockTexture;
         //}
-        IBlockState state = Block.getBlockFromItem(b.getItem()).getDefaultState();
-        return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getQuads(state, EnumFacing.byIndex(side),0l).get(0).getSprite();
+        IBlockState state = Block.getBlockFromItem(b.getItem()).getStateForPlacement(Minecraft.getMinecraft().world,
+                new BlockPos(Minecraft.getMinecraft().player.getPosition()),EnumFacing.UP,0,0,0,
+                b.getMetadata(),Minecraft.getMinecraft().player, EnumHand.MAIN_HAND);
+        List<BakedQuad> pothead = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getQuads(state, EnumFacing.byIndex(side),0l);
+        if(pothead.isEmpty()){
+            return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state).getParticleTexture();
+        } else {
+            return pothead.get(0).getSprite();
+        }
 
         /* backup plan
         TextureMap texturemap = Minecraft.getMinecraft().getTextureMapBlocks();
