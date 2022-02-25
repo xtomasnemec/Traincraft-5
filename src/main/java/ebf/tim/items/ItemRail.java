@@ -7,6 +7,7 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
 import mods.railcraft.api.items.ITrackItem;
 import net.minecraft.block.*;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -224,8 +225,8 @@ public class ItemRail extends Item implements ITrackItem {
      * We can cover the key and ticket description here, to simplify other classes.
      */
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List stringList, boolean p_77624_4_) {
-
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> stringList, ITooltipFlag flagIn) {
 
         if(stack.hasTagCompound()){
             if(stack.getTagCompound().hasKey("rail")) {
@@ -235,18 +236,18 @@ public class ItemRail extends Item implements ITrackItem {
             }
 
             //todo: for some reason i ill never understand, the lang file returns ties and ballast backwards.
-            if(stack.getTagCompound().hasKey("ballast")) {
-                stringList.add(CommonUtil.translate("menu.ballast")+ " " + new ItemStack(stack.getTagCompound().getCompoundTag("ballast")).getDisplayName());
+            if(stack.getTagCompound().hasKey("ballast") && new ItemStack(stack.getTagCompound().getCompoundTag("ballast")).getItem()!=Items.AIR) {
+                stringList.add(CommonUtil.translate("menu.ballast") + " " + new ItemStack(stack.getTagCompound().getCompoundTag("ballast")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.noballast"));
             }
-            if(stack.getTagCompound().hasKey("ties")) {
+            if(stack.getTagCompound().hasKey("ties") && new ItemStack(stack.getTagCompound().getCompoundTag("ties")).getItem()!=Items.AIR) {
                 stringList.add(CommonUtil.translate("menu.ties")+ " " + new ItemStack(stack.getTagCompound().getCompoundTag("ties")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.noties"));
             }
 
-            if(stack.getTagCompound().hasKey("wires")) {
+            if(stack.getTagCompound().hasKey("wires") && new ItemStack(stack.getTagCompound().getCompoundTag("wires")).getItem()!=Items.AIR) {
                 stringList.add(CommonUtil.translate("menu.wires") + " " +new ItemStack(stack.getTagCompound().getCompoundTag("wires")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.nowires"));
@@ -299,7 +300,7 @@ public class ItemRail extends Item implements ITrackItem {
     public void getSubItems(CreativeTabs p_150895_2_, NonNullList<ItemStack> tabItems) {
         for(Item ingot : new Item[]{Items.IRON_INGOT, Items.GOLD_INGOT}){
             for(Block b : new Block[]{null, Blocks.GRAVEL, Blocks.STONE}){
-                for(Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.DOUBLE_STONE_SLAB, null})
+                for(Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.STONE, null})
                 tabItems.add(setStackData(new ItemStack(TiMItems.railItem),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));
             }
         }

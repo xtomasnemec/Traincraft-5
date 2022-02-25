@@ -42,7 +42,10 @@ public class RailTileEntity extends TileEntity {
         return meta;
     }
     public void setMeta(int i){
-        if(meta==i){return;}
+        if(meta==i){
+            markDirty();
+            return;
+        }
         meta=i;
         if(world!=null) {
             CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(),meta);
@@ -121,10 +124,11 @@ public class RailTileEntity extends TileEntity {
 
 
     public void markDirty() {
-        super.markDirty();
+        //super.markDirty();
         if (this.world != null) {
-            world.markChunkDirty(pos, world.getTileEntity(pos));
+            world.markChunkDirty(pos, this);
             this.world.notifyNeighborsOfStateChange(this.pos, TiMBlocks.railBlock,true);
+
             if(world.isRemote && railGLID!=null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
                 railGLID = null;

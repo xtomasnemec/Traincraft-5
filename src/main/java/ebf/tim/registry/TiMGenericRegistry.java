@@ -9,6 +9,7 @@ import ebf.tim.blocks.OreGen;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
+import ebf.tim.items.ItemRail;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
@@ -171,12 +172,8 @@ public class TiMGenericRegistry {
         if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()+".name"))) {
             DebugUtil.println("Item missing lang entry: " + itm.getTranslationKey());
         }
-        if (TrainsInMotion.proxy.isClient() && itemRender != null) {
+        if (TrainsInMotion.proxy.isClient() && (itemRender != null || itm instanceof ItemTransport || itm instanceof ItemRail)) {
             //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
-            ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,unlocalizedName),""));
-
-        } else if (TrainsInMotion.proxy.isClient() && itm instanceof ItemTransport) {
             ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
             net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,unlocalizedName),""));
 
