@@ -41,6 +41,10 @@ public class RailTileEntity extends TileEntity {
         return meta;
     }
     public void setMeta(int i){
+        if(meta==i){
+            markDirty();
+            return;
+        }
         meta=i;
         if(worldObj!=null) {
             worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, 2);
