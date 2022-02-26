@@ -460,6 +460,7 @@ public enum ItemIDs {
 	minecart73centerbeam("ItemRollingStock", "73centerbeam", 4),
 	minecartGSI60FootBulkhead("ItemRollingStock", "gsi_bulky", 4),
 	minecartGSC60FootFlatcar("ItemRollingStock", "gsc_flatass", 3),
+	minecartthrall63centerbeam("ItemRollingStock", "63centerbeam", 3),
 
 	minecartPS140("ItemRollingStock", "ps140", 3),
 	minecartPS150("ItemRollingStock", "ps150", 4),

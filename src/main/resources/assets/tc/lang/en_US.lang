@@ -117,6 +117,8 @@ item.null.name=Paintbrush Thing
 item.tc:adminBook.name=Traincraft Admin Book
 item.tc:wirelessTransmitter.name= MTC Wireless Transmitter
 item.tc:atoCard.name= ATO Card
+
+
 item.tc:minecartWork.name=Work Train
 item.tc:minecartTender.name=Small Tender
 item.tc:minecartChest.name=Freight Car
@@ -465,6 +467,7 @@ item.tc:minecartSDP40.name=EMD SDP40
 item.tc:minecart60centerbeam.name=60' Center Beam
 item.tc:minecart66centerbeam.name=66' Center Beam
 item.tc:minecart73centerbeam.name=73' Center Beam
+item.tc:minecartthrall63centerbeam.name=Thrall 63' Centerbeam
 item.tc:minecartPS140.name=Pullman Standard 40' Boxcar
 item.tc:minecartPS150.name=Pullman Standard 50' Boxcar
 item.tc:minecartPS160.name=Pullman Standard 60' Boxcar
@@ -951,6 +954,7 @@ entity.tc.SD40T-2.name=EMD SD40T-2
 entity.tc.60centerbeam.name=60' Center Beam
 entity.tc.66centerbeam.name=66' Center Beam
 entity.tc.73centerbeam.name=73' Center Beam
+entity.tc.63centerbeam.name=Thrall 63' Centerbeam
 entity.tc.PS140.name=Pullman Standard 40' Boxcar
 entity.tc.PS150.name=Pullman Standard 50' Boxcar
 entity.tc.PS160.name=Pullman Standard 60' Boxcar
