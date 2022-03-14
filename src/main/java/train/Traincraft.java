@@ -35,7 +35,6 @@ import train.core.handlers.VillagerTraincraftHandler;
 import train.core.network.PacketKeyPress;
 import train.core.network.PacketLantern;
 import train.core.network.PacketSetJukeboxStreamingUrl;
-import train.core.plugins.AssemblyTableNEIIntegration;
 import train.core.plugins.PluginRailcraft;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
 import train.entity.zeppelin.EntityZeppelinTwoBalloons;
@@ -267,8 +266,8 @@ public class Traincraft {
 		}
 		LiquidManager.getLiquidsFromDictionnary();
 
-		if (Loader.isModLoaded("NotEnoughItems")) {
-			AssemblyTableNEIIntegration.setupNEIIntegration();
+		if (evt.getSide().isClient() && Loader.isModLoaded("NotEnoughItems")) {
+			train.core.plugins.AssemblyTableNEIIntegration.setupNEIIntegration();
 		}
 
 		tcLog.info("Finished PostInitialization");
