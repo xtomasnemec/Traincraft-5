@@ -10,6 +10,7 @@ import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -48,7 +49,6 @@ public class CommonUtil {
     /**converts a radians double to degrees*/
     public static final double degreesD = 180.0d / Math.PI;
     public static final float degreesF = (float) (180.0d / Math.PI);
-    private static List<String> loggedLangChecks = new ArrayList<>();
     public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing>create("facing", EnumFacing.class);
 
 
@@ -105,6 +105,9 @@ public class CommonUtil {
 
     public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){
         boolean set =setBlock(w,x,y,z,b);
+        if(!TrainsInMotion.proxy.isClient()){
+            set=w.getBlockState(new BlockPos(x,y,z)).getBlock()==b;
+        }
         if(set) {
             setBlockMeta(w, x, y, z, meta);
         }
@@ -147,7 +150,7 @@ public class CommonUtil {
 
     public static int parseInt(String str, Class host) throws NumberFormatException{
         if (str == null || str.length()==0) {
-            throw new NumberFormatException("the string: \"" + str + "\" was not a number, please check " + host.getName());
+            return 0;
         }
 
         int result = 0;
@@ -165,19 +168,18 @@ public class CommonUtil {
                 case '7':{result = (result * 10)+7;break;}
                 case '8':{result = (result * 10)+8;break;}
                 case '9':{result = (result * 10)+9;break;}
+                case ' ':{break;}
+                default:{throw new NumberFormatException("the string: \"" + str + "\" was not a number, please check " + host.getName());}
             }
         }
         return negative?-result:result;
     }
 
     public static String translate(String text){
-        if (translateToLocal(text).equals(text) && !loggedLangChecks.contains(text)){
-            DebugUtil.println("Missing lang entry for: ",text,Thread.currentThread().getStackTrace()[2]);
-            loggedLangChecks.add(text);
-            return text;
-        } else {
-            return translateToLocal(text);
+        if(TrainsInMotion.proxy.isClient()){
+            return ClientUtil.translate(text);
         }
+        return text;
     }
 
     public static String[]multiTranslate(String[] s){

@@ -9,14 +9,15 @@ import ebf.tim.blocks.OreGen;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
+import ebf.tim.items.ItemRail;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.utility.*;
+import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -24,10 +25,13 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
@@ -76,11 +80,7 @@ public class TiMGenericRegistry {
      * @return
      */
     public static Block registerBlock(Block block, CreativeTabs tab, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object render) {
-        if (render instanceof fexcraft.tmt.slim.ModelBase) {
-            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getTESR(), (fexcraft.tmt.slim.ModelBase) render);
-        } else {
             return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, render, null);
-        }
     }
 
     public static Block registerBlock(Block block, CreativeTabs tab, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object render) {
@@ -120,32 +120,13 @@ public class TiMGenericRegistry {
         if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getTranslationKey().equals(CommonUtil.translate(block.getTranslationKey()))) {
             DebugUtil.println("Block missing lang entry: " + block.getTranslationKey() + " : " + unlocalizedName);
         }
-        if (block instanceof BlockDynamic) {
-            if (model != null) {
-                ((BlockDynamic) block).setModel(model);
-            } else if (TESR != null) {
-                ((BlockDynamic) block).setTESR(TESR);
-            }
-        }
         if (block instanceof ITileEntityProvider) {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
             if (!redundantTiles.contains(tile.getName())) {
-                GameRegistry.registerTileEntity(tile, new ResourceLocation(MODID,unlocalizedName + "tile"));
+                GameRegistry.registerTileEntity(tile, new ResourceLocation(MODID,unlocalizedName + ".tile"));
                 redundantTiles.add(tile.getName());
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
-
-                    ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
-                    ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName+".item"));
-                    net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TESR);
-                    //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
-                    ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
-                    ebf.tim.items.CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
-                } else if (TrainsInMotion.proxy.isClient()) {
-                    net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (TileEntitySpecialRenderer) TrainsInMotion.proxy.getTESR());
-                    //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
-                    ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
-                    ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName+".item"));
-                    ebf.tim.items.CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
+                    regTileRender(MODID,unlocalizedName,block, tile, model, TESR);
                 }
             } else {
                 DebugUtil.println("redundant tile name found", unlocalizedName + "tile");
@@ -188,15 +169,11 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()))) {
+        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()+".name"))) {
             DebugUtil.println("Item missing lang entry: " + itm.getTranslationKey());
         }
-        if (TrainsInMotion.proxy.isClient() && itemRender != null) {
+        if (TrainsInMotion.proxy.isClient() && (itemRender != null || itm instanceof ItemTransport || itm instanceof ItemRail)) {
             //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
-            ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,unlocalizedName),""));
-
-        } else if (TrainsInMotion.proxy.isClient() && itm instanceof ItemTransport) {
             ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
             net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,unlocalizedName),""));
 
@@ -292,29 +269,50 @@ public class TiMGenericRegistry {
                     tempReipes.put(MODID, new recipePreReg(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
             }
             registry.registerSkins();
-            if (registry.getRecipe() != null) {
-               // RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getTier());
-            }
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {
-                if (entityRender == null) {
-                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), ebf.tim.render.RenderWagon.INSTANCE);
-                    if (ClientProxy.preRenderModels) {
-                        //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) TrainsInMotion.proxy.getEntityRender()).ren(registry, 0, 0, 0, 0, 0);
-                    }
-                } else {
-                    net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render<GenericRailTransport>) entityRender);
-                    if (ClientProxy.preRenderModels) {
-                        //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) entityRender).doRender(registry, 0, 0, 0, 0, 0);
-                    }
-                }
-                if (ClientProxy.preRenderModels && ClientProxy.hdTransportItems) {
-                    ebf.tim.items.CustomItemModel.instance.renderItemModel(registry.getCartItem(), net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.GUI,null);
-                }
+                regEntityRender(registry,entityRender);
             }
             usedNames.add(registry.transportName());
             registryPosition++;
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void regEntityRender(GenericRailTransport registry, Object entityRender){
+        if(entityRender==null){
+            net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), ebf.tim.render.RenderWagon.INSTANCE);
+            if (ClientProxy.preRenderModels) {
+                //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) TrainsInMotion.proxy.getEntityRender()).ren(registry, 0, 0, 0, 0, 0);
+            }
+        } else {
+              net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), (net.minecraft.client.renderer.entity.Render<GenericRailTransport>) entityRender);
+            if (ClientProxy.preRenderModels) {
+                //((net.minecraftforge.fml.client.registry.IRenderFactory<GenericRailTransport>) entityRender).doRender(registry, 0, 0, 0, 0, 0);
+            }
+        }
+        if (ClientProxy.preRenderModels && ClientProxy.hdTransportItems) {
+            ebf.tim.items.CustomItemModel.instance.renderItemModel(registry.getCartItem(), net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.GUI,null);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void regTileRender(String MODID, String unlocalizedName, Block block, Class<? extends TileEntity> tile, ModelBase model, Object TESR){
+
+        if (block instanceof BlockDynamic) {
+            if (model != null) {
+                ((BlockDynamic) block).setModel(model);
+            } else if (TESR != null) {
+                ((BlockDynamic) block).setTESR(TESR);
+            }
+        }
+        ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
+        ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName+".item"));
+        net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(tile, (net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer) TESR);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(block), CustomItemModel.instance);
+        //ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
+        ebf.tim.items.CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
+
     }
 
     /**

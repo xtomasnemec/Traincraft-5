@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
@@ -33,6 +35,8 @@ public class ClientUtil {
 
     //steals the texture atlas of items to re-bind when we are done rendering inventory stuff
     public static final ResourceLocation TEXTURE_MAP_ICONS = new ResourceLocation("textures/map/map_icons.png");
+
+    private static List<String> loggedLangChecks = new ArrayList<>();
 
     private static Minecraft getMC(){return Minecraft.getMinecraft();}
 
@@ -261,6 +265,18 @@ public class ClientUtil {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+    public static String translate(String text){
+        if (I18n.format(text).equals(text)){
+            if(!loggedLangChecks.contains(text)) {
+                DebugUtil.println("Missing lang entry for: ", text, Thread.currentThread().getStackTrace()[2]);
+                loggedLangChecks.add(text);
+            }
+            return text;
+        } else {
+            return I18n.format(text);
+        }
     }
 
 }

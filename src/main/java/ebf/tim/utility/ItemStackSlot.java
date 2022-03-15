@@ -17,13 +17,12 @@ import java.util.List;
 
 /**
  * @author Eternal Blue Flame
- * TODO: add support for tile entities post 0.2.7.
  */
 public class ItemStackSlot extends Slot {
 
     private ItemStack stack = ItemStack.EMPTY, overlay = null;
     private int slotID;
-    private boolean isCraftingOutput = false, isCraftingInput = false;
+    private boolean isCraftingOutput = false, isCraftingInput = false, playerInventory=false;
     private int tierIn = 0; //The tier of assemblytable this slot is in, if applicable. Ignore if not applicable.
 
     public ItemStackSlot(IInventory host, int slot, int tier){
@@ -41,7 +40,18 @@ public class ItemStackSlot extends Slot {
 
     public ItemStackSlot setCraftingOutput(boolean craft){
         isCraftingOutput =craft;
+        if(craft) {
+            playerInventory = false;
+        }
         return this;
+    }
+
+    public ItemStackSlot setPlayerSlot(){
+        playerInventory=true;
+        return this;
+    }
+    public boolean isPlayerSlot(){
+        return playerInventory;
     }
 
     public boolean isCraftingOutput() {
@@ -100,16 +110,16 @@ public class ItemStackSlot extends Slot {
     }
 
     public Item getItem(){
-        return getStack()!=null?getStack().getItem():null;
+        return getStack()!=null?getStack().getItem():ItemStack.EMPTY.getItem();
     }
 
 
     public NBTTagCompound writeToNBT(){
-        return getStack()!=null?getStack().writeToNBT(new NBTTagCompound()):null;
+        return getStack()!=ItemStack.EMPTY?getStack().writeToNBT(new NBTTagCompound()):null;
     }
 
     public int getStackSize(){
-        return getStack()!=null?getStack().getCount():0;
+        return getStack()!=ItemStack.EMPTY?getStack().getCount():0;
     }
 
 
@@ -158,15 +168,15 @@ public class ItemStackSlot extends Slot {
                 if(!setSlotContents(itemStack.getStack(),hostInventory)){
                     return itemStack.getStack();
                 } else {
-                    itemStack.setSlotContents(null, hostInventory);
-                    return null;
+                    itemStack.setSlotContents(ItemStack.EMPTY, hostInventory);
+                    return ItemStack.EMPTY;
                 }
             } else {
                 if (contentEquals(itemStack.getStack()) && getStack().getCount() < getStack().getMaxStackSize()) {
                     if(itemStack.getStackSize()+getStackSize()<=getStack().getMaxStackSize()){
                         itemStack.onCrafting(storageType,hostInventory,itemStack.getStackSize());
                         setSlotStackSize(getStack().getCount()+itemStack.getStackSize());
-                        return null;
+                        return ItemStack.EMPTY;
                     } else {
                         int difference=getStack().getMaxStackSize()-getStackSize();
                         itemStack.onCrafting(storageType,hostInventory,difference);
@@ -184,6 +194,9 @@ public class ItemStackSlot extends Slot {
     public boolean contentEquals(ItemStack other){
         if(getStack()==null || other==null){
             return getStack()==null&& other==null;
+        }
+        if(getStack()==ItemStack.EMPTY || other==ItemStack.EMPTY){
+            return getStack()==ItemStack.EMPTY&& other==ItemStack.EMPTY;
         }
         return other.getItem()== getStack().getItem() && other.getTagCompound()== getStack().getTagCompound();
     }
@@ -576,7 +589,7 @@ public class ItemStackSlot extends Slot {
      */
     @Override
     public boolean isItemValid(ItemStack p_75214_1_) {
-        if(p_75214_1_==null || p_75214_1_.getItem()==null){return true;}
+        if(p_75214_1_==null || p_75214_1_.getItem()==null || p_75214_1_==ItemStack.EMPTY){return true;}
         return inventory.isItemValidForSlot(getSlotID(), p_75214_1_);
     }
 

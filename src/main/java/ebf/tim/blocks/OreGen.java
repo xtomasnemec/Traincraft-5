@@ -1,6 +1,7 @@
 package ebf.tim.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -68,26 +69,38 @@ public class OreGen implements IWorldGenerator{
                 //be sure it's the correct biome
                 && (biomes==null || Arrays.asList(biomes).contains(
                         world.getBiomeProvider().getBiome(new BlockPos(chunkX*16,minY+maxY/2,chunkZ*16)).getRegistryName().getPath()))) {
-            //define the vein data
-            WorldGenMinable vein = new WorldGenMinable(ore.getDefaultState(), Math.max(minOres,random.nextInt(veinSize)), pre -> pre.getBlock() != ore);
-            //TODO see if default state is correct/good, else convert this class into using blockstates
-
             //calculate the max ore veins per chunk
             int maxVeins=random.nextInt(maxVeinsPerChunk);
+            //height offset defines how far above bedrock it should spawn,
             int spawnHeightOffset=0;
-            if(heightOffset==1){
+            if(heightOffset==1){//defines only in lans above water level
                 spawnHeightOffset=63;//defined in ChunkProvider around the use of BlockWater, seems hardcoded to 63
-            } else if (heightOffset==2){
+            } else if (heightOffset==2){//defined only in areas that are above the minimum of the chunk heightmap
                 spawnHeightOffset= world.getChunk(chunkX,chunkZ).getLowestHeight()-1;
             }
             for(int i=0; i<maxVeins;i++) {
                 //actually generate the vein
-                vein.generate(world, random, new BlockPos(
+                makeVein(world,random).generate(world, random, new BlockPos(
                         (chunkX * 16) + random.nextInt(16),
                         minY+spawnHeightOffset+random.nextInt(maxY-minY),
                         chunkZ * 16 + random.nextInt(16))
                 );
             }
+        }
+    }
+
+    //NOTE: 1.12 does not use blocks directly, instead use BlockMatcher.forBlock(notOre)
+    private WorldGenMinable makeVein(World world, Random random){
+        if(world.provider.getDimension()==-1){
+            if(notOre==Blocks.STONE) {
+                return new WorldGenMinable(ore.getDefaultState(), Math.max(minOres, random.nextInt(veinSize)), BlockMatcher.forBlock(Blocks.NETHERRACK));
+            } else if(notOre==Blocks.SAND){
+                return new WorldGenMinable(ore.getDefaultState(), Math.max(minOres, random.nextInt(veinSize)), BlockMatcher.forBlock(Blocks.SOUL_SAND));
+            } else {
+                return new WorldGenMinable(ore.getDefaultState(), Math.max(minOres, random.nextInt(veinSize)), BlockMatcher.forBlock(notOre));
+            }
+        } else {
+            return new WorldGenMinable(ore.getDefaultState(), Math.max(minOres, random.nextInt(veinSize)), BlockMatcher.forBlock(notOre));
         }
     }
 }

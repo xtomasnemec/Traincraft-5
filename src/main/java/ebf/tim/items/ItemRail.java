@@ -3,9 +3,11 @@ package ebf.tim.items;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.registry.TiMBlocks;
+import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
 import mods.railcraft.api.items.ITrackItem;
 import net.minecraft.block.*;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -115,9 +117,9 @@ public class ItemRail extends Item implements ITrackItem {
                 }
             }
 
-            if (CommonUtil.setBlock(world,x,y,z, getPlacedBlock(), 0)) {
+            if (placeTrack(stack,player,world,pos,null)) {
                 getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x,y,z), world.getBlockState(new BlockPos(x,y,z)), player, stack);
-                if (CommonUtil.getBlockAt(world, x,y,z) == getPlacedBlock()) {
+                if (CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailCore) {
                     getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x,y,z),world.getBlockState(new BlockPos(x,y,z)), player, stack);
 
                     ((BlockRailCore)CommonUtil.getBlockAt(world, x,y,z)).updateShape(x,y,z,world,
@@ -167,9 +169,10 @@ public class ItemRail extends Item implements ITrackItem {
         if (!(world.isSideSolid(new BlockPos(x, y, z),EnumFacing.UP))){
             return false;
         }
+        y++;
 
-        if(block.isReplaceable(world, new BlockPos(x, y+1, z)) || block instanceof BlockFlower || block == Blocks.DOUBLE_PLANT || block instanceof BlockMushroom){
-            block.dropBlockAsItem(world, new BlockPos(x, y+1, z), world.getBlockState(new BlockPos(x, y+1, z)), 0);
+        if(block instanceof BlockFlower || block == Blocks.DOUBLE_PLANT || block instanceof BlockMushroom){
+            block.dropBlockAsItem(world, new BlockPos(x, y, z), world.getBlockState(new BlockPos(x, y+1, z)), 0);
         }
 
 
@@ -222,10 +225,10 @@ public class ItemRail extends Item implements ITrackItem {
      * We can cover the key and ticket description here, to simplify other classes.
      */
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List stringList, boolean p_77624_4_) {
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> stringList, ITooltipFlag flagIn) {
 
-
-        if( stack.hasTagCompound()){
+        if(stack.hasTagCompound()){
             if(stack.getTagCompound().hasKey("rail")) {
                 stringList.add(CommonUtil.translate("menu.rails") + " " + new ItemStack(stack.getTagCompound().getCompoundTag("rail")).getDisplayName());
             } else {
@@ -233,18 +236,18 @@ public class ItemRail extends Item implements ITrackItem {
             }
 
             //todo: for some reason i ill never understand, the lang file returns ties and ballast backwards.
-            if(stack.getTagCompound().hasKey("ballast")) {
-                stringList.add(CommonUtil.translate("menu.ballast")+ " " + new ItemStack(stack.getTagCompound().getCompoundTag("ballast")).getDisplayName());
+            if(stack.getTagCompound().hasKey("ballast") && new ItemStack(stack.getTagCompound().getCompoundTag("ballast")).getItem()!=Items.AIR) {
+                stringList.add(CommonUtil.translate("menu.ballast") + " " + new ItemStack(stack.getTagCompound().getCompoundTag("ballast")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.noballast"));
             }
-            if(stack.getTagCompound().hasKey("ties")) {
+            if(stack.getTagCompound().hasKey("ties") && new ItemStack(stack.getTagCompound().getCompoundTag("ties")).getItem()!=Items.AIR) {
                 stringList.add(CommonUtil.translate("menu.ties")+ " " + new ItemStack(stack.getTagCompound().getCompoundTag("ties")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.noties"));
             }
 
-            if(stack.getTagCompound().hasKey("wires")) {
+            if(stack.getTagCompound().hasKey("wires") && new ItemStack(stack.getTagCompound().getCompoundTag("wires")).getItem()!=Items.AIR) {
                 stringList.add(CommonUtil.translate("menu.wires") + " " +new ItemStack(stack.getTagCompound().getCompoundTag("wires")).getDisplayName());
             } else {
                 stringList.add(CommonUtil.translate("menu.nowires"));
@@ -254,32 +257,32 @@ public class ItemRail extends Item implements ITrackItem {
 
     public static ItemStack setStackData(ItemStack stack, ItemStack ingot, ItemStack ballast, ItemStack ties, ItemStack wires){
         //init stack NBT
-        stack.setTagCompound(new NBTTagCompound());
-        //add a tag for the stack then put the stack in it.
+        NBTTagCompound stackTag = new NBTTagCompound();
+        //make a blank tag, write the item to it, then put it into the stack tag
         if(ingot!=null && ingot.getItem()!=null) {
-            stack.getTagCompound().setTag("rail", new NBTTagCompound());
-            ingot.writeToNBT(stack.getTagCompound().getCompoundTag("rail"));
+            NBTTagCompound r =new NBTTagCompound();
+            ingot.writeToNBT(r);
+            stackTag.setTag("rail", r);
         }
 
         //rinse and repeat
         if(ties!=null && ties.getItem()!=null && !isItemBanned(ties)) {
-            stack.getTagCompound().setTag("ties",new NBTTagCompound());
-            ties.writeToNBT(stack.getTagCompound().getCompoundTag("ties"));
-        } else if(ties!=null && ties.getItem()!=null){
-            return null;
+            NBTTagCompound t =new NBTTagCompound();
+            ties.writeToNBT(t);
+            stackTag.setTag("ties", t);
         }
         if(ballast!=null && ballast.getItem()!=null && !isItemBanned(ballast)) {
-            stack.getTagCompound().setTag("ballast",new NBTTagCompound());
-            ballast.writeToNBT(stack.getTagCompound().getCompoundTag("ballast"));
-        } else if(ballast!=null && ballast.getItem()!=null){
-            return null;
+            NBTTagCompound b =new NBTTagCompound();
+            ballast.writeToNBT(b);
+            stackTag.setTag("ballast", b);
         }
         if(wires!=null && wires.getItem()!=null && !isItemWires(wires)) {
-            stack.getTagCompound().setTag("wires",new NBTTagCompound());
-            wires.writeToNBT(stack.getTagCompound().getCompoundTag("wires"));
-        } else if(wires!=null && wires.getItem()!=null){
-            return null;
+            NBTTagCompound w =new NBTTagCompound();
+            wires.writeToNBT(w);
+            stackTag.setTag("wires", w);
         }
+        //set the stack tag to the actual stack
+        stack.setTagCompound(stackTag);
         return stack;
     }
 
@@ -297,8 +300,8 @@ public class ItemRail extends Item implements ITrackItem {
     public void getSubItems(CreativeTabs p_150895_2_, NonNullList<ItemStack> tabItems) {
         for(Item ingot : new Item[]{Items.IRON_INGOT, Items.GOLD_INGOT}){
             for(Block b : new Block[]{null, Blocks.GRAVEL, Blocks.STONE}){
-                for(Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.DOUBLE_STONE_SLAB, null})
-                tabItems.add(setStackData(new ItemStack(TiMBlocks.railBlock),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));
+                for(Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.STONE, null})
+                tabItems.add(setStackData(new ItemStack(TiMItems.railItem),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));
             }
         }
     }

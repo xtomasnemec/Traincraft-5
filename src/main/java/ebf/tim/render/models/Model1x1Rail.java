@@ -8,6 +8,9 @@ import ebf.tim.utility.Vec6f;
 import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -121,7 +124,7 @@ public class Model1x1Rail {
 
         Tessellator.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-        if(shape.ballast!=null && shape.ballast.getItem()!=null) {
+        if(shape.ballast!=null && shape.ballast.getItem()!=null && shape.ballast.getItem()!= Items.AIR) {
             GL11.glPushMatrix();
             if(ClientProxy.railSkin==0){
                 ModelBallast.modelPotatoBallast(shape,  maxWidth, minWidth, shape.renderScale, shape.ballast);
@@ -133,7 +136,7 @@ public class Model1x1Rail {
             GL11.glPopMatrix();
         }
 
-        if(shape.ties!=null && shape.ties.getItem()!=null) {
+        if(shape.ties!=null && shape.ties.getItem()!=null && shape.ties.getItem()!= Items.AIR) {
             GL11.glPushMatrix();
             if(ClientProxy.railSkin==0){
                 ModelTies.modelPotatoTies(BlockRailCore.getShape(world,xPos,yPos,zPos),  maxWidth, minWidth, shape.renderScale, shape.ties);

@@ -1,6 +1,7 @@
 package ebf.tim.utility;
 
 
+import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
@@ -203,8 +204,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntitySeat.class, nullRender);
         //hitboxes
         RenderingRegistry.registerEntityRenderingHandler(CollisionBox.class, nullRender);
-        //player scaler
-        RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, playerRender);
 
         //item render
         ModelLoaderRegistry.registerLoader(CustomItemModel.instance);
@@ -257,7 +256,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public Object getTESR(){return specialRenderer;}
+    public Object getRailTESR(){return railSpecialRenderer;}
 
     @Override
     public net.minecraft.client.renderer.entity.Render getEntityRender(){return transportRenderer;}
@@ -265,7 +264,7 @@ public class ClientProxy extends CommonProxy {
     public Object getNullRender(){return nullRender;}
 
 
-    public static final TileEntitySpecialRenderer specialRenderer = new TileEntitySpecialRenderer() {
+    public static final TileEntitySpecialRenderer railSpecialRenderer = new TileEntitySpecialRenderer() {
         @Override
         public void render(TileEntity tileEntity, double x, double y, double z, float p_147500_8_, int destroyStage, float alpha) {
             GL11.glPushMatrix();
@@ -277,7 +276,6 @@ public class ClientProxy extends CommonProxy {
         @Override
         protected void bindTexture(ResourceLocation p_147499_1_){}
     };
-
 
     private static RenderWagon transportRenderer=null;
 
@@ -308,33 +306,5 @@ public class ClientProxy extends CommonProxy {
         public boolean shouldRender(Entity livingEntity, ICamera camera, double camX, double camY, double camZ){return false;}
 
         public void doRenderShadowAndFire(Entity entityIn, double x, double y, double z, float yaw, float partialTicks) {}
-    };
-
-    private static net.minecraft.client.renderer.entity.Render<EntityPlayer> playerRender= new net.minecraft.client.renderer.entity.Render<EntityPlayer>(null){
-        GenericRailTransport t;
-        @Override
-        public void doRender(EntityPlayer p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_){
-            DebugUtil.println("RANDAR");
-            if (p_76986_1_.getRidingEntity() instanceof EntitySeat){
-                t=(GenericRailTransport) p_76986_1_.world.getEntityByID(((EntitySeat) p_76986_1_.getRidingEntity()).parentId);
-                GL11.glPushMatrix();
-                GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
-                if(p_76986_1_.getRidingEntity().getLookVec() !=null) {
-                    GL11.glRotated(p_76986_1_.getRidingEntity().getLookVec().x, 0, 1, 0);
-                    GL11.glRotated(p_76986_1_.getRidingEntity().getLookVec().y, 0, 0, 1);
-                    GL11.glRotated(p_76986_1_.getRidingEntity().getLookVec().z, 1, 0, 0);
-                }
-                super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-                GL11.glPopMatrix();
-
-            } else {
-                super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-            }
-        }
-        @Nullable
-        @Override
-        protected ResourceLocation getEntityTexture(EntityPlayer entity) {
-            return null;
-        }
     };
 }

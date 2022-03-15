@@ -54,3 +54,7 @@ eula.txt
 server.properties
 
 ops.json
+
+world/
+
+whitelist.json

@@ -16,6 +16,7 @@ public class TCInputHandler {
 	public static KeyBinding down;
 	public static KeyBinding idle;
 	public static KeyBinding furnace;
+	public static TCInputHandler instance = new TCInputHandler();
 	public TCInputHandler() {
 		up = new KeyBinding("key.traincraft.zepp.up", Keyboard.KEY_Y, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(up);
@@ -30,7 +31,7 @@ public class TCInputHandler {
 	}
 
 	@SubscribeEvent
-	public void onKeyInput(InputEvent.KeyInputEvent event) {
+	public void onClientKeyPress(InputEvent.KeyInputEvent event) {
 		if (!Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen()) {
 			if (up.isPressed()) {
 				sendKeyControlsPacket(0);

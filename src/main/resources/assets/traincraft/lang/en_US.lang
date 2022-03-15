@@ -1,4 +1,4 @@
-<!-- ## Blocks ## -->
+## Blocks ##
 tile.block.oilsand.name=Oil Sands
 tile.block.petroleum.name=Petroleum
 tile.block.ballast.name=Ballast
@@ -22,14 +22,14 @@ tile.block.bridgePillar.name=Bridge Pillar
 tile.block.highstar.name=High Star Switch Stand
 
 
-<!-- ## Fluids ## -->
+## Fluids ##
 fluid.diesel.name=Diesel Fuel
 fluid.refinedfuel.name=Refined Fuel
 
 fluid.tile.water=Water
 fluid.tile.lava=Lava
 
-<!-- ## Railcraft items ## -->
+## Railcraft items ##
 tile.traincraft.track.detector.freight.name=Freight Cart Detector Track
 tile.traincraft.track.detector.passenger.name=Passenger Cart Detector Track
 tile.traincraft.track.detector.loco.name=Locomotive Detector Track
@@ -52,7 +52,7 @@ tile.traincraft.track.speed.loco.name=Speed Limiter Track
 tile.traincraft.track.steel.name=Steel Track
 
 
-<!-- ## Items ## -->
+## Items ##
 item.traincraft:diesel.name=Diesel Canister
 item.traincraft:stake.name=Stake
 item.traincraft:steeldust.name=Steel Dust
@@ -196,7 +196,7 @@ item.TenderD51.name=D51 Tender [JNR]
 item.LocoSteamD51ShortStreamlining.name=D51 [JNR] (short streamlining)
 item.LocoSteamD51LongStreamlining.name=D51 [JNR] (Long streamlining)
 item.LocoSteamShay.name=Shay (US)
-item.LocoSteamAdler.name=Adler
+item.LocoSteamAdler.item.name=Adler
 item.TenderAdler.name=Adler Tender
 item.PassengerAdler.name=Adler Passenger Car
 item.CabooseLogging.name=Logging Caboose
@@ -312,7 +312,7 @@ item.FreightL.name=Freight Car L
 item.American(Remastered).name=American (Remastered)
 item.AmericanTender(Remastered).name=American Tender (Remastered)
 
-<!-- ## Achievements ## -->
+## Achievements ##
 achievement.traincraft:engineer=Engineers clothes
 achievement.traincraft:engineer.desc=A true trainman!
 achievement.traincraft:openHearth=Open Hearth Furnace
@@ -388,7 +388,7 @@ achievement.traincraft:flatCart.desc=Flat like a pancake!
 achievement.traincraft:caboose=Caboose
 achievement.traincraft:caboose.desc=The last one!
 
-<!-- ## GUI ## -->
+## GUI ##
 builder.follow.name=Follow tracks
 builder.remove.name=Remove tracks
 builder.up.name=Up
@@ -400,7 +400,7 @@ train.owner.name=You are not the owner!
 train.locked.name=Locked
 train.unlocked.name=Unlocked
 
-<!-- ## ENTITY ## -->
+## ENTITY ##
 entity.trainsinmotion.EntityFrontBogie.entity.name=Bogie
 entity.trainsinmotion.zeppelinbig.entity.name=Zeppelin One Balloon
 entity.trainsinmotion.zeppelin.entity.name=Zeppelin Two Balloons
