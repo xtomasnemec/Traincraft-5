@@ -96,14 +96,7 @@ public class EntityTrainCore extends GenericRailTransport {
 
 
     @Override
-    public boolean hasDrag(){return getAccelerator()==0 || Math.abs(getAccelerator())<6;}
-
-    @Override
-    public float getPower(){
-        //the average difference between metric horsepower and MHP is about 3.75% or tractiveEffort*26.3=MHP
-            return (transportTractiveEffort()<1f?transportMetricHorsePower()
-                    :transportTractiveEffort()*0.0035571365f);
-    }
+    public boolean hasDrag(){return getAccelerator()==0;}
 
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
     public float getAcceleratiorPercentage(){
@@ -118,119 +111,49 @@ public class EntityTrainCore extends GenericRailTransport {
         }
     }
 
-    private float maxPowerMicroblocks =0;
-
-    @Override
-    public void setValuesOnLinkUpdate(List<GenericRailTransport> consist){
-        super.setValuesOnLinkUpdate(consist);
-        maxPowerMicroblocks =0;
-        for(GenericRailTransport t : consist) {
-            if(t.getBoolean(boolValues.RUNNING)) {
-                maxPowerMicroblocks += t.getPower();
-            }
-        }
-    }
-
     /**
      * <h2>Calculate speed increase rate</h2>
+     * this has a direct relation to GenericRailTransport#applyDrag
      */
     public void calculateAcceleration(){
-        //speed is defined by the power in newtons divided by the weight, divided by the number of ticks in a second.
-        if(getPower() !=0) {
-            float weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
-            //update the consist if somehow it didnt get initialized.
-            if(maxPowerMicroblocks==0 || pullingWeight==0){
-                updateConsist();
-                weight = pullingWeight* (getBoolean(boolValues.BRAKE)?0.7f:0.007f);
-            }
-            weight -= this.weightKg() - 1;
-            // weight's effect on HP is generally inverse of HP itself, it can be described as
-            // 30 lbs of coal about 100 feet in one minute = 33,000 lbf for 1.01387 MHP
-            //or roughly 13.6kg over 30.48 meters in one minute = 1MHP
-            // however this is for vertical, converting to horizontal means multiplying by around 85% of gravity
-            // so say you have a train with 75mhp, that means your carrying capacity sits around
-            // 75*1.11039648 tons. (83.279)
-            //clamp to a max of the pulling power as to not generate negative pulling power
-
-            //so roughly, we divide the weight by the standard to get the idea of how much MHP is needed
-            //1814.3kg/13.6kg=133.4MHP
-            //so in this case, we need 133.4MHP to pull a load of 1814.3kg with no hinderance
-            //so we then divide the actual MHP by what's needed
-            //75*gravityZ/133.4=0.62428
-            //this end result means we now can move at 0.62428 of the speed provided by MHP
-            //0.62428*0.508=0.317 blocks per second acceleration.
-
-            //x is for current, y is for previous, z is for slip
-            //store this for later first
-            cachedVectors[2].yCoord = cachedVectors[2].xCoord;
-
-            // so 1 mhp would normally cover 13.6kg vertically, however this is low friction horizontal
-            // in which case we increase by around 70%
-            //cachedVectors[2].xCoord = (maxPowerMicroblocks * (maxPowerMicroblocks * 0.7f));
-            //now figure out the percentage of this vs with weight subtracted
-            //vectorCache[1][1] = Math.abs(cachedVectors[2].xCoord - weight);
-
-            //convert max power from MHP to HP, and then to lbf/s
-            cachedVectors[2].xCoord= (maxPowerMicroblocks * 0.98632f) * 0.001818f;
-
-            if(cachedVectors[2].xCoord<=0){
-                //if too much weight, or no power, you stall
-                cachedVectors[2].xCoord=0;
-            } else {
-                //scale the acceleration in lbf based on itself minus the weight
-                // after weight is converted to lb and scaled to the rough friction coefficient of steel on steel.
-                cachedVectors[2].xCoord/= cachedVectors[2].xCoord - (weight * 2.204622621849f * 0.0015f);
-                //scale to the acceleration stat of the train.
-                cachedVectors[2].xCoord*=transportAcceleration();
-                //scale further by throttle position
-                cachedVectors[2].xCoord*=getAcceleratiorPercentage();
-                //nerf to more TC-esk acceleration rates
-                cachedVectors[2].xCoord*=0.0006;
-
-
-                if(CommonProxy.realSpeed){
-                    cachedVectors[2].xCoord*=0.5f;//for real speed nerf by half
-                }
-
-                //add back the speed from last tick
-                cachedVectors[2].xCoord+=cachedVectors[2].yCoord;
-
-                //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
-                if(CommonProxy.realSpeed){
-                    //for real speed add a buff to max speed of 1.25%
-                    if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)*1.25f) {
-                        cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f)*1.25f;
-                    } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f) {
-                        cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f;
-                    }
-                } else {
-                    if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)) {
-                        cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f);
-                    } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)) {
-                        cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f);
-                    }
-                }
-
-            }
-
-
-
-            //-4.0880573E-7 applied MHP somehow needs to relate to a value that can move
-
-            //debuff traction for rain
-            //vectorCache[1][1]=( (1.75f * (world.isRaining()?0.5f:1)));
-
-            //todo rework this, the math isnt based on newtons anymore.
-            if(Math.abs(cachedVectors[2].xCoord)*-745.7>cachedVectors[2].zCoord/7457){
-                //todo: add sparks to animator.
-                //DebugUtil.println("SCREECH","wheelspin: " + (cachedVectors[2].xCoord*-745.7),
-                //        "Grip: " + (vectorCache[1][1]/7457), "i really need to get those spark particles in..");
-               // cachedVectors[2].xCoord *=0.33f;
-            }
-
-        } else {
-            updateConsist();
+        //core accel speed from TC4
+        float accel=0.02f*getAcceleratiorPercentage();
+        //buff to match engine type
+        if(getTypes().contains(STEAM)){
+            accel*=0.35f;
+        } else if(getTypes().contains(DIESEL)){
+            accel*=0.5f;
+        } else if(getTypes().contains(ELECTRIC)){
+            accel*=0.7f;
         }
+        //scale based on power and velocity
+        cachedVectors[2].xCoord=accel* (10f * (float)Math.pow(2.8f,((2.35f * (getVelocity()/getPower()))-2.35f)));
+        //add back in the speed from last tick.
+        cachedVectors[2].xCoord+=cachedVectors[2].yCoord;
+
+        //set the last tick speed to this speed.
+        cachedVectors[2].yCoord=cachedVectors[2].xCoord-cachedVectors[2].yCoord;
+        DebugUtil.println(cachedVectors[2].xCoord);
+
+        //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
+        if(CommonProxy.realSpeed){
+            //for real speed add a buff to max speed of 1.25%
+            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)*1.25f) {
+                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f)*1.25f;
+            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f) {
+                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f;
+            }
+        } else {
+            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)) {
+                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f);
+            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)) {
+                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f);
+            }
+        }
+
+        Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord,0, rotationYaw);
+        frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
+        backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
     }
     /**a method to interface getting the accelerator value
      * this is intended for external use like collisions that need to see if the train is in gear from a superclass cast*/
@@ -267,26 +190,15 @@ public class EntityTrainCore extends GenericRailTransport {
                                 if(slip<6) {
                                     cachedVectors[2].yCoord *= slip*0.75;
                                 }
-                                calculateAcceleration();
                                 cachedVectors[2].xCoord *= slip > 0 ? slip : 0.996;
-                            } else {
-                                calculateAcceleration();
                             }
                         }
                     } else {
                         accelerator = 0;
                         this.dataManager.set(ACCELERATOR, accelerator);
                     }
-                } else if(ticksExisted % 10 == 0) {
-                    //basically apply normal bogie drag to acceleration
-                    if((getVelocity()<0.3) || getBoolean(boolValues.BRAKE)) {
-                        cachedVectors[2].xCoord *= 0.95;
-                    }
-                    if(slip<6 && slip>0) {
-                        cachedVectors[2].yCoord *= slip*0.75;
-                    }
-                    cachedVectors[2].xCoord *= slip > 0 ? slip : 0.996;
                 }
+                calculateAcceleration();
 
                 if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
                     frontBogie.setVelocity(0,0,0);
@@ -463,7 +375,8 @@ public class EntityTrainCore extends GenericRailTransport {
     public ResourceLocation getHorn(){return null;}
     /**gets the resource location for the running/chugging sound*/
     public ResourceLocation getRunningSound(){return null;}
-    /**gets the multiplication of fuel consumption, 1 is normal, 2 would be double, 1.5 would be halfway between the two, etc.*/
+
+    @Deprecated//use GenericRailTransport#getFuelEfficiency
     public float getEfficiency(){return 1;}
 
 }

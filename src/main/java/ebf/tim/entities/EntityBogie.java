@@ -57,9 +57,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     private double railPathX2, railPathZ2;
     private int railMetadata;
     private Block blockNext;
-    double[] movementPath, retValue;
     float railmax;
-    double[] velDirection;
     /**normally this variable exists already in 1.7, this additional declaration of it is support for 1.8.9+*/
     public float yOffset=0.425f;
 
@@ -195,8 +193,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             int floorY = CommonUtil.floorDouble(this.posY);
             int floorZ = CommonUtil.floorDouble(this.posZ);
 
-            double velocity = moveX*moveX+moveZ*moveZ;
-
 
             Block block = CommonUtil.getBlockAt(world, floorX, floorY, floorZ);
             //todo: if (block instanceof BlockRailCore) {
@@ -205,19 +201,17 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
             //update on normal rails
             if (block instanceof BlockRailBase) {
-                loopVanilla(velocity, moveX, moveZ, floorX,floorY,floorZ, (BlockRailBase) block);
+                loopVanilla(Math.abs(moveX)+  Math.abs(moveZ), floorX,floorY,floorZ, (BlockRailBase) block);
                 //update on ZnD rails, and ones that don't extend block rail base.
                 //todo ZnD support, either by jar reference or API update
             //} else if (block instanceof ITrackBase) {
                 //update position for ZnD rails.
                 //moveBogieZnD(motionX, motionZ, floorX, floorY, floorZ, (ITrackBase) block);
             } else {
-
+                double velocity = Math.abs(moveX)+  Math.abs(moveZ);
                 while (velocity>0) {
                     posX+=Math.min(0.35, motionX);
                     posZ+=Math.min(0.35, motionZ);
-                    motionX-=Math.min(0.35, motionX);
-                    motionZ-=Math.min(0.35, motionZ);
                     velocity -= 0.35;
 
                     if (CommonUtil.getBlockAt(world, posX, posY,posZ) instanceof BlockAir) {
@@ -230,7 +224,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         return false;
     }
 
-    private void loopVanilla(double velocity, double velocityX, double velocityZ, int floorX, int floorY,int floorZ, BlockRailBase block){
+    private void loopVanilla(double velocity, int floorX, int floorY,int floorZ, BlockRailBase block){
         this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
@@ -238,11 +232,10 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         if(railmax!=0.4f){
             velocity=Math.min(velocity,railmax);
         }
-        velDirection = new double[]{velocityX,velocityZ};
         railMetadata = CommonUtil.getRailMeta(world, this, floorX, floorY, floorZ);
         //actually move
         while (velocity>0) {
-            moveBogieVanilla(Math.min(0.35, velocity), velDirection[0], velDirection[1], floorX, floorZ);
+            moveBogieVanilla(Math.min(0.35, velocity), floorX, floorZ);
             velocity -= 0.35;
 
             //update the last used block to the one we just used, if it's actually different.
@@ -284,40 +277,37 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     }
 
 
-    private void moveBogieVanilla(double currentMotion, double directionX, double directionZ, int floorX, int floorZ){
+    private void moveBogieVanilla(double currentMotion, int floorX, int floorZ){
         //figure out the current rail's direction
         railPathX = (martix[railMetadata][2][0]);
         railPathZ = (martix[railMetadata][2][1]);
         railPathSqrt = Math.sqrt(railPathX * railPathX + railPathZ * railPathZ);
+        if(railPathSqrt>2.0D){
+            railPathSqrt=2.0D;
+        }
 
-        motionSqrt = directionX * railPathX + directionZ * railPathZ;
-
-        if (motionSqrt < 0.0D) {
+        //cover moving reverse of track direction
+        if (motionX * railPathX + motionZ * railPathZ < 0.0D) {
             railPathX = -railPathX;
             railPathZ = -railPathZ;
         }
 
-        motionSqrt = Math.sqrt(directionX * directionX + directionZ * directionZ);
-        if(motionSqrt>2.0D){
-            motionSqrt=2.0D;
+        //update the motion vectors only when the current motion loop has reached it's end.
+        //improves performance and changes nothing
+        if(currentMotion<0.35f) {
+            motionSqrt = (Math.abs(motionX)+Math.abs(motionZ))*0.5;
+            if(railPathZ!=0 && railPathX!=0){
+                motionSqrt*=0.5;
+            }
+            motionX = motionSqrt * (railPathX);
+            motionZ = motionSqrt * (railPathZ);
         }
 
-        //update direction for consecutive loop calls
-        velDirection[0]=railPathX==0.0D?0:motionSqrt * (railPathX / railPathSqrt);
-        velDirection[1]=railPathZ==0.0D?0:motionSqrt * (railPathZ / railPathSqrt);
-
-        //handle rotating normal velocity based on track path
-        motionSqrt = Math.sqrt(motionX * motionX + motionZ * motionZ);
-        if (motionSqrt > 2.0D) {
-            motionSqrt = 2.0D;
+        if(railPathZ!=0 && railPathX!=0){
+            setPosition(posX + (currentMotion * railPathX*0.5), posY, posZ + (currentMotion * railPathZ*0.5));
+        } else {
+            setPosition(posX + (currentMotion * railPathX), posY, posZ + (currentMotion * railPathZ));
         }
-        motionX=railPathX==0.0D?0:motionSqrt * railPathX / railPathSqrt;
-        motionZ=railPathZ==0.0D?0:motionSqrt * railPathZ / railPathSqrt;
-
-
-        movementPath = new double[]{railPathX==0.0D?0:currentMotion * (railPathX / railPathSqrt),0,
-                railPathZ==0.0D?0:currentMotion * (railPathZ / railPathSqrt)};
-
 
         //define the rail path again, to center the transport.
         railPathX2 = floorX + 0.5D + martix[railMetadata][0][0];
@@ -337,8 +327,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             railPathDirection = ((this.posX - railPathX2) * railPathX + (this.posZ - railPathZ2) * railPathZ) * 2.0D;
         }
         //do the centering movement
-        this.posX = (railPathX2 + railPathX * railPathDirection)+movementPath[0];
-        this.posZ = (railPathZ2 + railPathZ * railPathDirection)+movementPath[2];
+        setPosition((railPathX2 + railPathX * railPathDirection), posY, (railPathZ2 + railPathZ * railPathDirection));
         //endMagic();
 
     }

@@ -155,7 +155,7 @@ public class FuelHandler{
 		if (burnTime <1){
 			burnTime=0;
 			if (slotId != null && itemBurnTime(slotId)>0) {
-				burnHeat = (int) (itemBurnTime(slotId) * train.getEfficiency());
+				burnHeat = (int) (itemBurnTime(slotId) * train.getFuelEfficiency());
 				burnTime = MathHelper.ceil(burnHeat *0.1);
 				burnTimeMax = burnTime;
 				if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
@@ -191,7 +191,7 @@ public class FuelHandler{
 			if(heat==0){heat=1;}
 			train.entityData.putFloat("boilerHeat", heat +
 					(float) ((1f- Math.sqrt(heat/maxHeat(train)))
-							* Math.sqrt((heat+burnHeat)/burnHeat))*(train.getEfficiency()*4)
+							* Math.sqrt((heat+burnHeat)/burnHeat))*(train.getFuelEfficiency()*4)
 			);
 
 		} else {//if engine is not running
@@ -244,7 +244,7 @@ public class FuelHandler{
 		if (train.entityData.containsFluidStack("tanks.1")&& train.entityData.getFluidStack("tanks.1").amount >0) {
 			//steam is expelled through the pistons to push them back and forth, but even when the accelerator is off, a degree of steam is still escaping.
 			train.entityData.putFluidStack("tanks.1", new FluidStack(train.entityData.getFluidStack("tanks.1").getFluid(),
-					train.entityData.getFluidStack("tanks.1").amount-(int)((5 * train.getEfficiency()) * ((train.accelerator) * train.getEfficiency()) * 0.55)));
+					train.entityData.getFluidStack("tanks.1").amount-(int)((5 * train.getFuelEfficiency()) * ((train.accelerator) * train.getFuelEfficiency()) * 0.55)));
 		}
 
 		//update the datawatchers so client can display the info on the GUI.
@@ -272,15 +272,15 @@ public class FuelHandler{
         if (train.getBoolean(GenericRailTransport.boolValues.RUNNING)){
             //diesel trains use fuel similar to electric, except idle will use fuel.
 			if(train.accelerator==0){//idle
-				if(train.drain(0, (int)(1f*train.getEfficiency()),false)==0) {
-					train.drain(0, (int) (1f * train.getEfficiency()), true);
+				if(train.drain(0, (int)(1f*train.getFuelEfficiency()),false)==0) {
+					train.drain(0, (int) (1f * train.getFuelEfficiency()), true);
 				} else {
 					train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
 					train.updateConsist();
 				}
 			} else {//moving
-				if (train.drain(0, CommonUtil.floorDouble((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), false)==0) {
-					train.drain(0,  CommonUtil.floorDouble((1 * train.getEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getEfficiency()))), true);
+				if (train.drain(0, CommonUtil.floorDouble((1 * train.getFuelEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getFuelEfficiency()))), false)==0) {
+					train.drain(0,  CommonUtil.floorDouble((1 * train.getFuelEfficiency()) + (Math.copySign(train.accelerator, 1) * (5 * train.getFuelEfficiency()))), true);
 				} else {
 					train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
 					train.updateConsist();
@@ -302,7 +302,7 @@ public class FuelHandler{
 
 			case  :
 
-			return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL)) * train.getEfficiency() * 0.2f;
+			return TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL)) * train.getFuelEfficiency() * 0.2f;
 				break;
 
 				default:
@@ -363,8 +363,8 @@ public class FuelHandler{
 		//use stored energy
 		if (train.getBoolean(GenericRailTransport.boolValues.RUNNING)){
 			//electric trains run at a generally set rate which is multiplied at the square of speed.
-			if (train.drain(0, CommonUtil.floorDouble((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), false)<1){
-				train.drain(0, CommonUtil.floorDouble((1*train.getEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getEfficiency()))), true);
+			if (train.drain(0, CommonUtil.floorDouble((1*train.getFuelEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getFuelEfficiency()))), false)<1){
+				train.drain(0, CommonUtil.floorDouble((1*train.getFuelEfficiency()) + (Math.copySign(train.accelerator, 1)*(5*train.getFuelEfficiency()))), true);
 			} else {
 				train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);
 				train.updateConsist();
