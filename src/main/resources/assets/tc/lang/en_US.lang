@@ -520,8 +520,10 @@ item.tc:minecartStampedeRack.name=CSWR Stampede Rack
 item.tc:minecartGP38h3.name=EMD GP38H3
 item.tc:minecartGP40tc.name=EMD GP40TC
 item.tc:minecartSB23R.name=CEE/GE SB23R
+item.tc:minecartSB23E.name=CEE/GE SB23E
 item.tc:minecartGSI60FootBulkhead.name=GSI 60' Bulkhead Flat
 item.tc:minecartGSC60FootFlatcar.name=GSC 60' Flatcar
+item.tc:minecartJT7.name=CEE JT-7 "Pignose"
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -1008,8 +1010,10 @@ entity.tc.StampedeRacl.name=CSWR Stampede Rack
 entity.tc.GP38h3.name=EMD GP38H3
 entity.tc.GP40tc.name=EMD GP40TC
 entity.tc.SB23R.name=CEE/GE SB23R
+entity.tc.SB23E.name=CEE/GE SB23E
 entity.tc.GSI_Bulkhead.name=GSC 60' Bulkhead Flat
 entity.tc.GSC_Flatcar.name=GSC 60' Flatcar
+entity.tc.JT7.name=CEE JT-7 "Pignose"
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
