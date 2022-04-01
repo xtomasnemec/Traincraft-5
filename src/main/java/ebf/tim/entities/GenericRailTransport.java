@@ -54,10 +54,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static ebf.tim.TrainsInMotion.transportTypes.*;
 import static ebf.tim.utility.CommonUtil.radianF;
@@ -129,11 +126,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     private float ticksSinceLastVelocityChange=1;
 
     private List<GenericRailTransport> consist = new ArrayList<>();
+    boolean consistListInUse=false;//use of consist variable needs to be thread safe.
 
     //@SideOnly(Side.CLIENT)
     public TransportRenderData renderData = new TransportRenderData();
 
     public XmlBuilder entityData = new XmlBuilder();
+
 
     /**the array of booleans, defined as bits
      * 0- brake: defines the brake
@@ -505,7 +504,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                                 //calling the method from itself is a very lazy way to do this, but it's less to write.
                                 interact(player,isFront,isBack,13);
                                 p.addChatMessage(new ChatComponentText(CommonUtil.translate("message.unlinked")));
-                            } else if (p.isSneaking()){
+                            } else {
                                 p.addChatMessage(new ChatComponentText(CommonUtil.translate("message.nolinks")));
                             }
                             return true;
@@ -577,6 +576,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                             transport.updateWatchers = true;
                         }
                     }
+                    updateConsist();
                     return true;
                 }
             }
@@ -942,8 +942,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(velocityX==null||velocityZ==null){
             frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
             backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
-            frontBogie.setVelocity(0,0,0);
-            backBogie.setVelocity(0,0,0);
         } else {
             frontBogie.minecartMove(this, velocityX, velocityZ);
             backBogie.minecartMove(this, velocityX, velocityZ);
@@ -967,6 +965,68 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return CommonUtil.getMaxRailSpeed(worldObj, (BlockRailBase) booster,this, posX,posY,posZ);
     }
 
+    /**
+     *
+     * the logic of this is directly related to EnttiyTrainCore#calculateAcceleration
+     * we didn't need to replace the super method, we could have used a different name. this name just reads nicer.
+     */
+    @Override
+    public void applyDrag(){
+        if(pullingWeight==0){
+            updateConsist();
+        }
+
+        if(frontLinkedID==null || backLinkedID==null) {
+
+            float drag = 0.92f,brakeBuff=0,slopeX=0,slopeZ=0;
+            //iterate the consist to collect the stats, since only end units can do this.
+            for(GenericRailTransport stock : getConsist()) {
+                if(stock.getBoolean(boolValues.BRAKE)){
+                    brakeBuff+=stock.weightKg()*2.4f;
+                }
+                if(stock.rotationPitch!=0){
+                    //vanilla uses 0.0078125 per tick for slope speed.
+                    //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
+                    //so we buff that to just under double to balance against drag, then scale by entity pitch
+                    //pith goes from -90 to 90, so it's inherently directional.
+                    slopeX+=0.00017361f*stock.rotationPitch;
+                }
+            }
+
+            //add in air/speed drag
+            if (getVelocity() > 0) {
+                drag -= ((getFriction() * getVelocity() * 4.448f));
+            }
+
+            //add in the drag from combined weight, plus brakes.
+            if(pullingWeight!=0) {//in theory this should never be 0, but we know forge is dumb
+                drag -= (getFriction() * (pullingWeight + brakeBuff)) / 4448;
+            }
+            //cap the drag to prevent weird behavior.
+            // if it goes to 1 or higher then we speed up, which is bad, if it's below 0 we reverse, which is also bad
+            if (drag > 0.9999f) {
+                drag = 0.9999f;
+            } else if (drag < 0f) {
+                drag = 0f;
+            }
+
+            //split the slope buff into X and Z, then rotate based on yaw.
+            if (rotationYaw != 0.0F) {
+                slopeZ = (slopeX * MathHelper.sin(rotationYaw*radianF));
+                slopeX = (slopeX * MathHelper.cos(rotationYaw*radianF));
+            }
+            frontBogie.setVelocity(
+                    (frontBogie.motionX * drag)+slopeX
+                    , frontBogie.motionY,
+                    (frontBogie.motionZ * drag)+slopeZ);
+            backBogie.setVelocity(
+                    (backBogie.motionX * drag)+slopeX,
+                    backBogie.motionY,
+                    (backBogie.motionZ * drag)+slopeZ);
+        }
+    }
+
+    public float getFriction(){return 0.0015f;}
 
     /**
      * <h2> on entity update </h2>
@@ -1111,27 +1171,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
         else if (frontBogie!=null && backBogie != null && ticksExisted>0){
-            //calculate for slopes
-            if(Math.abs(rotationPitch)>4f){
-                double[] roll = CommonUtil.rotatePoint(new double[]{
-                                ((backBogie.posY-frontBogie.posY)
-                                        /(Math.abs(rotationPoints()[0])+Math.abs(rotationPoints()[1]))
-                                )*0.0025,0,0},
-                        0, rotationYaw,0);
-                frontBogie.addVelocity(roll[0],roll[1],roll[2]);
-                backBogie.addVelocity(roll[0],roll[1],roll[2]);
-            } else if (hasDrag()) {//calculate for friction drag.
-                //add some extra drag at lower speeds to smooth out stopping
-                if((getVelocity()<0.3) || getBoolean(boolValues.BRAKE)){
-                    frontBogie.motionX*=0.95;
-                    frontBogie.motionZ*=0.95;
-                    backBogie.motionX*=0.95;
-                    backBogie.motionZ*=0.95;
-                }
-                frontBogie.motionX*=0.996;
-                frontBogie.motionZ*=0.996;
-                backBogie.motionX*=0.996;
-                backBogie.motionZ*=0.996;
+            //calculate for slopes, friction, and drag
+            if (hasDrag()) {
+                applyDrag();
             }
 
 
@@ -1224,7 +1266,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                 } else if (e instanceof CollisionBox) {
                     CollisionBox colliding = ((CollisionBox) e);
-                    if (colliding.host != null && colliding.host.frontBogie != null && colliding.host.backBogie != null) {
+                    if (colliding.host != null && colliding.host!=this && colliding.host.frontBogie != null && colliding.host.backBogie != null) {
 
                         //calculate the distance to yeet based on how far one pushed into the other
                         double d0 = colliding.host.posX - this.posX;
@@ -1291,10 +1333,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                     }
                     //hurt entity if going fast
-                    if (Math.abs(motionX) + Math.abs(motionZ) > 0.25f) {
+                    if (getVelocity() > 0.25f) {
                         e.attackEntityFrom(new EntityDamageSource(
                                         this instanceof EntityTrainCore ? "Locomotive" : "rollingstock", this),
-                                (float) (motionX + motionZ) * 0.1f);
+                                (getVelocity()) * 0.3f);
                     }
                 }
             }
@@ -1361,7 +1403,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             link = link.backLinkedID==null?null:(GenericRailTransport) worldObj.getEntityByID(link.backLinkedID);
         }
 
-        consist=transports;
+        setConsist(transports);
 
         //now tell everything in the list, including this, that there's a new list, and provide said list.
         for(GenericRailTransport t : transports){
@@ -1382,12 +1424,29 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
 
+    /**
+     * May return a 0 length array when consist is being updated.
+     */
     public List<GenericRailTransport> getConsist(){
-        return consist;
+        if(!consistListInUse && consist.size()>0) {
+            return consist;
+        } else {
+            return Collections.singletonList(this);
+        }
+    }
+    public void setConsist(List<GenericRailTransport> input){
+        consistListInUse=true;
+        consist=input;
+        consistListInUse=false;
     }
 
-    //used for trains and B-units
-    public float getPower(){return 0;}
+    //gets the power for acceleration math, result is in MHP, has a fallback that roughly converts TE to MHP
+    public float getPower(){return (transportMetricHorsePower()>0f?transportMetricHorsePower()
+            :transportTractiveEffort()*0.0035571365f);}
+    /**gets the multiplication of fuel consumption, 1 is normal, 2 would be double, 1.5 would be halfway between the two, etc.*/
+    public float getFuelEfficiency(){return 1;}
+
+    public float getRunningEfficiency(){return 0.7f;}
 
 
 
