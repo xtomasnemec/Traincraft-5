@@ -1108,7 +1108,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //sync inventory on spawn
             openInventory();
 
-            updatePosition();
+            if(!(this instanceof EntityTrainCore)) {
+                updatePosition();
+            }
 
 
             prevPosX = posX;
