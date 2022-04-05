@@ -278,6 +278,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
 
     private void moveBogieVanilla(double currentMotion, int floorX, int floorZ){
+        if(Math.abs(currentMotion)<0.00001){return;}
         //figure out the current rail's direction
         railPathX = (martix[railMetadata][2][0]);
         railPathZ = (martix[railMetadata][2][1]);
@@ -304,9 +305,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         }
 
         if(railPathZ!=0 && railPathX!=0){
-            setPosition(posX + (currentMotion * railPathX*0.5), posY, posZ + (currentMotion * railPathZ*0.5));
+            setPositionRelative((currentMotion * railPathX*0.5), 0, (currentMotion * railPathZ*0.5));
         } else {
-            setPosition(posX + (currentMotion * railPathX), posY, posZ + (currentMotion * railPathZ));
+            setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
         }
 
         //define the rail path again, to center the transport.
@@ -410,9 +411,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     @Override
     public void setVelocity(double x, double y, double z) {
-        motionX=(((long)(x*100000000))*0.00000001);
-        motionY=(((long)(y*100000000))*0.00000001);
-        motionZ=(((long)(z*100000000))*0.00000001);
+        motionX=(((long)(x*1000000))*0.000001);
+        motionY=y==0?0:(((long)(y*1000000))*0.000001);
+        motionZ=(((long)(z*1000000))*0.000001);
 
 
         isAirBorne = true;
@@ -425,12 +426,18 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**override of the super method just so we can set the position without updating the hitbox, because we don't need to.*/
     @Override
     public void setPosition(double x, double y, double z) {
-        posX=(int)(x*1000);
-        posX*=0.001;
-        posY=(int)(y*1000);
-        posY*=0.001;
-        posZ=(int)(z*1000);
-        posZ*=0.001;
+        posX=x;
+        posY=y;
+        posZ=z;
+    }
+
+
+    public void setPositionRelative(double x, double y, double z) {
+        posX+=((int)(x*1000))*0.001;
+        if(y!=0) {//usually we won't be changing this, so this is more efficient
+            posY += ((int) (y * 1000)) * 0.001;
+        }
+        posZ+=((int)(z*1000))*0.001;
     }
 
 

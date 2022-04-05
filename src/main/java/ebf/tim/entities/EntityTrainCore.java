@@ -99,7 +99,7 @@ public class EntityTrainCore extends GenericRailTransport {
     public boolean hasDrag(){return getAccelerator()==0;}
 
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
-    public float getAcceleratiorPercentage(){
+    public float getAcceleratorPercentage(){
         switch (Math.abs(getAccelerator())){
             case 1:{return Math.copySign(0.1f,getAccelerator());}
             case 2:{return Math.copySign(0.25f,getAccelerator());}
@@ -117,7 +117,7 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     public void calculateAcceleration(){
         //core accel speed from TC4
-        float accel=0.02f*getAcceleratiorPercentage();
+        float accel=0.02f* getAcceleratorPercentage();
         //buff to match engine type
         if(getTypes().contains(STEAM)){
             accel*=0.35f;
@@ -138,22 +138,32 @@ public class EntityTrainCore extends GenericRailTransport {
         //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
         if(CommonProxy.realSpeed){
             //for real speed add a buff to max speed of 1.25%
-            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)*1.25f) {
-                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f)*1.25f;
-            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f) {
-                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f)*1.25f;
+            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*01325f)*1.25f) {
+                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*01325f)*1.25f;
+            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*01325f)*1.25f) {
+                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*01325f)*1.25f;
             }
         } else {
-            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.03f)) {
-                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.03f);
-            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.03f)) {
-                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.03f);
+            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*01325f)) {
+                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*01325f);
+            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*01325f)) {
+                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*01325f);
             }
         }
 
-        Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord,0, rotationYaw);
-        frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-        backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
+        //handle ice slipping
+        if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
+            float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
+                    CommonUtil.getBlockAt(world,this.posX,this.posY-1,this.posZ).slipperiness;
+
+            if(slip>0) {
+                rotationYaw+=accelerator*slip;
+                if(slip<6) {
+                    cachedVectors[2].yCoord *= slip*0.75;
+                }
+                cachedVectors[2].xCoord *= slip > 0 ? slip : 0.996;
+            }
+        }
     }
     /**a method to interface getting the accelerator value
      * this is intended for external use like collisions that need to see if the train is in gear from a superclass cast*/
@@ -174,46 +184,32 @@ public class EntityTrainCore extends GenericRailTransport {
 
         super.onUpdate();
 
-        if(frontBogie != null && backBogie != null) {
-
-            if (!world.isRemote) {
-                float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
-                        CommonUtil.getBlockAt(world,this.posX,this.posY-1,this.posZ).slipperiness;
-                //twice a second, re-calculate the speed.
-                if (accelerator != 0 && ticksExisted % 10 == 0) {
-                    //stop calculation if it can't move, running should be managed from the fuel handler, to be more dynamic
-                    if (getBoolean(boolValues.RUNNING)) {
-                        //skip updating speed on TC style cruise control
-                        if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
-                            if(slip>0) {
-                                rotationYaw+=accelerator*slip;
-                                if(slip<6) {
-                                    cachedVectors[2].yCoord *= slip*0.75;
-                                }
-                                cachedVectors[2].xCoord *= slip > 0 ? slip : 0.996;
-                            }
-                        }
-                    } else {
-                        accelerator = 0;
-                        this.dataManager.set(ACCELERATOR, accelerator);
-                    }
+        if (!world.isRemote) {
+            //twice a second, re-calculate the speed.
+            if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
+                if(ticksExisted % 10 == 0) {
+                    calculateAcceleration();
                 }
-                calculateAcceleration();
-
-                if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
-                    frontBogie.setVelocity(0,0,0);
-                    backBogie.setVelocity(0,0,0);
-                    cachedVectors[2].xCoord = 0;
-                } else {
-                    Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord,0, rotationYaw);
-                    frontBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-                    backBogie.addVelocity(velocity.xCoord,0,velocity.zCoord);
-                }
-
-
-                updatePosition();
+            } else {
+                accelerator = 0;
+                this.dataManager.set(ACCELERATOR, accelerator);
             }
 
+            if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
+                frontBogie.setVelocity(0,0,0);
+                backBogie.setVelocity(0,0,0);
+                cachedVectors[2].xCoord = 0;
+            } else {
+                //add drag to the accelerator
+                if(accelerator==0){
+                    cachedVectors[2].yCoord*=0.99f;
+                }
+                Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
+                frontBogie.addVelocity(velocity.xCoord, 0, velocity.zCoord);
+                backBogie.addVelocity(velocity.xCoord, 0, velocity.zCoord);
+            }
+
+            updatePosition();
         }
         if(whistleDelay>0) {
             whistleDelay--;
