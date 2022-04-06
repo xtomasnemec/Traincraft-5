@@ -362,6 +362,9 @@ public enum ItemIDs {
 	minecartGP38dash2("ItemRollingStock", "gp38dash2", 4),
 	minecartGP38dash9W("ItemRollingStock", "gp38dash9w", 3),
 	minecartGP38h3("ItemRollingStock", "gp38h3icon", 4),
+	minecartGP38("ItemRollingStock", "gp38", 4),
+	minecartGP39("ItemRollingStock", "gp39", 4),
+	minecartGP40("ItemRollingStock", "gp40", 4),
 	minecartGP40tc("ItemRollingStock", "gp40tcicon", 4),
 	minecartGP49("ItemRollingStock", "gp49", 5),
 

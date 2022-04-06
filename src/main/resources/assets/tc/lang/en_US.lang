@@ -524,6 +524,9 @@ item.tc:minecartSB23E.name=CEE/GE SB23E
 item.tc:minecartGSI60FootBulkhead.name=GSI 60' Bulkhead Flat
 item.tc:minecartGSC60FootFlatcar.name=GSC 60' Flatcar
 item.tc:minecartJT7.name=CEE JT-7 "Pignose"
+item.tc:minecartGP38.name=EMD GP38
+item.tc:minecartGP39.name=EMD GP39
+item.tc:minecartGP40.name=EMD GP40
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -1014,6 +1017,9 @@ entity.tc.SB23E.name=CEE/GE SB23E
 entity.tc.GSI_Bulkhead.name=GSC 60' Bulkhead Flat
 entity.tc.GSC_Flatcar.name=GSC 60' Flatcar
 entity.tc.JT7.name=CEE JT-7 "Pignose"
+entity.tc.GP38.name=EMD GP38
+entity.tc.GP39.name=EMD GP39
+entity.tc.GP40.name=EMD GP40
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
