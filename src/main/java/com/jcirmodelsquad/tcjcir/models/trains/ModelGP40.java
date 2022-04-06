@@ -23,12 +23,12 @@ import train.common.library.Info;
 
 import java.util.ArrayList;
 
-public class ModelGP38 extends ModelConverter //Same as Filename
+public class ModelGP40 extends ModelConverter //Same as Filename
 {
 	int textureX = 512;
 	int textureY = 256;
 
-	public ModelGP38() //Same as Filename
+	public ModelGP40() //Same as Filename
 	{
 		bodyModel = new ModelRendererTurbo[544];
 
@@ -2272,7 +2272,7 @@ public class ModelGP38 extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 		}
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 5438) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 7548) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/TypeB_2_Black.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.47, -0.0, 0);//front & rear
@@ -2313,8 +2313,7 @@ public class ModelGP38 extends ModelConverter //Same as Filename
 	public ArrayList<double[]> getSmokePosition() {
 		return new ArrayList<double[]>() {
 			{
-				add(new double[]{1.45D, 1.3D, 0.0D});//front
-				add(new double[]{0.6D, 1.3D, 0.0D});//rear
+				add(new double[]{1.45D, 1.3D, 0.0D});
 			}
 		};
 	}

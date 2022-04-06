@@ -1,6 +1,7 @@
 package train.client.render;
 
 import com.jcirmodelsquad.tcjcir.models.trains.*;
+import com.jcirmodelsquad.tcjcir.models.trains.ModelGP40;
 import com.jcirmodelsquad.tcjcir.models.trains.ModelGP7;
 import com.jcirmodelsquad.tcjcir.vehicles.locomotives.*;
 import com.jcirmodelsquad.tcjcir.vehicles.rollingstock.*;
@@ -853,10 +854,10 @@ public enum RenderEnum {
 	GP38( DieselGP38.class,  new ModelGP38(), "gp38_", true,new float[] {-0F, 0.0F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
-	GP39( DieselGP39.class,  new ModelGP38(), "gp39_", true,new float[] {-0F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+	GP39( DieselGP39.class,  new ModelGP40(), "gp39_", true,new float[] {-0F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
-	GP40( DieselGP40.class,  new ModelGP38(), "gp40_", true,new float[] {-0F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
+	GP40( DieselGP40.class,  new ModelGP40(), "gp40_", true,new float[] {-0F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),
 	GP40TC( DieselGP40TC.class,  new ModelGP40TC(), "gp40tc_", true,new float[] {-1.5F, 0.155F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 3,  new ArrayList<double[]>() {
