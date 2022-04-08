@@ -2349,11 +2349,11 @@ public class ModelSD40dash2 extends ModelConverter //Same as Filename
 		bodyModel[568].setRotationPoint(34F, -22.75F, 5.5F);
 
 		bodyModel[569].addShapeBox(-0.5F, 0F, -1F, 1, 3, 3, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -1F, 0F, 0F, -1F, 0F, -1F, 0F, 0F, -1F, 0F, 0F, -1F, -1F, 0F, -1F, -1F); // Box 71 glow speedometer
-		bodyModel[569].setRotationPoint(-26F, -16.25F, 2F);
+		bodyModel[569].setRotationPoint(-26F, -16.25F, -4F);
 		bodyModel[569].rotateAngleY = 0.78539816F;
 
 		bodyModel[570].addShapeBox(-1.5F, 0F, -1F, 2, 2, 2, 0F,0F, 0F, 0.25F, -0.25F, 0.25F, 0.25F, -0.25F, 0.25F, 0.25F, 0F, 0F, 0.25F, 0F, 0.25F, 0.25F, -0.25F, 0.25F, 0.25F, -0.25F, 0.25F, 0.25F, 0F, 0.25F, 0.25F); // Box 307
-		bodyModel[570].setRotationPoint(-26F, -16.25F, 2F);
+		bodyModel[570].setRotationPoint(-26F, -16.25F, -4F);
 		bodyModel[570].rotateAngleY = 0.78539816F;
 	}
 	ModelFlexicoil_C2H theTrucks = new ModelFlexicoil_C2H();
