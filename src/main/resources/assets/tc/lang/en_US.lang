@@ -531,6 +531,8 @@ item.tc:minecartJT7.name=CEE JT-7 "Pignose"
 item.tc:minecartGP38.name=EMD GP38
 item.tc:minecartGP39.name=EMD GP39
 item.tc:minecartGP40.name=EMD GP40
+item.tc:minecartGP7old.name=EMD GP7 (Old Model)
+item.tc:minecartGP9old.name=EMD GP9 (Old Model)
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -1003,7 +1005,7 @@ entity.tc.E8B.name=EMD E8B
 entity.tc.E9B.name=EMD E9B
 entity.tc.PA1.name=Alco PA-1
 entity.tc.PB1.name=Alco PB-1
-entity.tc.FNCC50FootBoxcar.name=North Fox 50' Highcube Boxcar
+entity.tc.FNCC50FootBoxcar.name=FNCC 50' Highcube Boxcar
 entity.tc.U30C.name=GE U30C
 entity.WVBoose.name=Wide Vision Caboose
 entity.tc.gtavthing.name=GTAV Locomotive
@@ -1024,6 +1026,8 @@ entity.tc.JT7.name=CEE JT-7 "Pignose"
 entity.tc.GP38.name=EMD GP38
 entity.tc.GP39.name=EMD GP39
 entity.tc.GP40.name=EMD GP40
+entity.tc.GP9old.name=EMD GP9 (Old Model)
+entity.tc.GP7old.name=EMD GP7 (Old Model)
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container

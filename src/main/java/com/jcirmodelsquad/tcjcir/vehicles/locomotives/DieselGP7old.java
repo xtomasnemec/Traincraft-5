@@ -13,12 +13,13 @@ import train.common.api.LiquidManager;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
 
-public class DieselRSD15 extends DieselTrain {
-    public DieselRSD15(World world) {
-        super(world, EnumTrains.RSD15.getTankCapacity(), LiquidManager.dieselFilter());
+public class DieselGP7old extends DieselTrain {
+    public DieselGP7old(World world) {
+        super(world, EnumTrains.GP7old.getTankCapacity(), LiquidManager.dieselFilter());
         initLoco();
+
     }
-    public DieselRSD15(World world, double d, double d1, double d2){
+    public DieselGP7old(World world, double d, double d1, double d2){
         this(world);
         setPosition(d, d1 + yOffset, d2);
         motionX = 0.0D;
@@ -38,8 +39,8 @@ public class DieselRSD15 extends DieselTrain {
     public void updateRiderPosition() {
         if (riddenByEntity == null) {return;}
         double pitchRads = this.anglePitchClient * Math.PI / 180.0D;
-        double distance = 3;
-        double yOffset = 0.2;
+        double distance = 2.55;
+        double yOffset = 0.15;
         float rotationCos1 = (float) Math.cos(Math.toRadians(this.renderYaw + 90));
         float rotationSin1 = (float) Math.sin(Math.toRadians((this.renderYaw + 90)));
         if(side.isServer()){
@@ -120,7 +121,7 @@ public class DieselRSD15 extends DieselTrain {
     }
 
     @Override
-    public float getOptimalDistance(EntityMinecart cart) { return 1.4F;
+    public float getOptimalDistance(EntityMinecart cart) { return 1.1F;
     }
 
     @Override
@@ -130,7 +131,7 @@ public class DieselRSD15 extends DieselTrain {
 
     @Override
     public String getInventoryName() {
-        return "ALCo RSD-15";
+        return "EMD GP7";
     }
 
     @Override
