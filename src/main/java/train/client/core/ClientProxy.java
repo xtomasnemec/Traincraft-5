@@ -95,6 +95,15 @@ public class ClientProxy extends CommonProxy {
 		//bogies
 		RenderingRegistry.registerEntityRenderingHandler(EntityBogie.class, new RenderBogie());
 
+		ClientRegistry.bindTileEntitySpecialRenderer(TileRacor36D_1.class, new RenderRacor36D_1());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.Racor36D_1.block), new ItemRenderRacor36D_1());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileRacor36D_2.class, new RenderRacor36D_2());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.Racor36D_2.block), new ItemRenderRacor36D_2());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileRacor36H.class, new RenderRacor36H());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.Racor36H.block), new ItemRenderRacor36H());
+
 		ClientRegistry.bindTileEntitySpecialRenderer(TileowoYardSwitchStand.class, new RenderowoYardSwtichStand());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockIDs.owoYardSwitchStand.block), new ItemRenderowoYardSwitchStand());
 

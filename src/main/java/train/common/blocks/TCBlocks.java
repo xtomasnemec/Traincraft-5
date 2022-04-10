@@ -43,6 +43,9 @@ public class TCBlocks {
 		BlockIDs.owoSwitchStand.block = new BlockowoSwitchStand().setHardness(2F).setStepSound(Block.soundTypeMetal);
 		BlockIDs.circleSwitchStand.block = new BlockcircleSwitchStand().setHardness(2F).setStepSound(Block.soundTypeAnvil);
 		BlockIDs.owoYardSwitchStand.block = new BlockowoYardSwitchStand().setHardness(4F).setStepSound(Block.soundTypeLadder);
+		BlockIDs.Racor36D_1.block = new BlockRacor36D_1().setHardness(4F).setStepSound(Block.soundTypeWood);
+		BlockIDs.Racor36D_2.block = new BlockRacor36D_2().setHardness(4F).setStepSound(Block.soundTypeWood);
+		BlockIDs.Racor36H.block = new BlockRacor36H().setHardness(4F).setStepSound(Block.soundTypeWood);
 
 		BlockIDs.trainWorkbench.block = new BlockTrainWorkbench(16).setHardness(1.7F).setStepSound(Block.soundTypeWood);
 		BlockIDs.stopper.block = new BlockStopper().setHardness(1.7F).setStepSound(Block.soundTypeWood);

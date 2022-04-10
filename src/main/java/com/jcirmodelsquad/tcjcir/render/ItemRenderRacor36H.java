@@ -1,9 +1,7 @@
 package com.jcirmodelsquad.tcjcir.render;
 
-import com.jcirmodelsquad.tcjcir.render.models.ModelautoSwitchOff;
-import com.jcirmodelsquad.tcjcir.render.models.ModelautoSwitchOn;
-import com.jcirmodelsquad.tcjcir.render.models.ModelcircleSwitchStandOff;
-import com.jcirmodelsquad.tcjcir.render.models.ModelowoSwitchStandOff;
+import com.jcirmodelsquad.tcjcir.render.models.ModelRacor36D_Off;
+import com.jcirmodelsquad.tcjcir.render.models.ModelRacor36H_Off;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -11,25 +9,25 @@ import org.lwjgl.opengl.GL11;
 import tmt.Tessellator;
 import train.common.library.Info;
 
-public class ItemRendercircleSwitchStand implements IItemRenderer {
-    private static final ModelcircleSwitchStandOff modeSwitch = new ModelcircleSwitchStandOff();
-    private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "circleswitchoff.png");
+public class ItemRenderRacor36H implements IItemRenderer {
+    private static final ModelRacor36H_Off modeSwitch = new ModelRacor36H_Off();
+    private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "Racor36H.png");
 
-    public ItemRendercircleSwitchStand() {
+    public ItemRenderRacor36H() {
     }
 
     @Override
-    public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return true;
     }
 
     @Override
-    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return true;
     }
 
     @Override
-    public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         switch (type) {
             case ENTITY: {
                 renderSwitch(0f, 0f, 0f, 1f);

@@ -55,11 +55,16 @@ public enum BlockIDs {
 	tcRailGag(false,null),
 	tcRail(false,null),
 	bridgePillar(false,null),
+
 	MILWSwitchStand(false, null),
 	autoSwtichStand(false, null),
 	owoSwitchStand(false,null),
 	circleSwitchStand(false,null),
 	owoYardSwitchStand(false,null),
+	Racor36D_1(false,null),
+	Racor36D_2(false,null),
+	Racor36H(false,null),
+
 	snowGravel(false,null),
 	;
 

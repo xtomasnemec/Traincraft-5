@@ -35,6 +35,10 @@ tile.tc:mtcReceiverDestination.name=MTC Destination Receiver
 tile.tc:pdmInstructionBlock.name=W-MTC Wireless Radio
 tile.tc:betterDetector.name= Better Detector
 tile.tc:trainMonitor.name= Train Monitor
+tile.tc:Racor36D_1.name=Racor 36D Switch Stand (Regular Targets)
+tile.tc:Racor36D_2.name=Racor 36D Switch Stand (FNCC Targets)
+tile.tc:Racor36H.name=Racor 36H Switch Stand
+
 <!-- ## Fluids ## -->
 fluid.diesel.name=Diesel Fuel
 fluid.refinedfuel.name=Refined Fuel
