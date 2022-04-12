@@ -53,7 +53,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**cached values for the rail path
      * prevents need to generate a new variable multiple times per tick and reduces GC strain*/
     private double railPathX, railPathZ;
-    private double railPathSqrt, motionSqrt, railPathDirection;
+    private double motionSqrt, railPathDirection;
     private double railPathX2, railPathZ2;
     private int railMetadata;
     private Block blockNext;
@@ -235,8 +235,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         railMetadata = CommonUtil.getRailMeta(worldObj, this, floorX, floorY, floorZ);
         //actually move
         while (velocity>0) {
-            moveBogieVanilla(Math.min(0.35, velocity), floorX, floorZ);
-            velocity -= 0.35;
+            moveBogieVanilla(Math.min(0.3, velocity), floorX, floorZ);
+            velocity -= 0.3;
 
             //update the last used block to the one we just used, if it's actually different.
             if(floorX!=CommonUtil.floorDouble(this.posX) || floorZ != CommonUtil.floorDouble(this.posZ)) {
@@ -277,38 +277,29 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     }
 
 
-    private void moveBogieVanilla(double currentMotion, int floorX, int floorZ){
+    private void moveBogieVanilla(double currentMotion, double floorX, double floorZ){
         if(Math.abs(currentMotion)<0.00001){return;}
         //figure out the current rail's direction
         railPathX = (martix[railMetadata][2][0]);
         railPathZ = (martix[railMetadata][2][1]);
-        railPathSqrt = Math.sqrt(railPathX * railPathX + railPathZ * railPathZ);
-        if(railPathSqrt>2.0D){
-            railPathSqrt=2.0D;
-        }
 
         //cover moving reverse of track direction
-        if (motionX * railPathX + motionZ * railPathZ < 0.0D) {
+        if (motionX * railPathX + motionZ * railPathZ <= 0.0D) {
             railPathX = -railPathX;
             railPathZ = -railPathZ;
         }
 
-        //update the motion vectors only when the current motion loop has reached it's end.
-        //improves performance and changes nothing
-        if(currentMotion<0.35f) {
-            motionSqrt = (Math.abs(motionX)+Math.abs(motionZ))*0.5;
-            if(railPathZ!=0 && railPathX!=0){
-                motionSqrt*=0.5;
-            }
-            motionX = motionSqrt * (railPathX);
-            motionZ = motionSqrt * (railPathZ);
-        }
 
-        if(railPathZ!=0 && railPathX!=0){
-            setPositionRelative((currentMotion * railPathX*0.5), 0, (currentMotion * railPathZ*0.5));
+        //when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
+        if(railPathX!=0 && railPathZ!=0) {
+            motionSqrt = (Math.abs(motionX)+Math.abs(motionZ))*0.5;
+            setPositionRelative((currentMotion * railPathX)*0.5, 0, (currentMotion * railPathZ)*0.5);
         } else {
+            motionSqrt = (Math.abs(motionX)+Math.abs(motionZ));
             setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
         }
+        motionX = motionSqrt * (railPathX);
+        motionZ = motionSqrt * (railPathZ);
 
         //define the rail path again, to center the transport.
         railPathX2 = floorX + 0.5D + martix[railMetadata][0][0];

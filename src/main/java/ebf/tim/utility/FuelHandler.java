@@ -200,6 +200,11 @@ public class FuelHandler{
 					*0.368f//convert to celsius*0.01
 			);
 
+			//make steamers heat faster in creative
+			if(train.getBoolean(GenericRailTransport.boolValues.CREATIVE)){
+				biomeHeat=80;
+			}
+
 			if(heat>biomeHeat){
 				heat -=biomeHeat*0.1f;
 			} else {

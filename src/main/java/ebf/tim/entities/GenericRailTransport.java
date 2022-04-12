@@ -868,17 +868,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //can't hard clamp
             // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
-            if(Math.abs(f[0])>0.1 || Math.abs(f[2])>0.1) {
-                frontBogie.addVelocity(
-                        ((f[0] + posX) - frontBogie.posX)*0.8, 0,
-                        ((f[2] + posZ) - frontBogie.posZ)*0.8);
+            if(Math.abs(f[0])>0.2 || Math.abs(f[2])>0.2) {
+                frontBogie.setPositionRelative(
+                        ((f[0] + posX) - frontBogie.posX)*0.4, 0,
+                        ((f[2] + posZ) - frontBogie.posZ)*0.4);
             }
 
             f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw, 0);
-            if(Math.abs(f[0])>0.1 || Math.abs(f[2])>0.1) {
-                backBogie.addVelocity(
-                        ((f[0] + posX) - backBogie.posX)*0.8, 0,
-                        ((f[2] + posZ) - backBogie.posZ)*0.8);
+            if(Math.abs(f[0])>0.2 || Math.abs(f[2])>0.2) {
+                backBogie.setPositionRelative(
+                        ((f[0] + posX) - backBogie.posX)*0.4, 0,
+                        ((f[2] + posZ) - backBogie.posZ)*0.4);
             }
 
             //do scaled rail boosting but keep it capped to the max velocity of the rail
@@ -1254,7 +1254,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //handle collisions
-        if(!worldObj.isRemote){
+        if(!worldObj.isRemote && collisionHandler!=null){
             for (Entity e : collisionHandler.getCollidingEntities(this)) {
                 if (e.ridingEntity != null) {
                     continue;
@@ -1349,17 +1349,19 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         } else {
             //apparently to push away a player it has to happen on client
-            for (Entity e : collisionHandler.getCollidingEntities(this)) {
-                if (e instanceof EntityPlayer && !(e.ridingEntity instanceof EntitySeat)) {
+            if(collisionHandler!=null) {
+                for (Entity e : collisionHandler.getCollidingEntities(this)) {
+                    if (e instanceof EntityPlayer && !(e.ridingEntity instanceof EntitySeat)) {
 
-                    double d0 = e.posX - this.posX;
-                    double d1 = e.posZ - this.posZ;
-                    double d2 = MathHelper.abs_max(d0, d1) * 30;
-                    if (d2 >= 0.0009D) {
-                        d0 /= d2;
-                        d1 /= d2;
+                        double d0 = e.posX - this.posX;
+                        double d1 = e.posZ - this.posZ;
+                        double d2 = MathHelper.abs_max(d0, d1) * 30;
+                        if (d2 >= 0.0009D) {
+                            d0 /= d2;
+                            d1 /= d2;
+                        }
+                        e.addVelocity(d0, 0, d1);
                     }
-                    e.addVelocity(d0, 0, d1);
                 }
             }
         }

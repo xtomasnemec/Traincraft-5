@@ -170,8 +170,8 @@ public class HUDloco extends GuiScreen {
 
 	public int getHeat(GenericRailTransport loco){
 		if(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			if (true || loco.ticksExisted > lastTick) {
-				int l = loco.getTankInfo(null)[1] != null ?
+			if (loco.ticksExisted > lastTick) {
+				int l = loco.getTankInfo(null)[1] != null && loco.getTankInfo(null)[1].fluid !=null?
 						loco.getTankInfo(null)[1].fluid.amount : 1;
 				return ((l * 100) / (loco.getTankCapacity()[1]));
 			}

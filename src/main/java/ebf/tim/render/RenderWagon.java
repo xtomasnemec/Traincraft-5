@@ -408,7 +408,7 @@ public class RenderWagon extends Render {
                         GL11.glTranslated(sub.offset[0]-b.offset[0], sub.offset[1]-b.offset[1], sub.offset[2]-b.offset[2]);
 
                         if(!isPaintBucket) {
-                            GL11.glRotatef(sub.rotationYaw - b.rotationYaw, 0.0f, 1.0f, 0);
+                            GL11.glRotatef(sub.rotationYaw, 0.0f, 1.0f, 0);
                         }
                         sub.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
                         GL11.glPopMatrix();
