@@ -134,7 +134,7 @@ public class GroupedModelRender {
                 GL11.glRotated(block.rotateAngleY * CommonUtil.degreesD, 0, 1, 0);
                 GL11.glRotated((block.rotateAngleZ * CommonUtil.degreesD)+90, 0, 0, 1);
                 //define scale based on the model
-                GL11.glScaled(0.0625f*block.width, (0.0625f*block.height)*yScale, (0.0625f*block.depth));
+                GL11.glScalef(0.0625f*block.width, (0.0625f*block.height)*yScale, (0.0625f*block.depth));
                 //now actually render the block.
                 Minecraft.getMinecraft().entityRenderer.itemRenderer.renderItem(Minecraft.getMinecraft().player,new ItemStack(Block.getBlockFromItem(blockStack.getItem())), ItemCameraTransforms.TransformType.GUI);
                 GL11.glPopMatrix();

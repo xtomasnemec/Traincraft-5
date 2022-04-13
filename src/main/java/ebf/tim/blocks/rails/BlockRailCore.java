@@ -464,7 +464,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
     /**
      * Simplifies getting rail metadata for a block, returns -1 is the block is not a rail.
-     * in 1.8+ this will have to change to returning the expected int based on the block state, or the getBasicRailMetadata for TiM rails
+     * in 1.8+ this will have to change to returning the expected int based on the block state, or the CommonUtil.getRailMeta for TiM rails
      */
     public static int getRailMeta(IBlockAccess world, int x, int y, int z, @Nullable EntityMinecart cart){
         if(!(CommonUtil.getBlockAt((World) world,x,y,z) instanceof BlockRailBase)){

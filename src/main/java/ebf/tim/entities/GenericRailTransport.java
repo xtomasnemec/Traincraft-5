@@ -146,6 +146,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public XmlBuilder entityData = new XmlBuilder();
 
+
     /**the array of booleans, defined as bits
      * 0- brake: defines the brake
      * 1- locked: defines if transport is locked to owner and key holders
@@ -1132,7 +1133,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //todo: sync inventory on spawn
             //openInventory();
 
-            updatePosition();
+            if(!(this instanceof EntityTrainCore)) {
+                updatePosition();
+            }
 
 
             prevPosX = posX;

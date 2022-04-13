@@ -5,6 +5,7 @@ import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -164,7 +165,9 @@ public class EntityTrainCore extends GenericRailTransport {
                 cachedVectors[2].xCoord *= slip > 0 ? slip : 0.996;
             }
         }
+
     }
+
     /**a method to interface getting the accelerator value
      * this is intended for external use like collisions that need to see if the train is in gear from a superclass cast*/
     @Override

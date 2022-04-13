@@ -96,6 +96,7 @@ public class ModelRendererTurbo {
         float uOffs = 1.0F / (textureWidth * 10.0F);
         float vOffs = 1.0F / (textureHeight * 10.0F);
         List<TexturedVertex> verts = new ArrayList<>();
+        //todo: use the longest, or shortest for that side for h/f g/j respectively
         verts.add(vert1.setTexturePosition(h / textureWidth - uOffs, g / textureHeight + vOffs));
         verts.add(vert2.setTexturePosition(f / textureWidth + uOffs, g / textureHeight + vOffs));
         verts.add(vert3.setTexturePosition(f / textureWidth + uOffs, j / textureHeight - vOffs));

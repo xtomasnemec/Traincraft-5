@@ -62,7 +62,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     /**returns if the rider can interact, it shouldn't be necessary, but we'll leave it true just in case*/
     @Override
     public boolean canRiderInteract() {
-        return true;
+        return false;
     }
     /**actually useless for this entity*/
     @Override
@@ -179,4 +179,12 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         motionZ = z;
     }
 
+    public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_) {
+        this.posX = p_70107_1_;
+        this.posY = p_70107_3_;
+        this.posZ = p_70107_5_;
+        float f = this.width / 2.0F;
+        float f1 = this.height;
+        this.boundingBox.setBounds(p_70107_1_ - (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize, p_70107_5_ - (double)f, p_70107_1_ + (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize + (double)f1, p_70107_5_ + (double)f);
+    }
 }

@@ -183,6 +183,19 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         if (hostInventory instanceof TileEntityStorage && ((TileEntityStorage) hostInventory).assemblyTableTier >= 0) {
             this.detectAndSendChanges();
         }
+
+        /*
+        switch (clickType){
+            case PICKUP: {clickTypeIn=0; break;}//normal pickup and put down
+            case QUICK_MOVE: {clickTypeIn=1; break;}//shift click
+            case SWAP: {clickTypeIn=2; break;}//how does this work?
+            case CLONE: {clickTypeIn=3; break;}//middle mouse button
+            case THROW: {clickTypeIn=4; break;}//click outside GUI
+            case QUICK_CRAFT: {clickTypeIn=5; break;}//click and drag?
+            case PICKUP_ALL: {clickTypeIn=6; break;}//double-click item to pickup all
+        }
+         */
+
         if (clickTypeIn == 4){
             clickTypeIn = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 ://cover shift click
                     player.inventory.getItemStack() != ItemStack.EMPTY ? 4 : //cover if the cursor is carrying an item
