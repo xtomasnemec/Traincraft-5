@@ -106,10 +106,6 @@ public class JsonRecipeHelper {
         }
         //Item item = GameData.getItemRegistry().getObject(itemString); //1.7.10 version
 
-        if(item==null){
-            item= Item.getItemFromBlock(GameData.getBlockRegistry().getObject(itemString));
-        }
-
         if (item == null) {
             throw new JsonSyntaxException("Unknown item '" + itemString + "'");
         } else if (item.getHasSubtypes() && !json.has("data")) {
