@@ -30,7 +30,7 @@ public class ModelGP40 extends ModelConverter //Same as Filename
 
 	public ModelGP40() //Same as Filename
 	{
-		bodyModel = new ModelRendererTurbo[544];
+		bodyModel = new ModelRendererTurbo[550];
 
 		initbodyModel_1();
 		initbodyModel_2();
@@ -2116,6 +2116,12 @@ public class ModelGP40 extends ModelConverter //Same as Filename
 		bodyModel[541] = new ModelRendererTurbo(this, 14, 128, textureX, textureY); // Box 541
 		bodyModel[542] = new ModelRendererTurbo(this, 370, 161, textureX, textureY); // Box 542
 		bodyModel[543] = new ModelRendererTurbo(this, 404, 161, textureX, textureY); // Box 543
+		bodyModel[544] = new ModelRendererTurbo(this, 237, 56, textureX, textureY, "cull"); // Box 389 support cull
+		bodyModel[545] = new ModelRendererTurbo(this, 246, 56, textureX, textureY, "cull"); // Box 356 support cull
+		bodyModel[546] = new ModelRendererTurbo(this, 248, 53, textureX, textureY); // Box 409 commander base
+		bodyModel[547] = new ModelRendererTurbo(this, 248, 49, textureX, textureY, "lamp"); // Box 410 commander beacon
+		bodyModel[548] = new ModelRendererTurbo(this, 239, 53, textureX, textureY); // Box 409 commander base
+		bodyModel[549] = new ModelRendererTurbo(this, 239, 49, textureX, textureY, "lamp"); // Box 410 commander beacon
 
 		bodyModel[500].addShapeBox(0F, 0F, 0F, 4, 0, 2, 0F,0F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F); // Box 272
 		bodyModel[500].setRotationPoint(-40F, 8F, -11F);
@@ -2253,13 +2259,32 @@ public class ModelGP40 extends ModelConverter //Same as Filename
 
 		bodyModel[543].addShapeBox(0F, 0F, 0F, 0, 3, 1, 0F,0F, 0F, 1.5F, 0F, 0F, 1.5F, 0F, 0F, -1.5F, 0F, 0F, -1.5F, 0F, 0F, 0.5F, 0F, 0F, 0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.5F); // Box 543
 		bodyModel[543].setRotationPoint(36F, -3F, 10.5F);
+		
+		bodyModel[544].addBox(0F, 0F, 0F, 2, 2, 2, 0F); // Box 389 support cull
+		bodyModel[544].setRotationPoint(-25.5F, -21.5F, -9F);
+
+		bodyModel[545].addBox(0F, 0F, 0F, 2, 2, 2, 0F); // Box 356 support cull
+		bodyModel[545].setRotationPoint(-25.5F, -21.5F, 7F);
+
+		bodyModel[546].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0.1F, -0.5F, 0.1F, 0.1F, -0.5F, 0.1F, 0.1F, -0.5F, 0.1F, 0.1F, -0.5F, 0.1F, 0.1F, 0F, 0.1F, 0.1F, 0F, 0.1F, 0.1F, 0F, 0.1F, 0.1F, 0F, 0.1F); // Box 409 commander base
+		bodyModel[546].setRotationPoint(-25F, -22.5F, 7.5F);
+
+		bodyModel[547].addShapeBox(0F, 0F, 0F, 1, 2, 1, 0F,0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F); // Box 410 commander beacon
+		bodyModel[547].setRotationPoint(-25F, -23.5F, 7.5F);
+
+		bodyModel[548].addShapeBox(0F, 0F, 0F, 1, 1, 1, 0F,0.1F, -0.5F, 0.1F, 0.1F, -0.5F, 0.1F, 0.1F, -0.5F, 0.1F, 0.1F, -0.5F, 0.1F, 0.1F, 0F, 0.1F, 0.1F, 0F, 0.1F, 0.1F, 0F, 0.1F, 0.1F, 0F, 0.1F); // Box 409 commander base
+		bodyModel[548].setRotationPoint(-25F, -22.5F, -8.5F);
+
+		bodyModel[549].addShapeBox(0F, 0F, 0F, 1, 2, 1, 0F,0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, 0F); // Box 410 commander beacon
+		bodyModel[549].setRotationPoint(-25F, -23.5F, -8.5F);
+
 	}
 	ModelBlombergBnew theBlombi = new ModelBlombergBnew();
 	ModelTypeBnew theB = new ModelTypeBnew();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		for (int i = 0; i < 544; i++) {
+		for (int i = 0; i < 550; i++) {
 			if (bodyModel[i].boxName != null && bodyModel[i].boxName.contains("lamp")) {
 				Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 				bodyModel[i].render(f5);

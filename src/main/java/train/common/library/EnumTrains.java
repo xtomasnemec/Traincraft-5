@@ -283,7 +283,7 @@ public enum EnumTrains {
 	GP38dash2("GP38dash2", DieselGP38dash2.class, ItemIDs.minecartGP38dash2.item, "diesel", 2000, 105, 0, 25, 0, 180, 0.75, 0.9, 20000, TraincraftUtil.getBytesFromColors(new  String[] {"Cyan", "Green", "LightGrey", "Red", "Blue", "Yellow", "Orange", "Grey", "Black", "Pink", "Lime", "Skin16"}), 10, -3.1),
 	GP38dash9W("GP38dash9W", DieselGP38dash9W.class, ItemIDs.minecartGP38dash9W.item, "diesel", 2000, 105, 0, 45, 0, 185, 0.75, 0.8, 10000, null, 10, -3.2),
 	GP38H3("GP38H3", DieselGP38H3.class, ItemIDs.minecartGP38h3.item, "diesel", 2000, 169, 0, 25, 0, 160, 0.75, 0.7, 16000, TraincraftUtil.getBytesFromColors(new  String[] {"White", "Blue"}), 10, -3.25),
-	GP38("GP38", DieselGP38.class, ItemIDs.minecartGP38.item, "diesel", 2300, 105, 0, 25, 0, 180, 0.75, 0.9, 20000, TraincraftUtil.getBytesFromColors(new  String[] {"Yellow","Grey", "Green", "Skin16", "Cyan"}), 10, -2.9),
+	GP38("GP38", DieselGP38.class, ItemIDs.minecartGP38.item, "diesel", 2300, 105, 0, 25, 0, 180, 0.75, 0.9, 20000, TraincraftUtil.getBytesFromColors(new  String[] {"Yellow","Grey", "Green", "Skin16", "Cyan", "LightGrey"}), 10, -2.9),
 	GP39("GP39", DieselGP39.class, ItemIDs.minecartGP39.item, "diesel", 2300, 105, 0, 25, 0, 180, 0.75, 0.9, 20000, TraincraftUtil.getBytesFromColors(new  String[] {"Green", "Grey", "Skin16"}), 10, -2.9),
 	GP40("GP40", DieselGP40.class, ItemIDs.minecartGP40.item, "diesel", 3000, 105, 0, 25, 0, 180, 0.75, 0.9, 20000, TraincraftUtil.getBytesFromColors(new  String[] {"Grey", "Skin16"}), 10, -2.9),
 	GP40TC("GP40TC", DieselGP40TC.class, ItemIDs.minecartGP40tc.item, "diesel", 3000, 169, 0, 25, 0, 180, 0.8, 0.76, 16000, TraincraftUtil.getBytesFromColors(new  String[] {"Blue", "White"}), 10, -3.25),
