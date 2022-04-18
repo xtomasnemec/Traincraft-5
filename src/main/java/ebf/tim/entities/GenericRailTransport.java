@@ -32,6 +32,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -889,21 +890,24 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //reposition bogies to be sure they are the right distance
         if(!world.isRemote) {
 
-            float[] f = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0, rotationPitch, rotationYaw, 0);
+            //this is also handled by linking logic, if that's handling this then don't do it twice
+            if(frontLinkedID==null && backLinkedID==null) {
+                float[] f = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0, rotationPitch, rotationYaw, 0);
 
-            //can't hard clamp
-            // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
-            if(Math.abs(f[0])>0.1 || Math.abs(f[2])>0.1) {
-                frontBogie.setPositionRelative(
-                        ((f[0] + posX) - frontBogie.posX)*0.4, 0,
-                        ((f[2] + posZ) - frontBogie.posZ)*0.4);
-            }
+                //can't hard clamp
+                // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
+                if (Math.abs(f[0]) > 0.2 || Math.abs(f[2]) > 0.2) {
+                    frontBogie.setPositionRelative(
+                            ((f[0] + posX) - frontBogie.posX) * 0.4, 0,
+                            ((f[2] + posZ) - frontBogie.posZ) * 0.4);
+                }
 
-            f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw, 0);
-            if(Math.abs(f[0])>0.1 || Math.abs(f[2])>0.1) {
-                backBogie.setPositionRelative(
-                        ((f[0] + posX) - backBogie.posX)*0.4, 0,
-                        ((f[2] + posZ) - backBogie.posZ)*0.4);
+                f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw, 0);
+                if (Math.abs(f[0]) > 0.2 || Math.abs(f[2]) > 0.2) {
+                    backBogie.setPositionRelative(
+                            ((f[0] + posX) - backBogie.posX) * 0.4, 0,
+                            ((f[2] + posZ) - backBogie.posZ) * 0.4);
+                }
             }
 
             //do scaled rail boosting but keep it capped to the max velocity of the rail
@@ -1000,6 +1004,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(pullingWeight==0){
             updateConsist();
         }
+        //setDead();
 
         if(frontLinkedID==null || backLinkedID==null) {
 
@@ -1063,7 +1068,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * managing rotationYaw and rotationPitch.
      * updating rider entity positions if there is no one riding the core seat.
      * calling on link management.
-     * @see #manageLinks(GenericRailTransport, boolean)
+     * @see #manageLinks()
      * syncing the owner entity ID with client.
      * and updating the lighting block.
      */
@@ -1183,6 +1188,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
                 }
                 collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+                if(collisionHandler!=null){
+                    collisionHandler.updateCollidingEntities(this);
+                    for (Entity e : collisionHandler.collidingEntities) {
+                        manageCollision(e);
+                    }
+                    for (int[] pos : collisionHandler.collidingBlocks) {
+                        manageCollision(pos);
+                    }
+                }
                 tickOffset--;
             }
         }
@@ -1198,23 +1212,28 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
         else if (frontBogie!=null && backBogie != null && ticksExisted>0){
+
+            //update positions related to linking, this NEEDS to come after drag
+            if(getAccelerator()==0 &&(frontLinkedID != null || backLinkedID!=null)) {
+                manageLinks();
+            }
+            if(collisionHandler!=null){
+                collisionHandler.updateCollidingEntities(this);
+                for (Entity e : collisionHandler.collidingEntities) {
+                    manageCollision(e);
+                }
+                for (int[] pos : collisionHandler.collidingBlocks) {
+                    manageCollision(pos);
+                }
+            }
+
             //calculate for slopes, friction, and drag
             if (hasDrag()) {
                 applyDrag();
             }
-
-
-            if(getAccelerator()==0) {
-                //update positions related to linking, this NEEDS to come after drag
-                if (frontLinkedID != null) {
-                    manageLinks((GenericRailTransport) world.getEntityByID(frontLinkedID), true);
-                }
-                if (backLinkedID != null) {
-                    manageLinks((GenericRailTransport) world.getEntityByID(backLinkedID), false);
-                }
+            if(!(this instanceof EntityTrainCore)) {
+                updatePosition();
             }
-
-
         }
 
         //reposition the seats here to force the hand rather than relying on the update rider method
@@ -1278,119 +1297,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
 
-        //handle collisions
-        if(!world.isRemote && collisionHandler!=null){
-            for (Entity e : collisionHandler.getCollidingEntities(this)) {
-                if (e.getRidingEntity() != null) {
-                    continue;
-                }
-                if (e instanceof EntityItem) {
-                    if (getTypes()!=null &&getTypes().contains(TrainsInMotion.transportTypes.HOPPER) && this.posY > this.posY + 0.5f &&
-                            ((EntityItem) e).getItem()!=null && isItemValidForSlot(0, ((EntityItem) e).getItem())) {
-                        addItem(((EntityItem) e).getItem());
-                        world.removeEntity(e);
-                    }
-
-                } else if (e instanceof CollisionBox) {
-                    CollisionBox colliding = ((CollisionBox) e);
-                    if (colliding.host != null && colliding.host!=this && colliding.host.frontBogie != null && colliding.host.backBogie != null) {
-
-                        //calculate the distance to yeet based on how far one pushed into the other
-                        double d0 = colliding.host.posX - this.posX;
-                        double d1 = colliding.host.posZ - this.posZ;
-                        double d2 = Math.max(Math.abs(d0), Math.abs(d1));
-                        d2 = Math.sqrt(d2 * 0.0625)*0.01;
-                        d0 *= d2;
-                        d1 *= d2;
-                        //todo: scale by combined distance from center length of the two entities
-
-                        //if one was a train, half the yeeted value for that one, if the accelerator was not 0
-                        //    alternativley, yeet less hard, and the other _harder_ if the brake is on
-                        if(this instanceof EntityTrainCore && ((EntityTrainCore) this).accelerator!=0){
-                            backBogie.addVelocity(-d0*0.5, 0, -d1*0.5);
-                            frontBogie.addVelocity(-d0*0.5, 0, -d1*0.5);
-                        } else if(colliding.host.getBoolean(boolValues.BRAKE)) {
-                            backBogie.addVelocity(-d0*1.5, 0, -d1*1.5);
-                            frontBogie.addVelocity(-d0*1.5, 0, -d1*1.5);
-                        } else {
-                            backBogie.addVelocity(-d0, 0, -d1);
-                            frontBogie.addVelocity(-d0, 0, -d1);
-                        }
-                        if(colliding.host instanceof EntityTrainCore && ((EntityTrainCore) colliding.host).accelerator!=0){
-
-                            colliding.host.backBogie.addVelocity(d0*0.5, 0, d1*0.5);
-                            colliding.host.frontBogie.addVelocity(d0*0.5, 0, d1*0.5);
-
-                        } else if(getBoolean(boolValues.BRAKE)) {
-                            colliding.host.backBogie.addVelocity(d0*1.5, 0, d1*1.5);
-                            colliding.host.frontBogie.addVelocity(d0*1.5, 0, d1*1.5);
-                        } else {
-                            colliding.host.backBogie.addVelocity(d0, 0, d1);
-                            colliding.host.frontBogie.addVelocity(d0, 0, d1);
-                        }
-                    }
-                } else if (e instanceof EntityLiving || e instanceof EntityPlayer || e instanceof EntityMinecart) {
-                    if (e instanceof EntityPlayer && !getBoolean(boolValues.BRAKE) && getAccelerator()==0 && getVelocity()<0.1) {
-                        if  (CommonProxy.pushabletrains) {
-                            double[] motion = CommonUtil.rotatePoint(0.25,0,
-                                    CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
-                            double distance = Math.copySign(0.25,motion[0]);
-                            if(distance>0){
-                                if(frontBogie.motionX+distance>distance){
-                                    motion[0]=Math.max(0,distance-frontBogie.motionX);
-                                }
-                            } else {
-                                if(frontBogie.motionX+distance<distance){
-                                    motion[0]=Math.min(0,distance-frontBogie.motionX);
-                                }
-                            }
-                            distance = Math.copySign(0.075,motion[2]);
-                            if(distance>0){
-                                if(frontBogie.motionZ+distance>distance){
-                                    motion[2]=Math.max(0,distance-frontBogie.motionZ);
-                                }
-                            } else {
-                                if(frontBogie.motionZ+distance<distance){
-                                    motion[2]=Math.min(0,distance-frontBogie.motionZ);
-                                }
-                            }
-                            this.frontBogie.addVelocity(motion[0], 0, motion[2]);
-                            this.backBogie.addVelocity(motion[0], 0, motion[2]);
-                        }
-
-                    }
-                    //hurt entity if going fast
-                    if (getVelocity() > 0.25f) {
-                        e.attackEntityFrom(new EntityDamageSource(
-                                        this instanceof EntityTrainCore ? "Locomotive" : "rollingstock", this),
-                                getVelocity() * 0.3f);
-                    }
-                }
-            }
-
-
-            if(!(this instanceof EntityTrainCore)) {
-                updatePosition();
-            }
-        } else {
-            if (collisionHandler!=null) {
-                //apparently to push away a player it has to happen on client
-                for (Entity e : collisionHandler.getCollidingEntities(this)) {
-                    if (e instanceof EntityPlayer && !(e.getRidingEntity() instanceof EntitySeat)) {
-
-                        double d0 = e.posX - this.posX;
-                        double d1 = e.posZ - this.posZ;
-                        double d2 = Math.max(Math.abs(d0), Math.abs(d1)) * 30;
-                        if (d2 >= 0.0009D) {
-                            d0 /= d2;
-                            d1 /= d2;
-                        }
-                        e.addVelocity(d0, 0, d1);
-                    }
-                }
-            }
-        }
-        if (backBogie!=null && !isDead && world.isRemote) {
+        if (backBogie!=null && !isDead && worldObj.isRemote) {
             //handle particles
             if (ClientProxy.EnableParticles){
                 if(getParticles().size()>0) {
@@ -1406,6 +1313,82 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(!world.isRemote && ticksExisted%36000==0){
             ServerLogger.writeWagonToFolder(this);
         }
+    }
+
+    public void manageCollision(Entity e){
+
+        //on client we need to push away players.
+        if(worldObj.isRemote){
+            if (e instanceof EntityPlayer) {
+                double[] motion = CommonUtil.rotatePoint(0.025, 0,
+                        CommonUtil.atan2degreesf(e.posZ- posZ, e.posX-posX));
+                e.addVelocity(motion[0], 0.05, motion[2]);
+            }
+        } else {
+            if (e instanceof EntityItem) {
+                if (getTypes() != null && getTypes().contains(TrainsInMotion.transportTypes.HOPPER) && this.posY > this.posY + 0.5f &&
+                        ((EntityItem) e).getEntityItem() != null && isItemValidForSlot(0, ((EntityItem) e).getEntityItem())) {
+                    addItem(((EntityItem) e).getEntityItem());
+                    worldObj.removeEntity(e);
+                }
+
+            } else if (e instanceof CollisionBox) {
+                CollisionBox colliding = ((CollisionBox) e);
+
+                //calculate the distance to yeet based on how far one pushed into the other
+                double[] motion = CommonUtil.rotatePoint(
+                        Math.max(Math.abs(getVelocity()), Math.abs(colliding.host.getVelocity())),
+                        0, CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
+                motion[1]=1.0f;
+
+                //if one was a train, half the yeeted value for that one, if the accelerator was not 0
+                //    alternativley, yeet less hard, and the other _harder_ if the brake is on
+                if (this instanceof EntityTrainCore && ((EntityTrainCore) this).accelerator != 0) {
+                    motion[1]-=0.5f;
+                }
+                if (colliding.host.getBoolean(boolValues.BRAKE)) {
+                    motion[1]+=0.5f;
+                }
+                backBogie.addVelocity(-motion[0]*motion[1], 0, -motion[2]*motion[1]);
+                frontBogie.addVelocity(-motion[0]*motion[1], 0, -motion[2]*motion[1]);
+
+                motion[1]=1.0f;
+                if (colliding.host instanceof EntityTrainCore && ((EntityTrainCore) colliding.host).accelerator != 0) {
+                    motion[1]-=0.5f;
+                }
+                if (colliding.host.getBoolean(boolValues.BRAKE)) {
+                    motion[1]+=0.5f;
+                }
+                colliding.host.backBogie.addVelocity(motion[0]*motion[1], 0, motion[2]*motion[1]);
+                colliding.host.frontBogie.addVelocity(motion[0]*motion[1], 0, motion[2]*motion[1]);
+
+            } else if (e instanceof EntityPlayer || e instanceof EntityLiving) {
+                if (!getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.1) {
+                    if (CommonProxy.pushabletrains) {
+                        double[] motion = CommonUtil.rotatePoint(0.15, 0,
+                                CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
+                        this.frontBogie.minecartMove(this,motion[0],  motion[2]);
+                        this.backBogie.minecartMove(this, motion[0],  motion[2]);
+                    }
+
+                }
+
+
+                double[] motion = CommonUtil.rotatePoint(0.025, 0,
+                        CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
+                e.addVelocity(motion[0], 0.05, motion[2]);
+
+                //hurt entity if going fast
+                if (getVelocity() > 0.25f) {
+                    e.attackEntityFrom(new EntityDamageSource(
+                                    this instanceof EntityTrainCore ? "Locomotive" : "rollingstock", this),
+                            (getVelocity()) * 0.5f);
+                }
+            }
+        }
+    }
+    public void manageCollision(int[] pos){
+
     }
 
     public int getAccelerator(){return 0;}
@@ -1498,8 +1481,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * this is used to reposition the transport based on the linked transports.
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
-    public void manageLinks(GenericRailTransport linkedTransport, boolean front) {
-        if(linkedTransport==null){return;}
+    public void manageLinks() {
         //handle yaw changes for derail
         if(getBoolean(boolValues.DERAILED)) {
             if(frontLinkedID!=null && backLinkedID!=null){
@@ -1517,41 +1499,50 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
 
-        //todo: some vec2 logic could optimize this a little.
-        //set the target position
-        Vec3d point = new Vec3d(linkedTransport.posX, 0, linkedTransport.posZ);
-        if(linkedTransport.getAccelerator()==0) {
-            point.addVector(linkedTransport.motionX, 0, linkedTransport.motionZ);
+
+        //define point as center
+        Vec3d point = new Vec3d(0,0,0);
+        Entity entity;
+        //manage offset distance for front link
+        if(frontLinkedID!=null) {
+            entity=worldObj.getEntityByID(frontLinkedID);
+            if(entity instanceof GenericRailTransport) {
+                //add current position, then subtract the target's position to get the difference.
+                point.addVector(entity.posX, entity.posY, entity.posZ);
+                point.subtractVector(posX, posY, posZ);
+                point=point.subtract(CommonUtil.rotateDistance(getHitboxSize()[0]*-0.5,0, rotationYaw));
+                point=point.subtract(CommonUtil.rotateDistance(((GenericRailTransport)entity).getHitboxSize()[0]*-0.5,0, rotationYaw));
+            }
         }
-        //now subtract the current position
-        point.subtractVector(posX, 0, posZ);
-        if(getAccelerator()==0) {
-            point.subtractVector(motionX, 0, motionZ);
+        //manage offset distance for back link
+        if(backLinkedID!=null) {
+            entity=worldObj.getEntityByID(backLinkedID);
+            if(entity instanceof GenericRailTransport) {
+                //add current position, then subtract the target's position to get the difference.
+                point.addVector(entity.posX, entity.posY, entity.posZ);
+                point.subtractVector(posX, posY, posZ);
+                point=point.subtract(CommonUtil.rotateDistance(getHitboxSize()[0]*0.5,0, rotationYaw));
+                point=point.subtract(CommonUtil.rotateDistance(((GenericRailTransport)entity).getHitboxSize()[0]*0.5,0, rotationYaw));
+            }
         }
 
-        //now add the difference between the coupler offsets.
-        //this is done as other+this so we can get the angle at the hypotenuse of the right angle between the two
-        //which prevents phasing into eachother around corners.
 
-        //DebugUtil.println((Math.abs(point.xCoord)+ Math.abs(point.zCoord))-
-       //         (Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5));
+        //reposition bogies based on the new offset
+        float[] f = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0, 0, rotationYaw, 0);
 
-        double dist = Math.max(Math.abs(point.xCoord), Math.abs(point.zCoord));
+        //can't hard clamp
+        // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
+        if(Math.abs(f[0]) + Math.abs(point.xCoord)>0.2 || Math.abs(f[2]) + Math.abs(point.zCoord)>0.2) {
+            frontBogie.minecartMove(this,
+                    ((f[0] + posX+point.xCoord) - frontBogie.posX)*0.4,
+                    ((f[2] + posZ+point.zCoord) - frontBogie.posZ)*0.4);
+        }
 
-        dist -=(Math.abs(getHitboxSize()[0] + linkedTransport.getHitboxSize()[0])*0.5);
-
-        dist *=0.998;
-
-        point.xCoord = (dist *
-                Math.cos((front?rotationYaw+360:rotationYaw+180)*radianF));
-        point.zCoord = (dist *
-                Math.sin((front?rotationYaw+360:rotationYaw+180)*radianF));
-        //if(dist<0){
-            //dist+=0.0625;
-       // }
-
-        if(Math.abs(dist)>0.006 && Math.abs(dist) < 30) {
-            moveBogies(point.xCoord,point.zCoord);
+        f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, 0, rotationYaw, 0);
+        if(Math.abs(f[0]) + Math.abs(point.xCoord)>0.2 || Math.abs(f[2]) + Math.abs(point.zCoord)>0.2) {
+            backBogie.minecartMove(this,
+                    ((f[0] + posX+point.xCoord) - backBogie.posX)*0.4,
+                    ((f[2] + posZ+point.zCoord) - backBogie.posZ)*0.4);
         }
     }
 
