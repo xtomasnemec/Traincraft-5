@@ -461,6 +461,7 @@ public enum ItemIDs {
 	minecartRibbedHopper("ItemRollingStock", "ribbed_hopper", 2),
 	minecartHopper5201("ItemRollingStock", "Hopper5201", 4),
 	minecartHopper6260("ItemRollingStock", "Hopper6260", 5),
+	minecartFNCC2375Hopper("ItemRollingStock", "FNCCHopper", 3),
 
 	minecart60centerbeam("ItemRollingStock", "60centerbeam", 3),
 	minecart66centerbeam("ItemRollingStock", "66centerbeam", 3),

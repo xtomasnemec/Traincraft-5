@@ -536,6 +536,7 @@ item.tc:minecartGP9old.name=EMD GP9 (Old Model)
 item.tc:minecartFNCC60FootBulk.name=FNCC 60' Bulkhead Flat
 item.tc:minecartIngotPig.name=Molten Ingot "Pig"
 item.tc:minecartSteelSlabFlat.name=15' Steel Slab Flat
+item.tc:minecartFNCC2375Hopper.name=FNCC 2375 Cu Ft Hopper
 
 <!-- ## Achievements ## -->
 achievement.tc:engineer=Engineers clothes
@@ -1034,6 +1035,7 @@ entity.tc.GP7old.name=EMD GP7 (Old Model)
 entity.tc.FNCC60FootBulk.name=FNCC 60' Bulkhead Flat
 entity.tc.IngotPig.name=Molten Ingot Pig
 entity.tc.SteelSlabFlat.name=15' Steel Slab Flat
+entity.tc.FNCC2375Hopper.name=FNCC 2375 Cu Ft Hopper
 
 description.villager.profession.tc.station_chief=Station Chief
 tile.tc:FortyFootContainer.name= Forty Foot Container
