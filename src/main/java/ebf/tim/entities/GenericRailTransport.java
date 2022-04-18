@@ -1297,7 +1297,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
 
-        if (backBogie!=null && !isDead && worldObj.isRemote) {
+        if (backBogie!=null && !isDead && getWorld().isRemote) {
             //handle particles
             if (ClientProxy.EnableParticles){
                 if(getParticles().size()>0) {
@@ -1318,7 +1318,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void manageCollision(Entity e){
 
         //on client we need to push away players.
-        if(worldObj.isRemote){
+        if(getWorld().isRemote){
             if (e instanceof EntityPlayer) {
                 double[] motion = CommonUtil.rotatePoint(0.025, 0,
                         CommonUtil.atan2degreesf(e.posZ- posZ, e.posX-posX));
@@ -1327,9 +1327,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         } else {
             if (e instanceof EntityItem) {
                 if (getTypes() != null && getTypes().contains(TrainsInMotion.transportTypes.HOPPER) && this.posY > this.posY + 0.5f &&
-                        ((EntityItem) e).getEntityItem() != null && isItemValidForSlot(0, ((EntityItem) e).getEntityItem())) {
-                    addItem(((EntityItem) e).getEntityItem());
-                    worldObj.removeEntity(e);
+                        ((EntityItem) e).getItem() != null && isItemValidForSlot(0, ((EntityItem) e).getItem())) {
+                    addItem(((EntityItem) e).getItem());
+                    getWorld().removeEntity(e);
                 }
 
             } else if (e instanceof CollisionBox) {
@@ -1505,7 +1505,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         Entity entity;
         //manage offset distance for front link
         if(frontLinkedID!=null) {
-            entity=worldObj.getEntityByID(frontLinkedID);
+            entity=getWorld().getEntityByID(frontLinkedID);
             if(entity instanceof GenericRailTransport) {
                 //add current position, then subtract the target's position to get the difference.
                 point.addVector(entity.posX, entity.posY, entity.posZ);
@@ -1516,7 +1516,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
         //manage offset distance for back link
         if(backLinkedID!=null) {
-            entity=worldObj.getEntityByID(backLinkedID);
+            entity=getWorld().getEntityByID(backLinkedID);
             if(entity instanceof GenericRailTransport) {
                 //add current position, then subtract the target's position to get the difference.
                 point.addVector(entity.posX, entity.posY, entity.posZ);

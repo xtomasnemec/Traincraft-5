@@ -213,7 +213,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     posZ+=Math.min(0.35, moveZ);
                     velocity -= 0.35;
 
-                    if (CommonUtil.getBlockAt(worldObj, posX, posY-1,posZ) instanceof BlockAir) {
+                    if (CommonUtil.getBlockAt(world, posX, posY-1,posZ) instanceof BlockAir) {
                         posY--;
                     }
                 }
@@ -231,7 +231,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         if(railmax!=0.4f){
             velocity=Math.min(velocity,railmax);
         }
-        railMetadata = CommonUtil.getRailMeta(worldObj, this, floorX, floorY, floorZ);
+        railMetadata = CommonUtil.getRailMeta(world, this, floorX, floorY, floorZ);
         loopDirection=new double[]{velocityX,velocityZ};
         //actually move
         while (velocity>0) {

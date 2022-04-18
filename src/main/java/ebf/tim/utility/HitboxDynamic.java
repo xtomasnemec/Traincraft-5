@@ -4,11 +4,11 @@ import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ClassInheritanceMultiMap;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class HitboxDynamic {
 
     public List<Entity> collidingEntities = new ArrayList<>();
     public List<int[]> collidingBlocks = new ArrayList<>();
-    private List[] entities;
+    private ClassInheritanceMultiMap<Entity>[] entities;
     private int x,xMax,z,zMax,y,yMax;
 
     public void updateCollidingEntities(GenericRailTransport host){
@@ -81,9 +81,9 @@ public class HitboxDynamic {
 
         for (int i = x; i <= xMax; ++i) {
             for (int j = z; j <= zMax; ++j) {
-                if (host.worldObj.getChunkProvider().chunkExists(i,j)) {
-                    entities = host.worldObj.getChunkFromChunkCoords(i, j).entityLists;
-                    for (List olist: entities) {
+                if (host.getWorld().getChunkProvider().isChunkGeneratedAt(i,j)) {
+                    entities = host.getWorld().getChunk(i, j).getEntityLists();
+                    for (ClassInheritanceMultiMap<Entity> olist: entities) {
                         for(Object obj : olist) {
                             //this shouldn't be possible, but it's forge, sooooo....
                             if(!(obj instanceof Entity)){
@@ -93,7 +93,7 @@ public class HitboxDynamic {
                             //EntityFX is client only, so we _shouldn't_ have to worry about it..?
                             //we dont collide with passenger entities, we collide with the thing they are on.
                             if(obj instanceof EntitySeat || obj instanceof EntityBogie ||
-                                    obj instanceof GenericRailTransport || ((Entity) obj).ridingEntity!=null) {
+                                    obj instanceof GenericRailTransport || ((Entity) obj).isRiding()) {
                                 continue;
                             }
                             //if it's another collision box, be sure it's not the current entity or a linked one
@@ -115,13 +115,13 @@ public class HitboxDynamic {
                     }
 
                     //block collisions won't happen on client due to positioning, so there's no reason to check.
-                    if(host.worldObj.isRemote){
+                    if(host.getWorld().isRemote){
                         continue;
                     }
                     //this is basically a BlockPos for where the block is, so the entity can figure out what to do.
                     // but that's not a 1.7 thing, so we do this heresy to keep code similarities for easier porting
                     for(int k=y; k<yMax;k++) {
-                        if (!(CommonUtil.getBlockAt(host.worldObj, i, j, k) instanceof BlockAir)){
+                        if (!(CommonUtil.getBlockAt(host.getWorld(), i, j, k) instanceof BlockAir)){
                             collidingBlocks.add(new int[]{i,j,k});
                         }
                     }
