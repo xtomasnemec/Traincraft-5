@@ -468,6 +468,7 @@ public enum ItemIDs {
 	minecartGSI60FootBulkhead("ItemRollingStock", "gsi_bulky", 4),
 	minecartGSC60FootFlatcar("ItemRollingStock", "gsc_flatass", 3),
 	minecartthrall63centerbeam("ItemRollingStock", "63centerbeam", 3),
+	minecartFNCC60FootBulk("ItemRollingStock", "FNCC60FootBulk", 3),
 
 	minecartPS140("ItemRollingStock", "ps140", 3),
 	minecartPS150("ItemRollingStock", "ps150", 4),
@@ -496,6 +497,9 @@ public enum ItemIDs {
 	minecartGunderson89ftAutorack("ItemRollingStock", "gunderson_autorack", 7),
 	minecartGunderson89ftFlat("ItemRollingStock", "gunderson_flat", 2),
 	minecartStampedeRack("ItemRollingStock", "stampede", 3),
+
+	minecartIngotPig("ItemRollingStock", "pigiron", 3),
+	minecartSteelSlabFlat("ItemRollingStock", "steelflat", 3),
 
 	//pAssenger//
 	minecartPCH120Commute("ItemRollingStock", "pch120", 4),

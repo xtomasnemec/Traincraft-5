@@ -2259,7 +2259,7 @@ public class ModelGP40 extends ModelConverter //Same as Filename
 
 		bodyModel[543].addShapeBox(0F, 0F, 0F, 0, 3, 1, 0F,0F, 0F, 1.5F, 0F, 0F, 1.5F, 0F, 0F, -1.5F, 0F, 0F, -1.5F, 0F, 0F, 0.5F, 0F, 0F, 0.5F, 0F, 0F, -0.5F, 0F, 0F, -0.5F); // Box 543
 		bodyModel[543].setRotationPoint(36F, -3F, 10.5F);
-		
+
 		bodyModel[544].addBox(0F, 0F, 0F, 2, 2, 2, 0F); // Box 389 support cull
 		bodyModel[544].setRotationPoint(-25.5F, -21.5F, -9F);
 

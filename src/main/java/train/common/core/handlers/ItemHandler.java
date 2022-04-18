@@ -107,6 +107,9 @@ public class ItemHandler {
 		else if (entity instanceof OreJenny) {
 			return oreBlocks(itemstack);
 		}
+		else if (entity instanceof IngotPig) {
+			return ingotItems(itemstack);
+		}
 		else {
 			return true;
 		}
@@ -158,5 +161,22 @@ public class ItemHandler {
 			}
 		}
 		return OREDICT_ORES.contains(i.getUnlocalizedName());
+	}
+
+	private static LinkedList<String> OREDICT_INGOTS = null;
+
+	public static boolean ingotItems(ItemStack i){
+		if (OREDICT_INGOTS==null){
+			OREDICT_INGOTS = new LinkedList<>();
+		}
+		if (!OREDICT_INGOTS.contains(i.getUnlocalizedName())){
+			for(Integer ore : OreDictionary.getOreIDs(i)) {
+				if (OreDictionary.getOreName(ore).toLowerCase().startsWith("ingot")){
+					OREDICT_INGOTS.add(i.getUnlocalizedName());
+					return true;
+				}
+			}
+		}
+		return OREDICT_INGOTS.contains(i.getUnlocalizedName());
 	}
 }
