@@ -9,6 +9,7 @@ import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -93,15 +94,14 @@ public class CommonUtil {
     public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
         return getPropertyFacingInt(w.getBlockState(new BlockPos(x,y,z)), FACING);
     }
-    private static int getPropertyFacingInt(IBlockState state, PropertyEnum<?> key){
+    private static int getPropertyFacingInt(IBlockState state, IProperty<?> key){
         return state.getProperties().containsKey(key)?((EnumFacing)state.getProperties().get(key)).getIndex():0;
     }
 
     public static int getRailMeta(IBlockAccess w, EntityMinecart cart, int x, int y, int z){
-        return getPropertyShapeInt(w.getBlockState(new BlockPos(x,y,z)), BlockRail.SHAPE);
-    }
-    private static int getPropertyShapeInt(IBlockState state, PropertyEnum<?> key){
-        return state.getProperties().containsKey(key)?((BlockRailBase.EnumRailDirection)state.getProperties().get(key)).getMetadata():0;
+        return ((BlockRail)w.getBlockState(new BlockPos(x,y,z)).getBlock()).getRailDirection(
+                w,new BlockPos(x,y,z),w.getBlockState(new BlockPos(x,y,z)),cart
+        ).getMetadata();
     }
 
     public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){
@@ -550,6 +550,7 @@ public class CommonUtil {
         if (isRailBlockAt(worldObj, posX,posY,posZ) && !worldObj.isRemote) {
             //define the direction of the track
             int railMeta=CommonUtil.getRailMeta(worldObj, null,posX,posY,posZ);
+            DebugUtil.println(railMeta);
             //define the angle between the player and the track.
             // this is more reliable than player direction because player goes from -360 to 360 for no real reason.
             float rotation =atan2degreesf(posX-playerEntity.posX, posZ-playerEntity.posZ);
