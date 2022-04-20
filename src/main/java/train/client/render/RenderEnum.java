@@ -1140,7 +1140,7 @@ public enum RenderEnum {
 	GSI60FootBulkhead(GSI60FootBulkhead.class, new ModelGSI60FootBulkheadFlat(),"gsi_60bulk_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	GSC60FootFlat(GSC60FootFlat.class, new ModelGSI60FootBulkheadFlat(),"gsc_60flat_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	Thrall63centerbeam(Thrall63centerbeam.class, new Modelthrall63centerbeam(),"thrall63centerbeam_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
-	FNCC60FootBulk(FNCC60FootBulk.class, new ModelFNCC60FootBulk(),"FNCC60FootBulk_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
+	FNCC60FootBulk(FNCC60FootBulk.class, new ModelFNCC60FootBulk_fix(),"FNCC60FootBulk_", true, new float[]{0F, 0.0F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 
 	PS140(PS140.class, new ModelPS140(),"ps140_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),
 	PS150(PS150.class, new ModelPS150(),"ps150_", true, new float[]{0F, 0.15F, 0F}, new float[] { 0F, 180F, 180F }, null, "", 0, null, "", null, 0, false),

@@ -9,15 +9,12 @@
 
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
-import tmt.Tessellator;
-import train.common.api.AbstractTrains;
-import train.common.library.Info;
 
 public class ModelJT7 extends ModelConverter //Same as Filename
 {
@@ -1926,19 +1923,19 @@ public class ModelJT7 extends ModelConverter //Same as Filename
 		bodyModel[448].setRotationPoint(47F, -19F, 1F);
 
 		bodyModel[449].addBox(0F, 0F, 0F, 5, 5, 3, 0F); // Box 67
-		bodyModel[449].setRotationPoint(-34F, -12F, -2F);
+		bodyModel[449].setRotationPoint(-34F, -12F, -6F);
 
 		bodyModel[450].addBox(0F, 0F, 0F, 1, 2, 1, 0F); // Box 70
-		bodyModel[450].setRotationPoint(-35F, -15F, 1F);
+		bodyModel[450].setRotationPoint(-35F, -15F, -3F);
 
 		bodyModel[451].addBox(0F, 0F, 0F, 1, 9, 3, 0F); // Box 67
-		bodyModel[451].setRotationPoint(-29F, -16F, -2F);
+		bodyModel[451].setRotationPoint(-29F, -16F, -6F);
 
 		bodyModel[452].addShapeBox(0F, 0F, 0F, 5, 4, 3, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -1F, 0F, 0F, -1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0.5F, 0F, 0F, 0.5F); // Box 67
-		bodyModel[452].setRotationPoint(-34F, -16F, -2F);
+		bodyModel[452].setRotationPoint(-34F, -16F, -6F);
 
 		bodyModel[453].addBox(0F, 0F, 0F, 2, 6, 2, 0F); // Box 70
-		bodyModel[453].setRotationPoint(-36F, -13F, 1F);
+		bodyModel[453].setRotationPoint(-36F, -13F, -3F);
 
 		bodyModel[454].addBox(0F, 0F, 0F, 14, 5, 20, 0F); // Box 120
 		bodyModel[454].setRotationPoint(-38F, -7F, -10F);

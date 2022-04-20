@@ -1675,14 +1675,14 @@ public class ModelSD45dash2 extends ModelConverter //Same as Filename
 		bodyModel[370].setRotationPoint(-32F, -21F, 7F);
 
 		bodyModel[371].addBox(0F, 0F, 0F, 1, 9, 4, 0F); // Box 412
-		bodyModel[371].setRotationPoint(-31.5F, -13F, 3F);
+		bodyModel[371].setRotationPoint(-31.5F, -13F, -3F);
 
 		bodyModel[372].addBox(0F, 0F, 0F, 7, 8, 3, 0F); // Box 413
-		bodyModel[372].setRotationPoint(-31.6F, -12F, 1F);
+		bodyModel[372].setRotationPoint(-31.6F, -12F, -5F);
 		bodyModel[372].rotateAngleY = -0.38397244F;
 
 		bodyModel[373].addShapeBox(-1F, 0F, 0F, 11, 4, 2, 0F,0F, 0F, 0F, -5F, 0F, 0F, -5F, 0F, -0.5F, 0F, 0F, -0.5F, 0F, -2F, 0F, -5F, -2F, 0F, -5F, -2F, 0F, 0F, -2F, 0F); // Box 86
-		bodyModel[373].setRotationPoint(-30F, -14F, 1F);
+		bodyModel[373].setRotationPoint(-30F, -14F, -5F);
 		bodyModel[373].rotateAngleY = -0.38397244F;
 
 		bodyModel[374].addShapeBox(0F, 0F, 0F, 6, 5, 5, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -2.5F, 0F, 0F, -2.5F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, -2.5F, 0F, 0F, -2.5F); // Box 3 cull aww

@@ -33,7 +33,7 @@ public class Thrall63centerbeam extends Freight implements IInventory {
     }
 
     public void initFreightCart() {
-        numFreightSlots = 6;
+        numFreightSlots = 5;
         freightInventorySize = trainSpec.getCargoCapacity();
         cargoItems = new ItemStack[freightInventorySize];
     }

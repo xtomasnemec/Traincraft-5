@@ -1854,15 +1854,15 @@ public class ModelCF7angle2 extends ModelConverter //Same as Filename
 		bodyModel[429].setRotationPoint(-26F, -25F, 0F);
 
 		bodyModel[430].addBox(0.5F, 0F, 0.5F, 4, 9, 3, 0F); // Box 412 cs1
-		bodyModel[430].setRotationPoint(-20F, -14F, 0F);
+		bodyModel[430].setRotationPoint(-20F, -14F, -7F);
 		bodyModel[430].rotateAngleY = -0.26179939F;
 
 		bodyModel[431].addBox(0F, 0F, 0F, 6, 7, 3, 0F); // Box 413 cs1
-		bodyModel[431].setRotationPoint(-25.1F, -12F, 4F);
+		bodyModel[431].setRotationPoint(-25.1F, -12F, -3F);
 		bodyModel[431].rotateAngleY = -0.59341195F;
 
 		bodyModel[432].addShapeBox(0F, 0F, 0F, 12, 4, 1, 0F,0F, 0F, 0F, -6F, 0F, 0F, -6F, 0F, 0.5F, 0F, 0F, 0.5F, 0F, -2F, 0F, -6F, -2F, 0F, -6F, -2F, 0.5F, 0F, -2F, 0.5F); // Box 86 cs1
-		bodyModel[432].setRotationPoint(-25.1F, -14F, 4F);
+		bodyModel[432].setRotationPoint(-25.1F, -14F, -3F);
 		bodyModel[432].rotateAngleY = -0.59341195F;
 
 		bodyModel[433].addBox(0F, 0F, 0F, 3, 7, 0, 0F); // Box 461 nose stairs hand rail inside your ass
@@ -1881,31 +1881,31 @@ public class ModelCF7angle2 extends ModelConverter //Same as Filename
 		bodyModel[437].setRotationPoint(-28F, -25.5F, -0.5F);
 
 		bodyModel[438].addShapeBox(0F, 0F, 0F, 1, 2, 1, 0F,-0.2F, 0F, -0.2F, -0.2F, 0F, -0.2F, -0.2F, 0F, -0.1F, -0.2F, 0F, -0.1F, -0.2F, 0F, -0.2F, -0.2F, 0F, -0.2F, -0.2F, 0F, -0.1F, -0.2F, 0F, -0.1F); // Box 131 cs2
-		bodyModel[438].setRotationPoint(-24F, -12F, 8.5F);
+		bodyModel[438].setRotationPoint(-24F, -12F, 1.5F);
 
 		bodyModel[439].addShapeBox(0F, 0F, 0F, 2, 5, 2, 0F,-0.2F, 0F, -0.2F, -0.1F, 0F, -0.2F, -0.1F, 0F, -0.2F, -0.2F, 0F, -0.2F, -0.2F, 0.5F, -0.2F, -0.1F, 0.5F, -0.2F, -0.1F, 0.5F, -0.2F, -0.2F, 0.5F, -0.2F); // Box 131 cs2
-		bodyModel[439].setRotationPoint(-24.5F, -10F, 8F);
+		bodyModel[439].setRotationPoint(-24.5F, -10F, 1F);
 
 		bodyModel[440].addShapeBox(0F, 0F, 0F, 1, 7, 1, 0F,0F, 0F, 1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F); // Box 131 cs2
-		bodyModel[440].setRotationPoint(-21F, -12F, 2F);
+		bodyModel[440].setRotationPoint(-21F, -12F, -5F);
 
 		bodyModel[441].addShapeBox(0F, 0F, 0F, 1, 7, 3, 0F,0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F); // Box 131 cs2
-		bodyModel[441].setRotationPoint(-22F, -12F, 1F);
+		bodyModel[441].setRotationPoint(-22F, -12F, -6F);
 
 		bodyModel[442].addShapeBox(0F, 0F, 0F, 1, 7, 1, 0F,0F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 1F, 0F, 0F, 0F); // Box 131 cs2
-		bodyModel[442].setRotationPoint(-23F, -12F, 2F);
+		bodyModel[442].setRotationPoint(-23F, -12F, -5F);
 
 		bodyModel[443].addShapeBox(0F, 0F, 0F, 2, 2, 2, 0F,0.15F, -0.75F, -1F, -1F, -0.75F, 0.15F, 0.15F, -0.75F, -1F, -1F, -0.75F, 0.15F, 0.15F, 0F, -1F, -1F, 0F, 0.15F, 0.15F, 0F, -1F, -1F, 0F, 0.15F); // Box 131 cs2
-		bodyModel[443].setRotationPoint(-22.5F, -14F, 1.5F);
+		bodyModel[443].setRotationPoint(-22.5F, -14F, -5.5F);
 
 		bodyModel[444].addShapeBox(0F, 0F, 0F, 2, 4, 1, 0F,-0.5F, 0F, -1.25F, -1.5F, 0F, 0.25F, -0.25F, 0F, -1.25F, -1.25F, 0F, 0.25F, -0.5F, 0F, -1.25F, -1.5F, 0F, 0.25F, -0.25F, 0F, -1.25F, -1.25F, 0F, 0.25F); // Box 131 cs2
-		bodyModel[444].setRotationPoint(-25.5F, -14.5F, 5.75F);
+		bodyModel[444].setRotationPoint(-25.5F, -14.5F, -1.25F);
 
 		bodyModel[445].addBox(0F, 0F, 0F, 2, 3, 2, 0F); // Box 360 cs2
-		bodyModel[445].setRotationPoint(-25F, -9.3F, 4.5F);
+		bodyModel[445].setRotationPoint(-25F, -9.3F, -2.5F);
 
 		bodyModel[446].addShapeBox(0.5F, 0F, 0.5F, 4, 2, 3, 0F,0F, 0F, -0.25F, -0.25F, 0F, -0.25F, -0.25F, 0F, -0.25F, 0F, 0F, -0.25F, 0F, 0F, -0.25F, -0.25F, 0F, -0.25F, -0.25F, 0F, -0.25F, 0F, 0F, -0.25F); // Box 476 cs1 radio
-		bodyModel[446].setRotationPoint(-20F, -16F, 0F);
+		bodyModel[446].setRotationPoint(-20F, -16F, -7F);
 		bodyModel[446].rotateAngleY = -0.26179939F;
 
 		bodyModel[447].addBox(0F, 0F, 0F, 1, 1, 1, 0F); // Box 478

@@ -1046,6 +1046,7 @@ public class Modelthrall63centerbeam extends ModelConverter //Same as Filename
 	Model70TonTruck2 bogie = new Model70TonTruck2();
 	Modelthrall63tiedownsA tiedownsA = new Modelthrall63tiedownsA();
 	Modelthrall63tiedownsB tiedownsB = new Modelthrall63tiedownsB();
+	Modelthrall63tiedownsLoaded tiedownsL = new Modelthrall63tiedownsLoaded();
 	Modelwrappedwood load1 = new Modelwrappedwood();
 	ModelWrappedWoodDeluxe1 wood1 = new ModelWrappedWoodDeluxe1();
 	ModelWrappedWoodDeluxe5 wood5 = new ModelWrappedWoodDeluxe5();
@@ -1055,7 +1056,7 @@ public class Modelthrall63centerbeam extends ModelConverter //Same as Filename
 			"tile.wood.birch","tile.wood.jungle",
 			"tile.wood.acacia","tile.wood.big_oak",
 			"tile.widePlank3_", "tile.widePlank2_",
-			"tile.widePlank_"});
+			"tile.widePlank_", "tile.logs3.redwoodWood"});
 
 
 	@Override
@@ -1075,8 +1076,9 @@ public class Modelthrall63centerbeam extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 
-		for (ItemStack item : freight.cargoItems) {
-			if(freight.getAmmountOfCargo() == 0) {
+		int cargo = ((Freight) entity).getAmmountOfCargo();
+		//for (ItemStack item : freight.cargoItems) {
+			if (cargo == 0) {
 				Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/thrall63footcenterbeam_tiedowns.png"));
 				tiedownsA.render(entity,f,f1,f2,f3,f4,f5);
 
@@ -1095,19 +1097,207 @@ public class Modelthrall63centerbeam extends ModelConverter //Same as Filename
 					}
 				}*/
 
-			} else if (freight.getAmmountOfCargo() <= 9 && item!=null /*&& planks.contains(item.getUnlocalizedName())*/){
-
-				Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/wrappedwood_washaska.png"));
-				GL11.glPushMatrix();//side a1
-				GL11.glTranslated(-2.65f,-0.1,-0.4);
-				load1.render(entity,f,f1,f2,f3,f4,f5);
-				GL11.glTranslated(1.062f,-0.0,-0.0);
-				load1.render(entity,f,f1,f2,f3,f4,f5);
+			} else if (cargo <= 9 /*&& item!=null && planks.contains(item.getUnlocalizedName())*/){
+				 if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==16){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Washaska_Straps.png"));
+				 } else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 0) {
+					 Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Tolko_Straps.png"));
+				 } else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2) {
+					 Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Canfor_Straps.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Blank_Straps.png"));
+				}
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
 				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+			}else if(cargo<=18 && cargo>9) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==16){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Washaska_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 0) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Tolko_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Canfor_Straps.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Blank_Straps.png"));
+				}
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.78,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.78,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}else if(cargo<=27 && cargo>18) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==16){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Washaska_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 0) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Tolko_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Canfor_Straps.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Blank_Straps.png"));
+				}
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.78,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.78,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-1.09,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-1.09,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}else if(cargo<=36 && cargo>27) {
+				if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==16){
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Washaska_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 0) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Tolko_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Canfor_Straps.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Blank_Straps.png"));
+				}
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.47,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.78,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-0.78,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-1.09,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-1.09,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-1.4,-0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f,-1.4,0.4);
+				wood5.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}else {
+				if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 16) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Washaska_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 0) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Tolko_Straps.png"));
+				} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2) {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Canfor_Straps.png"));
+				} else {
+					Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/WrappedWood2_Blank_Straps.png"));
+				}
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -0.47, -0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -0.47, 0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -0.78, -0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -0.78, 0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -1.09, -0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -1.09, 0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -1.4, -0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -1.4, 0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -1.71, -0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0f, -1.71, 0.4);
+				wood5.render(entity, f, f1, f2, f3, f4, f5);
+				GL11.glPopMatrix();
+
+				Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/thrall63footcenterbeam_tiedowns.png"));
+				tiedownsL.render(entity,f,f1,f2,f3,f4,f5);
 			}
-		}
-
-
+		//}
 
 		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==324){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Black.png"));
