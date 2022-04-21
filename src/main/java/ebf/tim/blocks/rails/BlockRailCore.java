@@ -153,7 +153,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
         if (cart == null || cart.getEntityData() == null){
                 return EnumRailDirection.byMetadata(meta);
-            }
+        }
         //first be sure the key exists, and create it if it doesn't, that way we be sure we don't crash. Also if it doesn't exist we can just return the base meta unchanged.
         if (!cart.getEntityData().hasKey("tim.lastusedrail.meta")){
             cart.getEntityData().setInteger("tim.lastusedrail.meta",meta);

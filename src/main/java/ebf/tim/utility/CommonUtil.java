@@ -99,9 +99,9 @@ public class CommonUtil {
     }
 
     public static int getRailMeta(IBlockAccess w, EntityMinecart cart, int x, int y, int z){
-        return ((BlockRail)w.getBlockState(new BlockPos(x,y,z)).getBlock()).getRailDirection(
+        return w.getBlockState(new BlockPos(x,y,z)).getBlock() instanceof BlockRail?((BlockRail)w.getBlockState(new BlockPos(x,y,z)).getBlock()).getRailDirection(
                 w,new BlockPos(x,y,z),w.getBlockState(new BlockPos(x,y,z)),cart
-        ).getMetadata();
+        ).getMetadata():0;
     }
 
     public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){
