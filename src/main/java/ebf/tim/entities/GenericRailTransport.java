@@ -335,6 +335,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
             }
         }
+        //EntityTrainCore has it's own tanker management because fuel slots.
+        //todo: i really didnt think out function slot IDs....
+        if(!(this instanceof EntityTrainCore)){
+            inventory.add(tankerInputSlot());
+            inventory.add(tankerOutputSlot());
+        }
     }
 
     public ItemStackSlot fuelSlot(){
