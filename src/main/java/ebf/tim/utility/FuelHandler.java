@@ -391,17 +391,17 @@ public class FuelHandler{
 				//if there's an inventory, add the empty bucket, otherwise drop it on the nearest player, if no near player, drop on self
 				//todo: a generic add-or-drop method to the inventory would probably be good.
 				if(transport.getInventoryRows()>0) {
-					transport.addItem(FluidContainerRegistry.drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
+					transport.addItem(drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
 				} else {
-					EntityItem e = new EntityItem(transport.worldObj);
-					e.setEntityItemStack(FluidContainerRegistry.drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
-					EntityPlayer player = e.worldObj.getClosestPlayerToEntity(transport,16);
+					EntityItem e = new EntityItem(transport.world);
+					e.setItem(drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
+					EntityPlayer player = e.world.getClosestPlayerToEntity(transport,16);
 					if(player!=null) {
 						e.setPosition(player.posX, player.posY + 0.5, player.posZ);
 					} else {
 						e.setPosition(e.posX, e.posY + 0.5, e.posZ);
 					}
-					transport.worldObj.spawnEntityInWorld(e);
+					transport.world.spawnEntity(e);
 				}
 				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrStackSize(1);
 			}
@@ -416,25 +416,25 @@ public class FuelHandler{
 
 					//if there's an inventory, add the empty bucket, otherwise drop it on the nearest player, if no near player, drop on self
 					if(transport.getInventoryRows()>0) {
-						transport.addItem(FluidContainerRegistry.fillFluidContainer(
-								new FluidStack(transport.entityData.getFluidStack("tanks." + i).fluid, 1000)
+						transport.addItem(fillFluidContainer(
+								new FluidStack(transport.entityData.getFluidStack("tanks." + i).getFluid(), 1000)
 								, transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()));
 					} else {
-						EntityItem e = new EntityItem(transport.worldObj);
-						e.setEntityItemStack(
-								FluidContainerRegistry.fillFluidContainer(new FluidStack(transport.entityData.getFluidStack("tanks." + i).fluid, 1000),
+						EntityItem e = new EntityItem(transport.world);
+						e.setItem(
+								fillFluidContainer(new FluidStack(transport.entityData.getFluidStack("tanks." + i).getFluid(), 1000),
 										transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).getStack()));
-						EntityPlayer player = e.worldObj.getClosestPlayerToEntity(transport,16);
+						EntityPlayer player = e.world.getClosestPlayerToEntity(transport,16);
 						if(player!=null) {
 							e.setPosition(player.posX, player.posY + 0.5, player.posZ);
 						} else {
 							e.setPosition(e.posX, e.posY + 0.5, e.posZ);
 						}
-						transport.worldObj.spawnEntityInWorld(e);
+						transport.world.spawnEntity(e);
 					}
 
 					if(!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-						transport.drain(null, 1000, true);
+						transport.drain(1000, true);
 						transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID()).decrStackSize(1);
 					}
 					return;
