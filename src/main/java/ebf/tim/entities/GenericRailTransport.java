@@ -360,7 +360,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
         //EntityTrainCore has it's own tanker management because fuel slots.
         //todo: i really didnt think out function slot IDs....
-        if(!(this instanceof EntityTrainCore)){
+        if(getTypes().contains(TANKER)){
             inventory.add(tankerInputSlot());
             inventory.add(tankerOutputSlot());
         }
@@ -2012,11 +2012,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         FluidStack stack;
         for(int i=0;i<getTankCapacity().length;i++) {
             stack=entityData.getFluidStack("tanks."+i);
-            if (stack.amount > 0 && (stack.getFluid()==TiMFluids.nullFluid || stack.getFluid() == resource.getFluid())) {
+            if (stack.amount > 0 && (resource.getFluid()==TiMFluids.nullFluid || stack.getFluid() == resource.getFluid())) {
                 if(leftoverDrain>stack.amount){
                     leftoverDrain-=stack.amount;
                     if(doDrain){
-                        entityData.putFluidStack("tanks."+i,new FluidStack(TiMFluids.nullFluid,0));
+                        entityData.putFluidStack("tanks."+i,new FluidStack(stack.getFluid(),0));
                         markDirty();
                     }
                 } else {
@@ -2370,7 +2370,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * you may also leave it empty if you don't plan to use it.
      * for more detail on implementing custom versions, take a look at the existing ones, for example:
      * @see FuelHandler#manageSteam(EntityTrainCore) for an example*/
-    public void manageFuel(){}
+    public void manageFuel(){
+        if(getTypes().contains(TANKER)){
+            FuelHandler.manageTanker(this);
+        }
+    }
 
     /** returns the max fuel.
      * for steam trains this is cubic meters of the firebox size. (1.5 on average)
