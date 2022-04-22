@@ -89,11 +89,8 @@ public class EntityTrainCore extends GenericRailTransport {
         inventory.add(fuelSlot());
 
         //see super method's to-do
-        if(getTypes().contains(STEAM) && getTankCapacity().length>1){
+        if(getTypes().contains(STEAM)){
             inventory.add(waterSlot());
-        } else {
-            inventory.add(tankerInputSlot());
-            inventory.add(tankerOutputSlot());
         }
     }
 
