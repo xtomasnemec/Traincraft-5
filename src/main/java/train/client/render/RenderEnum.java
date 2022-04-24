@@ -816,6 +816,9 @@ public enum RenderEnum {
 			add(new double[]{1.25D, 1.35D, 0.0D});
 		}
 	}, "", null, 0, false),
+	GP7f( DieselGP7f.class,  new ModelGP7newer(), "gp7f_", true,new float[] {-0F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 2,  new ArrayList<double[]>() {
+		{ }
+	}, "", null, 0, false),
 	GP9( DieselGP9.class,  new ModelGP7newer(), "gp9_", true,new float[] {-1.5F, -0.05F, 0F},  new float[] { 0F, 180F, 180F }, null, "smoke", 5,  new ArrayList<double[]>() {
 		{ }
 	}, "", null, 0, false),

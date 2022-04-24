@@ -4,8 +4,10 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import train.common.Traincraft;
 import train.common.api.EntityRollingStock;
 import train.common.api.IPassenger;
+import train.common.library.GuiIDs;
 
 public class HBC1Cboose extends EntityRollingStock implements IPassenger {
     public HBC1Cboose(World world) {
@@ -53,6 +55,19 @@ public class HBC1Cboose extends EntityRollingStock implements IPassenger {
             }
         }
         return true;
+    }
+
+    @Override
+    public void pressKey(int i) {
+        if(locked && riddenByEntity != null && riddenByEntity instanceof EntityPlayer&& !((EntityPlayer)riddenByEntity).getDisplayName().toLowerCase().equals(this.trainOwner.toLowerCase())){
+            return;
+        }
+        if (i == 7 && riddenByEntity != null && riddenByEntity instanceof EntityPlayer) {
+            ((EntityPlayer) riddenByEntity).openGui(Traincraft.instance, GuiIDs.CRAFTING_CART, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
+        }
+        if (i == 9 && riddenByEntity != null && riddenByEntity instanceof EntityPlayer) {
+            ((EntityPlayer) riddenByEntity).openGui(Traincraft.instance, GuiIDs.FURNACE_CART, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
+        }
     }
 
     @Override

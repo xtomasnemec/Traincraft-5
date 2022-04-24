@@ -355,6 +355,7 @@ public enum ItemIDs {
 	minecartGP7("ItemRollingStock", "gp7", 3),
 	minecartGP7b("ItemRollingStock", "gp7b", 3),
 	minecartGP7u("ItemRollingStock", "gp7u", 3),
+	minecartGP7f("ItemRollingStock", "gp7f", 3),
 	minecartGP9("ItemRollingStock", "gp9", 3),
 	minecartGP7old("ItemRollingStock", "gp7old", 3),
 	minecartGP9old("ItemRollingStock", "gp9old", 3),
