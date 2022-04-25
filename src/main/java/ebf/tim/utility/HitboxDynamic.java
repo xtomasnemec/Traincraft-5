@@ -109,7 +109,7 @@ public class HitboxDynamic {
                             }
 
                             if(containsEntity((Entity) obj)){
-                                collidingEntities.add((Entity)obj);
+                                this.collidingEntities.add((Entity)obj);
                             }
                         }
                     }

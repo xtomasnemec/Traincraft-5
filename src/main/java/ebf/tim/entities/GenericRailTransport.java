@@ -958,6 +958,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
                 ticksSinceLastVelocityChange=1;
             } else {
+                motionX = (posX - prevPosX)/ticksSinceLastVelocityChange;
+                motionZ = (posZ - prevPosZ)/ticksSinceLastVelocityChange;
                 ticksSinceLastVelocityChange++;
             }
         }
@@ -1326,7 +1328,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //on client we need to push away players.
         if(getWorld().isRemote){
             if (e instanceof EntityPlayer) {
-                double[] motion = CommonUtil.rotatePoint(0.025, 0,
+                double[] motion = CommonUtil.rotatePoint(0.1, 0,
                         CommonUtil.atan2degreesf(e.posZ- posZ, e.posX-posX));
                 e.addVelocity(motion[0], 0.05, motion[2]);
             }
@@ -1341,41 +1343,57 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             } else if (e instanceof CollisionBox) {
                 CollisionBox colliding = ((CollisionBox) e);
 
+                //this is just a big mess to figure out if and which ends to couple since linking is front and back sided
+                if(getBoolean(boolValues.COUPLINGFRONT)
+                        && Math.abs(CommonUtil.atan2degreesf(posZ-e.posZ, posX-e.posX)-rotationYaw)<90){
+                    if(colliding.host.collisionHandler.interactionBoxes.get(0)==colliding &&
+                            colliding.host.getBoolean(boolValues.COUPLINGBACK)){
+
+                        colliding.host.setbackLinkedTransport(this);
+                        setFrontLinkedTransport(colliding.host);
+                        return;
+
+                    } else if(colliding.host.getBoolean(boolValues.COUPLINGFRONT)){
+                        colliding.host.setFrontLinkedTransport(this);
+                        setFrontLinkedTransport(colliding.host);
+                        return;
+                    }
+
+                } else if(getBoolean(boolValues.COUPLINGBACK)){
+                    if(colliding.host.collisionHandler.interactionBoxes.get(0)==colliding){
+                        colliding.host.setbackLinkedTransport(this);
+                        setbackLinkedTransport(colliding.host);
+                        return;
+                    } else {
+                        colliding.host.setFrontLinkedTransport(this);
+                        setbackLinkedTransport(colliding.host);
+                        return;
+                    }
+                }
+
                 //calculate the distance to yeet based on how far one pushed into the other
                 double[] motion = CommonUtil.rotatePoint(
-                        Math.max(Math.abs(getVelocity()), Math.abs(colliding.host.getVelocity())),
-                        0, CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
-                motion[1]=1.0f;
+                        Math.max(Math.abs(getVelocity()), (Math.abs(colliding.host.getVelocity()))*0.25)+0.05,
+                        0, CommonUtil.atan2degreesf(e.posZ-posZ, e.posX-posX));
 
-                //if one was a train, half the yeeted value for that one, if the accelerator was not 0
-                //    alternativley, yeet less hard, and the other _harder_ if the brake is on
-                if (this instanceof EntityTrainCore && ((EntityTrainCore) this).accelerator != 0) {
-                    motion[1]-=0.5f;
+                if (getBoolean(boolValues.BRAKE)) {
+                    moveBogies(-motion[0]*0.5,-motion[2]*0.5);
+                } else {
+                    moveBogies(-motion[0],-motion[2]);
                 }
-                if (colliding.host.getBoolean(boolValues.BRAKE)) {
-                    motion[1]+=0.5f;
-                }
-                backBogie.addVelocity(-motion[0]*motion[1], 0, -motion[2]*motion[1]);
-                frontBogie.addVelocity(-motion[0]*motion[1], 0, -motion[2]*motion[1]);
 
-                motion[1]=1.0f;
-                if (colliding.host instanceof EntityTrainCore && ((EntityTrainCore) colliding.host).accelerator != 0) {
-                    motion[1]-=0.5f;
-                }
                 if (colliding.host.getBoolean(boolValues.BRAKE)) {
-                    motion[1]+=0.5f;
+                    colliding.host.moveBogies(motion[0]*0.5,motion[2]*0.5);
+                } else {
+                    colliding.host.moveBogies(motion[0],motion[2]);
                 }
-                colliding.host.backBogie.addVelocity(motion[0]*motion[1], 0, motion[2]*motion[1]);
-                colliding.host.frontBogie.addVelocity(motion[0]*motion[1], 0, motion[2]*motion[1]);
 
             } else if (e instanceof EntityPlayer || e instanceof EntityLiving) {
-                if (!getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.1) {
-                    if (CommonProxy.pushabletrains) {
-                        double[] motion = CommonUtil.rotatePoint(0.15, 0,
-                                CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
-                        this.frontBogie.minecartMove(this,motion[0],  motion[2]);
-                        this.backBogie.minecartMove(this, motion[0],  motion[2]);
-                    }
+                if (CommonProxy.pushabletrains &&
+                        !getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.5) {
+                    double[] motion = CommonUtil.rotatePoint(0.25, 0,
+                            CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
+                    moveBogies(motion[0], motion[2]);
 
                 }
 
@@ -1399,6 +1417,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public int getAccelerator(){return 0;}
 
+    public void setFrontLinkedTransport(GenericRailTransport other){
+        frontLinkedID=other.getEntityId();
+        frontLinkedTransport=other.entityUniqueID;
+        setBoolean(boolValues.COUPLINGFRONT, false);
+    }
+
+    public void setbackLinkedTransport(GenericRailTransport other){
+        backLinkedID=other.getEntityId();
+        backLinkedTransport=other.entityUniqueID;
+        setBoolean(boolValues.COUPLINGBACK, false);
+    }
 
     /**
      * iterates all the links to check if the stock has a train
