@@ -6,7 +6,6 @@ import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -109,7 +108,7 @@ public class HitboxDynamic {
                             }
 
                             if(containsEntity((Entity) obj)){
-                                collidingEntities.add((Entity)obj);
+                                this.collidingEntities.add((Entity)obj);
                             }
                         }
                     }
