@@ -10,6 +10,7 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 
+import com.jcirmodelsquad.tcjcir.models.loads.ModelMixedLogs;
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruck2;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +19,7 @@ import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
 import train.common.api.AbstractTrains;
+import train.common.api.Freight;
 import train.common.library.Info;
 
 public class ModelFNCC60FootBulk_fix extends ModelConverter //Same as Filename
@@ -540,6 +542,8 @@ public class ModelFNCC60FootBulk_fix extends ModelConverter //Same as Filename
 		bodyModel[119].setRotationPoint(39.5F, -19F, -11F);
 	}
 	Model70TonTruck2 bogie2 = new Model70TonTruck2();
+	ModelMixedLogs sticks = new ModelMixedLogs();
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -551,6 +555,29 @@ public class ModelFNCC60FootBulk_fix extends ModelConverter //Same as Filename
 			} else {
 				bodyModel[i].render(f5);
 			}
+		int cargo = ((Freight) entity).getAmmountOfCargo();
+		if (cargo > 0) {
+			if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==2){
+				Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/loads/MixedLogs_Spruce.png"));
+				GL11.glPushMatrix();
+				GL11.glTranslated(-0.5,-0.0,-0.1);
+				sticks.render(entity,f,f1,f2,f3,f4,f5);
+
+				GL11.glTranslated(1,-0.05,0.25);
+				sticks.render(entity,f,f1,f2,f3,f4,f5);
+
+				GL11.glTranslated(-1.1,-0.25,-0.05);
+				sticks.render(entity,f,f1,f2,f3,f4,f5);
+
+				GL11.glTranslated(1.15,-0.25,-0.2);
+				sticks.render(entity,f,f1,f2,f3,f4,f5);
+
+				GL11.glTranslated(-1,-0.01,0.2);
+				sticks.render(entity,f,f1,f2,f3,f4,f5);
+				GL11.glPopMatrix();
+			}
+		}
+
 		if(entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor()==18900){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/70Ton_Black.png"));
 		} else {

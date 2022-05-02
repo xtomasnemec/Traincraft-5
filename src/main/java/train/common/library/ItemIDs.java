@@ -345,6 +345,7 @@ public enum ItemIDs {
 	minecartF7B("ItemRollingStock", "f7b", 5),
 	minecartCF7angle("ItemRollingStock", "cf7angle", 3),
 	minecartCF7round("ItemRollingStock", "cf7round", 3),
+	minecartCF7angle2("ItemRollingStock", "cf7dbrr", 2),
 	minecartF40PH("ItemRollingStock", "f40ph", 5),
 
 	minecartE8A( "ItemRollingStock", "e8a", 5),
