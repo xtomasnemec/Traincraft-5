@@ -100,9 +100,14 @@ public class HitboxDynamic {
                                 if(((CollisionBox) obj).host==null){
                                     continue;
                                 }
-                                Integer id = ((CollisionBox) obj).host.getEntityId();
-                                if(id.equals(host.getEntityId())
-                                        || id.equals(host.frontLinkedID) || id.equals(host.backLinkedID)){
+
+
+                                //make sure not to interact with own consist.
+                                //we have to check against front and back link on top of entire consist,
+                                //    in case entire consist hasn't updated just yet
+                                if((host.frontLinkedID!=null && host.frontLinkedID==((CollisionBox) obj).host.getEntityId()) ||
+                                        (host.backLinkedID!=null && host.backLinkedID==((CollisionBox) obj).host.getEntityId())||
+                                        host.getConsist().contains(((CollisionBox) obj).host)){
                                     continue;
                                 }
                             }

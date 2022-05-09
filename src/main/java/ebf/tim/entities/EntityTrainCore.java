@@ -1,5 +1,6 @@
 package ebf.tim.entities;
 
+import ebf.tim.TrainsInMotion;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
@@ -129,26 +130,22 @@ public class EntityTrainCore extends GenericRailTransport {
         }
         //scale based on power and velocity
         cachedVectors[2].xCoord=accel* (10f * (float)Math.pow(2.8f,((2.35f * (getVelocity()/getPower()))-2.35f)));
-        //add back in the speed from last tick.
-        cachedVectors[2].xCoord+=cachedVectors[2].yCoord;
+
+        //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
+        if(cachedVectors[2].yCoord!=0) {
+            cachedVectors[2].xCoord += cachedVectors[2].yCoord;
+        } else {
+            cachedVectors[2].xCoord += getVelocity()*0.99;
+        }
 
         //set the last tick speed to this speed.
         cachedVectors[2].yCoord=cachedVectors[2].xCoord;
 
         //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
-        if(CommonProxy.realSpeed){
-            //for real speed add a buff to max speed of 1.25%
-            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.01325f)*1.25f) {
-                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.01325f)*1.25f;
-            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.01325f)*1.25f) {
-                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.01325f)*1.25f;
-            }
-        } else {
-            if (cachedVectors[2].xCoord < -transportTopSpeed() * (0.277778f*0.01325f)) {
-                cachedVectors[2].xCoord = -transportTopSpeed() * (0.277778f*0.01325f);
-            } else if (cachedVectors[2].xCoord > transportTopSpeedReverse() * (0.277778f*0.01325f)) {
-                cachedVectors[2].xCoord = transportTopSpeedReverse() * (0.277778f*0.01325f);
-            }
+        if (cachedVectors[2].xCoord < -unRatio(transportTopSpeed())) {
+            cachedVectors[2].xCoord = -unRatio(transportTopSpeed());
+        } else if (cachedVectors[2].xCoord > unRatio(transportTopSpeedReverse())) {
+            cachedVectors[2].xCoord = unRatio(transportTopSpeedReverse());
         }
 
         //handle ice slipping
@@ -166,6 +163,14 @@ public class EntityTrainCore extends GenericRailTransport {
         }
 
     }
+
+    //TC4 uses this to scale movement speeds. documented as:
+    //speed *= 10;// convert in ms
+    //speed *= 6;// applying ratio
+    //speed *= 3.6;// convert in km/h
+    //unratio needs a +=1 because it always rounds down.
+    public static float ratio(float val){return  ((val*6f)*36f)* (CommonProxy.realSpeed?1.25f:1f);}
+    public static float unRatio(float val){return  (((val+1)*0.16667f)*0.027778f) * (CommonProxy.realSpeed?1.25f:1f);}
 
     /**a method to interface getting the accelerator value
      * this is intended for external use like collisions that need to see if the train is in gear from a superclass cast*/
@@ -209,8 +214,8 @@ public class EntityTrainCore extends GenericRailTransport {
                         cachedVectors[2].yCoord*=0.99f;
                     }
                     Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
-                    frontBogie.addVelocity(velocity.xCoord, 0, velocity.zCoord);
-                    backBogie.addVelocity(velocity.xCoord, 0, velocity.zCoord);
+                    frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
+                    backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
                 }
 
                 updatePosition();

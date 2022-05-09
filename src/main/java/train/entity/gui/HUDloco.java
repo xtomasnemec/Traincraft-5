@@ -65,7 +65,7 @@ public class HUDloco extends GuiScreen {
 	}
 
 	private void renderText(EntityTrainCore loco) {
-		double speed =( Math.sqrt(loco.getVelocity()) * (CommonProxy.realSpeed?120D*1.25D:120D));
+		double speed =EntityTrainCore.ratio(loco.getVelocity());
 		speed*=ClientProxy.speedInKmh?1:0.621371;
 		int h;
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
@@ -194,13 +194,13 @@ public class HUDloco extends GuiScreen {
 		 * Things are slightly different in Steam HUD
 		 */
 		//todo make dial thing aling with gearing
-		if (!(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM))) {
+		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "loco_hud_steam.png"));
-			ClientUtil.drawTexturedRect(75, windowHeight + 32 - speed, 163, 150, 30, 5);
+			ClientUtil.drawTexturedRect(75, windowHeight + 40 - speed, 163, 150, 30, 5);
 		}
 		else {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "locohud.png"));
-			ClientUtil.drawTexturedRect(84, windowHeight + 32 - speed, 177, 149, 16, 8);
+			ClientUtil.drawTexturedRect(86, windowHeight + 31 - speed, 172, 149, 16, 8);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);

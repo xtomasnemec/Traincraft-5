@@ -1298,7 +1298,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     public void manageCollision(Entity e){
-
         //on client we need to push away players.
         if(worldObj.isRemote){
             if (e instanceof EntityPlayer) {
@@ -1325,11 +1324,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                         colliding.host.setbackLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
+                        updateConsist();
                         return;
 
                     } else if(colliding.host.getBoolean(boolValues.COUPLINGFRONT)){
                         colliding.host.setFrontLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
+                        updateConsist();
                         return;
                     }
 
@@ -1337,10 +1338,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     if(colliding.host.collisionHandler.interactionBoxes.get(0)==colliding){
                         colliding.host.setbackLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
+                        updateConsist();
                         return;
                     } else {
                         colliding.host.setFrontLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
+                        updateConsist();
                         return;
                     }
                 }
@@ -1517,24 +1520,32 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(frontLinkedID!=null) {
             entity=worldObj.getEntityByID(frontLinkedID);
             if(entity instanceof GenericRailTransport) {
-                //add current position, then subtract the target's position to get the difference.
-                point.addVector(entity.posX, entity.posY, entity.posZ);
-                point.subtractVector(posX, posY, posZ);
-                point=point.subtract(CommonUtil.rotateDistance(getHitboxSize()[0]*-0.5,0, rotationYaw));
-                point=point.subtract(CommonUtil.rotateDistance(((GenericRailTransport)entity).getHitboxSize()[0]*-0.5,0, rotationYaw));
+                //get the raw distance between the two, then add the hitbox distance
+                //for some odd reason this all has to be done backwards, and that hurts my brain,
+                //    but im not arguing with success.
+                double dist = Math.abs(entity.posX - posX) + Math.abs(entity.posZ - posZ);
+
+                dist -=(getHitboxSize()[0]*0.5) + (((GenericRailTransport)entity).getHitboxSize()[0]*0.5);
+
+                point = CommonUtil.rotateDistance(-dist, 0, rotationYaw);
+
             }
         }
         //manage offset distance for back link
         if(backLinkedID!=null) {
             entity=worldObj.getEntityByID(backLinkedID);
             if(entity instanceof GenericRailTransport) {
-                //add current position, then subtract the target's position to get the difference.
-                point.addVector(entity.posX, entity.posY, entity.posZ);
-                point.subtractVector(posX, posY, posZ);
-                point=point.subtract(CommonUtil.rotateDistance(getHitboxSize()[0]*0.5,0, rotationYaw));
-                point=point.subtract(CommonUtil.rotateDistance(((GenericRailTransport)entity).getHitboxSize()[0]*0.5,0, rotationYaw));
+                //get the raw distance between the two, then add the hitbox distance
+                //for some odd reason this all has to be done backwards, and that hurts my brain,
+                //    but im not arguing with success.
+                double dist = Math.abs(entity.posX - posX) + Math.abs(entity.posZ - posZ);
+
+                dist -=(getHitboxSize()[0]*0.5) + (((GenericRailTransport)entity).getHitboxSize()[0]*0.5);
+
+                point = CommonUtil.rotateDistance(dist, 0, rotationYaw);
             }
         }
+
 
 
         //reposition bogies based on the new offset
@@ -1544,15 +1555,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
         if(Math.abs(f[0]) + Math.abs(point.xCoord)>0.2 || Math.abs(f[2]) + Math.abs(point.zCoord)>0.2) {
             frontBogie.minecartMove(this,
-                    ((f[0] + posX+point.xCoord) - frontBogie.posX)*0.4,
-                    ((f[2] + posZ+point.zCoord) - frontBogie.posZ)*0.4);
+                    ((f[0] + posX+point.xCoord) - frontBogie.posX)*0.995,
+                    ((f[2] + posZ+point.zCoord) - frontBogie.posZ)*0.995);
         }
 
         f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, 0, rotationYaw, 0);
         if(Math.abs(f[0]) + Math.abs(point.xCoord)>0.2 || Math.abs(f[2]) + Math.abs(point.zCoord)>0.2) {
             backBogie.minecartMove(this,
-                    ((f[0] + posX+point.xCoord) - backBogie.posX)*0.4,
-                    ((f[2] + posZ+point.zCoord) - backBogie.posZ)*0.4);
+                    ((f[0] + posX+point.xCoord) - backBogie.posX)*0.995,
+                    ((f[2] + posZ+point.zCoord) - backBogie.posZ)*0.995);
         }
     }
 
