@@ -192,17 +192,18 @@ public class EntityTrainCore extends GenericRailTransport {
     public void onUpdate() {
 
         super.onUpdate();
-
-        if (!world.isRemote) {
-            //twice a second, re-calculate the speed.
-            if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
-                if(ticksExisted % 10 == 0) {
-                    calculateAcceleration();
+        if(frontBogie != null && backBogie != null) {
+            
+            if (!world.isRemote) {
+                //twice a second, re-calculate the speed.
+                if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
+                    if(ticksExisted % 10 == 0) {
+                        calculateAcceleration();
+                    }
+                } else {
+                    accelerator = 0;
+                    this.dataManager.set(ACCELERATOR, accelerator);
                 }
-            } else {
-                accelerator = 0;
-                this.dataManager.set(ACCELERATOR, accelerator);
-            }
 
                 if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
                     frontBogie.setVelocity(0,0,0);
