@@ -1369,7 +1369,7 @@ public class ModelU18B extends ModelConverter //Same as Filename
 				bodyModel[i].render(f5);
 			}
 		}
-		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 7324) {
+		if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 5466||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 7324) {
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/fb2_Grey.png"));
 			GL11.glPushMatrix();
 			GL11.glTranslated(-1.3, 0.335, 0);
@@ -1378,13 +1378,13 @@ public class ModelU18B extends ModelConverter //Same as Filename
 			GL11.glTranslated(2.58, 0, 0);
 			theTrucks2.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
-		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 14321||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2436){
+		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 6||entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 2436){
 			Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, "textures/trains/TypeB_2_Silver.png"));
 			GL11.glPushMatrix();
-			GL11.glTranslated(-1.52, -0.025, 0);
+			GL11.glTranslated(-1.3, -0.025, 0);
 			theTrucks4.render(entity, f, f1, f2, f3, f4, f5);
 
-			GL11.glTranslated(3.05, 0, 0);
+			GL11.glTranslated(2.6, 0, 0);
 			theTrucks4.render(entity, f, f1, f2, f3, f4, f5);
 			GL11.glPopMatrix();
 		} else if (entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 4 || entity instanceof AbstractTrains && ((AbstractTrains) entity).getColor() == 9){
