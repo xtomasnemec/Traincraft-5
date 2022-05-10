@@ -197,7 +197,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     @Override
     public boolean canBeAdjusted(EntityMinecart cart) {
-        return false;
+        return getAccelerator()==0;
     }
 
     @Override
@@ -896,24 +896,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //reposition bogies to be sure they are the right distance
         if(!world.isRemote) {
 
-            //this is also handled by linking logic, if that's handling this then don't do it twice
-            if(frontLinkedID==null && backLinkedID==null) {
-                float[] f = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0, rotationPitch, rotationYaw, 0);
+            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[0], 0, 0), rotationPitch, rotationYaw, 0);
+            //can't hard clamp
+            // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
+            if (Math.abs(cachedVectors[1].xCoord) > 0.2 || Math.abs(cachedVectors[1].zCoord) > 0.2) {
+                frontBogie.setPositionRelative(
+                        ((cachedVectors[1].xCoord + posX) - frontBogie.posX) * 0.4, 0,
+                        ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ) * 0.4);
+            }
 
-                //can't hard clamp
-                // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
-                if (Math.abs(f[0]) > 0.2 || Math.abs(f[2]) > 0.2) {
-                    frontBogie.setPositionRelative(
-                            ((f[0] + posX) - frontBogie.posX) * 0.4, 0,
-                            ((f[2] + posZ) - frontBogie.posZ) * 0.4);
-                }
-
-                f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, rotationPitch, rotationYaw, 0);
-                if (Math.abs(f[0]) > 0.2 || Math.abs(f[2]) > 0.2) {
-                    backBogie.setPositionRelative(
-                            ((f[0] + posX) - backBogie.posX) * 0.4, 0,
-                            ((f[2] + posZ) - backBogie.posZ) * 0.4);
-                }
+            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[1], 0, 0), rotationPitch, rotationYaw, 0);
+            if (Math.abs(cachedVectors[1].xCoord) > 0.2 || Math.abs(cachedVectors[1].zCoord) > 0.2) {
+                backBogie.setPositionRelative(
+                        ((cachedVectors[1].xCoord + posX) - backBogie.posX) * 0.4, 0,
+                        ((cachedVectors[1].zCoord + posZ) - backBogie.posZ) * 0.4);
             }
 
             //do scaled rail boosting but keep it capped to the max velocity of the rail
@@ -963,13 +959,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 ticksSinceLastVelocityChange++;
             }
         }
-
-        if(collisionHandler==null) {
-            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
-            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-        } else {
-            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
-        }
     }
 
     /**
@@ -979,7 +968,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(velocityX==null||velocityZ==null){
             frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
             backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
-        } else {
+        } else if(velocityX!=0 || velocityZ!=0) {
             frontBogie.minecartMove(this, velocityX, velocityZ);
             backBogie.minecartMove(this, velocityX, velocityZ);
         }
@@ -992,6 +981,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //reset the vector when we're done so it wont break trains.
         cachedVectors[1]= new Vec3f(0,0,0);
 
+        if(collisionHandler==null) {
+            collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        } else {
+            collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
+        }
     }
 
     double maxBoost(Block booster){
@@ -1222,8 +1217,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         else if (frontBogie!=null && backBogie != null && ticksExisted>0){
 
             //update positions related to linking, this NEEDS to come after drag
-            if(getAccelerator()==0 &&(frontLinkedID != null || backLinkedID!=null)) {
-                manageLinks();
+            if(getAccelerator()==0 && ticksExisted>5) {
+                if (frontLinkedID!=null && worldObj.getEntityByID(frontLinkedID) instanceof GenericRailTransport) {
+                    manageLink((GenericRailTransport) worldObj.getEntityByID(frontLinkedID));
+                }
+                if (backLinkedID !=null && worldObj.getEntityByID(backLinkedID) instanceof GenericRailTransport) {
+                    manageLink((GenericRailTransport) worldObj.getEntityByID(backLinkedID));
+                }
             }
             if(collisionHandler!=null){
                 collisionHandler.updateCollidingEntities(this);
@@ -1519,7 +1519,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * this is used to reposition the transport based on the linked transports.
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
-    public void manageLinks() {
+    public void manageLink(GenericRailTransport other) {
         //handle yaw changes for derail
         if(getBoolean(boolValues.DERAILED)) {
             if(frontLinkedID!=null && backLinkedID!=null){
@@ -1537,59 +1537,81 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
 
+        boolean adj1 = other.canBeAdjusted(this);
+        boolean adj2 = this.canBeAdjusted(other);
 
-        //define point as center
-        Vec3d point = new Vec3d(0,0,0);
-        Entity entity;
-        //manage offset distance for front link
-        if(frontLinkedID!=null) {
-            entity=getWorld().getEntityByID(frontLinkedID);
-            if(entity instanceof GenericRailTransport) {
-                //get the raw distance between the two, then add the hitbox distance
-                //for some odd reason this all has to be done backwards, and that hurts my brain,
-                //    but im not arguing with success.
-                double dist = Math.abs(entity.posX - posX) + Math.abs(entity.posZ - posZ);
+        double d = other.posX - this.posX;
+        double d1 = other.posZ - this.posZ;
+        double vecX = other.posX - this.posX;
+        double vecZ = other.posZ - this.posZ;
 
-                dist -=(getHitboxSize()[0]*0.5) + (((GenericRailTransport)entity).getHitboxSize()[0]*0.5);
+        double cart1MotionX=0;
+        double cart1MotionZ=0;
+        double cart2MotionX=0;
+        double cart2MotionZ=0;
 
-                point = CommonUtil.rotateDistance(-dist, 0, rotationYaw);
 
-            }
+        //spring to distance
+        double vecNorm = MathHelper.sqrt_double((d * d) + (d1 * d1)) -
+                (other.getOptimalDistance(this)+this.getOptimalDistance(other));
+
+        double springX = -0.49D * vecNorm * vecX;
+        double springZ = -0.49D * vecNorm * vecZ;
+        if(springX>14d || springX<-14d){
+            springX=Math.copySign(14d, springX);
         }
-        //manage offset distance for back link
-        if(backLinkedID!=null) {
-            entity=getWorld().getEntityByID(backLinkedID);
-            if(entity instanceof GenericRailTransport) {
-                //get the raw distance between the two, then add the hitbox distance
-                //for some odd reason this all has to be done backwards, and that hurts my brain,
-                //    but im not arguing with success.
-                double dist = Math.abs(entity.posX - posX) + Math.abs(entity.posZ - posZ);
-
-                dist -=(getHitboxSize()[0]*0.5) + (((GenericRailTransport)entity).getHitboxSize()[0]*0.5);
-
-                point = CommonUtil.rotateDistance(dist, 0, rotationYaw);
-            }
+        if(springZ>14d || springZ<-14d){
+            springZ=Math.copySign(14d, springZ);
         }
 
-
-
-        //reposition bogies based on the new offset
-        float[] f = CommonUtil.rotatePointF(rotationPoints()[0], 0, 0, 0, rotationYaw, 0);
-
-        //can't hard clamp
-        // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
-        if(Math.abs(f[0]) + Math.abs(point.xCoord)>0.2 || Math.abs(f[2]) + Math.abs(point.zCoord)>0.2) {
-            frontBogie.minecartMove(this,
-                    ((f[0] + posX+point.xCoord) - frontBogie.posX)*0.995,
-                    ((f[2] + posZ+point.zCoord) - frontBogie.posZ)*0.995);
+        if (adj1) {
+            cart1MotionX += springX;
+            cart1MotionZ += springZ;
+        }
+        if (adj2) {
+            cart2MotionX -= springX;
+            cart2MotionZ -= springZ;
         }
 
-        f = CommonUtil.rotatePointF(rotationPoints()[1], 0, 0, 0, rotationYaw, 0);
-        if(Math.abs(f[0]) + Math.abs(point.xCoord)>0.2 || Math.abs(f[2]) + Math.abs(point.zCoord)>0.2) {
-            backBogie.minecartMove(this,
-                    ((f[0] + posX+point.xCoord) - backBogie.posX)*0.995,
-                    ((f[2] + posZ+point.zCoord) - backBogie.posZ)*0.995);
+
+        //dampen spring to smooth out
+        vecNorm = MathHelper.sqrt_double(vecX * vecX + vecZ * vecZ);
+        vecX /= vecNorm;
+        vecZ /= vecNorm;
+
+        vecNorm = (cart1MotionX - cart2MotionX) * vecX + (cart1MotionZ - cart2MotionZ) * vecZ;
+
+        springX = -0.37D * vecNorm * vecX;
+        springZ = -0.37D * vecNorm * vecZ;
+        if(springX>14d || springX<-14d){
+            springX=Math.copySign(14d, springX);
         }
+        if(springZ>14d || springZ<-14d){
+            springZ=Math.copySign(14d, springZ);
+        }
+
+        if (adj1) {
+            cart1MotionX += springX;
+            cart1MotionZ += springZ;
+        }
+        if (adj2) {
+            cart2MotionX -= springX;
+            cart2MotionZ -= springZ;
+        }
+
+        //move bogies
+        if(cart1MotionX!=0 || cart1MotionZ!=0) {
+            other.frontBogie.minecartMove(other, cart1MotionX, cart1MotionZ);
+            other.backBogie.minecartMove(other, cart1MotionX, cart1MotionZ);
+            other.moveBogies(0d,0d);
+        }
+
+        if(cart2MotionX!=0 || cart2MotionZ!=0) {
+            this.frontBogie.minecartMove(other, cart2MotionX, cart2MotionZ);
+            this.backBogie.minecartMove(other, cart2MotionX, cart2MotionZ);
+            this.moveBogies(0d,0d);
+        }
+
     }
 
 
