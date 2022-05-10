@@ -1218,11 +1218,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //update positions related to linking, this NEEDS to come after drag
             if(getAccelerator()==0 && ticksExisted>5) {
-                if (frontLinkedID!=null && worldObj.getEntityByID(frontLinkedID) instanceof GenericRailTransport) {
-                    manageLink((GenericRailTransport) worldObj.getEntityByID(frontLinkedID));
+                if (frontLinkedID!=null && world.getEntityByID(frontLinkedID) instanceof GenericRailTransport) {
+                    manageLink((GenericRailTransport) world.getEntityByID(frontLinkedID));
                 }
-                if (backLinkedID !=null && worldObj.getEntityByID(backLinkedID) instanceof GenericRailTransport) {
-                    manageLink((GenericRailTransport) worldObj.getEntityByID(backLinkedID));
+                if (backLinkedID !=null && world.getEntityByID(backLinkedID) instanceof GenericRailTransport) {
+                    manageLink((GenericRailTransport) world.getEntityByID(backLinkedID));
                 }
             }
             if(collisionHandler!=null){
@@ -1552,7 +1552,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
         //spring to distance
-        double vecNorm = MathHelper.sqrt_double((d * d) + (d1 * d1)) -
+        double vecNorm = MathHelper.sqrt((d * d) + (d1 * d1)) -
                 (other.getOptimalDistance(this)+this.getOptimalDistance(other));
 
         double springX = -0.49D * vecNorm * vecX;
@@ -1575,7 +1575,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
         //dampen spring to smooth out
-        vecNorm = MathHelper.sqrt_double(vecX * vecX + vecZ * vecZ);
+        vecNorm = MathHelper.sqrt(vecX * vecX + vecZ * vecZ);
         vecX /= vecNorm;
         vecZ /= vecNorm;
 
