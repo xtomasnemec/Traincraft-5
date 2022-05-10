@@ -77,7 +77,7 @@ public class HUDloco extends GuiScreen {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
 		game.fontRenderer.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
-		game.fontRenderer.drawStringWithShadow("  " + Math.floor(speed), 106,
+		game.fontRenderer.drawStringWithShadow("  " + Math.floor(speed), 100,
 				windowHeight + 18 + (h), 0xFFFFFF);
 		game.fontRenderer.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 

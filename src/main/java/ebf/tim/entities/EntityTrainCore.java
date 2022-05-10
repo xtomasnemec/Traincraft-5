@@ -138,15 +138,15 @@ public class EntityTrainCore extends GenericRailTransport {
             cachedVectors[2].xCoord += getVelocity()*0.99;
         }
 
-        //set the last tick speed to this speed.
-        cachedVectors[2].yCoord=cachedVectors[2].xCoord;
-
         //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
         if (cachedVectors[2].xCoord < -unRatio(transportTopSpeed())) {
             cachedVectors[2].xCoord = -unRatio(transportTopSpeed());
         } else if (cachedVectors[2].xCoord > unRatio(transportTopSpeedReverse())) {
             cachedVectors[2].xCoord = unRatio(transportTopSpeedReverse());
         }
+
+        //set the last tick speed to this speed.
+        cachedVectors[2].yCoord=cachedVectors[2].xCoord;
 
         //handle ice slipping
         if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
