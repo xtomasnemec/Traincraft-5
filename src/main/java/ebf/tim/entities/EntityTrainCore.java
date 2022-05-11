@@ -1,6 +1,5 @@
 package ebf.tim.entities;
 
-import ebf.tim.TrainsInMotion;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.Vec3d;
@@ -129,7 +128,7 @@ public class EntityTrainCore extends GenericRailTransport {
             accel*=0.7f;
         }
         //scale based on power and velocity
-        cachedVectors[2].xCoord=accel* (10f * (float)Math.pow(2.8f,((2.35f * (getVelocity()/getPower()))-2.35f)));
+        cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(getVelocity()/getPower()))-2.35f)));
 
         //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
         if(cachedVectors[2].yCoord!=0) {
@@ -212,10 +211,12 @@ public class EntityTrainCore extends GenericRailTransport {
                     //add drag to the accelerator
                     if(accelerator==0){
                         cachedVectors[2].yCoord*=0.99f;
+                    } else {
+                        Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
+                        frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
+                        backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
+                        applyDrag();
                     }
-                    Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
-                    frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                    backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
                 }
 
                 updatePosition();

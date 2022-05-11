@@ -226,18 +226,20 @@ public class FuelHandler{
 								(train.entityData.getFluidStack("tanks.0").amount * 0.005f) //calculate surface area of water
 				);
 				//drain fluid
-				if (train.drain(null, steam != 0 ? steam / 5 : 0, true) != null) {
-					train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int) (-(Math.abs(train.accelerator) * (train.getTankCapacity()[1] * 0.01f)) + steam * 0.9f)), true);
+				if(steam>0 && steam/5>0) {
+					if (train.drain(null, steam / 5, true) == null) {
+						train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int) (-(Math.abs(train.accelerator) * (train.getTankCapacity()[1] * 0.01f)) + steam * 0.9f)), true);
 
-					//if no fluid left and not creative mode, explode.
-				} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					train.worldObj.createExplosion(train, train.posX, train.posY, train.posZ, 5f, false);
-					train.dropItem(train.getItem(), 1);
-					train.setDead();
-				}
-				if (!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
-					train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
-					train.updateConsist();
+						//if no fluid left and not creative mode, explode.
+					} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
+						train.worldObj.createExplosion(train, train.posX, train.posY, train.posZ, 5f, false);
+						train.dropItem(train.getItem(), 1);
+						train.setDead();
+					}
+					if (!train.getBoolean(GenericRailTransport.boolValues.RUNNING)) {
+						train.setBoolean(GenericRailTransport.boolValues.RUNNING, true);
+						train.updateConsist();
+					}
 				}
 			} else {
 				train.setBoolean(GenericRailTransport.boolValues.RUNNING, false);

@@ -985,11 +985,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         if(frontLinkedID==null || backLinkedID==null) {
 
-            float drag = 0.92f,brakeBuff=0,slopeX=0,slopeZ=0;
+            float drag = 0.998f,brakeBuff=0,slopeX=0,slopeZ=0;
             //iterate the consist to collect the stats, since only end units can do this.
             for(GenericRailTransport stock : getConsist()) {
                 if(stock.getBoolean(boolValues.BRAKE)){
-                    brakeBuff+=stock.weightKg()*2.4f;
+                    //realistically would be more like 2.4, but 5 makes gameplay more dramatic
+                    brakeBuff+=stock.weightKg()*5.0f;
                 }
                 if(stock.rotationPitch!=0){
                     //vanilla uses 0.0078125 per tick for slope speed.
@@ -1007,7 +1008,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //add in the drag from combined weight, plus brakes.
             if(pullingWeight!=0) {//in theory this should never be 0, but we know forge is dumb
-                drag -= (getFriction() * (pullingWeight + brakeBuff)) / 4448;
+                drag -= ((getAccelerator()==0?getFriction():getFriction()*5) * (pullingWeight + brakeBuff)) / 44480;
             }
             //cap the drag to prevent weird behavior.
             // if it goes to 1 or higher then we speed up, which is bad, if it's below 0 we reverse, which is also bad
@@ -1045,7 +1046,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * managing rotationYaw and rotationPitch.
      * updating rider entity positions if there is no one riding the core seat.
      * calling on link management.
-     * @see #manageLinks()
+     * @see #manageLink(GenericRailTransport)
      * syncing the owner entity ID with client.
      * and updating the lighting block.
      */
