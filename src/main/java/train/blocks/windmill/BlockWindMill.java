@@ -48,7 +48,7 @@ public class BlockWindMill extends BlockDynamic {
 	}
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-		return new TileWindMill(this);
+		return new TileWindMill();
 	}
 
 	@Override

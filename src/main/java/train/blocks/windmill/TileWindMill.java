@@ -22,8 +22,8 @@ public class TileWindMill extends TileGeneratorDiesel {
 	public int windClient = 0;
     public int standsOpen = 0;
 
-	public TileWindMill(BlockDynamic host) {
-		super();
+	public TileWindMill() {
+		super(TCBlocks.windmill);
 		this.energy = new EnergyStorage(240, 80);
 	}
 

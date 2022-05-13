@@ -8,9 +8,11 @@
 package train.blocks.generator;
 
 
+import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.FuelHandler;
 import ebf.tim.utility.ItemStackSlot;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,6 +46,10 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergySto
         inventory.add(new ItemStackSlot(this, 400, 56, 17));
         inventory.add(new ItemStackSlot(this, 401, 56, 53));
 
+    }
+
+    public TileGeneratorDiesel(BlockDynamic b){
+        super(b);
     }
 
     @Override

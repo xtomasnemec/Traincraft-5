@@ -5,11 +5,12 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.energy.EnergyStorage;
+import train.blocks.TCBlocks;
 import train.blocks.generator.TileGeneratorDiesel;
 
 public class TileWaterWheel extends TileGeneratorDiesel {
-	public TileWaterWheel(BlockDynamic host) {
-		super();
+	public TileWaterWheel() {
+		super(TCBlocks.waterWheel);
 		this.energy=new EnergyStorage(80,80);
 	}
 
