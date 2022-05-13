@@ -115,14 +115,19 @@ public class TiMGenericRegistry {
         }
         if (block instanceof ITileEntityProvider) {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
-            if (!redundantTiles.contains(unlocalizedName + "tile")) {
+            if (!redundantTiles.contains(tile.getName())) {
                 GameRegistry.registerTileEntity(tile, unlocalizedName + "tile");
+                redundantTiles.add(tile.getName());
                 redundantTiles.add(unlocalizedName + "tile");
                 if (TrainsInMotion.proxy.isClient()) {
                     regTileRender(MODID,unlocalizedName,block,tile,model,TESR);
                 }
+            } else if(!redundantTiles.contains(unlocalizedName + "tile")) {
+                if (TrainsInMotion.proxy.isClient() && TESR != null) {
+                    regTileRender(MODID,unlocalizedName,block, tile, model, TESR);
+                }
             } else {
-                DebugUtil.println("redundant tile name found", unlocalizedName + "tile");
+                DebugUtil.println("redundant tile name found",tile.getName(), unlocalizedName + "tile");
                 DebugUtil.printStackTrace();
             }
         }
