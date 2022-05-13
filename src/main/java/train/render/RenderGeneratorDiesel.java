@@ -31,8 +31,8 @@ public class RenderGeneratorDiesel extends TileEntitySpecialRenderer {
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(texture);
 
 		if(var1.getWorld()==null){
-			GL11.glTranslatef(0, -0.5F, 0);
-			GL11.glScalef(0.85f,0.85f,0.85f);
+			GL11.glTranslatef(0.5F, -0.1F, 0.5F);
+			GL11.glScalef(0.75f,0.75f,0.75f);
 		} else {
 			GL11.glTranslatef(0.5F, 0.0F, 0.5F);
 		}

@@ -9,8 +9,6 @@ public class RenderWaterWheel extends TileEntitySpecialRenderer {
 
 	@Override
 	public void render(TileEntity tileEntity, double x, double y, double z, float tick, int destroyStage, float alpha) {
-		if(tileEntity!=null) {
 			modelWaterWheel.render(tileEntity, x, y, z);
-		}
 	}
 }

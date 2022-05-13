@@ -6,6 +6,7 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.BlockTrainFluid;
 import ebf.tim.blocks.OreGen;
+import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
@@ -99,8 +100,11 @@ public class TiMGenericRegistry {
             block.setTranslationKey(unlocalizedName);
             ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))
                     .register(block.setRegistryName(MODID,unlocalizedName));
-            if(model!=null) {
+            if(model!=null || (block instanceof ITileEntityProvider && ((ITileEntityProvider) block).createNewTileEntity(null,0) instanceof TileRenderFacing)) {
                 RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName + ".item", oreDictionaryName + ".item", tab, null, ebf.tim.items.CustomItemModel.instance);
+                if(TESR==null){
+                    TESR=new ebf.tim.render.BlockTESR();
+                }
             } else {
                 RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName + ".item", oreDictionaryName + ".item", tab, null, null);
             }
@@ -125,11 +129,16 @@ public class TiMGenericRegistry {
             if (!redundantTiles.contains(tile.getName())) {
                 GameRegistry.registerTileEntity(tile, new ResourceLocation(MODID,unlocalizedName + ".tile"));
                 redundantTiles.add(tile.getName());
+                redundantTiles.add(unlocalizedName + "tile");
+                if (TrainsInMotion.proxy.isClient() && TESR != null) {
+                    regTileRender(MODID,unlocalizedName,block, tile, model, TESR);
+                }
+            } else if(!redundantTiles.contains(unlocalizedName + "tile")) {
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
                     regTileRender(MODID,unlocalizedName,block, tile, model, TESR);
                 }
             } else {
-                DebugUtil.println("redundant tile name found", unlocalizedName + "tile");
+                DebugUtil.println("redundant tile name found",tile.getName(), unlocalizedName + "tile");
                 DebugUtil.printStackTrace();
             }
         }
