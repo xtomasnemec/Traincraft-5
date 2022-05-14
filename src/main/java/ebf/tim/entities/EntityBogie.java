@@ -79,6 +79,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         isFront = front;
     }
 
+    public World getWorld(){return worldObj;}
+
     /**Small networking check to add the bogie to the host train/rollingstock. Or to remove the bogie from the world if the host doesn't exist.*/
     @Override
     public void readSpawnData(ByteBuf additionalData) {
@@ -131,18 +133,18 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     public void onUpdate() {
 
         //client only, update position
-        if (this.worldObj.isRemote){
+        if (this.getWorld().isRemote){
             super.onUpdate();
         }
 
         if(ticksExisted%40==0 || ticksExisted==0) {
             //be sure to remove this if the parent is null, or in a different castle, I mean world.
-            if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport) {
-                if (worldObj.isRemote) {
-                    ((GenericRailTransport) worldObj.getEntityByID(parentId)).setBogie(this, isFront);
+            if (getWorld().getEntityByID(parentId) instanceof GenericRailTransport) {
+                if (getWorld().isRemote) {
+                    ((GenericRailTransport) getWorld().getEntityByID(parentId)).setBogie(this, isFront);
                 }
             } else {
-                worldObj.removeEntity(this);
+                getWorld().removeEntity(this);
             }
         }
     }
@@ -171,15 +173,15 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
      * @see CommonUtil
      * returns true or false depending on whether or not it derails from having no rail.
      */
-    public boolean minecartMove(GenericRailTransport host, double moveX, double moveZ) {
+    public void minecartMove(GenericRailTransport host, double moveX, double moveZ) {
         //server only
-        if(!worldObj.isRemote) {
+        if(!getWorld().isRemote) {
             //define the yaw from the super
             this.setRotation(host.rotationYaw, host.rotationPitch);
 
             //prevent moving without motion velocity
             if (Math.abs(moveX) + Math.abs(moveZ) < 0.000001) {
-                return true;
+                return;
             }
 
             //update old position, add the gravity, and get the block below this,
@@ -193,45 +195,64 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             int floorZ = CommonUtil.floorDouble(this.posZ);
 
 
-            Block block = CommonUtil.getBlockAt(worldObj, floorX, floorY, floorZ);
+            Block block = CommonUtil.getBlockAt(getWorld(), floorX, floorY, floorZ);
+            Block blockUp;
             //todo: if (block instanceof BlockRailCore) {
             //update using spline movement
             //} else if (block instanceof BlockRailBase)
 
             //update on normal rails
             if (block instanceof BlockRailBase) {
-                loopVanilla(Math.abs(moveX) + Math.abs(moveZ), moveX,moveZ, floorX,floorY,floorZ, (BlockRailBase) block);
+                loopVanilla(host, Math.abs(moveX) + Math.abs(moveZ), moveX,moveZ, floorX,floorY,floorZ, (BlockRailBase) block);
                 //update on ZnD rails, and ones that don't extend block rail base.
                 //todo ZnD support, either by jar reference or API update
             //} else if (block instanceof ITrackBase) {
                 //update position for ZnD rails.
                 //moveBogieZnD(motionX, motionZ, floorX, floorY, floorZ, (ITrackBase) block);
-            } else {
+            } else if(block instanceof BlockAir) {
                 double velocity = Math.abs(moveX) + Math.abs(moveZ);
                 while (velocity>0) {
                     posX+=Math.min(0.35, moveX);
                     posZ+=Math.min(0.35, moveZ);
                     velocity -= 0.35;
 
-                    if (CommonUtil.getBlockAt(worldObj, posX, posY-1,posZ) instanceof BlockAir) {
-                        posY--;
+                    //update Y position and check for collision
+                    if(floorX!=CommonUtil.floorDouble(this.posX) || floorZ!=CommonUtil.floorDouble(posZ)) {
+                        floorX = CommonUtil.floorDouble(this.posX);
+                        floorY = CommonUtil.floorDouble(this.posY);
+                        floorZ = CommonUtil.floorDouble(this.posZ);
+                        //check for collisions and skip update
+                        for (int i = 0; i < host.getHitboxSize()[1] - 1; i++) {
+                            blockUp = CommonUtil.getBlockAt(getWorld(), floorX, floorY + i, floorZ);
+                            if (!(blockUp instanceof BlockAir)) {
+                                host.frontBogie.motionX=0;
+                                host.frontBogie.motionZ=0;
+                                host.backBogie.motionX=0;
+                                host.backBogie.motionZ=0;
+                                return;
+                            }
+                        }
+                        //fall
+                        if (CommonUtil.getBlockAt(getWorld(), floorX, floorY - 1, floorZ) instanceof BlockAir) {
+                            posY--;
+                        }
                     }
                 }
-                return true;
+                return;
             }
         }
-        return false;
     }
 
-    private void loopVanilla(double velocity, double velocityX, double velocityZ, int floorX, int floorY,int floorZ, BlockRailBase block){
+    private void loopVanilla(GenericRailTransport host, double velocity, double velocityX, double velocityZ, int floorX, int floorY,int floorZ, BlockRailBase block){
         this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
-        railmax = block.getRailMaxSpeed(worldObj,this,floorX, floorY, floorZ);
+        railmax = block.getRailMaxSpeed(getWorld(),this,floorX, floorY, floorZ);
+        Block blockUp;
         if(railmax!=0.4f){
             velocity=Math.min(velocity,railmax);
         }
-        railMetadata = CommonUtil.getRailMeta(worldObj, this, floorX, floorY, floorZ);
+        railMetadata = CommonUtil.getRailMeta(getWorld(), this, floorX, floorY, floorZ);
         loopDirection=new double[]{velocityX,velocityZ};
         //actually move
         while (velocity>0) {
@@ -243,34 +264,45 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 floorX = CommonUtil.floorDouble(this.posX);
                 floorY = CommonUtil.floorDouble(this.posY);
                 floorZ = CommonUtil.floorDouble(this.posZ);
+                //check for collisions and skip update
+                for (int i = 1; i < host.getHitboxSize()[1] - 1; i++) {
+                    blockUp = CommonUtil.getBlockAt(getWorld(), floorX, floorY + i, floorZ);
+                    if (!(blockUp instanceof BlockAir)) {
+                        host.frontBogie.motionX=0;
+                        host.frontBogie.motionZ=0;
+                        host.backBogie.motionX=0;
+                        host.backBogie.motionZ=0;
+                        return;
+                    }
+                }
                 //handle slope movement before other interactions
-                if(!CommonUtil.isRailBlockAt(worldObj, floorX, floorY, floorZ)){
+                if(!CommonUtil.isRailBlockAt(getWorld(), floorX, floorY, floorZ)){
                     this.prevPosY =posY;
-                    if(CommonUtil.isRailBlockAt(worldObj, floorX, floorY+1, floorZ)){
+                    if(CommonUtil.isRailBlockAt(getWorld(), floorX, floorY+1, floorZ)){
                         posY++;
-                    } else if (CommonUtil.isRailBlockAt(worldObj, floorX, floorY-1, floorZ)) {
+                    } else if (CommonUtil.isRailBlockAt(getWorld(), floorX, floorY-1, floorZ)) {
                         posY--;
                     }
                     floorY = CommonUtil.floorDouble(this.posY);
                 }
 
-                blockNext = this.worldObj.getBlock(floorX, floorY, floorZ);
+                blockNext = this.getWorld().getBlock(floorX, floorY, floorZ);
                 //now loop this again for the next increment of movement, if there is one
                 if (blockNext instanceof BlockRailBase) {
                     block = (BlockRailBase) blockNext;
                     //do the rail functions.
                     if(shouldDoRailFunctions()) {
-                        block.onMinecartPass(worldObj, this, floorX, floorY, floorZ);
+                        block.onMinecartPass(getWorld(), this, floorX, floorY, floorZ);
                     }
                     if (block == Blocks.activator_rail) {
-                        this.onActivatorRailPass(floorX, floorY, floorZ, (worldObj.getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
+                        this.onActivatorRailPass(floorX, floorY, floorZ, (getWorld().getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
                     }
                     //get the direction of the rail from it's metadata
-                    railMetadata = CommonUtil.getRailMeta(worldObj, this, floorX, floorY, floorZ);
+                    railMetadata = CommonUtil.getRailMeta(getWorld(), this, floorX, floorY, floorZ);
                 }
                 //get the direction of the rail from it's metadata
-                else if (worldObj.getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)worldObj.getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
-                    railMetadata = CommonUtil.getRailMeta(worldObj,this,floorX, floorY, floorZ);//railcraft support
+                else if (getWorld().getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)getWorld().getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
+                    railMetadata = CommonUtil.getRailMeta(getWorld(),this,floorX, floorY, floorZ);//railcraft support
                 }
             }
         }
@@ -360,18 +392,18 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**checks if the parent transport matches the filter for railcraft items, if the filter is null or the parent is null, return false.*/
     @Override
     public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
-        if (stack == null || worldObj.getEntityByID(parentId) == null) {
+        if (stack == null || getWorld().getEntityByID(parentId) == null) {
             return false;
         } else {
-            Item cartItem = ((GenericRailTransport)worldObj.getEntityByID(parentId)).getItem();
+            Item cartItem = ((GenericRailTransport)getWorld().getEntityByID(parentId)).getItem();
             return cartItem != null && stack.getItem() == cartItem;
         }
     }
     /**returns the gameprofile of the owner for railcraft.*/
     @Override
     public GameProfile getOwner(){
-        if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport){
-            GenericRailTransport parent = (GenericRailTransport) worldObj.getEntityByID(parentId);
+        if (getWorld().getEntityByID(parentId) instanceof GenericRailTransport){
+            GenericRailTransport parent = (GenericRailTransport) getWorld().getEntityByID(parentId);
             if (parent.getOwner() != null){
                 return parent.getOwner();
             }
@@ -381,8 +413,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**returns the destination of the parent for railcraft*/
     @Override
     public String getDestination() {
-        if (worldObj.getEntityByID(parentId) instanceof GenericRailTransport){
-            GenericRailTransport parent = (GenericRailTransport) worldObj.getEntityByID(parentId);
+        if (getWorld().getEntityByID(parentId) instanceof GenericRailTransport){
+            GenericRailTransport parent = (GenericRailTransport) getWorld().getEntityByID(parentId);
             if (parent.getOwner() != null){
                 return parent.destination;
             }
