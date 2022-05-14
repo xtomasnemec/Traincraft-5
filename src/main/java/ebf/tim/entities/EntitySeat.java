@@ -54,6 +54,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         locomotive=parent instanceof EntityTrainCore;
     }
 
+    public World getWorld(){return worldObj;}
     /** returns if this can be pushed*/
     @Override
     public boolean canBePushed() {
@@ -71,15 +72,15 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     @Override
     public void onUpdate() {
         if(ticksExisted%40==0 || parent==null) {
-            if (world.getEntityByID(parentId) instanceof GenericRailTransport) {
-                if (world.isRemote) {
+            if (getWorld().getEntityByID(parentId) instanceof GenericRailTransport) {
+                if (getWorld().isRemote) {
                     if (parent == null) {
-                        parent = (GenericRailTransport) world.getEntityByID(parentId);
+                        parent = (GenericRailTransport) getWorld().getEntityByID(parentId);
                     }
                     parent.setseats(this, seatNumber);
                 }
             } else {
-                world.removeEntity(this);
+                getWorld().removeEntity(this);
             }
         }
 
