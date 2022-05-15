@@ -333,7 +333,7 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
         TransportSkin s;
         if(!isPaintBucket && entity.getWorld()!=null) {
             TextureManager.adjustLightFixture(entity.getWorld(), (int) entity.posX, (int) entity.posY + 1, (int) entity.posZ);
-            s=entity.getTexture(Minecraft.getMinecraft().thePlayer);
+            s=entity.getTexture(Minecraft.getMinecraft().player);
         } else if (textureURI!=null){
             s=textureURI;
         } else {

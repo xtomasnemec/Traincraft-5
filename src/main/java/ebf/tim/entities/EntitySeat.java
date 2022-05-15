@@ -54,7 +54,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         locomotive=parent instanceof EntityTrainCore;
     }
 
-    public World getWorld(){return worldObj;}
+    public World getWorld(){return world;}
     /** returns if this can be pushed*/
     @Override
     public boolean canBePushed() {

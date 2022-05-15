@@ -79,7 +79,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         isFront = front;
     }
 
-    public World getWorld(){return worldObj;}
+    public World getWorld(){return world;}
 
     /**Small networking check to add the bogie to the host train/rollingstock. Or to remove the bogie from the world if the host doesn't exist.*/
     @Override
@@ -247,7 +247,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
-        railmax = block.getRailMaxSpeed(getWorld(),this,floorX, floorY, floorZ);
+        railmax = block.getRailMaxSpeed(getWorld(),this,new BlockPos(floorX, floorY, floorZ));
         Block blockUp;
         if(railmax!=0.4f){
             velocity=Math.min(velocity,railmax);
@@ -286,24 +286,26 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     floorY = CommonUtil.floorDouble(this.posY);
                 }
 
-                blockNext = this.getWorld().getBlock(floorX, floorY, floorZ);
+                blockNext = CommonUtil.getBlockAt(getWorld(), floorX, floorY, floorZ);
                 //now loop this again for the next increment of movement, if there is one
                 if (blockNext instanceof BlockRailBase) {
                     block = (BlockRailBase) blockNext;
                     //do the rail functions.
                     if(shouldDoRailFunctions()) {
-                        block.onMinecartPass(getWorld(), this, floorX, floorY, floorZ);
+                        block.onMinecartPass(getWorld(), this, new BlockPos(floorX, floorY, floorZ));
                     }
-                    if (block == Blocks.activator_rail) {
-                        this.onActivatorRailPass(floorX, floorY, floorZ, (getWorld().getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
+                    if (block == Blocks.ACTIVATOR_RAIL) {
+                        this.onActivatorRailPass(floorX, floorY, floorZ,
+                                getWorld().getBlockState(new BlockPos(floorX, floorY, floorZ)).getValue(BlockRailPowered.POWERED));
                     }
                     //get the direction of the rail from it's metadata
                     railMetadata = CommonUtil.getRailMeta(getWorld(), this, floorX, floorY, floorZ);
                 }
                 //get the direction of the rail from it's metadata
+                /*TODO:railcraft support
                 else if (getWorld().getTileEntity(floorX, floorY, floorZ) instanceof ITrackTile && (((ITrackTile)getWorld().getTileEntity(floorX, floorY, floorZ)).getTrackInstance() instanceof ITrackSwitch)){
                     railMetadata = CommonUtil.getRailMeta(getWorld(),this,floorX, floorY, floorZ);//railcraft support
-                }
+                }*/
             }
         }
     }
