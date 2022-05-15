@@ -286,7 +286,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     floorY = CommonUtil.floorDouble(this.posY);
                 }
 
-                blockNext = this.getWorld().getBlock(floorX, floorY, floorZ);
+                blockNext = CommonUtil.getBlockAt(getWorld(), floorX, floorY, floorZ);
                 //now loop this again for the next increment of movement, if there is one
                 if (blockNext instanceof BlockRailBase) {
                     block = (BlockRailBase) blockNext;
