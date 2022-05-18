@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 import tmt.ModelConverter;
 import tmt.ModelRendererTurbo;
 import tmt.Tessellator;
+import train.client.render.models.ModelAmericanFreightTrucks;
 import train.common.library.Info;
 
 public class ModelRibbedHopper extends ModelConverter //Same as Filename
@@ -479,12 +480,12 @@ public class ModelRibbedHopper extends ModelConverter //Same as Filename
 		bodyModel[109].addBox(0F, 0F, 0F, 1, 19, 1, 0F); // Box 109
 		bodyModel[109].setRotationPoint(-30.5F, -21F, 10.5F);
 	}
-	/*ModelAmericanFreightTrucks bogie = new ModelAmericanFreightTrucks();
+	ModelAmericanFreightTrucks bogie = new ModelAmericanFreightTrucks();
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		for(int i = 0; i < 109; i++)
+		for(int i = 0; i < 110; i++)
 		{
 			bodyModel[i].render(f5);
 		}
@@ -493,14 +494,14 @@ public class ModelRibbedHopper extends ModelConverter //Same as Filename
 
 		GL11.glPushMatrix();
 		GL11.glScalef(1,1,0.9f);
-		GL11.glTranslated(-2.05,0.55,-0.4);
+		GL11.glTranslated(-2.06,0.5,-0.37);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 
-		GL11.glTranslated(4,0,0.03);
+		GL11.glTranslated(4,0,0.0);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
-	}*/
-	Model70TonTruckEarly bogie = new Model70TonTruckEarly();
+	}
+	/*Model70TonTruckEarly bogie = new Model70TonTruckEarly();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
@@ -521,5 +522,5 @@ public class ModelRibbedHopper extends ModelConverter //Same as Filename
 		GL11.glTranslated(4.0,0,0.00);
 		bogie.render(entity,f,f1,f2,f3,f4,f5);
 		GL11.glPopMatrix();
-	}
+	}*/
 }

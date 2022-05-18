@@ -10,6 +10,7 @@
 package com.jcirmodelsquad.tcjcir.models.trains; //Path where the model is located
 
 import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruck2;
+import com.jcirmodelsquad.tcjcir.models.trucks.Model70TonTruckEarly;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -254,11 +255,11 @@ public class ModelRoundHopper extends ModelConverter //Same as Filename
 		bodyModel[53].addBox(0F, 0F, 0F, 0, 1, 16, 0F); // Box 53
 		bodyModel[53].setRotationPoint(-46.49F, -6F, -8F);
 	}
-	Model70TonTruck2 bogie = new Model70TonTruck2();
+	Model70TonTruckEarly bogie = new Model70TonTruckEarly();
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
-		for (int i = 0; i < 53; i++) {
+		for (int i = 0; i < 54; i++) {
 			if (i == 9999) { //36 37 38 39 40 41 42 43 44
 
 			} else
