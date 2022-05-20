@@ -104,6 +104,7 @@ public class ItemTCRail extends ItemPart {
 	}
 
 	public static boolean isTCTurnTrack(TileTCRail tile) {
+		if(tile==null || tile.getType()==null){return false;}
 		return (tile.getType().equals(TrackTypes.MEDIUM_LEFT_SWITCH.getLabel()) && tile.getSwitchState())
 				|| (tile.getType().equals(TrackTypes.MEDIUM_RIGHT_SWITCH.getLabel()) && tile.getSwitchState())
 				|| (tile.getType().equals(TrackTypes.LARGE_LEFT_SWITCH.getLabel()) && tile.getSwitchState())
@@ -121,6 +122,7 @@ public class ItemTCRail extends ItemPart {
 	}
 
 	public static boolean isTCStraightTrack(TileTCRail tile) {
+		if(tile==null || tile.getType()==null){return false;}
 		return (tile.getType().equals(TrackTypes.MEDIUM_LEFT_SWITCH.getLabel()) && !tile.getSwitchState())
 				|| (tile.getType().equals(TrackTypes.MEDIUM_RIGHT_SWITCH.getLabel()) && !tile.getSwitchState())
 				|| (tile.getType().equals(TrackTypes.LARGE_LEFT_SWITCH.getLabel()) && !tile.getSwitchState())
@@ -139,14 +141,17 @@ public class ItemTCRail extends ItemPart {
 	}
 
 	public static boolean isTCTwoWaysCrossingTrack(TileTCRail tile) {
+		if(tile==null || tile.getType()==null){return false;}
 		return tile.getType().equals(TrackTypes.TWO_WAYS_CROSSING.getLabel());
 	}
 
 	public static boolean isTCSwitch(TileTCRail tile) {
+		if(tile==null || tile.getType()==null){return false;}
 		return (tile.getType().equals(TrackTypes.MEDIUM_LEFT_SWITCH.getLabel())) || (tile.getType().equals(TrackTypes.MEDIUM_RIGHT_SWITCH.getLabel())) || (tile.getType().equals(TrackTypes.LARGE_LEFT_SWITCH.getLabel())) || (tile.getType().equals(TrackTypes.LARGE_RIGHT_SWITCH.getLabel())) || (tile.getType().equals(TrackTypes.MEDIUM_RIGHT_PARALLEL_SWITCH.getLabel())) || (tile.getType().equals(TrackTypes.MEDIUM_LEFT_PARALLEL_SWITCH.getLabel()));
 	}
 
 	public static boolean isTCSlopeTrack(TileTCRail tile) {
+		if(tile==null || tile.getType()==null){return false;}
 		return tile.getType().equals(TrackTypes.SLOPE_WOOD.getLabel())
 				|| tile.getType().equals(TrackTypes.SLOPE_GRAVEL.getLabel())
 				|| tile.getType().equals(TrackTypes.SLOPE_BALLAST.getLabel())
