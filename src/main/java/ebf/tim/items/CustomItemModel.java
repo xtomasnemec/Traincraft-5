@@ -58,7 +58,6 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
         if(item==null){return;}
 
         if(blockTextures.containsKey(item.getItem())) {
-
             GL11.glPushMatrix();
             GL11.glScalef(0.95f,0.95f,0.95f);
             GL11.glTranslatef(0,-0.1f,0);

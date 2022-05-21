@@ -88,6 +88,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public UUID backLinkedTransport = null;
     /**the id of the rollingstock linked to the back*/
     public Integer backLinkedID = null;
+    /**the id of the lead entity in the consist*/
+    public Integer consistLeadID=null;
     /**the destination for routing*/
     public String destination ="";
     /**used to initialize a large number of variables that are used to calculate everything from movement to linking.
@@ -179,7 +181,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     //the distance to be kept between carts
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return getHitboxSize()[0]*0.5f;
+        return (getHitboxSize()[0]*0.5f);
     }
 
     @Override
@@ -864,28 +866,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {}
 
-    public boolean hasDrag(){return true;}
+    public boolean hasDrag(){return consistLeadID==null || consistLeadID==getEntityId();}
 
     public void updatePosition(){
 
         //reposition bogies to be sure they are the right distance
         if(!getWorld().isRemote) {
-
-            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[0], 0, 0), rotationPitch, rotationYaw, 0);
-            //can't hard clamp
-            // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
-            if (Math.abs(cachedVectors[1].xCoord) > 0.2 || Math.abs(cachedVectors[1].zCoord) > 0.2) {
-                frontBogie.setPositionRelative(
-                        ((cachedVectors[1].xCoord + posX) - frontBogie.posX) * 0.4, 0,
-                        ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ) * 0.4);
-            }
-
-            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[1], 0, 0), rotationPitch, rotationYaw, 0);
-            if (Math.abs(cachedVectors[1].xCoord) > 0.2 || Math.abs(cachedVectors[1].zCoord) > 0.2) {
-                backBogie.setPositionRelative(
-                        ((cachedVectors[1].xCoord + posX) - backBogie.posX) * 0.4, 0,
-                        ((cachedVectors[1].zCoord + posZ) - backBogie.posZ) * 0.4);
-            }
 
             //do scaled rail boosting but keep it capped to the max velocity of the rail
             Block b = CommonUtil.getBlockAt(getWorld(),posX,posY,posZ);
@@ -915,6 +901,24 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
 
 
+            //handle yaw changes for derail
+            if(getBoolean(boolValues.DERAILED)) {
+                if(frontLinkedID!=null && backLinkedID!=null){
+                    rotationYaw=CommonUtil.atan2degreesf(
+                            getWorld().getEntityByID(frontLinkedID).posZ - getWorld().getEntityByID(backLinkedID).posZ,
+                            getWorld().getEntityByID(frontLinkedID).posX - getWorld().getEntityByID(backLinkedID).posX);
+                } else if (frontLinkedID!=null){
+                    rotationYaw=CommonUtil.atan2degreesf(
+                            getWorld().getEntityByID(frontLinkedID).posZ - posZ,
+                            getWorld().getEntityByID(frontLinkedID).posX - posX);
+                } else if (backLinkedID!=null){
+                    rotationYaw=CommonUtil.atan2degreesf(
+                            posZ - getWorld().getEntityByID(backLinkedID).posZ,
+                            posX - getWorld().getEntityByID(backLinkedID).posX);
+                }
+            }
+
+
         //actually move
             moveBogies(null,null);
             //only update velocity if we've moved to any significance.
@@ -925,10 +929,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 prevPosZ = posZ;
                 dataWatcher.updateObject(12, getVelocity());
 
-                setRotation((CommonUtil.atan2degreesf(
-                        frontBogie.posZ - backBogie.posZ,
-                        frontBogie.posX - backBogie.posX)),
-                        CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
                 ticksSinceLastVelocityChange=1;
             } else {
                 motionX = (posX - prevPosX)/ticksSinceLastVelocityChange;
@@ -954,6 +954,27 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         setPosition((frontBogie.posX+cachedVectors[1].xCoord),
                 (frontBogie.posY+cachedVectors[1].yCoord),(frontBogie.posZ+cachedVectors[1].zCoord));
+        setRotation((CommonUtil.atan2degreesf(
+                frontBogie.posZ - backBogie.posZ,
+                frontBogie.posX - backBogie.posX)),
+                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+
+
+        cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[0], 0, 0), rotationPitch, rotationYaw, 0);
+        //can't hard clamp
+        // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
+        if (Math.abs(cachedVectors[1].xCoord) > 0.1 || Math.abs(cachedVectors[1].zCoord) > 0.1) {
+            frontBogie.minecartMove(this,
+                    ((cachedVectors[1].xCoord + posX) - frontBogie.posX) * 0.2,
+                    ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ) * 0.2);
+        }
+
+        cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[1], 0, 0), rotationPitch, rotationYaw, 0);
+        if (Math.abs(cachedVectors[1].xCoord) > 0.1 || Math.abs(cachedVectors[1].zCoord) > 0.1) {
+            backBogie.minecartMove(this,
+                    ((cachedVectors[1].xCoord + posX) - backBogie.posX) * 0.2,
+                    ((cachedVectors[1].zCoord + posZ) - backBogie.posZ) * 0.2);
+        }
 
         //reset the vector when we're done so it wont break trains.
         cachedVectors[1]= new Vec3f(0,0,0);
@@ -1192,17 +1213,31 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          *
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
-        else if (frontBogie!=null && backBogie != null && ticksExisted>0){
+        else if (frontBogie!=null && backBogie != null && ticksExisted>5){
 
-            //update positions related to linking, this NEEDS to come after drag
-            if(getAccelerator()==0 && ticksExisted>5) {
-                if (frontLinkedID!=null && getWorld().getEntityByID(frontLinkedID) instanceof GenericRailTransport) {
-                    manageLink((GenericRailTransport) getWorld().getEntityByID(frontLinkedID));
-                }
-                if (backLinkedID !=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport) {
-                    manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
-                }
+            //fixes consist not initializing on world load and similar
+            if((frontLinkedID!=null || backLinkedID!=null) && consist.size()==1){
+                updateConsist();
             }
+
+            //calculate for slopes, friction, and drag
+            if (hasDrag()) {
+                applyDrag();
+            }
+            //update positions related to linking, this NEEDS to come after drag
+            //only run updates if either the front link or the back link is null.
+            //if there is a consist lead, only the lead can run updates
+           if((consistLeadID!=null && getEntityId()==consistLeadID) ||
+                   ((frontLinkedID==null && backLinkedID!=null) || (frontLinkedID!=null && backLinkedID==null))){
+               GenericRailTransport last = null;
+               for (GenericRailTransport transport : getConsist()){
+                   if(last!=null) {
+                       last.manageLink(transport);
+                   }
+                   last = transport;
+               }
+           }
+
             if(collisionHandler!=null){
                 collisionHandler.updateCollidingEntities(this);
                 for (Entity e : collisionHandler.collidingEntities) {
@@ -1213,10 +1248,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
             }
 
-            //calculate for slopes, friction, and drag
-            if (hasDrag()) {
-                applyDrag();
-            }
             if(!(this instanceof EntityTrainCore)) {
                 updatePosition();
             }
@@ -1328,13 +1359,25 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                         colliding.host.setbackLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
+                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
+                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
+                                        CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                        CommonUtil.translate(getItem().getUnlocalizedName()))
+                        );
                         updateConsist();
+                        colliding.host.updateConsist();
                         return;
 
                     } else if(colliding.host.getBoolean(boolValues.COUPLINGFRONT)){
                         colliding.host.setFrontLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
+                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
+                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
+                                CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                CommonUtil.translate(getItem().getUnlocalizedName()))
+                        );
                         updateConsist();
+                        colliding.host.updateConsist();
                         return;
                     }
 
@@ -1342,12 +1385,24 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     if(colliding.host.collisionHandler.interactionBoxes.get(0)==colliding){
                         colliding.host.setbackLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
+                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
+                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
+                                CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                CommonUtil.translate(getItem().getUnlocalizedName()))
+                        );
                         updateConsist();
+                        colliding.host.updateConsist();
                         return;
                     } else {
                         colliding.host.setFrontLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
+                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
+                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
+                                CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                CommonUtil.translate(getItem().getUnlocalizedName()))
+                        );
                         updateConsist();
+                        colliding.host.updateConsist();
                         return;
                     }
                 }
@@ -1416,26 +1471,73 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
-        transports.add(this);
+        consistLeadID=null;
+        GenericRailTransport link, test;
+
+        //we need to have the list ordered from one of the ends, so iterate until an end is found and then use that.
+        if((frontLinkedID!=null && backLinkedID!=null)) {
+            link =(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
+            while (link != null) {
+                transports.add(link);
+                if (link.frontLinkedID != null &&
+                        !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
+                } else if (link.backLinkedID != null &&
+                        !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+                } else {
+                    break;
+                }
+            }
+            transports = new ArrayList<>();
+            transports.add(link);
+        } else {
+            transports.add(this);
+        }
 
         //check the front, then loop for every transport linked to it in opposite direction of this.
-        GenericRailTransport link = frontLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
-        while(link!=null && !transports.contains(link)){
+        link = frontLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
+        while(link!=null){
             transports.add(link);
-            link = link.frontLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
+            //if we find a consist lead, set it.
+            if(link.getAccelerator()!=0){
+                consistLeadID=link.getEntityId();
+            }
+
+            if(link.frontLinkedID!=null &&
+                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
+                link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
+            } else if(link.backLinkedID!=null &&
+                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
+                link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+            } else {
+                link=null;
+            }
         }
         //do it again, but for the back one
         link= backLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(backLinkedID);
-        while(link!=null && !transports.contains(link)){
+        while(link!=null){
             transports.add(link);
-            link = link.backLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+            //if we find a consist lead, set it.
+            if(link.getAccelerator()!=0){
+                consistLeadID=link.getEntityId();
+            }
+            if(link.frontLinkedID!=null &&
+                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
+                link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
+            } else if(link.backLinkedID!=null &&
+                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
+                link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+            } else {
+                link=null;
+            }
         }
-
-        setConsist(transports);
 
         //now tell everything in the list, including this, that there's a new list, and provide said list.
         for(GenericRailTransport t : transports){
+            t.setConsist(transports);
             t.setValuesOnLinkUpdate(transports);
+            t.consistLeadID=consistLeadID;
         }
     }
 
@@ -1499,21 +1601,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLink(GenericRailTransport other) {
-        //handle yaw changes for derail
-        if(getBoolean(boolValues.DERAILED)) {
-            if(frontLinkedID!=null && backLinkedID!=null){
-                rotationYaw=CommonUtil.atan2degreesf(
-                        getWorld().getEntityByID(frontLinkedID).posZ - getWorld().getEntityByID(backLinkedID).posZ,
-                        getWorld().getEntityByID(frontLinkedID).posX - getWorld().getEntityByID(backLinkedID).posX);
-            } else if (frontLinkedID!=null){
-                rotationYaw=CommonUtil.atan2degreesf(
-                        getWorld().getEntityByID(frontLinkedID).posZ - posZ,
-                        getWorld().getEntityByID(frontLinkedID).posX - posX);
-            } else if (backLinkedID!=null){
-                rotationYaw=CommonUtil.atan2degreesf(
-                        posZ - getWorld().getEntityByID(backLinkedID).posZ,
-                        posX - getWorld().getEntityByID(backLinkedID).posX);
-            }
+        if(other.frontBogie==null || other.backBogie==null || frontBogie==null || backBogie==null){
+            return;
         }
 
         boolean adj1 = other.canBeAdjusted(this);
@@ -1534,8 +1623,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         double vecNorm = MathHelper.sqrt_double((d * d) + (d1 * d1)) -
                 (other.getOptimalDistance(this)+this.getOptimalDistance(other));
 
-        double springX = -0.49D * vecNorm * vecX;
-        double springZ = -0.49D * vecNorm * vecZ;
+        double springX = -0.4D * vecNorm * vecX;
+        double springZ = -0.4D * vecNorm * vecZ;
+
         if(springX>14d || springX<-14d){
             springX=Math.copySign(14d, springX);
         }
@@ -1560,8 +1650,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         vecNorm = (cart1MotionX - cart2MotionX) * vecX + (cart1MotionZ - cart2MotionZ) * vecZ;
 
-        springX = -0.37D * vecNorm * vecX;
-        springZ = -0.37D * vecNorm * vecZ;
+        springX = -0.4D * vecNorm * vecX;
+        springZ = -0.4D * vecNorm * vecZ;
         if(springX>14d || springX<-14d){
             springX=Math.copySign(14d, springX);
         }
@@ -1580,15 +1670,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         //move bogies
         if(cart1MotionX!=0 || cart1MotionZ!=0) {
-            other.frontBogie.minecartMove(other, cart1MotionX, cart1MotionZ);
-            other.backBogie.minecartMove(other, cart1MotionX, cart1MotionZ);
-            other.moveBogies(0d,0d);
+            other.moveBogies(cart1MotionX, cart1MotionZ);
         }
 
         if(cart2MotionX!=0 || cart2MotionZ!=0) {
-            this.frontBogie.minecartMove(other, cart2MotionX, cart2MotionZ);
-            this.backBogie.minecartMove(other, cart2MotionX, cart2MotionZ);
-            this.moveBogies(0d,0d);
+            this.moveBogies(cart2MotionX, cart2MotionZ);
         }
 
     }

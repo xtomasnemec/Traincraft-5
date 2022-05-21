@@ -10,10 +10,13 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.BlockTrainFluid;
 import ebf.tim.blocks.OreGen;
+import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.CustomItemModel;
+import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemTransport;
+import ebf.tim.render.BlockTESR;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import mods.railcraft.api.fuel.FuelManager;
@@ -97,7 +100,16 @@ public class TiMGenericRegistry {
         }
         if (unlocalizedName.length() > 0) {
             block.setBlockName(unlocalizedName);
-            GameRegistry.registerBlock(block, unlocalizedName);
+            GameRegistry.registerBlock(block, null, unlocalizedName);
+            if(model!=null || (block instanceof ITileEntityProvider && ((ITileEntityProvider) block).createNewTileEntity(null,0) instanceof TileRenderFacing)) {
+                DebugUtil.println("block." +unlocalizedName);
+                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, ebf.tim.items.CustomItemModel.instance);
+                if(TESR==null){
+                    TESR=new ebf.tim.render.BlockTESR();
+                }
+            } else {
+                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, null);
+            }
             usedNames.add(unlocalizedName);
         } else {
             DebugUtil.println("ERROR: ", "attempted to register Block with no unlocalizedName");
@@ -119,7 +131,7 @@ public class TiMGenericRegistry {
                 GameRegistry.registerTileEntity(tile, unlocalizedName + "tile");
                 redundantTiles.add(tile.getName());
                 redundantTiles.add(unlocalizedName + "tile");
-                if (TrainsInMotion.proxy.isClient()) {
+                if (TrainsInMotion.proxy.isClient() && TESR!=null) {
                     regTileRender(MODID,unlocalizedName,block,tile,model,TESR);
                 }
             } else if(!redundantTiles.contains(unlocalizedName + "tile")) {
