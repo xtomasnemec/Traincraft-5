@@ -315,32 +315,30 @@ public class EntityTrainCore extends GenericRailTransport {
                 }case 2:{ //decrease speed
                     if (getBoolean(boolValues.RUNNING)) {
                         //if a linked transport is running, dont update
-                        for(GenericRailTransport consist : getConsist()){
-                            if(consist!=this && consist.getAccelerator()!=0){
-                                return true;
-                            }
+                        if(consistLeadID!=null && consistLeadID!=getEntityId()){
+                            return true;
                         }
                         if(accelerator<=-6){
                             accelerator=-6;
                         } else {
                             accelerator--;
                         }
+                        updateConsist();
                         this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }case 3:{ //increase speed
                     if (getBoolean(boolValues.RUNNING)) {
                         //if a linked transport is running, dont update
-                        for(GenericRailTransport consist : getConsist()){
-                            if(consist!=this && consist.getAccelerator()!=0){
-                                return true;
-                            }
+                        if(consistLeadID!=null && consistLeadID!=getEntityId()){
+                            return true;
                         }
                         if(accelerator>=6){
                             accelerator=6;
                         } else {
                             accelerator++;
                         }
+                        updateConsist();
                         this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;

@@ -12,6 +12,7 @@ import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemRail;
 import ebf.tim.items.ItemTransport;
+import ebf.tim.render.BlockTESR;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
