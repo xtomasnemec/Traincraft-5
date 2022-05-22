@@ -1382,9 +1382,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         colliding.host.setbackLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
-                                        CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                        CommonUtil.translate(getItem().getUnlocalizedName()))
+                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
+                                        CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                        CommonUtil.translate(getItem().getTranslationKey()))
                         );
                         updateConsist();
                         colliding.host.updateConsist();
@@ -1394,9 +1394,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         colliding.host.setFrontLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
-                                CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                CommonUtil.translate(getItem().getUnlocalizedName()))
+                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
+                                CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                CommonUtil.translate(getItem().getTranslationKey()))
                         );
                         updateConsist();
                         colliding.host.updateConsist();
@@ -1408,9 +1408,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         colliding.host.setbackLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
-                                CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                CommonUtil.translate(getItem().getUnlocalizedName()))
+                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
+                                CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                CommonUtil.translate(getItem().getTranslationKey()))
                         );
                         updateConsist();
                         colliding.host.updateConsist();
@@ -1419,9 +1419,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         colliding.host.setFrontLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.addChatMessage(new ChatComponentText("Linked the " +
-                                CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                CommonUtil.translate(getItem().getUnlocalizedName()))
+                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
+                                CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                CommonUtil.translate(getItem().getTranslationKey()))
                         );
                         updateConsist();
                         colliding.host.updateConsist();
