@@ -567,6 +567,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                             frontLinkedTransport = null;
                             frontLinkedID = null;
                             transport.updateWatchers = true;
+                            transport.updateConsist();
                         }
                     }
                     //backLinkedTransport
@@ -583,6 +584,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                             backLinkedTransport = null;
                             backLinkedID = null;
                             transport.updateWatchers = true;
+                            transport.updateConsist();
                         }
                     }
                     updateConsist();
@@ -671,9 +673,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(front != null && front.frontLinkedID != null && front.frontLinkedID == this.getEntityId()){
                 front.frontLinkedID = null;
                 front.frontLinkedTransport = null;
+                front.updateConsist();
             } else if(front != null && front.backLinkedID != null && front.backLinkedID == this.getEntityId()){
                 front.backLinkedID = null;
                 front.backLinkedTransport = null;
+                front.updateConsist();
             }
         }
         if (backLinkedID != null){
@@ -681,9 +685,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(back != null && back.frontLinkedID != null && back.frontLinkedID == this.getEntityId()){
                 back.frontLinkedID = null;
                 back.frontLinkedTransport = null;
+                back.updateConsist();
             } else if(back != null && back.backLinkedID != null && back.backLinkedID == this.getEntityId()){
                 back.backLinkedID = null;
                 back.backLinkedTransport = null;
+                back.updateConsist();
             }
         }
         for(CollisionBox box : collisionHandler.interactionBoxes){
