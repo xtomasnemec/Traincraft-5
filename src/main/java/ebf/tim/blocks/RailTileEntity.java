@@ -2,6 +2,7 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
@@ -9,6 +10,7 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.render.models.Model1x1Rail;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -21,6 +23,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import javax.annotation.Nullable;
 
@@ -42,7 +45,6 @@ public class RailTileEntity extends TileEntity {
     }
     public void setMeta(int i){
         if(meta==i){
-            markDirty();
             return;
         }
         meta=i;
@@ -53,8 +55,10 @@ public class RailTileEntity extends TileEntity {
     }
 
     public void setData(XmlBuilder d){
-        data=d;
-        markDirty();
+        if(data!=d) {
+            data = d;
+            markDirty();
+        }
     }
 
     public XmlBuilder getData() {
@@ -126,10 +130,9 @@ public class RailTileEntity extends TileEntity {
 
 
     public void markDirty() {
-        super.markDirty();
         if (this.worldObj != null) {
             CommonUtil.markBlockForUpdate(worldObj, xCoord, yCoord, zCoord);
-            this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, TiMBlocks.railBlock);
+            worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, TiMBlocks.railBlock);
             if(worldObj.isRemote && railGLID!=null) {
                 org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
                 railGLID = null;
