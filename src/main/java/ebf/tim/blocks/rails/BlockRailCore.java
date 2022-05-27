@@ -6,6 +6,7 @@ import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.ITileEntityProvider;
@@ -295,8 +296,8 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     @Override
-    public void onBlockAdded(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_) {
-        updateNearbyShapes(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_);
+    public void onBlockAdded(World p_149726_1_, BlockPos pos, IBlockState state) {
+        updateNearbyShapes(p_149726_1_, pos.getX(),pos.getY(),pos.getZ());
     }
 
 
@@ -330,9 +331,9 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     @Override
-    public void onNeighborBlockChange(World worldObj, int x, int y, int z, Block b) {
-        if(!(b instanceof BlockRailBase)) {
-            updateNearbyShapes(worldObj,x,y,z);
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
+        if(!(world.getBlockState(neighbor).getBlock() instanceof BlockRailBase)) {
+            updateNearbyShapes((World) world,pos.getX(),pos.getY(),pos.getZ());
         }
     }
 
@@ -352,9 +353,9 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             p_149749_1_.getChunk(pos.getX() >> 4, pos.getZ() >> 4)
                     .removeTileEntity(new BlockPos(pos.getX() & 15, pos.getY(), pos.getZ() & 15));
         }
-        CommonUtil.markBlockForUpdate(p_149749_1_, p_149749_2_,p_149749_3_,p_149749_4_);
-        p_149749_1_.func_147453_f(p_149749_2_,p_149749_3_,p_149749_4_, Blocks.air);
-        updateNearbyShapes(p_149749_1_, p_149749_2_,p_149749_3_,p_149749_4_);
+        CommonUtil.markBlockForUpdate(p_149749_1_, pos.getX(),pos.getY(),pos.getZ());
+        p_149749_1_.notifyNeighborsOfStateChange(pos, Blocks.AIR,true);
+        updateNearbyShapes(p_149749_1_, pos.getX(),pos.getY(),pos.getZ());
     }
 
     public void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
@@ -364,7 +365,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         for(int x : matrixXZ){
             for(int z : matrixXZ){
                 for(int y : matrixY){
-                    te=world.getTileEntity(x+xCoord,y+yCoord,z+zCoord);
+                    te=world.getTileEntity(new BlockPos(x+xCoord,y+yCoord,z+zCoord));
                     if(te instanceof RailTileEntity && ((RailTileEntity) te).getData()!=null){
                         new RailData(world,xCoord+x,yCoord+y,zCoord+z).rebuildRailMeta();
                         RailShapeCore.processPoints(x+xCoord,y+yCoord, z+zCoord,world,

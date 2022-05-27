@@ -7,11 +7,12 @@ import org.lwjgl.opengl.GL11;
 public class BlockTESR extends TileEntitySpecialRenderer {
 
     @Override
+    public void render(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha){
         GL11.glPushMatrix();
-        if(tileEntity.getWorldObj()!=null) {
+        if(te.getWorld()!=null) {
             GL11.glTranslated(x, y, z);
         }
-        tileEntity.addInfoToCrashReport(null);
+        te.addInfoToCrashReport(null);
         GL11.glPopMatrix();
     }
 }

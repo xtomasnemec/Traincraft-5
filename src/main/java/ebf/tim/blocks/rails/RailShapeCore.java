@@ -40,7 +40,7 @@ public class RailShapeCore {
             shape.ballast=trackBallast;
             shape.wires=overheadWires;
 
-            ((RailTileEntity) dimension.getTileEntity(x, y, z)).setData(shape.toXML());
+            ((RailTileEntity) dimension.getTileEntity(new BlockPos(x, y, z))).setData(shape.toXML());
         }
 
     }
@@ -54,7 +54,7 @@ public class RailShapeCore {
             shape.ballast=builder.getItemStack("ballast");
             shape.wires=builder.getItemStack("wires");
 
-            ((RailTileEntity) dimension.getTileEntity(x, y, z)).setData(shape.toXML());
+            ((RailTileEntity) dimension.getTileEntity(new BlockPos(x, y, z))).setData(shape.toXML());
         }
 
     }
