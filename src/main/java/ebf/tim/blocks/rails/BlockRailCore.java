@@ -3,6 +3,7 @@ package ebf.tim.blocks.rails;
 import ebf.XmlBuilder;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.items.ItemRail;
+import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.BlockRail;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
-    private static final int[] updateMatrix = {-2,-1,0,1,2};
+    private static final int[] matrixXZ = {0,-1,1,-2,2}, matrixY = {0,-1,+1};
 
 
 
@@ -294,12 +295,8 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     @Override
-    public void onBlockAdded(World p_149726_1_, BlockPos pos, IBlockState state) {
-        updateNearbyShapes(p_149726_1_, pos.getX(),pos.getY(),pos.getZ());
-
-        if (this.isPowered) {
-            this.updateNearbyShapes(p_149726_1_, pos.getX(),pos.getY(),pos.getZ());
-        }
+    public void onBlockAdded(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_) {
+        updateNearbyShapes(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_);
     }
 
 
@@ -333,8 +330,10 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     @Override
-    public void onNeighborChange(IBlockAccess worldObj, BlockPos block, BlockPos other) {
-        updateNearbyShapes((World) worldObj,block.getX(),block.getY(),block.getZ());
+    public void onNeighborBlockChange(World worldObj, int x, int y, int z, Block b) {
+        if(!(b instanceof BlockRailBase)) {
+            updateNearbyShapes(worldObj,x,y,z);
+        }
     }
 
 
@@ -353,31 +352,23 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
             p_149749_1_.getChunk(pos.getX() >> 4, pos.getZ() >> 4)
                     .removeTileEntity(new BlockPos(pos.getX() & 15, pos.getY(), pos.getZ() & 15));
         }
+        CommonUtil.markBlockForUpdate(p_149749_1_, p_149749_2_,p_149749_3_,p_149749_4_);
+        p_149749_1_.func_147453_f(p_149749_2_,p_149749_3_,p_149749_4_, Blocks.air);
+        updateNearbyShapes(p_149749_1_, p_149749_2_,p_149749_3_,p_149749_4_);
     }
 
     public void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
-        //update the meta of just this rail
-        new RailData(world,xCoord,yCoord,zCoord).rebuildRailMeta();
-
-        //rails above and below the current rail don't always get updated because of how vanilla handles updating nearby blocks.
-        // force it.
-        for(int x : updateMatrix) {
-            for (int z : updateMatrix) {
-                new RailData(world,xCoord+x,yCoord+1,zCoord+z).rebuildRailMeta();
-                new RailData(world,xCoord+x,yCoord-1,zCoord+z).rebuildRailMeta();
-            }
-        }
-
+        //todo: right idea, but somehow doesnt force updates outside a 1x1 range. probably a related update somewhere else.
         //update all the other nearby rails.
         TileEntity te;
-        for(int x : updateMatrix){
-            for(int z : updateMatrix){
-                for(int y : updateMatrix){
-                    te=getTileEntity(world,x+xCoord,y+yCoord,z+zCoord);
+        for(int x : matrixXZ){
+            for(int z : matrixXZ){
+                for(int y : matrixY){
+                    te=world.getTileEntity(x+xCoord,y+yCoord,z+zCoord);
                     if(te instanceof RailTileEntity && ((RailTileEntity) te).getData()!=null){
+                        new RailData(world,xCoord+x,yCoord+y,zCoord+z).rebuildRailMeta();
                         RailShapeCore.processPoints(x+xCoord,y+yCoord, z+zCoord,world,
-                                getShape(world, x+xCoord,y+yCoord, z+zCoord),
-                                ((RailTileEntity) te).getData());
+                                getShape(world, x+xCoord,y+yCoord, z+zCoord),((RailTileEntity) te).getData());
                     }
                 }
             }
