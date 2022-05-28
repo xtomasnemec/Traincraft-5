@@ -99,7 +99,7 @@ public class EntityLocoDieselChME3 extends EntityTrainCore {
     public int[] getTankCapacity(){return new int[]{5000};}
 
     public String[] setParticles(){return new String[]{
-            "smoke 0,0,-0.15,1.55,0,0,0,0"
+            "smoke ,0,-0.15,1.55,0,0,0,0"
     };}
 
 

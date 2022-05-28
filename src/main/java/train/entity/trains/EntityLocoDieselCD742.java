@@ -107,7 +107,7 @@ public class EntityLocoDieselCD742 extends EntityTrainCore {
     public int[] getTankCapacity(){return new int[]{10000};}
 
     public String[] setParticles(){return new String[]{
-            "smoke 0,0,1.25,1.15,0,0,0,0"
+            "smoke ,0,1.25,1.15,0,0,0,0"
     };}
 
 

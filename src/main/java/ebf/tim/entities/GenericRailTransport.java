@@ -2563,7 +2563,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     /**
      * returns an array of strings to define particles from the entity class.
-     * an example is: "smoke,0,24,55.5,12,0,0,0,"
+     * an example is: "smoke ,0,24,55.5,12,0,0,0"
      * each value is separated by commas.
      * the first part is the tag
      * @see ebf.tim.render.AnimList
