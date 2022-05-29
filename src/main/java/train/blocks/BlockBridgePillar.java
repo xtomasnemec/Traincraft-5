@@ -56,32 +56,7 @@ public class BlockBridgePillar extends BlockDynamic {
 		return new tilePillar(this);
 	}
 	
-	/**
-	 * Called when the block is placed in the world.
-	 */
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
-		int l = CommonUtil.floorDouble((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		int i1 = CommonUtil.getBlockFacing(world,pos.getX(),pos.getY(),pos.getZ()) >> 2;
-		++l;
-		l %= 4;
 
-		if (l == 0) {
-			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 2 | i1 << 2);
-		}
-
-		if (l == 1) {
-			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 3 | i1 << 2);
-		}
-
-		if (l == 2) {
-			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 0 | i1 << 2);
-		}
-
-		if (l == 3) {
-			CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(), 1 | i1 << 2);
-		}
-	}
 	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
