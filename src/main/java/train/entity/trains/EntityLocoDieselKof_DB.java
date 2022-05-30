@@ -107,8 +107,8 @@ public class EntityLocoDieselKof_DB extends EntityTrainCore {
     public int[] getTankCapacity(){return new int[]{5000};}
 
     public String[] setParticles(){return new String[]{
-            "smoke ,1,1,1.15,0,0,0,0",
-            "smoke ,1,0.6,1.15,0,0,0,0"
+            "smoke ,0,1,1,1.15,0,0,0",
+            "smoke ,0,1,0.6,1.15,0,0,0"
     };}
 
 

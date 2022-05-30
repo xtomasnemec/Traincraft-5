@@ -497,6 +497,18 @@ public class CommonUtil {
         }
     }
 
+    public static float wrapAngleTo180(double input) {
+        input %= 360.0d;
+
+        if (input >= 180.0d) {
+            input -= 360.0d;
+        } else if (input < -180.0d) {
+            input += 360.0d;
+        }
+
+        return (float)input;
+    }
+
     /**
      * <h2>rail placement from item</h2>
      * basic functionality to place a train or rollingstock on the rails on item use.

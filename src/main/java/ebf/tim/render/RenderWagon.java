@@ -57,10 +57,10 @@ public class RenderWagon extends Render {
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
         if (entity instanceof GenericRailTransport){
             if(((GenericRailTransport) entity).frontBogie!=null) {
-                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
                         false);
             } else {
-                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
                         true);
             }
         }
