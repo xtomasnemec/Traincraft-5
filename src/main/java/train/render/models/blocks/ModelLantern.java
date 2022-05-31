@@ -17,13 +17,13 @@ public class ModelLantern extends ModelBase {
 
 	public ModelLantern() {
 		modelLantern = new ModelRendererTurbo(this);
-		modelLantern.addObj(Info.modelPrefix + "lantern.obj");
+		modelLantern.addObj(Info.getModelAddress("lantern.obj"));
 
 		//renderItem.setRenderManager(RenderManager.instance);
 	}
 
 	public void render() {
-		modelLantern.render();
+		modelLantern.render(1);
 	}
 
 	public void render(TileEntity lantern, double x, double y, double z) {
@@ -39,6 +39,7 @@ public class ModelLantern extends ModelBase {
 			// Scale our object to about half-size in all directions (the OBJ file is a little large)
 			GL11.glScalef(0.5f, 0.5f, 0.5f);
 		}
+		GL11.glRotatef(90,1,0,0);
 
 
 		// Bind the texture, so that OpenGL properly textures our block.

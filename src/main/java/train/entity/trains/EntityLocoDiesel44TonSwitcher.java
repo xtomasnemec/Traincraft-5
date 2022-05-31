@@ -59,6 +59,9 @@ public class EntityLocoDiesel44TonSwitcher extends EntityTrainCore {
     public void registerSkins(){
         SkinRegistry.addSkin(this.getClass(),
             new TransportSkin(Info.modID,"textures/trains/loco_44tonswitcher.png","loco_44tonswitcher", "description.loco_44tonswitcher"));
+
+        //SkinRegistry.addSkin(this.getClass(),
+        //        new TransportSkin(Info.modID,"textures/trains/loco_44tonswitcher_Red.png","loco_44tonswitcher_Red", "description.loco_44tonswitcher_Red"));
     }
     @Override
     public String getDefaultSkin(){

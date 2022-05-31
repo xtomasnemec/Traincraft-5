@@ -19,11 +19,11 @@ private ModelRendererTurbo ring;
 	
 	public ModelRing() {
 		ring = new ModelRendererTurbo(this);
-		ring.addObj(Info.modelPrefix + "ring.obj");
+		ring.addObj(Info.getModelAddress("ring.obj"));
 	}
 	
 	public void render() {
-		ring.render();
+		ring.render(1);
 	}
 	
 	public void render(int color) {

@@ -33,7 +33,7 @@ public class ModelStopper extends ModelBase {
 	public ModelStopper(float scale) {
 
 		track =  new ModelRendererTurbo(this);
-		track.addObj(Info.modelPrefix + "track_normal.obj");
+		track.addObj(Info.getModelAddress("track_normal.obj"));
 		
 		box = new CustomModelRenderer(this, 43, 4, 64, 64);
 		box.addBox(0F, 0F, 0F, 2, 15, 1, scale);
@@ -106,7 +106,7 @@ public class ModelStopper extends ModelBase {
 		FMLClientHandler.instance().getClient().renderEngine
 				.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_normal.png"));
 		GL11.glColor4f(1, 1, 1, 1);
-		track.render();
+		track.render(1);
 		GL11.glPopMatrix();
 	}
 

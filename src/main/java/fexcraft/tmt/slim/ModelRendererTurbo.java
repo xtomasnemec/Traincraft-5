@@ -1,16 +1,12 @@
 package fexcraft.tmt.slim;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
-
 import fexcraft.fvtm.TurboList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
+import java.util.*;
+
 /**
  * An extension to the ModelRenderer class. It basically is a copy to ModelRenderer,
  * however, it contains various new methods to make your models.
@@ -1170,8 +1166,9 @@ public class ModelRendererTurbo {
      * @param file the location of the .obj file. The location is relative to the base directories,
      * which are either resources/models or resources/mods/models.
      */
-    public void addObj(String file){
+    public ModelRendererTurbo addObj(String file){
         addModel(file, ModelPool.OBJ);
+        return this;
     }
 
     public void addObjF(String file){
@@ -1194,6 +1191,11 @@ public class ModelRendererTurbo {
         if(entry == null){
             return;
         }
+        if(mirror){
+            for (TexturedPolygon face : entry.faces) {
+                face.flipFace();
+            }
+        }
         faces.addAll(Arrays.asList(entry.faces));
     }
 
@@ -1201,6 +1203,11 @@ public class ModelRendererTurbo {
         ModelPoolEntry entry = ModelPool.addFileF(file, modelFormat);
         if(entry == null){
             return;
+        }
+        if(mirror){
+            for (TexturedPolygon face : entry.faces) {
+                face.flipFace();
+            }
         }
         faces.addAll(Arrays.asList(entry.faces));
     }
