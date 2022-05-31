@@ -23,11 +23,11 @@ public class ModelWindMillWheel extends ModelBase {
 
 	public ModelWindMillWheel() {
 		modelWindMillWheel = new ModelRendererTurbo(this);
-		modelWindMillWheel.addObj(Info.modelPrefix + "wind_mill_wheel.obj");
+		modelWindMillWheel.addObj(Info.getModelAddress("wind_mill_wheel.obj"));
 	}
 
 	public void render() {
-		modelWindMillWheel.render();
+		modelWindMillWheel.render(1);
 	}
 
 	public void render(TileEntity windMill, double x, double y, double z) {

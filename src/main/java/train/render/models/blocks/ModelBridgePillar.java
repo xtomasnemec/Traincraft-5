@@ -20,19 +20,19 @@ public class ModelBridgePillar extends ModelBase {
 
 	public ModelBridgePillar() {
 		bridgePillar = new ModelRendererTurbo(this);
-		bridgePillar.addObj(Info.modelPrefix + "bridge_block.obj");
+		bridgePillar.addObj(Info.getModelAddress("bridge_block.obj"));
 	}
 	
 	public void render() {
-		bridgePillar.render();
+		bridgePillar.render(1);
 	}
 	
 	public void render(TileEntity pillar, double x, double y, double z) {
 		if(pillar.getWorldObj()==null){
-			GL11.glTranslated( x,  y+0.5,  z);
+			GL11.glTranslated( x,  y+0.15,  z+0.5);
 			GL11.glRotatef(180,0,0,1);
 		} else {
-			GL11.glTranslated( x + 0.5,  y,  z + 0.5);
+			GL11.glTranslated( x + 0.5,  y+0.5,  z+1);
 		}
 
 		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_slope.png"));

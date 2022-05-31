@@ -19,11 +19,11 @@ public class ModelPresent extends ModelBase {
 	
 	public ModelPresent() {
 		present = new ModelRendererTurbo(this);
-		present.addObj(Info.modelPrefix + "present.obj");
+		present.addObj(Info.getModelAddress("present.obj"));
 	}
 	
 	public void render() {
-		present.render();
+		present.render(1);
 	}
 
 	public void render(int color) {

@@ -22,11 +22,11 @@ public class ModelWaterWheel extends ModelBase {
 
 	public ModelWaterWheel() {
 		modelWaterWheel = new ModelRendererTurbo(this);
-		modelWaterWheel.addObj(Info.modelPrefix + "water_wheel.obj");
+		modelWaterWheel.addObj(Info.getModelAddress("water_wheel.obj"));
 	}
 
 	public void render() {
-		modelWaterWheel.render();
+		modelWaterWheel.render(1);
 	}
 
 	public void render(TileEntity waterWheel, double x, double y, double z) {

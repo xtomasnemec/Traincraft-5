@@ -23,11 +23,11 @@ public class ModelLights extends ModelBase {
 	
 	public ModelLights() {
 		branch = new ModelRendererTurbo(this);
-		branch.addObj(Info.modelPrefix + "lights2.branch1.obj");
+		branch.addObj(Info.getModelAddress("lights2.branch1.obj"));
 		plane = new ModelRendererTurbo(this);
-		plane.addObj(Info.modelPrefix + "lights2.plane1.obj");
+		plane.addObj(Info.getModelAddress("lights2.plane1.obj"));
 		bulb = new ModelRendererTurbo(this);
-		bulb.addObj(Info.modelPrefix + "lights2.bulb1.obj");
+		bulb.addObj(Info.getModelAddress("lights2.bulb1.obj"));
 	}
 
 	
