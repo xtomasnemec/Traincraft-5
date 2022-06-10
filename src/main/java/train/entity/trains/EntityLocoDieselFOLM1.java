@@ -55,7 +55,7 @@ public class EntityLocoDieselFOLM1 extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelFOL_M1()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.9f, 0.15f, -0.9f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.9f, 0.175f, -0.9f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -83,7 +83,7 @@ public class EntityLocoDieselFOLM1 extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{-2.2f,1.5f, 0f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{-2.2f,1.4f, 0f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{6.1f,2.4f,1.5f};}
     @Override

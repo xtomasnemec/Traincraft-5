@@ -2,10 +2,12 @@ package ebf.tim.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.registry.TiMBlocks;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import mods.railcraft.api.core.items.ITrackItem;
 import net.minecraft.block.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -39,7 +41,7 @@ public class ItemRail extends Item implements ITrackItem {
     @Deprecated
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int meta, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-        if(world.isRemote){return true;}
+        if(world.isRemote){return false;}
         net.minecraft.block.Block block = CommonUtil.getBlockAt(world, x, y, z);
 
         if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush) {
@@ -89,7 +91,7 @@ public class ItemRail extends Item implements ITrackItem {
             }
         }
 
-        if (!player.canPlayerEdit(x,y,z, meta, stack) || stack.stackSize==0 ||
+        if (player==null || !player.canPlayerEdit(x,y,z, meta, stack) || stack.stackSize==0 ||
         !world.getChunkProvider().chunkExists(
                 x>>4, z>>4)) {
             return false;

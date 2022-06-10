@@ -459,7 +459,8 @@ public class GUITransport extends GUIContainerNoNEI {
                 Tessellator.bindTexture(URIRegistry.GUI_PREFIX.getResource("gui.png"));
                 ClientUtil.drawTexturedRect(186, 40 + (-20 * i), 16, 0, 90, 18, 16, 16);
 
-                if (transport.getTankInfo(null)[i] != null && transport.getTankInfo(null)[i].fluid.amount > 0) {
+                if (transport.getTankInfo(null)[i] != null && transport.getTankInfo(null)[i].fluid !=null &&
+                        transport.getTankInfo(null)[i].fluid.amount > 0) {
                     liquid = transport.getTankInfo(null)[i].fluid.amount;
                     if (liquid != 0) {
                         liquid /= transport.getTankInfo(null)[i].capacity;

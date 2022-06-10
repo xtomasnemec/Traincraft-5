@@ -102,9 +102,8 @@ public class TiMGenericRegistry {
             block.setBlockName(unlocalizedName);
             GameRegistry.registerBlock(block, null, unlocalizedName);
             if(model!=null || (block instanceof ITileEntityProvider && ((ITileEntityProvider) block).createNewTileEntity(null,0) instanceof TileRenderFacing)) {
-                DebugUtil.println("block." +unlocalizedName);
                 RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, ebf.tim.items.CustomItemModel.instance);
-                if(TESR==null){
+                if(TrainsInMotion.proxy.isClient() && TESR==null){
                     TESR=new ebf.tim.render.BlockTESR();
                 }
             } else {

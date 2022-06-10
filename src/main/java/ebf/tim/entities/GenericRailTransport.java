@@ -10,6 +10,7 @@ import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.api.TransportSkin;
+import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.items.ItemKey;
 import ebf.tim.items.ItemPaintBucket;
 import ebf.tim.items.ItemStake;
@@ -1011,7 +1012,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(pullingWeight==0){
             updateConsist();
         }
-        //setDead();
 
         if(frontLinkedID==null || backLinkedID==null) {
 
@@ -1027,12 +1027,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
                     //so we buff that to just under double to balance against drag, then scale by entity pitch
                     //pith goes from -90 to 90, so it's inherently directional.
-                    slopeX+=0.00017361f*stock.rotationPitch;
+                    slopeX+=(0.00017361f*0.5f)*stock.rotationPitch;
                 }
             }
 
-            //add in air/speed drag
-            if (getVelocity() > 0) {
+            //scale drag for derail, or air lateral friction. if you do both at the same time then it's way too much.
+            if(getBoolean(boolValues.DERAILED)){
+                drag*=CommonUtil.getBlockAt(getWorld(),posX,posY,posZ).slipperiness;
+            } else if (getVelocity() > 0) {
                 drag -= ((getFriction() * getVelocity() * 4.448f));
             }
 
@@ -1050,8 +1052,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //split the slope buff into X and Z, then rotate based on yaw.
             if (rotationYaw != 0.0F) {
-                slopeZ = (slopeX * MathHelper.sin(rotationYaw*radianF));
-                slopeX = (slopeX * MathHelper.cos(rotationYaw*radianF));
+                slopeZ = (slopeX * MathHelper.sin((rotationYaw-90)*radianF));
+                slopeX = (slopeX * MathHelper.cos((rotationYaw-90)*radianF));
             }
             frontBogie.setVelocity(
                     (frontBogie.motionX * drag)+slopeX

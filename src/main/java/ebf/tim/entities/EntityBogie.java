@@ -203,6 +203,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
             //update on normal rails
             if (block instanceof BlockRailBase) {
+                this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
                 loopVanilla(host, Math.abs(moveX) + Math.abs(moveZ), moveX,moveZ, floorX,floorY,floorZ, (BlockRailBase) block);
                 //update on ZnD rails, and ones that don't extend block rail base.
                 //todo ZnD support, either by jar reference or API update
@@ -244,7 +245,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     }
 
     private void loopVanilla(GenericRailTransport host, double velocity, double velocityX, double velocityZ, int floorX, int floorY,int floorZ, BlockRailBase block){
-        this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
 
         //try to adhere to limiter track
         railmax = block.getRailMaxSpeed(getWorld(),this,floorX, floorY, floorZ);

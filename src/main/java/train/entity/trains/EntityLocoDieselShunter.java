@@ -53,7 +53,7 @@ public class EntityLocoDieselShunter extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelShunter()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, 0.62f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, 0.64f, 0.0f}};}
 @Override
     public float[][] modelRotations(){return new float[][]{{0f,180f,180f}};}
     @Override
@@ -85,9 +85,9 @@ public class EntityLocoDieselShunter extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{1.4f,1.3f, 0.3f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{1.4f,1.45f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{3.7f,2.3f,1.5f};}
+    public float[] getHitboxSize(){return new float[]{worldObj==null?3.8f:3.7f,2.3f,1.5f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.85f, -0.8f};}
     //Train specific stuff

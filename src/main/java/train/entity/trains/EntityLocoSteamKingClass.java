@@ -84,7 +84,7 @@ public class EntityLocoSteamKingClass extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{2.8f,1.5f, 0.3f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{2.8f,1.45f, 0.3f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{6.15f,2.3f,1.4f};}
     @Override
