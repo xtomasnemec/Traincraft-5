@@ -87,7 +87,7 @@ public class EntityLocoDieselShunter extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{1.4f,1.45f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{worldObj==null?3.8f:3.7f,2.3f,1.5f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?3.8f:3.7f,2.3f,1.5f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.85f, -0.8f};}
     //Train specific stuff

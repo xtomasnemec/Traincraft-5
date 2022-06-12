@@ -376,6 +376,8 @@ public class EventManager {
             GenericRailTransport t;
             GL11.glPushMatrix();
             t = (GenericRailTransport) event.getEntity().world.getEntityByID(((EntitySeat) event.getEntity().getRidingEntity()).parentId);
+            //for whatever reason 1.12 needs this extra offset, 1.7 does not.
+            GL11.glTranslatef(0,0.3125f,0);
             GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
             if (event.getEntity().getRidingEntity().getLookVec() != null) {
                 GL11.glRotated(event.getEntity().getRidingEntity().getLookVec().x, 0, 1, 0);
