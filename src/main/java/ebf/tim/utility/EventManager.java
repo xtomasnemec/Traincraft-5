@@ -363,15 +363,12 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onPreRenderEvent(RenderLivingEvent.Pre event){
         if (event.entity.ridingEntity instanceof EntitySeat) {
-            GenericRailTransport t;
             GL11.glPushMatrix();
-            t = (GenericRailTransport) event.entity.worldObj.getEntityByID(((EntitySeat) event.entity.ridingEntity).parentId);
-            GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
-            if (event.entity.ridingEntity.getLookVec() != null) {
-                GL11.glRotated(event.entity.ridingEntity.getLookVec().xCoord, 0, 1, 0);
-                GL11.glRotated(event.entity.ridingEntity.getLookVec().yCoord, 0, 0, 1);
-                GL11.glRotated(event.entity.ridingEntity.getLookVec().zCoord, 1, 0, 0);
+            GenericRailTransport t = (GenericRailTransport) event.entity.worldObj.getEntityByID(((EntitySeat) event.entity.ridingEntity).parentId);
+            if(t!=null) {
+                GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
             }
+
         }
     }
     @SubscribeEvent
