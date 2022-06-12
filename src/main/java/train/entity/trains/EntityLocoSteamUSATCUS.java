@@ -54,7 +54,7 @@ public class EntityLocoSteamUSATCUS extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelUSATCUS()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.95f, 0.35f, -0.8375f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.95f, 0.375f, -0.8375f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -84,7 +84,7 @@ public class EntityLocoSteamUSATCUS extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{1.1f,1.3f, -0.25f},{1.1f,1.3f, 0.25f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{1.1f,1.2f, -0.25f},{1.1f,1.2f, 0.25f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{3.9f,2.1f,1.3f};}
     @Override

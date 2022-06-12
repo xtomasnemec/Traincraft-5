@@ -98,7 +98,7 @@ public class ItemRail extends Item implements ITrackItem {
             }
         }
 
-        if (!player.canPlayerEdit(new BlockPos(x,y,z), facing, stack) || stack.getCount()==0 ||
+        if (player==null || !player.canPlayerEdit(x,y,z, meta, stack) || stack.stackSize==0 ||
         !world.getChunkProvider().isChunkGeneratedAt(
                 x>>4, z>>4)) {
             return EnumActionResult.FAIL;

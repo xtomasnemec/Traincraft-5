@@ -53,7 +53,7 @@ public class EntityLocoDieselCD742 extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelGP40()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.55f, -0.9f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.55f, -0.85f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{180.0f, 0.0f, -180.0f}};}
     @Override

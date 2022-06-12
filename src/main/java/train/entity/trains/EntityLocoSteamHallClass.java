@@ -53,7 +53,7 @@ public class EntityLocoSteamHallClass extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelHallClass()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{1.9f, 0f, 0.25f}};}
+    public float[][] modelOffsets(){return new float[][]{{1.9f, 0.025f, 0.25f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
