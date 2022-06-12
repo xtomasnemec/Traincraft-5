@@ -80,7 +80,7 @@ public class EntityLocoSteamBerk765 extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{3.4f,1.5f, 0.35f},{3.4f,1.5f, -0.35f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{3.4f,1.4f, 0.35f},{3.4f,1.4f, -0.35f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{7.35f,2.5f,1.5f};}
     @Override
@@ -106,7 +106,7 @@ public class EntityLocoSteamBerk765 extends EntityTrainCore {
     //these only change in very specific use cases.
     @Override
     public boolean shouldRiderSit(){
-        return false;
+        return true;
     }
     @Override
     public Item getItem(){return thisItem;}
