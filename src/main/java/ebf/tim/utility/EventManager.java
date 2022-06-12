@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.model.IModel;
@@ -373,16 +374,12 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onPreRenderEvent(RenderLivingEvent.Pre event){
         if (event.getEntity().getRidingEntity() instanceof EntitySeat) {
-            GenericRailTransport t;
             GL11.glPushMatrix();
-            t = (GenericRailTransport) event.getEntity().world.getEntityByID(((EntitySeat) event.getEntity().getRidingEntity()).parentId);
+            GenericRailTransport t = (GenericRailTransport) event.getEntity().world.getEntityByID(((EntitySeat) event.getEntity().getRidingEntity()).parentId);
             //for whatever reason 1.12 needs this extra offset, 1.7 does not.
             GL11.glTranslatef(0,0.3125f,0);
-            GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
-            if (event.getEntity().getRidingEntity().getLookVec() != null) {
-                GL11.glRotated(event.getEntity().getRidingEntity().getLookVec().x, 0, 1, 0);
-                GL11.glRotated(event.getEntity().getRidingEntity().getLookVec().y, 0, 0, 1);
-                GL11.glRotated(event.getEntity().getRidingEntity().getLookVec().z, 1, 0, 0);
+            if(t!=null) {
+                GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
             }
         }
     }
@@ -394,6 +391,18 @@ public class EventManager {
         }
     }
 
+    @SubscribeEvent
+    public void CameraSetup(EntityViewRenderEvent.CameraSetup event){
+        if(Minecraft.getMinecraft().player==null){
+            return;
+        }
+
+        if(Minecraft.getMinecraft().player.getRidingEntity() instanceof EntitySeat&&
+                Minecraft.getMinecraft().gameSettings.thirdPersonView==0){
+            GL11.glTranslatef(0,0.25f,0);
+        }
+
+    }
 
     /**
      * <h2>join world</h2>
