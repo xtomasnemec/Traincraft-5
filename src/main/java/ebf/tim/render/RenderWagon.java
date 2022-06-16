@@ -282,8 +282,8 @@ public class RenderWagon extends Render {
          */
         if (entity.getWorld()!=null && !Minecraft.getMinecraft().isGamePaused()) {
             //cap the pitch value so we don't exceed values accepted by an integer.
-            if(entity.renderData.wheelPitch>Math.PI*10000 ||entity.renderData.wheelPitch<Math.PI*-10000){
-                entity.renderData.wheelPitch -= Math.copySign(Math.PI*10000, entity.renderData.wheelPitch);
+            if(Math.abs(entity.renderData.wheelPitch) >= 3600) {
+                entity.renderData.wheelPitch -= Math.copySign(3600, entity.renderData.wheelPitch);
             }
             // define the rotation angle, scale based on framerate.
             entity.renderData.wheelPitch -=(entity.velocity[1]*(System.currentTimeMillis()-entity.renderData.lastFrameTime)*60);

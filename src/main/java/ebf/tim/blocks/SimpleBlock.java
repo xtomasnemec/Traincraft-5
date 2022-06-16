@@ -12,9 +12,9 @@ public class SimpleBlock extends Block {
         setHardness(hardness);
         setResistance(resistance);
         setBlockName(unlocalizedName);
-        setBlockTextureName(texture);
         setHarvestLevel("pickaxe", 2); //iron pick for all blocks
 
         TiMGenericRegistry.registerBlock(this, TrainsInMotion.creativeTab,TrainsInMotion.MODID,unlocalizedName,null,null);
+        setBlockTextureName(texture);
     }
 }
