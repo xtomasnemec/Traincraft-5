@@ -381,6 +381,7 @@ public class EventManager {
             if(t!=null) {
                 GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
             }
+
         }
     }
     @SubscribeEvent
