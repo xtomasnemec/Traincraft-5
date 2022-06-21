@@ -86,16 +86,15 @@ public class BlockLantern extends BlockDynamic {
 		world.spawnParticle(EnumParticleTypes.FLAME, d0, pos.getY() + d3, d2, 0.0D, 0.0D, 0.0D);
 
 	}
+
+	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		if (player.isSneaking()) {
-			return false;
-		}
-		if(player.getActiveItemStack()!=null && player.getActiveItemStack() != ItemStack.EMPTY && player.getActiveItemStack().getItem() instanceof ItemWrench)
-		if (te instanceof TileLantern) {
-			player.openGui(Traincraft.instance, GuiIDs.LANTERN, world, pos.getX(),pos.getY(),pos.getZ());
-		}
-		return true;
+	public Object getGUI(EntityPlayer player, TileEntity te){
+		return new train.blocks.lantern.GuiLantern(player, (TileLantern) te);
+	}
+
+	@Override
+	public Object getInventoryManager(EntityPlayer player, TileEntity te){
+		return null;//lantern has no server-sided inventory, GUI works from packets to the tile directly
 	}
 }

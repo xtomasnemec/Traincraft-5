@@ -1,6 +1,7 @@
 package train.blocks.distil;
 
 import ebf.tim.blocks.BlockDynamic;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -13,11 +14,11 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.Traincraft;
 import train.blocks.TCBlocks;
-import train.library.GuiIDs;
 
 import java.util.Random;
 
@@ -34,18 +35,15 @@ public class BlockDistil extends BlockDynamic {
 		return Item.getItemFromBlock(TCBlocks.blockDistil);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand par6, EnumFacing facing, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(pos);
-		if (player.isSneaking()) {
-			return false;
-		}
-		if (!world.isRemote) {
-			if (te instanceof TileEntityDistil) {
-				player.openGui(Traincraft.instance, GuiIDs.DISTIL, world, pos.getX(), pos.getY(),pos.getZ());
-			}
-		}
-		return true;
+	public Object getGUI(EntityPlayer player, TileEntity te){
+		return new train.blocks.distil.GuiDistil(player.inventory, (TileEntityDistil) te);
+	}
+
+	@Override
+	public Object getInventoryManager(EntityPlayer player, TileEntity te){
+		return new ContainerDistil(player.inventory, (TileEntityDistil) te);
 	}
 
 	@Override

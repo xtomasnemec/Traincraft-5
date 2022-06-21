@@ -3,6 +3,7 @@ package ebf.tim.blocks;
 import depreciated.minecraft.util.IIcon;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.TransportSlotManager;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -21,6 +22,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import train.blocks.distil.ContainerDistil;
+import train.blocks.distil.TileEntityDistil;
 
 /**
  * <h1>Block core</h1>
@@ -135,9 +138,16 @@ public class BlockDynamic extends BlockContainer {
         } else {
             return false;
         }
-
     }
 
+    @SideOnly(Side.CLIENT)
+    public Object getGUI(EntityPlayer player, TileEntity te){
+        return new ebf.tim.gui.GUITrainTable(player.inventory, (TileEntityStorage) te);
+    }
+
+    public Object getInventoryManager(EntityPlayer player, TileEntity te){
+        return new TransportSlotManager(player.inventory, (TileEntityStorage) te);
+    }
 
 
     public class particleTexture extends IIcon {

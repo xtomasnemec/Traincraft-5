@@ -12,6 +12,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -42,10 +43,10 @@ public class GUITrainTable extends GuiContainer {
     /**a reference to the player that opened the GUI.*/
     private EntityPlayer player;
 
-    public GUITrainTable(InventoryPlayer inventoryPlayer, World world, int x, int y, int z) {
-        super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) world.getTileEntity(new BlockPos(x,y,z))));
-        hostname=CommonUtil.getBlockAt(world, x,y,z).getTranslationKey();
-        xCoord=x;yCoord=y;zCoord=z;dimension=world.provider.getDimension();
+    public GUITrainTable(InventoryPlayer inventoryPlayer, TileEntity te) {
+        super(new TransportSlotManager(inventoryPlayer, (TileEntityStorage) te));
+        hostname=te.getBlockType().getUnlocalizedName();
+        xCoord=te.xCoord;yCoord=te.yCoord;zCoord=te.zCoord;dimension=te.getWorldObj().provider.dimensionId;
         player = inventoryPlayer.player;
 
         if (CommonProxy.isTraincraft && hostname.startsWith("tile.block.traintabletier")) {

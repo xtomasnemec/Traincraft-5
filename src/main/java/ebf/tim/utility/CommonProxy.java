@@ -2,6 +2,7 @@ package ebf.tim.utility;
 
 
 import ebf.tim.api.SkinRegistry;
+import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.registry.TiMBlocks;
@@ -62,8 +63,9 @@ public class CommonProxy implements IGuiHandler {
             if (player.world.getEntityByID(ID) instanceof GenericRailTransport && !((GenericRailTransport) player.world.getEntityByID(ID)).hasCustomGUI()) {
                 return new TransportSlotManager(player.inventory, (GenericRailTransport) player.world.getEntityByID(ID));
                 //tile entities
-            } else if (world.getTileEntity(new BlockPos(x,y,z)) instanceof TileEntityStorage){
-                return new TransportSlotManager(player.inventory, (TileEntityStorage) world.getTileEntity(new BlockPos(x,y,z)));
+            } else if (CommonUtil.getBlockAt(world,x,y,z) instanceof BlockDynamic){
+                return ((BlockDynamic) CommonUtil.getBlockAt(world, x, y, z))
+                        .getInventoryManager(player, world.getTileEntity(x,y,z));
             }
         }
         return null;

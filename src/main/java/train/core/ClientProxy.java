@@ -69,37 +69,19 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-		Entity entity = player.getRidingEntity();
+    	if(player==null){return null;}
 
-		Entity entity1 = null;
-		if (y == -1) {
-			for (Object ent : world.loadedEntityList) {
-				if (((Entity) ent).getEntityId() == x)
-					entity1 = (Entity) ent;
+		if(ID==GuiIDs.ZEPPELIN){
+			Entity entity = player.ridingEntity;
+			return new GuiZepp(player.inventory, entity);
+		} else if (ID==GuiIDs.JUKEBOX){
+			Entity entity1 = getEntity(world, x);
+			if(entity1 instanceof EntityJukeBoxCart) {
+				return new GuiJukebox(player, (EntityJukeBoxCart) entity1);
 			}
 		}
-		switch (ID) {
-		case (GuiIDs.DISTIL):
-			return te instanceof TileEntityDistil ? new GuiDistil(player.inventory, (TileEntityDistil) te) : null;
-		case (GuiIDs.GENERATOR_DIESEL):
-			return te instanceof TileGeneratorDiesel ? new GuiGeneratorDiesel(player.inventory, (TileGeneratorDiesel) te) : null;
-		case (GuiIDs.OPEN_HEARTH_FURNACE):
-			return te instanceof TileEntityOpenHearthFurnace ? new GuiOpenHearthFurnace(player.inventory, (TileEntityOpenHearthFurnace) te) : null;
-		case GuiIDs.TRAIN_WORKBENCH:
-			return te instanceof TileTrainWbench ? new GuiTrainCraftingBlock(player.inventory, (TileTrainWbench) te) : null;
-		case (GuiIDs.ZEPPELIN):
-			return player != null ? new GuiZepp(player.inventory, entity) : null;
-			//Stationary entities while player is not riding.
-		/*case (GuiIDs.RECIPE_BOOK2):
-			return te != null && te instanceof TileBook ? new GuiRecipeBook2(player, player.getCurrentEquippedItem()) : new GuiRecipeBook2(player, player.getCurrentEquippedItem());*/
-		case (GuiIDs.LANTERN):
-			return new GuiLantern(player, (TileLantern)te);
-		case (GuiIDs.JUKEBOX):
-			return entity1 != null ? new GuiJukebox(player,(EntityJukeBoxCart)entity1) : null;
-		default:
-			return null;
-		}
+
+		return null;
 	}
 
 	@Override
