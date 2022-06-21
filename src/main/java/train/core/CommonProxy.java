@@ -51,38 +51,20 @@ public class CommonProxy implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
-		EntityPlayer riddenByEntity = null;
-		Entity entity = player.ridingEntity;
 
-		if (player.ridingEntity != null) {
-			riddenByEntity = (EntityPlayer) entity.riddenByEntity;
+		if(ID==GuiIDs.ZEPPELIN){
+			Entity entity = player.ridingEntity;
+			if(entity!=null) {
+				return new InventoryZepp(player.inventory, (AbstractZeppelin) entity);
+			}
+		} else if (ID==GuiIDs.JUKEBOX){
+			Entity entity1 = getEntity(world, x);
+			if(entity1 instanceof EntityJukeBoxCart){
+				return new InventoryJukeBoxCart(player.inventory, (EntityJukeBoxCart) entity1);
+			}
 		}
 
-		Entity entity1 = null;
-		if (y == -1) {
-			entity1 = getEntity(world, x);
-		}
-
-		switch (ID) {
-		case (GuiIDs.DISTIL):
-			return te instanceof TileEntityDistil ? new ContainerDistil(player.inventory, (TileEntityDistil) te) : null;
-		case (GuiIDs.GENERATOR_DIESEL):
-			return te instanceof TileGeneratorDiesel ? new ContainerGeneratorDiesel(player.inventory, (TileGeneratorDiesel) te) : null;
-		case (GuiIDs.OPEN_HEARTH_FURNACE):
-			return te instanceof TileEntityOpenHearthFurnace ? new ContainerOpenHearthFurnace(player.inventory, (TileEntityOpenHearthFurnace) te) : null;
-		case (GuiIDs.TRAIN_WORKBENCH):
-			return te instanceof TileTrainWbench ? new ContainerTrainWorkbench(player.inventory, (TileTrainWbench) te) : null;
-		case (GuiIDs.ZEPPELIN):
-			return riddenByEntity != null ? new InventoryZepp(player.inventory, (AbstractZeppelin) entity) : null;
-
-
-			/* Stationary entities while player is not riding. */
-		case (GuiIDs.JUKEBOX):
-			return entity1 instanceof EntityJukeBoxCart ? new InventoryJukeBoxCart(player.inventory, (EntityJukeBoxCart) entity1) : null;
-		default:
-			return null;
-		}
+		return null;
 	}
 
 	@Override

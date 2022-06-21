@@ -78,18 +78,15 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(i, j, k);
-		if (player.isSneaking()) {
-			return false;
-		}
-		if (!world.isRemote) {
-			if (te instanceof TileEntityOpenHearthFurnace) {
-				player.openGui(Traincraft.instance, GuiIDs.OPEN_HEARTH_FURNACE, world, i, j, k);
-			}
-		}
-		return true;
+	public Object getGUI(EntityPlayer player, TileEntity te){
+		return new train.blocks.hearth.GuiOpenHearthFurnace(player.inventory, (TileEntityOpenHearthFurnace) te);
+	}
+
+	@Override
+	public Object getInventoryManager(EntityPlayer player, TileEntity te){
+		return new ContainerOpenHearthFurnace(player.inventory, (TileEntityOpenHearthFurnace) te);
 	}
 
 

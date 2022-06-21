@@ -1,5 +1,7 @@
 package train.blocks.bench;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
@@ -20,20 +22,15 @@ public class BlockTrainWorkbench extends BlockDynamic {
 		super(Material.wood, true);
 		setCreativeTab(Traincraft.tcTab);
 	}
-
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Object getGUI(EntityPlayer player, TileEntity te){
+		return new train.blocks.bench.GuiTrainCraftingBlock(player.inventory, (TileTrainWbench) te);
+	}
 
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		TileEntity te = world.getTileEntity(i, j, k);
-		if (player.isSneaking()) {
-			return false;
-		}
-		if (!world.isRemote) {
-			if (te instanceof TileTrainWbench) {
-				player.openGui(Traincraft.instance, GuiIDs.TRAIN_WORKBENCH, world, i, j, k);
-			}
-		}
-		return true;
+	public Object getInventoryManager(EntityPlayer player, TileEntity te){
+		return new ContainerTrainWorkbench(player.inventory, (TileTrainWbench) te);
 	}
 
 	@Override

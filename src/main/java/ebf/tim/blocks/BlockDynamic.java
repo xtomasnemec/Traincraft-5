@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.TransportSlotManager;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -16,6 +17,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import train.blocks.distil.ContainerDistil;
+import train.blocks.distil.TileEntityDistil;
 
 /**
  * <h1>Block core</h1>
@@ -139,9 +142,16 @@ public class BlockDynamic extends BlockContainer {
         } else {
             return false;
         }
-
     }
 
+    @SideOnly(Side.CLIENT)
+    public Object getGUI(EntityPlayer player, TileEntity te){
+        return new ebf.tim.gui.GUITrainTable(player.inventory, (TileEntityStorage) te);
+    }
+
+    public Object getInventoryManager(EntityPlayer player, TileEntity te){
+        return new TransportSlotManager(player.inventory, (TileEntityStorage) te);
+    }
 
 
     public class particleTexture extends TextureAtlasSprite {

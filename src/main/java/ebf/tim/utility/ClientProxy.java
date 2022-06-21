@@ -6,6 +6,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
@@ -110,8 +111,9 @@ public class ClientProxy extends CommonProxy {
             if (player.worldObj.getEntityByID(ID) instanceof GenericRailTransport && !((GenericRailTransport) player.worldObj.getEntityByID(ID)).hasCustomGUI()) {
                 return new GUITransport(player.inventory, (GenericRailTransport) player.worldObj.getEntityByID(ID));
                 //tile entities
-            } else if (player.worldObj.getTileEntity(x,y,z) instanceof TileEntityStorage) {
-                return new GUITrainTable(player.inventory, player.worldObj, x, y, z);
+            }else if (CommonUtil.getBlockAt(world,x,y,z) instanceof BlockDynamic){
+                return ((BlockDynamic) CommonUtil.getBlockAt(world, x, y, z))
+                        .getGUI(player, world.getTileEntity(x,y,z));
             }
         }
         return null;
