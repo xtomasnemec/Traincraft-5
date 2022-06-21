@@ -45,11 +45,6 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	@Override
-	public int getRenderType() {
-		return RenderingRegistry.getNextAvailableRenderId();
-	}
-
 	@SideOnly(Side.CLIENT)
 	@Override
 	public Object getGUI(EntityPlayer player, TileEntity te){

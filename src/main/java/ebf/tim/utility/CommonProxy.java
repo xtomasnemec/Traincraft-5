@@ -65,7 +65,7 @@ public class CommonProxy implements IGuiHandler {
                 //tile entities
             } else if (CommonUtil.getBlockAt(world,x,y,z) instanceof BlockDynamic){
                 return ((BlockDynamic) CommonUtil.getBlockAt(world, x, y, z))
-                        .getInventoryManager(player, world.getTileEntity(x,y,z));
+                        .getInventoryManager(player, world.getTileEntity(new BlockPos(x,y,z)));
             }
         }
         return null;
