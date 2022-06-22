@@ -1,6 +1,7 @@
 package train.blocks.bench;
 
 import ebf.tim.blocks.TileEntityStorage;
+import ebf.tim.utility.TransportSlotManager;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -10,7 +11,7 @@ import train.library.Info;
 
 public class GuiTrainCraftingBlock extends GuiContainer {
 	public GuiTrainCraftingBlock(InventoryPlayer invPlayer, TileEntityStorage inv) {
-		super(new ContainerTrainWorkbench(invPlayer, inv));
+		super(new TransportSlotManager(invPlayer, inv));
 	}
 
 	@Override
