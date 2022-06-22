@@ -29,10 +29,6 @@ public class BlockTrainWorkbench extends BlockDynamic {
 		return new train.blocks.bench.GuiTrainCraftingBlock(player.inventory, (TileTrainWbench) te);
 	}
 
-	@Override
-	public Object getInventoryManager(EntityPlayer player, TileEntity te){
-		return new ContainerTrainWorkbench(player.inventory, (TileTrainWbench) te);
-	}
 
 
 
