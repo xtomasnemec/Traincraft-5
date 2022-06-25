@@ -30,12 +30,14 @@ public class ModelWindMill extends ModelBase {
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
 		if(windMill.getWorld()==null){
-			GL11.glTranslated( x,  y-0.25,  z);
+			GL11.glTranslated( x+1,  y-0.3,  z);
+			GL11.glRotatef(90,1,0,0);
+			GL11.glRotatef(90,0,0,1);
 			GL11.glScalef(0.8f,0.8f,0.8f);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+0.5,  z + 0.5);
+			GL11.glRotatef(90,0,0,1);
 		}
-
 		// Bind the texture, so that OpenGL properly textures our block.
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "water_wheel_uv.png"));
 		int j = 0x331D14;//0x1C0F0A; //0x5a3222;

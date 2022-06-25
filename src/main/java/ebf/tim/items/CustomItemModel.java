@@ -91,14 +91,31 @@ public class CustomItemModel implements ICustomModelLoader {
 
         if(blockTextures.containsKey(item.getItem())) {
             GL11.glPushMatrix();
-            if(type== ItemCameraTransforms.TransformType.GUI){
-                GL11.glRotatef(25,1,0,0);
-                GL11.glRotatef(45,0,1,0);
-                GL11.glTranslated(-0.65, 0, 0);
-                GL11.glScalef(0.65f,0.65f,0.65f);
-            } else if(type== ItemCameraTransforms.TransformType.GROUND){
-                GL11.glTranslated(-0.1, -0.1, -0.1);
-                GL11.glScalef(0.25f,0.25f,0.25f);
+
+            switch (type){
+                case FIRST_PERSON_RIGHT_HAND: FIRST_PERSON_LEFT_HAND:{
+                    GL11.glScalef(0.625f,0.625f,0.625f);
+                    GL11.glTranslated(0, -0.625, -0.625f);
+                    //GL11.glTranslated(0.65, 0, 0);
+                    break;
+                }
+                case THIRD_PERSON_LEFT_HAND: case THIRD_PERSON_RIGHT_HAND:{
+                    GL11.glScalef(0.625f,0.625f,0.625f);
+                    GL11.glTranslated(0, 0.625, -0.625f);
+                    GL11.glRotatef(45,1,0,0);
+                }
+                case GUI:{
+                    GL11.glRotatef(25,1,0,0);
+                    GL11.glRotatef(45,0,1,0);
+                    GL11.glTranslated(-0.65, 0, 0);
+                    GL11.glScalef(0.65f,0.65f,0.65f);
+                    break;
+                }
+                case GROUND:{
+                    GL11.glTranslated(-0.1, -0.1, -0.1);
+                    GL11.glScalef(0.25f, 0.25f, 0.25f);
+                    break;
+                }
             }
             GL11.glScalef(0.95f,0.95f,0.95f);
             GL11.glTranslatef(0,-0.1f,0);

@@ -36,10 +36,12 @@ public class ModelWindMillWheel extends ModelBase {
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
 		if(windMill.getWorld()==null){
-			GL11.glTranslated( x,  y+0.5,  z);
+			GL11.glTranslated( x+1,  y+0.5,  z);
+			GL11.glRotatef(90,0,0,1);
 			GL11.glScalef(0.8f,0.8f,0.8f);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+1.5,  z + 0.5);
+			GL11.glRotatef(90,0,0,1);
 		}
 
 		// Bind the texture, so that OpenGL properly textures our block.
@@ -83,7 +85,7 @@ public class ModelWindMillWheel extends ModelBase {
 		int elapsed = (int) ((now - lastframe) / (1000 * (100 - (windStrength))));
 		wheel -= (float) elapsed / (250.0f);
 		lastframe = now;
-		GL11.glRotatef(-(wheel + wheel1), 0F, 0F, 1F);
+		GL11.glRotatef(-(wheel + wheel1), 0F, 1F, 0F);
 
 		this.render();
 		//GL11.glColor3f(1, 1, 1);

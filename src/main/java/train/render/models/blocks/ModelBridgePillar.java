@@ -29,7 +29,7 @@ public class ModelBridgePillar extends ModelBase {
 	
 	public void render(TileEntity pillar, double x, double y, double z) {
 		if(pillar.getWorld()==null){
-			GL11.glTranslated( x,  y+0.15,  z+0.5);
+			GL11.glTranslated( x,  y+0.75,  z+1.5);
 			GL11.glRotatef(180,0,0,1);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+0.5,  z+1);
