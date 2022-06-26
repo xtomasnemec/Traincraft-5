@@ -19,7 +19,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -83,14 +85,14 @@ public class TiMGenericRegistry {
      */
     public static Block registerBlock(Block block, CreativeTabs tab, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object render) {
         if (render instanceof ModelBase) {
-            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getTESR(), (ModelBase) render, unlocalizedName);
+            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getRailTESR(), (ModelBase) render, unlocalizedName);
         } else {
             return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, render, null, unlocalizedName);
         }
     }
     public static Block registerBlock(Block block, CreativeTabs tab, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object render, String textureName) {
         if (render instanceof ModelBase) {
-            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getTESR(), (ModelBase) render, textureName);
+            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getRailTESR(), (ModelBase) render, textureName);
         } else {
             return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, render, null, textureName);
         }
@@ -131,7 +133,14 @@ public class TiMGenericRegistry {
         }
 
         if (TrainsInMotion.proxy.isClient() && MODID != null) {
-            block.setBlockTextureName(MODID + ":" + textureName);
+            net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new IStateMapper() {
+                @Override
+                public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
+                    Map value = new HashMap<IBlockState, ModelResourceLocation>(){};
+                    value.put(blockIn.getDefaultState(), new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
+                    return value;
+                }
+            });
         }
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
@@ -209,7 +218,7 @@ public class TiMGenericRegistry {
                 //ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
             }
         } else if(TrainsInMotion.proxy.isClient()){
-            itm.setTextureName(MODID+ ":" + textureName);
+            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
         }
         return itm;
     }
