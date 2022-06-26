@@ -83,7 +83,7 @@ public class EntityLocoDieselClass66 extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{-3,1.2f, 0.2f},{2.9f,1.2f, -0.15f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{-3,1.25f, 0.2f},{2.9f,1.25f, -0.15f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{7.4f,2.2f,1.4f};}
     @Override
@@ -107,7 +107,7 @@ public class EntityLocoDieselClass66 extends EntityTrainCore {
     //these only change in very specific use cases.
     @Override
     public boolean shouldRiderSit(){
-        return false;
+        return true;
     }
     @Override
     public Item getItem(){return thisItem;}

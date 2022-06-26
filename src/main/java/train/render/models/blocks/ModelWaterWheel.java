@@ -1,31 +1,32 @@
 package train.render.models.blocks;
 
+import ebf.tim.utility.CommonUtil;
+import fexcraft.tmt.slim.ModelBase;
+import fexcraft.tmt.slim.ModelRendererTurbo;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
-import train.library.Info;
 import train.blocks.waterwheel.TileWaterWheel;
+import train.library.Info;
 
 @SideOnly(Side.CLIENT)
 public class ModelWaterWheel extends ModelBase {
-	private IModelCustom modelWaterWheel;
+	private ModelRendererTurbo modelWaterWheel;
 	private long lastframe;
 	private float wheel;
 	private int l;
 	public float wheel1 = 0.4188790204786391F;
 
 	public ModelWaterWheel() {
-		modelWaterWheel = AdvancedModelLoader.loadModel(new ResourceLocation(Info.modelPrefix + "water_wheel.obj"));
+		modelWaterWheel = new ModelRendererTurbo(this);
+		modelWaterWheel.addObj(Info.getModelAddress("water_wheel.obj"));
 	}
 
 	public void render() {
-		modelWaterWheel.renderAll();
+		modelWaterWheel.render(1);
 	}
 
 	public void render(TileEntity waterWheel, double x, double y, double z) {
@@ -42,7 +43,7 @@ public class ModelWaterWheel extends ModelBase {
 		}
 
 		// Bind the texture, so that OpenGL properly textures our block.
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "water_wheel_uv.png"));
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "water_wheel_uv.png"));
 		int j = 0x331D14;//0x1C0F0A; //0x5a3222;
 		//System.out.println(j);
 		float f1 = 1.0F;
@@ -52,7 +53,7 @@ public class ModelWaterWheel extends ModelBase {
 		GL11.glColor4f(f1 * f2, f1 * f3, f1 * f4, 1);
 		// Render the object, using modelTutBox.renderAll();
 		if(waterWheel.getWorldObj()!=null) {
-			int facing = waterWheel.getWorldObj().getBlockMetadata(waterWheel.xCoord, waterWheel.yCoord, waterWheel.zCoord);
+			int facing = CommonUtil.getBlockFacing(waterWheel.getWorldObj(), waterWheel.xCoord,waterWheel.yCoord, waterWheel.zCoord);
 			if (facing == 3) {
 				GL11.glScalef(0.7f, 0.5f, 0.5f);
 				GL11.glScalef(1f, 0.36f, 0.36f);

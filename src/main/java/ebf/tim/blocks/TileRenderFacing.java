@@ -3,6 +3,7 @@ package ebf.tim.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -137,7 +138,7 @@ public class TileRenderFacing extends TileEntity {
     public void markDirty() {
         super.markDirty();
         if(this.worldObj != null) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            CommonUtil.markBlockForUpdate(worldObj, xCoord, yCoord, zCoord);
             worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
             this.worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, host);
             if (worldObj.isRemote && blockGLID != null) {

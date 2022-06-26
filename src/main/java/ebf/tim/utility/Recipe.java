@@ -212,6 +212,8 @@ public class Recipe {
         if(target==null && toCompare == null) {
             //both must be null otherwise stacks.get(i) could have something and it falsely matches
             return true;
+        } else if (target == null || toCompare == null){
+            return false;
         }
 
         //items not equal or stack isn't big enough, or stack not big enough

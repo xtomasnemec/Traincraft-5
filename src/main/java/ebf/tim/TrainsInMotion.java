@@ -189,6 +189,7 @@ public class TrainsInMotion {
         if(event.getSide().isClient()) {
             //register the event handler
             FMLCommonHandler.instance().bus().register(ClientProxy.eventManager);
+            MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
             fexcraft.tmt.slim.TextureManager.collectIngotColors();
         }
         FMLCommonHandler.instance().bus().register(CommonProxy.eventManagerServer);
@@ -199,7 +200,7 @@ public class TrainsInMotion {
 
     @Mod.EventHandler
     public void postinit(FMLPostInitializationEvent event) {
-        if (Loader.isModLoaded("NotEnoughItems")) {
+        if (TrainsInMotion.proxy.isClient() && Loader.isModLoaded("NotEnoughItems")) {
             TiMTableNEIIntegration.setupNEIintegration();
         }
 

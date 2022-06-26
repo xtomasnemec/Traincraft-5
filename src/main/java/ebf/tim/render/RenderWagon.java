@@ -57,10 +57,10 @@ public class RenderWagon extends Render {
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
         if (entity instanceof GenericRailTransport){
             if(((GenericRailTransport) entity).frontBogie!=null) {
-                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
                         false);
             } else {
-                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + MathHelper.wrapAngleTo180_float(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
                         true);
             }
         }
@@ -98,13 +98,18 @@ public class RenderWagon extends Render {
 
         if(entity==null){return;}
 
+        if(ClientProxy.modeldevtoolReloadAll!=null && ClientProxy.modeldevtoolReloadAll.getIsKeyPressed()){
+            entity.renderData.needsModelUpdate=true;
+            return;
+        }
+
         if (entity.renderData.modelList == null || entity.renderData.needsModelUpdate) {
             entity.renderData = new TransportRenderData();
             entity.renderData.modelList = entity.getModel();
             entity.renderData.bogies = entity.bogies();
 
             //cache animating parts
-            if (entity.worldObj!=null && ClientProxy.EnableAnimations && entity.renderData.needsModelUpdate) {
+            if (entity.getWorld()!=null && ClientProxy.EnableAnimations && entity.renderData.needsModelUpdate) {
                 boolean isAdded;
                 int m=0;
                 for (ModelBase part : entity.renderData.modelList) {
@@ -140,8 +145,8 @@ public class RenderWagon extends Render {
                             }
                             render.showModel = false;
                         }
-                        if(ParticleFX.parseData(render.boxName, entity.getClass())!=null){
-                            entity.renderData.particles.addAll(ParticleFX.newParticleItterator(render.boxName,
+                        if(ParticleFX.parseData(render.boxName + " ", entity.getClass())!=null){
+                            entity.renderData.particles.addAll(ParticleFX.newParticleItterator(render.boxName + " ",
                                     render.rotationPointX+(entity.modelOffsets()[m][0]*16),
                                     render.rotationPointY+(entity.modelOffsets()[m][1]*16),
                                     render.rotationPointZ+(entity.modelOffsets()[m][2]*16),
@@ -169,8 +174,8 @@ public class RenderWagon extends Render {
                                 entity.renderData.animatedPart.add(StaticModelAnimator.initPart(box, entity));
                                 box.animated=true;
                             }
-                            if(ParticleFX.parseData(box.boxName, entity.getClass())!=null){
-                                animators.addAll(ParticleFX.newParticleItterator(box.boxName,
+                            if(ParticleFX.parseData(box.boxName + " ", entity.getClass())!=null){
+                                animators.addAll(ParticleFX.newParticleItterator(box.boxName + " ",
                                         box.rotationPointX, box.rotationPointY, box.rotationPointZ,
                                         box.rotateAngleX,box.rotateAngleY,box.rotateAngleZ, entity));
                             }
@@ -199,6 +204,32 @@ public class RenderWagon extends Render {
                     }
                 }
             }
+
+            if(entity.setParticles()!=null) {
+                String[] parse;
+                for(String value : entity.setParticles()) {
+                    parse=value.split(",");
+                    if (ParticleFX.parseData(" "+ parse[0] + " ", entity.getClass()) != null) {
+                        int id= Integer.parseInt(parse[1]);
+                        if(id==0) {
+                            entity.renderData.particles.addAll(ParticleFX.newParticleItterator(" "+ parse[0] + " ",
+                                    (Float.parseFloat(parse[2])*16)-2 + (entity.modelOffsets()[0][0] * 16),
+                                    (Float.parseFloat(parse[3])*-16)-14 + (entity.modelOffsets()[0][1] * 16),
+                                    (Float.parseFloat(parse[4])*16)-2 + (entity.modelOffsets()[0][2] * 16),
+                                    Float.parseFloat(parse[5]), Float.parseFloat(parse[6]), Float.parseFloat(parse[7]),
+                                    entity));
+                        } else {
+                            entity.renderData.bogieParticles.get(id).addAll(ParticleFX.newParticleItterator(" "+ parse[0] + " ",
+                                    (Float.parseFloat(parse[2])*16)-2 + entity.renderData.bogies[id].offset[0],
+                                    (Float.parseFloat(parse[3])*-16)-14 + entity.renderData.bogies[id].offset[1],
+                                    (Float.parseFloat(parse[4])*16)-2 + entity.renderData.bogies[id].offset[2],
+                                    Float.parseFloat(parse[5]), Float.parseFloat(parse[6]), Float.parseFloat(parse[7]),
+                                    entity));
+                        }
+                    }
+                }
+            }
+
             entity.renderData.needsModelUpdate=false;
         }
 
@@ -249,10 +280,10 @@ public class RenderWagon extends Render {
          * Be sure animations are enabled in user settings, then check of there is something to animate.
          * if there is, then calculate the vectors and apply the animations
          */
-        if (entity.worldObj!=null && !Minecraft.getMinecraft().isGamePaused()) {
+        if (entity.getWorld()!=null && !Minecraft.getMinecraft().isGamePaused()) {
             //cap the pitch value so we don't exceed values accepted by an integer.
-            if(entity.renderData.wheelPitch>Math.PI*10000 ||entity.renderData.wheelPitch<Math.PI*-10000){
-                entity.renderData.wheelPitch -= Math.copySign(Math.PI*10000, entity.renderData.wheelPitch);
+            if(Math.abs(entity.renderData.wheelPitch) >= 3600) {
+                entity.renderData.wheelPitch -= Math.copySign(3600, entity.renderData.wheelPitch);
             }
             // define the rotation angle, scale based on framerate.
             entity.renderData.wheelPitch -=(entity.velocity[1]*(System.currentTimeMillis()-entity.renderData.lastFrameTime)*60);
@@ -281,8 +312,8 @@ public class RenderWagon extends Render {
          */
         //System.out.println(entity.getTexture(0).getResourcePath() + entity.getDataWatcher().getWatchableObjectInt(24));
         TransportSkin s;
-        if(!isPaintBucket && entity.worldObj!=null) {
-            TextureManager.adjustLightFixture(entity.worldObj, (int) entity.posX, (int) entity.posY + 1, (int) entity.posZ);
+        if(!isPaintBucket && entity.getWorld()!=null) {
+            TextureManager.adjustLightFixture(entity.getWorld(), (int) entity.posX, (int) entity.posY + 1, (int) entity.posZ);
             s=entity.getTexture(Minecraft.getMinecraft().thePlayer);
         } else if (textureURI!=null){
             s=textureURI;
@@ -309,7 +340,7 @@ public class RenderWagon extends Render {
 
         //todo add support for model offsets by making this a list like for bogies.
         //render the particles, if there are any.
-        if(entity.worldObj!=null && !isPaintBucket) {
+        if(entity.getWorld()!=null && !isPaintBucket) {
             for (ParticleFX particle : entity.renderData.particles) {
                 ParticleFX.doRender(particle, entity.getRenderScale(), yaw);
             }
@@ -357,7 +388,7 @@ public class RenderWagon extends Render {
                 b.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
 
                 //render the particles, if there are any. do this _after_ the normal render because it breaks texture bind
-                if(!isPaintBucket && entity.worldObj!=null && entity.renderData.bogieParticles.size()>0) {
+                if(!isPaintBucket && entity.getWorld()!=null && entity.renderData.bogieParticles.size()>0) {
                     for (ParticleFX p : entity.renderData.bogieParticles.get(ii)) {
                         ParticleFX.doRender(p, entity.getRenderScale(), yaw);
                     }
@@ -377,7 +408,7 @@ public class RenderWagon extends Render {
                         GL11.glTranslated(sub.offset[0]-b.offset[0], sub.offset[1]-b.offset[1], sub.offset[2]-b.offset[2]);
 
                         if(!isPaintBucket) {
-                            GL11.glRotatef(sub.rotationYaw - b.rotationYaw, 0.0f, 1.0f, 0);
+                            GL11.glRotatef(sub.rotationYaw, 0.0f, 1.0f, 0);
                         }
                         sub.bogieModel.render(entity, 0, 0, 0, 0, 0, 0.0625f);
                         GL11.glPopMatrix();
@@ -391,7 +422,7 @@ public class RenderWagon extends Render {
         }
 
         GL11.glPopMatrix();
-        if(entity.worldObj==null || isPaintBucket){return;}
+        if(entity.getWorld()==null || isPaintBucket){return;}
         //render the smoke and steam particles, if there are any.
         //this has to render seperate from the rest of the train as it's position is intended to be independant outside of spawn position
         for (ParticleFX particle : entity.renderData.particles) {
@@ -458,7 +489,7 @@ public class RenderWagon extends Render {
             GL11.glColor4f(1,0,1,1);
 
             if(entity.frontLinkedID!=null) {
-                Entity e = entity.worldObj.getEntityByID(entity.frontLinkedID);
+                Entity e = entity.getWorld().getEntityByID(entity.frontLinkedID);
                 if(e instanceof GenericRailTransport) {
                     Vec3d rotated = CommonUtil.rotateDistance(entity.getHitboxSize()[0] * 0.5f,
                             0, CommonUtil.atan2degreesf(
@@ -474,7 +505,7 @@ public class RenderWagon extends Render {
 
 
             if(entity.backLinkedID!=null) {
-                Entity e = entity.worldObj.getEntityByID(entity.backLinkedID);
+                Entity e = entity.getWorld().getEntityByID(entity.backLinkedID);
                 if(e instanceof GenericRailTransport) {
 
                     Vec3d rotated = CommonUtil.rotateDistance(entity.getHitboxSize()[0] * 0.5f,

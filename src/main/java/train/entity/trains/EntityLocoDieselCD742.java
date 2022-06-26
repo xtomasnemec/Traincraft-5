@@ -53,7 +53,7 @@ public class EntityLocoDieselCD742 extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelGP40()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.55f, -0.9f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.55f, -0.85f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{180.0f, 0.0f, -180.0f}};}
     @Override
@@ -106,6 +106,9 @@ public class EntityLocoDieselCD742 extends EntityTrainCore {
     @Override
     public int[] getTankCapacity(){return new int[]{10000};}
 
+    public String[] setParticles(){return new String[]{
+            "smoke ,0,1.25,1.15,0,0,0,0"
+    };}
 
 
     //these only change in very specific use cases.

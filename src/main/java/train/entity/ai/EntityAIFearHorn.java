@@ -1,12 +1,15 @@
 package train.entity.ai;
 
+import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCache;
@@ -25,7 +28,8 @@ public class EntityAIFearHorn extends EntityAIBase{
 
 	@Override
 	public boolean shouldExecute() {
-		if(entity.getEntityToAttack() instanceof EntityTrainCore) {
+        if(entity.getAttackTarget() instanceof EntityPlayer &&
+                (entity.getAttackTarget().ridingEntity instanceof EntityTrainCore || entity.getAttackTarget().ridingEntity instanceof EntitySeat)) {
 			entity.detachHome();
             Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(entity, 10, 8, Vec3.createVectorHelper(entity.getEntityToAttack().posX, entity.getEntityToAttack().posY, entity.getEntityToAttack().posZ));
 
@@ -83,6 +87,6 @@ public class EntityAIFearHorn extends EntityAIBase{
                 x - range, y - range, z - range,
                 x + range, y + range, z + range,
                 0);
-        return (new TCPathFinder(chunkcache, canPassOpenDoor, canPassClosedDoor, false, canSwim)).createEntityPathTo(entity, targetX, targetY, targetZ, range);
+        return new PathFinder(chunkcache, canPassOpenDoor, canPassClosedDoor, false, canSwim).createEntityPathTo(entity, targetX, targetY, targetZ, range);
     }
 }

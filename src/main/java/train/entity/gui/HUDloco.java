@@ -2,6 +2,7 @@ package train.entity.gui;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.utility.*;
@@ -22,11 +23,12 @@ public class HUDloco extends GuiScreen {
 
 	@SubscribeEvent
 	public void onGameRender(RenderGameOverlayEvent.Text event){
-		if (game != null && game.thePlayer != null && game.thePlayer.ridingEntity instanceof EntityTrainCore && Minecraft.isGuiEnabled() && game.currentScreen == null) {
-			renderSkillHUD(event, (EntityTrainCore) game.thePlayer.ridingEntity);
+		if (game != null && game.thePlayer != null && game.thePlayer.ridingEntity instanceof EntitySeat && Minecraft.isGuiEnabled() && game.currentScreen == null) {
+			if(((EntitySeat)game.thePlayer.ridingEntity).isLocoControlSeat()) {
+				renderSkillHUD(event, (EntityTrainCore) game.theWorld.getEntityByID(((EntitySeat) game.thePlayer.ridingEntity).parentId));
+			}
 		} else {
-			this.game = this.mc = Minecraft.getMinecraft();
-			this.fontRendererObj = this.game.fontRenderer;
+			this.game = Minecraft.getMinecraft();
 		}
 	}
 
@@ -57,13 +59,13 @@ public class HUDloco extends GuiScreen {
 		else {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "locohud.png"));
 		}
-		drawTexturedModalRect(10, windowHeight, 0, 150, 137, 90);
+		ClientUtil.drawTexturedRect(10, windowHeight, 0, 150, 137, 90);
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 	private void renderText(EntityTrainCore loco) {
-		double speed =( Math.sqrt(loco.getVelocity()) * (CommonProxy.realSpeed?120D*1.25D:120D));
+		double speed =EntityTrainCore.ratio(loco.getVelocity());
 		speed*=ClientProxy.speedInKmh?1:0.621371;
 		int h;
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
@@ -74,13 +76,13 @@ public class HUDloco extends GuiScreen {
 		}
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
-		fontRendererObj.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("  " + Math.floor(speed), 106,
+		game.fontRenderer.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
+		game.fontRenderer.drawStringWithShadow("  " + Math.floor(speed), 100,
 				windowHeight + 18 + (h), 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
+		game.fontRenderer.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			fontRendererObj.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
+			game.fontRenderer.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
@@ -157,19 +159,19 @@ public class HUDloco extends GuiScreen {
 		 */
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
-		drawTexturedModalRect(70, windowHeight + 17, 190, 169 + l_Scaled, 6, 49 - l_Scaled);// l max = 49
+		ClientUtil.drawTexturedRect(70, windowHeight + 17, 190, 169 + l_Scaled, 6, 49 - l_Scaled);// l max = 49
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
 		/* this is for the red overlay if you don't put water into steam trains */
 		if (l <= 1 && loco.entityData.hasFloat("burnTime") && loco.entityData.getFloat("burnTime")>0) {
-			this.drawGradientRect(0, 0, windowWidth, windowHeight + 100, 1615855616, -1602211792);
+			ClientUtil.drawGradientRect(0, 0, windowWidth, windowHeight + 100, 1615855616, -1602211792);
 		}
 	}
 
 	public int getHeat(GenericRailTransport loco){
 		if(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			if (true || loco.ticksExisted > lastTick) {
-				int l = loco.getTankInfo(null)[1] != null ?
+			if (loco.ticksExisted > lastTick) {
+				int l = loco.getTankInfo(null)[1] != null && loco.getTankInfo(null)[1].fluid !=null?
 						loco.getTankInfo(null)[1].fluid.amount : 1;
 				return ((l * 100) / (loco.getTankCapacity()[1]));
 			}
@@ -192,13 +194,13 @@ public class HUDloco extends GuiScreen {
 		 * Things are slightly different in Steam HUD
 		 */
 		//todo make dial thing aling with gearing
-		if (!(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM))) {
+		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "loco_hud_steam.png"));
-			drawTexturedModalRect(75, windowHeight + 32 - speed, 163, 150, 30, 5);
+			ClientUtil.drawTexturedRect(75, windowHeight + 40 - speed, 163, 150, 30, 5);
 		}
 		else {
 			game.renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation,Info.guiPrefix + "locohud.png"));
-			drawTexturedModalRect(84, windowHeight + 32 - speed, 177, 149, 16, 8);
+			ClientUtil.drawTexturedRect(86, windowHeight + 31 - speed, 172, 149, 16, 8);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
@@ -227,10 +229,10 @@ public class HUDloco extends GuiScreen {
 		 * Things are slightly different in Steam HUD render overheat arrow black bar for steam train
 		 */
 		if (!(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM))) {
-			drawTexturedModalRect(58, windowHeight + 37 - ( overheatScaled)+20, 169, 158, 23, 5);
+			ClientUtil.drawTexturedRect(58, windowHeight + 37 - ( overheatScaled)+20, 169, 158, 23, 5);
 		}
 		else {
-			drawTexturedModalRect(56, windowHeight + 17, 176, (169 + overheatScaled), 5, 49 - overheatScaled);
+			ClientUtil.drawTexturedRect(56, windowHeight + 17, 176, (169 + overheatScaled), 5, 49 - overheatScaled);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);

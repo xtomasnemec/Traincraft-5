@@ -81,7 +81,7 @@ public class BlockSwitchStand extends BlockDynamic {
 		if (te != null) {
 			int dir = CommonUtil.floorDouble((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 			te.setFacing(ForgeDirection.getOrientation(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
-			world.markBlockForUpdate(i, j, k);
+			CommonUtil.markBlockForUpdate(world, i, j, k);
 		}
 	}
 	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)

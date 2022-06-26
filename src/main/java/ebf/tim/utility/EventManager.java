@@ -21,6 +21,8 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import org.lwjgl.input.Keyboard;
@@ -54,37 +56,37 @@ public class EventManager {
     @SubscribeEvent
     public void onClientKeyPress(InputEvent.KeyInputEvent event) {
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-        if (player.ridingEntity instanceof GenericRailTransport || player.ridingEntity instanceof EntitySeat) {
+        if (player.ridingEntity instanceof EntitySeat) {
             //for lamp
             if (ClientProxy.KeyLamp.getIsKeyPressed()) {
-                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0, player.ridingEntity.getEntityId()));
-                ((GenericRailTransport) player.ridingEntity).setBoolean(GenericRailTransport.boolValues.LAMP, !((GenericRailTransport) player.ridingEntity).getBoolean(GenericRailTransport.boolValues.LAMP));
+                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0, ((EntitySeat) player.ridingEntity).parentId));
+                ((GenericRailTransport)player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId)).setBoolean(GenericRailTransport.boolValues.LAMP, !((GenericRailTransport) player.ridingEntity).getBoolean(GenericRailTransport.boolValues.LAMP));
             }
             //for inventory
             if (ClientProxy.KeyInventory.getIsKeyPressed()) {
-                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(1, player.ridingEntity.getEntityId()));
+                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(1, ((EntitySeat) player.ridingEntity).parentId));
             }
-            if (player.ridingEntity instanceof EntityTrainCore) {
+            if (((EntitySeat) player.ridingEntity).isLocoSeat()) {
                 //for speed change
                 if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
-                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(2, player.ridingEntity.getEntityId()));
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(2, ((EntitySeat) player.ridingEntity).parentId));
                     }
                 } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
-                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(3, player.ridingEntity.getEntityId()));
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(3, ((EntitySeat) player.ridingEntity).parentId));
                     }
                 } else if (ClientProxy.KeyHorn.getIsKeyPressed()){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(9, player.ridingEntity.getEntityId()));
+                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(9, ((EntitySeat) player.ridingEntity).parentId));
                 } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.getIsKeyPressed()){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, player.ridingEntity.getEntityId()));
+                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.ridingEntity).parentId));
                 }
 
                 //manage key release events
                 if (Keyboard.getEventKey() == FMLClientHandler.instance().getClient().gameSettings.keyBindJump.getKeyCode() && !Keyboard.getEventKeyState()){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, player.ridingEntity.getEntityId()));
+                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, ((EntitySeat) player.ridingEntity).parentId));
                 }
             }
         } else if(DebugUtil.dev()) {
@@ -165,7 +167,7 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onClientTick(TickEvent.PlayerTickEvent event) {
-        if(event.player.ridingEntity instanceof EntityTrainCore){
+        if(event.player.ridingEntity instanceof EntitySeat){
             if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.
                 if(ClientProxy.controls==1 && holdTimer<40){
@@ -174,7 +176,7 @@ public class EventManager {
                     return;
                 }
                 if (holdTimer==40){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(12, event.player.ridingEntity.getEntityId()));
+                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(12, ((EntitySeat) event.player.ridingEntity).parentId));
                     holdTimer++;
                 } else if (holdTimer<40){
                     holdTimer++;
@@ -188,7 +190,7 @@ public class EventManager {
                 }
 
                 if (holdTimer==40){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(11, event.player.ridingEntity.getEntityId()));
+                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(11, ((EntitySeat) event.player.ridingEntity).parentId));
                     holdTimer++;
                 } else if (holdTimer<40){
                     holdTimer++;
@@ -198,9 +200,9 @@ public class EventManager {
                     !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()){
                 if (holdTimer>40){
                     if(ClientProxy.controls!=1) {
-                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, event.player.ridingEntity.getEntityId()));
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, ((EntitySeat) event.player.ridingEntity).parentId));
                     } else {
-                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(14, event.player.ridingEntity.getEntityId()));
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(14, ((EntitySeat) event.player.ridingEntity).parentId));
                     }
                 }
                 holdTimer=0;
@@ -311,7 +313,7 @@ public class EventManager {
 
     private static int left=0,longest;
     private static String[] disp;
-    private static RenderItem itemRender = new RenderItem();
+    public static RenderItem itemRender = new RenderItem();
 
     private static String[] getStaticStrings(GenericRailTransport t, EntityPlayer p){
         return new String[]{
@@ -354,6 +356,27 @@ public class EventManager {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onPreRenderEvent(RenderLivingEvent.Pre event){
+        if (event.entity.ridingEntity instanceof EntitySeat) {
+            GL11.glPushMatrix();
+            GenericRailTransport t = (GenericRailTransport) event.entity.worldObj.getEntityByID(((EntitySeat) event.entity.ridingEntity).parentId);
+            if(t!=null) {
+                GL11.glScalef(t.getPlayerScale(), t.getPlayerScale(), t.getPlayerScale());
+            }
+
+        }
+    }
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onPostRenderEvent(RenderLivingEvent.Post event){
+        if (event.entity.ridingEntity instanceof EntitySeat) {
+            GL11.glPopMatrix();
+        }
     }
 
     /**

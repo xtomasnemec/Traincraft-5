@@ -36,6 +36,20 @@ public class ItemTransport extends Item {
     public ItemTransport(GenericRailTransport cart, String MODID, CreativeTabs tabs) {
         super();
         setUnlocalizedName(cart.transportName().replace(" ",""));
+        if(TrainsInMotion.proxy.isClient()){
+            setItemLore(cart);
+        }
+        transport=cart.getClass();
+        setTextureName(MODID+":transports/"+getUnlocalizedName());
+        setCreativeTab(tabs);
+        if(TrainsInMotion.proxy.isClient()){
+            entity=cart;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setItemLore(GenericRailTransport cart){
+
         if(cart.transportYear()!=null) {
             subtext.add(EnumChatFormatting.GRAY + t("menu.item.year") + ": " + cart.transportYear());
         }
@@ -101,12 +115,6 @@ public class ItemTransport extends Item {
                     subtext.add(EnumChatFormatting.LIGHT_PURPLE + s);
                 }
             }
-        }
-        transport=cart.getClass();
-        setTextureName(MODID+":transports/"+getUnlocalizedName());
-        setCreativeTab(tabs);
-        if(TrainsInMotion.proxy.isClient()){
-            entity=cart;
         }
     }
 
