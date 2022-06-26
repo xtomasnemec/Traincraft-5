@@ -80,9 +80,16 @@ public class TiMGenericRegistry {
      */
     public static Block registerBlock(Block block, CreativeTabs tab, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object render) {
         if (render instanceof ModelBase) {
-            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getTESR(), (ModelBase) render);
+            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getTESR(), (ModelBase) render, unlocalizedName);
         } else {
-            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, render, null);
+            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, render, null, unlocalizedName);
+        }
+    }
+    public static Block registerBlock(Block block, CreativeTabs tab, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object render, String textureName) {
+        if (render instanceof ModelBase) {
+            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TrainsInMotion.proxy.getTESR(), (ModelBase) render, textureName);
+        } else {
+            return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, render, null, textureName);
         }
     }
 
@@ -91,6 +98,10 @@ public class TiMGenericRegistry {
     }
 
     public static Block registerBlock(Block block, CreativeTabs tab, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object TESR, @Nullable ModelBase model) {
+        return registerBlock(block, tab, MODID, unlocalizedName, oreDictionaryName, TESR, model, unlocalizedName);
+    }
+
+    public static Block registerBlock(Block block, CreativeTabs tab, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable Object TESR, @Nullable ModelBase model, String textureName) {
         if (usedNames.contains(unlocalizedName)) {
             DebugUtil.println("ERROR: ", "attempted to register Block with a used unlocalizedName", unlocalizedName);
             DebugUtil.throwStackTrace();
@@ -102,12 +113,12 @@ public class TiMGenericRegistry {
             block.setBlockName(unlocalizedName);
             GameRegistry.registerBlock(block, null, unlocalizedName);
             if(model!=null || (block instanceof ITileEntityProvider && ((ITileEntityProvider) block).createNewTileEntity(null,0) instanceof TileRenderFacing)) {
-                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, ebf.tim.items.CustomItemModel.instance);
+                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, ebf.tim.items.CustomItemModel.instance, textureName);
                 if(TrainsInMotion.proxy.isClient() && TESR==null){
                     TESR=new ebf.tim.render.BlockTESR();
                 }
             } else {
-                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, null);
+                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, null, textureName);
             }
             usedNames.add(unlocalizedName);
         } else {
@@ -116,7 +127,7 @@ public class TiMGenericRegistry {
         }
 
         if (TrainsInMotion.proxy.isClient() && MODID != null) {
-            block.setBlockTextureName(MODID + ":" + unlocalizedName);
+            block.setBlockTextureName(MODID + ":" + textureName);
         }
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
@@ -149,7 +160,15 @@ public class TiMGenericRegistry {
         return RegisterItem(itm, MODID, unlocalizedName, null, tab, null, null);
     }
 
+    public static Item RegisterItem(Item itm, String MODID, String unlocalizedName, CreativeTabs tab, String textureName) {
+        return RegisterItem(itm, MODID, unlocalizedName, null, tab, null, null, textureName);
+    }
+
     public static Item RegisterItem(Item itm, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable CreativeTabs tab, @Nullable Item container, @Nullable Object itemRender) {
+        return RegisterItem(itm, MODID, unlocalizedName, oreDictionaryName, tab, container, itemRender, unlocalizedName.replace("item.", ""));
+    }
+
+    public static Item RegisterItem(Item itm, String MODID, String unlocalizedName, @Nullable String oreDictionaryName, @Nullable CreativeTabs tab, @Nullable Item container, @Nullable Object itemRender, String textureName) {
         if (usedNames.contains(unlocalizedName)) {
             DebugUtil.println("ERROR: ", "attempted to register Item with a used unlocalizedName", unlocalizedName);
             DebugUtil.throwStackTrace();
@@ -167,9 +186,6 @@ public class TiMGenericRegistry {
             DebugUtil.println("ERROR: ", "attempted to register Item with no unlocalizedName");
             DebugUtil.throwStackTrace();
         }
-        if (TrainsInMotion.proxy.isClient()) {
-            itm.setTextureName(MODID + ":" + unlocalizedName);
-        }
         GameRegistry.registerItem(itm, unlocalizedName);
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
@@ -184,6 +200,8 @@ public class TiMGenericRegistry {
             if (ClientProxy.preRenderModels) {
                 ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
             }
+        } else if(TrainsInMotion.proxy.isClient()){
+            itm.setTextureName(MODID+ ":" + textureName);
         }
         return itm;
     }
