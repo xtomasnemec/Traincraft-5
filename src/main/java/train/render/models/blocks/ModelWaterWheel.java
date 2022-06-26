@@ -35,12 +35,11 @@ public class ModelWaterWheel extends ModelBase {
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
 		if(waterWheel==null || waterWheel.getWorld()==null){
-			GL11.glTranslated( x,  y+0.1f,  z);
-			GL11.glRotatef(180,0,0,1);
-			GL11.glScalef(0.25f, 0.25f, 0.5f);
+			GL11.glTranslated( x+0.95,  y+0.15f,  z);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+0.5,  z + 0.5);
 		}
+		GL11.glRotatef(90,0,0,1);
 
 		// Bind the texture, so that OpenGL properly textures our block.
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "water_wheel_uv.png"));
@@ -55,23 +54,13 @@ public class ModelWaterWheel extends ModelBase {
 		if(waterWheel!=null && waterWheel.getWorld()!=null) {
 			int facing = CommonUtil.getBlockFacing(waterWheel.getWorld(), waterWheel.getPos().getX(),waterWheel.getPos().getY(), waterWheel.getPos().getZ());
 			if (facing == 3) {
-				GL11.glScalef(0.7f, 0.5f, 0.5f);
-				GL11.glScalef(1f, 0.36f, 0.36f);
-				GL11.glRotatef(90, 0, 1, 0);
+				GL11.glRotatef(90, 1, 0, 0);
 			}
 			if (facing == 1) {
-				GL11.glScalef(0.7f, 0.5f, 0.5f);
-				GL11.glScalef(1f, 0.36f, 0.36f);
-				GL11.glRotatef(-90, 0, 1, 0);
-			}
-			if (facing == 0) {
-				GL11.glScalef(0.5f, 0.5f, 0.7f);
-				GL11.glScalef(0.36f, 0.36f, 1f);
+				GL11.glRotatef(-90, 1, 0, 0);
 			}
 			if (facing == 2) {
-				GL11.glScalef(0.5f, 0.5f, 0.7f);
-				GL11.glScalef(0.36f, 0.36f, 1f);
-				GL11.glRotatef(180, 0, 1, 0);
+				GL11.glRotatef(180, 1, 0, 0);
 			}
 		}
 		if(waterWheel instanceof TileWaterWheel) {
@@ -82,10 +71,11 @@ public class ModelWaterWheel extends ModelBase {
 				lastframe = now;
 				//System.out.println(facing);
 				if (((TileWaterWheel)waterWheel).getWaterDir() == 0 || ((TileWaterWheel)waterWheel).getWaterDir() == -3 || ((TileWaterWheel)waterWheel).getWaterDir() == -1 || ((TileWaterWheel)waterWheel).getWaterDir() == 1 || ((TileWaterWheel)waterWheel).getWaterDir() == -2) {
-					GL11.glRotatef(-(wheel + wheel1), 0F, 0F, 1F);
+					GL11.glRotatef(-(wheel + wheel1), 0F, 1F, 0F);
 				}
 			}
 		}
+		GL11.glScalef(0.25f, 0.5f, 0.25f);
 		this.render();
 		//GL11.glColor3f(1, 1, 1);
 
