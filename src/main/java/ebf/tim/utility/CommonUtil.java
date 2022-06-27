@@ -556,6 +556,8 @@ public class CommonUtil {
             //actually place the entity
             worldObj.spawnEntityInWorld(entity);
             entity.entityFirstInit(stack);
+            //force first update to spawn entity in faster
+            entity.onUpdate();
             return true;
         }
 

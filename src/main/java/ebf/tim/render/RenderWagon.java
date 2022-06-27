@@ -256,7 +256,7 @@ public class RenderWagon extends Render {
         GL11.glEnable(GL_NORMALIZE);
 
         //set the render position
-        GL11.glTranslated(x, y+ railOffset +bogieOffset, z);
+        GL11.glTranslated(x-0.03125f, y+ railOffset +bogieOffset, z);
         //rotate the model.
         if(!isPaintBucket) {
             GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
