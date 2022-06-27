@@ -766,7 +766,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //shouldn't need this, but enable if getting nulls
         initInventorySlots();
         entityData = new XmlBuilder(ByteBufUtils.readUTF8String(additionalData));
-        rotationYaw = additionalData.readFloat();
 
     }
     @Deprecated //todo: send this data over the datawatcher or other more reliable means
@@ -774,7 +773,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public void writeSpawnData(ByteBuf buffer) {
         ByteBufUtils.writeUTF8String(buffer, entityData.toXMLString());
-        buffer.writeFloat(rotationYaw);
     }
 
     /**loads the entity's save file*/
@@ -1184,14 +1182,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         //CLIENT UPDATE
         if(getWorld().isRemote){
-            if(tickOffset >0) {
+            if(tickOffset >0 || ticksExisted<2) {
                 prevPosX = posX;
                 prevPosZ = posZ;
-                setPosition(
-                        this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
-                        this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
-                        this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
-                );
+                if(tickOffset >0) {
+                    setPosition(
+                            this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
+                            this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
+                            this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
+                    );
+                }
 
                 for(int i=0;i<seats.size();i++){
                     if(seats.get(i)!=null) {
