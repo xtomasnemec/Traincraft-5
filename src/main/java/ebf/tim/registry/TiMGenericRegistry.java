@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -41,6 +42,9 @@ import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 
 import javax.annotation.Nullable;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,7 +128,7 @@ public class TiMGenericRegistry {
                     TESR=new ebf.tim.render.BlockTESR();
                 }
             } else {
-                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, null, textureName);
+                RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, null);
             }
             usedNames.add(unlocalizedName);
         } else {
@@ -132,16 +136,6 @@ public class TiMGenericRegistry {
             DebugUtil.throwStackTrace();
         }
 
-        if (TrainsInMotion.proxy.isClient() && MODID != null) {
-            net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new IStateMapper() {
-                @Override
-                public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
-                    Map value = new HashMap<IBlockState, ModelResourceLocation>(){};
-                    value.put(blockIn.getDefaultState(), new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
-                    return value;
-                }
-            });
-        }
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
         }
@@ -160,11 +154,29 @@ public class TiMGenericRegistry {
             } else if(!redundantTiles.contains(unlocalizedName + "tile")) {
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
                     regTileRender(MODID,unlocalizedName,block, tile, model, TESR);
+                } else if (TrainsInMotion.proxy.isClient()) {
+                    net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new IStateMapper() {
+                        @Override
+                        public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
+                            Map value = new HashMap<IBlockState, ModelResourceLocation>(){};
+                            value.put(blockIn.getDefaultState(), new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
+                            return value;
+                        }
+                    });
                 }
             } else {
                 DebugUtil.println("redundant tile name found",tile.getName(), unlocalizedName + "tile");
                 DebugUtil.printStackTrace();
             }
+        } else if (TrainsInMotion.proxy.isClient() && MODID != null) {
+            net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new IStateMapper() {
+                @Override
+                public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
+                    Map value = new HashMap<IBlockState, ModelResourceLocation>(){};
+                    value.put(blockIn.getDefaultState(), new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
+                    return value;
+                }
+            });
         }
 
         return block;
@@ -211,14 +223,57 @@ public class TiMGenericRegistry {
         if (TrainsInMotion.proxy.isClient() && (itemRender != null || itm instanceof ItemTransport || itm instanceof ItemRail)) {
             //MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
             ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID,unlocalizedName));
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,unlocalizedName),""));
 
             //todo:this somehow? actually it might just be forced in 1.8+
             if (ClientProxy.preRenderModels) {
                 //ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
             }
-        } else if(TrainsInMotion.proxy.isClient()){
-            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
+        }
+        if(TrainsInMotion.proxy.isClient()){
+            //make the .json files because it's stupid and im lazy.
+            if(DebugUtil.dev() && !(itm instanceof ItemTransport || itm instanceof ItemRail || itm instanceof ItemBlock)){
+                File dir =  new File(new File(ClientProxy.configDirectory).getParentFile().toString()+
+                        "/src/main/resources/assets/" + MODID + "/models");
+                if(!dir.exists()){
+                    dir.mkdirs();
+                }
+                dir =  new File(dir.toString()+ "/item");
+                if(!dir.exists()){
+                    dir.mkdirs();
+                }
+                File conf = new File(dir.toString() + "/"+ unlocalizedName.toLowerCase()+".json");
+
+                //todo: remove the true later
+                if(!conf.exists() || true){
+                    FileOutputStream fileoutputstream=null;
+                    try {
+                        fileoutputstream=new FileOutputStream(conf);
+
+                        StringBuilder sb = new StringBuilder();
+
+                        sb.append("{\n  \"parent\": \"item/generated\",\n  \"textures\": {\n    \"layer0\": \"");
+                        sb.append(MODID);
+                        sb.append(":");
+                        sb.append("items/");
+                        sb.append(textureName);
+                        sb.append("\"\n  }\n}");
+
+                        fileoutputstream.write(sb.toString().getBytes());
+                        fileoutputstream.close();
+                        DebugUtil.println("creating json model at", conf.toString());
+                    } catch (IOException e) {
+                        if(fileoutputstream!=null) {
+                            try {
+                                fileoutputstream.close();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                        e.printStackTrace();
+                    }
+                }
+            }
+            net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation(itm,0,new ModelResourceLocation(new ResourceLocation(MODID,textureName),"inventory"));
         }
         return itm;
     }
