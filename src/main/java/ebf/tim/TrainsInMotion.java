@@ -135,6 +135,9 @@ public class TrainsInMotion {
             MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
             MinecraftForge.EVENT_BUS.register(EventManager.class);
         }
+
+        //register blocks, items, fluids, etc.
+        proxy.register();
     }
 
     /**
@@ -149,8 +152,6 @@ public class TrainsInMotion {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
 
-        //register blocks, items, fluids, etc.
-        proxy.register();
 
         //parse and register json crafting recipes
 

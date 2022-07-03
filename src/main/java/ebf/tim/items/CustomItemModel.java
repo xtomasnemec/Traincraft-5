@@ -43,6 +43,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static ebf.tim.render.models.Model1x1Rail.addVertexWithOffsetAndUV;
+import static org.lwjgl.opengl.GL11.GL_COLOR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 public class CustomItemModel implements ICustomModelLoader {
@@ -200,9 +201,11 @@ public class CustomItemModel implements ICustomModelLoader {
                 GL11.glRotatef(90,1,0,0);
                 GL11.glRotatef(-45,0,0,1);
                 GL11.glRotatef(90,0,1,0);
-                GL11.glScalef(1.4f,1f,1.2f);
+                GL11.glScalef(0.8f,0.8f,0.8f);
+                GL11.glTranslatef(-0.0625f,0,0);
             }
-            if(item.getTagCompound().hasKey("ballast")) {
+            if(item.getTagCompound().hasKey("ballast") && item.getTagCompound().getCompoundTag("ballast").hasKey("id")
+            && !item.getTagCompound().getCompoundTag("ballast").getString("id").equals("minecraft:air")) {
                 TextureAtlasSprite iicon = TextureManager.bindBlockTextureFromSide(EnumFacing.UP.ordinal(),
                         new ItemStack(item.getTagCompound().getCompoundTag("ballast")));
 
@@ -215,7 +218,8 @@ public class CustomItemModel implements ICustomModelLoader {
                 Tessellator.getInstance().draw();
             }
 
-            if(item.getTagCompound().hasKey("ties")) {
+            if(item.getTagCompound().hasKey("ties") && item.getTagCompound().getCompoundTag("ties").hasKey("id")
+                    && !item.getTagCompound().getCompoundTag("ties").getString("id").equals("minecraft:air")) {
                 TextureAtlasSprite iicon = TextureManager.bindBlockTextureFromSide(EnumFacing.WEST.ordinal(),
                         new ItemStack(item.getTagCompound().getCompoundTag("ties")));
 
@@ -298,6 +302,8 @@ public class CustomItemModel implements ICustomModelLoader {
                 addVertexWithOffsetAndUV(end, 0.3f, 0, 0, 0, 0);
                 Tessellator.getInstance().draw();
                 GL11.glEnable(GL_TEXTURE_2D);
+
+                GL11.glColor4f(1,1,1,1);
                 GL11.glPopMatrix();
             }
 

@@ -163,7 +163,7 @@ public class TiMItems {
 
     private static Item createItem(String unlocalizedName) {
         Item item = new Item();
-        TiMGenericRegistry.RegisterItem(item, TrainsInMotion.MODID, unlocalizedName, TrainsInMotion.creativeTabCrafting, "crafting/" + unlocalizedName);
+        TiMGenericRegistry.RegisterItem(item, TrainsInMotion.MODID, unlocalizedName, TrainsInMotion.creativeTabCrafting);
         return item;
     }
 }

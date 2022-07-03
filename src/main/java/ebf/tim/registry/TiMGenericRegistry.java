@@ -244,7 +244,7 @@ public class TiMGenericRegistry {
                 File conf = new File(dir.toString() + "/"+ unlocalizedName.toLowerCase()+".json");
 
                 //todo: remove the true later
-                if(!conf.exists() || true){
+                if(!conf.exists()){
                     FileOutputStream fileoutputstream=null;
                     try {
                         fileoutputstream=new FileOutputStream(conf);
