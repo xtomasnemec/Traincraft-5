@@ -220,6 +220,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
                 addVertexWithOffsetAndUV(end, 0.3f, 0, 0, 0, 0);
                 Tessellator.getInstance().draw();
                 GL11.glEnable(GL_TEXTURE_2D);
+                GL11.glColor4f(1,1,1,1);
                 GL11.glPopMatrix();
             }
 
