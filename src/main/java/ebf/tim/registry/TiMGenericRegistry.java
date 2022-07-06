@@ -195,6 +195,9 @@ public class TiMGenericRegistry {
         }
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {
             MinecraftForgeClient.registerItemRenderer(itm, (IItemRenderer) itemRender);
+            if (ClientProxy.preRenderModels) {
+                ebf.tim.items.CustomItemModel.instance.renderItem(IItemRenderer.ItemRenderType.INVENTORY, new ItemStack(itm));
+            }
         } else if (TrainsInMotion.proxy.isClient() && itm instanceof ItemTransport) {
             MinecraftForgeClient.registerItemRenderer(itm, ebf.tim.items.CustomItemModel.instance);
             if (ClientProxy.preRenderModels) {

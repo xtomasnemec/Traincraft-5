@@ -29,11 +29,15 @@ public class ModelWindMill extends ModelBase {
 		GL11.glPushMatrix();
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
-		if(windMill.getWorldObj()==null){
-			GL11.glTranslated( x,  y-0.25,  z);
+		if(windMill==null ||windMill.getWorldObj()==null){
+			GL11.glTranslated( x,  y-0.1,  z);
+			GL11.glRotatef(90,1,0,0);
+			GL11.glRotatef(90,0,0,1);
 			GL11.glScalef(0.8f,0.8f,0.8f);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+0.5,  z + 0.5);
+			GL11.glRotatef(90,1,0,0);
+			GL11.glRotatef(90,0,0,1);
 		}
 
 		// Bind the texture, so that OpenGL properly textures our block.
@@ -46,7 +50,7 @@ public class ModelWindMill extends ModelBase {
 		float f4 = (float) (j & 255) / 255.0F;
 		GL11.glColor4f(f1 * f2, f1 * f3, f1 * f4, 1);
 		GL11.glScalef(0.5f, 0.5f, 0.5f);
-		if(windMill.getWorldObj()!=null) {
+		if(windMill==null && windMill.getWorldObj()!=null) {
 			int facing = CommonUtil.getBlockFacing(windMill.getWorldObj(), windMill.xCoord,windMill.yCoord, windMill.zCoord);
 			if (facing == 3) {
 			}

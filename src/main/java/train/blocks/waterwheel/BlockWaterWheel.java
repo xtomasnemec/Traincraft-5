@@ -41,12 +41,12 @@ public class BlockWaterWheel extends BlockDynamic {
 
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
-		return new TileWaterWheel(this);
+		return new TileWaterWheel();
 	}
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileWaterWheel(this);
+        return new TileWaterWheel();
     }
 
 	@Override
