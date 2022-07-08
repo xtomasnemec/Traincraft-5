@@ -1025,7 +1025,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
                     //so we buff that to just under double to balance against drag, then scale by entity pitch
                     //pith goes from -90 to 90, so it's inherently directional.
-                    slopeX+=(0.00017361f*0.5f)*stock.rotationPitch;
+                    slopeX+=(0.00017361f*0.5f)*-stock.rotationPitch;
                 }
             }
 

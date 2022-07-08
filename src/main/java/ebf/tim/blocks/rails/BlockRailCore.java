@@ -113,7 +113,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int meta = CommonUtil.getRailMeta(world, null, x, y, z);
         if (meta >1 && meta <6) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1f, 1.0F);
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5f, 1.0F);
         } else {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
         }
