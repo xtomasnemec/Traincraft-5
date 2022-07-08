@@ -101,7 +101,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         int meta = CommonUtil.getRailMeta(world, null, pos.getX(),pos.getY(),pos.getZ());
         if (meta >1 && meta <6) {
-            return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1f, 1.0F);
+            return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.5f, 1.0F);
         } else {
             return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
         }

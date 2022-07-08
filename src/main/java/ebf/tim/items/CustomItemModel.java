@@ -43,8 +43,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static ebf.tim.render.models.Model1x1Rail.addVertexWithOffsetAndUV;
-import static org.lwjgl.opengl.GL11.GL_COLOR;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.*;
 
 public class CustomItemModel implements ICustomModelLoader {
 
@@ -203,6 +202,15 @@ public class CustomItemModel implements ICustomModelLoader {
                 GL11.glRotatef(90,0,1,0);
                 GL11.glScalef(0.8f,0.8f,0.8f);
                 GL11.glTranslatef(-0.0625f,0,0);
+            } else if (type== ItemCameraTransforms.TransformType.GROUND){
+                GL11.glRotatef(90,0,1,0);
+                GL11.glScalef(0.4f,0.4f,0.4f);
+            } else if (type== ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND){
+                GL11.glRotatef(95,0,0,1);
+                GL11.glRotatef(15,0,1,0);
+                GL11.glRotatef(-5,1,0,0);
+                GL11.glScalef(0.6f,0.6f,0.6f);
+                GL11.glTranslatef(0.0625f,-0.125f,0);
             }
             if(item.getTagCompound().hasKey("ballast") && item.getTagCompound().getCompoundTag("ballast").hasKey("id")
             && !item.getTagCompound().getCompoundTag("ballast").getString("id").equals("minecraft:air")) {

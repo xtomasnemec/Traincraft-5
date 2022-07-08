@@ -5,6 +5,7 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.models.Bogie;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -283,18 +284,18 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
 
         //set the render position
         GL11.glTranslated(x-0.03125f, y+ railOffset +bogieOffset, z);
-        //rotate the model.
-        if(!isPaintBucket) {
-            GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
-        }
-
         GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
                 Math.abs(entity.bogieLengthFromCenter()[0])+Math.abs(entity.bogieLengthFromCenter()[1]),
                 0,0), entity.rotationPitch,0,0).yCoord, 0);
         if(entity.frontBogie!=null && entity.backBogie!=null){
             GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
         }
-        GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
+        //rotate the model.
+        if(!isPaintBucket) {
+            GL11.glRotatef((-entity.rotationPitch) + 180f, 0.0f, 0.0f, 1.0f);
+            GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
+        }
+
         GL11.glPushMatrix();
 
 
