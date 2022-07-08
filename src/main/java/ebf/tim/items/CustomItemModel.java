@@ -137,25 +137,25 @@ public class CustomItemModel implements ICustomModelLoader {
             GL11.glScalef(scale,scale,scale);
             switch (type){
                 case FIRST_PERSON_RIGHT_HAND:{
-                    GL11.glRotatef(270+(1*entity.getHitboxSize()[0]),0,1,0);
-                    GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
+                    GL11.glRotatef(90+(1*entity.getHitboxSize()[0]),0,1,0);
+                    GL11.glRotatef(190+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
                     GL11.glTranslatef(1f,0.1f*(entity.getHitboxSize()[0]),0.1f*(entity.getHitboxSize()[0]));
                     break;
                 }
                 case FIRST_PERSON_LEFT_HAND:{
-                    GL11.glRotatef(270+(1*entity.getHitboxSize()[0]),0,1,0);
-                    GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
+                    GL11.glRotatef(90+(1*entity.getHitboxSize()[0]),0,1,0);
+                    GL11.glRotatef(190+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
                     GL11.glTranslatef(1f,0.1f*(entity.getHitboxSize()[0]),0.7f*(entity.getHitboxSize()[0]));
                     break;
                 }
                 case GUI: {
                     GL11.glRotatef(225,0,1,0);
-                    GL11.glRotatef(-5,0,0,1);
-                    GL11.glRotatef(-5,1,0,0);
+                    GL11.glRotatef(-185,0,0,1);
+                    GL11.glRotatef(5,1,0,0);
                     GL11.glScalef(0.6f,0.6f,0.6f);
-                    GL11.glTranslatef(0,-0.95f,0);
+                    GL11.glTranslatef(0,0.3f,0);
                     break;
                 }
                 case THIRD_PERSON_RIGHT_HAND:{
