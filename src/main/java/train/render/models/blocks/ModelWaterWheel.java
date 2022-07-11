@@ -63,7 +63,7 @@ public class ModelWaterWheel extends ModelBase {
 				GL11.glRotatef(180, 1, 0, 0);
 			}
 		}
-		if(waterWheel instanceof TileWaterWheel) {
+		if(waterWheel!=null && waterWheel instanceof TileWaterWheel) {
 			if (((TileWaterWheel)waterWheel).getWaterDir() > -1001) {
 				long now = System.nanoTime();
 				int elapsed = (int) ((now - lastframe) / (1000 * 100));

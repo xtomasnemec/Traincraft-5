@@ -140,7 +140,8 @@ public class CustomItemModel implements ICustomModelLoader {
                     GL11.glRotatef(90+(1*entity.getHitboxSize()[0]),0,1,0);
                     GL11.glRotatef(190+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
-                    GL11.glTranslatef(1f,0.1f*(entity.getHitboxSize()[0]),0.1f*(entity.getHitboxSize()[0]));
+                    GL11.glTranslatef(1.5f,3+(0.4f*(entity.getHitboxSize()[0])),0.75f);
+                    GL11.glRotatef(180,1,0,0);
                     break;
                 }
                 case FIRST_PERSON_LEFT_HAND:{
@@ -148,6 +149,11 @@ public class CustomItemModel implements ICustomModelLoader {
                     GL11.glRotatef(190+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
                     GL11.glTranslatef(1f,0.1f*(entity.getHitboxSize()[0]),0.7f*(entity.getHitboxSize()[0]));
+                case INVENTORY: {
+                    GL11.glRotatef(90,0,1,0);
+                    GL11.glRotatef(-25,1,0,1);
+                    GL11.glRotatef(180,1,0,0);
+                    GL11.glTranslatef(0,-1.3f,0);
                     break;
                 }
                 case GUI: {
@@ -159,11 +165,12 @@ public class CustomItemModel implements ICustomModelLoader {
                     break;
                 }
                 case THIRD_PERSON_RIGHT_HAND:{
-                    GL11.glRotatef(90+(0*entity.getHitboxSize()[0]),0,1,0);
-                    GL11.glRotatef(80+(-1*entity.getHitboxSize()[0]),0,0,1);
+                    GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
+                    GL11.glRotatef(45,0,1,0);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
-                    GL11.glTranslatef(0.35f*(entity.getHitboxSize()[0]),-0.05f*(entity.getHitboxSize()[0]),
-                            0.1f*(entity.getHitboxSize()[0]));
+                    GL11.glTranslatef(0.25f*(entity.getHitboxSize()[0]),0.15f*(entity.getHitboxSize()[0]),0.5f*(entity.getHitboxSize()[0]));
+                    GL11.glTranslatef(-1,2,0);
+                    GL11.glRotatef(180,1,0,0);
                     break;
                 }
                 case THIRD_PERSON_LEFT_HAND:{
@@ -177,7 +184,8 @@ public class CustomItemModel implements ICustomModelLoader {
                 default:{//item frame case
                     GL11.glRotatef(90,0,1,0);
                     GL11.glScalef(0.5f,0.5f,0.5f);
-                    GL11.glTranslatef(0,-0.5f,0);
+                    GL11.glTranslatef(0,1.5f,0);
+                    GL11.glRotatef(180,1,0,0);
                 }
 
             }
@@ -310,7 +318,6 @@ public class CustomItemModel implements ICustomModelLoader {
                 addVertexWithOffsetAndUV(end, 0.3f, 0, 0, 0, 0);
                 Tessellator.getInstance().draw();
                 GL11.glEnable(GL_TEXTURE_2D);
-
                 GL11.glColor4f(1,1,1,1);
                 GL11.glPopMatrix();
             }

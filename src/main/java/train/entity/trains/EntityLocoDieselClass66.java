@@ -33,7 +33,7 @@ public class EntityLocoDieselClass66 extends EntityTrainCore {
 
     //main stats
     @Override
-    public String transportName(){return "Loco Electric EWS Class 66";}
+    public String transportName(){return "Loco Diesel EWS Class 66";}
     @Override
     public String transportcountry(){return "uk";}
     @Override

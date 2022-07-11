@@ -570,6 +570,7 @@ public class CommonUtil {
                 } else {
                     entity.rotationYaw= 90;
                 }
+                entity.posX+=0.03125f;
 
             } else if (railMeta==1){
                 //check if the train fits on the track
@@ -585,6 +586,7 @@ public class CommonUtil {
                 } else {
                     entity.rotationYaw= 0;
                 }
+                entity.posZ+=0.03125f;
             }
             //actually place the entity
             worldObj.spawnEntity(entity);

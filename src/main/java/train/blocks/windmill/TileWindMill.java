@@ -16,11 +16,12 @@ import train.core.handlers.WorldEvents;
 
 import java.util.Random;
 
-public class TileWindMill extends TileGeneratorDiesel {
+public class TileWindMill extends TileEntityStorage implements IEnergyProvider  {
 	private int updateTicks = 0;
 	private static Random rand = new Random();
 	public int windClient = 0;
     public int standsOpen = 0;
+	public EnergyStorage energy=new EnergyStorage(240,80);
 
 	public TileWindMill() {
 		super(TCBlocks.windmill);
@@ -32,6 +33,7 @@ public class TileWindMill extends TileGeneratorDiesel {
 		super.readFromNBT(nbt);
 		this.windClient = nbt.getInteger("Wind");
         this.standsOpen = nbt.getInteger("standsOpen");
+		this.energy.readFromNBT(nbt);
 	}
 
 	@Override
@@ -39,6 +41,7 @@ public class TileWindMill extends TileGeneratorDiesel {
 		super.writeToNBT(nbt);
 		nbt.setInteger("Wind", this.windClient);
         nbt.setInteger("standsOpen", this.standsOpen);
+		this.energy.writeToNBT(nbt);
         return nbt;
 	}
 
@@ -102,4 +105,46 @@ public class TileWindMill extends TileGeneratorDiesel {
 			this.syncTileEntity();
 		}
 	}
+
+	public int[] getTankCapacity(){
+		return new int[]{30000};
+	}
+
+	@Override
+	public World getWorldObj(){
+		return this.worldObj;
+	}
+
+
+	public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){
+		for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+			TileEntity tile = world.getTileEntity(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
+			if (tile instanceof IEnergyReceiver && storage.getEnergyStored() > 0) {
+				if (((IEnergyReceiver) tile).canConnectEnergy(side.getOpposite())) {
+					int receive = ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(), Math.min(storage.getMaxExtract(), storage.getEnergyStored()), false);
+					storage.extractEnergy(receive, false);
+				}
+			}
+		}
+	}
+
+
+	//RF Overrides
+	@Override
+	public boolean canConnectEnergy(ForgeDirection dir) {
+		return true;
+	}
+	@Override
+	public int extractEnergy(ForgeDirection dir, int amount, boolean simulate) {
+		return energy.extractEnergy(amount, simulate);
+	}
+	@Override
+	public int getEnergyStored(ForgeDirection dir) {
+		return energy.getEnergyStored();
+	}
+	@Override
+	public int getMaxEnergyStored(ForgeDirection dir) {
+		return this.energy.getMaxEnergyStored();
+	}
+
 }
