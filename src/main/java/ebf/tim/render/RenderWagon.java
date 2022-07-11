@@ -239,6 +239,8 @@ public class RenderWagon extends Render {
             railOffset=bogieRenderYOffset(entity.frontBogie.yOffset);
             railOffset+=bogieRenderYOffset(entity.backBogie.yOffset);
             railOffset*=0.5f;
+        } else if(entity.getWorld()!=null){
+            return;
         }
 
 
@@ -256,7 +258,7 @@ public class RenderWagon extends Render {
         GL11.glEnable(GL_NORMALIZE);
 
         //set the render position
-        GL11.glTranslated(x-0.03125f, y+ railOffset +bogieOffset, z);
+        GL11.glTranslated(x, y+ railOffset +bogieOffset+1.5, z);
 
         GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
                 Math.abs(entity.bogieLengthFromCenter()[0])+Math.abs(entity.bogieLengthFromCenter()[1]),
@@ -267,8 +269,8 @@ public class RenderWagon extends Render {
         //rotate the model.
         if(!isPaintBucket) {
             GL11.glTranslated(0, -railOffset -bogieOffset, 0);
-            GL11.glRotatef(-entity.rotationPitch + 180f, 1.0f, 0.0f, 0.0f);
             GL11.glRotatef(-entity.rotationYaw - 180f, 0.0f, 1.0f, 0.0f);
+            GL11.glRotatef(entity.rotationPitch + 180f, 0.0f, 0.0f, 1.0f);
             GL11.glTranslated(0, railOffset +bogieOffset, 0);
         }
         GL11.glPushMatrix();

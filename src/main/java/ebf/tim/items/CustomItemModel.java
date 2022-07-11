@@ -82,27 +82,31 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
                     GL11.glRotatef(270+(1*entity.getHitboxSize()[0]),0,1,0);
                     GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
-                    GL11.glTranslatef(1f,0.4f*(entity.getHitboxSize()[0]),0.75f);
+                    GL11.glTranslatef(1.5f,3+(0.4f*(entity.getHitboxSize()[0])),0.75f);
+                    GL11.glRotatef(180,1,0,0);
                     break;
                 }
                 case INVENTORY: {
                     GL11.glRotatef(90,0,1,0);
                     GL11.glRotatef(-25,1,0,1);
                     GL11.glRotatef(180,1,0,0);
-                    GL11.glTranslatef(0,0.3f,0);
+                    GL11.glTranslatef(0,-1.3f,0);
                     break;
                 }
                 case EQUIPPED:{
-                    GL11.glRotatef(0+(1*entity.getHitboxSize()[0]),0,1,0);
+                    GL11.glRotatef(45,0,1,0);
                     GL11.glRotatef(10+(-1*entity.getHitboxSize()[0]),0,0,1);
                     GL11.glRotatef(-1*entity.getHitboxSize()[0],1,0,0);
-                    GL11.glTranslatef(0.5f*(entity.getHitboxSize()[0]),0.15f*(entity.getHitboxSize()[0]),0.5f*(entity.getHitboxSize()[0]));
+                    GL11.glTranslatef(0.25f*(entity.getHitboxSize()[0]),0.15f*(entity.getHitboxSize()[0]),0.5f*(entity.getHitboxSize()[0]));
+                    GL11.glTranslatef(-1,2,0);
+                    GL11.glRotatef(180,1,0,0);
                     break;
                 }
                 default:{//item frame case
                     GL11.glRotatef(90,0,1,0);
                     GL11.glScalef(0.5f,0.5f,0.5f);
-                    GL11.glTranslatef(0,-0.5f,0);
+                    GL11.glTranslatef(0,1.5f,0);
+                    GL11.glRotatef(180,1,0,0);
                 }
 
             }
