@@ -17,20 +17,7 @@ import train.blocks.generator.TileGeneratorDiesel;
 import train.library.Info;
 import train.render.models.blocks.ModelGeneratorDiesel;
 
-public class RenderGeneratorDiesel extends TileEntitySpecialRenderer implements IItemRenderer {
-
-	@Override
-	public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
-		return true;
-	}
-	@Override
-	public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
-		return true;
-	}
-	@Override
-	public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
-		renderTileEntityAt(null,0,0,0,0);
-	}
+public class RenderGeneratorDiesel extends TileEntitySpecialRenderer {
 
 	private static final ModelGeneratorDiesel modelGenerator = new ModelGeneratorDiesel((float) (1.0 / 16.0));
 	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "generator_diesel.png");
@@ -44,7 +31,7 @@ public class RenderGeneratorDiesel extends TileEntitySpecialRenderer implements 
 		GL11.glTranslated(x, y, z);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(texture);
 
-		if(var1==null || var1.getWorldObj()==null){
+		if(var1==null || var1.getWorld()==null){
 			GL11.glScalef(0.75f,0.75f,0.75f);
 			GL11.glTranslatef(0.5F, -0.1F, 0.5F);
 		} else {

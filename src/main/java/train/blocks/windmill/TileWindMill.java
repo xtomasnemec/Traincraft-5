@@ -2,13 +2,20 @@ package train.blocks.windmill;
 
 
 import ebf.tim.blocks.BlockDynamic;
+import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 import train.blocks.TCBlocks;
 import train.blocks.generator.TileGeneratorDiesel;
 import train.core.handlers.ConfigHandler;
@@ -16,7 +23,7 @@ import train.core.handlers.WorldEvents;
 
 import java.util.Random;
 
-public class TileWindMill extends TileEntityStorage implements IEnergyProvider  {
+public class TileWindMill extends TileEntityStorage implements IEnergyStorage, ITickable {
 	private int updateTicks = 0;
 	private static Random rand = new Random();
 	public int windClient = 0;
@@ -33,7 +40,7 @@ public class TileWindMill extends TileEntityStorage implements IEnergyProvider  
 		super.readFromNBT(nbt);
 		this.windClient = nbt.getInteger("Wind");
         this.standsOpen = nbt.getInteger("standsOpen");
-		this.energy.readFromNBT(nbt);
+		this.energy.receiveEnergy(nbt.getInteger("energy"),false);
 	}
 
 	@Override
@@ -41,7 +48,7 @@ public class TileWindMill extends TileEntityStorage implements IEnergyProvider  
 		super.writeToNBT(nbt);
 		nbt.setInteger("Wind", this.windClient);
         nbt.setInteger("standsOpen", this.standsOpen);
-		this.energy.writeToNBT(nbt);
+		nbt.setInteger("energy",this.energy.getEnergyStored());
         return nbt;
 	}
 
@@ -110,18 +117,13 @@ public class TileWindMill extends TileEntityStorage implements IEnergyProvider  
 		return new int[]{30000};
 	}
 
-	@Override
-	public World getWorldObj(){
-		return this.worldObj;
-	}
-
 
 	public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){
-		for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-			TileEntity tile = world.getTileEntity(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
-			if (tile instanceof IEnergyReceiver && storage.getEnergyStored() > 0) {
-				if (((IEnergyReceiver) tile).canConnectEnergy(side.getOpposite())) {
-					int receive = ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(), Math.min(storage.getMaxExtract(), storage.getEnergyStored()), false);
+		for (EnumFacing side : EnumFacing.HORIZONTALS) {
+			TileEntity tile = world.getTileEntity(new BlockPos(x + side.getXOffset(), y + side.getYOffset(), z + side.getZOffset()));
+			if (tile instanceof IEnergyStorage && storage.getEnergyStored() > 0) {
+				if (((IEnergyStorage) tile).canReceive()) {
+					int receive = ((IEnergyStorage) tile).receiveEnergy(Math.min(storage.getMaxEnergyStored(), storage.getEnergyStored()), false);
 					storage.extractEnergy(receive, false);
 				}
 			}
@@ -130,21 +132,35 @@ public class TileWindMill extends TileEntityStorage implements IEnergyProvider  
 
 
 	//RF Overrides
+
+
+	//RF Overrides
 	@Override
-	public boolean canConnectEnergy(ForgeDirection dir) {
-		return true;
-	}
-	@Override
-	public int extractEnergy(ForgeDirection dir, int amount, boolean simulate) {
+	public int extractEnergy(int amount, boolean simulate) {
 		return energy.extractEnergy(amount, simulate);
 	}
 	@Override
-	public int getEnergyStored(ForgeDirection dir) {
+	public int getEnergyStored() {
 		return energy.getEnergyStored();
 	}
 	@Override
-	public int getMaxEnergyStored(ForgeDirection dir) {
+	public int getMaxEnergyStored() {
 		return this.energy.getMaxEnergyStored();
+	}
+
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		return 0;
+	}
+
+	@Override
+	public boolean canExtract() {
+		return energy.getEnergyStored()>0;
+	}
+
+	@Override
+	public boolean canReceive() {
+		return false;
 	}
 
 }

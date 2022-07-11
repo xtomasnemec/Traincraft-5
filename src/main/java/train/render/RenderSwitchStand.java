@@ -9,27 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import train.core.ClientProxy;
 import train.library.Info;
 import train.render.models.ModelSwitchStandOff;
 
-public class RenderSwitchStand extends TileEntitySpecialRenderer implements IItemRenderer {
-
-
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
-	}
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return true;
-	}
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		renderTileEntityAt(null,0,0,0,0);
-	}
+public class RenderSwitchStand extends TileEntitySpecialRenderer {
 
 	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
 	private static final ResourceLocation texture2 = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");
@@ -39,7 +24,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer implements IIte
 		if(tileEntity==null){return;}
 		GL11.glPushMatrix();
 
-		if(tileEntity==null || tileEntity.getWorldObj()==null){
+		if(tileEntity==null || tileEntity.getWorld()==null){
 			GL11.glTranslated( x + 0.5,  y+0.4f,  z + 0.5);
 			GL11.glScalef(0.65f,0.65f,0.65f);
 		} else {
@@ -59,7 +44,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer implements IIte
 			}
 		}
 
-		if(tileEntity==null || tileEntity.getWorldObj()==null) {
+		if(tileEntity==null || tileEntity.getWorld()==null) {
 			TextureManager.bindTexture(texture2);
 			//this is stupid levels of finicky
 			if(ClientProxy.modelSwitch2.bodyModel==null){
