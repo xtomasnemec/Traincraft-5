@@ -65,6 +65,11 @@ public class CommonUtil {
 
     public static void setBlockMeta(World w, int x, int y, int z, int meta){
         w.setBlockMetadataWithNotify(x,y,z,meta,2);
+        w.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+        w.notifyBlocksOfNeighborChange(x, y, z, getBlockAt(w,x,y,z));
+        w.scheduleBlockUpdate(x, y, z, getBlockAt(w,x,y,z), getBlockAt(w,x,y,z).tickRate(w));
+
+        w.func_147453_f(x, y, z, getBlockAt(w,x,y,z));
     }
 
     public static void markBlockForUpdate(World w, int x, int y, int z){
