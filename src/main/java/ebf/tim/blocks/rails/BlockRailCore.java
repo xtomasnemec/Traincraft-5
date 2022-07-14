@@ -388,15 +388,13 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     public static RailSimpleShape getShape(World worldObj, int xPos, int yPos, int zPos){
-        if(!(CommonUtil.getBlockAt(worldObj, xPos,yPos,zPos) instanceof BlockRailCore)){
-            return null;
-        }
         TileEntity te= worldObj.getTileEntity(xPos, yPos, zPos);
         if(!(te instanceof RailTileEntity)){
             te = new RailTileEntity();
             te.xCoord=xPos;
             te.yCoord=yPos;
             te.zCoord=zPos;
+            worldObj.addTileEntity(te);
         }
         switch (((RailTileEntity)te).getMeta()){
             //Z straight

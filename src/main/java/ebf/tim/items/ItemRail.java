@@ -163,7 +163,9 @@ public class ItemRail extends Item implements ITrackItem {
 
         if(block.isReplaceable(world, x, y+1, z) || block instanceof BlockFlower || block == Blocks.double_plant || block instanceof BlockMushroom){
             block.dropBlockAsItem(world, x, y+1, z, world.getBlockMetadata(x, y+1, z), 0);
+            world.setBlockToAir(x, y, z);
         }
+        world.removeTileEntity(x,y,z);
 
         int meta=world.getBlockMetadata(x,y,z);
 
