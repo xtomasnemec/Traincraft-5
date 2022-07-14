@@ -116,8 +116,9 @@ public class ItemRail extends Item implements ITrackItem {
                     }
                 }
             }
+            y--;
 
-            if (placeTrack(stack,player,world,pos,null)) {
+            if (placeTrack(stack,player,world, new BlockPos(x,y,z),null)) {
                 getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x,y,z), world.getBlockState(new BlockPos(x,y,z)), player, stack);
                 if (CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailCore) {
                     getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x,y,z),world.getBlockState(new BlockPos(x,y,z)), player, stack);
@@ -146,6 +147,7 @@ public class ItemRail extends Item implements ITrackItem {
 
                 world.playSound(player,x + 0.5F, y + 0.5F, z + 0.5F, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, (getPlacedBlock().getSoundType().getVolume() + 1.0F) / 2.0F, getPlacedBlock().getSoundType().getPitch() * 0.8F);
                 stack.shrink(1);
+                BlockRailCore.updateNearbyShapes(world, x,y,z);
             }
             return EnumActionResult.SUCCESS;
         }
@@ -173,11 +175,12 @@ public class ItemRail extends Item implements ITrackItem {
 
         if(block instanceof BlockFlower || block == Blocks.DOUBLE_PLANT || block instanceof BlockMushroom){
             block.dropBlockAsItem(world, new BlockPos(x, y, z), world.getBlockState(new BlockPos(x, y+1, z)), 0);
+            world.setBlockToAir(new BlockPos(x, y, z));
         }
 
+        world.removeTileEntity(pos);
 
         if (world.mayPlace(getPlacedBlock(),new BlockPos(x,y,z), false, EnumFacing.UP, player)) {
-            getPlacedBlock().onBlockPlacedBy(world, new BlockPos(x, y, z), block.getDefaultState(), player,stack);
 
             if (CommonUtil.setBlock(world,x, y, z, getPlacedBlock(), 0)) {
                 if (CommonUtil.getBlockAt(world, x, y, z) == getPlacedBlock()) {

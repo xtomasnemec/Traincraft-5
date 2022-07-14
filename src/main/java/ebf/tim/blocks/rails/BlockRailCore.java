@@ -352,13 +352,14 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         if(p_149749_1_!=null) {
             p_149749_1_.getChunk(pos.getX() >> 4, pos.getZ() >> 4)
                     .removeTileEntity(new BlockPos(pos.getX() & 15, pos.getY(), pos.getZ() & 15));
+            p_149749_1_.setBlockToAir(pos);
         }
         CommonUtil.markBlockForUpdate(p_149749_1_, pos.getX(),pos.getY(),pos.getZ());
-        p_149749_1_.notifyNeighborsOfStateChange(pos, Blocks.AIR,true);
+        p_149749_1_.notifyNeighborsOfStateChange(pos, this,false);
         updateNearbyShapes(p_149749_1_, pos.getX(),pos.getY(),pos.getZ());
     }
 
-    public void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
+    public static void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
         //todo: right idea, but somehow doesnt force updates outside a 1x1 range. probably a related update somewhere else.
         //update all the other nearby rails.
         TileEntity te;
@@ -384,13 +385,11 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     public static RailSimpleShape getShape(World worldObj, int xPos, int yPos, int zPos){
-        if(!(CommonUtil.getBlockAt(worldObj, xPos,yPos,zPos) instanceof BlockRailCore)){
-            return null;
-        }
         TileEntity te= worldObj.getTileEntity(new BlockPos(xPos,yPos,zPos));
         if(!(te instanceof RailTileEntity)){
             te = new RailTileEntity();
             te.setPos(new BlockPos(xPos,yPos,zPos));
+            worldObj.addTileEntity(te);
         }
         switch (((RailTileEntity)te).getMeta()){
             //Z straight

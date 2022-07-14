@@ -2,6 +2,7 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
@@ -10,6 +11,7 @@ import ebf.tim.render.models.Model1x1Rail;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.TextureManager;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReportCategory;
@@ -46,8 +48,8 @@ public class RailTileEntity extends TileEntity {
             return;
         }
         meta=i;
-        if(world!=null) {
-            CommonUtil.setBlockMeta(world,pos.getX(),pos.getY(),pos.getZ(),meta);
+        if(world!=null && CommonUtil.getBlockAt(getWorld(),pos.getX(),pos.getY(),pos.getZ()) instanceof BlockRailBase) {
+            CommonUtil.setBlockMeta(getWorld(),pos.getX(),pos.getY(),pos.getZ(),meta);
         }
         markDirty();
     }

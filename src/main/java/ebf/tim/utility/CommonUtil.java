@@ -77,14 +77,19 @@ public class CommonUtil {
     }
 
     public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
-        Block b = w.getBlockState(new BlockPos(x,y,z)).getBlock();
+        BlockPos pos = new BlockPos(x,y,z);
+        Block b = w.getBlockState(pos).getBlock();
         if(b instanceof BlockRailBase){
-            w.getBlockState(new BlockPos(x, y, z)).withProperty(BlockRail.SHAPE,BlockRailBase.EnumRailDirection.byMetadata(meta));
+            w.getBlockState(pos).withProperty(BlockRail.SHAPE,BlockRailBase.EnumRailDirection.byMetadata(meta));
         } else if(b instanceof BlockFluidClassic) {
-            w.getBlockState(new BlockPos(x, y, z)).withProperty(BlockFluidBase.LEVEL,meta);
-        }else {
-            w.getBlockState(new BlockPos(x, y, z)).withProperty(FACING,EnumFacing.byHorizontalIndex(meta));
-        }  //might need one without the two at the end? check BlockSwitchStand.java Line 97
+            w.getBlockState(pos).withProperty(BlockFluidBase.LEVEL,meta);
+        } else {
+            w.getBlockState(pos).withProperty(FACING,EnumFacing.byHorizontalIndex(meta));
+        }
+        ((World)w).notifyNeighborsOfStateChange(pos, b, false);
+        ((World)w).notifyNeighborsOfStateChange(pos.down(), b, false);
+        ((World)w).notifyNeighborsOfStateChange(pos.up(), b, false);
+        ((World)w).markBlockRangeForRenderUpdate(pos, pos);
     }
 
     public static void markBlockForUpdate(World w, int x, int y, int z){

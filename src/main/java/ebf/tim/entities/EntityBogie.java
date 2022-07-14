@@ -145,7 +145,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         }
 
         //do detector rail things
-        if(blockCurrent instanceof BlockRailBase && ((BlockRailBase)blockCurrent).isPowered()){
+        //todo: isFlexibleRail is an absolutely atrocious way to check if it's powered
+        if(blockCurrent instanceof BlockRailBase && !((BlockRailBase)blockCurrent).isFlexibleRail(
+                getWorld(), new BlockPos(xFloor,yFloor,zFloor))){
             int meta = CommonUtil.getRailMeta(getWorld(),this,xFloor,yFloor,zFloor);
             if((meta & 8) == 0) {
                 CommonUtil.setBlockMeta(getWorld(), xFloor,yFloor,zFloor, meta | 8);
@@ -154,7 +156,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
         //todo: reroute to host for activator rail stuff, activator rail activates train.
         //host would also need identification if it was front or back bogie
-        if (blockCurrent == Blocks.activator_rail) {
+        if (blockCurrent == Blocks.ACTIVATOR_RAIL) {
             this.onActivatorRailPass(xFloor,yFloor,zFloor,
                     (CommonUtil.getRailMeta(getWorld(),this,xFloor,yFloor,zFloor) & 8) != 0);
         }
