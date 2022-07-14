@@ -11,6 +11,7 @@ import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -52,6 +53,9 @@ public class CustomItemModel implements ICustomModelLoader {
     private static HashMap<Item, TileRenderFacing> blockTextures = new HashMap<>();
 
     public static List<ResourceLocation> renderItems = new ArrayList<>();
+
+    //not-1.7 relies on a perpetually bound item texture, rather than checking bound texture each item
+    private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
 
     public static void registerBlockTextures(Item itm, TileEntity tile){
@@ -126,6 +130,7 @@ public class CustomItemModel implements ICustomModelLoader {
                 blockTextures.get(item.getItem()).addInfoToCrashReport(null);
             }
             GL11.glPopMatrix();
+            Minecraft.getMinecraft().getTextureManager().bindTexture(RES_ITEM_GLINT);
 
         } else if (item.getItem() instanceof ItemTransport){
             GenericRailTransport entity = ((ItemTransport) item.getItem()).entity;
@@ -190,6 +195,7 @@ public class CustomItemModel implements ICustomModelLoader {
                     ((ItemTransport)item.getItem()).entity,0,0,0, 0, true, null);
             Minecraft.getMinecraft().getTextureManager().bindTexture(ClientUtil.TEXTURE_MAP_ICONS);
             GL11.glPopMatrix();
+            Minecraft.getMinecraft().getTextureManager().bindTexture(RES_ITEM_GLINT);
         } else if (item.getItem() instanceof ItemRail){
             if(item.getTagCompound()==null){
                 return;
@@ -322,6 +328,7 @@ public class CustomItemModel implements ICustomModelLoader {
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glPopMatrix();
+            Minecraft.getMinecraft().getTextureManager().bindTexture(RES_ITEM_GLINT);
         }
 
 

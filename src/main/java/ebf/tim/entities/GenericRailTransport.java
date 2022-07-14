@@ -548,7 +548,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //be sure the player has permission to enter the transport, and that the transport has the main seat open.
                     if (getRiderOffsets() != null && getPermissions(p, false, true)) {
                         for (EntitySeat seat : seats) {
-                            if (seat.getPassenger() == null && !world.isRemote) {
+                            //1.12 is stupid, sometimes when the passenger is null, it returns the player
+                            if (!getWorld().isRemote && (seat.getPassenger() == null
+                                    || seat.getPassenger().getEntityId()==p.getEntityId())) {
                                 p.startRiding(seat);
                                 return true;
                             }

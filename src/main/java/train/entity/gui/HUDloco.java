@@ -171,8 +171,8 @@ public class HUDloco {
 
 	public int getHeat(GenericRailTransport loco){
 		if(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			if (true || loco.ticksExisted > lastTick) {
-				int l = loco.getTankInfo()[1] != null ?
+			if (loco.ticksExisted > lastTick) {
+				int l = loco.getTankInfo()[1] != null && loco.getTankInfo()[1].fluid!=null?
 						loco.getTankInfo()[1].fluid.amount : 1;
 				return ((l * 100) / (loco.getTankCapacity()[1]));
 			}

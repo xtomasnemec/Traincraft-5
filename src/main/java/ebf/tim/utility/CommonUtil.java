@@ -551,7 +551,6 @@ public class CommonUtil {
         if (isRailBlockAt(worldObj, posX,posY,posZ) && !worldObj.isRemote) {
             //define the direction of the track
             int railMeta=CommonUtil.getRailMeta(worldObj, null,posX,posY,posZ);
-            DebugUtil.println(railMeta);
             //define the angle between the player and the track.
             // this is more reliable than player direction because player goes from -360 to 360 for no real reason.
             float rotation =atan2degreesf(posX-playerEntity.posX, posZ-playerEntity.posZ);
