@@ -261,7 +261,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                         }
                     }
                 }
-                return;
+            } else if(CommonUtil.getBlockAt(getWorld(), floorX, floorY+1, floorZ) instanceof BlockRailBase) {
+                prevPosY=posY;
+                posY++;
             }
         }
     }
