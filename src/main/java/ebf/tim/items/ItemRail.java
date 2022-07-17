@@ -40,27 +40,14 @@ public class ItemRail extends Item implements ITrackItem {
      */
     @Deprecated
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int meta, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-        if(world.isRemote){return false;}
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+        if(world.isRemote || player==null || stack.stackSize==0){return false;}
         net.minecraft.block.Block block = CommonUtil.getBlockAt(world, x, y, z);
 
-        if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush) {
-            switch (meta) {
-                case 0:{--y;break;}
-                case 1:{++y;break;}
-                case 2:{--z;break;}
-                case 3:{++z;break;}
-                case 4:{--x;break;}
-                case 5:{++x;break;}
-            }
-        }
-
+        //for use from item, unlike external use, we want to give the player ability to "place ahead"
         if(block instanceof BlockRailBase){
-            if(meta==0) {
-                return false;
-            } else if (meta==1){
-                y--;
-                int rotation = MathHelper.floor_double((player!=null?player.rotationYawHead:p_77648_10_) * 4.0F / 360.0F + 0.5D) & 3;
+            if (side==1){//side 1/up
+                int rotation = CommonUtil.floorDouble(player.rotationYawHead * 4.0F / 360.0F + 0.5D) & 3;
                 switch (rotation){
                     case 0:{z++;
                     if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){z++;}
@@ -88,61 +75,22 @@ public class ItemRail extends Item implements ITrackItem {
                         if(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockRailBase){return false;}}//east
                 }
 
+            } else {//only allow placing on top of a block
+                return false;
             }
+        } else {//if it's not a track block, then the Y position will be too low, raise it one.
+            y++;
         }
 
-        if (player==null || !player.canPlayerEdit(x,y,z, meta, stack) || stack.stackSize==0 ||
-        !world.getChunkProvider().chunkExists(
+        //now be sure the player can place there, and the chunk position is loaded
+        if (!player.canPlayerEdit(x,y,z, side, stack) || !world.getChunkProvider().chunkExists(
                 x>>4, z>>4)) {
             return false;
-        } else {
-            if(!(CommonUtil.getBlockAt(world, x,y,z) instanceof BlockAir)){
-                //replaceable covers things like fluids, IPlantable and IGrowable cover things like grass and flowers
-                if(!CommonUtil.getBlockAt(world, x,y,z).isReplaceable(world,x,y,z)
-                        && !(block instanceof IPlantable) && !(block instanceof IGrowable)){
-                    return false;
-                } else {
-                    //if it is replaceable, try to spawn the dropped item.
-                    List<ItemStack> blockStacks = CommonUtil.getBlockAt(world, x,y,z).getDrops(world,x,y,z,world.getBlockMetadata(x,y,z),0);
-                    for(ItemStack stak : blockStacks){
-                        world.spawnEntityInWorld(new EntityItem(world,x,y+0.5,z, stak));
-                    }
-                }
-            }
-
-            if (world.setBlock(x,y,z, getPlacedBlock(), 0, 3)) {
-                int i1 = getPlacedBlock().onBlockPlaced(world, x,y,z, meta, p_77648_8_, p_77648_9_, p_77648_10_, 0);
-                if (CommonUtil.getBlockAt(world, x,y,z) == getPlacedBlock()) {
-                    getPlacedBlock().onBlockPlacedBy(world, x,y,z, player, stack);
-
-                    ((BlockRailCore)CommonUtil.getBlockAt(world, x,y,z)).updateShape(x,y,z,world,
-                            //set rail
-                            stack.getTagCompound().getTag("rail")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("rail")):
-                                    new ItemStack(Items.iron_ingot),
-                            //set ties
-                            stack.getTagCompound().getTag("ties")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ties")):
-                                    null,
-
-                            //set ballast
-                            stack.getTagCompound().getTag("ballast")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("ballast")):
-                                    null,
-
-                            //set wires
-                            stack.getTagCompound().getTag("wires")!=null?
-                                    ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("wires")):
-                                    null
-                            );
-                }
-
-                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, getPlacedBlock().stepSound.func_150496_b(), (getPlacedBlock().stepSound.getVolume() + 1.0F) / 2.0F, getPlacedBlock().stepSound.getPitch() * 0.8F);
-                getPlacedBlock().onPostBlockPlaced(world, x,y,z, i1);
-                --stack.stackSize;
-            }
-            return true;
         }
+
+        //continue with normal placement
+        placeTrack(stack, world, x, y, z,player);
+        return true;
     }
 
     public boolean isPlacedTileEntity(ItemStack stack, TileEntity tile){
@@ -153,28 +101,36 @@ public class ItemRail extends Item implements ITrackItem {
         return TiMBlocks.railBlock;
     }
 
+    //redirect for 3rd party mods
     public boolean placeTrack(ItemStack stack, World world, int x, int y, int z){
+        return placeTrack(stack, world, x, y, z,null);
+    }
+
+    /**
+     * normal placement
+     * this is meant mainly for add-ons like railcraft, and tools like the track builder
+     */
+    public boolean placeTrack(ItemStack stack, World world, int x, int y, int z, EntityPlayer p){
         if(world.isRemote){return true;}
         net.minecraft.block.Block block = CommonUtil.getBlockAt(world, x, y, z);
 
-        if (!(World.doesBlockHaveSolidTopSurface(world ,x, y, z))){
+        if (!(World.doesBlockHaveSolidTopSurface(world ,x, y-1, z))){
             return false;
         }
 
-        if(block.isReplaceable(world, x, y+1, z) || block instanceof BlockFlower || block == Blocks.double_plant || block instanceof BlockMushroom){
-            block.dropBlockAsItem(world, x, y+1, z, world.getBlockMetadata(x, y+1, z), 0);
+        if(block.isReplaceable(world, x, y, z) || block instanceof IPlantable){
+            block.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
             world.setBlockToAir(x, y, z);
         }
         world.removeTileEntity(x,y,z);
 
         int meta=world.getBlockMetadata(x,y,z);
 
-        if (world.canPlaceEntityOnSide(getPlacedBlock(),x,y,z, false, meta, null, stack)) {
-            int i1 = getPlacedBlock().onBlockPlaced(world, x, y, z, meta, 0, 0, 0, 0);
+        if (world.canPlaceEntityOnSide(getPlacedBlock(),x,y,z, false, meta, p, stack)) {
 
-            if (world.setBlock(x, y, z, getPlacedBlock(), 0, 3)) {
+            if (CommonUtil.setBlock(world, x, y, z, getPlacedBlock(), 0)) {
                 if (CommonUtil.getBlockAt(world, x, y, z) == getPlacedBlock()) {
-                    getPlacedBlock().onPostBlockPlaced(world, x, y, z, i1);
+                    getPlacedBlock().onBlockPlacedBy(world, x,y,z, world.getClosestPlayer(x,y,z,1000), stack);
                     ((BlockRailCore) CommonUtil.getBlockAt(world, x, y, z)).updateShape(x, y, z, world,
                             //set rail
                             stack.getTagCompound().getTag("rail")!=null?
@@ -199,6 +155,7 @@ public class ItemRail extends Item implements ITrackItem {
 
                 world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, getPlacedBlock().stepSound.func_150496_b(), (getPlacedBlock().stepSound.getVolume() + 1.0F) / 2.0F, getPlacedBlock().stepSound.getPitch() * 0.8F);
                 --stack.stackSize;
+                getPlacedBlock().onPostBlockPlaced(world, x, y, z, meta);
             }
         }
 

@@ -59,8 +59,8 @@ public class CommonUtil {
         return world.getBlock(x,y,z);
     }
 
-    public static void setBlock(World w, int x, int y, int z, Block b){
-        w.setBlock(x,y,z,b);
+    public static boolean setBlock(World w, int x, int y, int z, Block b){
+        return w.setBlock(x,y,z,b);
     }
 
     public static void setBlockMeta(World w, int x, int y, int z, int meta){
@@ -84,9 +84,12 @@ public class CommonUtil {
         return ((BlockRailBase)w.getBlock(x,y,z)).getBasicRailMetadata(w,cart,x,y,z);
     }
 
-    public static void setBlock(World w, int x, int y, int z, Block b, int meta){
-        setBlock(w,x,y,z,b);
-        setBlockMeta(w,x,y,z,meta);
+    public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){
+        boolean set =setBlock(w,x,y,z,b);
+        if(set) {
+            setBlockMeta(w, x, y, z, meta);
+        }
+        return set;
     }
 
     public static float getMaxRailSpeed(World world, BlockRailBase rail, GenericRailTransport host, double x, double y, double z){
