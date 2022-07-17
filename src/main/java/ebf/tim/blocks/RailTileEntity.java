@@ -101,10 +101,14 @@ public class RailTileEntity extends TileEntity {
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return (oldState.getBlock() != newSate.getBlock()) ||
-                (oldState.getBlock().getMetaFromState(oldState) != newSate.getBlock().getMetaFromState(newSate));
+        return false;
     }
 
+    @Override
+    public void updateContainingBlockInfo(){
+        super.updateContainingBlockInfo();
+        BlockRailCore.updateNearbyShapes(getWorld(), pos.getX(),pos.getY(),pos.getZ());
+    }
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {

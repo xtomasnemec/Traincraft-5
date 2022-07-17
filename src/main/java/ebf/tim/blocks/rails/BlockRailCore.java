@@ -6,6 +6,7 @@ import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
@@ -363,10 +364,12 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         //todo: right idea, but somehow doesnt force updates outside a 1x1 range. probably a related update somewhere else.
         //update all the other nearby rails.
         TileEntity te;
+        BlockPos pos;
         for(int x : matrixXZ){
             for(int z : matrixXZ){
                 for(int y : matrixY){
-                    te=world.getTileEntity(new BlockPos(x+xCoord,y+yCoord,z+zCoord));
+                    pos=new BlockPos(x+xCoord,y+yCoord,z+zCoord);
+                    te=world.getTileEntity(pos);
                     if(te instanceof RailTileEntity && ((RailTileEntity) te).getData()!=null){
                         new RailData(world,xCoord+x,yCoord+y,zCoord+z).rebuildRailMeta();
                         RailShapeCore.processPoints(x+xCoord,y+yCoord, z+zCoord,world,
