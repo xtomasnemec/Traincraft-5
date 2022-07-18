@@ -120,7 +120,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
     @Deprecated
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         DebugUtil.println("something is using transfer stack, this is bad");
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**modified from 1.7.10 version to check if the item is valid for the slot*/
@@ -272,7 +272,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                         break;
                     } else if (slot.getStack()!=ItemStack.EMPTY){
                         if(dragType==0) { //todo: why does pressing q end up here and not throwing?
-                            player.inventory.setItemStack(slot.getStack().copy());
+                            player.inventory.setItemStack(slot.getStack()==null?ItemStack.EMPTY:slot.getStack().copy());
                             slot.onCrafting(hostType, inventory, 1);
                             slot.setSlotContents(ItemStack.EMPTY, inventory);
                         } else if(dragType==1) {

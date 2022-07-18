@@ -281,21 +281,6 @@ public class EntityTrainCore extends GenericRailTransport {
         }
     }
 
-    @Override
-    public void markDirty() {
-        if(forceBackupTimer==0) {
-            forceBackupTimer = 30;
-        }
-        for (ItemStackSlot slot : inventory){
-            entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
-        }
-
-        if(syncTimer==-1){
-            syncTimer=20;
-        }
-
-    }
-
 
     @Override
     public boolean interact(int player, boolean isFront, boolean isBack, int key) {

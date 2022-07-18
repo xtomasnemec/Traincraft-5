@@ -33,6 +33,7 @@ public class XmlBuilder {
     public XmlBuilder(String str){
         super();
         buildString=str;
+        buildXML();
     }
     public XmlBuilder(){}
     /*
@@ -447,7 +448,7 @@ public class XmlBuilder {
                 data.append("null");
             } else {
                 ItemStack stack = itemMap.get(key);
-                data.append(stack.getItem().delegate.name());
+                data.append(stack.getItem().delegate.name().toString());
                 data.append(",");
                 data.append(stack.getCount());
                 data.append(",");
