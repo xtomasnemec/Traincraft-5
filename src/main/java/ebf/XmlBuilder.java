@@ -34,6 +34,7 @@ public class XmlBuilder {
     public XmlBuilder(String str){
         super();
         buildString=str;
+        buildXML();
     }
     public XmlBuilder(){}
     /*

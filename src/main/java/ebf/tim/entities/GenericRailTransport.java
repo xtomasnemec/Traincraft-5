@@ -104,7 +104,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**the health of the entity, similar to that of EntityLiving*/
     private int health = 20;
     /**the list of items used for the inventory and crafting slots.*/
-    public List<ItemStackSlot> inventory = null;
+    public List<ItemStackSlot> inventory = new ArrayList<>();
     /**whether or not this needs to update the datawatchers*/
     public boolean updateWatchers = false;
     /**the ticket that gives the entity permission to load chunks.*/
@@ -259,7 +259,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         super(world);
         setSize(0.25f,0.25f);
         ignoreFrustumCheck = true;
-        inventory = new ArrayList<>();
         initInventorySlots();
         if(world!=null && collisionHandler==null) {
             this.height = 0.25f;
@@ -276,7 +275,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         entityData.putUUID("owner", owner);
         setSize(0.25f,0.25f);
         ignoreFrustumCheck = true;
-        inventory = new ArrayList<>();
         initInventorySlots();
     }
 
@@ -759,6 +757,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         if (tag.hasKey("entityxml")) {
             entityData = new XmlBuilder(tag.getString("entityxml"));
+            for(String key : entityData.itemMap.keySet()){
+                getSlotIndexByID(Integer.parseInt(key.substring(4))).setStack(entityData.getItemStack(key));
+            }
         }
         bools.set(tag.getByteArray(NBTKeys.bools));
         isDead = tag.getBoolean(NBTKeys.dead);
@@ -806,33 +807,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         rotationRoll = tag.getFloat(NBTKeys.rotationRoll);
         prevRotationRoll = tag.getFloat(NBTKeys.prevRotationRoll);
 
-        //@DEPRECIATED, legacy data loading
-        if (getTankCapacity() != null) {
-            for (int i = 0; i < getTankCapacity().length; i++) {
-                if (tag.hasKey("tanks." + i)) {
-                    entityData.putFluidStack("tanks." + i, FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("tanks." + i)));
-                }
-            }
-        }
-        //@DEPRECIATED, legacy data loading
-        if (tag.hasKey("transportinv.0")) {
-            inventory = new ArrayList<>();
-            initInventorySlots();
-
-            NBTTagCompound invTag;
-
-            if (getSizeInventory() > 0) {
-                for (int i = 0; i < getSizeInventory(); i++) {
-                    if (tag.hasKey("transportinv." + i)) {
-                        invTag = tag.getCompoundTag("transportinv." + i);
-                        if (invTag != null) {
-                            inventory.get(i).setSlotContents(ItemStack.loadItemStackFromNBT(invTag), inventory);
-                        }
-                    }
-                }
-            }
-            closeInventory();
-        }
         updateWatchers = true;
     }
 
@@ -841,6 +815,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
+        //force write inventory to data before saving to prevent dupe bugs
+        for (ItemStackSlot slot : inventory){
+            entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
+        }
         tag.setString("entityxml", entityData.toXMLString());
         tag.setByteArray(NBTKeys.bools, bools.getBits());
         tag.setBoolean(NBTKeys.dead, isDead);
@@ -2030,7 +2008,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         if(syncTimer==-1){
-            syncTimer=60;
+            syncTimer=this instanceof EntityTrainCore?20:60;
         }
 
     }
