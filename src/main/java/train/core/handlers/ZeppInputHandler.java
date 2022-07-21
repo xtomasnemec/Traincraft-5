@@ -11,15 +11,15 @@ import train.Traincraft;
 import train.core.network.PacketKeyPress;
 
 
-public class TCInputHandler {
+public class ZeppInputHandler {
 	public static KeyBinding up;
 	public static KeyBinding down;
 	public static KeyBinding idle;
 	public static KeyBinding furnace;
 
-	public static TCInputHandler instance = new TCInputHandler();
+	public static ZeppInputHandler instance = new ZeppInputHandler();
 
-	public TCInputHandler() {
+	public ZeppInputHandler() {
 		up = new KeyBinding("key.traincraft.zepp.up", Keyboard.KEY_Y, "key.categories.traincraft5");
 		ClientRegistry.registerKeyBinding(up);
 		down = new KeyBinding("key.traincraft.zepp.down", Keyboard.KEY_X, "key.categories.traincraft5");

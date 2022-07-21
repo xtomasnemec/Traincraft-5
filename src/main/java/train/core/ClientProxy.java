@@ -9,22 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import train.blocks.bench.GuiTrainCraftingBlock;
-import train.blocks.bench.TileTrainWbench;
-import train.blocks.distil.GuiDistil;
-import train.blocks.distil.TileEntityDistil;
-import train.blocks.generator.GuiGeneratorDiesel;
-import train.blocks.generator.TileGeneratorDiesel;
-import train.blocks.hearth.GuiOpenHearthFurnace;
-import train.blocks.hearth.TileEntityOpenHearthFurnace;
-import train.blocks.lantern.GuiLantern;
-import train.blocks.lantern.TileLantern;
 import train.core.handlers.ClientTickHandler;
-import train.core.handlers.TCInputHandler;
+import train.core.handlers.ZeppInputHandler;
 import train.core.helpers.JLayerHook;
 import train.entity.gui.GuiJukebox;
 import train.entity.gui.GuiZepp;
@@ -112,8 +101,8 @@ public class ClientProxy extends CommonProxy {
 	}
 	@Override
 	public void registerKeyBindingHandler() {
-            FMLCommonHandler.instance().bus().register(TCInputHandler.instance);
-            MinecraftForge.EVENT_BUS.register(TCInputHandler.instance);
+            FMLCommonHandler.instance().bus().register(ZeppInputHandler.instance);
+            MinecraftForge.EVENT_BUS.register(ZeppInputHandler.instance);
     }
 	
 	@Override
