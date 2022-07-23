@@ -4,6 +4,7 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.networking.PacketCraftingPage;
 import ebf.tim.utility.*;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -79,6 +80,9 @@ public class GUITrainTable extends GuiContainer {
                 public void onClick() {
                     TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(false, xCoord, yCoord, zCoord, dimension));
                 }
+
+                @Override
+                public FontRenderer getFont(){return fontRenderer;}
             });
 
             this.buttonList.add(new GUIButton(this.guiLeft + downButtonCoord[0], this.guiTop + downButtonCoord[1], 18, 18, ">>") {
@@ -91,6 +95,9 @@ public class GUITrainTable extends GuiContainer {
                 public void onClick() {
                     TrainsInMotion.keyChannel.sendToServer(new PacketCraftingPage(true, xCoord, yCoord, zCoord, dimension));
                 }
+
+                @Override
+                public FontRenderer getFont(){return fontRenderer;}
             });
         }
     }
@@ -98,15 +105,9 @@ public class GUITrainTable extends GuiContainer {
     @Override
     public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_) {
         super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
-
-        //draw button hover text
-        for (Object b : buttonList){
-            if(b instanceof GUIButton) {
-                ((GUIButton) b).drawText(p_73863_1_, p_73863_2_);
-            }
-        }
     }
 
+    @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
         if (!CommonProxy.isTraincraft || hostname.equals("tile.block.traintable")) {
             this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -117,6 +118,13 @@ public class GUITrainTable extends GuiContainer {
                 this.fontRenderer.drawString(I18n.format(hostname + ".name"), 8, 5, 12241200);
                 this.fontRenderer.drawString(I18n.format("container.storage"), 8, 118, 4210752);
                 this.fontRenderer.drawString(I18n.format("container.output"), 90, 118, 12241200);
+            }
+        }
+
+        //draw button hover text
+        for (Object b : buttonList){
+            if(b instanceof GUIButton) {
+                ((GUIButton) b).drawText(p_146979_1_, p_146979_2_);
             }
         }
     }

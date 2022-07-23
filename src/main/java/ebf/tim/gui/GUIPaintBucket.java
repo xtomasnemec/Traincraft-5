@@ -9,6 +9,7 @@ import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.EventManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -125,6 +126,9 @@ public class GUIPaintBucket extends GuiScreen {
                             page = (page <= 0 ? entity.getSkinList(Minecraft.getMinecraft().player, true).keySet().size() -1: page - 1);
                             currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().player, true).get(skinList.get(page));
                         }
+
+                        @Override
+                        public FontRenderer getFont(){return fontRenderer;}
                     }
                 );
 
@@ -139,6 +143,9 @@ public class GUIPaintBucket extends GuiScreen {
                                 page = (page+1 >= entity.getSkinList(Minecraft.getMinecraft().player, true).keySet().size() ? 0 : page + 1);
                                 currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().player, true).get(skinList.get(page));
                             }
+
+                            @Override
+                            public FontRenderer getFont(){return fontRenderer;}
                         }
                 );
 
@@ -160,6 +167,9 @@ public class GUIPaintBucket extends GuiScreen {
                                 }
                                 entity.renderData.needsModelUpdate=true;
                             }
+
+                            @Override
+                            public FontRenderer getFont(){return fontRenderer;}
                         }
                 );
 
@@ -174,6 +184,9 @@ public class GUIPaintBucket extends GuiScreen {
                             public void onClick() {
                                 mc.displayGuiScreen(null);
                             }
+
+                            @Override
+                            public FontRenderer getFont(){return fontRenderer;}
                         }
                 );
                 break;
