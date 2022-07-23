@@ -9,6 +9,7 @@ import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.EventManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -96,12 +97,6 @@ public class GUIPaintBucket extends GuiScreen {
             case 0:{defineButtons();guiSkinSelect();break;}
         }
 
-        //draw button hover text
-        for (Object b : buttonList){
-            if(b instanceof GUIButton) {
-                ((GUIButton) b).drawText(parWidth, parHeight);
-            }
-        }
     }
 
 
@@ -125,6 +120,9 @@ public class GUIPaintBucket extends GuiScreen {
                             page = (page <= 0 ? entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).keySet().size() -1: page - 1);
                             currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).get(skinList.get(page));
                         }
+
+                        @Override
+                        public FontRenderer getFont(){return fontRendererObj;}
                     }
                 );
 
@@ -139,6 +137,9 @@ public class GUIPaintBucket extends GuiScreen {
                                 page = (page+1 >= entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).keySet().size() ? 0 : page + 1);
                                 currentTransportSkin =entity.getSkinList(Minecraft.getMinecraft().thePlayer, true).get(skinList.get(page));
                             }
+
+                            @Override
+                            public FontRenderer getFont(){return fontRendererObj;}
                         }
                 );
 
@@ -160,6 +161,9 @@ public class GUIPaintBucket extends GuiScreen {
                                 }
                                 entity.renderData.needsModelUpdate=true;
                             }
+
+                            @Override
+                            public FontRenderer getFont(){return fontRendererObj;}
                         }
                 );
 
@@ -174,6 +178,9 @@ public class GUIPaintBucket extends GuiScreen {
                             public void onClick() {
                                 mc.displayGuiScreen(null);
                             }
+
+                            @Override
+                            public FontRenderer getFont(){return fontRendererObj;}
                         }
                 );
                 break;
