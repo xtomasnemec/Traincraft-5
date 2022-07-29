@@ -1,5 +1,6 @@
 package ebf.tim.items;
 
+import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.registry.TiMBlocks;
@@ -248,10 +249,12 @@ public class ItemRail extends Item implements ITrackItem {
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubItems(CreativeTabs p_150895_2_, NonNullList<ItemStack> tabItems) {
-        for(Item ingot : new Item[]{Items.IRON_INGOT, Items.GOLD_INGOT}){
-            for(Block b : new Block[]{null, Blocks.GRAVEL, Blocks.STONE}){
-                for(Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.STONE, null})
-                tabItems.add(setStackData(new ItemStack(TiMItems.railItem),new ItemStack(ingot), new ItemStack(b),new ItemStack(t), null));
+        if(p_150895_2_== TrainsInMotion.creativeTab) {
+            for (Item ingot : new Item[]{Items.IRON_INGOT, Items.GOLD_INGOT}) {
+                for (Block b : new Block[]{null, Blocks.GRAVEL, Blocks.STONE}) {
+                    for (Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.STONE, null})
+                        tabItems.add(setStackData(new ItemStack(TiMItems.railItem), new ItemStack(ingot), new ItemStack(b), new ItemStack(t), null));
+                }
             }
         }
     }

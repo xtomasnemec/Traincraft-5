@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -165,6 +166,9 @@ public class TextureManager {
         int[]rgb, colorBuff;
         ResourceLocation texture;
         for (ItemStack s : Ores){
+            if(s.getItem()==null || s.getItem()==Items.AIR){
+                continue;
+            }
 
             texture=null;
             red =0;green=0;blue=0;divisor=0;

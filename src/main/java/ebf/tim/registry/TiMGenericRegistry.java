@@ -12,7 +12,6 @@ import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemRail;
 import ebf.tim.items.ItemTransport;
-import ebf.tim.render.BlockTESR;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
@@ -21,7 +20,6 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -30,7 +28,6 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Optional;
@@ -122,7 +119,7 @@ public class TiMGenericRegistry {
             block.setTranslationKey(unlocalizedName);
             ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))
                     .register(block.setRegistryName(MODID,unlocalizedName));
-            if(model!=null || (block instanceof ITileEntityProvider && ((ITileEntityProvider) block).createNewTileEntity(null,0) instanceof TileRenderFacing)) {
+            if(TrainsInMotion.proxy.isClient() && (model!=null || (block instanceof ITileEntityProvider && ((ITileEntityProvider) block).createNewTileEntity(null,0) instanceof TileRenderFacing))) {
                 RegisterItem(new ItemBlockTiM(block), MODID, unlocalizedName, oreDictionaryName + ".item", tab, null, ebf.tim.items.CustomItemModel.instance, textureName);
                 if(TrainsInMotion.proxy.isClient() && TESR==null){
                     TESR=new ebf.tim.render.BlockTESR();
@@ -155,28 +152,14 @@ public class TiMGenericRegistry {
                 if (TrainsInMotion.proxy.isClient() && TESR != null) {
                     regTileRender(MODID,unlocalizedName,block, tile, model, TESR);
                 } else if (TrainsInMotion.proxy.isClient()) {
-                    net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new IStateMapper() {
-                        @Override
-                        public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
-                            Map value = new HashMap<IBlockState, ModelResourceLocation>(){};
-                            value.put(blockIn.getDefaultState(), new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
-                            return value;
-                        }
-                    });
+                    registerBlockStateModel(block,MODID,textureName);
                 }
             } else {
                 DebugUtil.println("redundant tile name found",tile.getName(), unlocalizedName + "tile");
                 DebugUtil.printStackTrace();
             }
         } else if (TrainsInMotion.proxy.isClient() && MODID != null) {
-            net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new IStateMapper() {
-                @Override
-                public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
-                    Map value = new HashMap<IBlockState, ModelResourceLocation>(){};
-                    value.put(blockIn.getDefaultState(), new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
-                    return value;
-                }
-            });
+            registerBlockStateModel(block,MODID,textureName);
         }
 
         return block;
@@ -406,6 +389,18 @@ public class TiMGenericRegistry {
         //ebf.tim.items.CustomItemModel.renderItems.add(new ResourceLocation(MODID, unlocalizedName + "tile"));
         ebf.tim.items.CustomItemModel.registerBlockTextures(Item.getItemFromBlock(block), ((ITileEntityProvider) block).createNewTileEntity(null, 0));
 
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerBlockStateModel(Block block, String MODID, String textureName){
+        net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new net.minecraft.client.renderer.block.statemap.IStateMapper() {
+            @Override
+            public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
+                Map value = new HashMap<IBlockState, ModelResourceLocation>(){};
+                value.put(blockIn.getDefaultState(), new ModelResourceLocation(new ResourceLocation(MODID,textureName),""));
+                return value;
+            }
+        });
     }
 
     /**
