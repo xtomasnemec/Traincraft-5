@@ -156,6 +156,9 @@ public class TextureManager {
         int[]rgb, colorBuff;
         ResourceLocation texture;
         for (ItemStack s : Ores){
+            if(s.getItem()==null){
+                continue;
+            }
 
             texture=null;
             red =0;green=0;blue=0;divisor=0;

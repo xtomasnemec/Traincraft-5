@@ -2164,7 +2164,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
             }
             if (entityData.containsFluidStack("tanks."+stack)&& (
-                    resource.getFluid() == null || entityData.getFluidStack("tanks."+stack).getFluid() == resource.getFluid() ||
+                    resource==null || resource.getFluid() == null ||
+                            entityData.getFluidStack("tanks."+stack)==null ||
+                            entityData.getFluidStack("tanks."+stack).getFluid() == resource.getFluid() ||
                             entityData.getFluidStack("tanks."+stack).amount ==0)) {
                 fluid=entityData.getFluidStack("tanks."+stack);
 
