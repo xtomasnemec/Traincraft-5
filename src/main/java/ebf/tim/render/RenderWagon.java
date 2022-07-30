@@ -114,7 +114,6 @@ public class RenderWagon extends Render {
                 int m=0;
                 for (ModelBase part : entity.renderData.modelList) {
                     for (ModelRendererTurbo render : part.getnamedParts()) {
-                        if (render.boxName ==null){continue;}
                         //attempt to cache the parts for the main transport model
                         if(StaticModelAnimator.checkCulls(render)){
                             render.boxName=render.boxName.replace("cull","").replace("Cull", "");

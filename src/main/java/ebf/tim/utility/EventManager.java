@@ -59,8 +59,9 @@ public class EventManager {
         if (player.ridingEntity instanceof EntitySeat) {
             //for lamp
             if (ClientProxy.KeyLamp.getIsKeyPressed()) {
-                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0, ((EntitySeat) player.ridingEntity).parentId));
-                ((GenericRailTransport)player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId)).setBoolean(GenericRailTransport.boolValues.LAMP, !((GenericRailTransport) player.ridingEntity).getBoolean(GenericRailTransport.boolValues.LAMP));
+                GenericRailTransport parent = (GenericRailTransport) player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId);
+                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0,parent.getEntityId()));
+                parent.setBoolean(GenericRailTransport.boolValues.LAMP, !parent.getBoolean(GenericRailTransport.boolValues.LAMP));
             }
             //for inventory
             if (ClientProxy.KeyInventory.getIsKeyPressed()) {
