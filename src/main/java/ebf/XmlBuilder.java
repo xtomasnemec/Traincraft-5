@@ -219,7 +219,7 @@ public class XmlBuilder {
     public boolean containsFloatArray(String id){buildXML(); return floatArrayMap.containsKey(id);}
     public boolean containsDouble(String id){buildXML(); return doubleMap.containsKey(id);}
     public boolean containsItemStack(String id){buildXML(); return itemMap.containsKey(id);}
-    public boolean containsFluidStack(String id){buildXML(); return fluidMap.containsKey(id);}
+    public boolean containsFluidStack(String id){buildXML(); return fluidMap.containsKey(id) && fluidMap.get(id)!=null;}
     public boolean containsUUID(String id){buildXML(); return uuidMap.containsKey(id);}
     public boolean containsXml(String id){buildXML(); return xmlMap.containsKey(id);}
 
