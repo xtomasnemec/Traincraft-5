@@ -81,7 +81,7 @@ public class EntityLocoDieselDD35A extends EntityTrainCore {
 
     //these are separated for being fiddly.
     @Override
-    public float[][] getRiderOffsets(){return new float[][]{{0,1.2f, 0f}};}
+    public float[][] getRiderOffsets(){return new float[][]{{-2.8f,1.5f, -0.2f}};}
     @Override
     public float[] getHitboxSize(){return new float[]{8.3f,2.6f,1.2f};}
     @Override

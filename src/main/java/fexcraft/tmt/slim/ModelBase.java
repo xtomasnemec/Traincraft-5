@@ -260,7 +260,6 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 	}
 
 	public List<ModelRendererTurbo> getnamedParts(){
-
 		if(init){
 			initAllParts();
 		}
@@ -270,8 +269,7 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 	public void addPart(ModelRendererTurbo part){
 		if(part==null) {
 			return;
-		}if(part.boxName!=null && part.boxName.length()>2 &&
-				(StaticModelAnimator.checkAnimators(part) || GroupedModelRender.canAdd(part))){
+		}if(part.boxName!=null && part.boxName.length()>2){
 			namedList.add(part);
 		} else {
 			boxList.add(part);
