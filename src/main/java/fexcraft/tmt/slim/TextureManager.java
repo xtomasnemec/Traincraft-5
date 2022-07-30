@@ -166,46 +166,47 @@ public class TextureManager {
         int[]rgb, colorBuff;
         ResourceLocation texture;
         for (ItemStack s : Ores){
-            if(s.getItem()==null || s.getItem()==Items.AIR){
-                continue;
-            }
+            if(s!=null && s!= ItemStack.EMPTY && s.getItem()!=null && s.getItem()!=Items.AIR) {
 
-            texture=null;
-            red =0;green=0;blue=0;divisor=0;
-            //todo: this may not work? this is how it's supposed to work, buildcraft does it.
-            // but i know better than to blindly trust this game.
-            //Item item = s.getItem();
-            String textureName = TextureMap.LOCATION_BLOCKS_TEXTURE.toString();// item.getIcon(s,0)!=null?item.getIcon(s,0).getIconName():null;
-            if(textureName != null){
-                if(textureName.split(":").length == 1){
-                    textureName = "minecraft:" + textureName;
+                texture = null;
+                red = 0;
+                green = 0;
+                blue = 0;
+                divisor = 0;
+                //todo: this may not work? this is how it's supposed to work, buildcraft does it.
+                // but i know better than to blindly trust this game.
+                //Item item = s.getItem();
+                String textureName = TextureMap.LOCATION_BLOCKS_TEXTURE.toString();// item.getIcon(s,0)!=null?item.getIcon(s,0).getIconName():null;
+                if (textureName != null) {
+                    if (textureName.split(":").length == 1) {
+                        textureName = "minecraft:" + textureName;
+                    }
+                    texture = ClientUtil.TEXTURE_MAP_ICONS;//in theory this should fix it since we're only looking for item textures.
+                    //new ResourceLocation(textureName.split(":")[0], "textures/items/" + textureName.split(":")[1]);
                 }
-                texture = ClientUtil.TEXTURE_MAP_ICONS;//in theory this should fix it since we're only looking for item textures.
-                        //new ResourceLocation(textureName.split(":")[0], "textures/items/" + textureName.split(":")[1]);
-            }
 
-            if(texture != null){
-                try {
-                    colorBuff = TextureUtil.readImageData(Minecraft.getMinecraft().getResourceManager(), texture);
-                    for(int c : colorBuff){
-                        rgb=hexTorgba(c);
-                        if(rgb[3]>128) {
-                            if(rgb[0]+rgb[1]+rgb[2]>20) {
-                                red+=25+rgb[2];
-                                blue+=25+rgb[1];
-                                green+=25+rgb[0];
-                                divisor++;
+                if (texture != null) {
+                    try {
+                        colorBuff = TextureUtil.readImageData(Minecraft.getMinecraft().getResourceManager(), texture);
+                        for (int c : colorBuff) {
+                            rgb = hexTorgba(c);
+                            if (rgb[3] > 128) {
+                                if (rgb[0] + rgb[1] + rgb[2] > 20) {
+                                    red += 25 + rgb[2];
+                                    blue += 25 + rgb[1];
+                                    green += 25 + rgb[0];
+                                    divisor++;
+                                }
                             }
                         }
+                        ingotColors.put(s, new int[]{red / divisor, blue / divisor, green / divisor});
+                    } catch (IOException e) {
+                        DebugUtil.println("Caught exception while parsing texture to get color: ");
+                        e.printStackTrace();
                     }
-                    ingotColors.put(s, new int[]{red/divisor,blue/divisor,green/divisor});
-                } catch (IOException e) {
-                    DebugUtil.println("Caught exception while parsing texture to get color: ");
-                    e.printStackTrace();
+
                 }
-
             }
-
         }
     }
 

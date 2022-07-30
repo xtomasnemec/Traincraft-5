@@ -349,10 +349,10 @@ public class ParticleFX {
                     (entity.offset[1]*0.0625f)-8f,//subtract half if cone radius
                     -entity.offset[2]*0.0625f);*/
 
-            lamp.setPosition(
+            /*lamp.setPosition(
                     lamp.rotationPointX,
                     lamp.rotationPointY-(size*0.5f),
-                    lamp.rotationPointZ-(size*0.5f));
+                    lamp.rotationPointZ-(size*0.5f));*/
 
             GL11.glDisable(GL11.GL_LIGHTING);
             Minecraft.getMinecraft().entityRenderer.disableLightmap();

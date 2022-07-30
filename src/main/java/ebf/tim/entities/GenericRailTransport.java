@@ -1013,7 +1013,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         if(frontLinkedID==null || backLinkedID==null) {
 
-            float drag = 0.998f,brakeBuff=0,slopeX=0,slopeZ=0;
+            float drag = 0.9998f,brakeBuff=0,slopeX=0,slopeZ=0;
             //iterate the consist to collect the stats, since only end units can do this.
             for(GenericRailTransport stock : getConsist()) {
                 if(stock.getBoolean(boolValues.BRAKE)){
@@ -1038,7 +1038,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //add in the drag from combined weight, plus brakes.
             if(pullingWeight!=0) {//in theory this should never be 0, but we know forge is dumb
-                drag -= ((getAccelerator()==0?getFriction():getFriction()*5) * (pullingWeight + brakeBuff)) / 44480;
+                drag -= ((getAccelerator()==0?getFriction()*0.75:getFriction()*2.5) * (pullingWeight + brakeBuff)) / 44480;
             }
             //cap the drag to prevent weird behavior.
             // if it goes to 1 or higher then we speed up, which is bad, if it's below 0 we reverse, which is also bad
@@ -1434,7 +1434,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             } else if (e instanceof EntityPlayer || e instanceof EntityLiving) {
                 if (CommonProxy.pushabletrains &&
-                        !getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.5) {
+                        !getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.01) {
                     double[] motion = CommonUtil.rotatePoint(0.25, 0,
                             CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
                     moveBogies(motion[0], motion[2]);
