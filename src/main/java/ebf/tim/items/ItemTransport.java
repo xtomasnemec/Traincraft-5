@@ -152,7 +152,7 @@ public class ItemTransport extends Item {
             }
             return false;
         } catch (Exception e){
-        	if(DebugUtil.dev()){
+        	if(DebugUtil.dev){
             	e.printStackTrace();
         	}
         	DebugUtil.log("Failed to cast : " + transport.toString() + "to a new generic transport entity");

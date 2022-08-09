@@ -212,7 +212,7 @@ public class ClientProxy extends CommonProxy {
         KeyInventory = new KeyBinding("Open Train/rollingstock GUI",  Keyboard.KEY_R, "Trains in Motion");
         ClientRegistry.registerKeyBinding(KeyInventory);
 
-        if(DebugUtil.dev()) {
+        if(DebugUtil.dev) {
             raildevtoolUp = new KeyBinding("Move Point Z+", Keyboard.KEY_UP, "Trains in Motion Dev");
             raildevtoolDown = new KeyBinding("Move Point Z-", Keyboard.KEY_DOWN, "Trains in Motion Dev");
             raildevtoolLeft = new KeyBinding("Move Point X+", Keyboard.KEY_LEFT, "Trains in Motion Dev");

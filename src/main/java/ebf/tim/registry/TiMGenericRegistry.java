@@ -132,7 +132,7 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getUnlocalizedName().equals(StatCollector.translateToLocal(block.getUnlocalizedName()))) {
+        if (DebugUtil.dev && TrainsInMotion.proxy.isClient() && block.getUnlocalizedName().equals(StatCollector.translateToLocal(block.getUnlocalizedName()))) {
             DebugUtil.println("Block missing lang entry: " + block.getUnlocalizedName());
         }
         if (block instanceof ITileEntityProvider) {
@@ -190,7 +190,7 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getUnlocalizedName().equals(StatCollector.translateToLocal(itm.getUnlocalizedName()))) {
+        if (DebugUtil.dev && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getUnlocalizedName().equals(StatCollector.translateToLocal(itm.getUnlocalizedName()))) {
             DebugUtil.println("Item missing lang entry: " + itm.getUnlocalizedName());
         }
         if (TrainsInMotion.proxy.isClient() && itemRender != null) {
@@ -244,7 +244,7 @@ public class TiMGenericRegistry {
         FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.bucket));
 
 
-        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient()) {
+        if (DebugUtil.dev && TrainsInMotion.proxy.isClient()) {
             if (fluid.getUnlocalizedName().equals(StatCollector.translateToLocal(fluid.getUnlocalizedName()))) {
                 DebugUtil.println("Fluid missing lang entry: " + fluid.getUnlocalizedName());
             }
@@ -269,7 +269,7 @@ public class TiMGenericRegistry {
                     "@Mod.EventHandler public void init(FMLInitializationEvent event)");
         }
         for (GenericRailTransport registry : entities) {
-            if (DebugUtil.dev() && usedNames.contains(registry.transportName())) {
+            if (DebugUtil.dev && usedNames.contains(registry.transportName())) {
                 DebugUtil.println(registry.getClass().getName(), "is trying to register under the name", usedNames.contains(registry.transportName()), "which is already used");
                 DebugUtil.throwStackTrace();
             }
