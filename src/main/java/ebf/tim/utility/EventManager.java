@@ -95,7 +95,7 @@ public class EventManager {
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, ((EntitySeat) player.getRidingEntity()).parentId));
                 }
             }
-        } else if(DebugUtil.dev()) {
+        } else if(DebugUtil.dev) {
             if (ClientProxy.raildevtoolUp.isKeyDown()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]+=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +

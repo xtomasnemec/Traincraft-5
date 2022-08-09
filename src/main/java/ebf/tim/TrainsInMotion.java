@@ -8,9 +8,11 @@ import ebf.tim.items.TiMTab;
 import ebf.tim.networking.*;
 import ebf.tim.registry.TiMGenericRegistry;
 import ebf.tim.utility.*;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -45,6 +47,9 @@ import java.util.List;
  */
 @Mod(modid = TrainsInMotion.MODID, name = "Trains in Motion")
 public class TrainsInMotion {
+
+    //this makes fluids work
+    static {FluidRegistry.enableUniversalBucket();}
 
     /*
     Note for laziness: gradle deobfuscator is located at:
@@ -119,6 +124,7 @@ public class TrainsInMotion {
      */
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        DebugUtil.dev = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
         proxy.loadConfig(event);
         ForgeChunkManager.setForcedChunkLoadingCallback(TrainsInMotion.instance, chunkHandler);

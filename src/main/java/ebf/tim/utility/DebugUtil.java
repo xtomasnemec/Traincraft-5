@@ -11,21 +11,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class DebugUtil {
 	
-	private static Boolean dev;
-	
-	public static boolean dev(){
-		if(dev == null){
-			dev = (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment");
-		}
-		return dev;
-	}
+	public static Boolean dev;
+
 
 	/**
 	 * Replicated method of System.out.println that supports an array of data and only prints in a dev environment.
 	 * @param o
 	 */
 	public static void println(Object... o){
-		if(dev()){
+		if(dev){
 			System.out.println("------------------TiM Debug------------------");
 			System.out.println(Thread.currentThread().getStackTrace()[2]);//print what function just called this
 			for (Object obj : o){
@@ -47,7 +41,7 @@ public class DebugUtil {
 		}
 	}
 	public static void println(Object o){
-		if(dev()){
+		if(dev){
 			System.out.println("------------------TiM Debug------------------");
 			System.out.println(Thread.currentThread().getStackTrace()[2]);//print what function just called this
 			System.out.println(o);
@@ -57,7 +51,7 @@ public class DebugUtil {
 
 
 	public static void printStackTrace(){
-		if(dev()) {
+		if(dev) {
 			System.out.println("------------------TiM Debug------------------");
 			for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
 				System.out.println(e);
@@ -67,7 +61,7 @@ public class DebugUtil {
 	}
 
 	public static void throwStackTrace(){
-		if(dev()) {
+		if(dev) {
 			System.out.println("------------------TiM Debug------------------");
 			for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
 				System.out.println(e);
@@ -83,7 +77,7 @@ public class DebugUtil {
 	 */
 	@Deprecated
 	public static void log(Object obj){
-		if(dev()){
+		if(dev){
 			//logger.info(String.valueOf(obj));
 			System.out.println(obj);
 		}
@@ -96,7 +90,7 @@ public class DebugUtil {
 	 * <br>
 	 * Which also prints the caller classes into console.
 	 * <br>
-	 * See also {@link #dev()}
+	 * See also {@link #dev}
 	 */
 	public static void exception(int i, String string, boolean halt){
 		Exception ex = new Exception();
@@ -107,7 +101,7 @@ public class DebugUtil {
 		if(string != null){
 			log(string);
 		}
-		if(dev() && halt){
+		if(dev && halt){
 			halt();
 		}
 	}

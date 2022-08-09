@@ -157,7 +157,7 @@ public class ItemTransport extends Item {
             }
             return EnumActionResult.FAIL;
         } catch (Exception e){
-        	if(DebugUtil.dev()){
+        	if(DebugUtil.dev){
             	e.printStackTrace();
         	}
         	DebugUtil.log("Failed to cast : " + transport.toString() + "to a new generic transport entity");

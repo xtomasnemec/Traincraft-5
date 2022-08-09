@@ -5,6 +5,7 @@ import ebf.tim.blocks.OreGen;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -18,22 +19,22 @@ public class TiMFluids {
 
     /**the oil fluid*/
     public static Fluid fluidOil = makeFluid("Oil");
-    public static Item bucketOil;
+    public static ItemBucket bucketOil;
     /**the diesel fluid*/
     public static Fluid fluidDiesel = makeFluid("Diesel");
-    public static Item bucketDiesel;
+    public static ItemBucket bucketDiesel;
     /**the fuel oil fluid*/
     public static Fluid fluidfueloil = makeFluid("FuelOil");
-    public static Item bucketFuelOil;
+    public static ItemBucket bucketFuelOil;
     /**the steam fluid*/
     public static Fluid fluidSteam = makeFluid("Steam");
-    public static Item bucketSteam;
+    public static ItemBucket bucketSteam;
     /**the heavy steam fluid*/
     public static Fluid fluidHeavySteam = makeFluid("HeavySteam");
-    public static Item bucketHeavySteam;
+    public static ItemBucket bucketHeavySteam;
     /**the RF fluid*/
     public static Fluid fluidRedstone = makeFluid("Redstone");
-    public static Item bucketRedstone;
+    public static ItemBucket bucketRedstone;
 
     public static Fluid fluidBCFuel = FluidRegistry.getFluid("fuel");
     public static Fluid fluidEthanol = FluidRegistry.getFluid("bioethanol");
@@ -45,7 +46,7 @@ public class TiMFluids {
 
 
     private static Fluid makeFluid(String name){
-        return new Fluid(name,new ResourceLocation(TrainsInMotion.MODID,name+".still"),new ResourceLocation(TrainsInMotion.MODID,name+".flowing"));
+        return new Fluid(name.toLowerCase(),new ResourceLocation(TrainsInMotion.MODID,name.toLowerCase()+".still"),new ResourceLocation(TrainsInMotion.MODID,name.toLowerCase()+".flowing"));
     }
 
 

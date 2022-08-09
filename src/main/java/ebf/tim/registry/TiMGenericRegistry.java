@@ -26,10 +26,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.common.ForgeModContainer;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -136,7 +138,7 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, block);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient() && block.getTranslationKey().equals(CommonUtil.translate(block.getTranslationKey()))) {
+        if (DebugUtil.dev && TrainsInMotion.proxy.isClient() && block.getTranslationKey().equals(CommonUtil.translate(block.getTranslationKey()))) {
             DebugUtil.println("Block missing lang entry: " + block.getTranslationKey() + " : " + unlocalizedName);
         }
         if (block instanceof ITileEntityProvider) {
@@ -200,7 +202,7 @@ public class TiMGenericRegistry {
         if (oreDictionaryName != null) {
             OreDictionary.registerOre(oreDictionaryName, itm);
         }
-        if (DebugUtil.dev() && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()+".name"))) {
+        if (DebugUtil.dev && TrainsInMotion.proxy != null && TrainsInMotion.proxy.isClient() && itm.getTranslationKey().equals(CommonUtil.translate(itm.getTranslationKey()+".name"))) {
             DebugUtil.println("Item missing lang entry: " + itm.getTranslationKey());
         }
         if (TrainsInMotion.proxy.isClient() && (itemRender != null || itm instanceof ItemTransport || itm instanceof ItemRail)) {
@@ -214,7 +216,7 @@ public class TiMGenericRegistry {
         }
         if(TrainsInMotion.proxy.isClient()){
             //make the .json files because it's stupid and im lazy.
-            if(DebugUtil.dev() && !(itm instanceof ItemTransport || itm instanceof ItemRail || itm instanceof ItemBlock)){
+            if(DebugUtil.dev && !(itm instanceof ItemTransport || itm instanceof ItemRail || itm instanceof ItemBlock)){
                 File dir =  new File(new File(ClientProxy.configDirectory).getParentFile().toString()+
                         "/src/main/resources/assets/" + MODID + "/models");
                 if(!dir.exists()){
@@ -275,7 +277,7 @@ public class TiMGenericRegistry {
             DebugUtil.throwStackTrace();
         }
         fluid.setGaseous(isGaseous).setDensity(density);
-        FluidRegistry.registerFluid(fluid);
+        FluidRegistry.addBucketForFluid(fluid);
 
         Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color))
                 .getBlockState().getBlock().setTranslationKey("block." + unlocalizedName.replace(".item", ""));
@@ -291,20 +293,37 @@ public class TiMGenericRegistry {
         }
         fluid.setBlock(block);
 
+
         if (bucket == null) {
-            bucket = new ItemBucket(block).setCreativeTab(tab).setContainerItem(Items.BUCKET);
+
+            bucket = new UniversalBucket(){
+                @Override
+                public void getSubItems(@Nullable final CreativeTabs tab, final NonNullList<ItemStack> subItems) {
+                    if (!this.isInCreativeTab(tab)){return;}
+
+                    ItemStack filledBucket = new ItemStack(ForgeModContainer.getInstance().universalBucket);
+
+                    NBTTagCompound tag = new NBTTagCompound();
+                    new FluidStack(fluid, 1000).writeToNBT(tag);
+                    filledBucket.setTagCompound(tag);
+                    subItems.add(filledBucket);
+
+                }
+            };
+
+
             if (TrainsInMotion.proxy.isClient()) {
                 bucket.setTranslationKey(MODID + ":bucket_" + unlocalizedName);
             }
         }
-        bucket.setTranslationKey(unlocalizedName + ".bucket");
+        bucket.setTranslationKey(unlocalizedName + ".bucket").setCreativeTab(tab).setContainerItem(bucket);
         ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
                 .register(bucket.setRegistryName(MODID,"fluid." +unlocalizedName + ".bucket"));
         //todo: 1.12 uses instanceof stuff, so this _shouldn't_ be needed?
         //FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
 
 
-        if (DebugUtil.dev() && TrainsInMotion.proxy.isClient()) {
+        if (DebugUtil.dev && TrainsInMotion.proxy.isClient()) {
             if (fluid.getUnlocalizedName().equals(CommonUtil.translate(fluid.getUnlocalizedName()))) {
                 DebugUtil.println("Fluid missing lang entry: " + fluid.getUnlocalizedName());
             }
@@ -329,7 +348,7 @@ public class TiMGenericRegistry {
                     "@Mod.EventHandler public void init(FMLInitializationEvent event)");
         }
         for (GenericRailTransport registry : entities) {
-            if (DebugUtil.dev() && usedNames.contains(registry.transportName())) {
+            if (DebugUtil.dev && usedNames.contains(registry.transportName())) {
                 DebugUtil.println(registry.getClass().getName(), "is trying to register under the name", usedNames.contains(registry.transportName()), "which is already used");
                 DebugUtil.throwStackTrace();
             }

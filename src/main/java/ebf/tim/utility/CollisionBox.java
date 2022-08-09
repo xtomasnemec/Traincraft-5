@@ -42,7 +42,11 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
 
     @Override
     public EnumActionResult applyPlayerInteraction(EntityPlayer p_130002_1_, net.minecraft.util.math.Vec3d vec, EnumHand hand) {
-        return host.applyPlayerInteraction(p_130002_1_, vec, hand);
+        if(hand==EnumHand.MAIN_HAND) {
+            return host.applyPlayerInteraction(p_130002_1_, vec, hand);
+        } else {
+            return EnumActionResult.FAIL;
+        }
     }
 
     //check often to be sure the host actually exists and didnt somehow get deleted in such a way that would make it skip hitbox removal.
