@@ -33,6 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class EventManager {
     private static List<GenericRailTransport> stock;
     private static GenericRailTransport selected=null, lastSelected=null;
     private static int holdTimer=0;
+    private static boolean inited=false;
     /**
      * <h2>Keybind management</h2>
      * manages key pressed or released, since 1.7.10 has no direct support for key released we have to do it directly through LWJGL.
@@ -173,6 +175,14 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onClientTick(TickEvent.PlayerTickEvent event) {
+        if(!inited && event.phase== TickEvent.Phase.END){
+            try{
+                GLContext.getCapabilities();
+                fexcraft.tmt.slim.TextureManager.collectIngotColors();
+                inited=true;
+            } catch (RuntimeException e){}//this is thrown when world render isn't initialized yet
+        }
+
         if(event.player.getRidingEntity() instanceof EntitySeat){
             if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isKeyDown()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.

@@ -5,7 +5,6 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.models.Bogie;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
