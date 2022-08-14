@@ -192,7 +192,6 @@ public class TrainsInMotion {
             //register the event handler
             FMLCommonHandler.instance().bus().register(ClientProxy.eventManager);
             MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
-            fexcraft.tmt.slim.TextureManager.collectIngotColors();
         }
         FMLCommonHandler.instance().bus().register(CommonProxy.eventManagerServer);
 
