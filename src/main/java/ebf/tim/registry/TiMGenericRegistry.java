@@ -277,6 +277,7 @@ public class TiMGenericRegistry {
             DebugUtil.throwStackTrace();
         }
         fluid.setGaseous(isGaseous).setDensity(density);
+        FluidRegistry.registerFluid(fluid);
         FluidRegistry.addBucketForFluid(fluid);
 
         Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color))

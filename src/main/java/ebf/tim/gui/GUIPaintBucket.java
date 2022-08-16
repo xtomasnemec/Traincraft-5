@@ -14,14 +14,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.Project;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  *@author Oskiek
@@ -82,7 +81,6 @@ public class GUIPaintBucket extends GuiScreen {
 
     @Override
     public void drawScreen(int parWidth, int parHeight, float p_73863_3_) {
-        super.drawScreen(parWidth, parHeight, p_73863_3_);
         guiLeft=new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth();
         guiTop=new ScaledResolution(Minecraft.getMinecraft()).getScaledHeight();
 
@@ -93,8 +91,13 @@ public class GUIPaintBucket extends GuiScreen {
 
         if(currentTransportSkin ==null){return;}
 
+        //draw the buttons.
+        for (GuiButton b : buttonList){
+            ((GUIButton)b).drawButton(parWidth,parHeight, 0);
+        }
+
         switch(guiScreen) {
-            case 0:{defineButtons();guiSkinSelect();break;}
+            case 0:{defineButtons();guiSkinSelect(parWidth,parHeight);break;}
         }
 
         //draw button hover text
@@ -197,7 +200,7 @@ public class GUIPaintBucket extends GuiScreen {
 
 
 
-    public void guiSkinSelect(){
+    public void guiSkinSelect(int mouseX, int mouseY){
 
         GL11.glPushMatrix();
         GL11.glColor4f(1F, 1F, 1F, 0.5F);
@@ -216,9 +219,15 @@ public class GUIPaintBucket extends GuiScreen {
 
         EventManager.drawTooltipBox((int)(width*0.175f),(int)(height*0.56f),(int)(width*0.5525f),(int)(height*0.085f),  ClientProxy.WAILA_BGCOLOR, ClientProxy.WAILA_GRADIENT1, ClientProxy.WAILA_GRADIENT2,100);
 
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
         fontRenderer.drawString(CommonUtil.translate(currentTransportSkin.getName()),
                 (int)(offsetFromScreenLeft - fontRenderer.getStringWidth(currentTransportSkin.getName())*0.65f),
-                (int)(height*0.59f),ClientProxy.WAILA_FONTCOLOR,false);
+                (int)(height*0.59f),ClientProxy.WAILA_FONTCOLOR, false);
 
         if(currentTransportSkin.getDescription()!=null) {
             for(int i = 0; i< currentTransportSkin.getDescription().length; i++) {
@@ -227,23 +236,20 @@ public class GUIPaintBucket extends GuiScreen {
                         (int) ((height * 0.1f) * 7)+(10*i), ClientProxy.WAILA_FONTCOLOR, false);
             }
         }
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 
 
         EventManager.drawTooltipBox((int)(width*0.125f),(int)(height*0.2f),(int)(width*0.35f),(int)(height*0.35f),  ClientProxy.WAILA_BGCOLOR, ClientProxy.WAILA_GRADIENT1, ClientProxy.WAILA_GRADIENT2,100);
 
         GL11.glPopMatrix();
-        //check scaling Width vs scaling Height, we want the smaller of the two, however we scale them differently.
-        float scale = entity.getHitboxSize()[0];
-        if(scale!=0){
-           // scale = 0.25f/(scale /0.25f);
-        }
+        //check scaling Width vs scaling Height, we want the bigger of the two
+        float scale = 1.5f/(Math.max(entity.getHitboxSize()[0], entity.getHitboxSize()[1])/1.5f);
 
-        float scale2 =  entity.getHitboxSize()[1];
-        if(scale2!=0){
-          //  scale2 = 0.125f/(scale2 /0.125f);
-        }
-        scale=Math.min(scale,scale2);
         //now scale based on the resolution
         scale*=Math.min(mc.displayWidth/800f, mc.displayHeight/300f);
         scale *=0.004f;
@@ -255,15 +261,16 @@ public class GUIPaintBucket extends GuiScreen {
         GL11.glPushMatrix();
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glTranslatef(-0.4f,0.15f,-1f);
+        GL11.glTranslatef(-0.4f,(entity.getHitboxSize()[1]/ entity.getHitboxSize()[0])*1.3f,-1f);
 
-        Project.gluPerspective(45.0F, (float)Minecraft.getMinecraft().displayWidth/(float)Minecraft.getMinecraft().displayHeight, 0.05f, 2);
+        Project.gluPerspective(3.1F, (float)Minecraft.getMinecraft().displayWidth/(float)Minecraft.getMinecraft().displayHeight, 0.05f, 2);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         RenderHelper.enableStandardItemLighting();
         GL11.glTranslatef(0,0,-0.4f);
 
         GL11.glRotatef(15,1,0,0);
+        GL11.glRotatef(180,0,0,1);
         GL11.glRotatef(field_147073_u+=1,0,1,0);
         if (field_147073_u>360){
             field_147073_u=0;

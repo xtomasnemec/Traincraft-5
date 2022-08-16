@@ -110,7 +110,7 @@ public abstract class GUIButton extends GuiButton {
         else if (this.hovered) {
             l = 16777120;
         }
-
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
         this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, l);
 
         RenderHelper.disableStandardItemLighting();
