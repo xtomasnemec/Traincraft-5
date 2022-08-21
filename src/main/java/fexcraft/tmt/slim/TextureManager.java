@@ -163,15 +163,13 @@ public class TextureManager {
                 divisor = 0;
                 //this is less efficient than doing it directly, but if i promote the functionality for
                 // getting the array of bytes to something reuseable, it returns a blank spritez
-                colorBuff = renderItemViewport(s);
+                colorBuff = renderItemViewport(s, 32);
                 for (int c : colorBuff) {
                     rgb = hexToargb(c);
-                    if (rgb[0] > 128 && rgb[1] + rgb[2] + rgb[3] > 20) {
-                        red += 25 + rgb[1];
-                        green += 25 + rgb[2];
-                        blue += 25 + rgb[3];
-                        divisor++;
-                    }
+                    red += rgb[3];
+                    green += rgb[1];
+                    blue += rgb[2];
+                    divisor++;
                 }
                 ingotColors.put(s, new int[]{red / divisor, blue / divisor, green / divisor});
 
@@ -412,18 +410,19 @@ public class TextureManager {
 
     /*
     gets an item texture as an array of pixels, with 0x00000000 as "empty" pixels
+    scale is based off 32. so for example entering 64 will be double scale.
      */
-    public static int[] renderItemViewport(ItemStack stack) {
-        int scale =64;
+    public static int[] renderItemViewport(ItemStack stack, int scale) {
         int[] pixels = new int[scale*scale];
         GL11.glPushMatrix();
 
         GL11.glTranslatef(0,(Minecraft.getMinecraft().displayHeight*0.5f)-(scale*0.5f),500);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor4f(1,1,1,1);
+        GL11.glColor4f(0.75f,0.75f,0.75f,1);
         ClientUtil.drawTexturedRect(0,0,0,0,scale,scale);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(1,1,1,1);
 
         GL11.glScalef(scale/32f,scale/32f,scale/32f);
         RenderHelper.enableGUIStandardItemLighting();
