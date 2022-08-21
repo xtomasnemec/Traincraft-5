@@ -56,6 +56,7 @@ public class ModelRail {
             centerShading(rail,color,30,false);
             drawFace(shape.activePath, rail, 0, -0.0625f,0,0, scale);
         }
+        GL11.glColor4f(1,1,1,1);
     }
 
     public static void modelExtrudedRail(RailShapeCore shape, float scale,  int[] color) {
@@ -97,6 +98,7 @@ public class ModelRail {
                 Tessellator.getInstance().draw();
             }
         }
+        GL11.glColor4f(1,1,1,1);
     }
 
     public static void model3DRail(RailShapeCore shape, float scale,  int[] color) {
@@ -188,6 +190,7 @@ public class ModelRail {
             }
             GL11.glPopMatrix();
         }
+        GL11.glColor4f(1,1,1,1);
     }
 
     public static void modelHDRail(RailShapeCore shape, float scale, int[] color) {
@@ -283,5 +286,6 @@ public class ModelRail {
             }
             GL11.glPopMatrix();
         }
+        GL11.glColor4f(1,1,1,1);
     }
 }

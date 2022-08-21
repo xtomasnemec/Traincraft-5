@@ -115,7 +115,7 @@ public class ItemStackSlot extends Slot {
 
 
     public NBTTagCompound writeToNBT(){
-        return getStack()!=ItemStack.EMPTY?getStack().writeToNBT(new NBTTagCompound()):null;
+        return getStack().writeToNBT(new NBTTagCompound());
     }
 
     public int getStackSize(){
@@ -192,11 +192,8 @@ public class ItemStackSlot extends Slot {
 
 
     public boolean contentEquals(ItemStack other){
-        if(getStack()==null || other==null){
-            return getStack()==null&& other==null;
-        }
-        if(getStack()==ItemStack.EMPTY || other==ItemStack.EMPTY){
-            return getStack()==ItemStack.EMPTY&& other==ItemStack.EMPTY;
+        if(getStack()==ItemStack.EMPTY || other==null || other==ItemStack.EMPTY){
+            return getStack()==ItemStack.EMPTY&& (other==null||other==ItemStack.EMPTY);
         }
         return other.getItem()== getStack().getItem() && other.getTagCompound()== getStack().getTagCompound();
     }
@@ -490,10 +487,8 @@ public class ItemStackSlot extends Slot {
             }
         }
         if (stackSlot!=null) {
-            if(stackSlot.getStack()==ItemStack.EMPTY || stack==ItemStack.EMPTY) {
-                return stackSlot.getStack() == ItemStack.EMPTY && stack == ItemStack.EMPTY;
-            } else if(stackSlot.getStack()==null || stack==null) {
-                return stackSlot.getStack() == null && stack == null;
+            if(stackSlot.getStack()==ItemStack.EMPTY || stack==ItemStack.EMPTY || stack==null) {
+                return stackSlot.getStack() == ItemStack.EMPTY && (stack == ItemStack.EMPTY || stack==null);
             } else {
                 return stack.getItem()==stackSlot.getStack().getItem();
             }
@@ -532,11 +527,16 @@ public class ItemStackSlot extends Slot {
     }
 
     public boolean setSlotContents(@Nonnull ItemStack stack, List<ItemStackSlot> hostInventory){
+        //TODO: not empty, but is empty? also all stacks are air?
+            if(!stack.getDisplayName().equals("Air")) {
+                DebugUtil.println(slotNumber, stack.getDisplayName(), stack == ItemStack.EMPTY, getStack() == ItemStack.EMPTY);
+                DebugUtil.printStackTrace();
+            }
         if (isItemValid(stack) || stack == ItemStack.EMPTY) {
             if (!(inventory instanceof GenericRailTransport) && !(inventory instanceof TileEntityStorage)) {
-                    inventory.setInventorySlotContents(slotNumber, stack==ItemStack.EMPTY?ItemStack.EMPTY:stack.copy());
+                inventory.setInventorySlotContents(slotNumber, stack.copy());
             } else {
-                this.stack = stack==ItemStack.EMPTY?ItemStack.EMPTY:stack.copy();
+                this.stack = stack.copy();
             }
             this.onSlotChanged();
             if(hostInventory!=null) {
@@ -598,9 +598,13 @@ public class ItemStackSlot extends Slot {
      */
     @Override
     public ItemStack getStack() {
-        return inventory instanceof GenericRailTransport || inventory instanceof TileEntityStorage ?stack:
-                inventory!=null && inventory.getSizeInventory()>slotNumber?
-                        inventory.getStackInSlot(slotNumber):ItemStack.EMPTY;
+        if(stack==null || stack==ItemStack.EMPTY){
+            if(inventory!=null&& inventory.getStackInSlot(slotNumber)!=null){
+                return inventory.getStackInSlot(slotNumber);
+            }
+            return ItemStack.EMPTY;
+        }
+        return stack;
     }
 
     /**
@@ -654,7 +658,7 @@ public class ItemStackSlot extends Slot {
     @Override
     @Deprecated
     public boolean isSameInventory(Slot other) {
-        return inventory == other.inventory;
+        return inventory.getClass() == other.inventory.getClass();
     }
 
     /**
