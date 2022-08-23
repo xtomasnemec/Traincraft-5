@@ -150,6 +150,7 @@ public class Model1x1Rail {
             GL11.glPopMatrix();
         }
 
+        GL11.glColor4f(1,1,1,1);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
 

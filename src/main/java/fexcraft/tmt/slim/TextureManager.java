@@ -449,7 +449,6 @@ public class TextureManager {
         GL11.glScalef(scale/32f,scale/32f,scale/32f);
         RenderHelper.enableGUIStandardItemLighting();
         Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(stack, 0, 0);
-        Minecraft.getMinecraft().getRenderItem().renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRenderer, stack, 0, 0, "");
         ByteBuffer buffer = BufferUtils.createByteBuffer(scale * scale * 4);
         GL11.glReadPixels(0, 0, scale, scale, GL11.GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 

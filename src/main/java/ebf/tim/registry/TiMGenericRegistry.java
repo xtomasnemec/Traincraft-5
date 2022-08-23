@@ -304,9 +304,14 @@ public class TiMGenericRegistry {
 
                     ItemStack filledBucket = new ItemStack(ForgeModContainer.getInstance().universalBucket);
 
-                    NBTTagCompound tag = new NBTTagCompound();
-                    new FluidStack(fluid, 1000).writeToNBT(tag);
-                    filledBucket.setTagCompound(tag);
+                    NBTTagCompound nbt = new NBTTagCompound();
+                    nbt.setString("FluidName", fluid.getName());
+                    nbt.setInteger("Amount", 1000);
+
+                    if (filledBucket.getTagCompound() != null) {
+                        nbt.setTag("Tag", filledBucket.getTagCompound());
+                    }
+                    filledBucket.setTagCompound(nbt);
                     subItems.add(filledBucket);
 
                 }

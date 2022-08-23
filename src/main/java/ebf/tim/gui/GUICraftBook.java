@@ -19,6 +19,8 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nullable;
 import java.util.*;
 
+import static buildcraft.core.lib.gui.buttons.GuiBetterButton.BUTTON_TEXTURES;
+
 
 /**
  * new data storage management, pages as Objects, as either List<ItemStack>[] or String
@@ -91,7 +93,9 @@ public class GUICraftBook extends GuiScreen {
         ClientUtil.drawTexturedRect(percentLeft(50),percentTop(15),26,0,percentLeft(40),percentTop(60),140,192);
         GL11.glPopMatrix();
 
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
         renderpage(true, mouseX, mouseY, itemRender);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
         renderpage(false, mouseX, mouseY, itemRender);
 
         GL11.glEnable(GL11.GL_LIGHTING);
