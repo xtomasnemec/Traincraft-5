@@ -59,7 +59,7 @@ public class SlotDistil extends Slot {
 
 		if (!this.thePlayer.world.isRemote) {
 			int var2 = this.amount;
-			float var3 = DistilRecipes.smelting().getExperience(Item.getIdFromItem(itemstack.getItem()));
+			float var3 = TileEntityDistil.getExperience(itemstack);
 			int var4;
 
 			if (var3 == 0.0F) {

@@ -25,7 +25,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import train.Traincraft;
 import train.blocks.TCBlocks;
-import train.blocks.distil.TileEntityDistil;
 import train.library.GuiIDs;
 
 import java.util.Random;
@@ -41,7 +40,7 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 	public ResourceLocation getTexture(int x, int y, int z){
 		//todo this is inefficient, do from tile entity
 		if(Minecraft.getMinecraft().world!=null &&
-				Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x,y,z)) instanceof TileEntityDistil){
+				Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x,y,z)) instanceof TileEntityOpenHearthFurnace){
 			if(((TileEntityOpenHearthFurnace) Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x,y,z))).isBurning()){
 				return new ResourceLocation("traincraft", "textures/blocks/furnace_on.png");
 			}
@@ -58,7 +57,7 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 		TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
-		if (te instanceof TileEntityDistil && ((TileEntityDistil) te).isBurning()) {
+		if (te instanceof TileEntityOpenHearthFurnace && ((TileEntityOpenHearthFurnace) te).isBurning()) {
 			float var7 = (float) pos.getX() + 0.5F;
 			float var9 = (float) pos.getZ() + 0.5F;
 			float f3 = 0.009F;

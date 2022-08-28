@@ -5,7 +5,7 @@ import ebf.tim.blocks.OreGen;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -19,22 +19,22 @@ public class TiMFluids {
 
     /**the oil fluid*/
     public static Fluid fluidOil = makeFluid("Oil");
-    public static ItemBucket bucketOil;
+    public static Item bucketOil;
     /**the diesel fluid*/
     public static Fluid fluidDiesel = makeFluid("Diesel");
-    public static ItemBucket bucketDiesel;
+    public static Item bucketDiesel;
     /**the fuel oil fluid*/
     public static Fluid fluidfueloil = makeFluid("FuelOil");
-    public static ItemBucket bucketFuelOil;
+    public static Item bucketFuelOil;
     /**the steam fluid*/
     public static Fluid fluidSteam = makeFluid("Steam");
-    public static ItemBucket bucketSteam;
+    public static Item bucketSteam;
     /**the heavy steam fluid*/
     public static Fluid fluidHeavySteam = makeFluid("HeavySteam");
-    public static ItemBucket bucketHeavySteam;
+    public static Item bucketHeavySteam;
     /**the RF fluid*/
     public static Fluid fluidRedstone = makeFluid("Redstone");
-    public static ItemBucket bucketRedstone;
+    public static Item bucketRedstone;
 
     public static Fluid fluidBCFuel = FluidRegistry.getFluid("fuel");
     public static Fluid fluidEthanol = FluidRegistry.getFluid("bioethanol");
@@ -54,13 +54,13 @@ public class TiMFluids {
 
     public static void registerFluids(){
 
-        RegisterFluid(fluidOil, bucketOil, TrainsInMotion.MODID, "oil", false, 700, MapColor.BLACK, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidDiesel, bucketDiesel, TrainsInMotion.MODID, "diesel", false, 500, MapColor.SAND, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidSteam, bucketSteam, TrainsInMotion.MODID, "steam", true, 200, MapColor.SNOW, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidHeavySteam, bucketHeavySteam, TrainsInMotion.MODID, "heavysteam", true, 600, MapColor.SNOW, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidfueloil, bucketFuelOil, TrainsInMotion.MODID, "fueloil", false, 600, MapColor.BROWN, TrainsInMotion.creativeTab);
-        RegisterFluid(fluidRedstone, bucketRedstone, TrainsInMotion.MODID, "redstone", false, 100, MapColor.RED, TrainsInMotion.creativeTab);
-        RegisterFluid(nullFluid, null, TrainsInMotion.MODID, "nullFluid", false, 100, MapColor.PINK, null);
+        bucketOil = RegisterFluid(fluidOil, TrainsInMotion.MODID, "oil", false, 700, MapColor.BLACK, TrainsInMotion.creativeTab);
+        bucketDiesel = RegisterFluid(fluidDiesel, TrainsInMotion.MODID, "diesel", false, 500, MapColor.SAND, TrainsInMotion.creativeTab);
+        bucketSteam = RegisterFluid(fluidSteam, TrainsInMotion.MODID, "steam", true, 200, MapColor.SNOW, TrainsInMotion.creativeTab);
+        bucketHeavySteam = RegisterFluid(fluidHeavySteam, TrainsInMotion.MODID, "heavysteam", true, 600, MapColor.SNOW, TrainsInMotion.creativeTab);
+        bucketFuelOil = RegisterFluid(fluidfueloil, TrainsInMotion.MODID, "fueloil", false, 600, MapColor.BROWN, TrainsInMotion.creativeTab);
+        bucketRedstone = RegisterFluid(fluidRedstone, TrainsInMotion.MODID, "redstone", false, 100, MapColor.RED, TrainsInMotion.creativeTab);
+        RegisterFluid(nullFluid, TrainsInMotion.MODID, "nullFluid", false, 100, MapColor.PINK, null);
 
 
         //oil spawn at surface for deserts

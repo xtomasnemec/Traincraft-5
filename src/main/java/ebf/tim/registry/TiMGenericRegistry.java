@@ -226,6 +226,15 @@ public class TiMGenericRegistry {
                 if(!dir.exists()){
                     dir.mkdirs();
                 }
+                if(textureName.contains("/")) {
+                    String[] split = textureName.split("/");
+                    for (int i=0;i<split.length-1;i++) {
+                        dir =  new File(dir.toString()+ "/"+split[i].replace("/",""));
+                        if(!dir.exists()){
+                            dir.mkdirs();
+                        }
+                    }
+                }
                 File conf = new File(dir.toString() + "/"+ unlocalizedName.toLowerCase()+".json");
 
                 //todo: remove the true later
@@ -241,6 +250,7 @@ public class TiMGenericRegistry {
                         sb.append(":");
                         sb.append("items/");
                         sb.append(textureName);
+                        sb.append(".png");
                         sb.append("\"\n  }\n}");
 
                         fileoutputstream.write(sb.toString().getBytes());
@@ -264,7 +274,7 @@ public class TiMGenericRegistry {
     }
 
 
-    public static void RegisterFluid(Fluid fluid, @Nullable Item bucket, String MODID, String unlocalizedName, boolean isGaseous, int density, MapColor color, @Nullable CreativeTabs tab) {
+    public static Item RegisterFluid(Fluid fluid, String MODID, String unlocalizedName, boolean isGaseous, int density, MapColor color, @Nullable CreativeTabs tab) {
         if (usedNames.contains(unlocalizedName)) {
             DebugUtil.println("ERROR: ", "attempted to register Fluid with a used unlocalizedName", unlocalizedName);
             DebugUtil.throwStackTrace();
@@ -295,32 +305,29 @@ public class TiMGenericRegistry {
         fluid.setBlock(block);
 
 
-        if (bucket == null) {
+        Item bucket = new UniversalBucket(){
+            @Override
+            public void getSubItems(@Nullable final CreativeTabs tab, final NonNullList<ItemStack> subItems) {
+                if (!this.isInCreativeTab(tab)){return;}
 
-            bucket = new UniversalBucket(){
-                @Override
-                public void getSubItems(@Nullable final CreativeTabs tab, final NonNullList<ItemStack> subItems) {
-                    if (!this.isInCreativeTab(tab)){return;}
+                ItemStack filledBucket = new ItemStack(ForgeModContainer.getInstance().universalBucket);
 
-                    ItemStack filledBucket = new ItemStack(ForgeModContainer.getInstance().universalBucket);
+                NBTTagCompound nbt = new NBTTagCompound();
+                nbt.setString("FluidName", fluid.getName());
+                nbt.setInteger("Amount", 1000);
 
-                    NBTTagCompound nbt = new NBTTagCompound();
-                    nbt.setString("FluidName", fluid.getName());
-                    nbt.setInteger("Amount", 1000);
-
-                    if (filledBucket.getTagCompound() != null) {
-                        nbt.setTag("Tag", filledBucket.getTagCompound());
-                    }
-                    filledBucket.setTagCompound(nbt);
-                    subItems.add(filledBucket);
-
+                if (filledBucket.getTagCompound() != null) {
+                    nbt.setTag("Tag", filledBucket.getTagCompound());
                 }
-            };
+                filledBucket.setTagCompound(nbt);
+                subItems.add(filledBucket);
 
-
-            if (TrainsInMotion.proxy.isClient()) {
-                bucket.setTranslationKey(MODID + ":bucket_" + unlocalizedName);
             }
+        };
+
+
+        if (TrainsInMotion.proxy.isClient()) {
+            bucket.setTranslationKey(MODID + ":bucket_" + unlocalizedName);
         }
         bucket.setTranslationKey(unlocalizedName + ".bucket").setCreativeTab(tab).setContainerItem(bucket);
         ((ForgeRegistry<Item>)RegistryManager.ACTIVE.getRegistry(ITEMS))
@@ -341,6 +348,7 @@ public class TiMGenericRegistry {
             }
 
         }
+        return bucket;
     }
 
 
