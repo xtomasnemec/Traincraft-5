@@ -50,7 +50,7 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage {
 
 		inventory.add(new ItemStackSlot(this, 400, 56, 17).setCraftingInput(true).setOverlay(Items.iron_ingot));//iron
 		inventory.add(new ItemStackSlot(this, 401, 35, 17).setCraftingInput(true).setOverlay(TiMItems.graphite));//graphite
-		inventory.add(new ItemStackSlot(this, 402, 47, 53).setCraftingInput(true));//burnable
+		inventory.add(new ItemStackSlot(this, 402, 47, 53).setCraftingInput(true).setOverlay(Items.coal));//burnable
 		inventory.add(new ItemStackSlot(this, 403, 116, 35).setCraftingOutput(true));//output
 	}
 

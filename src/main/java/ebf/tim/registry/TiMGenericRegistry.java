@@ -210,7 +210,7 @@ public class TiMGenericRegistry {
     }
 
 
-    public static void RegisterFluid(Fluid fluid, @Nullable Item bucket, String MODID, String unlocalizedName, boolean isGaseous, int density, MapColor color, @Nullable CreativeTabs tab) {
+    public static Item RegisterFluid(Fluid fluid, String MODID, String unlocalizedName, boolean isGaseous, int density, MapColor color, @Nullable CreativeTabs tab) {
         if (usedNames.contains(unlocalizedName)) {
             DebugUtil.println("ERROR: ", "attempted to register Fluid with a used unlocalizedName", unlocalizedName);
             DebugUtil.throwStackTrace();
@@ -233,11 +233,10 @@ public class TiMGenericRegistry {
         }
         fluid.setBlock(block);
 
-        if (bucket == null) {
-            bucket = new ItemBucket(block).setCreativeTab(tab).setContainerItem(Items.bucket);
-            if (TrainsInMotion.proxy.isClient()) {
-                bucket.setTextureName(MODID + ":bucket_" + unlocalizedName);
-            }
+
+        Item bucket = new ItemBucket(block).setCreativeTab(tab).setContainerItem(Items.bucket);
+        if (TrainsInMotion.proxy.isClient()) {
+            bucket.setTextureName(MODID + ":bucket_" + unlocalizedName);
         }
         bucket.setUnlocalizedName(unlocalizedName + ".bucket");
         GameRegistry.registerItem(bucket, "fluid." + unlocalizedName + ".bucket");
@@ -256,6 +255,7 @@ public class TiMGenericRegistry {
             }
 
         }
+        return bucket;
     }
 
 
