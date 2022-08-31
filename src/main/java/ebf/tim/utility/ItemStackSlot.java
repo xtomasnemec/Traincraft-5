@@ -1,5 +1,6 @@
 package ebf.tim.utility;
 
+import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.block.Block;
@@ -163,27 +164,25 @@ public class ItemStackSlot extends Slot {
     public ItemStack mergeStack(ItemStackSlot itemStack, List<ItemStackSlot> hostInventory, int storageType){
         if (isItemValid(itemStack.getStack())) {
 
-            if (!getHasStack()) { //no stack in current slot
-                itemStack.onCrafting(storageType,hostInventory,itemStack.getStackSize());
-                if(!setSlotContents(itemStack.getStack(),hostInventory)){
+            if (!getHasStack()) {
+                onCrafting(storageType,hostInventory,getStackSize());
+                if(!setSlotContents(itemStack.getStack().copy(),hostInventory)){
                     return itemStack.getStack();
-                } else {
-                    itemStack.setSlotContents(ItemStack.EMPTY, hostInventory);
-                    return ItemStack.EMPTY;
                 }
-            } else {
-                if (contentEquals(itemStack.getStack()) && getStack().getCount() < getStack().getMaxStackSize()) {
-                    if(itemStack.getStackSize()+getStackSize()<=getStack().getMaxStackSize()){
-                        itemStack.onCrafting(storageType,hostInventory,itemStack.getStackSize());
-                        setSlotStackSize(getStack().getCount()+itemStack.getStackSize());
+                return ItemStack.EMPTY;
+            } else if (contentEquals(itemStack.getStack()) && getStackSize() < getStack().getMaxStackSize()) {
+                if (itemStack.getStack().copy().getCount() + getStackSize() <= getStack().getMaxStackSize()) {
+                    onCrafting(storageType,hostInventory,getStackSize());
+                    setSlotStackSize(getStackSize() +itemStack.getStack().copy().getCount());
+                    return ItemStack.EMPTY;
+                } else {
+                    itemStack.getStack().setCount(itemStack.getStack().getCount()-(getStack().getMaxStackSize() - getStackSize()));
+                    setSlotStackSize(getStack().getMaxStackSize());
+                    onCrafting(storageType,hostInventory,itemStack.getStack().getMaxStackSize()-itemStack.getStack().getCount());
+                    if(itemStack.getStack().getCount()==0){
                         return ItemStack.EMPTY;
-                    } else {
-                        int difference=getStack().getMaxStackSize()-getStackSize();
-                        itemStack.onCrafting(storageType,hostInventory,difference);
-                        itemStack.decrStackSize(difference);
-                        setSlotStackSize(getStack().getMaxStackSize());
-                        return itemStack.getStack();
                     }
+                    return itemStack.getStack();
                 }
             }
         }
@@ -527,17 +526,11 @@ public class ItemStackSlot extends Slot {
     }
 
     public boolean setSlotContents(@Nonnull ItemStack stack, List<ItemStackSlot> hostInventory){
-        //TODO: not empty, but is empty? also all stacks are air?
-            if(!stack.getDisplayName().equals("Air")) {
-                DebugUtil.println(slotNumber, stack.getDisplayName(), stack == ItemStack.EMPTY, getStack() == ItemStack.EMPTY);
-                DebugUtil.printStackTrace();
-            }
         if (isItemValid(stack) || stack == ItemStack.EMPTY) {
-            if (!(inventory instanceof GenericRailTransport) && !(inventory instanceof TileEntityStorage)) {
+            if(inventory!=null) {
                 inventory.setInventorySlotContents(slotNumber, stack.copy());
-            } else {
-                this.stack = stack.copy();
             }
+            this.stack = stack.copy();
             this.onSlotChanged();
             if(hostInventory!=null) {
                 onCraftMatrixChanged(inventory, hostInventory);
@@ -605,6 +598,11 @@ public class ItemStackSlot extends Slot {
             return ItemStack.EMPTY;
         }
         return stack;
+    }
+
+    @Override
+    public boolean getHasStack() {
+        return !(getStack().isEmpty() || getStack()==ItemStack.EMPTY || getStackSize()==0);
     }
 
     /**

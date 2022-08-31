@@ -175,7 +175,7 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onClientTick(TickEvent.PlayerTickEvent event) {
-        if(!inited && event.phase== TickEvent.Phase.END){
+        if(event.phase== TickEvent.Phase.END){
             try{
                 GLContext.getCapabilities();
                 fexcraft.tmt.slim.TextureManager.collectIngotColors();

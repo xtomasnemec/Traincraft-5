@@ -117,9 +117,6 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         NonNullList<ItemStack> arraylist = NonNullList.<ItemStack>create();
 
         for (ItemStackSlot inventorySlot : this.inventory) {
-            if(!inventorySlot.getStack().getDisplayName().equals("Air")){
-                DebugUtil.println(inventorySlot.getStack().getDisplayName());
-            }
             arraylist.add(inventorySlot.getStack());
         }
 
@@ -159,7 +156,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
      * normally relied on getSlot, but can't use it because this method does not function on our internal IDs
      * */
     @SideOnly(Side.CLIENT)
-    public void putStacksInSlots(ItemStack[] p_75131_1_) {
+    public void setStacksInSlots(ItemStack[] p_75131_1_) {
         for (int i = 0; i < p_75131_1_.length; ++i) {
             this.getSlot(i).putStack(p_75131_1_[i]);
         }
@@ -255,7 +252,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 ItemStack old = player.inventory.getItemStack();
                                 ItemStack old2 = slot.getStack().copy();
 
-                                slot.putStack(old.copy());
+                                slot.setStack(old.copy());
                                 player.inventory.setItemStack(old2.copy());
                                 this.detectAndSendChanges();
                                 break;
@@ -323,9 +320,8 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                 if (slot == null) {
                     return ItemStack.EMPTY;
                 }
-                int maxCraft=0;
                 if(slot.isCraftingOutput()){
-                    maxCraft=slot.getMaxCraft(hostInventory,inventory);
+                    int maxCraft=slot.getMaxCraft(hostInventory,inventory);
                     slot.setSlotStackSize(maxCraft);
                 }
 
@@ -334,8 +330,10 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     for(ItemStackSlot s : inventory){
                         if(s.getSlotID()>399 && !s.isCraftingOutput()){
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
-                            if(slot.getStack()==ItemStack.EMPTY) {
+                            if(slot.getStack()==ItemStack.EMPTY || slot.getStackSize()==0) {
                                 this.detectAndSendChanges();
+                                slot.onCrafting(hostType, inventory, 1);
+                                slot.onCraftMatrixChanged(hostInventory, inventory);
                                 return ItemStack.EMPTY;
                             }
                         }
@@ -344,8 +342,10 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     for(ItemStackSlot s : inventory){
                         if(s.getSlotID()>35 && s.getSlotID()<400){
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
-                            if(slot.getStack()==ItemStack.EMPTY) {
+                            if(slot.getStack()==ItemStack.EMPTY || slot.getStackSize()==0) {
                                 this.detectAndSendChanges();
+                                slot.onCrafting(hostType, inventory, 1);
+                                slot.onCraftMatrixChanged(hostInventory, inventory);
                                 return ItemStack.EMPTY;
                             }
                         }
@@ -354,8 +354,10 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     for(ItemStackSlot s : inventory){
                         if(s.getSlotID()<36 && slotId != s.getSlotID()){ //prevent slot from trying to merge into itself
                             slot.setSlotContents(s.mergeStack(slot,inventory, hostType), inventory);
-                            if(slot.getStack()==ItemStack.EMPTY) {
+                            if(slot.getStack()==ItemStack.EMPTY || slot.getStackSize()==0) {
                                 this.detectAndSendChanges();
+                                slot.onCrafting(hostType, inventory, 1);
+                                slot.onCraftMatrixChanged(hostInventory, inventory);
                                 return ItemStack.EMPTY;
                             }
                         }
@@ -413,6 +415,8 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                             if (!slot.getHasStack() || slot.getStackSize() == 0) {
                                 slot.setStack(ItemStack.EMPTY);
                                 this.detectAndSendChanges();
+                                slot.onCrafting(hostType, inventory, 1);
+                                slot.onCraftMatrixChanged(hostInventory, inventory);
                                 return ItemStack.EMPTY;
                             }
                         }
@@ -426,6 +430,8 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                             if(s.mergeStack(slot,inventory, hostType)==ItemStack.EMPTY) {
                                 slot.setStack(ItemStack.EMPTY);
                                 this.detectAndSendChanges();
+                                slot.onCrafting(hostType, inventory, 1);
+                                slot.onCraftMatrixChanged(hostInventory, inventory);
                                 return ItemStack.EMPTY;
                             }
                         } else if (s.getSlotID()>35){
@@ -439,11 +445,14 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 if(s.mergeStack(slot,inventory, hostType)==ItemStack.EMPTY) {
                                     slot.setStack(ItemStack.EMPTY);
                                     this.detectAndSendChanges();
+                                    slot.onCrafting(hostType, inventory, 1);
+                                    slot.onCraftMatrixChanged(hostInventory, inventory);
                                     return ItemStack.EMPTY;
                                 }
                             }
                         }
                     }
+                    this.detectAndSendChanges();
 
                 }
                 break;
@@ -640,6 +649,8 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     }
             }
         }
+        this.dragEvent = 0;
+        this.dragSlots.clear();
     }
     /*a modified replica of the 1.12 version*/
     public static boolean canAddItemToSlot(@Nullable Slot slotIn, ItemStack stack) {
