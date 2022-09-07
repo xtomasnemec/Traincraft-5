@@ -35,7 +35,6 @@ import org.lwjgl.opengl.GL11;
 
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.ClientProxy;
-import ebf.tim.utility.ClientUtil;
 import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.RecipeManager;
 import net.minecraft.block.Block;

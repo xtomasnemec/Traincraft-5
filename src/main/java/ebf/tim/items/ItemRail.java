@@ -255,8 +255,6 @@ public class ItemRail extends Item implements ITrackItem {
                     for (Block t : new Block[]{Blocks.LOG, Blocks.PLANKS, Blocks.STONE, null})
                         tabItems.add(setStackData(new ItemStack(TiMItems.railItem), new ItemStack(ingot), new ItemStack(b), new ItemStack(t), null));
                 }
-            } else {
-                tabItems.add(new ItemStack(p_150895_1_));
             }
         }
     }

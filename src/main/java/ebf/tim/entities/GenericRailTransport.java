@@ -1480,7 +1480,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
         consistLeadID=null;
-        GenericRailTransport link;
+        GenericRailTransport link, test;
 
         //we need to have the list ordered from one of the ends, so iterate until an end is found and then use that.
         if((frontLinkedID!=null && backLinkedID!=null)) {
@@ -1541,13 +1541,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
 
-        if(transports.size()>1) {
-            //now tell everything in the list, including this, that there's a new list, and provide said list.
-            for (GenericRailTransport t : transports) {
-                t.setConsist(transports);
-                t.setValuesOnLinkUpdate(transports);
-                t.consistLeadID = consistLeadID;
-            }
+        //now tell everything in the list, including this, that there's a new list, and provide said list.
+        for(GenericRailTransport t : transports){
+            t.setConsist(transports);
+            t.setValuesOnLinkUpdate(transports);
+            t.consistLeadID=consistLeadID;
         }
     }
 

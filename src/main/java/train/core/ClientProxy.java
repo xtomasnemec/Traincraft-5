@@ -24,7 +24,7 @@ import train.blocks.hearth.TileEntityOpenHearthFurnace;
 import train.blocks.lantern.GuiLantern;
 import train.blocks.lantern.TileLantern;
 import train.core.handlers.ClientTickHandler;
-import train.core.handlers.ZeppInputHandler;
+import train.core.handlers.TCInputHandler;
 import train.core.helpers.JLayerHook;
 import train.entity.gui.GuiJukebox;
 import train.entity.gui.GuiZepp;
