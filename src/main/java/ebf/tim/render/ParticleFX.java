@@ -372,7 +372,7 @@ public class ParticleFX {
             GL11.glEnable(GL_CULL_FACE);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0);
             GL11.glDepthMask(true);
 
         }

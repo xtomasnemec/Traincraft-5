@@ -100,12 +100,6 @@ public class GUIPaintBucket extends GuiScreen {
             case 0:{defineButtons();guiSkinSelect(parWidth,parHeight);break;}
         }
 
-        //draw button hover text
-        for (Object b : buttonList){
-            if(b instanceof GUIButton) {
-                ((GUIButton) b).drawText(parWidth, parHeight);
-            }
-        }
     }
 
 

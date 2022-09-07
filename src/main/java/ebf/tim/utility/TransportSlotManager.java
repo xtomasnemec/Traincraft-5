@@ -111,6 +111,16 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         return this.inventory.get(p_75139_1_);
     }
 
+    @Override
+    public List getInventory() {
+        ArrayList arraylist = new ArrayList();
+
+        for (ItemStackSlot inventorySlot : this.inventory) {
+            arraylist.add(inventorySlot.getStack());
+        }
+
+        return arraylist;
+    }
 
     @Override
     public NonNullList<ItemStack> getInventory() {

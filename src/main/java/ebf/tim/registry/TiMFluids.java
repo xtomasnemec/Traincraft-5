@@ -2,6 +2,7 @@ package ebf.tim.registry;
 
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.OreGen;
+import ebf.tim.utility.DebugUtil;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;

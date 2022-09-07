@@ -219,7 +219,9 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 	}
 
 	private boolean canSmelt() {
-		if (getSlotIndexByID(400).getStack() == null || (getSlotIndexByID(403).getStack() != null && getSlotIndexByID(403).getStackSize()==64) || (getSlotIndexByID(404).getStack() != null && getSlotIndexByID(404).getStackSize()==64)) {
+		if (getSlotIndexByID(400).getStack() == null ||
+				(getSlotIndexByID(403).getStack() != null && getSlotIndexByID(403).getStackSize()==64) ||
+				(getSlotIndexByID(404).getStack() != null && getSlotIndexByID(404).getStackSize()==64)) {
 			return false;
 		}
 		ItemStack itemstack = getSmeltingResult(getSlotIndexByID(400).getStack());

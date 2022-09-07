@@ -104,6 +104,10 @@ public class GUITransport extends GuiContainer {
             b.drawButton(mouseX,mouseY, 0);
         }
 
+        //draw the buttons.
+        for (GUIButton b : buttons){
+            b.drawButton(mouseX,mouseY);
+        }
 
         //todo:there needs to be some way for custom GUI's from the train's class without breaking it's ability to be defined on server too.
 

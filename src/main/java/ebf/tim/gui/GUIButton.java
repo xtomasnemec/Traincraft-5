@@ -139,6 +139,9 @@ public abstract class GUIButton extends GuiButton {
             if (j2 + k > this.width) {
                 j2 -= 28 + k;
             }
+            if(j2+150>Minecraft.getMinecraft().displayWidth*0.4){
+                j2-=k;
+            }
 
             if(j2+150>Minecraft.getMinecraft().displayWidth*0.4){
                 j2-=k;
