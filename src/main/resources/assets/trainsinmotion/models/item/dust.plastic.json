@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "trainsinmotion:items/dust.plastic"
+    "layer0": "trainsinmotion:items/materials/dust.plastic"
   }
 }
