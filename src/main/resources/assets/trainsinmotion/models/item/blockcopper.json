@@ -1,6 +1,3 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "trainsinmotion:items/blockCopper"
-  }
+  "parent": "trainsinmotion:block/blockCopper"
 }
