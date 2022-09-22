@@ -327,7 +327,18 @@ public class EntityTrainCore extends GenericRailTransport {
                         this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
-                }case 11:{//TC control forward
+                } case 16:{//reset speed
+                    if (getBoolean(boolValues.RUNNING)) {
+                        //if a linked transport is running, dont update
+                        if (consistLeadID != null && consistLeadID != getEntityId()) {
+                            return true;
+                        }
+                        accelerator = 0;
+                        updateConsist();
+                        this.dataWatcher.updateObject(18, accelerator);
+                    }
+                    return true;
+                } case 11:{//TC control forward
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = 7;
                         this.dataManager.set(ACCELERATOR, accelerator);
