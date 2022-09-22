@@ -69,6 +69,9 @@ public class EventManager {
             if (ClientProxy.KeyInventory.getIsKeyPressed()) {
                 TrainsInMotion.keyChannel.sendToServer(new PacketInteract(1, ((EntitySeat) player.ridingEntity).parentId));
             }
+            if (ClientProxy.KeyLamp.getIsKeyPressed()) {
+                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(5, ((EntitySeat) player.ridingEntity).parentId));
+            }
             if (((EntitySeat) player.ridingEntity).isLocoSeat()) {
                 //for speed change
                 if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
@@ -76,15 +79,23 @@ public class EventManager {
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(2, ((EntitySeat) player.ridingEntity).parentId));
                     }
+                    //if speed is in TC mode and going backwards, reset speed.
+                    if(((GenericRailTransport) player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId)).getAccelerator()>6) {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.ridingEntity).parentId));
+                    }
                 } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(3, ((EntitySeat) player.ridingEntity).parentId));
                     }
+                    //if speed is in TC mode and going forwards, reset speed.
+                    if(((GenericRailTransport) player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId)).getAccelerator()<-6) {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.ridingEntity).parentId));
+                    }
                 } else if (ClientProxy.KeyHorn.getIsKeyPressed()){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(9, ((EntitySeat) player.ridingEntity).parentId));
                 } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.getIsKeyPressed()){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.ridingEntity).parentId));
+                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, ((EntitySeat) player.ridingEntity).parentId));
                 }
 
                 //manage key release events
