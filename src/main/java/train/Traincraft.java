@@ -27,7 +27,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
-import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
@@ -264,7 +263,6 @@ public class Traincraft {
 				e.printStackTrace();
 			}
 		}
-		LiquidManager.getLiquidsFromDictionnary();
 
 		if (evt.getSide().isClient() && Loader.isModLoaded("NotEnoughItems")) {
 			train.core.plugins.AssemblyTableNEIIntegration.setupNEIIntegration();
