@@ -33,7 +33,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
-import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
@@ -284,7 +283,6 @@ public class Traincraft {
 				e.printStackTrace();
 			}
 		}
-		LiquidManager.getLiquidsFromDictionnary();
 
 		tcLog.info("Finished PostInitialization");
 	}

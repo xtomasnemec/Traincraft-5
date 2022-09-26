@@ -301,12 +301,20 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
-        for(FluidTankInfo stack : getTankInfo()) {
-            if (stack.fluid.amount > 0 && (stack.fluid.getFluid()==TiMFluids.nullFluid || stack.fluid.getFluid() == resource.getFluid())) {
+        FluidStack value = resource.copy();
+        for(FluidTankInfo stack : getTankInfo(null)) {
+            if (stack.fluid.amount > 0 &&
+                    (value.getFluid()==TiMFluids.nullFluid ||
+                            stack.fluid.getFluid()==TiMFluids.nullFluid ||
+                            stack.fluid.getFluid() == value.getFluid())
+            ) {
                 if(leftoverDrain>stack.fluid.amount){
-                    leftoverDrain-=stack.fluid.amount;
+                    leftoverDrain -= stack.fluid.amount;
                     if(doDrain){
                         stack.fluid.amount=0;
+                    }
+                    if (value.getFluid()==TiMFluids.nullFluid){
+                        value=new FluidStack(stack.fluid.getFluid(), stack.fluid.amount);
                     }
                 } else {
                     if(doDrain){
@@ -316,7 +324,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 }
             }
         }
-        return resource;
+        return value;
 
     }
 
