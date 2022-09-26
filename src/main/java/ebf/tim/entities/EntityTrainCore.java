@@ -335,7 +335,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         }
                         accelerator = 0;
                         updateConsist();
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 } case 11:{//TC control forward

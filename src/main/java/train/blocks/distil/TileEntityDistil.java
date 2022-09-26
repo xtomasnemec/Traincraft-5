@@ -5,6 +5,7 @@ import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.registry.TiMFluids;
 import ebf.tim.registry.TiMOres;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.FuelHandler;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -140,7 +141,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 						}
 
 						if (getSlotIndexByID(401).getStack()!=null &&
-								getSlotIndexByID(401).getStack().stackSize == 0) {
+								getSlotIndexByID(401).getStack().getCount() == 0) {
 							getSlotIndexByID(401).setStack(null);
 						}
 					}
@@ -164,9 +165,9 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 			if (this.updateTicks % 8 == 0) {
 				if (getSlotIndexByID(402).getStack() != null) {
 
-					if(getSlotIndexByID(402).getStack().getItem()==Items.bucket){
+					if(getSlotIndexByID(402).getStack().getItem()==Items.BUCKET){
 						if(getTankInfo(0).fluid.amount>0){
-							placeInInvent(FluidContainerRegistry.fillFluidContainer(
+							placeInInvent(FuelHandler.fillFluidContainer(
 									getTankInfo(0).fluid, getSlotIndexByID(402).getStack()));
 							flag1 = true;
 						}
@@ -176,10 +177,10 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 							placeInInvent(new ItemStack(ItemIDs.diesel_canister.item));
 							flag1 = true;
 						}
-					} else if(FluidContainerRegistry.isContainer(getSlotIndexByID(402).getStack()) &&
-					fill(null, FluidContainerRegistry.getFluidForFilledItem(getSlotIndexByID(402).getStack()),false)==0){
-						fill(null, FluidContainerRegistry.getFluidForFilledItem(getSlotIndexByID(402).getStack()),true);
-						ItemStack output = FluidContainerRegistry.drainFluidContainer(getSlotIndexByID(402).getStack());
+					} else if(FuelHandler.isContainer(getSlotIndexByID(402).getStack()) &&
+					fill(FuelHandler.getFluidForFilledItem(getSlotIndexByID(402).getStack()),false)==0){
+						fill(FuelHandler.getFluidForFilledItem(getSlotIndexByID(402).getStack()),true);
+						ItemStack output = FuelHandler.drainFluidContainer(getSlotIndexByID(402).getStack());
 						if(getSlotIndexByID(404).getStack()==null) {
 							getSlotIndexByID(404).setStack(output);
 						} else if(getSlotIndexByID(404).getStack().getItem()==output.getItem()){
@@ -197,7 +198,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 			if (flag1) {
 				this.syncTileEntity();
 				markDirty();
-				CommonUtil.markBlockForUpdate(worldObj, this.xCoord, this.yCoord, this.zCoord);
+				CommonUtil.markBlockForUpdate(world, this.pos.getX(), this.pos.getY(), this.pos.getZ());
 			}
 		}
 	}
@@ -206,16 +207,16 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 		if (getSlotIndexByID(404).getStack() == null) {
 			getSlotIndexByID(404).setStack(itemstack1);
 			getSlotIndexByID(402).decrStackSize(1);
-			drain(null, 1000, true);
+			drain(1000, true);
 		}
 		else if (getSlotIndexByID(404).getItem() == itemstack1.getItem() &&
 				(!itemstack1.getHasSubtypes() || getSlotIndexByID(404).getStack().getItemDamage() == itemstack1.getItemDamage())
 				&& ItemStack.areItemStackTagsEqual(getSlotIndexByID(404).getStack(), itemstack1)) {
-			int var9 = getSlotIndexByID(404).getStack().stackSize + itemstack1.stackSize;
+			int var9 = getSlotIndexByID(404).getStack().getCount() + itemstack1.getCount();
 			if (var9 <= itemstack1.getMaxStackSize()) {
-				getSlotIndexByID(404).setSlotStacksize(var9);
+				getSlotIndexByID(404).setSlotStackSize(var9);
 				getSlotIndexByID(402).decrStackSize(1);
-				drain(null, 1000, true);
+				drain(1000, true);
 			}
 		}
 	}
@@ -243,18 +244,18 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 		ItemStack itemstack = getSmeltingResult(getSlotIndexByID(400).getStack());
 		ItemStack plasticStack = getPlasticResult(getSlotIndexByID(400).getStack());
 
-		fill(null, FluidContainerRegistry.getFluidForFilledItem(itemstack), true);
+		fill(FuelHandler.getFluidForFilledItem(itemstack), true);
 		if (random.nextInt(getPlasticChance(getSlotIndexByID(400).getStack())) == 0) {
 			outputPlastic(plasticStack, getSlotIndexByID(400).getStack().getItem() == TiMFluids.bucketDiesel);
 		}
 
 		this.markDirty();
-		CommonUtil.markBlockForUpdate(worldObj, this.xCoord, this.yCoord, this.zCoord);
+		CommonUtil.markBlockForUpdate(world, this.pos.getX(), this.pos.getY(), this.pos.getZ());
 
 		if (getSlotIndexByID(400).getStack().getItem().hasContainerItem(getSlotIndexByID(400).getStack())) {
 			getSlotIndexByID(400).setStack(new ItemStack(getSlotIndexByID(400).getStack().getItem().getContainerItem()));
 		} else {
-			getSlotIndexByID(400).getStack().stackSize--;
+			getSlotIndexByID(400).getStack().shrink(1);
 		}
 		if (getSlotIndexByID(400).getStack().getCount() <= 0) {
 			getSlotIndexByID(400).setStack(null);
@@ -350,8 +351,8 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 	}
 
 	public static ItemStack getSmeltingResult(ItemStack item) {
-		if(item.getItem() == Items.reeds || item.getItem()==Items.wheat ||
-				item.getItem()==Item.getItemFromBlock(Blocks.leaves)){
+		if(item.getItem() == Items.REEDS || item.getItem()==Items.WHEAT ||
+				item.getItem()==Item.getItemFromBlock(Blocks.LEAVES)){
 			return new ItemStack(TiMFluids.bucketDiesel, 1);
 		} else if(item.getItem()==Item.getItemFromBlock(TCBlocks.orePetroleum)){
 			return new ItemStack(TiMFluids.bucketDiesel, 2);

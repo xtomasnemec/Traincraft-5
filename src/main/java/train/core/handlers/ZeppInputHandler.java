@@ -1,11 +1,11 @@
 package train.core.handlers;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent;
 import ebf.tim.utility.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 import train.Traincraft;
 import train.core.network.PacketKeyPress;
@@ -35,10 +35,10 @@ public class ZeppInputHandler {
 	@SubscribeEvent
 	public void onClientKeyPress(InputEvent.KeyInputEvent event) {
 		if (!Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen()) {
-			if (up.getIsKeyPressed()) {
+			if (up.isKeyDown()) {
 				sendKeyControlsPacket(0);
 			}
-			else if (down.getIsKeyPressed()) {
+			else if (down.isKeyDown()) {
 				sendKeyControlsPacket(2);
 			}
 			else if (idle.isPressed()) {

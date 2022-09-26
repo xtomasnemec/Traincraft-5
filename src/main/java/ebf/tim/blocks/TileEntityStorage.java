@@ -302,7 +302,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     public FluidStack drain(FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
         FluidStack value = resource.copy();
-        for(FluidTankInfo stack : getTankInfo(null)) {
+        for(FluidTankInfo stack : getTankInfo()) {
             if (stack.fluid.amount > 0 &&
                     (value.getFluid()==TiMFluids.nullFluid ||
                             stack.fluid.getFluid()==TiMFluids.nullFluid ||

@@ -473,6 +473,10 @@ public class FuelHandler{
 		return FluidUtil.getFluidHandler(item)==null?null:FluidUtil.getFluidHandler(item).getTankProperties()[0].getContents();
 	}
 
+	public static boolean isContainer(ItemStack item){
+		return FluidUtil.getFluidHandler(item)!=null;
+	}
+
 	public static boolean isEmptyContainer(ItemStack item){
 		return FluidUtil.getFluidHandler(item)==null ||
 				FluidUtil.getFluidHandler(item).getTankProperties()==null||
