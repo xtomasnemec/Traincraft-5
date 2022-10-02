@@ -29,7 +29,6 @@ public class ConfigHandler {
 	public static boolean ENERGYTRACK_USES_RF;
 	public static int TRAINCRAFT_VILLAGER_ID;
 	public static int WINDMILL_CHECK_RADIUS;
-	public static boolean REAL_TRAIN_SPEED;
 	public static boolean RETROGEN_CHUNKS;
 	public static boolean MAKE_MODPACKS_GREAT_AGAIN;
 	public static boolean DISABLE_TRAIN_WORKBENCH;
@@ -54,7 +53,6 @@ public class ConfigHandler {
 
 		REMASTERS = cf.get(CATEGORY_GENERAL, "ENABLE_REMASTERS", 1, "setting to 0 enables remastered trains and stock alongside the originals. 1 will disable the remasters. 2 will remove the originals.").getInt();
 
-		REAL_TRAIN_SPEED = cf.get(CATEGORY_GENERAL, "REAL_TRAIN_SPEED", false).getBoolean(false);
 		ENERGYTRACK_USES_RF = cf.getBoolean("ENERGYTRACK_USES_RF", CATEGORY_GENERAL, true, "Here you can define, if electric tracks should be powered by redstone (false) or use 'real' RF-power (true) [Default: true]");
 		RETROGEN_CHUNKS = cf.getBoolean("ENABLE_RETROGEN", CATEGORY_GENERAL, false, "This will generate Traincraft ores in chunks that existed prior to installing Traincraft.");
 		MAKE_MODPACKS_GREAT_AGAIN = cf.getBoolean("MAKE_MODPACKS_GREAT_AGAIN", CATEGORY_GENERAL, false,

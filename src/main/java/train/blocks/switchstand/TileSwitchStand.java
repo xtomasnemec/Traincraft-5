@@ -3,7 +3,9 @@ package train.blocks.switchstand;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
+import ebf.tim.blocks.BlockSwitch;
 import ebf.tim.blocks.TileRenderFacing;
+import ebf.tim.blocks.TileSwitch;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -14,12 +16,12 @@ import train.blocks.TCBlocks;
 
 import java.util.Random;
 
-public class TileSwitchStand extends TileRenderFacing {
+public class TileSwitchStand extends TileSwitch {
 
     private int updateTicks = 0;
     private static Random rand = new Random();
 
-    public TileSwitchStand(BlockDynamic host){
+    public TileSwitchStand(BlockSwitch host){
         super(host);
     }
 
@@ -35,7 +37,7 @@ public class TileSwitchStand extends TileRenderFacing {
         super.updateEntity();
         updateTicks++;
         /**
-         * Remove any block on top of the wind mill
+         * Remove any block on top
          */
         if (!worldObj.isRemote) {
             if (updateTicks % 20 == 0) {

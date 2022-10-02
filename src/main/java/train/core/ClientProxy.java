@@ -31,6 +31,8 @@ import java.util.Calendar;
 
 public class ClientProxy extends CommonProxy {
 
+	ClientTickHandler clientTickHandler = new ClientTickHandler();
+	HUDloco hud = new HUDloco();
 	//NOTE: these had to be moved here rather than the render, because they wouldn't init soon enough in the TESR and crashed
     public static ModelSwitchStandOn modelSwitch = new ModelSwitchStandOn();
     public static ModelSwitchStandOff modelSwitch2 = new ModelSwitchStandOff();
@@ -43,8 +45,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerEvents(FMLPreInitializationEvent event) {
 		super.registerEvents(event);
-		registerEvent(new ClientTickHandler());
-		registerEvent(new HUDloco());
+
+		FMLCommonHandler.instance().bus().register(clientTickHandler);
+		FMLCommonHandler.instance().bus().register(hud);
+		MinecraftForge.EVENT_BUS.register(clientTickHandler);
+		MinecraftForge.EVENT_BUS.register(hud);
 	}
 
 	@Deprecated //TESR should be handled as noted in TCBlocks.init()
