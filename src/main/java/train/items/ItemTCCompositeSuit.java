@@ -31,7 +31,6 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 		super(iconName, material, par3, par4,color);
 		setCreativeTab(Traincraft.tcTab);
 		this.color = color;
-		Traincraft.proxy.registerEvent(this);
 	}
 
 	/**
@@ -192,62 +191,6 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
 
 	}
 
-	/**
-	 * Initially projected to have a jump boost
-	 */
-	@SubscribeEvent
-	public void onEntityLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
-		if(event.getEntity() instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer)event.getEntity();
-			ItemStack armor=null;
-			for (ItemStack s : player.inventory.armorInventory){
-				if (s.getItem() == ItemIDs.boots_suit_paintable.item){
-					armor=s; break;
-				}
-			}
-			if(armor!=null && armor.getItem() instanceof ItemTCArmor && !player.isInWater()){
-				ItemTCArmor itemarmor = (ItemTCArmor)armor.getItem();
-				if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
-					if (armor.getMaxDamage()-armor.getItemDamage()>5) {
-						event.getEntity().motionY+=0.05;
-						armor.damageItem(5, player);
-					} else {
-						armor.damageItem(armor.getMaxDamage()-armor.getItemDamage(), player);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Boots protect against fall damage
-	 */
-	@SubscribeEvent
-	public void onEntityLivingFallEvent(LivingFallEvent event) {
-		if(event.getEntity() instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer)event.getEntity();
-			ItemStack armor=null;
-			for (ItemStack s : player.inventory.armorInventory){
-				if (s.getItem() == ItemIDs.boots_suit_paintable.item){
-					armor=s; break;
-				}
-			}
-			if(armor!=null && !player.isInWater()){
-				ItemTCCompositeSuit itemarmor = (ItemTCCompositeSuit)armor.getItem();
-				if(itemarmor.getArmorMaterial() == Traincraft.instance.armorCompositeSuit){
-					if(event.getDistance()-3>0){
-						if (armor.getMaxDamage()-armor.getItemDamage()>5) {
-							armor.damageItem(5, player);
-							event.setCanceled(true);
-						} else {
-							armor.damageItem(armor.getMaxDamage()-armor.getItemDamage(), player);
-						}
-					}
-				}
-			}
-		}
-
-	}
 
 	@Override
 	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {

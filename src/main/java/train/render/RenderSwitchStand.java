@@ -24,57 +24,51 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 		if(tileEntity==null){return;}
 		GL11.glPushMatrix();
 
-		if(tileEntity==null || tileEntity.getWorld()==null){
-			GL11.glTranslated( x + 0.5,  y+0.4f,  z + 0.5);
+		//item render
+		if(tileEntity==null || tileEntity.getWorldObj()==null){
+			GL11.glTranslated( x+0.2,  y,  z);
 			GL11.glScalef(0.65f,0.65f,0.65f);
-		} else {
-			GL11.glTranslated( x + 0.5,  y+0.7f,  z + 0.5);
-		}
-		if(tileEntity instanceof TileRenderFacing) {
-			GL11.glRotatef(180,0,0,1);
-			switch (((TileRenderFacing) tileEntity).facing){
-				//north
-				case 0:{GL11.glRotatef(90,0,1,0);break;}
-				//east
-				case 1:{break;}
-				//south
-				case 2:{GL11.glRotatef(270,0,1,0);break;}
-				//west
-				case 3:{GL11.glRotatef(180,0,1,0);break;}
-			}
-		}
 
-		if(tileEntity==null || tileEntity.getWorld()==null) {
 			TextureManager.bindTexture(texture2);
 			//this is stupid levels of finicky
 			if(ClientProxy.modelSwitch2.bodyModel==null){
 				ClientProxy.modelSwitch2= new ModelSwitchStandOff();
 			}
 
-			for(ModelRendererTurbo sub : ClientProxy.modelSwitch2.bodyModel){
-				if(sub!=null) {
-					GL11.glPushMatrix();
-					sub.render();
-					GL11.glPopMatrix();
+			ClientProxy.modelSwitch2.render(null, 0, 0, 0, 0, 0, 0.0625f);
+		}
+		//inworld render
+		else {
+			GL11.glTranslated( x + 0.5,  y+0.7f,  z + 0.5);
+			if(tileEntity instanceof TileRenderFacing) {
+				GL11.glRotatef(180,0,0,1);
+				switch (((TileRenderFacing) tileEntity).facing){
+					//north
+					case 0:{GL11.glRotatef(90,0,1,0);break;}
+					//east
+					case 1:{break;}
+					//south
+					case 2:{GL11.glRotatef(270,0,1,0);break;}
+					//west
+					case 3:{GL11.glRotatef(180,0,1,0);break;}
 				}
 			}
-		} else if (CommonUtil.getBlockAt(tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getX())
-		.getWeakPower(tileEntity.getWorld().getBlockState(tileEntity.getPos()),tileEntity.getWorld(), tileEntity.getPos(), EnumFacing.UP) > 0) {
-			TextureManager.bindTexture(texture2);
+
+			//extra offset for track height
 			if(ebf.tim.utility.ClientProxy.railSkin==3){
 				GL11.glTranslatef(0, 0.09f, 0);
 			} else {
 				GL11.glTranslatef(0, 0.01875f, 0);
 			}
-			ClientProxy.modelSwitch2.render(null, 0, 0, 0, 0, 0, 0.0625f);
-		} else {
-			TextureManager.bindTexture(texture);
-			if(ebf.tim.utility.ClientProxy.railSkin==3){
-				GL11.glTranslatef(0, 0.09f, 0);
-			} else {
-				GL11.glTranslatef(0, 0.01875f, 0);
+
+			//on
+			if (CommonUtil.getBlockAt(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).isProvidingWeakPower(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0) > 0) {
+				TextureManager.bindTexture(texture2);
+				ClientProxy.modelSwitch2.render(null, 0, 0, 0, 0, 0, 0.0625f);
+			} else {//off
+				TextureManager.bindTexture(texture);
+				ClientProxy.modelSwitch.render(null, 0, 0, 0, 0, 0, 0.0625f);
 			}
-			ClientProxy.modelSwitch.render(null, 0, 0, 0, 0, 0, 0.0625f);
 		}
 
 		GL11.glPopMatrix();
