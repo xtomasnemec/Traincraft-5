@@ -3,17 +3,23 @@ package ebf.tim.blocks;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import train.blocks.switchstand.TileSwitchStand;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockSwitch extends BlockDynamic {
@@ -24,28 +30,14 @@ public class BlockSwitch extends BlockDynamic {
     }
 
     @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB box, List otherBoxes, Entity entities) {
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return -1;
-    }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
@@ -68,51 +60,52 @@ public class BlockSwitch extends BlockDynamic {
 
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityliving, ItemStack stack) {
-        super.onBlockPlacedBy(world, x,y,z, entityliving, stack);
-        TileSwitchStand te = (TileSwitchStand) world.getTileEntity(x,y,z);
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityliving, ItemStack stack) {
+        super.onBlockPlacedBy(world, pos, state, entityliving, stack);
+        TileSwitchStand te = (TileSwitchStand) world.getTileEntity(pos);
         if (te != null) {
             int dir = CommonUtil.floorDouble((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-            te.setFacing(ForgeDirection.getOrientation(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
-            CommonUtil.markBlockForUpdate(world, x,y,z);
+            te.setFacing(EnumFacing.byHorizontalIndex(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
+            CommonUtil.markBlockForUpdate(world, pos.getX(),pos.getY(),pos.getZ());
         }
     }
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
         } else {
 
-            TileSwitch t = (TileSwitch)world.getTileEntity(x,y,z);
+            TileSwitch t = (TileSwitch)world.getTileEntity(pos);
             if(t!=null){
                 t.toggleEnabled();
-                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.3F, t.getEnabled() ? 0.6F : 0.5F);
-                world.notifyBlocksOfNeighborChange(x, y, z, this);
+                world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, t.getEnabled() ? 0.6F : 0.5F);
+                world.notifyNeighborsOfStateChange(pos, this, false);
             }
 
             return true;
         }
     }
 
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-        p_149749_1_.notifyBlocksOfNeighborChange(p_149749_2_, p_149749_3_, p_149749_4_, this);
-        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        world.notifyNeighborsOfStateChange(pos, this, false);
+        super.breakBlock(world, pos, state);
     }
 
 
 
-    public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int meta) {
-        return isProvidingStrongPower(world, x, y, z, meta);
+    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return getStrongPower(state,world,pos,side);
     }
 
-    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int meta) {
-        TileSwitch t = (TileSwitch)world.getTileEntity(x,y,z);
+    public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        TileSwitch t = (TileSwitch)world.getTileEntity(pos);
         if(t!=null && t.getEnabled()){
             return 15;
         }
         return 0;
     }
 
-    public boolean canProvidePower() {
+    public boolean canProvidePower(IBlockState state) {
         return true;
     }
 }

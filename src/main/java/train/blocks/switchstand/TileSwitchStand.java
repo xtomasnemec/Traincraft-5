@@ -18,7 +18,7 @@ import train.blocks.TCBlocks;
 
 import java.util.Random;
 
-public class TileSwitchStand extends TileSwitch {
+public class TileSwitchStand extends TileSwitch implements ITickable {
 
     private int updateTicks = 0;
     private static Random rand = new Random();

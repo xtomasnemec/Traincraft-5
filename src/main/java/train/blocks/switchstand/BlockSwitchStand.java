@@ -9,12 +9,12 @@ import train.Traincraft;
 public class BlockSwitchStand extends BlockSwitch {
 
 	public BlockSwitchStand() {
-		super(Material.rock, false);
+		super(Material.ROCK, false);
 		setCreativeTab(Traincraft.tcTab);
 		this.setTickRandomly(true);
 	}
 
-	@Override
+
 	public TileEntity createTileEntity(World world, int metadata) {
 		return new TileSwitchStand(this);
 	}

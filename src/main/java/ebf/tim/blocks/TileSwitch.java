@@ -1,7 +1,12 @@
 package ebf.tim.blocks;
 
 import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 
 public class TileSwitch extends TileRenderFacing implements ITickable {
     private boolean enabled=false;
@@ -24,9 +29,10 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
     public boolean getEnabled(){return enabled;}
 
     @Override
-    public void writeToNBT(NBTTagCompound tag){
+    public NBTTagCompound writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
         tag.setBoolean("e", enabled);
+        return tag;
     }
 
     @Override
@@ -52,7 +58,7 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
         //if there's a defined sound, play that every interval.
         if(getEnabled() && sound!=null){
             if(time>lastSoundMS+soundLength){
-                getWorldObj().playSound(xCoord,yCoord,zCoord,sound,volume,pitch,false);
+                getWorld().playSound((EntityPlayer)null,getPos(),new SoundEvent(new ResourceLocation(sound)), SoundCategory.BLOCKS,volume,pitch);
                 lastSoundMS=time;
             }
         }

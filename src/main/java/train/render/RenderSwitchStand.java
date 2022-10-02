@@ -25,7 +25,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 
 		//item render
-		if(tileEntity==null || tileEntity.getWorldObj()==null){
+		if(tileEntity==null || tileEntity.getWorld()==null){
 			GL11.glTranslated( x+0.2,  y,  z);
 			GL11.glScalef(0.65f,0.65f,0.65f);
 
@@ -62,7 +62,7 @@ public class RenderSwitchStand extends TileEntitySpecialRenderer {
 			}
 
 			//on
-			if (CommonUtil.getBlockAt(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).isProvidingWeakPower(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0) > 0) {
+			if (CommonUtil.getBlockAt(tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ()).getWeakPower(getWorld().getBlockState(tileEntity.getPos()),getWorld(),tileEntity.getPos(),EnumFacing.UP) > 0) {
 				TextureManager.bindTexture(texture2);
 				ClientProxy.modelSwitch2.render(null, 0, 0, 0, 0, 0, 0.0625f);
 			} else {//off
