@@ -2,7 +2,6 @@ package train.blocks.hearth;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ebf.XmlBuilder;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.registry.TiMItems;
@@ -11,9 +10,7 @@ import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;

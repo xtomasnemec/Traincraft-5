@@ -8,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import train.Traincraft;
-import train.items.ItemWrench;
-import train.library.GuiIDs;
 
 import java.util.Random;
 

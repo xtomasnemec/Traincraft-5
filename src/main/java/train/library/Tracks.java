@@ -6,7 +6,6 @@
  */
 package train.library;
 
-import ebf.tim.registry.TiMFluids;
 import ebf.tim.registry.TiMItems;
 import mods.railcraft.api.tracks.TrackRegistry;
 import mods.railcraft.api.tracks.TrackSpec;

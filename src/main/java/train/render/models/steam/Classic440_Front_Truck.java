@@ -6,7 +6,6 @@ import ebf.tim.render.StaticModelAnimator;
 import fexcraft.fvtm.RollingStockModel;
 import fexcraft.fvtm.TurboList;
 import fexcraft.tmt.slim.ModelRendererTurbo;
-import fexcraft.tmt.slim.Vec3f;
 
 /** This file was exported via the FVTM Exporter v1.5 of<br>
  *  FMT (Fex's Modelling Toolbox) v.2.6.6 &copy; 2021 - Fexcraft.net<br>

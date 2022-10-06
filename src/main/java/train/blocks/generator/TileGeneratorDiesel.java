@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import train.blocks.TCBlocks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TileGeneratorDiesel extends TileEntityStorage implements IEnergyProvider {
 

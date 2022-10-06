@@ -31,7 +31,6 @@ import train.core.CommonProxy;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
 import train.core.handlers.VillagerTraincraftHandler;
-import train.core.handlers.WorldEvents;
 import train.core.network.PacketKeyPress;
 import train.core.network.PacketLantern;
 import train.core.network.PacketSetJukeboxStreamingUrl;

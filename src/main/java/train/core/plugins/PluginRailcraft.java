@@ -1,12 +1,9 @@
 package train.core.plugins;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import ebf.tim.utility.DebugUtil;
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;

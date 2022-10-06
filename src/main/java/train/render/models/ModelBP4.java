@@ -9,15 +9,9 @@
 
 package train.render.models;
 
-import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.render.AnimList;
 import fexcraft.tmt.slim.ModelConverter;
 import fexcraft.tmt.slim.ModelRendererTurbo;
-import fexcraft.tmt.slim.Tessellator;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import train.library.Info;
 
 public class ModelBP4 extends ModelConverter
 {

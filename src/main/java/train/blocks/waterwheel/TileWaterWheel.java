@@ -3,22 +3,17 @@ package train.blocks.waterwheel;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
-import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
-import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import train.blocks.TCBlocks;
-import train.blocks.generator.TileGeneratorDiesel;
 
 public class TileWaterWheel extends TileEntityStorage implements IEnergyProvider {
 	public EnergyStorage energy= new EnergyStorage(80,80);

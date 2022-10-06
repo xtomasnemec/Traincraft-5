@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.items.ItemRail;
-import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;

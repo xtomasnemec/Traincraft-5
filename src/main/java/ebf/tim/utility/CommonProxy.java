@@ -5,7 +5,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.blocks.BlockDynamic;
-import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMFluids;

@@ -3,7 +3,6 @@ package ebf.tim.utility;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.launchwrapper.Launch;
 
 /**
  * @author Ferdinand

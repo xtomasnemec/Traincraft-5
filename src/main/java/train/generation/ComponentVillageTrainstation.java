@@ -8,7 +8,6 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import train.blocks.TCBlocks;
-import train.core.util.TraincraftUtil;
 import train.entity.rollingStock.*;
 
 import java.util.List;

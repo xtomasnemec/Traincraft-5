@@ -4,9 +4,7 @@ package train.blocks.windmill;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
-import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
-import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -17,11 +15,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import train.blocks.TCBlocks;
-import train.blocks.generator.TileGeneratorDiesel;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.WorldEvents;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class TileWindMill extends TileEntityStorage implements IEnergyProvider  {

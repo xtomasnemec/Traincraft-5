@@ -1,7 +1,6 @@
 package ebf.tim.utility;
 
 
-import com.google.common.collect.ImmutableMap;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
@@ -14,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;

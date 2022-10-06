@@ -5,9 +5,10 @@ import ebf.tim.utility.TransportSlotManager;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import static ebf.tim.utility.CommonUtil.translate;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
+
+import static ebf.tim.utility.CommonUtil.translate;
 
 public class GuiTrainCraftingBlock extends GuiContainer {
 	public GuiTrainCraftingBlock(InventoryPlayer invPlayer, TileEntityStorage inv) {

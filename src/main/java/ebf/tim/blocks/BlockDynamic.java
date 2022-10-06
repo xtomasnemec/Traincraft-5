@@ -17,8 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import train.blocks.distil.ContainerDistil;
-import train.blocks.distil.TileEntityDistil;
 
 /**
  * <h1>Block core</h1>

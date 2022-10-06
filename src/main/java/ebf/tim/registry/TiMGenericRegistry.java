@@ -16,7 +16,6 @@ import ebf.tim.items.CustomItemModel;
 import ebf.tim.items.ItemBlockTiM;
 import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemTransport;
-import ebf.tim.render.BlockTESR;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import mods.railcraft.api.fuel.FuelManager;

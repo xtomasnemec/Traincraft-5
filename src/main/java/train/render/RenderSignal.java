@@ -1,34 +1,33 @@
 package train.render;
 
-import ebf.tim.blocks.TileRenderFacing;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import ebf.tim.blocks.TileSwitch;
+import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import train.blocks.signal.TileSignal;
+import train.library.Info;
 import train.render.models.blocks.ModelBlockSignal;
 
-public class RenderSignal extends TileEntitySpecialRenderer {
+public class RenderSignal extends TiMTESR {
 
 	private static final ModelBlockSignal modelSignal = new ModelBlockSignal(1.0F / 16.0F);
-
-	public RenderSignal() {
-	}
-
-	public void renderAModelAt(TileEntity var1, double d, double d1, double d2, float f) {
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d + 0.46F, (float) d1 + 0.0F, (float) d2 + 0.46F);
-		/*if (var1.state == 1) {
-			bindTextureByName(Info.trainsPrefix + "signal_suisse_green.png");
-		}
-		else {
-			bindTextureByName(Info.trainsPrefix + "signal_suisse_red.png");
-		}*/
-		modelSignal.render(0.0625F, var1 instanceof TileRenderFacing?((TileRenderFacing)var1).facing:0);
-		GL11.glPopMatrix();
-	}
+	public RenderSignal() {}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-		renderAModelAt((TileSignal) tileentity, d, d1, d2, f);
+	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float tick) {
+		GL11.glPushMatrix();
+		GL11.glTranslatef((float) x + 0.46F, (float) y + 0.0F, (float) z + 0.46F);
+		if(tileentity instanceof TileSwitch) {
+			if (((TileSwitch) tileentity).getEnabled()) {
+				TextureManager.bindTexture(new ResourceLocation(Info.modID,Info.trainsPrefix + "signal_suisse_green.png"));
+			} else {
+				TextureManager.bindTexture(new ResourceLocation(Info.modID,Info.trainsPrefix + "signal_suisse_red.png"));
+			}
+			modelSignal.render(0.0625F, ((TileSwitch)tileentity).facing);
+		} else {
+			TextureManager.bindTexture(new ResourceLocation(Info.modID,Info.trainsPrefix + "signal_suisse_green.png"));
+			modelSignal.render(0.0625F, 0);
+		}
+		GL11.glPopMatrix();
 	}
 }

@@ -8,7 +8,6 @@
 package train.core.handlers;
 
 import net.minecraftforge.common.config.Configuration;
-import train.Traincraft;
 
 import java.io.File;
 
