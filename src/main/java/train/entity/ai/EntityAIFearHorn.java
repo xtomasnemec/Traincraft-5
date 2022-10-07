@@ -9,8 +9,8 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.ChunkCache;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIFearHorn extends EntityAIBase{
 	

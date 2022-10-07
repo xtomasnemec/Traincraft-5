@@ -60,9 +60,9 @@ public class BlockSwitch extends BlockDynamic {
 
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityliving, ItemStack stack) {
-        super.onBlockPlacedBy(world, x,y,z, entityliving, stack);
-        TileSwitch te = (TileSwitch) world.getTileEntity(x,y,z);
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityliving, ItemStack stack){
+        super.onBlockPlacedBy(world, pos, state, entityliving, stack);
+        TileSwitch te = (TileSwitch) world.getTileEntity(pos);
         if (te != null) {
             int dir = CommonUtil.floorDouble((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
             te.setFacing(EnumFacing.byHorizontalIndex(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));

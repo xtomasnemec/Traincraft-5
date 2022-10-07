@@ -3,8 +3,13 @@ package train.blocks.signal;
 import ebf.tim.blocks.BlockSignal;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import train.Traincraft;
 
@@ -13,49 +18,49 @@ import java.util.Random;
 public class BlockTCSignal extends BlockSignal {
 
 	public BlockTCSignal() {
-		super(Material.circuits,true);
+		super(Material.CIRCUITS,true);
 		this.setLightLevel(1.0F);
-		setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 2.6F, 0.8F);
+		//setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 2.6F, 0.8F);
 		setCreativeTab(Traincraft.tcTab);
 	}
 
 
 	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
-		super.onBlockAdded(world, i, j, k);
-		updateTick(world, i, j, k, null);
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(world, pos,state);
+		updateTick(world, pos, null);
 	}
 
 
-	public void updateTick(World world, int i, int j, int k, Random r) {
-		TileTCSignal te = (TileTCSignal) world.getTileEntity(i, j, k);
+	public void updateTick(World world, BlockPos pos, Random r) {
+		TileTCSignal te = (TileTCSignal) world.getTileEntity(pos);
 		if (te == null) {
 			return;
 		}
-		if (te.getEnabled() && !world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		if (te.getEnabled() && !world.isBlockPowered(pos)) {
 			te.toggleEnabled();
-		} else if (!te.getEnabled() && world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		} else if (!te.getEnabled() && world.isBlockPowered(pos)) {
 			te.toggleEnabled();
 		}
 	}
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
-		updateTick(world, i, j, k, null);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		updateTick(world, pos, null);
 		return true;
 	}
 	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, Block l) {
-		TileTCSignal te = (TileTCSignal) world.getTileEntity(i, j, k);
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
+		TileTCSignal te = (TileTCSignal) world.getTileEntity(pos);
 		if (te == null) {
 			return;
 		}
-		if (te.getEnabled() && !world.isBlockIndirectlyGettingPowered(i, j, k)) {
-			world.scheduleBlockUpdate(i, j, k, this, 4);
+		if (te.getEnabled() && !((World)world).isBlockPowered(pos)) {
+			((World)world).scheduleBlockUpdate(pos, this, 0, 4);
 		}
-		else if (!te.getEnabled() && world.isBlockIndirectlyGettingPowered(i, j, k)) {
+		else if (!te.getEnabled() && ((World)world).isBlockPowered(pos)) {
 			te.toggleEnabled();
 		}
-		updateTick(world, i, j, k, null);
+		updateTick((World) world, pos, null);
 	}
 
 	@Override
@@ -64,7 +69,7 @@ public class BlockTCSignal extends BlockSignal {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int meta) {
+	public TileEntity createTileEntity(World world, IBlockState meta) {
 		return new TileTCSignal(this);
 	}
 }

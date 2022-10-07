@@ -2,6 +2,7 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
+import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;

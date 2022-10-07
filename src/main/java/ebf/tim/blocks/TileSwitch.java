@@ -1,11 +1,13 @@
 package ebf.tim.blocks;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
-public class TileSwitch extends TileRenderFacing {
+public class TileSwitch extends TileRenderFacing implements ITickable {
     private boolean enabled=false;
     public int crossingTick=0, soundLength=0;
     private long lastTick=0, lastSoundMS=0;
@@ -50,11 +52,8 @@ public class TileSwitch extends TileRenderFacing {
     }
 
     @Override
-    public boolean canUpdate(){return true;}
-
-    @Override
-    public void updateEntity() {
-        if(!getWorldObj().isRemote){
+    public void update() {
+        if(!getWorld().isRemote){
             return;
         }
         long time = System.currentTimeMillis();

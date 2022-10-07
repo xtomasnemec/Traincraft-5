@@ -14,7 +14,7 @@ public class RenderSignal extends TiMTESR {
 	public RenderSignal() {}
 	
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float tick) {
+	public void render(TileEntity tileentity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.46F, (float) y, (float) z + 0.46F);
 		if(tileentity instanceof TileSwitch) {

@@ -6,18 +6,20 @@ import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
-import mods.railcraft.api.core.items.ITrackItem;
+import mods.railcraft.api.items.ITrackItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
@@ -48,7 +50,7 @@ public class ItemRail extends Item implements ITrackItem {
 
         //for use from item, unlike external use, we want to give the player ability to "place ahead"
         if(block instanceof BlockRailBase){
-            if (facing==EnumFacing.UP){//side 1/up
+            if (facing== EnumFacing.UP){//side 1/up
                 int rotation = CommonUtil.floorDouble(player.rotationYawHead * 4.0F / 360.0F + 0.5D) & 3;
                 switch (rotation){
                     case 0:{z++;

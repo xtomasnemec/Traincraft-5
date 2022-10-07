@@ -7,9 +7,9 @@
 
 package train.render;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import train.blocks.generator.TileGeneratorDiesel;
 import train.library.Info;
@@ -24,13 +24,13 @@ public class RenderGeneratorDiesel extends TiMTESR {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float tick) {
+	public void render(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
 
 		GL11.glTranslated(x, y, z);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(texture);
 
-		if(tile==null || tile.getWorldObj()==null){
+		if(tile==null || tile.getWorld()==null){
 			GL11.glTranslatef(0, -0.5F, 0);
 			GL11.glScalef(0.85f,0.85f,0.85f);
 		} else {

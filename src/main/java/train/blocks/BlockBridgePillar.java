@@ -11,9 +11,11 @@ import depreciated.minecraft.util.IIcon;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileRenderFacing;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import train.Traincraft;
 

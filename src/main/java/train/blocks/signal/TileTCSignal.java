@@ -2,11 +2,8 @@ package train.blocks.signal;
 
 import ebf.tim.blocks.BlockSignal;
 import ebf.tim.blocks.TileSwitch;
-import ebf.tim.utility.DebugUtil;
-import net.minecraft.client.renderer.texture.ITickable;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.List;
 
@@ -21,8 +18,8 @@ public class TileTCSignal extends TileSwitch {
 	}
 
 	@Override
-	public void updateEntity() {
-		super.updateEntity();
+	public void update() {
+		super.update();
 		//check if given redstone signal, let that override normal detection.
 		if(getEnabled()){
 			return;
@@ -67,9 +64,9 @@ public class TileTCSignal extends TileSwitch {
 			}
 		}
 
-		List list = this.worldObj.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox(
-				this.xCoord + x4, this.yCoord-1, this.zCoord + x5,
-				(this.xCoord + x1), (this.yCoord + 1), (this.zCoord + x3))
+		List list = this.getWorld().getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(
+				this.pos.getX() + x4, this.pos.getY()-1, this.pos.getZ() + x5,
+				(this.pos.getX() + x1), (this.pos.getY() + 1), (this.pos.getZ() + x3))
 				.expand(1.0D, 2.0D, 1.0D));
 
 		if (list != null && list.size() > 0) {
