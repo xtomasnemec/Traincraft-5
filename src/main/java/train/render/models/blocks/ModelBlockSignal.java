@@ -32,27 +32,23 @@ public class ModelBlockSignal extends ModelBase {
 	}
 
 	public void render(float f5, int meta) {
-		if (meta != -1) {
-			switch (meta) {
-			case 0:
+		switch (meta) {
+			case 0: {
+				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+				break;
+			}
+			case 1: {
+				GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
+				break;
+			}
+			case 3: {
 				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-			case 1:
-				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-			case 2:
-				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-			case 3:
-				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+				break;
 			}
 		}
 		box.render(f5);
 		box0.render(f5);
 		box1.render(f5);
-	}
-
-	public void render2(float f1) {
-		box.render(f1);
-		box0.render(f1);
-		box1.render(f1);
 	}
 
 }

@@ -9,6 +9,7 @@
 
 package train.render.models;
 
+import ebf.tim.render.AnimList;
 import fexcraft.tmt.slim.ModelConverter;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 

@@ -1,7 +1,9 @@
 package train.blocks.windmill;
 
 
-import ebf.tim.blocks.BlockDynamic;
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
@@ -17,7 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import train.blocks.TCBlocks;
-import train.blocks.generator.TileGeneratorDiesel;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.WorldEvents;
 

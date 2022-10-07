@@ -1,12 +1,10 @@
 package train.render;
 
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import train.render.models.blocks.ModelWindMill;
 import train.render.models.blocks.ModelWindMillWheel;
 
-public class RenderWindMill extends TileEntitySpecialRenderer {
+public class RenderWindMill extends TiMTESR {
 
 	private static final ModelWindMill modelWindMill = new ModelWindMill();
 	private static final ModelWindMillWheel modelWindMillWheel = new ModelWindMillWheel();

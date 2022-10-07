@@ -2,10 +2,7 @@ package train.render;
 
 import ebf.tim.blocks.TileRenderFacing;
 import ebf.tim.utility.CommonUtil;
-import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.TextureManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -14,7 +11,7 @@ import train.core.ClientProxy;
 import train.library.Info;
 import train.render.models.ModelSwitchStandOff;
 
-public class RenderSwitchStand extends TileEntitySpecialRenderer {
+public class RenderSwitchStand extends TiMTESR {
 
 	private static final ResourceLocation texture = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
 	private static final ResourceLocation texture2 = new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");

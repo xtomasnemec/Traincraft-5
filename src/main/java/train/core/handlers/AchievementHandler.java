@@ -7,7 +7,6 @@
 
 package train.core.handlers;
 
-
 public class AchievementHandler {
 
 	/*todo: make an achievement handler in TiM, branch add-ons off the core and then individual achievements off that.

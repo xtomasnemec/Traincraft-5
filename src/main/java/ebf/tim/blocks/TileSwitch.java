@@ -1,14 +1,11 @@
 package ebf.tim.blocks;
 
-import net.minecraft.client.renderer.texture.ITickable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
-public class TileSwitch extends TileRenderFacing implements ITickable {
+public class TileSwitch extends TileRenderFacing {
     private boolean enabled=false;
     public int crossingTick=0, soundLength=0;
     private long lastTick=0, lastSoundMS=0;
@@ -24,7 +21,18 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
     }
     public TileSwitch(){}
 
-    public boolean toggleEnabled(){return enabled=!enabled;}
+    public boolean toggleEnabled(){
+        enabled=!enabled;
+        markDirty();
+        return enabled;
+    }
+
+    public void setEnabled(boolean e){
+        if(e!=enabled){
+            enabled=e;
+            markDirty();
+        }
+    }
 
     public boolean getEnabled(){return enabled;}
 
@@ -42,7 +50,13 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
     }
 
     @Override
-    public void tick() {
+    public boolean canUpdate(){return true;}
+
+    @Override
+    public void updateEntity() {
+        if(!getWorldObj().isRemote){
+            return;
+        }
         long time = System.currentTimeMillis();
         //only tick every 1/20 of a second. Client tick tends to be fast and unreliable depending on FPS
         if(time>lastTick+50){

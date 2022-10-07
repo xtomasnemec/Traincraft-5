@@ -27,6 +27,7 @@ import train.blocks.distil.BlockDistil;
 import train.blocks.generator.BlockGeneratorDiesel;
 import train.blocks.hearth.BlockOpenHearthFurnace;
 import train.blocks.lantern.BlockLantern;
+import train.blocks.signal.BlockTCSignal;
 import train.blocks.switchstand.BlockSwitchStand;
 import train.blocks.waterwheel.BlockWaterWheel;
 import train.blocks.windmill.BlockWindMill;
@@ -61,6 +62,7 @@ public class TCBlocks {
 	public static BlockWindMill windmill = new BlockWindMill();
 	public static BlockWaterWheel waterWheel = new BlockWaterWheel();
 	public static BlockSwitchStand highStarSwitch = new BlockSwitchStand();
+	public static BlockTCSignal signal = new BlockTCSignal();
 
 
 	@Deprecated //need to use TiMGenericRegistry.registerBlock(), this will also cover tile entities and TESR.
@@ -114,6 +116,7 @@ public class TCBlocks {
 			registerBlock(windmill, Traincraft.tcTab, Info.modID, "block.windmill", null, new train.render.RenderWindMill());
 			registerBlock(waterWheel, Traincraft.tcTab, Info.modID, "block.waterwheel", null, new train.render.RenderWaterWheel());
 			registerBlock(highStarSwitch, Traincraft.tcTab, Info.modID, "block.highstar", null, new train.render.RenderSwitchStand());
+			registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, new train.render.RenderSignal());
 
 			//registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, new train.render.RenderSignal());
 			registerBlock(lantern, Traincraft.tcTab, Info.modID, "block.lantern", null, new train.render.RenderLantern());
@@ -124,6 +127,7 @@ public class TCBlocks {
 			registerBlock(windmill, Traincraft.tcTab, Info.modID, "block.windmill", null, null);
 			registerBlock(waterWheel, Traincraft.tcTab, Info.modID, "block.waterwheel", null, null);
 			registerBlock(highStarSwitch, Traincraft.tcTab, Info.modID, "block.highstar", null, null);
+			registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, null);
 
 			//registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, null);
 			registerBlock(lantern, Traincraft.tcTab, Info.modID, "block.lantern", null, null);
