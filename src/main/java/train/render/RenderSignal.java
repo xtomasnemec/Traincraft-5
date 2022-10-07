@@ -16,9 +16,9 @@ public class RenderSignal extends TiMTESR {
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float tick) {
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) x + 0.46F, (float) y + 0.0F, (float) z + 0.46F);
+		GL11.glTranslatef((float) x + 0.46F, (float) y, (float) z + 0.46F);
 		if(tileentity instanceof TileSwitch) {
-			if (((TileSwitch) tileentity).getEnabled()) {
+			if (!((TileSwitch) tileentity).getEnabled()) {
 				TextureManager.bindTexture(new ResourceLocation(Info.modID,Info.trainsPrefix + "signal_suisse_green.png"));
 			} else {
 				TextureManager.bindTexture(new ResourceLocation(Info.modID,Info.trainsPrefix + "signal_suisse_red.png"));

@@ -1,17 +1,23 @@
 package train.blocks.signal;
 
+import ebf.tim.blocks.BlockSignal;
 import ebf.tim.blocks.TileSwitch;
+import ebf.tim.utility.DebugUtil;
+import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.AxisAlignedBB;
 
 import java.util.List;
 
-//client
 public class TileTCSignal extends TileSwitch {
 
 	public TileTCSignal() {
 		super();
+	}
+
+	public TileTCSignal(BlockSignal block){
+		host=block;
 	}
 
 	@Override
@@ -62,15 +68,13 @@ public class TileTCSignal extends TileSwitch {
 		}
 
 		List list = this.worldObj.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox(
-				this.xCoord + x4, this.yCoord, this.zCoord + x5,
+				this.xCoord + x4, this.yCoord-1, this.zCoord + x5,
 				(this.xCoord + x1), (this.yCoord + 1), (this.zCoord + x3))
-				.expand(1.0D, 1.0D, 1.0D));
+				.expand(1.0D, 2.0D, 1.0D));
 
 		if (list != null && list.size() > 0) {
-			Entity entity;
 			for (Object o : list) {
-				entity = (Entity) o;
-				if (entity instanceof EntityMinecart) {
+				if (o instanceof EntityMinecart) {
 					setEnabled(true);
 					return;
 				}

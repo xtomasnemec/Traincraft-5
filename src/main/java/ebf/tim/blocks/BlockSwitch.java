@@ -70,7 +70,7 @@ public class BlockSwitch extends BlockDynamic {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityliving, ItemStack stack) {
         super.onBlockPlacedBy(world, x,y,z, entityliving, stack);
-        TileSwitchStand te = (TileSwitchStand) world.getTileEntity(x,y,z);
+        TileSwitch te = (TileSwitch) world.getTileEntity(x,y,z);
         if (te != null) {
             int dir = CommonUtil.floorDouble((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
             te.setFacing(ForgeDirection.getOrientation(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));

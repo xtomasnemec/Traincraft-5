@@ -46,7 +46,13 @@ public class TileSwitch extends TileRenderFacing {
     }
 
     @Override
+    public boolean canUpdate(){return true;}
+
+    @Override
     public void updateEntity() {
+        if(!getWorldObj().isRemote){
+            return;
+        }
         long time = System.currentTimeMillis();
         //only tick every 1/20 of a second. Client tick tends to be fast and unreliable depending on FPS
         if(time>lastTick+50){
