@@ -2,6 +2,7 @@ package ebf.tim.blocks;
 
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,9 +71,9 @@ public class TileRenderFacing extends TileEntity {
     @Override
     public void addInfoToCrashReport(CrashReportCategory r){
         if(r==null){
-            if(getTexture(xCoord,yCoord,zCoord)!=null) {
+            if(getTexture(getPos().getX(),getPos().getY(),getPos().getZ())!=null) {
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
-                TextureManager.bindTexture(getTexture(xCoord,yCoord,zCoord));
+                TextureManager.bindTexture(getTexture(getPos().getX(),getPos().getY(),getPos().getZ()));
             } else {
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
             }
@@ -136,7 +139,7 @@ public class TileRenderFacing extends TileEntity {
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
-        return isVanilla ? (oldState.getBlock() != newSate.getBlock()) : oldState != newSate;
+        return getClass().getName().startsWith("net.minecraft.") ? (oldState.getBlock() != newSate.getBlock()) : oldState != newSate;
     }
 
     @Override
@@ -177,8 +180,7 @@ public class TileRenderFacing extends TileEntity {
 
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag)
-    {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte("f", facing);
         return tag; //might cause issues
@@ -189,7 +191,7 @@ public class TileRenderFacing extends TileEntity {
         super.readFromNBT(tag);
         facing = tag.getByte("f");
         if(world!=null && world.isRemote) {
-            markDirty();
+           // markDirty();
         }
     }
 

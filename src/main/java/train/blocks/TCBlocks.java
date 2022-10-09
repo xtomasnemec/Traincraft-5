@@ -109,9 +109,9 @@ public class TCBlocks {
 
 		registerBlock(partTable, Traincraft.tcTab, Info.modID,"block.parttable", null, null);
 
-		registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, TrainsInMotion.proxy.getTESR());
+		registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, TrainsInMotion.proxy.getRailTESR());
 
-		registerBlock(highStarSwitch, Traincraft.tcTab, Info.modID, "block.highstar", null, TrainsInMotion.proxy.getTESR());
+		registerBlock(highStarSwitch, Traincraft.tcTab, Info.modID, "block.highstar", null, TrainsInMotion.proxy.getRailTESR());
 
 		if(TrainsInMotion.proxy.isClient()){
 			registerBlock(dieselGenerator, Traincraft.tcTab, Info.modID, "block.dieselGenerator", null, new train.render.RenderGeneratorDiesel());
