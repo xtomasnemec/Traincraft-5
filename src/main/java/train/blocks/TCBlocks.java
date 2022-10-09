@@ -104,14 +104,16 @@ public class TCBlocks {
 
 		registerBlock(partTable, Traincraft.tcTab, Info.modID,"block.parttable", null, null);
 
+		registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, TrainsInMotion.proxy.getTESR());
+
+		registerBlock(highStarSwitch, Traincraft.tcTab, Info.modID, "block.highstar", null, TrainsInMotion.proxy.getTESR());
+
 		if(TrainsInMotion.proxy.isClient()){
 			registerBlock(dieselGenerator, Traincraft.tcTab, Info.modID, "block.dieselGenerator", null, new train.render.RenderGeneratorDiesel());
 			registerBlock(bridgePillar, Traincraft.tcTab, Info.modID, "block.bridgePillar", null, new train.render.RenderBridgePillar());
 
 			registerBlock(windmill, Traincraft.tcTab, Info.modID, "block.windmill", null, new train.render.RenderWindMill());
 			registerBlock(waterWheel, Traincraft.tcTab, Info.modID, "block.waterwheel", null, new train.render.RenderWaterWheel());
-			registerBlock(highStarSwitch, Traincraft.tcTab, Info.modID, "block.highstar", null, new train.render.RenderSwitchStand());
-			registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, new train.render.RenderSignal());
 
 			//registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, new train.render.RenderSignal());
 			registerBlock(lantern, Traincraft.tcTab, Info.modID, "block.lantern", null, new train.render.RenderLantern());
@@ -121,8 +123,6 @@ public class TCBlocks {
 
 			registerBlock(windmill, Traincraft.tcTab, Info.modID, "block.windmill", null, null);
 			registerBlock(waterWheel, Traincraft.tcTab, Info.modID, "block.waterwheel", null, null);
-			registerBlock(highStarSwitch, Traincraft.tcTab, Info.modID, "block.highstar", null, null);
-			registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, null);
 
 			//registerBlock(signal, Traincraft.tcTab, Info.modID, "block.signal", null, null);
 			registerBlock(lantern, Traincraft.tcTab, Info.modID, "block.lantern", null, null);

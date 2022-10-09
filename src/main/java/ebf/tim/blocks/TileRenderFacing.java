@@ -14,6 +14,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
@@ -68,9 +69,9 @@ public class TileRenderFacing extends TileEntity {
     @Override
     public void func_145828_a(CrashReportCategory r){
         if(r==null){
-            if(host.getTexture(xCoord,yCoord,zCoord)!=null) {
+            if(getTexture(xCoord,yCoord,zCoord)!=null) {
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
-                TextureManager.bindTexture(host.getTexture(xCoord,yCoord,zCoord));
+                TextureManager.bindTexture(getTexture(xCoord,yCoord,zCoord));
             } else {
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
             }
@@ -95,13 +96,7 @@ public class TileRenderFacing extends TileEntity {
                 }
                 GL11.glRotatef(180,1,0,0);
 
-                if(host.model!=null) {
-                    host.model.render(null, 0, 0, 0, 0, 0, 0);
-                } else {
-                    for (TexturedPolygon poly : cube.faces) {
-                        Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625f);
-                    }
-                }
+                renderModel();
                 org.lwjgl.opengl.GL11.glEndList();
 
             } else {
@@ -121,6 +116,22 @@ public class TileRenderFacing extends TileEntity {
         } else{
             super.func_145828_a(r);
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void renderModel(){
+        if(host.model!=null) {
+            host.model.render(null, 0, 0, 0, 0, 0, 0);
+        } else {
+            for (TexturedPolygon poly : cube.faces) {
+                Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625f);
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ResourceLocation getTexture(int x, int y, int z){
+        return host.getTexture(x,y,z);
     }
 
     @Override

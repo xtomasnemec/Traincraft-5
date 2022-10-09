@@ -24,8 +24,6 @@ import train.entity.zeppelin.EntityZeppelinTwoBalloons;
 import train.library.GuiIDs;
 import train.library.Info;
 import train.render.RenderZeppelins;
-import train.render.models.ModelSwitchStandOff;
-import train.render.models.ModelSwitchStandOn;
 
 import java.util.Calendar;
 
@@ -33,9 +31,6 @@ public class ClientProxy extends CommonProxy {
 
 	ClientTickHandler clientTickHandler = new ClientTickHandler();
 	HUDloco hud = new HUDloco();
-	//NOTE: these had to be moved here rather than the render, because they wouldn't init soon enough in the TESR and crashed
-    public static ModelSwitchStandOn modelSwitch = new ModelSwitchStandOn();
-    public static ModelSwitchStandOff modelSwitch2 = new ModelSwitchStandOff();
 
     public static boolean isHoliday() {
 		Calendar cal = Calendar.getInstance();
