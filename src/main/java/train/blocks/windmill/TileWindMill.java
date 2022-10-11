@@ -2,8 +2,6 @@ package train.blocks.windmill;
 
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
