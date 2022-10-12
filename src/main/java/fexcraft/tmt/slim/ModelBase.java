@@ -115,7 +115,9 @@ public class ModelBase extends ArrayList<ModelRendererTurbo> {
 	}
 
 	public void renderBlock(){
-		initAllParts();
+		if(!init) {
+			initAllParts();
+		}
 		render(boxList);
 
 		ModelRendererTurbo part;
