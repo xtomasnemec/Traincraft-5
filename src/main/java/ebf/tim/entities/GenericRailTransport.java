@@ -637,6 +637,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             health -=20;
             //be sure we drop the inventory items on death.
             dropAllItems();
+            entityDropItem(getCartItem(),1);
             setDead();
             return true;
         }
@@ -669,6 +670,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             ServerLogger.deleteWagon(this);
             //be sure we drop the inventory items on death.
             dropAllItems();
+            entityDropItem(getCartItem(),1);
             setDead();
             return true;
         }

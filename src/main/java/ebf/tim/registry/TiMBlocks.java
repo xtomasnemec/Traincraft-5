@@ -38,9 +38,6 @@ public class TiMBlocks {
                 new ItemStack(registerBlock(railTable, TrainsInMotion.creativeTab, TrainsInMotion.MODID,"block.railtable", null, null),1),
                 "IRI", "WCW", "WWW", 'I', Items.IRON_INGOT, 'W', Blocks.PLANKS, 'C', Blocks.CRAFTING_TABLE, 'R', Blocks.RAIL);
 
-        trainTable.setHardness(3);
-        railTable.setHardness(3);
-
         railBlock.setHardness(0.7f);
         railBlock.setResistance(0.7f);
     }
