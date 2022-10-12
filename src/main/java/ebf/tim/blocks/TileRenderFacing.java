@@ -71,6 +71,7 @@ public class TileRenderFacing extends TileEntity {
     @Override
     public void addInfoToCrashReport(CrashReportCategory r){
         if(r==null){
+            int boundTexture = GL11.glGetInteger(GL11.GL_TEXTURE_2D);
             if(getTexture(getPos().getX(),getPos().getY(),getPos().getZ())!=null) {
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 TextureManager.bindTexture(getTexture(getPos().getX(),getPos().getY(),getPos().getZ()));
@@ -115,6 +116,7 @@ public class TileRenderFacing extends TileEntity {
             }
             //be sure to re-enable the texture biding, because the UI wont
             GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D,boundTexture);
         } else{
             super.addInfoToCrashReport(r);
         }
@@ -137,9 +139,8 @@ public class TileRenderFacing extends TileEntity {
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-    {
-        return getClass().getName().startsWith("net.minecraft.") ? (oldState.getBlock() != newSate.getBlock()) : oldState != newSate;
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return oldState != newSate;
     }
 
     @Override
@@ -190,9 +191,11 @@ public class TileRenderFacing extends TileEntity {
     public void readFromNBT(NBTTagCompound tag){
         super.readFromNBT(tag);
         facing = tag.getByte("f");
-        if(world!=null && world.isRemote) {
-           // markDirty();
-        }
+    }
+
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     public void syncTileEntity(){

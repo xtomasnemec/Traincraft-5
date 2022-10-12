@@ -26,6 +26,7 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
     public boolean toggleEnabled(){
         enabled=!enabled;
         markDirty();
+        syncTileEntity();
         return enabled;
     }
 
@@ -33,6 +34,7 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
         if(e!=enabled){
             enabled=e;
             markDirty();
+            syncTileEntity();
         }
     }
 

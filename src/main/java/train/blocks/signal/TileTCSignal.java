@@ -93,7 +93,7 @@ public class TileTCSignal extends TileSwitch {
 		org.lwjgl.opengl.GL11.glRotatef(180, 0,  0,  1f);
 		//modifications for item render
 		if(getWorld()==null){
-			GL11.glScalef(0.65f,0.65f,0.65f);
+			org.lwjgl.opengl.GL11.glScalef(0.65f,0.65f,0.65f);
 			org.lwjgl.opengl.GL11.glTranslatef( 0,  -0.5f,  0);
 		}
 		new train.render.models.blocks.ModelBlockSignal()

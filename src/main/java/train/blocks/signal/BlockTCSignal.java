@@ -24,45 +24,6 @@ public class BlockTCSignal extends BlockSignal {
 		setCreativeTab(Traincraft.tcTab);
 	}
 
-
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		super.onBlockAdded(world, pos,state);
-		updateTick(world, pos, null);
-	}
-
-
-	public void updateTick(World world, BlockPos pos, Random r) {
-		TileTCSignal te = (TileTCSignal) world.getTileEntity(pos);
-		if (te == null) {
-			return;
-		}
-		if (te.getEnabled() && !world.isBlockPowered(pos)) {
-			te.toggleEnabled();
-		} else if (!te.getEnabled() && world.isBlockPowered(pos)) {
-			te.toggleEnabled();
-		}
-	}
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		updateTick(world, pos, null);
-		return true;
-	}
-	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
-		TileTCSignal te = (TileTCSignal) world.getTileEntity(pos);
-		if (te == null) {
-			return;
-		}
-		if (te.getEnabled() && !((World)world).isBlockPowered(pos)) {
-			((World)world).scheduleBlockUpdate(pos, this, 0, 4);
-		}
-		else if (!te.getEnabled() && ((World)world).isBlockPowered(pos)) {
-			te.toggleEnabled();
-		}
-		updateTick((World) world, pos, null);
-	}
-
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileTCSignal(this);

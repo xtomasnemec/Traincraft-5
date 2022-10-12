@@ -49,11 +49,15 @@ public class BlockSignal extends BlockSwitch {
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos other) {
-        super.onNeighborChange(world, pos, other);
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileSwitch && !TrainsInMotion.proxy.isClient()) {
-            ((TileSwitch) tile).setEnabled(((World)world).isBlockPowered(pos));
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
+        TileSwitch te = (TileSwitch) world.getTileEntity(pos);
+        if (te == null) {
+            return;
+        }
+        if (te.getEnabled() && !world.isBlockPowered(pos)) {
+            te.toggleEnabled();
+        } else if (!te.getEnabled() && world.isBlockPowered(pos)) {
+            te.toggleEnabled();
         }
     }
 

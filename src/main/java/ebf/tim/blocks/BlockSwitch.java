@@ -58,18 +58,6 @@ public class BlockSwitch extends BlockDynamic {
     //sound volume
     public float soundVolume(){return 1f;}
 
-
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityliving, ItemStack stack){
-        super.onBlockPlacedBy(world, pos, state, entityliving, stack);
-        TileSwitch te = (TileSwitch) world.getTileEntity(pos);
-        if (te != null) {
-            int dir = CommonUtil.floorDouble((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-            te.setFacing(EnumFacing.byHorizontalIndex(dir == 0 ? 2 : dir == 1 ? 5 : dir == 2 ? 3 : 4));
-            CommonUtil.markBlockForUpdate(world, pos.getX(),pos.getY(),pos.getZ());
-        }
-    }
-
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;

@@ -101,6 +101,11 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
+    public boolean hasTileEntity(){
+        return true;
+    }
+
+    @Override
     public boolean hasTileEntity(IBlockState state){
         return true;
     }
@@ -114,7 +119,7 @@ public class BlockDynamic extends BlockContainer {
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
         super.onBlockPlacedBy(world, pos,state, entity, stack);
         //force tile spawn manually and override any existing tile at the space
-        world.setTileEntity(pos,createNewTileEntity(world,0));
+        world.addTileEntity(createNewTileEntity(world,0));
         if(world.getTileEntity(pos) instanceof TileRenderFacing){
             ((TileRenderFacing) world.getTileEntity(pos)).setFacing(
                     CommonUtil.floorDouble((entity.rotationYaw / 90.0F) + 2.5D) & 3);

@@ -39,8 +39,7 @@ public class TileSwitchStand extends TileSwitch implements ITickable {
             org.lwjgl.opengl.GL11.glTranslated( -0.2,  0,  0);
             org.lwjgl.opengl.GL11.glScalef(0.65f,0.65f,0.65f);
 
-            new train.render.models.ModelSwitchStandOn()
-                    .render(null, 0, 0, 0, 0, 0, 0.0625f);
+            new train.render.models.ModelSwitchStandOff().renderBlock();
         }
         //inworld render
         else {
@@ -55,11 +54,9 @@ public class TileSwitchStand extends TileSwitch implements ITickable {
 
             //on
             if (getEnabled()) {
-                new train.render.models.ModelSwitchStandOn()
-                        .render(null, 0, 0, 0, 0, 0, 0.0625f);
+                new train.render.models.ModelSwitchStandOn().renderBlock();
             } else {//off
-                new train.render.models.ModelSwitchStandOff()
-                        .render(null, 0, 0, 0, 0, 0, 0.0625f);
+                new train.render.models.ModelSwitchStandOff().renderBlock();
             }
         }
     }
