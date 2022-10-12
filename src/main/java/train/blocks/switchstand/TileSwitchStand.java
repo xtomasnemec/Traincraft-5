@@ -59,11 +59,9 @@ public class TileSwitchStand extends TileSwitch {
 
             //on
             if (getEnabled()) {
-                new train.render.models.ModelSwitchStandOn()
-                        .render(null, 0, 0, 0, 0, 0, 0.0625f);
+                new train.render.models.ModelSwitchStandOn().renderBlock();
             } else {//off
-                new train.render.models.ModelSwitchStandOff()
-                        .render(null, 0, 0, 0, 0, 0, 0.0625f);
+                new train.render.models.ModelSwitchStandOff().renderBlock();
             }
         }
     }

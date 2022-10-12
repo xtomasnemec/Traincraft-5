@@ -17,7 +17,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class TileRenderFacing extends TileEntity {
     public byte facing =-1;
@@ -69,11 +68,12 @@ public class TileRenderFacing extends TileEntity {
     @Override
     public void func_145828_a(CrashReportCategory r){
         if(r==null){
+            int boundTexture =  org.lwjgl.opengl.GL11.glGetInteger( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
             if(getTexture(xCoord,yCoord,zCoord)!=null) {
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                org.lwjgl.opengl.GL11.glEnable( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
                 TextureManager.bindTexture(getTexture(xCoord,yCoord,zCoord));
             } else {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
+                org.lwjgl.opengl.GL11.glDisable( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
             }
 
 
@@ -83,18 +83,18 @@ public class TileRenderFacing extends TileEntity {
                 if(worldObj==null) {
                     Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
                 }
-                GL11.glTranslatef(0.5f,0.5f,0.5f);
+                org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.5f,0.5f);
                 switch (facing){
                     //north
-                    case 0:{GL11.glRotatef(90,0,1,0);break;}
+                    case 0:{ org.lwjgl.opengl.GL11.glRotatef(90,0,1,0);break;}
                     //east
                     case 1:{break;}
                     //south
-                    case 2:{GL11.glRotatef(270,0,1,0);break;}
+                    case 2:{ org.lwjgl.opengl.GL11.glRotatef(270,0,1,0);break;}
                     //west
-                    case 3:{GL11.glRotatef(180,0,1,0);break;}
+                    case 3:{ org.lwjgl.opengl.GL11.glRotatef(180,0,1,0);break;}
                 }
-                GL11.glRotatef(180,1,0,0);
+                org.lwjgl.opengl.GL11.glRotatef(180,1,0,0);
 
                 renderModel();
                 org.lwjgl.opengl.GL11.glEndList();
@@ -112,7 +112,8 @@ public class TileRenderFacing extends TileEntity {
                 }
             }
             //be sure to re-enable the texture biding, because the UI wont
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            org.lwjgl.opengl.GL11.glEnable( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
+            org.lwjgl.opengl.GL11.glBindTexture( org.lwjgl.opengl.GL11.GL_TEXTURE_2D,boundTexture);
         } else{
             super.func_145828_a(r);
         }
