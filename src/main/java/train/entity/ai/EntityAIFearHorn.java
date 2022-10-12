@@ -76,7 +76,7 @@ public class EntityAIFearHorn extends EntityAIBase{
         if(entity==null || entity.getNavigator()==null){
             return false;
         }
-        PathEntity pathentity = this.getPathToXYZ((double)CommonUtil.floorDouble(x), (double)((int)y), (double)CommonUtil.floorDouble(z));
+        Path pathentity = this.getPathToXYZ((double)CommonUtil.floorDouble(x), (double)((int)y), (double)CommonUtil.floorDouble(z));
         return entity.getNavigator().setPath(pathentity, speed);
     }
     
