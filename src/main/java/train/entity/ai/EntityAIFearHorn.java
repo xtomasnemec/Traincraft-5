@@ -70,8 +70,10 @@ public class EntityAIFearHorn extends EntityAIBase{
     /**
      * Try to find and set a path to XYZ. Returns true if successful.
      */
-    private boolean tryMoveToXYZ(double x, double y, double z, double speed)
-    {
+    private boolean tryMoveToXYZ(double x, double y, double z, double speed) {
+        if(entity==null || entity.getNavigator()==null){
+            return false;
+        }
         PathEntity pathentity = this.getPathToXYZ((double)CommonUtil.floorDouble(x), (double)((int)y), (double)CommonUtil.floorDouble(z));
         return entity.getNavigator().setPath(pathentity, speed);
     }
