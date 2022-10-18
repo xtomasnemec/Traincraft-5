@@ -35,19 +35,20 @@ public class BlockDynamic extends BlockContainer {
     public ModelBase model=null;
     public Object tesr=null;
     public int assemblyTableTier = -1; //only applies if it is an assembly table/traintable. no need to set otherwise. -1 unless set.
+    public boolean isContainer=true;
 
     public boolean isBlockContainer=true;
     public String textureName="";
 
     public BlockDynamic(Material material, boolean isStorage, int tier) {
         super(material);
-        this.isBlockContainer=isStorage;
+        this.isContainer=isStorage;
         this.assemblyTableTier = tier;
     }
 
     public BlockDynamic(Material material, boolean isStorage) {
         super(material);
-        this.isBlockContainer=isStorage;
+        this.isContainer=isStorage;
     }
 
     public Block setModel(ModelBase modelBase){
@@ -112,7 +113,7 @@ public class BlockDynamic extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return isBlockContainer?new TileEntityStorage(this):new TileRenderFacing(this);
+        return isContainer?new TileEntityStorage(this):new TileRenderFacing(this);
     }
 
     @Override
