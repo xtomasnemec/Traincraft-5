@@ -104,4 +104,19 @@ public class BlockSwitch extends BlockDynamic {
     public boolean canProvidePower() {
         return true;
     }
+
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        super.onBlockAdded(world, x,y,z);
+        TileSwitch te = (TileSwitch) world.getTileEntity(x,y,z);
+        if (te !=null) {
+            te.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block other) {
+        super.onNeighborBlockChange(world, x, y, z, other);
+    }
 }

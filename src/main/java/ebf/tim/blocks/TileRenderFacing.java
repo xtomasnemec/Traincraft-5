@@ -77,40 +77,23 @@ public class TileRenderFacing extends TileEntity {
             }
 
 
-            if(blockGLID ==null){
-                blockGLID=org.lwjgl.opengl.GL11.glGenLists(1);
-                org.lwjgl.opengl.GL11.glNewList(blockGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
-                if(worldObj==null) {
-                    Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
-                }
-                org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.5f,0.5f);
-                switch (facing){
-                    //north
-                    case 0:{ org.lwjgl.opengl.GL11.glRotatef(90,0,1,0);break;}
-                    //east
-                    case 1:{break;}
-                    //south
-                    case 2:{ org.lwjgl.opengl.GL11.glRotatef(270,0,1,0);break;}
-                    //west
-                    case 3:{ org.lwjgl.opengl.GL11.glRotatef(180,0,1,0);break;}
-                }
-                org.lwjgl.opengl.GL11.glRotatef(180,1,0,0);
-
-                renderModel();
-                org.lwjgl.opengl.GL11.glEndList();
-
-            } else {
-
-                if(!org.lwjgl.opengl.GL11.glIsList(blockGLID)){
-                    blockGLID=null;
-                    return;
-                }
-                org.lwjgl.opengl.GL11.glCallList(blockGLID);
-                if(ebf.tim.utility.ClientProxy.disableCache){
-                    org.lwjgl.opengl.GL11.glDeleteLists(blockGLID,1);
-                    blockGLID =null;
-                }
+            if(worldObj==null) {
+                Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
             }
+            org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.5f,0.5f);
+            switch (facing){
+                //north
+                case 0:{ org.lwjgl.opengl.GL11.glRotatef(90,0,1,0);break;}
+                //east
+                case 1:{break;}
+                //south
+                case 2:{ org.lwjgl.opengl.GL11.glRotatef(270,0,1,0);break;}
+                //west
+                case 3:{ org.lwjgl.opengl.GL11.glRotatef(180,0,1,0);break;}
+            }
+            org.lwjgl.opengl.GL11.glRotatef(180,1,0,0);
+
+            renderModel();
             //be sure to re-enable the texture biding, because the UI wont
             org.lwjgl.opengl.GL11.glEnable( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
             org.lwjgl.opengl.GL11.glBindTexture( org.lwjgl.opengl.GL11.GL_TEXTURE_2D,boundTexture);
@@ -122,11 +105,27 @@ public class TileRenderFacing extends TileEntity {
     @SideOnly(Side.CLIENT)
     public void renderModel(){
         if(host.model!=null) {
-            host.model.render(null, 0, 0, 0, 0, 0, 0);
+            host.model.render();
         } else {
-            for (TexturedPolygon poly : cube.faces) {
-                Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625f);
+            if(blockGLID ==null) {
+                blockGLID = org.lwjgl.opengl.GL11.glGenLists(1);
+                org.lwjgl.opengl.GL11.glNewList(blockGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
+                for (TexturedPolygon poly : cube.faces) {
+                    Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625f);
+                }
+                org.lwjgl.opengl.GL11.glEndList();
+            } else {
+
+            if(!org.lwjgl.opengl.GL11.glIsList(blockGLID)){
+                blockGLID=null;
+                return;
             }
+            org.lwjgl.opengl.GL11.glCallList(blockGLID);
+            if(ebf.tim.utility.ClientProxy.disableCache){
+                org.lwjgl.opengl.GL11.glDeleteLists(blockGLID,1);
+                blockGLID =null;
+            }
+        }
         }
     }
 

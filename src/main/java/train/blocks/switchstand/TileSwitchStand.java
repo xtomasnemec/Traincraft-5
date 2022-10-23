@@ -43,8 +43,7 @@ public class TileSwitchStand extends TileSwitch {
             org.lwjgl.opengl.GL11.glTranslated( -0.2,  0,  0);
             org.lwjgl.opengl.GL11.glScalef(0.65f,0.65f,0.65f);
 
-            new train.render.models.ModelSwitchStandOn()
-                    .render(null, 0, 0, 0, 0, 0, 0.0625f);
+            new train.render.models.ModelSwitchStandOff().render();
         }
         //inworld render
         else {
@@ -59,9 +58,9 @@ public class TileSwitchStand extends TileSwitch {
 
             //on
             if (getEnabled()) {
-                new train.render.models.ModelSwitchStandOn().renderBlock();
+                new train.render.models.ModelSwitchStandOn().render();
             } else {//off
-                new train.render.models.ModelSwitchStandOff().renderBlock();
+                new train.render.models.ModelSwitchStandOff().render();
             }
         }
     }
@@ -69,7 +68,7 @@ public class TileSwitchStand extends TileSwitch {
     @SideOnly(Side.CLIENT)
     @Override
     public ResourceLocation getTexture(int x, int y, int z){
-        if (!getEnabled()) {
+        if (getEnabled()) {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
         } else {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");

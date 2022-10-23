@@ -99,6 +99,7 @@ public class TileTCSignal extends TileSwitch {
 			GL11.glScalef(0.65f,0.65f,0.65f);
 			org.lwjgl.opengl.GL11.glTranslatef( 0,  -0.5f,  0);
 		}
+		//this would normally be the regular render() call, but this model is weird.
 		new train.render.models.blocks.ModelBlockSignal()
 				.render(null, 0, 0, 0, 0, 0, 0.0625f);
 	}
