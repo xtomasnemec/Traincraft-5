@@ -68,8 +68,6 @@ public class TileSwitchStand extends TileSwitch implements ITickable {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
         } else {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");
-        } else {
-            return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
         }
     }
 }

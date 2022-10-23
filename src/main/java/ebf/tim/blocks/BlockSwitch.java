@@ -99,16 +99,16 @@ public class BlockSwitch extends BlockDynamic {
 
 
     @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        super.onBlockAdded(world, x,y,z);
-        TileSwitch te = (TileSwitch) world.getTileEntity(x,y,z);
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+        super.onBlockAdded(world, pos,state);
+        TileSwitch te = (TileSwitch) world.getTileEntity(pos);
         if (te !=null) {
             te.setEnabled(false);
         }
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block other) {
-        super.onNeighborBlockChange(world, x, y, z, other);
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
+        super.neighborChanged(state, world, pos, block, other);
     }
 }

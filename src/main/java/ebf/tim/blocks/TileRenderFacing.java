@@ -78,8 +78,8 @@ public class TileRenderFacing extends TileEntity {
             }
 
 
-            if(worldObj==null) {
-                Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
+            if(world==null) {
+                Minecraft.getMinecraft().entityRenderer.disableLightmap();
             }
             org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.5f,0.5f);
             switch (facing){
