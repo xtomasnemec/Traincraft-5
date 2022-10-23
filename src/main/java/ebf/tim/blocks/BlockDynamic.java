@@ -107,8 +107,8 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
-    public boolean hasTileEntity(IBlockState state){
-        return true;
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return isContainer?new TileEntityStorage(this):new TileRenderFacing(this);
     }
 
     @Override
@@ -129,8 +129,8 @@ public class BlockDynamic extends BlockContainer {
 
 
     @Override
-    public boolean onBlockActivated(World worldOBJ, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (player.isSneaking() || !isBlockContainer) {
+    public boolean onBlockActivated(World worldOBJ, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+        if (player.isSneaking() || !isContainer) {
             return false;
         } else if (worldOBJ.isRemote) {
             return true;
