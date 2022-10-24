@@ -1,25 +1,29 @@
 package train.blocks.tracks;
 
+import ebf.tim.utility.DebugUtil;
 import mods.railcraft.api.core.ITextureLoader;
 import mods.railcraft.api.tracks.ITrackItemIconProvider;
 import mods.railcraft.api.tracks.TrackSpec;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
-import train.library.Tracks;
+import train.library.RCTracks;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class TrackTextureLoader implements ITextureLoader, ITrackItemIconProvider {
-	public static final TrackTextureLoader INSTANCE = new TrackTextureLoader();
+public class RailTextureLoader implements ITextureLoader, ITrackItemIconProvider {
+	public static final RailTextureLoader INSTANCE = new RailTextureLoader();
 	public final Map textures = new HashMap();
-	//public final Map itemIcon = new HashMap();
+
 	@Override
 	public void registerIcons(IIconRegister iconRegister) {
-		for (Tracks track : Tracks.values()) {
-			IIcon[] icons = SheetTextureStitched.unstitchIcons(iconRegister, track.getTextureTag(), track.getNumIcons());
+		for (RCTracks track : RCTracks.values()) {
+
+			IIcon[] icons = new IIcon[track.getNumIcons()];
+			for (int i = 0; i < track.getNumIcons(); i++) {
+				icons[i]=iconRegister.registerIcon(track.getTextureTag() + "." + i);
+			}
 			this.textures.put(track.getTrackSpec(), icons);
-			//this.itemIcon.put(track.getTrackSpec(), icons[track.getNumIcons()]);
 		}
 	}
 	@Override

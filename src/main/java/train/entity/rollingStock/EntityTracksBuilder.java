@@ -33,7 +33,7 @@ public class EntityTracksBuilder extends GenericRailTransport {
 
     //main stats
     @Override
-    public String transportName(){return "Tracks Builder";}
+    public String transportName(){return "RCTracks Builder";}
     @Override
     public String transportcountry(){return null;}
     @Override
