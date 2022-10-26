@@ -7,19 +7,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
-public class TileSwitch extends TileRenderFacing implements ITickable {
-    private boolean enabled=false;
-    public int crossingTick=0, soundLength=0;
+public class TileSwitch extends TileRenderFacing {
+    private boolean enabled=false, animationReversing=false;
+    public int crossingTick=0;
     private long lastTick=0, lastSoundMS=0;
-    private String sound=null;
-    private float pitch=1,volume=1;
 
     public TileSwitch(BlockSwitch block){
         host=block;
-        sound=block.soundFile();
-        soundLength=block.getSoundInterval();
-        pitch=block.soundPitch();
-        volume=block.soundVolume();
     }
     public TileSwitch(){}
 
@@ -53,6 +47,28 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
         super.readFromNBT(tag);
     }
 
+    //how often to repeat the sound in MS, this includes the length of the sound itself
+    public int getSoundInterval(){
+        return 2000;
+    }
+
+    //remember to list the sound file in your sounds.json and ID it there
+    // TC5 does not yet feature direct audio streaming.
+    public String soundFile(){return "";}
+    //optional pitch shift for sound
+    public float soundPitch(){return 1f;}
+    //sound volume
+    public float soundVolume(){return 1f;}
+
+    //sets the min and max rotation angles.
+    // if there is a difference of exactly 360 between the two, it will not reverse
+    public float maxAngle(){return 360;}
+    public float minAngle(){return 0;}
+    //how many degrees to move each animation tick.
+    public float animationSpeed(){return 1;}
+    //this prevents the tick from reversing or looping until the redstone state changes
+    public boolean angleStops(){return false;}
+
     @Override
     public void update() {
         if(!getWorld().isRemote){
@@ -62,18 +78,34 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
         //only tick every 1/20 of a second. Client tick tends to be fast and unreliable depending on FPS
         if(time>lastTick+50){
             lastTick=time;
-            crossingTick++;
-            //this handles ticks for animations so models can access and modulate the value for
-            // blinking, swinging, and other animations.
-            if(crossingTick>=360){
-                crossingTick=0;
+            if(angleStops()){
+                if (crossingTick<=maxAngle() && getWorldObj().isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord)){
+                    crossingTick+=animationSpeed();
+                } else if (crossingTick>=minAngle() && !getWorldObj().isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord)){
+                    crossingTick-=animationSpeed();
+                }
+            } else {
+                if(maxAngle()-minAngle()==360) {
+                    crossingTick+=animationSpeed();
+                    if(crossingTick>=360){
+                        crossingTick=0;
+                    }
+                } else if(animationReversing){
+                    crossingTick-=animationSpeed();
+                } else {
+                    crossingTick+=animationSpeed();
+                }
+
+                if(crossingTick<=minAngle() || crossingTick>=maxAngle()){
+                    animationReversing=!animationReversing;
+                }
             }
         }
 
         //if there's a defined sound, play that every interval.
-        if(getEnabled() && sound!=null){
-            if(time>lastSoundMS+soundLength){
-                getWorld().playSound((EntityPlayer)null,getPos(),new SoundEvent(new ResourceLocation(sound)), SoundCategory.BLOCKS,volume,pitch);
+        if(getEnabled() && soundFile()!=null){
+            if(time>lastSoundMS+getSoundInterval()){
+                getWorldObj().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
                 lastSoundMS=time;
             }
         }

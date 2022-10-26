@@ -93,46 +93,8 @@ public class CustomItemModel implements ICustomModelLoader {
     public static void renderItemModel(ItemStack item, ItemCameraTransforms.TransformType type, EntityLivingBase holder) {
         if(item==null){return;}
 
-        if(blockTextures.containsKey(item.getItem())) {
+        if (item.getItem() instanceof ItemTransport){
             GL11.glPushMatrix();
-
-            switch (type){
-                case FIRST_PERSON_RIGHT_HAND: FIRST_PERSON_LEFT_HAND:{
-                    GL11.glScalef(0.625f,0.625f,0.625f);
-                    GL11.glTranslated(0, -0.625, -0.625f);
-                    //GL11.glTranslated(0.65, 0, 0);
-                    break;
-                }
-                case THIRD_PERSON_LEFT_HAND: case THIRD_PERSON_RIGHT_HAND:{
-                    GL11.glScalef(0.625f,0.625f,0.625f);
-                    GL11.glTranslated(0, 0.625, -0.625f);
-                    GL11.glRotatef(45,1,0,0);
-                }
-                case GUI:{
-                    GL11.glRotatef(25,1,0,0);
-                    GL11.glRotatef(45,0,1,0);
-                    GL11.glTranslated(-0.65, 0, 0);
-                    GL11.glScalef(0.65f,0.65f,0.65f);
-                    break;
-                }
-                case GROUND:{
-                    GL11.glTranslated(-0.1, -0.1, -0.1);
-                    GL11.glScalef(0.25f, 0.25f, 0.25f);
-                    break;
-                }
-            }
-            GL11.glScalef(0.95f,0.95f,0.95f);
-            GL11.glTranslatef(0,-0.1f,0);
-            if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){
-                ((TileEntitySpecialRenderer)blockTextures.get(item.getItem()).host.tesr)
-                        .render(blockTextures.get(item.getItem()),0,0,0,0,0,0);
-            } else {
-                blockTextures.get(item.getItem()).addInfoToCrashReport(null);
-            }
-            GL11.glPopMatrix();
-            Minecraft.getMinecraft().getTextureManager().bindTexture(LOCATION_BLOCKS_TEXTURE);
-
-        } else if (item.getItem() instanceof ItemTransport){
             GenericRailTransport entity = ((ItemTransport) item.getItem()).entity;
             float scale = entity.getHitboxSize()[0];
             if(scale!=0){
@@ -328,7 +290,18 @@ public class CustomItemModel implements ICustomModelLoader {
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glPopMatrix();
-            Minecraft.getMinecraft().getTextureManager().bindTexture(LOCATION_BLOCKS_TEXTURE);
+        } else if(blockTextures.containsKey(item.getItem())) {
+            GL11.glPushMatrix();
+            GL11.glScalef(0.95f,0.95f,0.95f);
+            GL11.glTranslatef(0,-0.1f,0);
+            if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){
+                ((TileEntitySpecialRenderer)blockTextures.get(item.getItem()).host.tesr)
+                        .renderTileEntityAt(blockTextures.get(item.getItem()),0,0,0,0);
+            } else {
+                blockTextures.get(item.getItem()).func_145828_a(null);
+            }
+            GL11.glPopMatrix();
+
         }
 
 

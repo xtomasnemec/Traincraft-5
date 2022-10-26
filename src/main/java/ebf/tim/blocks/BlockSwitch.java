@@ -45,20 +45,7 @@ public class BlockSwitch extends BlockDynamic {
     }
 
 
-    //how often to repeat the sound in MS, this includes the length of the sound itself
-    public int getSoundInterval(){
-        return 2000;
-    }
-
-    //remember to list the sound file in your sounds.json and ID it there
-    // TC5 does not yet feature direct audio streaming.
-    public String soundFile(){return "";}
-    //optional pitch shift for sound
-    public float soundPitch(){return 1f;}
-    //sound volume
-    public float soundVolume(){return 1f;}
-
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
         } else {
