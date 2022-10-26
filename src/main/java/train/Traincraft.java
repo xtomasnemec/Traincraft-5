@@ -257,34 +257,6 @@ public class Traincraft {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
-		tcLog.info("Start to PostInitialize");
-		tcLog.info("Register ChunkHandler");
-
-		tcLog.info("Activation Mod Compatibility");
-		//railcraft recipe compatibility
-		if(Loader.isModLoaded("Railcraft")) {
-
-			File file = new File("./config/railcraft/railcraft.cfg");
-			try {
-				@SuppressWarnings("resource") Scanner scanner = new Scanner(new FileInputStream(file));
-
-				while (scanner.hasNextLine()) {
-					String line = scanner.nextLine().trim();
-
-					if (line.equals("B:useAltRecipes=false")) {
-						PluginRailcraft.init();
-						Traincraft.tcLog.info("Enabled Traincraft additional tracks for Railcraft");
-						break;
-					} else if(line.equals("B:useAltRecipes=true")){
-						Traincraft.tcLog.info(
-								"You've enabled vanilla rail recipes in Railcraft. Disable them to get Traincraft additional tracks");
-					}
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-
 		tcLog.info("Finished PostInitialization");
 	}
 

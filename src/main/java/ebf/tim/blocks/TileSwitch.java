@@ -1,13 +1,15 @@
 package ebf.tim.blocks;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
-public class TileSwitch extends TileRenderFacing {
+public class TileSwitch extends TileRenderFacing implements ITickable {
     private boolean enabled=false, animationReversing=false;
     public int crossingTick=0;
     private long lastTick=0, lastSoundMS=0;
@@ -79,9 +81,9 @@ public class TileSwitch extends TileRenderFacing {
         if(time>lastTick+50){
             lastTick=time;
             if(angleStops()){
-                if (crossingTick<=maxAngle() && getWorldObj().isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord)){
+                if (crossingTick<=maxAngle() && getWorld().isBlockPowered(pos)){
                     crossingTick+=animationSpeed();
-                } else if (crossingTick>=minAngle() && !getWorldObj().isBlockIndirectlyGettingPowered(xCoord,yCoord,zCoord)){
+                } else if (crossingTick>=minAngle() && !getWorld().isBlockPowered(pos)){
                     crossingTick-=animationSpeed();
                 }
             } else {
@@ -105,7 +107,9 @@ public class TileSwitch extends TileRenderFacing {
         //if there's a defined sound, play that every interval.
         if(getEnabled() && soundFile()!=null){
             if(time>lastSoundMS+getSoundInterval()){
-                getWorldObj().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
+                world.playSound(null, pos,
+                        SoundEvent.REGISTRY.getObject(new ResourceLocation(soundFile())), SoundCategory.BLOCKS,
+                        soundVolume(),soundPitch());
                 lastSoundMS=time;
             }
         }

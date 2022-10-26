@@ -296,9 +296,9 @@ public class CustomItemModel implements ICustomModelLoader {
             GL11.glTranslatef(0,-0.1f,0);
             if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){
                 ((TileEntitySpecialRenderer)blockTextures.get(item.getItem()).host.tesr)
-                        .renderTileEntityAt(blockTextures.get(item.getItem()),0,0,0,0);
+                        .render(blockTextures.get(item.getItem()),0,0,0,0,0,0);
             } else {
-                blockTextures.get(item.getItem()).func_145828_a(null);
+                blockTextures.get(item.getItem()).addInfoToCrashReport(null);
             }
             GL11.glPopMatrix();
 
