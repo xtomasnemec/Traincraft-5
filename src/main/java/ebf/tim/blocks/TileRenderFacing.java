@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileRenderFacing extends TileEntity {
     public byte facing =-1;
     private Integer blockGLID =null;
-    private AxisAlignedBB boundingBox = null;
     public BlockDynamic host;
 
     public TileRenderFacing(BlockDynamic block){

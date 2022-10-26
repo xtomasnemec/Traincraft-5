@@ -56,19 +56,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         if(item==null){return;}
 
-        if(blockTextures.containsKey(item.getItem())) {
-            GL11.glPushMatrix();
-            GL11.glScalef(0.95f,0.95f,0.95f);
-            GL11.glTranslatef(0,-0.1f,0);
-            if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){
-                ((TileEntitySpecialRenderer)blockTextures.get(item.getItem()).host.tesr)
-                        .renderTileEntityAt(blockTextures.get(item.getItem()),0,0,0,0);
-            } else {
-                blockTextures.get(item.getItem()).func_145828_a(null);
-            }
-            GL11.glPopMatrix();
-
-        } else if (item.getItem() instanceof ItemTransport){
+        if (item.getItem() instanceof ItemTransport){
             GL11.glPushMatrix();
             GenericRailTransport entity = ((ItemTransport) item.getItem()).entity;
             scale = entity.getHitboxSize()[0];
@@ -232,6 +220,18 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glPopMatrix();
+        } else if(blockTextures.containsKey(item.getItem())) {
+            GL11.glPushMatrix();
+            GL11.glScalef(0.95f,0.95f,0.95f);
+            GL11.glTranslatef(0,-0.1f,0);
+            if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){
+                ((TileEntitySpecialRenderer)blockTextures.get(item.getItem()).host.tesr)
+                        .renderTileEntityAt(blockTextures.get(item.getItem()),0,0,0,0);
+            } else {
+                blockTextures.get(item.getItem()).func_145828_a(null);
+            }
+            GL11.glPopMatrix();
+
         }
 
 

@@ -119,6 +119,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**/
     float rotationRoll;
     /**calculated movement speed, first value is used for GUI and speed, second is used for render effects.*/
+    @Deprecated //TODO: value 1 gets the number right more often, but value 2 gets direction right. HOW
     public float[] velocity=new float[]{0,0};
     public int forceBackupTimer =0, syncTimer=0;
     public float pullingWeight=0;
