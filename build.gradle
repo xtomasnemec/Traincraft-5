@@ -11,10 +11,6 @@ buildscript {
 			name = "gt"
 			url = "https://gregtech.overminddl1.com/"
 		}
-		maven {
-			name "codechicken"
-			url "http://chickenbones.net/maven/"
-		}
 	}
 	dependencies {
 		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
@@ -75,8 +71,12 @@ processResources
 		exclude 'mcmod.info'
 	}
 }
-
-
+repositories {
+	maven {
+		name "codechicken"
+		url "https://maven.cil.li/"
+	}
+}
 dependencies {
 	// `compile` will compile it and run with `runClient`/`runServer`
     // `compileOnly will only compile but not load in dev testing (can still put in the instance mods directory though)
