@@ -169,12 +169,17 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
 
             if(item.getTagCompound().hasKey("rail")) {
                 int[] color = {255,255,255};
-                for (Map.Entry<ItemStack, int[]> e : TextureManager.ingotColors.entrySet()) {
-                    if (e.getKey().getItem() == ItemStack.loadItemStackFromNBT(item.getTagCompound().getCompoundTag("rail")).getItem() &&
-                            e.getKey().getTagCompound() == ItemStack.loadItemStackFromNBT(item.getTagCompound().getCompoundTag("rail")).getTagCompound() &&
-                            e.getKey().getItemDamage() == ItemStack.loadItemStackFromNBT(item.getTagCompound().getCompoundTag("rail")).getItemDamage()) {
-                        color = TextureManager.ingotColors.get(e.getKey());
-                        break;
+                ItemStack rail = ItemStack.loadItemStackFromNBT(item.getTagCompound().getCompoundTag("rail"));
+                if(TextureManager.ingotColors.containsKey(rail)) {
+                    color = TextureManager.ingotColors.get(rail);
+                } else {
+                    for (Map.Entry<ItemStack, int[]> e : TextureManager.ingotColors.entrySet()) {
+                        if (e.getKey().getItem() ==rail.getItem() &&
+                                e.getKey().getTagCompound() == rail.getTagCompound() &&
+                                e.getKey().getItemDamage() == rail.getItemDamage()) {
+                            color = TextureManager.ingotColors.get(e.getKey());
+                            break;
+                        }
                     }
                 }
 
