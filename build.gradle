@@ -8,6 +8,10 @@ buildscript {
 			url = "https://files.minecraftforge.net/maven"
 		}
 		maven {
+			name = "oldforge"
+			url = "https://maven.minecraftforge.net/"
+		}
+		maven {
 			name = "gt"
 			url = "https://gregtech.overminddl1.com/"
 		}
