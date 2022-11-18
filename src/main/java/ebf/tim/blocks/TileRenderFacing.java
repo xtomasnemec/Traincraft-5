@@ -68,7 +68,7 @@ public class TileRenderFacing extends TileEntity {
     @Override
     public void addInfoToCrashReport(CrashReportCategory r){
         if(r==null){
-            int boundTexture = org.lwjgl.opengl.GL11.glGetInteger(org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
+            int boundTexture = org.lwjgl.opengl.GL11.glGetInteger(org.lwjgl.opengl.GL11.GL_TEXTURE_BINDING_2D);
             if(getTexture(getPos().getX(),getPos().getY(),getPos().getZ())!=null) {
                 org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
                 TextureManager.bindTexture(getTexture(getPos().getX(),getPos().getY(),getPos().getZ()));

@@ -11,6 +11,7 @@ public class RenderBridgePillar extends TiMTESR {
 	@Override
 	public void render(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GL11.glPushMatrix();
+		org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.3f,0.5f);
 		modelBridgePillar.render(tileEntity, x, y, z);
 		GL11.glPopMatrix();
 	}

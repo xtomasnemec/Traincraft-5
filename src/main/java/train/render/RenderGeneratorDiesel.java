@@ -31,7 +31,8 @@ public class RenderGeneratorDiesel extends TiMTESR {
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(texture);
 
 		if(tile==null || tile.getWorld()==null){
-			GL11.glTranslatef(0, -0.5F, 0);
+			org.lwjgl.opengl.GL11.glTranslatef(
+					0.5f,-0.15f,0.5f);
 			GL11.glScalef(0.85f,0.85f,0.85f);
 		} else {
 			GL11.glTranslatef(0.5F, 0.0F, 0.5F);

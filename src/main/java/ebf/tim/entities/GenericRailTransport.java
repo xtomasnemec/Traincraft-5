@@ -634,6 +634,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float p_70097_2_){
+        if(getWorld().isRemote){
+            return true;
+        }
         if(damageSource==null){
             health -=20;
             //be sure we drop the inventory items on death.
@@ -666,7 +669,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //on Destruction
-        if (health<1 && !getWorld().isRemote){
+        if (health<1){
             //since it was a player be sure we remove the entity from the logging.
             ServerLogger.deleteWagon(this);
             //be sure we drop the inventory items on death.
