@@ -1,6 +1,5 @@
 package ebf.tim.registry;
 
-
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
@@ -375,7 +374,7 @@ public class TiMGenericRegistry {
             RegisterItem(registry.getCartItem().getItem(),MODID,registry.transportName().replace(" ", "")+".item",
                     null,registry.getItem().getCreativeTab(),null,null);
             if (registry.getRecipe() != null) {
-                    tempReipes.put(MODID, new recipePreReg(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
+                    tempReipes.add(new recipePreReg(registry.getRecipe(), registry.getCartItem(), registry.getTier(), MODID));
             }
             registry.registerSkins();
             ItemCraftGuide.itemEntries.add(registry.getClass());
@@ -447,12 +446,12 @@ public class TiMGenericRegistry {
 
     public static void endRegistration() {
 
-        for(String key : tempReipes.keySet()){
-            if (!CommonProxy.recipesInMods.containsKey(key)) {
-                CommonProxy.recipesInMods.put(key, new ArrayList<Recipe>());
+        for(recipePreReg recipe : tempReipes){
+            if (!CommonProxy.recipesInMods.containsKey(recipe.modid)) {
+                CommonProxy.recipesInMods.put(recipe.modid, new ArrayList<Recipe>());
             }
-            CommonProxy.recipesInMods.get(key).add(getRecipeWithTier(tempReipes.get(key).inputs, tempReipes.get(key).result, tempReipes.get(key).tier));
-            RecipeManager.registerRecipe(tempReipes.get(key).inputs, tempReipes.get(key).result, tempReipes.get(key).tier);
+            CommonProxy.recipesInMods.get(recipe.modid).add(getRecipeWithTier(recipe.inputs, recipe.result, recipe.tier));
+            RecipeManager.registerRecipe(recipe.inputs, recipe.result, recipe.tier);
         }
 
         usedNames = null;
@@ -460,14 +459,15 @@ public class TiMGenericRegistry {
         redundantTiles = null;
     }
 
-    private static Map<String, recipePreReg> tempReipes = new HashMap<>();
+    private static List<recipePreReg> tempReipes = new ArrayList<>();
     private static class recipePreReg {
-        int tier;ItemStack result;ItemStack[] inputs;
+        int tier;ItemStack result;ItemStack[] inputs; String modid;
 
-        public recipePreReg(ItemStack[] i, ItemStack r, int t) {
+        public recipePreReg(ItemStack[] i, ItemStack r, int t, String m) {
             this.inputs=i;
             this.result = r;
             this.tier=t;
+            this.modid=m;
         }
     }
 

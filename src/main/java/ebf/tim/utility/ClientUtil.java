@@ -53,7 +53,6 @@ public class ClientUtil {
 
         GL11.glPushMatrix();
         TextureManager.bindTexture(vanillaInventory);
-        GL11.glDisable(GL11.GL_LIGHTING);
         int i=0;
         for (;i<slots.size(); i++){
             drawTexturedRect(slotX.get(i)+ guiLeft-2, slotY.get(i)+guiTop-2,
@@ -86,7 +85,6 @@ public class ClientUtil {
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             TextureManager.bindTexture(vanillaInventory);
             GL11.glEnable(GL11.GL_BLEND);
-            GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glTranslatef(0,0,100);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
             for (i = 0; i < overlays.size(); i++) {
@@ -99,7 +97,6 @@ public class ClientUtil {
             GL11.glPopMatrix();
         }
 
-        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
     }
 

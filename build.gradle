@@ -4,17 +4,6 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "https://maven.minecraftforge.net/" }
-        maven { url = "https://jitpack.io" }
-        
-        maven {
-            name "codechicken"
-            url "http://chickenbones.net/maven/"
-        }
-
-        ivy {
-            name "BuildCraft"
-            artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
-        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3.2'
@@ -46,6 +35,21 @@ minecraft {
     runDir = "run"
     //replaceIn "Info.java"
     //replace "@VERSION1@", config.modVersion.toString()
+}
+
+repositories {
+    maven {
+        name "ChickenBones"
+        url "http://chickenbones.net/maven/"
+    }
+    maven { url = "https://jitpack.io" }
+    //maven {
+    //    url = "http://maven.cil.li/"
+    //}
+    ivy {
+        name "BuildCraft"
+        artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
+    }
 }
 
 

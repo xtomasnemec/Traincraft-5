@@ -86,7 +86,6 @@ public class GUICraftBook extends GuiScreen {
         //GL11.glTranslatef(,, 300);
         GL11.glColor4f(1,1,1,1);
 
-        GL11.glDisable(GL11.GL_LIGHTING);
         TextureManager.bindTexture(new ResourceLocation("textures/gui/book.png"));
         ClientUtil.drawTexturedRect(percentLeft(10),percentTop(15),166,0,percentLeft(40),percentTop(60),-140,192);
 
@@ -98,7 +97,6 @@ public class GUICraftBook extends GuiScreen {
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
         renderpage(false, mouseX, mouseY, itemRender);
 
-        GL11.glEnable(GL11.GL_LIGHTING);
 
         //change the item displayed every second
         if(System.currentTimeMillis()-frame>1000){
@@ -157,7 +155,11 @@ public class GUICraftBook extends GuiScreen {
     }
 
     public GUICraftBook(){}
-
+    @Override
+    public boolean doesGuiPauseGame()
+    {
+        return false;
+    }
 
 
     @Override
