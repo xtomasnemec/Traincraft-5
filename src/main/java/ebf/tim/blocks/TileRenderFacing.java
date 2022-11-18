@@ -107,12 +107,17 @@ public class TileRenderFacing extends TileEntity {
             host.model.render();
         } else {
             if(blockGLID ==null) {
-                blockGLID = org.lwjgl.opengl.GL11.glGenLists(1);
-                org.lwjgl.opengl.GL11.glNewList(blockGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
                 for (TexturedPolygon poly : cube.faces) {
                     Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625f);
                 }
-                org.lwjgl.opengl.GL11.glEndList();
+                if(!ebf.tim.utility.ClientProxy.disableCache) {
+                    blockGLID = org.lwjgl.opengl.GL11.glGenLists(1);
+                    org.lwjgl.opengl.GL11.glNewList(blockGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
+                    for (TexturedPolygon poly : cube.faces) {
+                        Tessellator.getInstance().drawTexturedVertsWithNormal(poly, 0.0625f);
+                    }
+                    org.lwjgl.opengl.GL11.glEndList();
+                }
             } else {
 
             if(!org.lwjgl.opengl.GL11.glIsList(blockGLID)){
