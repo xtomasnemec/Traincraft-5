@@ -21,12 +21,8 @@ jobs:
         sudo apt-get install -y p7zip-full
         mkdir ~/.gradle
         mkdir ~/.gradle/caches
-        dir ../
-        echo directory 2
-        dir ../../
-        echo directory 3
-        dir ~
-        echo homedir
+        pwd
+        echo current directory
         cd ~/.gradle/caches
         7z x ~/Traincraft-5/gradle/caches.7z.001 -y
         
