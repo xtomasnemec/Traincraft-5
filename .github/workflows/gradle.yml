@@ -28,8 +28,8 @@ jobs:
         sudo apt-get install -y p7zip-full
         mkdir ~/.gradle/
         mkdir ~/.gradle/caches/
-        dir -a ./
-        7z x ./gradle/caches.7z.001 -o~/.gradle/caches/
+        dir -a ~/
+        7z x ./gradle/caches.7z.001 -o${{ runner.os }}-gradle
       
     - name: setup with Gradle
       run: ./gradlew setupDecompWorkspace --refresh-dependencies idea
