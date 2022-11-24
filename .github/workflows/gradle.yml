@@ -26,15 +26,11 @@ jobs:
     - name: Install 7z and extract data
       run: |
         sudo apt-get install -y p7zip-full
-        dir -a ~/
         mkdir ~/.gradle/
         mkdir ~/.gradle/caches/
-        dir -a ~/
         echo ${{ runner.os }}-gradle
-        7z x ./gradle/caches.7z.001 -o~/.gradle/caches/
-        echo gradle
-        dir -a ~/.gradle
-        echo gradle caches
+        7z x ./gradle/caches.7z.001 -o~/.gradle/caches/ -y
+        echo check gradle caches
         dir -a ~/.gradle/caches/
         echo gradle minecraft
         dir -a ~/.gradle/caches/minecraft
