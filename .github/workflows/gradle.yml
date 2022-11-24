@@ -21,12 +21,9 @@ jobs:
         sudo apt-get install -y p7zip-full
         mkdir ~/.gradle
         mkdir ~/.gradle/caches
-        pwd
-        echo current directory
         cd ~/.gradle/caches
-        7z x ~/Traincraft-5/gradle/caches.7z.001 -y
-        
-        cd ~/Traincraft-5
+        7z x /home/runner/work/Traincraft-5/Traincraft-5/gradle/caches.7z.001 -y
+        cd /home/runner/work/Traincraft-5/Traincraft-5
 
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
