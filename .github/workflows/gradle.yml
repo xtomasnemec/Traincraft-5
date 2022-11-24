@@ -21,9 +21,9 @@ jobs:
         sudo apt-get install -y p7zip-full
         mkdir ~/.gradle/
         mkdir ~/.gradle/caches/
-        echo gralde system dir
-        echo ${{ runner.os }}-gradle
         7z x ./gradle/caches.7z.001 -o"~/.gradle/caches/" -y
+        echo current folder
+        dir -a ./
         echo check gradle caches
         dir -a ~/.gradle/caches/
         echo gradle minecraft
