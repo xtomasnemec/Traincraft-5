@@ -17,11 +17,10 @@ jobs:
     steps:
     - name: Install 7z and extract data
       run: |
-        sudo apt-get update
         sudo apt-get install -y p7zip-full
         mkdir -p ~/.gradle/caches/
-        dir -a
-        7z x ./gradle/caches.7z.001 -o~/.gradle/caches/
+        dir -a ../
+        7z x ../gradle/caches.7z.001 -o~/.gradle/caches/
 
 
     - name: Set up JDK 1.8
