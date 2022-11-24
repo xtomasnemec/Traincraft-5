@@ -15,6 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      
+    - name: Install 7z and extract data
+      run: |
+        sudo apt-get install -y p7zip-full
+        mkdir ~/.gradle/
+        mkdir ~/.gradle/caches/
+        echo gralde system dir
+        echo ${{ runner.os }}-gradle
+        7z x ./gradle/caches.7z.001 -o"~/.gradle/caches/" -y
+        echo check gradle caches
+        dir -a ~/.gradle/caches/
+        echo gradle minecraft
+        dir -a ~/.gradle/caches/minecraft
 
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
@@ -22,18 +35,6 @@ jobs:
         java-version: 1.8
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
-    - name: Install 7z and extract data
-      run: |
-        sudo apt-get install -y p7zip-full
-        mkdir ~/.gradle/
-        mkdir ~/.gradle/caches/
-        echo ${{ runner.os }}-gradle
-        7z x ./gradle/caches.7z.001 -o~/.gradle/caches/ -y
-        echo check gradle caches
-        dir -a ~/.gradle/caches/
-        echo gradle minecraft
-        dir -a ~/.gradle/caches/minecraft
       
     - name: setup with Gradle
       run: ./gradlew setupDecompWorkspace --refresh-dependencies idea
