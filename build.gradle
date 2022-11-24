@@ -77,20 +77,8 @@ processResources
 		}
 repositories {
 	maven {
-		name = "forge"
-		url = "https://files.minecraftforge.net/maven"
-	}
-	maven {
-		name = "oldforge"
-		url = "https://maven.minecraftforge.net/"
-	}
-	maven {
 		name "codechicken"
 		url "https://maven.cil.li/"
-	}
-	maven {
-		name "gt"
-		url "https://gregtech.overminddl1.com/"
 	}
 	ivy {
 		name "BuildCraft"
