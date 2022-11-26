@@ -1,5 +1,6 @@
 package ebf.tim.blocks;
 
+import ebf.tim.utility.DebugUtil;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileSwitch extends TileRenderFacing {
