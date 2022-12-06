@@ -96,9 +96,9 @@ jar {
 }
 
 idea
-{
-	module
-	{
-		inheritOutputDirs = true
-	}
-}
+		{
+			module
+					{
+						inheritOutputDirs = true
+					}
+		}

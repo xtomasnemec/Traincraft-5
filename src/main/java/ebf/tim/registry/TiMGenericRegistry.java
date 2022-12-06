@@ -48,9 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ebf.tim.utility.RecipeManager.getRecipeWithTier;
-import static net.minecraftforge.registries.GameData.BLOCKS;
-import static net.minecraftforge.registries.GameData.ITEMS;
+import static ebf.tim.utility.RecipeManager.getRecipe;
 
 /**
  * <h1>Train registry</h1>
@@ -374,9 +372,16 @@ public class TiMGenericRegistry {
             RegisterItem(registry.getCartItem().getItem(),MODID,registry.transportName().replace(" ", "")+".item",
                     null,registry.getItem().getCreativeTab(),null,null);
             if (registry.getRecipe() != null) {
-                    tempReipes.add(new recipePreReg(registry.getRecipe(), registry.getCartItem(), registry.getTier(), MODID));
+                if (!CommonProxy.recipesInMods.containsKey(MODID)) {
+                    CommonProxy.recipesInMods.put(MODID, new ArrayList<Recipe>());
+                }
+                CommonProxy.recipesInMods.get(MODID).add(getRecipe(registry.getRecipe(), registry.getCartItem()));
+
             }
             registry.registerSkins();
+            if (registry.getRecipe() != null) {
+                RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getCraftingTable());
+            }
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {
                 regEntityRender(registry,entityRender);

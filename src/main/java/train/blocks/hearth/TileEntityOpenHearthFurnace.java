@@ -36,8 +36,9 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage implements IT
 
 	protected void initInventoryFromBlock( BlockDynamic block )
 	{
-		if ( host == null )
-			super.initInventoryFromBlock( block );
+		if ( host == null ) {
+			super.initInventoryFromBlock(block);
+		}
 
 		furnaceBurnTime = 0;
 		currentItemBurnTime = 0;

@@ -45,8 +45,9 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 
 	protected void initInventoryFromBlock( BlockDynamic block )
 	{
-		if ( host == null )
-			super.initInventoryFromBlock( block );
+		if ( host == null ) {
+			super.initInventoryFromBlock(block);
+		}
 
 		distilBurnTime = 0;
 		currentItemBurnTime = 0;

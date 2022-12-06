@@ -52,18 +52,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.*;
+import train.blocks.TCBlocks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -1491,10 +1482,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             link =(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
             while (link != null) {
                 transports.add(link);
-                if (link.frontLinkedID != null &&
+                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
                         !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-                } else if (link.backLinkedID != null &&
+                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
                         !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
                 } else {
@@ -1516,10 +1507,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 consistLeadID=link.getEntityId();
             }
 
-            if(link.frontLinkedID!=null &&
+            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null &&
+            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
             } else {
@@ -1534,10 +1525,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(link.getAccelerator()!=0){
                 consistLeadID=link.getEntityId();
             }
-            if(link.frontLinkedID!=null &&
+            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null &&
+            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
             } else {
@@ -2605,8 +2596,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      *
      * @return either 1, 2, or 3 corresponding to which table should be able to craft it, or 0, to use the TiM traintable instead.
      */
-    public int getTier() {
-        return 0;
+    public Block getCraftingTable() {
+        return TCBlocks.trainTableTier1;
     }
 
     /**defines the name used for registration and the default name used in the gui.*/

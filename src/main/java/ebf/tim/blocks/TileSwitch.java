@@ -1,18 +1,16 @@
 package ebf.tim.blocks;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import ebf.tim.utility.DebugUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
-public class TileSwitch extends TileRenderFacing implements ITickable {
-    private boolean enabled=false, animationReversing=false;
+public class TileSwitch extends TileRenderFacing {
+    public boolean enabled=false, animationReversing=false;
     public int crossingTick=0;
-    private long lastTick=0, lastSoundMS=0;
+    public long lastTick=0, lastSoundMS=0;
 
     public TileSwitch(BlockSwitch block){
         host=block;
@@ -81,26 +79,30 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
         if(time>lastTick+50){
             lastTick=time;
             if(angleStops()){
-                if (crossingTick<=maxAngle() && getWorld().isBlockPowered(pos)){
+                if (crossingTick<=maxAngle() && getEnabled()){
                     crossingTick+=animationSpeed();
-                } else if (crossingTick>=minAngle() && !getWorld().isBlockPowered(pos)){
+                } else if (crossingTick>=minAngle() && !getEnabled()){
                     crossingTick-=animationSpeed();
                 }
             } else {
                 if(maxAngle()-minAngle()==360) {
-                    crossingTick+=animationSpeed();
-                    if(crossingTick>=360){
-                        crossingTick=0;
+                    if(getEnabled()) {
+                        crossingTick += animationSpeed();
+                        if (crossingTick >= 360) {
+                            crossingTick = 0;
+                        }
                     }
-                } else if(animationReversing){
-                    crossingTick-=animationSpeed();
-                } else {
-                    crossingTick+=animationSpeed();
+                } else if(getEnabled() || crossingTick!=0){
+                    if(animationReversing){
+                        crossingTick -= animationSpeed();
+                    } else {
+                        crossingTick += animationSpeed();
+                    }
+                    if(crossingTick<=minAngle() || crossingTick>=maxAngle()){
+                        animationReversing=!animationReversing;
+                    }
                 }
 
-                if(crossingTick<=minAngle() || crossingTick>=maxAngle()){
-                    animationReversing=!animationReversing;
-                }
             }
         }
 

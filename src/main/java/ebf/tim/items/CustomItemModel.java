@@ -238,13 +238,12 @@ public class CustomItemModel implements ICustomModelLoader {
 
             if(item.getTagCompound().hasKey("rail")) {
                 int[] color = {255,255,255};
-                ItemStack rail =new ItemStack(item.getTagCompound().getCompoundTag("rail"));
-
+                ItemStack rail = ItemStack.loadItemStackFromNBT(item.getTagCompound().getCompoundTag("rail"));
                 if(TextureManager.ingotColors.containsKey(rail)) {
                     color = TextureManager.ingotColors.get(rail);
                 } else {
                     for (Map.Entry<ItemStack, int[]> e : TextureManager.ingotColors.entrySet()) {
-                        if (e.getKey().getItem() == rail.getItem() &&
+                        if (e.getKey().getItem() ==rail.getItem() &&
                                 e.getKey().getTagCompound() == rail.getTagCompound() &&
                                 e.getKey().getItemDamage() == rail.getItemDamage()) {
                             color = TextureManager.ingotColors.get(e.getKey());

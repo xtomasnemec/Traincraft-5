@@ -10,6 +10,7 @@ package train.blocks;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.SimpleBlock;
+import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
 import ebf.tim.utility.RecipeManager;
@@ -37,9 +38,9 @@ import train.library.ItemIDs;
 import static ebf.tim.registry.TiMGenericRegistry.registerBlock;
 
 public class TCBlocks {
-	public static BlockDynamic trainTableTier1 = new BlockDynamic(new Material(MapColor.WOOD),true, 1);
-	public static BlockDynamic trainTableTier2 = new BlockDynamic(new Material(MapColor.WOOD),true, 2);
-	public static BlockDynamic trainTableTier3 = new BlockDynamic(new Material(MapColor.WOOD),true, 3);
+	public static BlockDynamic trainTableTier1 = new BlockDynamic(new Material(MapColor.mapColorArray[13]),true);
+	public static BlockDynamic trainTableTier2 = new BlockDynamic(new Material(MapColor.mapColorArray[13]),true);
+	public static BlockDynamic trainTableTier3 = new BlockDynamic(new Material(MapColor.mapColorArray[13]),true);
 
 	public static SimpleBlock oilSand;
 	public static SimpleBlock orePetroleum;
@@ -151,31 +152,31 @@ public class TCBlocks {
 	public static void registerRecipes(){
 
 		RecipeManager.registerRecipe(
-				new Object[]{Blocks.NETHER_BRICK,Items.LAVA_BUCKET,Blocks.NETHER_BRICK,Blocks.NETHER_BRICK,Items.BUCKET,Blocks.NETHER_BRICK,Blocks.NETHER_BRICK,Blocks.IRON_BLOCK,Blocks.NETHER_BRICK},
-				new ItemStack(blockHearthFurnace));
+				new Object[]{Blocks.nether_brick,Items.lava_bucket,Blocks.nether_brick,Blocks.nether_brick,Items.bucket,Blocks.nether_brick,Blocks.nether_brick,Blocks.iron_block,Blocks.nether_brick},
+				new ItemStack(blockHearthFurnace), TiMBlocks.trainTable);
 
 		RecipeManager.registerRecipe(
-				new Object[]{Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT,Blocks.GLASS_PANE,Blocks.TORCH,Blocks.GLASS_PANE,Items.IRON_INGOT,Items.IRON_INGOT,Items.IRON_INGOT},
-				new ItemStack(lantern));
+				new Object[]{Items.iron_ingot,Items.iron_ingot,Items.iron_ingot,Blocks.glass_pane,Blocks.torch,Blocks.glass_pane,Items.iron_ingot,Items.iron_ingot,Items.iron_ingot},
+				new ItemStack(lantern), TiMBlocks.trainTable);
 
 		RecipeManager.registerRecipe(
 				new Object[]{TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel, TiMItems.fireboxSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel,TiMOres.ingotSteel},
-				new ItemStack(blockDistil));
+				new ItemStack(blockDistil), TiMBlocks.trainTable);
 
 		RecipeManager.registerRecipe(
 				new Object[]{TiMItems.chimneySteel,null,null,TiMItems.mediumDieselEngine,TiMItems.steelPinCircuit,null,null,null,null},
-				new ItemStack(dieselGenerator));
+				new ItemStack(dieselGenerator), TiMBlocks.trainTable);
 
 		RecipeManager.registerRecipe(
-				new Object[]{null, ItemIDs.propeller.item, null, null, TiMItems.generator, null, Items.IRON_INGOT,null, Items.IRON_INGOT},
-				new ItemStack(windmill));
+				new Object[]{null, ItemIDs.propeller.item, null, null, TiMItems.generator, null, Items.iron_ingot,null, Items.iron_ingot},
+				new ItemStack(windmill), TiMBlocks.trainTable);
 
 		RecipeManager.registerRecipe(
-				new Object[]{null, Blocks.LOG,null,Blocks.LOG,TiMItems.generator,Blocks.LOG,null,Blocks.LOG,null},
-				new ItemStack(waterWheel));
+				new Object[]{null, Blocks.log,null,Blocks.log,TiMItems.generator,Blocks.log,null,Blocks.log,null},
+				new ItemStack(waterWheel), TiMBlocks.trainTable);
 
-		RecipeManager.registerRecipe(new Object[]{Blocks.GRAVEL,Items.CLAY_BALL,Blocks.GRAVEL,null,null,null,null,null,null},
-                new ItemStack(blockBallast));
+		RecipeManager.registerRecipe(new Object[]{Blocks.gravel,Items.clay_ball,Blocks.gravel,null,null,null,null,null,null},
+                new ItemStack(blockBallast), TiMBlocks.trainTable);
 
 	}
 }

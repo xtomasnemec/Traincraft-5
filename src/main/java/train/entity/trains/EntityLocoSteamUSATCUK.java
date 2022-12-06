@@ -9,11 +9,13 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import train.Traincraft;
+import train.blocks.TCBlocks;
 import train.library.Info;
 
 import java.util.List;
@@ -69,8 +71,8 @@ public class EntityLocoSteamUSATCUK extends EntityTrainCore {
 
 
     @Override
-    public int getTier() {
-        return 1;
+    public Block getCraftingTable() {
+        return TCBlocks.trainTableTier2;
     }
 
     @Override
