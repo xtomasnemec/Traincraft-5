@@ -42,7 +42,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ebf.tim.utility.RecipeManager.getRecipeWithTier;
+import static ebf.tim.utility.RecipeManager.getRecipe;
 
 /**
  * <h1>Train registry</h1>
@@ -278,16 +278,15 @@ public class TiMGenericRegistry {
                     registryPosition, TrainsInMotion.instance, 1600, 3, true);
             GameRegistry.registerItem(registry.getCartItem().getItem(), registry.getCartItem().getItem().getUnlocalizedName());
             if (registry.getRecipe() != null) {
-                if (CommonProxy.recipesInMods.containsKey(MODID)) {
-                    CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
-                } else {
+                if (!CommonProxy.recipesInMods.containsKey(MODID)) {
                     CommonProxy.recipesInMods.put(MODID, new ArrayList<Recipe>());
-                    CommonProxy.recipesInMods.get(MODID).add(getRecipeWithTier(registry.getRecipe(), registry.getCartItem(), registry.getTier()));
                 }
+                CommonProxy.recipesInMods.get(MODID).add(getRecipe(registry.getRecipe(), registry.getCartItem()));
+
             }
             registry.registerSkins();
             if (registry.getRecipe() != null) {
-                RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getTier());
+                RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getCraftingTable());
             }
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {

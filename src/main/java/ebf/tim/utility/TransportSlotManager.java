@@ -12,6 +12,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
+import train.blocks.TCBlocks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         }
         //player toolbar
         for (int iT = 0; iT < 9; iT++) {
-            addSlots(new ItemStackSlot(iinventory, iT).setCoords( 113 + (iT * 18), 142).setPlayerSlot());
+            addSlots(new ItemStackSlot(iinventory, iT, null).setCoords( 113 + (iT * 18), 142).setPlayerSlot());
         }
         //player inventory
         for (int ic = 0; ic < 9; ic++) {
@@ -62,7 +63,9 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         //tile entity reference
         hostInventory = block;
 
-        if (block.assemblyTableTier > 0 && CommonProxy.isTraincraft) { //it is an assembly table, move slots lower. (but only for the traincraft asm tables)
+        //train table layout
+        if (block.assemblyTableTier==TCBlocks.trainTableTier1 || block.assemblyTableTier==TCBlocks.trainTableTier2
+        || block.assemblyTableTier==TCBlocks.trainTableTier3) { //it is an assembly table, move slots lower. (but only for the traincraft asm tables)
             //player hotbar
             for (int iT = 0; iT < 9; iT++) {
                 addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 232).setPlayerSlot());
@@ -74,7 +77,9 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                     addSlots(new ItemStackSlot(iinventory, ((ir * 9) + ic) + 9, 8 + (ic * 18), 174 + (ir * 18)).setPlayerSlot());
                 }
             }
-        } else {
+        }
+        //train crafter layout
+        else {
             //player toolbar
             for (int iT = 0; iT < 9; iT++) {
                 addSlots(new ItemStackSlot(iinventory, iT, 8 + iT * 18, 142).setPlayerSlot());
@@ -177,7 +182,8 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
     @Override
     public ItemStack slotClick(int slotId, int dragType, int clickTypeIn, EntityPlayer player) {
 
-        if (hostInventory instanceof TileEntityStorage && ((TileEntityStorage) hostInventory).assemblyTableTier >= 0) {
+        if (hostInventory instanceof TileEntityStorage &&
+                ((TileEntityStorage) hostInventory).assemblyTableTier != TCBlocks.partTable) {
             this.detectAndSendChanges();
         }
 

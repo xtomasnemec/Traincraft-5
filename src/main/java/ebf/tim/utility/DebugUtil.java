@@ -3,6 +3,9 @@ package ebf.tim.utility;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Ferdinand
@@ -11,6 +14,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class DebugUtil {
 	
 	public static Boolean dev;
+
+	private static Logger LOGGER = LogManager.getLogger("trainsinmotion");
 
 
 	/**
@@ -74,12 +79,20 @@ public class DebugUtil {
 	 * Generic logging method, meant for using an actual minecraft logger;
 	 * @param obj the object to be logged or string
 	 */
-	@Deprecated
 	public static void log(Object obj){
-		if(dev){
-			//logger.info(String.valueOf(obj));
-			System.out.println(obj);
-		}
+		LOGGER.log(Level.WARN, obj);
+	}
+
+	public static void log(Level level, Object obj){
+		LOGGER.log(level, obj);
+	}
+
+	public static void error(Object obj, Exception e){
+		LOGGER.error(obj,e);
+	}
+
+	public static void error(Object obj){
+		LOGGER.error(obj);
 	}
 	
 	//CODE BELLOW COPY/EDITED FROM FCL

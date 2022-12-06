@@ -29,14 +29,7 @@ public class BlockDynamic extends BlockContainer {
 
     public ModelBase model=null;
     public Object tesr=null;
-    public int assemblyTableTier = -1; //only applies if it is an assembly table/traintable. no need to set otherwise. -1 unless set.
     public boolean isContainer=true;
-
-    public BlockDynamic(Material material, boolean isStorage, int tier) {
-        super(material);
-        this.isContainer=isStorage;
-        this.assemblyTableTier = tier;
-    }
 
     public BlockDynamic(Material material, boolean isStorage) {
         super(material);

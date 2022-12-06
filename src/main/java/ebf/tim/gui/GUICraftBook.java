@@ -56,7 +56,6 @@ public class GUICraftBook extends GuiScreen {
             modids.add(0,TrainsInMotion.MODID);//make sure core mod entries are at start
 
             for (String mod : modids) {
-                DebugUtil.println(mod);
                 if(infoPages.containsKey(mod)) {
                     for(bookPage p : infoPages.get(mod)){
                         pages.add(p);//Collections.addAll does not work with this. i have no idea why.
