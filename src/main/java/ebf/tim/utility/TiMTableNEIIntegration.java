@@ -51,7 +51,7 @@ public class TiMTableNEIIntegration extends TemplateRecipeHandler {
                     this.ingredients = setIngredients(3,3, recipe.getRecipeItems());
                     table=TCBlocks.partTable;
                 } else {
-                    this.recipe = RecipeManager.getRecipe((ItemStack) _ingredient);
+                    this.recipe = RecipeManager.getRecipe((ItemStack) _ingredient, null);
                     if (recipe == null) { //Swift's guard statements would sure be nice here.
                         DebugUtil.println("[NEI INTEGRATION] Could not get recipe from ingredient.");
                     } else {
