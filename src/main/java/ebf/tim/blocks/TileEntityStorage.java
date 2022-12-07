@@ -17,6 +17,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import train.blocks.TCBlocks;
 
 import javax.annotation.Nullable;
@@ -66,14 +69,14 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
                 }
             }
         } else if (block== TiMBlocks.railTable) {
-            inventory.add(new ItemStackSlot(this,400, assemblyTableTier).setCoords( 30 , -2).setCraftingInput(true).setOverlay(Items.iron_ingot)); //ingot
-            inventory.add(new ItemStackSlot(this,401, assemblyTableTier).setCoords( 30 , 18).setCraftingInput(true).setOverlay(Blocks.planks)); //ties
-            inventory.add(new ItemStackSlot(this,402, assemblyTableTier).setCoords( 30 , 37).setCraftingInput(true).setOverlay(Blocks.gravel)); //ballast
+            inventory.add(new ItemStackSlot(this,400, assemblyTableTier).setCoords( 30 , -2).setCraftingInput(true).setOverlay(Items.IRON_INGOT)); //ingot
+            inventory.add(new ItemStackSlot(this,401, assemblyTableTier).setCoords( 30 , 18).setCraftingInput(true).setOverlay(Blocks.PLANKS)); //ties
+            inventory.add(new ItemStackSlot(this,402, assemblyTableTier).setCoords( 30 , 37).setCraftingInput(true).setOverlay(Blocks.GRAVEL)); //ballast
 
             inventory.add(new ItemStackSlot(this,403, assemblyTableTier).setCoords( 50 , 7).setCraftingInput(true)); //wires
             inventory.add(new ItemStackSlot(this,404, assemblyTableTier).setCoords( 50 , 27).setCraftingInput(true));//augment slot
 
-            inventory.add(new ItemStackSlot(this,405, assemblyTableTier).setCoords( 124 , -2).setCraftingInput(true).setOverlay(Blocks.rail));//old shape input
+            inventory.add(new ItemStackSlot(this,405, assemblyTableTier).setCoords( 124 , -2).setCraftingInput(true).setOverlay(Blocks.RAIL));//old shape input
 
             inventory.add(new ItemStackSlot(this,406, assemblyTableTier).setCoords( 124 , 33).setCraftingOutput(true)); //output
             storageType=0;

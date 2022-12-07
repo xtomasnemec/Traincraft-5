@@ -242,7 +242,7 @@ public class ItemStackSlot extends Slot {
                             //for each ingredient, we want to see the most that can be crafted with the ingredient,
                             //  then take the lowest number, for the stack that can craft the least of that ingredient.
                             //  each ItemStack in the ingredient will have the same size, so we can use the first one because it's always there.
-                            int amountCanMake = ((TileEntityStorage) hostInventory).getSlotIndexByID(400 + i).getStackSize() / recipe.getRecipeItems().get(i).get(0).stackSize;
+                            int amountCanMake = ((TileEntityStorage) hostInventory).getSlotIndexByID(400 + i).getStackSize() / recipe.getRecipeItems().get(i).get(0).getCount();
                             if (amountCanMake < largestAmountCanMake) {
                                 largestAmountCanMake = amountCanMake;
                             }
@@ -356,7 +356,7 @@ public class ItemStackSlot extends Slot {
                     if (r.input.get(i) != null) {
                         for (ItemStack s : r.input.get(i)) {
                             if (slotMatchesItem(hostSlots, 400 + i, s)) {
-                                shrinkStackInSlot(hostSlots, 400 + i, s == null ? 0 : stacksize * s.stackSize);
+                                shrinkStackInSlot(hostSlots, 400 + i, s == null ? 0 : stackSize * s.getCount());
                                 break;
                             }
                         }

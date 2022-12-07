@@ -35,6 +35,7 @@ public class BlockDynamic extends BlockContainer {
     public ModelBase model=null;
     public Object tesr=null;
     public boolean isContainer=true;
+    public String textureName="";
 
     public BlockDynamic(Material material, boolean isStorage) {
         super(material);

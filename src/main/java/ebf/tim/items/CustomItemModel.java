@@ -238,7 +238,7 @@ public class CustomItemModel implements ICustomModelLoader {
 
             if(item.getTagCompound().hasKey("rail")) {
                 int[] color = {255,255,255};
-                ItemStack rail = ItemStack.loadItemStackFromNBT(item.getTagCompound().getCompoundTag("rail"));
+                ItemStack rail = new ItemStack(item.getTagCompound().getCompoundTag("rail"));
                 if(TextureManager.ingotColors.containsKey(rail)) {
                     color = TextureManager.ingotColors.get(rail);
                 } else {

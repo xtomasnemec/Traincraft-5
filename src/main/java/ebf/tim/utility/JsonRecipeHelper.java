@@ -3,10 +3,12 @@ package ebf.tim.utility;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import cpw.mods.fml.common.registry.GameData;
 import ebf.tim.registry.TiMBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 

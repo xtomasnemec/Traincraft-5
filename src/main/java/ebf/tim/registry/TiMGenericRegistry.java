@@ -43,12 +43,11 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ebf.tim.utility.RecipeManager.getRecipe;
+import static net.minecraftforge.registries.GameData.BLOCKS;
+import static net.minecraftforge.registries.GameData.ITEMS;
 
 /**
  * <h1>Train registry</h1>
@@ -372,16 +371,9 @@ public class TiMGenericRegistry {
             RegisterItem(registry.getCartItem().getItem(),MODID,registry.transportName().replace(" ", "")+".item",
                     null,registry.getItem().getCreativeTab(),null,null);
             if (registry.getRecipe() != null) {
-                if (!CommonProxy.recipesInMods.containsKey(MODID)) {
-                    CommonProxy.recipesInMods.put(MODID, new ArrayList<Recipe>());
-                }
-                CommonProxy.recipesInMods.get(MODID).add(getRecipe(registry.getRecipe(), registry.getCartItem()));
-
+                tempReipes.add(new recipePreReg(registry.getRecipe(), registry.getCartItem(), registry.getCraftingTable(), MODID));
             }
             registry.registerSkins();
-            if (registry.getRecipe() != null) {
-                RecipeManager.registerRecipe(registry.getRecipe(), registry.getCartItem(), registry.getCraftingTable());
-            }
             ItemCraftGuide.itemEntries.add(registry.getClass());
             if (TrainsInMotion.proxy.isClient()) {
                 regEntityRender(registry,entityRender);
@@ -455,7 +447,12 @@ public class TiMGenericRegistry {
             if (!CommonProxy.recipesInMods.containsKey(recipe.modid)) {
                 CommonProxy.recipesInMods.put(recipe.modid, new ArrayList<Recipe>());
             }
-            CommonProxy.recipesInMods.get(recipe.modid).add(getRecipeWithTier(recipe.inputs, recipe.result, recipe.tier));
+            CommonProxy.recipesInMods.get(recipe.modid).add(new Recipe(
+                    recipe.result,
+                    recipe.inputs[0],recipe.inputs[1],recipe.inputs[2],
+                    recipe.inputs[3],recipe.inputs[4],recipe.inputs[5],
+                    recipe.inputs[6],recipe.inputs[7],recipe.inputs[8]
+            ));
             RecipeManager.registerRecipe(recipe.inputs, recipe.result, recipe.tier);
         }
 
@@ -466,9 +463,9 @@ public class TiMGenericRegistry {
 
     private static List<recipePreReg> tempReipes = new ArrayList<>();
     private static class recipePreReg {
-        int tier;ItemStack result;ItemStack[] inputs; String modid;
+        Block tier;ItemStack result;ItemStack[] inputs; String modid;
 
-        public recipePreReg(ItemStack[] i, ItemStack r, int t, String m) {
+        public recipePreReg(ItemStack[] i, ItemStack r, Block t, String m) {
             this.inputs=i;
             this.result = r;
             this.tier=t;

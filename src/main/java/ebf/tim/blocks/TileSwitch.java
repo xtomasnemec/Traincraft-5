@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
-public class TileSwitch extends TileRenderFacing {
+public class TileSwitch extends TileRenderFacing implements ITickable {
     public boolean enabled=false, animationReversing=false;
     public int crossingTick=0;
     public long lastTick=0, lastSoundMS=0;
