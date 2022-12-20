@@ -177,7 +177,7 @@ public class FuelHandler{
 
 		//if there's a fluid item in the slot and the train can consume the entire thing
 		if (getUseableFluid(train.waterSlot().getSlotID(),train) !=null &&
-				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==0) {
+				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==getUseableFluid(train.waterSlot().getSlotID(),train).amount) {
 			train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);
@@ -344,7 +344,7 @@ public class FuelHandler{
 		}
 
 		//fill from overhead wires/3rd rail/under rail
-		if (train.fill(null, new FluidStack(TiMFluids.fluidRedstone, 100), false) == 0) {
+		if (train.fill(null, new FluidStack(TiMFluids.fluidRedstone, 100), false) == 100) {
 			int draw = 0;
 			TileEntity te;
 			Block b;

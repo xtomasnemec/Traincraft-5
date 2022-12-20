@@ -40,10 +40,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -64,7 +66,7 @@ import static ebf.tim.utility.CommonUtil.radianF;
  * this is the base for all trains and rollingstock.
  * @author Eternal Blue Flame
  */
-public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, IFluidCart, ILinkableCart, IEntityMultiPart, IMinecart {
+public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, ILinkableCart, IEntityMultiPart, IMinecart, ISidedInventory {
 
     /*
      * <h2>variables</h2>
@@ -255,11 +257,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public GenericRailTransport(World world){
         super(world);
-        setSize(0.25f,0.25f);
+        setSize(0.75f,getHitboxSize()[1]-0.05f);
         ignoreFrustumCheck = true;
         initInventorySlots();
         if(world!=null && collisionHandler==null) {
-            this.height = 0.25f;
             collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
@@ -271,7 +272,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         posX = xPos;
         posZ = zPos;
         entityData.putUUID("owner", owner);
-        setSize(0.25f,0.25f);
+        setSize(0.75f,getHitboxSize()[1]-0.05f);
         ignoreFrustumCheck = true;
         initInventorySlots();
     }
@@ -2044,6 +2045,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
 
+    @Override
+    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+        return false;
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
+        return false;
+    }
+
     /*
      * <h1>Fluid Management</h1>
      */
@@ -2055,23 +2071,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
 
-    @Override
-    public boolean canPassFluidRequests(Fluid fluid){
-        return canDrain(null, fluid) || canFill(null, fluid);
-    }
-
-    @Override
-    public boolean canAcceptPushedFluid(EntityMinecart requester, Fluid fluid){
-        return canFill(null, fluid);
-    }
-
-    @Override
-    public boolean canProvidePulledFluid(EntityMinecart requester, Fluid fluid){
-        return canDrain(ForgeDirection.UNKNOWN, fluid);
-    }
-
-    @Override
-    public void setFilling(boolean filling){}
 
     /**Returns true if the given fluid can be extracted.*/
     @Override
@@ -2086,8 +2085,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**Returns true if the given fluid can be inserted into the fluid tank.*/
     @Override
     //TODO: rework this to work more similar to the fill function
-    public boolean canFill(@Nullable ForgeDirection from, Fluid resource){
-        return true;
+    public boolean canFill(@Nullable ForgeDirection from, Fluid resource){return true;
     }
 
     /**drain with a fluidStack, this is mostly a redirect to
@@ -2144,7 +2142,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**checks if the fluid can be put into the tank, and if doFill is true, will actually attempt to add the fluid to the tank.
      * @return the amount of fluid that was or could be put into the tank.*/
     @Override
-    public int fill(@Nullable ForgeDirection from, FluidStack resource, boolean doFill){
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill){
         if(getTankCapacity()==null){return resource.amount;}
         int leftoverDrain=resource.amount;
         FluidStack fluid;
@@ -2190,11 +2188,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     leftoverDrain=0;
                 }
                 if(leftoverDrain==0){
-                    return 0;
+                    return resource.amount;
                 }
             }
         }
-        return leftoverDrain;
+        return resource.amount-leftoverDrain;
     }
 
     /**
