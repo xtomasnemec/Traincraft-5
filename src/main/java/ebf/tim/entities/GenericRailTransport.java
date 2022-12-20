@@ -66,7 +66,7 @@ import static ebf.tim.utility.CommonUtil.radianF;
  * this is the base for all trains and rollingstock.
  * @author Eternal Blue Flame
  */
-public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, ILinkableCart, IEntityMultiPart, IMinecart, ISidedInventory {
+public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, ILinkableCart, IEntityMultiPart, IMinecart {
 
     /*
      * <h2>variables</h2>
@@ -257,7 +257,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public GenericRailTransport(World world){
         super(world);
-        setSize(0.75f,getHitboxSize()[1]-0.05f);
+        setSize(0.75f,Math.max(getHitboxSize()[1],3));
         ignoreFrustumCheck = true;
         initInventorySlots();
         if(world!=null && collisionHandler==null) {
@@ -272,7 +272,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         posX = xPos;
         posZ = zPos;
         entityData.putUUID("owner", owner);
-        setSize(0.75f,getHitboxSize()[1]-0.05f);
+        setSize(0.75f,Math.max(getHitboxSize()[1],3));
         ignoreFrustumCheck = true;
         initInventorySlots();
     }
@@ -2044,22 +2044,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
 
-
-    @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
-    }
-
-    @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return false;
-    }
-
     /*
      * <h1>Fluid Management</h1>
      */
@@ -2094,7 +2078,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public FluidStack drain(@Nullable ForgeDirection from, FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
-        FluidStack stack;
+        FluidStack stack=null;
         for(int i=0;i<getTankCapacity().length;i++) {
             stack=entityData.getFluidStack("tanks."+i);
             if (stack.amount > 0 && (resource.getFluid()==TiMFluids.nullFluid || stack.getFluid() == resource.getFluid())) {
@@ -2109,11 +2093,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         entityData.putFluidStack("tanks."+i,new FluidStack(stack.getFluid(),stack.amount-leftoverDrain));
                         markDirty();
                     }
-                    return null;
+                    return stack;
                 }
             }
         }
-        return resource;
+        if (stack != null) {
+            return null;
+        } else {
+            return new FluidStack(stack.getFluid(), leftoverDrain);
+        }
 
     }
 

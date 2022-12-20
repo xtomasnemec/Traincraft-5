@@ -227,7 +227,7 @@ public class FuelHandler{
 				);
 				//drain fluid
 				if(steam>0 && steam/5>0) {
-					if (train.drain(null, steam / 5, true) == null) {
+					if (train.drain(null, steam / 5, true) != null) {
 						train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int) (-(Math.abs(train.accelerator) * (train.getTankCapacity()[1] * 0.01f)) + steam * 0.9f)), true);
 
 						//if no fluid left and not creative mode, explode.
