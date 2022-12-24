@@ -109,7 +109,7 @@ public class FuelHandler{
 			}
 		}
 
-		if(transport.getTypes().contains(TrainsInMotion.transportTypes.TANKER)){
+		if(transport.getTypes().contains(TrainsInMotion.transportTypes.TANKER) || transport.getTypes().contains(TrainsInMotion.transportTypes.TENDER)){
 			return FluidContainerRegistry.getFluidForFilledItem(itemStack);
 		}
 
@@ -184,6 +184,23 @@ public class FuelHandler{
 				train.addItem(new ItemStack(Items.bucket));
 			}
 		}
+
+		GenericRailTransport link;
+		if(train.frontLinkedID!=null){
+			link=((GenericRailTransport)train.worldObj.getEntityByID(train.frontLinkedID));
+			if(link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) || link.getTypes().contains(TrainsInMotion.transportTypes.TANKER)
+					&& train.fill(null, link.drain(null,100,false),false)==100){
+				train.fill(null, link.drain(null,100,true),true);
+			}
+		}
+		if(train.backLinkedID!=null){
+			link=((GenericRailTransport)train.worldObj.getEntityByID(train.backLinkedID));
+			if(link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) || link.getTypes().contains(TrainsInMotion.transportTypes.TANKER)
+					&& train.fill(null, link.drain(null,100,false),false)==100){
+				train.fill(null, link.drain(null,100,true),true);
+			}
+		}
+
 		//manage boiler heat
 		if (burnHeat > 1) {
 			//calculate the heat increase
