@@ -188,16 +188,24 @@ public class FuelHandler{
 		GenericRailTransport link;
 		if(train.frontLinkedID!=null){
 			link=((GenericRailTransport)train.worldObj.getEntityByID(train.frontLinkedID));
-			if(link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) || link.getTypes().contains(TrainsInMotion.transportTypes.TANKER)
-					&& train.fill(null, link.drain(null,100,false),false)==100){
-				train.fill(null, link.drain(null,100,true),true);
+			if((link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) ||
+					link.getTypes().contains(TrainsInMotion.transportTypes.TANKER))
+					&& train.fill(null,new FluidStack(FluidRegistry.WATER,100),false)==100
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false)!=null
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false).amount==100){
+				;
+				train.fill(null,link.drain(null,new FluidStack(FluidRegistry.WATER,100),true),true);
 			}
 		}
 		if(train.backLinkedID!=null){
 			link=((GenericRailTransport)train.worldObj.getEntityByID(train.backLinkedID));
-			if(link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) || link.getTypes().contains(TrainsInMotion.transportTypes.TANKER)
-					&& train.fill(null, link.drain(null,100,false),false)==100){
-				train.fill(null, link.drain(null,100,true),true);
+			if((link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) ||
+					link.getTypes().contains(TrainsInMotion.transportTypes.TANKER))
+					&& train.fill(null,new FluidStack(FluidRegistry.WATER,100),false)==100
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false)!=null
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false).amount==100){
+				;
+				train.fill(null,link.drain(null,new FluidStack(FluidRegistry.WATER,100),true),true);
 			}
 		}
 
@@ -408,8 +416,6 @@ public class FuelHandler{
 
 		if (getUseableFluid(transport.tankerInputSlot().getSlotID(), transport) != null &&
 				transport.fill(null, getUseableFluid(transport.tankerInputSlot().getSlotID(), transport))) {
-
-			transport.fill(null, getUseableFluid(transport.tankerInputSlot().getSlotID(), transport), true);
 
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				//if there's an inventory, add the empty bucket, otherwise drop it on the nearest player, if no near player, drop on self

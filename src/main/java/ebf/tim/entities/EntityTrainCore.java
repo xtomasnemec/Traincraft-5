@@ -189,9 +189,6 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     @Override
     public void onUpdate() {
-
-        super.onUpdate();
-
         if(frontBogie != null && backBogie != null) {
 
             if (!worldObj.isRemote) {
@@ -217,14 +214,16 @@ public class EntityTrainCore extends GenericRailTransport {
                         Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
                         frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
                         backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                        applyDrag();
                     }
                 }
 
-                updatePosition();
             }
 
         }
+
+        super.onUpdate();
+        updatePosition();
+
         if(whistleDelay>0) {
             whistleDelay--;
         }
