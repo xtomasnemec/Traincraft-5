@@ -1000,7 +1000,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //realistically would be more like 2.4, but 5 makes gameplay more dramatic
                     brakeBuff+=stock.weightKg()*5.0f;
                 }
-                if(stock.rotationPitch!=0){
+                if(stock.rotationPitch!=0 && getAccelerator()==0){
                     //vanilla uses 0.0078125 per tick for slope speed.
                     //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
                     //so we buff that to just under double to balance against drag, then scale by entity pitch

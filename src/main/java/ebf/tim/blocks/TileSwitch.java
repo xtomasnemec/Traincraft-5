@@ -1,7 +1,12 @@
 package ebf.tim.blocks;
 
 import ebf.tim.utility.DebugUtil;
+import fexcraft.tmt.slim.Vec3f;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+
+import java.util.List;
 
 public class TileSwitch extends TileRenderFacing {
     public boolean enabled=false, animationReversing=false;
@@ -108,6 +113,57 @@ public class TileSwitch extends TileRenderFacing {
                 getWorldObj().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
                 lastSoundMS=time;
             }
+        }
+    }
+
+
+
+
+    private Vec3f end, start;
+    //use this to detect entities within a range from the block and change state based on that.
+    //will not take negative values.
+    public void detectNearby(int width, int depth, boolean useRedstone){
+        switch (this.facing) {
+            case 0: {
+                end=new Vec3f(0,4,0);
+                start=new Vec3f(-width,-1, -depth);
+                break;
+            }
+            case 1: {
+                end=new Vec3f(depth,4,0);
+                start=new Vec3f(0,-1, -width);
+                break;
+            }
+
+            case 2: {
+                end=new Vec3f(depth,4,depth);
+                start=new Vec3f(0,-1, 0);
+                break;
+            }
+
+            case 3: {
+                end=new Vec3f(0,4,width);
+                start=new Vec3f(-depth,-1, 0);
+                break;
+            }
+        }
+
+        List list = this.worldObj.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox(
+                xCoord+start.xCoord, yCoord+start.yCoord, zCoord+start.zCoord,
+                xCoord+end.xCoord, yCoord+end.yCoord, zCoord+end.zCoord));
+
+        if (list != null && list.size() > 0) {
+            for (Object o : list) {
+                if (o instanceof EntityMinecart) {
+                    setEnabled(true);
+                    return;
+                }
+            }
+        }
+        if(useRedstone) {
+            setEnabled(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+        } else {
+            setEnabled(false);
         }
     }
 }
