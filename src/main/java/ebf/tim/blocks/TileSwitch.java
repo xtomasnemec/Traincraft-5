@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TileSwitch extends TileRenderFacing {
     public boolean enabled=false, animationReversing=false;
-    public int crossingTick=0;
+    public int crossingTick=0, currentTick=0;
     public long lastTick=0, lastSoundMS=0;
 
     public TileSwitch(BlockSwitch block){
@@ -118,6 +118,28 @@ public class TileSwitch extends TileRenderFacing {
 
 
 
+    public void tickTile(){
+        currentTick++;
+        if(currentTick>200){
+            currentTick=0;
+        }
+    }
+
+    public int checkBlockPower(int[] ... offset){
+        int signalStrength=0;
+        for(int[] o : offset) {
+            if (signalStrength == 0) {
+                signalStrength = worldObj.getBlockPowerInput(xCoord + o[0], yCoord + o[1], zCoord + o[2]);
+                if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + o[0], yCoord + o[1], zCoord + o[2])) {
+                    signalStrength = 15;
+                }
+            }
+            else {
+                return signalStrength;
+            }
+        }
+        return signalStrength;
+    }
 
     private Vec3f end, start;
     //use this to detect entities within a range from the block and change state based on that.
