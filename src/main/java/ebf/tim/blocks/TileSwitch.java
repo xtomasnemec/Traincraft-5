@@ -144,28 +144,49 @@ public class TileSwitch extends TileRenderFacing {
     private Vec3f end, start;
     //use this to detect entities within a range from the block and change state based on that.
     //will not take negative values.
-    public void detectNearby(int width, int depth, boolean useRedstone){
+    public void detectNearby(int width, int depth, boolean useRedstone, boolean left){
         switch (this.facing) {
             case 0: {
-                end=new Vec3f(0,4,0);
-                start=new Vec3f(-width,-1, -depth);
+                if (left) {
+                    end = new Vec3f(width, 4, 0);
+                    start = new Vec3f(0, -1, -depth);
+                } else {
+                    end = new Vec3f(0, 4, 0);
+                    start = new Vec3f(-width, -1, -depth);
+                }
                 break;
             }
             case 1: {
-                end=new Vec3f(depth,4,0);
-                start=new Vec3f(0,-1, -width);
+                if (left) {
+                    end = new Vec3f(depth, 4, width);
+                    start = new Vec3f(0, -1, 0);
+                } else {
+                    end = new Vec3f(depth, 4, 0);
+                    start = new Vec3f(0, -1, -width);
+                }
                 break;
             }
 
             case 2: {
-                end=new Vec3f(depth,4,depth);
-                start=new Vec3f(0,-1, 0);
+                if (left) {
+                    end = new Vec3f(0, 4, depth);
+                    start = new Vec3f(-width, -1, 0);
+                } else {
+                    end = new Vec3f(width, 4, depth);
+                    start = new Vec3f(0, -1, 0);
+                }
+                DebugUtil.println("1");
                 break;
             }
 
             case 3: {
-                end=new Vec3f(0,4,width);
-                start=new Vec3f(-depth,-1, 0);
+                if (left) {
+                    end = new Vec3f(0, 4, 0);
+                    start = new Vec3f(-depth, -1, -width);
+                } else {
+                    end = new Vec3f(0, 4, width);
+                    start = new Vec3f(-depth, -1, 0);
+                }
                 break;
             }
         }

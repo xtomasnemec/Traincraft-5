@@ -29,9 +29,12 @@ public class TileTCSignal extends TileSwitch {
 
 	@Override
 	public void updateEntity() {
-		super.updateEntity();
+		//super.updateEntity();
 		//check if given redstone signal, let that override normal detection.
-		detectNearby(3,9,true);
+		tickTile();
+		if(currentTick%5==0) {
+			detectNearby(3, 16, true, false);
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
