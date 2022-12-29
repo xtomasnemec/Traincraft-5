@@ -175,7 +175,6 @@ public class TileSwitch extends TileRenderFacing {
                     end = new Vec3f(width, 4, depth);
                     start = new Vec3f(0, -1, 0);
                 }
-                DebugUtil.println("1");
                 break;
             }
 
