@@ -11,7 +11,7 @@ import java.util.List;
 public class TileSwitch extends TileRenderFacing {
     public boolean enabled=false, animationReversing=false;
     public int crossingTick=0, currentTick=0;
-    public long lastTick=0, lastSoundMS=0;
+    public long lastTick=0, lastSoundMS=0, time=0;
 
     public TileSwitch(BlockSwitch block){
         host=block;
@@ -75,7 +75,7 @@ public class TileSwitch extends TileRenderFacing {
         if(!getWorldObj().isRemote){
             return;
         }
-        long time = System.currentTimeMillis();
+        time = System.currentTimeMillis();
         //only tick every 1/20 of a second. Client tick tends to be fast and unreliable depending on FPS
         if(time>lastTick+50){
             lastTick=time;

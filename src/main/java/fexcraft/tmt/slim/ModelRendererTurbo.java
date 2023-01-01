@@ -168,6 +168,11 @@ public class ModelRendererTurbo {
         return this;
     }
 
+    public ModelRendererTurbo addBox(float x, float y, float z, float w, float h, float d){
+        addBox(x, y, z, w, h, d, 0.0F, 1F);
+        return this;
+    }
+
     /**
      * Adds a new box to the model.
      * @param x the starting x-position
