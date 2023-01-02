@@ -58,7 +58,7 @@ public class TileTCSignal extends TileSwitch {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public ResourceLocation getTexture(int x, int y, int z){
-		if (!getEnabled()) {
+		if (!getEnabled(0)) {
 			return new ResourceLocation(Info.modID, Info.trainsPrefix + "signal_suisse_green.png");
 		} else {
 			return new ResourceLocation(Info.modID,Info.trainsPrefix + "signal_suisse_red.png");

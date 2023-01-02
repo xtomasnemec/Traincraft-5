@@ -9,8 +9,10 @@ import net.minecraft.util.AxisAlignedBB;
 import java.util.List;
 
 public class TileSwitch extends TileRenderFacing {
-    public boolean enabled=false, animationReversing=false;
-    public int crossingTick=0, currentTick=0;
+    public boolean enabled[]={false};
+    public boolean[] animationReversing={false};
+    public int[] crossingTick={0};
+    public int currentTick=0;
     public long lastTick=0, lastSoundMS=0, time=0;
 
     public TileSwitch(BlockSwitch block){
@@ -18,30 +20,36 @@ public class TileSwitch extends TileRenderFacing {
     }
     public TileSwitch(){}
 
-    public boolean toggleEnabled(){
-        enabled=!enabled;
+    public boolean toggleEnabled(int index){
+        enabled[index]=!enabled[index];
         markDirty();
-        return enabled;
+        return enabled[index];
     }
 
-    public void setEnabled(boolean e){
-        if(e!=enabled){
-            enabled=e;
+    public void setEnabled(boolean e, int index){
+        if(e!=enabled[index]){
+            enabled[index]=e;
             markDirty();
         }
     }
 
-    public boolean getEnabled(){return enabled;}
+    public boolean getEnabled(int index){return enabled[index];}
 
     @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
-        tag.setBoolean("e", enabled);
+        tag.setInteger("c", bladeCount());
+        for(int i=0; i<bladeCount(); i++) {
+            tag.setBoolean("e"+i, enabled[i]);
+        }
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag){
-        enabled = tag.getBoolean("e");
+        int c = tag.getInteger("c");
+        for(int i=0; i<c;i++) {
+            enabled[i] = tag.getBoolean("e"+i);
+        }
         super.readFromNBT(tag);
     }
 
@@ -60,12 +68,14 @@ public class TileSwitch extends TileRenderFacing {
 
     //sets the min and max rotation angles.
     // if there is a difference of exactly 360 between the two, it will not reverse
-    public float maxAngle(){return 360;}
-    public float minAngle(){return 0;}
+    public float maxAngle(int index){return 360;}
+    public float minAngle(int index){return 0;}
     //how many degrees to move each animation tick.
-    public float animationSpeed(){return 1;}
+    public float animationSpeed(int index){return 1;}
     //this prevents the tick from reversing or looping until the redstone state changes
-    public boolean angleStops(){return false;}
+    public boolean angleStops(int index){return false;}
+
+    public int bladeCount(){return 1;}
 
     @Override
     public boolean canUpdate(){return true;}
@@ -79,36 +89,43 @@ public class TileSwitch extends TileRenderFacing {
         //only tick every 1/20 of a second. Client tick tends to be fast and unreliable depending on FPS
         if(time>lastTick+50){
             lastTick=time;
-            if(angleStops()){
-                if (crossingTick<=maxAngle() && getEnabled()){
-                    crossingTick+=animationSpeed();
-                } else if (crossingTick>=minAngle() && !getEnabled()){
-                    crossingTick-=animationSpeed();
+            for(int i=0; i<bladeCount();i++) {
+                if (crossingTick.length < bladeCount()) {
+                    crossingTick = new int[bladeCount()];
+                    enabled = new boolean[bladeCount()];
+                    animationReversing = new boolean[bladeCount()];
                 }
-            } else {
-                if(maxAngle()-minAngle()==360) {
-                    if(getEnabled()) {
-                        crossingTick += animationSpeed();
-                        if (crossingTick >= 360) {
-                            crossingTick = 0;
+                if (angleStops(i)) {
+                    if (crossingTick[i] <= maxAngle(i) && getEnabled(i)) {
+                        crossingTick[i] += animationSpeed(i);
+                    } else if (crossingTick[i] >= minAngle(i) && !getEnabled(i)) {
+                        crossingTick[i] -= animationSpeed(i);
+                    }
+                } else {
+                    if (maxAngle(i) - minAngle(i) == 360) {
+                        if (getEnabled(i)) {
+                            crossingTick[i] += animationSpeed(i);
+                            if (crossingTick[i] >= 360) {
+                                crossingTick[i] = 0;
+                            }
+                        }
+                    } else if (getEnabled(i) || crossingTick[i] != 0) {
+                        if (animationReversing[i]) {
+                            crossingTick[i] -= animationSpeed(i);
+                        } else {
+                            crossingTick[i] += animationSpeed(i);
+                        }
+                        if (crossingTick[i] <= minAngle(i) || crossingTick[i] >= maxAngle(i)) {
+                            animationReversing[i] = !animationReversing[i];
                         }
                     }
-                } else if(getEnabled() || crossingTick!=0){
-                    if(animationReversing){
-                        crossingTick -= animationSpeed();
-                    } else {
-                        crossingTick += animationSpeed();
-                    }
-                    if(crossingTick<=minAngle() || crossingTick>=maxAngle()){
-                        animationReversing=!animationReversing;
-                    }
-                }
 
+                }
             }
         }
 
         //if there's a defined sound, play that every interval.
-        if(getEnabled() && soundFile()!=null){
+        if(getEnabled(0) && soundFile()!=null){
             if(time>lastSoundMS+getSoundInterval()){
                 getWorldObj().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
                 lastSoundMS=time;
@@ -197,15 +214,15 @@ public class TileSwitch extends TileRenderFacing {
         if (list != null && list.size() > 0) {
             for (Object o : list) {
                 if (o instanceof EntityMinecart) {
-                    setEnabled(true);
+                    setEnabled(true,0);
                     return;
                 }
             }
         }
         if(useRedstone) {
-            setEnabled(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+            setEnabled(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord),0);
         } else {
-            setEnabled(false);
+            setEnabled(false,0);
         }
     }
 }

@@ -39,7 +39,7 @@ public class BlockSignal extends BlockSwitch {
         super.onBlockAdded(world, x,y,z);
         TileSwitch te = (TileSwitch) world.getTileEntity(x,y,z);
         if (te !=null && world.isBlockIndirectlyGettingPowered(x,y,z)) {
-            te.setEnabled(true);
+            te.setEnabled(true,0);
         }
     }
 
@@ -48,7 +48,7 @@ public class BlockSignal extends BlockSwitch {
         super.onNeighborBlockChange(world, x, y, z, other);
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof TileSwitch && !world.isRemote) {
-            ((TileSwitch) tile).setEnabled(world.isBlockIndirectlyGettingPowered(x,y,z));
+            ((TileSwitch) tile).setEnabled(world.isBlockIndirectlyGettingPowered(x,y,z),0);
         }
     }
 
