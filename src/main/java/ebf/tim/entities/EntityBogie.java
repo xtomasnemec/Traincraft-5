@@ -53,7 +53,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**cached values for the rail path and motion vectors
      * prevents need to generate a new variable multiple times per tick and reduces GC strain*/
     private double railPathX, railPathZ,motionSqrt,railPathX2, railPathZ2;
-    private double[] loopDirection;
+    public double[] loopDirection = null;
     private int railMetadata, xFloor=0,yFloor=0,zFloor=0;
     private Block blockNext, blockCurrent;
     float railmax;
@@ -363,12 +363,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //    and rotate movement for the next cycle.
         //NOTE: when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
         if (railPathX != 0 && railPathZ != 0) {
-            motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]))*0.5;
             setPositionRelative((currentMotion * railPathX) * 0.5, 0, (currentMotion * railPathZ) * 0.5);
         } else {
-            motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]));
             setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
         }
+        motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]));
         moveDirection[0] = motionSqrt * (railPathX);
         moveDirection[1] = motionSqrt * (railPathZ);
 
