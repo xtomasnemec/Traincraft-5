@@ -59,9 +59,9 @@ public class ModelLantern extends ModelBase {
 		// Pop this matrix from the stack.
 		GL11.glPopMatrix();
 		//todo: model remake include torch
-		/*if(lantern.getWorldObj()!=null) {
+		/*if(lantern.getWorld()!=null) {
 			GL11.glPushMatrix();
-			EntityItem ghostEntityItem = new EntityItem(lantern.getWorldObj());
+			EntityItem ghostEntityItem = new EntityItem(lantern.getWorld());
 			ghostEntityItem.setEntityItemStack(new ItemStack(Blocks.torch, 1));
 			ghostEntityItem.hoverStart = 0.0F;
 

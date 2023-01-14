@@ -93,7 +93,7 @@ public class TileWaterWheel extends TileEntityStorage implements IEnergyProvider
 	}
 
 	@Override
-	public World getWorldObj(){
+	public World getWorld(){
 		return this.worldObj;
 	}
 

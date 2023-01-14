@@ -4,19 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockSignal;
 import ebf.tim.blocks.TileSwitch;
-import ebf.tim.utility.DebugUtil;
-import fexcraft.tmt.slim.Vec3f;
-import net.minecraft.client.renderer.texture.ITickable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
-
-import java.util.List;
 
 public class TileTCSignal extends TileSwitch {
 	public TileTCSignal() {
@@ -43,7 +33,7 @@ public class TileTCSignal extends TileSwitch {
 		org.lwjgl.opengl.GL11.glTranslatef( 0,  0.5f,  0);
 		org.lwjgl.opengl.GL11.glRotatef(180, 0,  0,  1f);
 		//modifications for item render
-		if(getWorldObj()==null){
+		if(getWorld()==null){
 			GL11.glScalef(0.65f,0.65f,0.65f);
 			org.lwjgl.opengl.GL11.glTranslatef( 0,  -0.5f,  0);
 			org.lwjgl.opengl.GL11.glRotatef(225, 0,  1f,  0);

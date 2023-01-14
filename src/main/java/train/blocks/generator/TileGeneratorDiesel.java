@@ -128,7 +128,7 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergyPro
     }
 
     @Override
-    public World getWorldObj(){
+    public World getWorld(){
         return this.worldObj;
     }
 

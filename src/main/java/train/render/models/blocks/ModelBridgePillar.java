@@ -36,7 +36,7 @@ public class ModelBridgePillar extends ModelBase {
 		}
 
 		Tessellator.bindTexture(new ResourceLocation(Info.resourceLocation, Info.modelTexPrefix + "track_slope.png"));
-		/*int facing = pillar.getWorldObj().getBlockMetadata(pillar.xCoord, pillar.yCoord, pillar.zCoord);
+		/*int facing = pillar.getWorld().getBlockMetadata(pillar.xCoord, pillar.yCoord, pillar.zCoord);
 		if(facing == 2 || facing==0){
 			GL11.glRotatef(90, 0, 1, 0);
 		}*/

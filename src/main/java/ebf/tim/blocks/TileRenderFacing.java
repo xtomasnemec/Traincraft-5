@@ -49,6 +49,11 @@ public class TileRenderFacing extends TileEntity {
         return this;
     }
 
+    //for whatever dumb stupid reason, sometimes getWorldObject() doesn't exist.
+    public World getWorld(){
+        return worldObj;
+    }
+
     public ForgeDirection getFacing(){
         //1.8.9+ it's getHorizontal
         return ForgeDirection.getOrientation((int)facing);

@@ -1,6 +1,5 @@
 package ebf.tim.blocks;
 
-import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
@@ -83,7 +82,7 @@ public class TileSwitch extends TileRenderFacing {
 
     @Override
     public void updateEntity() {
-        if(!getWorldObj().isRemote){
+        if(!getWorld().isRemote){
             return;
         }
         time = System.currentTimeMillis();
@@ -128,7 +127,7 @@ public class TileSwitch extends TileRenderFacing {
         //if there's a defined sound, play that every interval.
         if(getEnabled(0) && soundFile()!=null){
             if(time>lastSoundMS+getSoundInterval()){
-                getWorldObj().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
+                getWorld().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
                 lastSoundMS=time;
             }
         }

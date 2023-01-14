@@ -4,17 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockSwitch;
 import ebf.tim.blocks.TileSwitch;
-import ebf.tim.utility.CommonUtil;
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import train.blocks.TCBlocks;
 import train.library.Info;
-
-import java.util.Random;
 
 public class TileSwitchStand extends TileSwitch {
 
@@ -39,7 +31,7 @@ public class TileSwitchStand extends TileSwitch {
     @Override
     public void renderModel(){
         //item render
-        if(getWorldObj()==null){
+        if(getWorld()==null){
             org.lwjgl.opengl.GL11.glTranslated( -0.2,  0,  0);
             org.lwjgl.opengl.GL11.glScalef(0.65f,0.65f,0.65f);
 
