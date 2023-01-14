@@ -37,10 +37,19 @@ public class BlockSignal extends BlockSwitch {
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x,y,z);
-        TileSwitch te = (TileSwitch) world.getTileEntity(x,y,z);
-        if (te !=null && world.isBlockIndirectlyGettingPowered(x,y,z)) {
-            te.setEnabled(true,0);
+        TileEntity tile = world.getTileEntity(x,y,z);
+        if (tile instanceof TileSwitch) {
+            ((TileSwitch)tile).setEnabled(world.isBlockIndirectlyGettingPowered(x,y,z),0);
         }
+    }
+
+    @Override
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
+        TileEntity tile = world.getTileEntity(x,y,z);
+        if (tile instanceof TileSwitch) {
+            ((TileSwitch)tile).setEnabled(world.isBlockIndirectlyGettingPowered(x,y,z),0);
+        }
+        return super.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, meta);
     }
 
     @Override
