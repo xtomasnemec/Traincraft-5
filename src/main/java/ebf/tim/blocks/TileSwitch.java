@@ -47,6 +47,7 @@ public class TileSwitch extends TileRenderFacing {
     @Override
     public void readFromNBT(NBTTagCompound tag){
         int c = tag.getInteger("c");
+        enabled=new boolean[c];
         for(int i=0; i<c;i++) {
             enabled[i] = tag.getBoolean("e"+i);
         }
