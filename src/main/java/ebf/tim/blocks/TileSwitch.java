@@ -38,6 +38,9 @@ public class TileSwitch extends TileRenderFacing {
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
         tag.setInteger("c", bladeCount());
+        if(enabled.length<bladeCount()){
+            enabled=new boolean[bladeCount()];
+        }
         for(int i=0; i<bladeCount(); i++) {
             tag.setBoolean("e"+i, enabled[i]);
         }
