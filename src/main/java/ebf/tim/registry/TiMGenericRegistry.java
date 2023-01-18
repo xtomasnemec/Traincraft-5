@@ -238,6 +238,9 @@ public class TiMGenericRegistry {
             bucket.setTextureName(MODID + ":bucket_" + unlocalizedName);
         }
         bucket.setUnlocalizedName(unlocalizedName + ".bucket");
+        if(unlocalizedName.equals("diesel")) {
+            bucket.setMaxStackSize(64);
+        }
         GameRegistry.registerItem(bucket, "fluid." + unlocalizedName + ".bucket");
         FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.bucket));
 

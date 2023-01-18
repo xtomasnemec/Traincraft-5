@@ -86,7 +86,7 @@ public class EntityBUnitDD35 extends GenericRailTransport {
     @Override
     public float[] rotationPoints() {return new float[]{1.925f, -1.925f};}
     @Override
-    public int[] getTankCapacity(){return new int[]{12000};}
+    public int[] getTankCapacity(){return new int[]{getTankVolume()};}
 
 
 
