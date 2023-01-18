@@ -5,9 +5,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ebf.tim.blocks.BlockDynamic;
-import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
@@ -16,9 +14,7 @@ import ebf.tim.items.ItemCraftGuide;
 import ebf.tim.items.ItemPaintBucket;
 import ebf.tim.render.RenderWagon;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -26,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import org.lwjgl.input.Keyboard;
@@ -122,7 +117,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void adminGui(String datacsv){
         Minecraft.getMinecraft().displayGuiScreen(new GUIAdminBook(datacsv));
-    };
+    }
 
     @Override
     public boolean isClient(){return true;}
@@ -212,7 +207,7 @@ public class ClientProxy extends CommonProxy {
         KeyInventory = new KeyBinding("Open Train/rollingstock GUI",  Keyboard.KEY_R, "Trains in Motion");
         ClientRegistry.registerKeyBinding(KeyInventory);
 
-        if(DebugUtil.dev()) {
+        if(DebugUtil.dev) {
             raildevtoolUp = new KeyBinding("Move Point Z+", Keyboard.KEY_UP, "Trains in Motion Dev");
             raildevtoolDown = new KeyBinding("Move Point Z-", Keyboard.KEY_DOWN, "Trains in Motion Dev");
             raildevtoolLeft = new KeyBinding("Move Point X+", Keyboard.KEY_LEFT, "Trains in Motion Dev");

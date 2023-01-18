@@ -10,7 +10,6 @@ import ebf.tim.utility.CommonProxy;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.opengl.GL11;
 

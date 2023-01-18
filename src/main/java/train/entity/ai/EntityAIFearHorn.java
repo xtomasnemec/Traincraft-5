@@ -3,14 +3,12 @@ package train.entity.ai;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.utility.CommonUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCache;
 
@@ -72,8 +70,10 @@ public class EntityAIFearHorn extends EntityAIBase{
     /**
      * Try to find and set a path to XYZ. Returns true if successful.
      */
-    private boolean tryMoveToXYZ(double x, double y, double z, double speed)
-    {
+    private boolean tryMoveToXYZ(double x, double y, double z, double speed) {
+        if(entity==null || entity.getNavigator()==null){
+            return false;
+        }
         PathEntity pathentity = this.getPathToXYZ((double)CommonUtil.floorDouble(x), (double)((int)y), (double)CommonUtil.floorDouble(z));
         return entity.getNavigator().setPath(pathentity, speed);
     }

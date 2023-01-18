@@ -10,7 +10,6 @@ import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.api.TransportSkin;
-import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.items.ItemKey;
 import ebf.tim.items.ItemPaintBucket;
 import ebf.tim.items.ItemStake;
@@ -24,7 +23,6 @@ import ebf.tim.render.ParticleFX;
 import ebf.tim.render.TransportRenderData;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
-import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.api.carts.IFluidCart;
@@ -32,7 +30,6 @@ import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.BlockRailPowered;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityMultiPart;
@@ -40,14 +37,15 @@ import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.*;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -55,6 +53,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import train.blocks.TCBlocks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -67,7 +66,7 @@ import static ebf.tim.utility.CommonUtil.radianF;
  * this is the base for all trains and rollingstock.
  * @author Eternal Blue Flame
  */
-public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, IFluidCart, ILinkableCart, IEntityMultiPart, IMinecart {
+public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, ILinkableCart, IEntityMultiPart, IMinecart {
 
     /*
      * <h2>variables</h2>
@@ -104,7 +103,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**the health of the entity, similar to that of EntityLiving*/
     private int health = 20;
     /**the list of items used for the inventory and crafting slots.*/
-    public List<ItemStackSlot> inventory = null;
+    public List<ItemStackSlot> inventory = new ArrayList<>();
     /**whether or not this needs to update the datawatchers*/
     public boolean updateWatchers = false;
     /**the ticket that gives the entity permission to load chunks.*/
@@ -123,6 +122,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**/
     float rotationRoll;
     /**calculated movement speed, first value is used for GUI and speed, second is used for render effects.*/
+    @Deprecated //TODO: value 1 gets the number right more often, but value 2 gets direction right. HOW
     public float[] velocity=new float[]{0,0};
     public int forceBackupTimer =0, syncTimer=0;
     public float pullingWeight=0;
@@ -257,12 +257,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public GenericRailTransport(World world){
         super(world);
-        setSize(0.25f,0.25f);
+        setSize(0.75f,Math.max(getHitboxSize()[1],3));
         ignoreFrustumCheck = true;
-        inventory = new ArrayList<>();
         initInventorySlots();
         if(world!=null && collisionHandler==null) {
-            this.height = 0.25f;
             collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
@@ -274,9 +272,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         posX = xPos;
         posZ = zPos;
         entityData.putUUID("owner", owner);
-        setSize(0.25f,0.25f);
+        setSize(0.75f,Math.max(getHitboxSize()[1],3));
         ignoreFrustumCheck = true;
-        inventory = new ArrayList<>();
         initInventorySlots();
     }
 
@@ -340,8 +337,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
         //EntityTrainCore has it's own tanker management because fuel slots.
-        //todo: i really didnt think out function slot IDs....
-        if(getTypes().contains(TANKER)){
+        if(getTypes().contains(TANKER) || getTypes().contains(TENDER)){
             inventory.add(tankerInputSlot());
             inventory.add(tankerOutputSlot());
         }
@@ -524,7 +520,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //be sure the player has permission to enter the transport, and that the transport has the main seat open.
                     if (getRiderOffsets() != null && getPermissions(p, false, true)) {
                         for (EntitySeat seat : seats) {
-                            if (seat.getPassenger() == null) {
+                            //1.12 is stupid, sometimes when the passenger is null, it returns the player
+                            if (!getWorld().isRemote && (seat.getPassenger() == null
+                                    || seat.getPassenger().getEntityId()==p.getEntityId())) {
                                 seat.addPassenger(p);
                                 return true;
                             }
@@ -614,6 +612,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             health -=20;
             //be sure we drop the inventory items on death.
             dropAllItems();
+            entityDropItem(getCartItem(),1);
             setDead();
             return true;
         }
@@ -646,6 +645,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             ServerLogger.deleteWagon(this);
             //be sure we drop the inventory items on death.
             dropAllItems();
+            entityDropItem(getCartItem(),1);
             setDead();
             return true;
         }
@@ -741,7 +741,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //shouldn't need this, but enable if getting nulls
         initInventorySlots();
         entityData = new XmlBuilder(ByteBufUtils.readUTF8String(additionalData));
-        rotationYaw = additionalData.readFloat();
 
     }
     @Deprecated //todo: send this data over the datawatcher or other more reliable means
@@ -749,7 +748,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public void writeSpawnData(ByteBuf buffer) {
         ByteBufUtils.writeUTF8String(buffer, entityData.toXMLString());
-        buffer.writeFloat(rotationYaw);
     }
 
     /**loads the entity's save file*/
@@ -759,6 +757,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         if (tag.hasKey("entityxml")) {
             entityData = new XmlBuilder(tag.getString("entityxml"));
+            for(String key : entityData.itemMap.keySet()){
+                getSlotIndexByID(Integer.parseInt(key.substring(4))).setStack(entityData.getItemStack(key));
+            }
         }
         bools.set(tag.getByteArray(NBTKeys.bools));
         isDead = tag.getBoolean(NBTKeys.dead);
@@ -806,33 +807,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         rotationRoll = tag.getFloat(NBTKeys.rotationRoll);
         prevRotationRoll = tag.getFloat(NBTKeys.prevRotationRoll);
 
-        //@DEPRECIATED, legacy data loading
-        if (getTankCapacity() != null) {
-            for (int i = 0; i < getTankCapacity().length; i++) {
-                if (tag.hasKey("tanks." + i)) {
-                    entityData.putFluidStack("tanks." + i, FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("tanks." + i)));
-                }
-            }
-        }
-        //@DEPRECIATED, legacy data loading
-        if (tag.hasKey("transportinv.0")) {
-            inventory = new ArrayList<>();
-            initInventorySlots();
-
-            NBTTagCompound invTag;
-
-            if (getSizeInventory() > 0) {
-                for (int i = 0; i < getSizeInventory(); i++) {
-                    if (tag.hasKey("transportinv." + i)) {
-                        invTag = tag.getCompoundTag("transportinv." + i);
-                        if (invTag != null) {
-                            inventory.get(i).setSlotContents(ItemStack.loadItemStackFromNBT(invTag), inventory);
-                        }
-                    }
-                }
-            }
-            closeInventory();
-        }
         updateWatchers = true;
     }
 
@@ -841,6 +815,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
+        //force write inventory to data before saving to prevent dupe bugs
+        for (ItemStackSlot slot : inventory){
+            entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
+        }
         tag.setString("entityxml", entityData.toXMLString());
         tag.setByteArray(NBTKeys.bools, bools.getBits());
         tag.setBoolean(NBTKeys.dead, isDead);
@@ -1022,12 +1000,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //realistically would be more like 2.4, but 5 makes gameplay more dramatic
                     brakeBuff+=stock.weightKg()*5.0f;
                 }
-                if(stock.rotationPitch!=0){
+                if(stock.rotationPitch!=0 && getAccelerator()==0){
                     //vanilla uses 0.0078125 per tick for slope speed.
                     //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
                     //so we buff that to just under double to balance against drag, then scale by entity pitch
                     //pith goes from -90 to 90, so it's inherently directional.
-                    slopeX+=(0.00017361f*0.5f)*stock.rotationPitch;
+                    slopeX+=(0.000017361f*0.5f)*-stock.rotationPitch;
                 }
             }
 
@@ -1040,7 +1018,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //add in the drag from combined weight, plus brakes.
             if(pullingWeight!=0) {//in theory this should never be 0, but we know forge is dumb
-                drag -= ((getAccelerator()==0?getFriction():getFriction()*5) * (pullingWeight + brakeBuff)) / 44480;
+                drag -= ((getAccelerator()==0?getFriction()*0.75:getFriction()*2.5) * (pullingWeight + brakeBuff)) / 44480;
             }
             //cap the drag to prevent weird behavior.
             // if it goes to 1 or higher then we speed up, which is bad, if it's below 0 we reverse, which is also bad
@@ -1162,14 +1140,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
         //CLIENT UPDATE
         if(getWorld().isRemote){
-            if(tickOffset >0) {
+            if(tickOffset >0 || ticksExisted<2) {
                 prevPosX = posX;
                 prevPosZ = posZ;
-                setPosition(
-                        this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
-                        this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
-                        this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
-                );
+                if(tickOffset >0) {
+                    setPosition(
+                            this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
+                            this.posY + (this.transportY - this.posY) / (double) this.tickOffset,
+                            this.posZ + (this.transportZ - this.posZ) / (double) this.tickOffset
+                    );
+                }
 
                 for(int i=0;i<seats.size();i++){
                     if(seats.get(i)!=null) {
@@ -1434,7 +1414,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             } else if (e instanceof EntityPlayer || e instanceof EntityLiving) {
                 if (CommonProxy.pushabletrains &&
-                        !getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.5) {
+                        !getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.01) {
                     double[] motion = CommonUtil.rotatePoint(0.25, 0,
                             CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
                     moveBogies(motion[0], motion[2]);
@@ -1480,17 +1460,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
         consistLeadID=null;
-        GenericRailTransport link, test;
+        GenericRailTransport link;
 
         //we need to have the list ordered from one of the ends, so iterate until an end is found and then use that.
         if((frontLinkedID!=null && backLinkedID!=null)) {
             link =(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
             while (link != null) {
                 transports.add(link);
-                if (link.frontLinkedID != null &&
+                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
                         !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-                } else if (link.backLinkedID != null &&
+                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
                         !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
                 } else {
@@ -1512,10 +1492,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 consistLeadID=link.getEntityId();
             }
 
-            if(link.frontLinkedID!=null &&
+            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null &&
+            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
             } else {
@@ -1530,10 +1510,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(link.getAccelerator()!=0){
                 consistLeadID=link.getEntityId();
             }
-            if(link.frontLinkedID!=null &&
+            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null &&
+            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
                     !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
                 link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
             } else {
@@ -1541,11 +1521,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
 
-        //now tell everything in the list, including this, that there's a new list, and provide said list.
-        for(GenericRailTransport t : transports){
-            t.setConsist(transports);
-            t.setValuesOnLinkUpdate(transports);
-            t.consistLeadID=consistLeadID;
+        if(transports.size()>1) {
+            //now tell everything in the list, including this, that there's a new list, and provide said list.
+            for (GenericRailTransport t : transports) {
+                t.setConsist(transports);
+                t.setValuesOnLinkUpdate(transports);
+                t.consistLeadID = consistLeadID;
+            }
         }
     }
 
@@ -2028,7 +2010,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         if(syncTimer==-1){
-            syncTimer=60;
+            syncTimer=this instanceof EntityTrainCore?20:60;
         }
 
     }
@@ -2061,7 +2043,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
 
-
     /*
      * <h1>Fluid Management</h1>
      */
@@ -2073,23 +2054,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
 
-    @Override
-    public boolean canPassFluidRequests(Fluid fluid){
-        return canDrain(null, fluid) || canFill(null, fluid);
-    }
-
-    @Override
-    public boolean canAcceptPushedFluid(EntityMinecart requester, Fluid fluid){
-        return canFill(null, fluid);
-    }
-
-    @Override
-    public boolean canProvidePulledFluid(EntityMinecart requester, Fluid fluid){
-        return canDrain(ForgeDirection.UNKNOWN, fluid);
-    }
-
-    @Override
-    public void setFilling(boolean filling){}
 
     /**Returns true if the given fluid can be extracted.*/
     @Override
@@ -2104,8 +2068,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**Returns true if the given fluid can be inserted into the fluid tank.*/
     @Override
     //TODO: rework this to work more similar to the fill function
-    public boolean canFill(@Nullable ForgeDirection from, Fluid resource){
-        return true;
+    public boolean canFill(@Nullable ForgeDirection from, Fluid resource){return true;
     }
 
     /**drain with a fluidStack, this is mostly a redirect to
@@ -2114,7 +2077,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public FluidStack drain(@Nullable ForgeDirection from, FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
-        FluidStack stack;
+        FluidStack stack=null;
+        if(getTankCapacity()==null){
+            return null;
+        }
         for(int i=0;i<getTankCapacity().length;i++) {
             stack=entityData.getFluidStack("tanks."+i);
             if (stack.amount > 0 && (resource.getFluid()==TiMFluids.nullFluid || stack.getFluid() == resource.getFluid())) {
@@ -2129,11 +2095,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         entityData.putFluidStack("tanks."+i,new FluidStack(stack.getFluid(),stack.amount-leftoverDrain));
                         markDirty();
                     }
-                    return null;
+                    return stack;
                 }
             }
         }
-        return resource;
+        if (stack != null) {
+            return null;
+        } else {
+            return new FluidStack(stack.getFluid(), leftoverDrain);
+        }
 
     }
 
@@ -2162,7 +2132,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**checks if the fluid can be put into the tank, and if doFill is true, will actually attempt to add the fluid to the tank.
      * @return the amount of fluid that was or could be put into the tank.*/
     @Override
-    public int fill(@Nullable ForgeDirection from, FluidStack resource, boolean doFill){
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill){
+        if(resource==null){return 1000;}
         if(getTankCapacity()==null){return resource.amount;}
         int leftoverDrain=resource.amount;
         FluidStack fluid;
@@ -2182,7 +2153,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
             }
             if (entityData.containsFluidStack("tanks."+stack)&& (
-                    resource.getFluid() == null || entityData.getFluidStack("tanks."+stack).getFluid() == resource.getFluid() ||
+                    resource==null || resource.getFluid() == null ||
+                            entityData.getFluidStack("tanks."+stack)==null ||
+                            entityData.getFluidStack("tanks."+stack).getFluid() == resource.getFluid() ||
                             entityData.getFluidStack("tanks."+stack).amount ==0)) {
                 fluid=entityData.getFluidStack("tanks."+stack);
 
@@ -2206,11 +2179,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     leftoverDrain=0;
                 }
                 if(leftoverDrain==0){
-                    return 0;
+                    return resource.amount;
                 }
             }
         }
-        return leftoverDrain;
+        return resource.amount-leftoverDrain;
     }
 
     /**
@@ -2466,7 +2439,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * for more detail on implementing custom versions, take a look at the existing ones, for example:
      * @see FuelHandler#manageSteam(EntityTrainCore) for an example*/
     public void manageFuel(){
-        if(getTypes().contains(TANKER)){
+        if(getTypes().contains(TANKER) || getTypes().contains(TENDER)){
             FuelHandler.manageTanker(this);
         }
     }
@@ -2559,8 +2532,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      *
      * @return either 1, 2, or 3 corresponding to which table should be able to craft it, or 0, to use the TiM traintable instead.
      */
-    public int getTier() {
-        return 0;
+    public Block getCraftingTable() {
+        return TCBlocks.trainTableTier1;
     }
 
     /**defines the name used for registration and the default name used in the gui.*/

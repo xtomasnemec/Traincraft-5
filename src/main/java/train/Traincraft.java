@@ -27,7 +27,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import train.blocks.TCBlocks;
-import train.blocks.fluids.LiquidManager;
 import train.core.CommonProxy;
 import train.core.handlers.ConfigHandler;
 import train.core.handlers.FuelHandler;
@@ -84,7 +83,7 @@ public class Traincraft {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-				/* Config handler */
+		/* Config handler */
 		configDirectory= event.getModConfigurationDirectory();
 		ConfigHandler.init(new File(event.getModConfigurationDirectory(), Info.modName + ".cfg"));
 
@@ -242,7 +241,8 @@ public class Traincraft {
 
 		tcLog.info("Activation Mod Compatibility");
 		//railcraft recipe compatibility
-		if(Loader.isModLoaded("Railcraft") && !Loader.isModLoaded("tc")){
+		if(Loader.isModLoaded("Railcraft")) {
+
 			File file = new File("./config/railcraft/railcraft.cfg");
 			try {
 				@SuppressWarnings("resource") Scanner scanner = new Scanner(new FileInputStream(file));
@@ -250,21 +250,19 @@ public class Traincraft {
 				while (scanner.hasNextLine()) {
 					String line = scanner.nextLine().trim();
 
-					if (line.equals("B:useAltRecipes=true")) {
-						Traincraft.tcLog.info(
-								"You've enabled vanilla rail recipes in Railcraft. Disable them to get Traincraft additional tracks");
-						break;
-					} else if (line.equals("B:useAltRecipes=false")) {
+					if (line.equals("B:useAltRecipes=false")) {
 						PluginRailcraft.init();
 						Traincraft.tcLog.info("Enabled Traincraft additional tracks for Railcraft");
 						break;
+					} else if(line.equals("B:useAltRecipes=true")){
+						Traincraft.tcLog.info(
+								"You've enabled vanilla rail recipes in Railcraft. Disable them to get Traincraft additional tracks");
 					}
 				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
-		LiquidManager.getLiquidsFromDictionnary();
 
 		if (evt.getSide().isClient() && Loader.isModLoaded("NotEnoughItems")) {
 			train.core.plugins.AssemblyTableNEIIntegration.setupNEIIntegration();

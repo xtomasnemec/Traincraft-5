@@ -53,9 +53,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**cached values for the rail path and motion vectors
      * prevents need to generate a new variable multiple times per tick and reduces GC strain*/
     private double railPathX, railPathZ,motionSqrt,railPathX2, railPathZ2;
-    private double[] loopDirection;
-    private int railMetadata;
-    private Block blockNext;
+    public double[] loopDirection = null;
+    private int railMetadata, xFloor=0,yFloor=0,zFloor=0;
+    private Block blockNext, blockCurrent;
     float railmax;
     /**normally this variable exists already in 1.7, this additional declaration of it is support for 1.8.9+*/
     public float yOffset=0.425f;
@@ -135,6 +135,28 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //client only, update position
         if (this.getWorld().isRemote){
             super.onUpdate();
+        }
+        //init stuff for detector/activator rails
+        if(yFloor==0) {
+            xFloor = CommonUtil.floorDouble(this.posX);
+            yFloor = CommonUtil.floorDouble(this.posY);
+            zFloor = CommonUtil.floorDouble(this.posZ);
+            blockCurrent=CommonUtil.getBlockAt(getWorld(),xFloor,yFloor,zFloor);
+        }
+
+        //do detector rail things
+        if(blockCurrent instanceof BlockRailBase && ((BlockRailBase)blockCurrent).isPowered()){
+            int meta = CommonUtil.getRailMeta(getWorld(),this,xFloor,yFloor,zFloor);
+            if((meta & 8) == 0) {
+                CommonUtil.setBlockMeta(getWorld(), xFloor,yFloor,zFloor, meta | 8);
+            }
+        }
+
+        //todo: reroute to host for activator rail stuff, activator rail activates train.
+        //host would also need identification if it was front or back bogie
+        if (blockCurrent == Blocks.activator_rail) {
+            this.onActivatorRailPass(xFloor,yFloor,zFloor,
+                    (CommonUtil.getRailMeta(getWorld(),this,xFloor,yFloor,zFloor) & 8) != 0);
         }
 
         if(ticksExisted%40==0 || ticksExisted==0) {
@@ -239,7 +261,9 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                         }
                     }
                 }
-                return;
+            } else if(CommonUtil.getBlockAt(getWorld(), floorX, floorY+1, floorZ) instanceof BlockRailBase) {
+                prevPosY=posY;
+                posY++;
             }
         }
     }
@@ -264,6 +288,10 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                 floorX = CommonUtil.floorDouble(this.posX);
                 floorY = CommonUtil.floorDouble(this.posY);
                 floorZ = CommonUtil.floorDouble(this.posZ);
+                xFloor = CommonUtil.floorDouble(this.posX);
+                yFloor = CommonUtil.floorDouble(this.posY);
+                zFloor = CommonUtil.floorDouble(this.posZ);
+                blockCurrent=CommonUtil.getBlockAt(getWorld(),xFloor,yFloor,zFloor);
                 //check for collisions and skip update
                 for (int i = 1; i < host.getHitboxSize()[1] - 1; i++) {
                     blockUp = CommonUtil.getBlockAt(getWorld(), floorX, floorY + i, floorZ);
@@ -293,9 +321,6 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     //do the rail functions.
                     if(shouldDoRailFunctions()) {
                         block.onMinecartPass(getWorld(), this, floorX, floorY, floorZ);
-                    }
-                    if (block == Blocks.activator_rail) {
-                        this.onActivatorRailPass(floorX, floorY, floorZ, (getWorld().getBlockMetadata(floorX, floorY, floorZ) & 8) != 0);
                     }
                     //get the direction of the rail from it's metadata
                     railMetadata = CommonUtil.getRailMeta(getWorld(), this, floorX, floorY, floorZ);
@@ -338,12 +363,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //    and rotate movement for the next cycle.
         //NOTE: when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
         if (railPathX != 0 && railPathZ != 0) {
-            motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]))*0.5;
             setPositionRelative((currentMotion * railPathX) * 0.5, 0, (currentMotion * railPathZ) * 0.5);
         } else {
-            motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]));
             setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
         }
+        motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]));
         moveDirection[0] = motionSqrt * (railPathX);
         moveDirection[1] = motionSqrt * (railPathZ);
 

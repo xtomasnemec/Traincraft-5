@@ -1,7 +1,9 @@
 package ebf.tim.entities;
 
 import ebf.tim.registry.NBTKeys;
-import ebf.tim.utility.*;
+import ebf.tim.utility.CommonProxy;
+import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.FuelHandler;
 import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
@@ -187,9 +189,6 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     @Override
     public void onUpdate() {
-
-        super.onUpdate();
-
         if(frontBogie != null && backBogie != null) {
 
             if (!worldObj.isRemote) {
@@ -215,14 +214,16 @@ public class EntityTrainCore extends GenericRailTransport {
                         Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
                         frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
                         backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                        applyDrag();
                     }
                 }
 
-                updatePosition();
             }
 
         }
+
+        super.onUpdate();
+        updatePosition();
+
         if(whistleDelay>0) {
             whistleDelay--;
         }
@@ -278,21 +279,6 @@ public class EntityTrainCore extends GenericRailTransport {
         }
     }
 
-    @Override
-    public void markDirty() {
-        if(forceBackupTimer==0) {
-            forceBackupTimer = 30;
-        }
-        for (ItemStackSlot slot : inventory){
-            entityData.putItemStack("inv."+slot.getSlotID(), slot.getStack());
-        }
-
-        if(syncTimer==-1){
-            syncTimer=20;
-        }
-
-    }
-
 
     @Override
     public boolean interact(int player, boolean isFront, boolean isBack, int key) {
@@ -337,7 +323,18 @@ public class EntityTrainCore extends GenericRailTransport {
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
-                }case 11:{//TC control forward
+                } case 16:{//reset speed
+                    if (getBoolean(boolValues.RUNNING)) {
+                        //if a linked transport is running, dont update
+                        if (consistLeadID != null && consistLeadID != getEntityId()) {
+                            return true;
+                        }
+                        accelerator = 0;
+                        updateConsist();
+                        this.dataWatcher.updateObject(18, accelerator);
+                    }
+                    return true;
+                } case 11:{//TC control forward
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = 7;
                         this.dataWatcher.updateObject(18, accelerator);

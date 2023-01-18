@@ -2,7 +2,6 @@ package ebf.tim.blocks;
 
 import ebf.XmlBuilder;
 import ebf.tim.TrainsInMotion;
-import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
@@ -10,7 +9,6 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.render.models.Model1x1Rail;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
-import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -23,7 +21,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import javax.annotation.Nullable;
 

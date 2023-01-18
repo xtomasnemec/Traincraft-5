@@ -4,7 +4,6 @@ import ebf.tim.entities.EntityBogie;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

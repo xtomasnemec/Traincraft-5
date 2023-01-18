@@ -23,17 +23,14 @@ import java.util.List;
 public class CommonProxy implements IGuiHandler {
 	public static List<MP3Player> playerList = new ArrayList<MP3Player>();
 
+	public static WorldEvents eventManager = new WorldEvents();
 
 	public void registerRenderInformation() {}
 
 	public void registerEvents(FMLPreInitializationEvent event){
-		registerEvent(new WorldEvents());
+		FMLCommonHandler.instance().bus().register(eventManager);
+		MinecraftForge.EVENT_BUS.register(eventManager);
 
-	}
-
-	public void registerEvent(Object o){
-		FMLCommonHandler.instance().bus().register(o);
-		MinecraftForge.EVENT_BUS.register(o);
 	}
 
 

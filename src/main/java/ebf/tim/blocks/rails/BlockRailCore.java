@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.items.ItemRail;
-import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
@@ -113,7 +112,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int meta = CommonUtil.getRailMeta(world, null, x, y, z);
         if (meta >1 && meta <6) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1f, 1.0F);
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5f, 1.0F);
         } else {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
         }
@@ -388,15 +387,13 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     public static RailSimpleShape getShape(World worldObj, int xPos, int yPos, int zPos){
-        if(!(CommonUtil.getBlockAt(worldObj, xPos,yPos,zPos) instanceof BlockRailCore)){
-            return null;
-        }
         TileEntity te= worldObj.getTileEntity(xPos, yPos, zPos);
         if(!(te instanceof RailTileEntity)){
             te = new RailTileEntity();
             te.xCoord=xPos;
             te.yCoord=yPos;
             te.zCoord=zPos;
+            worldObj.addTileEntity(te);
         }
         switch (((RailTileEntity)te).getMeta()){
             //Z straight

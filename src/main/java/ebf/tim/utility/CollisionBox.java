@@ -6,6 +6,7 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketRemove;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
+import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -21,8 +22,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
+public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IMinecart, ILinkableCart {
     public GenericRailTransport host;
+
     public CollisionBox(GenericRailTransport transport) {
         super(transport, HitboxDynamic.dragonBoxName, transport.getHitboxSize()[2],transport.getHitboxSize()[1]);
         host=transport;
@@ -66,20 +68,6 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
         }
         return this.host.attackEntityFromPart(this, damageSource, p_70097_2_);
     }
-
-    @Override
-    public boolean canPassFluidRequests(Fluid fluid) {return host.canPassFluidRequests(fluid);}
-
-    @Override
-    public boolean canAcceptPushedFluid(EntityMinecart requester, Fluid fluid) {
-        return host.canAcceptPushedFluid(requester,fluid);}
-
-    @Override
-    public boolean canProvidePulledFluid(EntityMinecart requester, Fluid fluid) {
-        return host.canProvidePulledFluid(requester,fluid);}
-
-    @Override
-    public void setFilling(boolean filling) {host.setFilling(filling);}
 
     @Override
     public boolean isLinkable() {return host.isLinkable();}
@@ -190,5 +178,10 @@ public class CollisionBox extends EntityDragonPart implements IInventory, IFluid
         if(boundingBox.maxZ!=0) {
             this.boundingBox.setBounds(p_70107_1_ - (double) f, p_70107_3_ - (double) this.yOffset + (double) this.ySize, p_70107_5_ - (double) f, p_70107_1_ + (double) f, p_70107_3_ - (double) this.yOffset + (double) this.ySize + (double) f1, p_70107_5_ + (double) f);
         }
+    }
+
+    @Override
+    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+        return host.doesCartMatchFilter(stack, cart);
     }
 }

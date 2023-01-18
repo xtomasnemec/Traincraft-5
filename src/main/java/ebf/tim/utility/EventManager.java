@@ -9,7 +9,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.entities.EntitySeat;
-import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketInteract;
 import fexcraft.tmt.slim.Tessellator;
@@ -22,12 +21,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,7 @@ public class EventManager {
     private static List<GenericRailTransport> stock;
     private static GenericRailTransport selected=null, lastSelected=null;
     private static int holdTimer=0;
+    private static boolean inited=false;
     /**
      * <h2>Keybind management</h2>
      * manages key pressed or released, since 1.7.10 has no direct support for key released we have to do it directly through LWJGL.
@@ -59,12 +59,16 @@ public class EventManager {
         if (player.ridingEntity instanceof EntitySeat) {
             //for lamp
             if (ClientProxy.KeyLamp.getIsKeyPressed()) {
-                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0, ((EntitySeat) player.ridingEntity).parentId));
-                ((GenericRailTransport)player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId)).setBoolean(GenericRailTransport.boolValues.LAMP, !((GenericRailTransport) player.ridingEntity).getBoolean(GenericRailTransport.boolValues.LAMP));
+                GenericRailTransport parent = (GenericRailTransport) player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId);
+                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(0,parent.getEntityId()));
+                parent.setBoolean(GenericRailTransport.boolValues.LAMP, !parent.getBoolean(GenericRailTransport.boolValues.LAMP));
             }
             //for inventory
             if (ClientProxy.KeyInventory.getIsKeyPressed()) {
                 TrainsInMotion.keyChannel.sendToServer(new PacketInteract(1, ((EntitySeat) player.ridingEntity).parentId));
+            }
+            if (ClientProxy.KeyLamp.getIsKeyPressed()) {
+                TrainsInMotion.keyChannel.sendToServer(new PacketInteract(5, ((EntitySeat) player.ridingEntity).parentId));
             }
             if (((EntitySeat) player.ridingEntity).isLocoSeat()) {
                 //for speed change
@@ -73,15 +77,23 @@ public class EventManager {
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(2, ((EntitySeat) player.ridingEntity).parentId));
                     }
+                    //if speed is in TC mode and going backwards, reset speed.
+                    if(((GenericRailTransport) player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId)).getAccelerator()>6) {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.ridingEntity).parentId));
+                    }
                 } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
                     //dont send if controls are TC mode
                     if (holdTimer<15 && ClientProxy.controls!=1){
                         TrainsInMotion.keyChannel.sendToServer(new PacketInteract(3, ((EntitySeat) player.ridingEntity).parentId));
                     }
+                    //if speed is in TC mode and going forwards, reset speed.
+                    if(((GenericRailTransport) player.worldObj.getEntityByID(((EntitySeat) player.ridingEntity).parentId)).getAccelerator()<-6) {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.ridingEntity).parentId));
+                    }
                 } else if (ClientProxy.KeyHorn.getIsKeyPressed()){
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(9, ((EntitySeat) player.ridingEntity).parentId));
                 } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindJump.getIsKeyPressed()){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(16, ((EntitySeat) player.ridingEntity).parentId));
+                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, ((EntitySeat) player.ridingEntity).parentId));
                 }
 
                 //manage key release events
@@ -89,7 +101,7 @@ public class EventManager {
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, ((EntitySeat) player.ridingEntity).parentId));
                 }
             }
-        } else if(DebugUtil.dev()) {
+        } else if(DebugUtil.dev) {
             if (ClientProxy.raildevtoolUp.getIsKeyPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]+=0.0625;
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +
@@ -167,6 +179,13 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onClientTick(TickEvent.PlayerTickEvent event) {
+        if(!inited && event.phase== TickEvent.Phase.END){
+            try{
+                GLContext.getCapabilities();
+                fexcraft.tmt.slim.TextureManager.collectIngotColors();
+                inited=true;
+            } catch (RuntimeException e){}//this is thrown when world render isn't initialized yet
+        }
         if(event.player.ridingEntity instanceof EntitySeat){
             if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
                 //for TC only controls, skip wait, for TiM only controls just stop.

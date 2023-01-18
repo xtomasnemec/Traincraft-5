@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -57,7 +56,6 @@ public class GUICraftBook extends GuiScreen {
             modids.add(0,TrainsInMotion.MODID);//make sure core mod entries are at start
 
             for (String mod : modids) {
-                DebugUtil.println(mod);
                 if(infoPages.containsKey(mod)) {
                     for(bookPage p : infoPages.get(mod)){
                         pages.add(p);//Collections.addAll does not work with this. i have no idea why.

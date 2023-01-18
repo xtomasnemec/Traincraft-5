@@ -170,7 +170,13 @@ public class TCItems {
 	private static void registerItems() {
 		for (ItemIDs items : ItemIDs.values()) {
 			if (items.item != null) {
-				TiMGenericRegistry.RegisterItem(items.item,Info.modID,items.name(),Traincraft.tcTab);
+				if(items.item instanceof ItemTCArmor){
+					TiMGenericRegistry.RegisterItem(items.item, Info.modID, items.name(), Traincraft.tcTab, "armour/"+items.name());
+				} else if(items.item instanceof ItemZeppelins || items.item instanceof ItemWrench) {
+					TiMGenericRegistry.RegisterItem(items.item, Info.modID, items.name(), Traincraft.tcTab, items.name());
+				} else {
+					TiMGenericRegistry.RegisterItem(items.item, Info.modID, items.name(), Traincraft.tcTab, "parts/"+items.name());
+				}
 			}
 		}
 	}

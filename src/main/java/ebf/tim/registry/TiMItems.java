@@ -2,7 +2,11 @@ package ebf.tim.registry;
 
 import ebf.tim.TrainsInMotion;
 import ebf.tim.items.*;
+import ebf.tim.utility.Recipe;
+import ebf.tim.utility.RecipeManager;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import train.blocks.TCBlocks;
 
 public class TiMItems {
 
@@ -161,10 +165,16 @@ public class TiMItems {
         generator = createItem("generator");
     }
 
+    private static Item createItem(String unlocalizedName, ItemStack[] r) {
+        Item item = new Item();
+        TiMGenericRegistry.RegisterItem(item, TrainsInMotion.MODID, unlocalizedName, TrainsInMotion.creativeTabCrafting, "crafting/" + unlocalizedName);
+        RecipeManager.registerRecipe(new Recipe(new ItemStack(item), r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7],r[8]), TiMBlocks.trainTable);
+        return item;
+    }
+
     private static Item createItem(String unlocalizedName) {
         Item item = new Item();
-        TiMGenericRegistry.RegisterItem(item, TrainsInMotion.MODID, unlocalizedName, TrainsInMotion.creativeTabCrafting);
-        item.setTextureName(TrainsInMotion.MODID+ ":" + "crafting/" + item.getUnlocalizedName().replace("item.", ""));
+        TiMGenericRegistry.RegisterItem(item, TrainsInMotion.MODID, unlocalizedName, TrainsInMotion.creativeTabCrafting, "crafting/" + unlocalizedName);
         return item;
     }
 }

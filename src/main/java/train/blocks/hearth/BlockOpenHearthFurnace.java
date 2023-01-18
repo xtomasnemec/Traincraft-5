@@ -9,25 +9,17 @@ package train.blocks.hearth;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import train.Traincraft;
 import train.blocks.TCBlocks;
-import train.blocks.distil.TileEntityDistil;
-import train.library.GuiIDs;
 
 import java.util.Random;
 
@@ -42,7 +34,7 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 	public ResourceLocation getTexture(int x, int y, int z){
 		//todo this is inefficient, do from tile entity
 		if(Minecraft.getMinecraft().theWorld!=null &&
-				Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z) instanceof TileEntityDistil){
+				Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z) instanceof TileEntityOpenHearthFurnace){
 			if(((TileEntityOpenHearthFurnace) Minecraft.getMinecraft().theWorld.getTileEntity(x,y,z)).isBurning()){
 				return new ResourceLocation("traincraft", "textures/blocks/furnace_on.png");
 			}
@@ -59,7 +51,7 @@ public class BlockOpenHearthFurnace extends BlockDynamic {
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity((int) minX, (int) minY, (int) minZ);
-		if (te instanceof TileEntityDistil && ((TileEntityDistil) te).isBurning()) {
+		if (te instanceof TileEntityOpenHearthFurnace && ((TileEntityOpenHearthFurnace) te).isBurning()) {
 			float var7 = (float) i + 0.5F;
 			float var9 = (float) k + 0.5F;
 			float f3 = 0.009F;

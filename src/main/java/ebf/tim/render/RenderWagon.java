@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -114,7 +113,6 @@ public class RenderWagon extends Render {
                 int m=0;
                 for (ModelBase part : entity.renderData.modelList) {
                     for (ModelRendererTurbo render : part.getnamedParts()) {
-                        if (render.boxName ==null){continue;}
                         //attempt to cache the parts for the main transport model
                         if(StaticModelAnimator.checkCulls(render)){
                             render.boxName=render.boxName.replace("cull","").replace("Cull", "");
@@ -239,6 +237,8 @@ public class RenderWagon extends Render {
             railOffset=bogieRenderYOffset(entity.frontBogie.yOffset);
             railOffset+=bogieRenderYOffset(entity.backBogie.yOffset);
             railOffset*=0.5f;
+        } else if(entity.getWorld()!=null){
+            return;
         }
 
 
@@ -256,11 +256,7 @@ public class RenderWagon extends Render {
         GL11.glEnable(GL_NORMALIZE);
 
         //set the render position
-        GL11.glTranslated(x, y+ railOffset +bogieOffset, z);
-        //rotate the model.
-        if(!isPaintBucket) {
-            GL11.glRotatef(-yaw - 180f, 0.0f, 1.0f, 0.0f);
-        }
+        GL11.glTranslated(x, y+ railOffset +bogieOffset+1.5, z);
 
         GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
                 Math.abs(entity.bogieLengthFromCenter()[0])+Math.abs(entity.bogieLengthFromCenter()[1]),
@@ -268,7 +264,13 @@ public class RenderWagon extends Render {
         if(entity.frontBogie!=null && entity.backBogie!=null){
             GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
         }
-        GL11.glRotatef(entity.rotationPitch - 180f, 0.0f, 0.0f, 1.0f);
+        //rotate the model.
+        if(!isPaintBucket) {
+            GL11.glTranslated(0, -railOffset -bogieOffset, 0);
+            GL11.glRotatef(-entity.rotationYaw - 180f, 0.0f, 1.0f, 0.0f);
+            GL11.glRotatef(entity.rotationPitch + 180f, 0.0f, 0.0f, 1.0f);
+            GL11.glTranslated(0, railOffset +bogieOffset, 0);
+        }
         GL11.glPushMatrix();
 
 
@@ -282,11 +284,11 @@ public class RenderWagon extends Render {
          */
         if (entity.getWorld()!=null && !Minecraft.getMinecraft().isGamePaused()) {
             //cap the pitch value so we don't exceed values accepted by an integer.
-            if(Math.abs(entity.renderData.wheelPitch) >= 3600) {
-                entity.renderData.wheelPitch -= Math.copySign(3600, entity.renderData.wheelPitch);
+            if(Math.abs(entity.renderData.wheelPitch) >= 100) {
+                entity.renderData.wheelPitch -= Math.copySign(100, entity.renderData.wheelPitch);
             }
             // define the rotation angle, scale based on framerate.
-            entity.renderData.wheelPitch -=(entity.velocity[1]*(System.currentTimeMillis()-entity.renderData.lastFrameTime)*60);
+            entity.renderData.wheelPitch +=(entity.velocity[1]*(System.currentTimeMillis()-entity.renderData.lastFrameTime)*60);
 
             //entity.renderData.wheelPitch+=0.03f;
 

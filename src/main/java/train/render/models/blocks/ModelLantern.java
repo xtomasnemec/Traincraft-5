@@ -1,12 +1,12 @@
 package train.render.models.blocks;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import train.blocks.lantern.TileLantern;
 import train.library.Info;
@@ -59,9 +59,9 @@ public class ModelLantern extends ModelBase {
 		// Pop this matrix from the stack.
 		GL11.glPopMatrix();
 		//todo: model remake include torch
-		/*if(lantern.getWorldObj()!=null) {
+		/*if(lantern.getWorld()!=null) {
 			GL11.glPushMatrix();
-			EntityItem ghostEntityItem = new EntityItem(lantern.getWorldObj());
+			EntityItem ghostEntityItem = new EntityItem(lantern.getWorld());
 			ghostEntityItem.setEntityItemStack(new ItemStack(Blocks.torch, 1));
 			ghostEntityItem.hoverStart = 0.0F;
 

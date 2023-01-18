@@ -1,7 +1,6 @@
 package ebf.tim.utility;
 
 
-import com.google.common.collect.ImmutableMap;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.GenericRailTransport;
 import fexcraft.tmt.slim.Vec3d;
@@ -14,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
@@ -59,12 +57,17 @@ public class CommonUtil {
         return world.getBlock(x,y,z);
     }
 
-    public static void setBlock(World w, int x, int y, int z, Block b){
-        w.setBlock(x,y,z,b);
+    public static boolean setBlock(World w, int x, int y, int z, Block b){
+        return w.setBlock(x,y,z,b);
     }
 
     public static void setBlockMeta(World w, int x, int y, int z, int meta){
         w.setBlockMetadataWithNotify(x,y,z,meta,2);
+        w.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+        w.notifyBlocksOfNeighborChange(x, y, z, getBlockAt(w,x,y,z));
+        w.scheduleBlockUpdate(x, y, z, getBlockAt(w,x,y,z), getBlockAt(w,x,y,z).tickRate(w));
+
+        w.func_147453_f(x, y, z, getBlockAt(w,x,y,z));
     }
 
     public static void markBlockForUpdate(World w, int x, int y, int z){
@@ -79,9 +82,12 @@ public class CommonUtil {
         return ((BlockRailBase)w.getBlock(x,y,z)).getBasicRailMetadata(w,cart,x,y,z);
     }
 
-    public static void setBlock(World w, int x, int y, int z, Block b, int meta){
-        setBlock(w,x,y,z,b);
-        setBlockMeta(w,x,y,z,meta);
+    public static boolean setBlock(World w, int x, int y, int z, Block b, int meta){
+        boolean set =setBlock(w,x,y,z,b);
+        if(set) {
+            setBlockMeta(w, x, y, z, meta);
+        }
+        return set;
     }
 
     public static float getMaxRailSpeed(World world, BlockRailBase rail, GenericRailTransport host, double x, double y, double z){
@@ -537,6 +543,7 @@ public class CommonUtil {
                 } else {
                     entity.rotationYaw= 90;
                 }
+                entity.posX+=0.03125f;
 
             } else if (railMeta==1){
                 //check if the train fits on the track
@@ -552,10 +559,13 @@ public class CommonUtil {
                 } else {
                     entity.rotationYaw= 0;
                 }
+                entity.posZ+=0.03125f;
             }
             //actually place the entity
             worldObj.spawnEntityInWorld(entity);
             entity.entityFirstInit(stack);
+            //force first update to spawn entity in faster
+            entity.onUpdate();
             return true;
         }
 
