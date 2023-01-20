@@ -19,6 +19,7 @@ import ebf.tim.networking.PacketInteract;
 import ebf.tim.networking.PacketUpdateClients;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.registry.TiMFluids;
+import ebf.tim.registry.TiMItems;
 import ebf.tim.render.ParticleFX;
 import ebf.tim.render.TransportRenderData;
 import ebf.tim.utility.*;
@@ -446,7 +447,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean interactFirst(EntityPlayer p_130002_1_) {
         return getWorld().isRemote?interact(p_130002_1_.getEntityId(),false,false, -1):super.interactFirst(p_130002_1_);
     }
-
     //unused IDs: 14+
     public boolean interact(int player, boolean isFront, boolean isBack, int key) {
         EntityPlayer p =((EntityPlayer)getWorld().getEntityByID(player));
@@ -1830,6 +1830,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return inventory==null?0:inventory.size();
     }
 
+    public int getInventoryRowCount() {
+        /** multiplying by 0.276 is the inverse of dividing by 3.669 Multiplication is more efficient
+         * 3.669 is the volume, in blocks, per inventory row based off of the PRR X31 boxcar, the first 'modern' boxcar.
+         * 12 is an arbitrary number. Used for determining if the stock inventory size should be nerfed or not. ]
+         0.7 is the nerf value. Change if you feel it is too high or too low.*/
+        return (int)Math.ceil(((getHitboxSize()[0]*getHitboxSize()[1]*getHitboxSize()[2]) * 0.276) * (getHitboxSize()[0]>12? 0.7:1) * (this.seats.size() == 0 ? 1:0.5));
+    }
+    public int getTankVolume() {
+        /** 5535.268 is the buckets, per block of volume, of fluid based off of the Three Dome Tank, the first 'modern' tankcar.
+         * 12 is an arbitrary number. Used for determining if the stock inventory size should be nerfed or not.
+         * We nerf tenders even more so they aren't used as normal tank wagons. If its a tender over 12 blocks long, nerf it by 75%, else nerf by 50%.
+         * If its not a tender and over 12 blocks long, nerf by 30%, else don't nerf at all.
+         */
+        return (int)Math.ceil(((getHitboxSize()[0]*getHitboxSize()[1]*getHitboxSize()[2]) * 5535.268) * (this.getTypes().contains(B_UNIT) || this.getTypes().contains(TENDER)? getHitboxSize()[0]>12? 0.25:0.5:getHitboxSize()[0]>12? 0.7:1) * (this.seats.size() == 0 ? 1:0.5));
+    }
     /**
      * <h2>get item</h2>
      * @return the item in the requested slot

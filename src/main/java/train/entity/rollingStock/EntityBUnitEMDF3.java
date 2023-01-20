@@ -94,7 +94,7 @@ public class EntityBUnitEMDF3 extends GenericRailTransport {
     @Override
     public float[] rotationPoints() {return new float[]{1.8f, -1.782f};}
     @Override
-    public int[] getTankCapacity(){return new int[]{12000};}
+    public int[] getTankCapacity(){return new int[]{getTankVolume()};}
 
 
 

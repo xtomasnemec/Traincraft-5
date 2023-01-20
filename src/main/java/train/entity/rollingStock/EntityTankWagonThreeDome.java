@@ -86,7 +86,7 @@ public class EntityTankWagonThreeDome extends GenericRailTransport {
     @Override
     public float[] rotationPoints() {return new float[]{1.925f, -1.85f};}
     @Override
-    public int[] getTankCapacity(){return new int[]{90000};}
+    public int[] getTankCapacity(){return new int[]{getTankVolume()};}
 
 
 

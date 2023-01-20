@@ -84,7 +84,7 @@ public class EntityTankWagon extends GenericRailTransport {
     @Override
     public float[] rotationPoints() {return new float[]{0.9f, -0.925f};}
     @Override
-    public int[] getTankCapacity(){return new int[]{40000};}
+    public int[] getTankCapacity(){return new int[]{getTankVolume()};}
 
 
 

@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.registry.TiMFluids;
+import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.ItemStackSlot;
@@ -170,9 +171,14 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 							flag1 = true;
 						}
 
-					} else if (getSlotIndexByID(402).getStack().getItem()== ItemIDs.emptyCanister.item){
-						if(getTankInfo(0).fluid.getFluid().getName().toLowerCase().contains("diesel")){
-							placeInInvent(new ItemStack(ItemIDs.diesel_canister.item));
+					} else if (getSlotIndexByID(402).getStack().getItem()== TiMItems.emptyCanister) {
+						if (getTankInfo(0).fluid.getFluid().getName().toLowerCase().contains("diesel") && getTankInfo(0).fluid.amount >= 1000) {
+							placeInInvent(new ItemStack(TiMItems.dieselCanister));
+							flag1 = true;
+						}
+					} else if (getSlotIndexByID(402).getStack().getItem()==Items.bucket) {
+						if (getTankInfo(0).fluid.getFluid().getName().toLowerCase().contains("diesel") && getTankInfo(0).fluid.amount >= 1000) {
+							placeInInvent(new ItemStack(TiMFluids.bucketDiesel));
 							flag1 = true;
 						}
 					} else if(FluidContainerRegistry.isContainer(getSlotIndexByID(402).getStack()) &&

@@ -10,7 +10,7 @@ package train.library;
 import net.minecraft.item.Item;
 
 public enum ItemIDs {
-	diesel_canister("ItemContainer", "item_diesel_filled", 20),
+	//diesel_canister("ItemContainer", "item_diesel_filled", 20),
 	//stake("ItemStacked", "item_stake", 1),
 	//steeldust("ItemTrain", "item_steeldust", 0),
 	//coaldust("ItemTrain", "item_coaldust", 15),
@@ -56,7 +56,7 @@ public enum ItemIDs {
 	//chunkLoaderActivator("ItemChunkLoaderActivator", "item_chunk_loader", 1),
 	//refinedFuelLiquid("ItemTrain", "item_liquid_fuel"),
 	//dieselLiquid("ItemTrain", "item_liquid_diesel"),
-	emptyCanister("ItemContainer", "item_canister", 40),
+	//emptyCanister("ItemContainer", "item_canister", 40),
 	//copperRail("ItemRail", "item_rail_copper", 1),
 	//steelRail("ItemRail", "item_rail_steel", 1),
 	copperRail("ItemTrain", "item_rail_copper", 1),

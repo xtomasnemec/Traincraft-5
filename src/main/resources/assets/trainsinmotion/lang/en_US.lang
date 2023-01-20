@@ -145,6 +145,8 @@ item.ingot.aluminum.name=Aluminum Ingot
 item.ingot.copper.name=Copper Ingot
 item.dust.plastic.name=Plastic Dust
 item.dust.coal.name=Coal Dust
+item.emptycanister.name=Empty Canister
+item.dieselcanister.name=Diesel Canister
 
 <!-- ## Crafting Items ## -->
 item.cabin.wood.name=Wood Cabin

@@ -42,7 +42,7 @@ public class EntityPassengerDenverRioGrandeCombo extends GenericRailTransport {
     @Override
     public boolean isFictional(){return false;}
     @Override
-    public int getInventoryRows(){return 2;}
+    public int getInventoryRows(){return getInventoryRowCount();}
     @Override
     public List<TrainsInMotion.transportTypes> getTypes(){
         List<TrainsInMotion.transportTypes> l=new ArrayList<>();
