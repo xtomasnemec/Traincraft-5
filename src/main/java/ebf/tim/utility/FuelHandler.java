@@ -7,6 +7,7 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.registry.TiMFluids;
+import ebf.tim.registry.TiMItems;
 import mods.railcraft.api.electricity.IElectricGrid;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -75,10 +76,13 @@ public class FuelHandler{
 				return new FluidStack(TiMFluids.fluidRedstone, ((IEnergyContainerItem) itemStack.getItem()).extractEnergy(itemStack, 250, true));
 			}
 		}
-		if(transport.getTypes().contains(TrainsInMotion.transportTypes.DIESEL)){
-			if(FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
-					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")){
-				return new FluidStack(TiMFluids.fluidDiesel,1000);
+		if(transport.getTypes().contains(TrainsInMotion.transportTypes.DIESEL)) {
+			if (itemStack.getItem() == TiMItems.dieselCanister) {
+				return new FluidStack(TiMFluids.fluidDiesel, 1000);
+			}
+			if (FluidContainerRegistry.getFluidForFilledItem(itemStack) != null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")) {
+				return new FluidStack(TiMFluids.fluidDiesel, 1000);
 			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
 					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
 				return new FluidStack(TiMFluids.fluidfueloil, 1000);
@@ -293,8 +297,13 @@ public class FuelHandler{
         if(getUseableFluid(400,train) !=null) {
 			if (train.fill(null, getUseableFluid(400,train))) {
 				if(!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
-					train.addItem(new ItemStack(Items.bucket));
+					if (train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem().equals(TiMItems.dieselCanister)) {
+						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+						train.addItem(new ItemStack(TiMItems.emptyCanister));
+					} else {
+						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+						train.addItem(new ItemStack(Items.bucket));
+					}
 				}
 			}
             //todo: fluid pipe support, should be able to be toggled in server settings

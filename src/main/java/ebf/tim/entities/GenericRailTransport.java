@@ -19,6 +19,7 @@ import ebf.tim.networking.PacketInteract;
 import ebf.tim.networking.PacketUpdateClients;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.registry.TiMFluids;
+import ebf.tim.registry.TiMItems;
 import ebf.tim.render.ParticleFX;
 import ebf.tim.render.TransportRenderData;
 import ebf.tim.utility.*;
@@ -1842,7 +1843,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          * We nerf tenders even more so they aren't used as normal tank wagons. If its a tender over 12 blocks long, nerf it by 75%, else nerf by 50%.
          * If its not a tender and over 12 blocks long, nerf by 30%, else don't nerf at all.
          */
-        return (int)Math.ceil(((getHitboxSize()[0]*getHitboxSize()[1]*getHitboxSize()[2]) * 5535.268) * (this.getTypes().contains(TrainsInMotion.transportTypes.TENDER)? getHitboxSize()[0]>12? 0.25:0.5:getHitboxSize()[0]>12? 0.7:1) * (this.seats.size() == 0 ? 1:0.5));
+        return (int)Math.ceil(((getHitboxSize()[0]*getHitboxSize()[1]*getHitboxSize()[2]) * 5535.268) * (this.getTypes().contains(B_UNIT) || this.getTypes().contains(TENDER)? getHitboxSize()[0]>12? 0.25:0.5:getHitboxSize()[0]>12? 0.7:1) * (this.seats.size() == 0 ? 1:0.5));
     }
     /**
      * <h2>get item</h2>
