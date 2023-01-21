@@ -1,6 +1,7 @@
 package ebf.tim.utility;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -11,7 +12,9 @@ import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketInteract;
+import ebf.tim.registry.TiMGenericRegistry;
 import fexcraft.tmt.slim.Tessellator;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
@@ -19,9 +22,11 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -405,5 +410,22 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void entityJoinWorldEvent(EntityJoinWorldEvent event) {
+    }
+
+    /**
+     * used to make vanilla buckets pickup custom fluids.
+     * i think it only runs on client, which is a HORRIBLE and LAZY design by mojank, but oh well.
+     * @see EventManagerServer#onBucketFillServer(FillBucketEvent)
+     * adding to server event manager anyway, just in case.
+     * @param event
+     */
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onBucketFill(FillBucketEvent event){
+        Block b = CommonUtil.getBlockAt(event.world,event.target.blockX, event.target.blockY, event.target.blockZ);
+        if(TiMGenericRegistry.fluidMap.get(b) !=null){
+            event.result= new ItemStack(TiMGenericRegistry.fluidMap.get(b));
+            event.setResult(Event.Result.ALLOW);
+        }
     }
 }
