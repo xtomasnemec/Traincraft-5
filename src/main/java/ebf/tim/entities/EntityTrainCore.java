@@ -150,7 +150,7 @@ public class EntityTrainCore extends GenericRailTransport {
         cachedVectors[2].yCoord=cachedVectors[2].xCoord;
 
         //handle ice slipping
-        if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
+        if(!getBoolean(boolValues.BRAKE)) {
         float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
                 CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
 
@@ -194,7 +194,7 @@ public class EntityTrainCore extends GenericRailTransport {
             if (!worldObj.isRemote) {
                 //twice a second, re-calculate the speed.
                 if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
-                    if(ticksExisted % 10 == 0) {
+                    if(Math.abs(accelerator)!=8 && ticksExisted % 10 == 0) {
                         calculateAcceleration();
                     }
                 } else {
