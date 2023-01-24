@@ -346,24 +346,12 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             railPathZ = -railPathZ;
         }
 
-
-        //if current motion is not 0.3 blocks, then it's the last loop iteration, so update the persistent motion vector.
-        if(currentMotion<0.3) {
-            //NOTE: when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
-            if (railPathX != 0 && railPathZ != 0) {
-                motionSqrt = (Math.abs(motionX) + Math.abs(motionZ)) * 0.5;
-            } else {
-                motionSqrt = (Math.abs(motionX) + Math.abs(motionZ));
-            }
-            motionX = motionSqrt * (railPathX);
-            motionZ = motionSqrt * (railPathZ);
-        }
-
         //for every iteration of the loop, use the current movement direction to update the position
         //    and rotate movement for the next cycle.
         //NOTE: when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
+        //for some reason it actually ends up as more than double speed.
         if (railPathX != 0 && railPathZ != 0) {
-            setPositionRelative((currentMotion * railPathX) * 0.5, 0, (currentMotion * railPathZ) * 0.5);
+            setPositionRelative((currentMotion * railPathX) * 0.355, 0, (currentMotion * railPathZ) * 0.355);
         } else {
             setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
         }
