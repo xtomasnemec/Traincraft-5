@@ -3,11 +3,16 @@ package ebf.tim.blocks;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.List;
 
-public class TileSwitch extends TileRenderFacing {
+public class TileSwitch extends TileRenderFacing implements ITickable {
     public boolean enabled[]={false};
     public boolean[] animationReversing={false};
     public int[] crossingTick={0};
@@ -45,6 +50,7 @@ public class TileSwitch extends TileRenderFacing {
         for(int i=0; i<bladeCount(); i++) {
             tag.setBoolean("e"+i, enabled[i]);
         }
+        return tag;
     }
 
     @Override
@@ -64,7 +70,7 @@ public class TileSwitch extends TileRenderFacing {
 
     //remember to list the sound file in your sounds.json and ID it there
     // TC5 does not yet feature direct audio streaming.
-    public String soundFile(){return "";}
+    public SoundEvent soundFile(){return new SoundEvent(new ResourceLocation(""));}
     //optional pitch shift for sound
     public float soundPitch(){return 1f;}
     //sound volume
@@ -82,10 +88,7 @@ public class TileSwitch extends TileRenderFacing {
     public int bladeCount(){return 1;}
 
     @Override
-    public boolean canUpdate(){return true;}
-
-    @Override
-    public void updateEntity() {
+    public void update() {
         if(!getWorld().isRemote){
             return;
         }
@@ -131,7 +134,7 @@ public class TileSwitch extends TileRenderFacing {
         //if there's a defined sound, play that every interval.
         if(getEnabled(0) && soundFile()!=null){
             if(time>lastSoundMS+getSoundInterval()){
-                getWorld().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
+                getWorld().playSound(getPos().getX(),getPos().getY(),getPos().getZ(), soundFile(), SoundCategory.BLOCKS, soundVolume(),soundPitch(),false);
                 lastSoundMS=time;
             }
         }
@@ -150,8 +153,8 @@ public class TileSwitch extends TileRenderFacing {
         int signalStrength=0;
         for(int[] o : offset) {
             if (signalStrength == 0) {
-                signalStrength = worldObj.getBlockPowerInput(xCoord + o[0], yCoord + o[1], zCoord + o[2]);
-                if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + o[0], yCoord + o[1], zCoord + o[2])) {
+                signalStrength = world.getStrongPower(getPos().add(new Vec3i(o[0],o[1],o[2])));
+                if (signalStrength == 0 && world.isBlockPowered(getPos().add(new Vec3i(o[0],o[1],o[2])))) {
                     signalStrength = 15;
                 }
             }
@@ -211,9 +214,9 @@ public class TileSwitch extends TileRenderFacing {
             }
         }
 
-        List list = this.worldObj.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox(
-                xCoord+start.xCoord, yCoord+start.yCoord, zCoord+start.zCoord,
-                xCoord+end.xCoord, yCoord+end.yCoord, zCoord+end.zCoord));
+        List list = this.world.getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(
+                getPos().getX()+start.xCoord, getPos().getY()+start.yCoord, getPos().getZ()+start.zCoord,
+                getPos().getX()+end.xCoord, getPos().getY()+end.yCoord, getPos().getZ()+end.zCoord));
 
         if (list != null && list.size() > 0) {
             for (Object o : list) {
@@ -224,7 +227,7 @@ public class TileSwitch extends TileRenderFacing {
             }
         }
         if(useRedstone) {
-            setEnabled(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord),0);
+            setEnabled(world.isBlockPowered(getPos()),0);
         } else {
             setEnabled(false,0);
         }

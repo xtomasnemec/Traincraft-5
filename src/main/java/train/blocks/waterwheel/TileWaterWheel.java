@@ -3,7 +3,13 @@ package train.blocks.waterwheel;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.Fluid;
 import train.blocks.TCBlocks;
 import train.blocks.generator.TileGeneratorDiesel;
 
@@ -78,22 +84,17 @@ public class TileWaterWheel extends TileGeneratorDiesel {
 
 	@Override
 	public World getWorld(){
-		return this.worldObj;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid){
-		return false;
+		return this.world;
 	}
 
 
 
 	public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){
-		for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-			TileEntity tile = world.getTileEntity(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
-			if (tile instanceof IEnergyReceiver && storage.getEnergyStored() > 0) {
-				if (((IEnergyReceiver) tile).canConnectEnergy(side.getOpposite())) {
-					int receive = ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(), Math.min(storage.getMaxExtract(), storage.getEnergyStored()), false);
+		for (EnumFacing side : EnumFacing.values()) {
+			TileEntity tile = world.getTileEntity(new BlockPos(x + side.getXOffset(), y + side.getYOffset(), z + side.getZOffset()));
+			if (tile instanceof IEnergyStorage && storage.getEnergyStored() > 0) {
+				if (((IEnergyStorage) tile).canExtract()) {
+					int receive = ((IEnergyStorage) tile).receiveEnergy(Math.min(storage.getMaxEnergyStored(), storage.getEnergyStored()), false);
 					storage.extractEnergy(receive, false);
 				}
 			}
@@ -103,19 +104,15 @@ public class TileWaterWheel extends TileGeneratorDiesel {
 
 	//RF Overrides
 	@Override
-	public boolean canConnectEnergy(ForgeDirection dir) {
-		return true;
-	}
-	@Override
-	public int extractEnergy(ForgeDirection dir, int amount, boolean simulate) {
+	public int extractEnergy(int amount, boolean simulate) {
 		return energy.extractEnergy(amount, simulate);
 	}
 	@Override
-	public int getEnergyStored(ForgeDirection dir) {
+	public int getEnergyStored() {
 		return energy.getEnergyStored();
 	}
 	@Override
-	public int getMaxEnergyStored(ForgeDirection dir) {
+	public int getMaxEnergyStored() {
 		return this.energy.getMaxEnergyStored();
 	}
 

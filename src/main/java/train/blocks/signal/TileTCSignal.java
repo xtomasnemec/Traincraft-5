@@ -19,7 +19,7 @@ public class TileTCSignal extends TileSwitch {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 		//super.updateEntity();
 		//check if given redstone signal, let that override normal detection.
 		tickTile();

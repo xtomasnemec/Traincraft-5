@@ -117,7 +117,7 @@ public class TileWindMill extends TileEntityStorage implements IEnergyStorage, I
 
 	@Override
 	public World getWorld(){
-		return this.worldObj;
+		return this.world;
 	}
 
 	public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){

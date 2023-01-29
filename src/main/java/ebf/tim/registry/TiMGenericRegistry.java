@@ -41,6 +41,9 @@ import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 
 import javax.annotation.Nullable;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -289,7 +292,10 @@ public class TiMGenericRegistry {
         FluidRegistry.registerFluid(fluid);
         FluidRegistry.addBucketForFluid(fluid);
 
-        Block block = new BlockTrainFluid(fluid, Material.water).setBlockName("block." + unlocalizedName.replace(".item", "")).setBlockTextureName(MODID + ":block_" + unlocalizedName);
+        Block block = new BlockTrainFluid(fluid, Material.WATER)
+                .getBlockState().getBlock().setTranslationKey("block." + unlocalizedName.replace(".item", ""));
+            //todo: block textures aren't this configurable anymore
+            //.setBlockTextureName(MODID + ":block_" + unlocalizedName);
         ((BlockTrainFluid) block).setModID(MODID);
 
         ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))

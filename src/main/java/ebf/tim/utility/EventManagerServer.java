@@ -1,8 +1,5 @@
 package ebf.tim.utility;
 
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.registry.TiMGenericRegistry;
@@ -10,6 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class EventManagerServer {
 
@@ -40,9 +40,9 @@ public class EventManagerServer {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onBucketFillServer(FillBucketEvent event){
-        Block b = CommonUtil.getBlockAt(event.world,event.target.blockX, event.target.blockY, event.target.blockZ);
+        Block b = CommonUtil.getBlockAt(event.getWorld(),event.getTarget().getBlockPos().getX(), event.getTarget().getBlockPos().getY(), event.getTarget().getBlockPos().getZ());
         if(TiMGenericRegistry.fluidMap.get(b) !=null){
-            event.result= new ItemStack(TiMGenericRegistry.fluidMap.get(b));
+            event.setFilledBucket(new ItemStack(TiMGenericRegistry.fluidMap.get(b)));
             event.setResult(Event.Result.ALLOW);
         }
     }

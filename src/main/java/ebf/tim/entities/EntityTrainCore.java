@@ -154,7 +154,7 @@ public class EntityTrainCore extends GenericRailTransport {
         //handle ice slipping
         if(!getBoolean(boolValues.BRAKE)) {
         float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
-                CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
+                CommonUtil.getBlockAt(world,this.posX,this.posY-1,this.posZ).slipperiness;
 
             if(slip>0) {
                 rotationYaw+=accelerator*slip;

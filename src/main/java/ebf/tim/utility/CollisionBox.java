@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IMinecart, ILinkableCart {
+public class CollisionBox extends MultiPartEntityPart implements IInventory, IFluidHandler, IMinecart, ILinkableCart {
     public GenericRailTransport host;
 
     public CollisionBox(GenericRailTransport transport) {

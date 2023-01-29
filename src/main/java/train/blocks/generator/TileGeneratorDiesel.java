@@ -8,7 +8,7 @@
 package train.blocks.generator;
 
 
-import cofh.api.energy.EnergyStorage;
+import net.minecraftforge.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import ebf.tim.blocks.BlockDynamic;
@@ -24,7 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import train.blocks.TCBlocks;
@@ -43,6 +42,11 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergySto
 
     public TileGeneratorDiesel(){
         super(TCBlocks.dieselGenerator);
+        //this.theTank = LiquidManager.getInstance().new FilteredTank(30000, LiquidManager.dieselFilter(), 1);
+
+    }
+    public TileGeneratorDiesel(BlockDynamic b){
+        super(b);
         //this.theTank = LiquidManager.getInstance().new FilteredTank(30000, LiquidManager.dieselFilter(), 1);
 
     }
@@ -134,7 +138,7 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergySto
 
     @Override
     public World getWorld(){
-        return this.worldObj;
+        return this.world;
     }
 
     public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){

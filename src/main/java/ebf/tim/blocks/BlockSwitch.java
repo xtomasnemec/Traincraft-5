@@ -54,33 +54,36 @@ public class BlockSwitch extends BlockDynamic {
             TileSwitch t = (TileSwitch)world.getTileEntity(pos);
             if(t!=null){
                 t.toggleEnabled(0);
-                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.3F, t.getEnabled(0) ? 0.6F : 0.5F);
-                world.notifyBlocksOfNeighborChange(x, y, z, this);
+                world.playSound(world.getClosestPlayer(pos.getX(),pos.getY(),pos.getZ(),16,false)
+                        ,pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS,
+                        0.3F, t.getEnabled(0) ? 0.6F : 0.5F);
+                world.notifyNeighborsOfStateChange(pos, this, true);
             }
 
             return true;
         }
     }
 
+    @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         world.notifyNeighborsOfStateChange(pos, this, false);
         super.breakBlock(world, pos, state);
     }
 
 
-
+    @Override
     public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return getStrongPower(state,world,pos,side);
     }
-
-    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int meta) {
-        TileSwitch t = (TileSwitch)world.getTileEntity(x,y,z);
+    @Override
+    public int getStrongPower(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        TileSwitch t = (TileSwitch)world.getTileEntity(pos);
         if(t!=null && t.getEnabled(0)){
             return 15;
         }
         return 0;
     }
-
+    @Override
     public boolean canProvidePower(IBlockState state) {
         return true;
     }

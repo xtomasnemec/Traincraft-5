@@ -179,7 +179,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 							placeInInvent(new ItemStack(TiMItems.dieselCanister));
 							flag1 = true;
 						}
-					} else if (getSlotIndexByID(402).getStack().getItem()==Items.bucket) {
+					} else if (getSlotIndexByID(402).getStack().getItem()==Items.BUCKET) {
 						if (getTankInfo(0).fluid.getFluid().getName().toLowerCase().contains("diesel") && getTankInfo(0).fluid.amount >= 1000) {
 							placeInInvent(new ItemStack(TiMFluids.bucketDiesel));
 							flag1 = true;

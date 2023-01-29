@@ -52,10 +52,10 @@ public class TileRenderFacing extends TileEntity {
 
     //for whatever dumb stupid reason, sometimes getWorldObject() doesn't exist.
     public World getWorld(){
-        return worldObj;
+        return world;
     }
 
-    public ForgeDirection getFacing(){
+    public EnumFacing getFacing(){
         //1.8.9+ it's getHorizontal
         return EnumFacing.byHorizontalIndex((int)facing);
     }

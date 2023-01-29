@@ -39,6 +39,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.DamageSource;
@@ -1301,7 +1304,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             if (!getWorld().isRemote && getBoolean(boolValues.DERAILED) && !displayDerail){
                 //todo
-                //MinecraftServer.getServer().sendMessage(new TextComponentString(getOwner().getName()+"'s " + StatCollector.translateToLocal(getItem().getUnlocalizedName()) + " has derailed!"));
+                //MinecraftServer.getServer().sendMessage(new TextComponentString(getOwner().getName()+"'s " + StatCollector.translateToLocal(getItem().getTranslationKey()) + " has derailed!"));
                 displayDerail = true;
             }
 
@@ -1361,9 +1364,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
-                            listener.addChatMessage(new ChatComponentText("Linked the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            listener.sendMessage(new TextComponentString("Linked the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()))
                             );
                         }
                         return;
@@ -1373,9 +1376,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         setFrontLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
-                            listener.addChatMessage(new ChatComponentText("Linked the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            listener.sendMessage(new TextComponentString("Linked the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()))
                             );
                         }
                         return;
@@ -1392,9 +1395,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         setbackLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
-                            listener.addChatMessage(new ChatComponentText("Linked the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            listener.sendMessage(new TextComponentString("Linked the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()))
                             );
                         }
                         return;
@@ -1403,9 +1406,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         setbackLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
-                            listener.addChatMessage(new ChatComponentText("Linked the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
-                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            listener.sendMessage(new TextComponentString("Linked the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
+                                    CommonUtil.translate(getItem().getTranslationKey()))
                             );
                         }
                         return;
@@ -1844,6 +1847,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return inventory==null?0:inventory.size();
     }
 
+    @Override
+    public boolean isEmpty() {
+        for (ItemStackSlot slot : inventory){
+            if(slot.getHasStack()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public int getInventoryRowCount() {
         /** multiplying by 0.276 is the inverse of dividing by 3.669 Multiplication is more efficient
          * 3.669 is the volume, in blocks, per inventory row based off of the PRR X31 boxcar, the first 'modern' boxcar.
@@ -2115,7 +2128,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
     /**Returns true if the given fluid can be inserted into the fluid tank.*/
     //TODO: rework this to work more similar to the fill function
-    public boolean canFill(@Nullable ForgeDirection from, Fluid resource){return true;
+    public boolean canFill(Fluid resource){return true;
     }
 
     /**drain with a fluidStack, this is mostly a redirect to
@@ -2179,7 +2192,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**checks if the fluid can be put into the tank, and if doFill is true, will actually attempt to add the fluid to the tank.
      * @return the amount of fluid that was or could be put into the tank.*/
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill){
+    public int fill(FluidStack resource, boolean doFill){
         if(resource==null){return 1000;}
         if(getTankCapacity()==null){return resource.amount;}
         int leftoverDrain=resource.amount;

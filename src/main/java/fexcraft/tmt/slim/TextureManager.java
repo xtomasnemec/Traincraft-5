@@ -40,7 +40,6 @@ import ebf.tim.utility.RecipeManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

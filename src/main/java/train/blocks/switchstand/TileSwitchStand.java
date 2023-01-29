@@ -2,8 +2,10 @@ package train.blocks.switchstand;
 
 import ebf.tim.blocks.BlockSwitch;
 import ebf.tim.blocks.TileSwitch;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import train.library.Info;
 
 public class TileSwitchStand extends TileSwitch {
