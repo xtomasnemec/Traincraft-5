@@ -248,11 +248,10 @@ public class GUIPaintBucket extends GuiScreen {
 
         GL11.glPopMatrix();
         //check scaling Width vs scaling Height, we want the bigger of the two
-        float scale = 1.5f/(Math.max(entity.getHitboxSize()[0], entity.getHitboxSize()[1])/1.5f);
-
-        //now scale based on the resolution
-        scale*=Math.min(mc.displayWidth/800f, mc.displayHeight/300f);
-        scale *=0.004f;
+        float scale = Math.max(entity.getHitboxSize()[0], entity.getHitboxSize()[1]);
+        if(scale!=0){
+            scale = 0.08f/(scale /0.08f);
+        }
 
 
 
@@ -261,9 +260,9 @@ public class GUIPaintBucket extends GuiScreen {
         GL11.glPushMatrix();
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glTranslatef(-0.4f,(entity.getHitboxSize()[1]/ entity.getHitboxSize()[0])*1.3f,-1f);
+        GL11.glTranslatef(-0.4f,0.65f,-1f);
 
-        Project.gluPerspective(3.1F, (float)Minecraft.getMinecraft().displayWidth/(float)Minecraft.getMinecraft().displayHeight, 0.05f, 2);
+        Project.gluPerspective(2.9F, 1.1f, 0.05f, 2);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         RenderHelper.enableStandardItemLighting();
@@ -275,6 +274,8 @@ public class GUIPaintBucket extends GuiScreen {
         if (field_147073_u>360){
             field_147073_u=0;
         }
+
+        GL11.glTranslatef(0,(entity.getHitboxSize()[0]/entity.getHitboxSize()[1])*0.00085f,0);
         GL11.glScalef(scale,scale,scale);
 
         ClientProxy.getTransportRenderer().render(entity,0,0,0,0, true,

@@ -125,6 +125,16 @@ public class ModelRendererTurbo {
         TexturedVertex vert5 = new TexturedVertex(v5[0], v5[1], v5[2], 0.0F, 8.0F);
         TexturedVertex vert6 = new TexturedVertex(v6[0], v6[1], v6[2], 8.0F, 8.0F);
         TexturedVertex vert7 = new TexturedVertex(v7[0], v7[1], v7[2], 8.0F, 0.0F);
+
+        if(w % 1 != 0){
+            w = w < 1 ? 1 : (int)w + (w % 1 > 0.5f ? 1 : 0);
+        }
+        if(h % 1 != 0){
+            h = h < 1 ? 1 : (int)h + (h % 1 > 0.5f ? 1 : 0);
+        }
+        if(d % 1 != 0){
+            d = d < 1 ? 1 : (int)d + (d % 1 > 0.5f ? 1 : 0);
+        }
         if(sides == null){
             poly.add(textureQuad(vert5, vert1, vert2, vert6, textureOffsetX + d + w, textureOffsetY + d, textureOffsetX + d + w + d, textureOffsetY + d + h));
             poly.add(textureQuad(vert0, vert4, vert7, vert3, textureOffsetX, textureOffsetY + d, textureOffsetX + d, textureOffsetY + d + h));
@@ -163,6 +173,11 @@ public class ModelRendererTurbo {
      */
     public ModelRendererTurbo addBox(float x, float y, float z, int w, int h, int d){
         addBox(x, y, z, w, h, d, 0.0F);
+        return this;
+    }
+
+    public ModelRendererTurbo addBox(float x, float y, float z, float w, float h, float d){
+        addBox(x, y, z, w, h, d, 0.0F, 1F);
         return this;
     }
 
@@ -906,118 +921,122 @@ public class ModelRendererTurbo {
         return addHollowCylinder(x, y, z, radius, radius2, length, segments, seglimit, baseScale, topScale, baseDirection, (int)Math.floor(radius * 2F), (int)Math.floor(radius * 2F), (int)Math.floor(length), topoff, bools);
     }
 
-        /**
-         * Based on the addCylinder method.
-         * @author Ferdinand Calo' (FEX___96)
-         * Adds a cylinder.
-         *
-         * You can make cones by either setting baseScale or topScale to zero. Setting both
-         * to zero will set the baseScale to 1F.
-         *
-         * Setting the baseDirection to either MR_LEFT, MR_BOTTOM or MR_BACK will result in
-         * the top being placed at the (x,y,z).
-         *
-         * The textures for the base and top are placed next to each other, while the body
-         * will be placed below the circles.
-         *
-         * @param x the x-position of the base
-         * @param y the y-position of the base
-         * @param z the z-position of the base
-         * @param radius the radius of the cylinder
-         * @param length the length of the cylinder
-         * @param segments the amount of segments the cylinder is made of
-         * @param baseScale the scaling of the base. Can be negative.
-         * @param topScale the scaling of the top. Can be negative.
-         * @param baseDirection the direction it faces
-         * @param textureCircleDiameterW the diameter width of the circle on the texture
-         * @param textureCircleDiameterH the diameter height of the circle on the texture
-         * @param textureH the height of the texture of the body
-         */
-        public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff){
-            if(radius < 1){ textureCircleDiameterW = 2; textureCircleDiameterH = 2; } if(length < 1){ textureH = 2; }
-            boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
-            boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
-            boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);
-            boolean dirMirror = (baseDirection == MR_LEFT || baseDirection == MR_BOTTOM || baseDirection == MR_BACK);
-            boolean coneBase = (baseScale == 0);
-            boolean coneTop = (topScale == 0);
-            if(coneBase && coneTop){ baseScale = 1F; coneBase = false; }
-            TexturedVertex[] tempVerts = new TexturedVertex[segments * (coneBase || coneTop ? 1 : 2) + 2];
-            TexturedPolygon[] poly = new TexturedPolygon[segments * (coneBase || coneTop ? 2 : 3)];
-            float xLength = (dirSide ? length : 0);
-            float yLength = (dirTop ? length : 0);
-            float zLength = (dirFront ? length : 0);
-            float xStart = (dirMirror ? x + xLength : x);
-            float yStart = (dirMirror ? y + yLength : y);
-            float zStart = (dirMirror ? z + zLength : z);
-            float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.xCoord);
-            float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.yCoord);
-            float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
-            tempVerts[0] = new TexturedVertex(xStart, yStart, zStart, 0, 0);
-            tempVerts[tempVerts.length - 1] = new TexturedVertex(xEnd, yEnd, zEnd, 0, 0);
-            float xCur = xStart;
-            float yCur = yStart;
-            float zCur = zStart;
-            float sCur = (coneBase ? topScale : baseScale);
-            for(int repeat = 0; repeat < (coneBase || coneTop ? 1 : 2); repeat++){
-                for(int index = 0; index < segments; index++){
-                    float xSize = (float)((mirror ^ dirMirror ? -1 : 1) * Math.sin((pi / segments) * index * 2F + pi) * radius * sCur);
-                    float zSize = (float)(-Math.cos((pi / segments) * index * 2F + pi) * radius * sCur);
-                    float xPlace = xCur + (!dirSide ? xSize : 0);
-                    float yPlace = yCur + (!dirTop ? zSize : 0);
-                    float zPlace = zCur + (dirSide ? xSize : (dirTop ? zSize : 0));
-                    tempVerts[1 + index + repeat * segments] = new TexturedVertex(xPlace, yPlace, zPlace, 0, 0 );
-                }
-                xCur = xEnd; yCur = yEnd; zCur = zEnd; sCur = topScale;
-            }
-            float uScale = 1.0F / textureWidth;
-            float vScale = 1.0F / textureHeight;
-            float uOffset = uScale / 20.0F;
-            float vOffset = vScale / 20.0F;
-            float uCircle = textureCircleDiameterW * uScale;
-            float vCircle = textureCircleDiameterH * vScale;
-            float uWidth = (uCircle * 2F - uOffset * 2F) / segments;
-            float vHeight = textureH * vScale - uOffset * 2f;
-            float uStart = textureOffsetX * uScale;
-            float vStart = textureOffsetY * vScale;
-            TexturedVertex[] vert;
+    /**
+     * Based on the addCylinder method.
+     * @author Ferdinand Calo' (FEX___96)
+     * Adds a cylinder.
+     *
+     * You can make cones by either setting baseScale or topScale to zero. Setting both
+     * to zero will set the baseScale to 1F.
+     *
+     * Setting the baseDirection to either MR_LEFT, MR_BOTTOM or MR_BACK will result in
+     * the top being placed at the (x,y,z).
+     *
+     * The textures for the base and top are placed next to each other, while the body
+     * will be placed below the circles.
+     *
+     * @param x the x-position of the base
+     * @param y the y-position of the base
+     * @param z the z-position of the base
+     * @param radius the radius of the cylinder
+     * @param length the length of the cylinder
+     * @param segments the amount of segments the cylinder is made of
+     * @param baseScale the scaling of the base. Can be negative.
+     * @param topScale the scaling of the top. Can be negative.
+     * @param baseDirection the direction it faces
+     * @param textureCircleDiameterW the diameter width of the circle on the texture
+     * @param textureCircleDiameterH the diameter height of the circle on the texture
+     * @param textureH the height of the texture of the body
+     */
+    public ModelRendererTurbo addCylinder(float x, float y, float z, float radius, float length, int segments, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff){
+        if(radius < 1){ textureCircleDiameterW = 1; textureCircleDiameterH = 1; } if(length < 1){ textureH = 1; }
+        boolean dirTop = (baseDirection == MR_TOP || baseDirection == MR_BOTTOM);
+        boolean dirSide = (baseDirection == MR_RIGHT || baseDirection == MR_LEFT);
+        boolean dirFront = (baseDirection == MR_FRONT || baseDirection == MR_BACK);
+        boolean dirMirror = (baseDirection == MR_LEFT || baseDirection == MR_BOTTOM || baseDirection == MR_BACK);
+        boolean coneBase = (baseScale == 0);
+        boolean coneTop = (topScale == 0);
+        if(coneBase && coneTop){ baseScale = 1F; coneBase = false; }
+        TexturedVertex[] tempVerts = new TexturedVertex[segments * (coneBase || coneTop ? 1 : 2) + 2];
+        TexturedPolygon[] poly = new TexturedPolygon[segments * (coneBase || coneTop ? 2 : 3)];
+        float xLength = (dirSide ? length : 0);
+        float yLength = (dirTop ? length : 0);
+        float zLength = (dirFront ? length : 0);
+        float xStart = (dirMirror ? x + xLength : x);
+        float yStart = (dirMirror ? y + yLength : y);
+        float zStart = (dirMirror ? z + zLength : z);
+        float xEnd = (!dirMirror ? x + xLength : x) + (topoff == null ? 0 : topoff.xCoord);
+        float yEnd = (!dirMirror ? y + yLength : y) + (topoff == null ? 0 : topoff.yCoord);
+        float zEnd = (!dirMirror ? z + zLength : z) + (topoff == null ? 0 : topoff.zCoord);
+        tempVerts[0] = new TexturedVertex(xStart, yStart, zStart, 0, 0);
+        tempVerts[tempVerts.length - 1] = new TexturedVertex(xEnd, yEnd, zEnd, 0, 0);
+        float xCur = xStart;
+        float yCur = yStart;
+        float zCur = zStart;
+        float sCur = (coneBase ? topScale : baseScale);
+        for(int repeat = 0; repeat < (coneBase || coneTop ? 1 : 2); repeat++){
             for(int index = 0; index < segments; index++){
-                int index2 = (index + 1) % segments;
-                float uSize = (float)(Math.sin((pi / segments) * index * 2F + (!dirTop ? 0 : pi)) * (0.5F * uCircle - 2F * uOffset));
-                float vSize = (float)(Math.cos((pi / segments) * index * 2F + (!dirTop ? 0 : pi)) * (0.5F * vCircle - 2F * vOffset));
-                float uSize1 = (float)(Math.sin((pi / segments) * index2 * 2F + (!dirTop ? 0 : pi)) * (0.5F * uCircle - 2F * uOffset));
-                float vSize1 = (float)(Math.cos((pi / segments) * index2 * 2F + (!dirTop ? 0 : pi)) * (0.5F * vCircle - 2F * vOffset));
-                vert = new TexturedVertex[3];
-                vert[0] = tempVerts[0].setTexturePosition(uStart + 0.5F * uCircle, vStart + 0.5F * vCircle);
-                vert[1] = tempVerts[1 + index2].setTexturePosition(uStart + 0.5F * uCircle + uSize1, vStart + 0.5F * vCircle + vSize1);
-                vert[2] = tempVerts[1 + index].setTexturePosition(uStart + 0.5F * uCircle + uSize, vStart + 0.5F * vCircle + vSize);
-                poly[index] = new TexturedPolygon(vert);
+                float xSize = (float)((mirror ^ dirMirror ? -1 : 1) * Math.sin((pi / segments) * index * 2F + pi) * radius * sCur);
+                float zSize = (float)(-Math.cos((pi / segments) * index * 2F + pi) * radius * sCur);
+                float xPlace = xCur + (!dirSide ? xSize : 0);
+                float yPlace = yCur + (!dirTop ? zSize : 0);
+                float zPlace = zCur + (dirSide ? xSize : (dirTop ? zSize : 0));
+                tempVerts[1 + index + repeat * segments] = new TexturedVertex(xPlace, yPlace, zPlace, 0, 0 );
+            }
+            xCur = xEnd; yCur = yEnd; zCur = zEnd; sCur = topScale;
+        }
+        float uScale = 1.0F / textureWidth;
+        float vScale = 1.0F / textureHeight;
+        float uOffset = uScale / 20.0F;
+        float vOffset = vScale / 20.0F;
+        float uCircle = textureCircleDiameterW * uScale;
+        float vCircle = textureCircleDiameterH * vScale;
+        float uWidth = (uCircle * 2F - uOffset * 2F) / segments;
+        float vHeight = textureH * vScale - uOffset * 2f;
+        float uStart = textureOffsetX * uScale;
+        float vStart = textureOffsetY * vScale;
+        TexturedVertex[] vert;
+
+
+        for(int index = 0; index < segments; index++){
+            int index2 = (index + 1) % segments;
+            float uSize = (float)(Math.sin((pi / segments) * index * 2F + (!dirTop ? 0 : pi)) * (0.5F * uCircle - 2F * uOffset));
+            float vSize = (float)(Math.cos((pi / segments) * index * 2F + (!dirTop ? 0 : pi)) * (0.5F * vCircle - 2F * vOffset));
+            float uSize1 = (float)(Math.sin((pi / segments) * index2 * 2F + (!dirTop ? 0 : pi)) * (0.5F * uCircle - 2F * uOffset));
+            float vSize1 = (float)(Math.cos((pi / segments) * index2 * 2F + (!dirTop ? 0 : pi)) * (0.5F * vCircle - 2F * vOffset));
+
+            vert = new TexturedVertex[3];
+            vert[0] = tempVerts[0].setTexturePosition(uStart + 0.5F * uCircle, vStart + 0.5F * vCircle);
+            vert[1] = tempVerts[1 + index2].setTexturePosition(uStart + 0.5F * uCircle + uSize1, vStart + 0.5F * vCircle + vSize1);
+            vert[2] = tempVerts[1 + index].setTexturePosition(uStart + 0.5F * uCircle + uSize, vStart + 0.5F * vCircle + vSize);
+            poly[index] = new TexturedPolygon(vert);
+            if(!dirFront || mirror){
+                poly[index].flipFace();
+            }
+
+            if(!coneBase && !coneTop){
+                vert = new TexturedVertex[4];
+                vert[0] = tempVerts[1 + index].setTexturePosition(uStart + uOffset + uWidth * index, vStart + vOffset + vCircle);
+                vert[1] = tempVerts[1 + index2].setTexturePosition(uStart + uOffset + uWidth * (index + 1), vStart + vOffset + vCircle);
+                vert[2] = tempVerts[1 + segments + index2].setTexturePosition(uStart + uOffset + uWidth * (index + 1), vStart + vOffset + vCircle + vHeight);
+                vert[3] = tempVerts[1 + segments + index].setTexturePosition(uStart + uOffset + uWidth * index, vStart + vOffset + vCircle + vHeight);
+                poly[index + segments] = new TexturedPolygon(vert);
                 if(!dirFront || mirror){
-                    poly[index].flipFace();
-                }
-                if(!coneBase && !coneTop){
-                    vert = new TexturedVertex[4];
-                    vert[0] = tempVerts[1 + index].setTexturePosition(uStart + uOffset + uWidth * index, vStart + vOffset + vCircle);
-                    vert[1] = tempVerts[1 + index2].setTexturePosition(uStart + uOffset + uWidth * (index + 1), vStart + vOffset + vCircle);
-                    vert[2] = tempVerts[1 + segments + index2].setTexturePosition(uStart + uOffset + uWidth * (index + 1), vStart + vOffset + vCircle + vHeight);
-                    vert[3] = tempVerts[1 + segments + index].setTexturePosition(uStart + uOffset + uWidth * index, vStart + vOffset + vCircle + vHeight);
-                    poly[index + segments] = new TexturedPolygon(vert);
-                    if(!dirFront || mirror){
-                        poly[index + segments].flipFace();
-                    }
-                }
-                vert = new TexturedVertex[3];
-                vert[0] = tempVerts[tempVerts.length - 1].setTexturePosition(uStart + 1.5F * uCircle, vStart + 0.5F * vCircle);
-                vert[1] = tempVerts[tempVerts.length - 2 - index].setTexturePosition(uStart + 1.5F * uCircle + uSize1, vStart + 0.5F * vCircle + vSize1);
-                vert[2] = tempVerts[tempVerts.length - (1 + segments) + ((segments - index) % segments)].setTexturePosition(uStart + 1.5F * uCircle + uSize, vStart + 0.5F * vCircle + vSize);
-                poly[poly.length - segments + index]  = new TexturedPolygon(vert);
-                if(!dirFront || mirror){
-                    poly[poly.length - segments + index].flipFace();
+                    poly[index + segments].flipFace();
                 }
             }
-            faces.addAll(Arrays.asList(poly));
-            return this;
+            vert = new TexturedVertex[3];
+            vert[0] = tempVerts[tempVerts.length - 1].setTexturePosition(uStart + 1.5F * uCircle, vStart + 0.5F * vCircle);
+            vert[1] = tempVerts[tempVerts.length - 2 - index].setTexturePosition(uStart + 1.5F * uCircle + uSize1, vStart + 0.5F * vCircle + vSize1);
+            vert[2] = tempVerts[tempVerts.length - (1 + segments) + ((segments - index) % segments)].setTexturePosition(uStart + 1.5F * uCircle + uSize, vStart + 0.5F * vCircle + vSize);
+            poly[poly.length - segments + index]  = new TexturedPolygon(vert);
+            if(!dirFront || mirror){
+                poly[poly.length - segments + index].flipFace();
+            }
         }
+        faces.addAll(Arrays.asList(poly));
+        return this;
+    }
 
 
     public ModelRendererTurbo addHollowCylinder(float x, float y, float z, float radius, float radius2, float length, int segments, int seglimit, float baseScale, float topScale, int baseDirection, int textureCircleDiameterW, int textureCircleDiameterH, int textureH, Vec3f topoff, boolean[] bools){

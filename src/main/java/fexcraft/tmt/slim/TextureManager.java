@@ -39,15 +39,24 @@ import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.RecipeManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.item.Item;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import org.lwjgl.util.glu.Project;
-import train.entity.trains.EntityLocoSteamBR80_DB;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.util.*;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 

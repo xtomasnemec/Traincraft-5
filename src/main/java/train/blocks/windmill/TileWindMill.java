@@ -115,6 +115,10 @@ public class TileWindMill extends TileEntityStorage implements IEnergyStorage, I
 		return new int[]{30000};
 	}
 
+	@Override
+	public World getWorld(){
+		return this.worldObj;
+	}
 
 	public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){
 		for (EnumFacing side : EnumFacing.HORIZONTALS) {

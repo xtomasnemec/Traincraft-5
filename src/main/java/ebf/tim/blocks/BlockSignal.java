@@ -40,19 +40,29 @@ public class BlockSignal extends BlockSwitch {
     }
 
     @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-        super.onBlockAdded(world, pos,state);
-        TileSwitch te = (TileSwitch) world.getTileEntity(pos);
-        if (te !=null && world.isBlockPowered(pos)) {
-            te.setEnabled(true);
+    public void onBlockAdded(World world, int x, int y, int z) {
+        super.onBlockAdded(world, x,y,z);
+        TileEntity tile = world.getTileEntity(x,y,z);
+        if (tile instanceof TileSwitch) {
+            ((TileSwitch)tile).setEnabled(world.isBlockIndirectlyGettingPowered(x,y,z),0);
         }
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos other) {
-        TileSwitch te = (TileSwitch) world.getTileEntity(pos);
-        if (te == null) {
-            return;
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
+        TileEntity tile = world.getTileEntity(x,y,z);
+        if (tile instanceof TileSwitch) {
+            ((TileSwitch)tile).setEnabled(world.isBlockIndirectlyGettingPowered(x,y,z),0);
+        }
+        return super.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, meta);
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block other) {
+        super.onNeighborBlockChange(world, x, y, z, other);
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof TileSwitch && !world.isRemote) {
+            ((TileSwitch) tile).setEnabled(world.isBlockIndirectlyGettingPowered(x,y,z),0);
         }
         if (te.getEnabled() && !world.isBlockPowered(pos)) {
             te.toggleEnabled();

@@ -44,16 +44,16 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             {{0, -0.5}, {0, 0.5}, {0, -1}},
             {{0, -0.5}, {0, 0.5}, {0, -1}},
             //turns
-            {{0, 0.5}, {0.5, 0}, {-1, 1}},
-            {{0, 0.5}, { -0.5, 0}, {1, 1}},
-            {{0, -0.5}, { -0.5, 0}, {1, -1}},
-            {{0, -0.5}, {0.5, 0}, {-1, -1}}
+            {{0, 0.5}, {0.5, 0}, {-0.3557, 0.3557}},
+            {{0, 0.5}, { -0.5, 0}, {0.3557, 0.3557}},
+            {{0, -0.5}, { -0.5, 0}, {0.3557, -0.3557}},
+            {{0, -0.5}, {0.5, 0}, {-0.3557, -0.3557}}
     };
 
     /**cached values for the rail path and motion vectors
      * prevents need to generate a new variable multiple times per tick and reduces GC strain*/
     private double railPathX, railPathZ,motionSqrt,railPathX2, railPathZ2;
-    private double[] loopDirection;
+    public double[] loopDirection = null;
     private int railMetadata, xFloor=0,yFloor=0,zFloor=0;
     private Block blockNext, blockCurrent;
     float railmax;
@@ -201,7 +201,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //server only
         if(!getWorld().isRemote) {
             //define the yaw from the super
-            this.setRotation(host.rotationYaw, host.rotationPitch);
+            //this.setRotation(host.rotationYaw, host.rotationPitch);
 
             //prevent moving without motion velocity
             if (Math.abs(moveX) + Math.abs(moveZ) < 0.000001) {
@@ -349,29 +349,13 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             railPathZ = -railPathZ;
         }
 
-
-        //if current motion is not 0.3 blocks, then it's the last loop iteration, so update the persistent motion vector.
-        if(currentMotion<0.3) {
-            //NOTE: when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
-            if (railPathX != 0 && railPathZ != 0) {
-                motionSqrt = (Math.abs(motionX) + Math.abs(motionZ)) * 0.5;
-            } else {
-                motionSqrt = (Math.abs(motionX) + Math.abs(motionZ));
-            }
-            motionX = motionSqrt * (railPathX);
-            motionZ = motionSqrt * (railPathZ);
-        }
-
         //for every iteration of the loop, use the current movement direction to update the position
         //    and rotate movement for the next cycle.
         //NOTE: when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
-        if (railPathX != 0 && railPathZ != 0) {
-            motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]))*0.5;
-            setPositionRelative((currentMotion * railPathX) * 0.5, 0, (currentMotion * railPathZ) * 0.5);
-        } else {
-            motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]));
-            setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
-        }
+        //for some reason it actually ends up as more than double speed.
+        setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
+
+        motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]));
         moveDirection[0] = motionSqrt * (railPathX);
         moveDirection[1] = motionSqrt * (railPathZ);
 

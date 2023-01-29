@@ -16,6 +16,7 @@ import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -40,10 +41,10 @@ import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static ebf.tim.utility.RecipeManager.getRecipe;
 import static net.minecraftforge.registries.GameData.BLOCKS;
@@ -65,6 +66,8 @@ public class TiMGenericRegistry {
     private static List<String> redundantTiles = new ArrayList<>();
     private static List<String> redundantBlocks = new ArrayList<>();
     public static int registryPosition = 18;
+
+    public static Map<Block, Item> fluidMap = new HashMap<>();
 
     public TiMGenericRegistry(GenericRailTransport transport, Item[] recipe) {
         this.transport = transport;
@@ -286,10 +289,7 @@ public class TiMGenericRegistry {
         FluidRegistry.registerFluid(fluid);
         FluidRegistry.addBucketForFluid(fluid);
 
-        Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color))
-                .getBlockState().getBlock().setTranslationKey("block." + unlocalizedName.replace(".item", ""));
-                //todo: block textures aren't this configurable anymore
-                //.setBlockTextureName(MODID + ":block_" + unlocalizedName);
+        Block block = new BlockTrainFluid(fluid, Material.water).setBlockName("block." + unlocalizedName.replace(".item", "")).setBlockTextureName(MODID + ":block_" + unlocalizedName);
         ((BlockTrainFluid) block).setModID(MODID);
 
         ((ForgeRegistry<Block>)RegistryManager.ACTIVE.getRegistry(BLOCKS))
@@ -331,6 +331,7 @@ public class TiMGenericRegistry {
         //todo: 1.12 uses instanceof stuff, so this _shouldn't_ be needed?
         //FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.BUCKET));
 
+        fluidMap.put(block, bucket);
 
         if (DebugUtil.dev && TrainsInMotion.proxy.isClient()) {
             if (fluid.getUnlocalizedName().equals(CommonUtil.translate(fluid.getUnlocalizedName()))) {

@@ -41,7 +41,7 @@ public class EntityFreightShortCoveredHopper extends GenericRailTransport {
     @Override
     public boolean isFictional(){return false;}
     @Override
-    public int getInventoryRows(){return 4;}
+    public int getInventoryRows(){return getInventoryRowCount();}
     @Override
     public List<TrainsInMotion.transportTypes> getTypes(){
         return TrainsInMotion.transportTypes.FREIGHT.singleton();

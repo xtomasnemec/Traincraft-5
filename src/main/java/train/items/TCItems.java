@@ -136,9 +136,9 @@ public class TCItems {
 				if (items.className.equals("ItemTrain")) {
 					items.item = new ItemPart(items.iconName);
 				}
-				else if (items.className.equals("ItemContainer")) {
+/*				else if (items.className.equals("ItemContainer")) {
 					items.item = new ItemContainer(items.iconName);
-				}
+				}*/
 			}
 		}
 		//ItemIDs.signal.item = new ItemSignal(ItemIDs.signal.itemID, BlockIDs.activeSignal.block).setIconIndex(ItemIDs.signal.iconIndex);

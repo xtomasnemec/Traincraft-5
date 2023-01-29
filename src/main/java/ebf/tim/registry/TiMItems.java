@@ -40,6 +40,8 @@ public class TiMItems {
 
     public static Item generator;
 
+    public static Item emptyCanister, dieselCanister;
+
     public static Item itemStake = new ItemStake().setMaxStackSize(1);
     public static Item recipeBook = new ItemCraftGuide().setMaxStackSize(1);
 
@@ -58,6 +60,8 @@ public class TiMItems {
 
         //overides the server registration of the rail item, so the client can have a complex model.
         //   server can't load the CustomItemModel class due to it's reliance on GL imports.
+        emptyCanister = createItem("emptycanister").setCreativeTab(TrainsInMotion.creativeTab);
+        dieselCanister = createItem("dieselcanister").setCreativeTab(TrainsInMotion.creativeTab);
         if(!TrainsInMotion.proxy.isClient()) {
             railItem = TiMGenericRegistry.RegisterItem( new ItemRail(), TrainsInMotion.MODID, "timrail", TrainsInMotion.creativeTab);
         } else {

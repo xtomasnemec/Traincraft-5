@@ -14,6 +14,7 @@ import ebf.tim.networking.PacketInteract;
 import ebf.tim.networking.PacketUpdateClients;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.registry.TiMFluids;
+import ebf.tim.registry.TiMItems;
 import ebf.tim.render.ParticleFX;
 import ebf.tim.render.TransportRenderData;
 import ebf.tim.utility.*;
@@ -33,13 +34,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
@@ -74,7 +74,7 @@ import static ebf.tim.utility.CommonUtil.radianF;
  * this is the base for all trains and rollingstock.
  * @author Eternal Blue Flame
  */
-public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, IFluidCart, ILinkableCart, IEntityMultiPart, IMinecart {
+public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, ILinkableCart, IEntityMultiPart, IMinecart {
 
     /*
      * <h2>variables</h2>
@@ -265,11 +265,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     public GenericRailTransport(World world){
         super(world);
-        setSize(0.25f,0.25f);
+        setSize(0.75f,Math.max(getHitboxSize()[1],3));
         ignoreFrustumCheck = true;
         initInventorySlots();
         if(world!=null && collisionHandler==null) {
-            this.height = 0.25f;
             collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
@@ -281,7 +280,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         posX = xPos;
         posZ = zPos;
         entityData.putUUID("owner", owner);
-        setSize(0.25f,0.25f);
+        setSize(0.75f,Math.max(getHitboxSize()[1],3));
         ignoreFrustumCheck = true;
         initInventorySlots();
     }
@@ -355,8 +354,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
         //EntityTrainCore has it's own tanker management because fuel slots.
-        //todo: i really didnt think out function slot IDs....
-        if(getTypes().contains(TANKER)){
+        if(getTypes().contains(TANKER) || getTypes().contains(TENDER)){
             inventory.add(tankerInputSlot());
             inventory.add(tankerOutputSlot());
         }
@@ -469,7 +467,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return getWorld().isRemote?interact(p_130002_1_.getEntityId(),false,false, -1)?EnumActionResult.SUCCESS:EnumActionResult.FAIL
                 :super.applyPlayerInteraction(p_130002_1_,vec,hand);
     }
-
     //unused IDs: 14+
     public boolean interact(int player, boolean isFront, boolean isBack, int key) {
         EntityPlayer p =((EntityPlayer)getWorld().getEntityByID(player));
@@ -910,15 +907,17 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
             //handle yaw changes for derail
             if(getBoolean(boolValues.DERAILED)) {
-                if(frontLinkedID!=null && backLinkedID!=null){
+                if(frontLinkedID!=null && backLinkedID!=null &&
+                        getWorld().getEntityByID(frontLinkedID) instanceof GenericRailTransport &&
+                        getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
                     rotationYaw=CommonUtil.atan2degreesf(
                             getWorld().getEntityByID(frontLinkedID).posZ - getWorld().getEntityByID(backLinkedID).posZ,
                             getWorld().getEntityByID(frontLinkedID).posX - getWorld().getEntityByID(backLinkedID).posX);
-                } else if (frontLinkedID!=null){
+                } else if (frontLinkedID!=null && getWorld().getEntityByID(frontLinkedID) instanceof GenericRailTransport){
                     rotationYaw=CommonUtil.atan2degreesf(
                             getWorld().getEntityByID(frontLinkedID).posZ - posZ,
                             getWorld().getEntityByID(frontLinkedID).posX - posX);
-                } else if (backLinkedID!=null){
+                } else if (backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
                     rotationYaw=CommonUtil.atan2degreesf(
                             posZ - getWorld().getEntityByID(backLinkedID).posZ,
                             posX - getWorld().getEntityByID(backLinkedID).posX);
@@ -949,43 +948,37 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * if X or Z is null, the bogie's existing motion velocity will be used
      */
     public void moveBogies(Double velocityX, Double velocityZ){
+        //move the bogies with the track.
         if(velocityX==null||velocityZ==null){
             frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
             backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
+
         } else if(velocityX!=0 || velocityZ!=0) {
             frontBogie.minecartMove(this, velocityX, velocityZ);
             backBogie.minecartMove(this, velocityX, velocityZ);
         }
 
-        cachedVectors[1] = new Vec3f(-rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+        //center the entity based on the back bogie position
+        cachedVectors[1] = new Vec3f(rotationPoints()[0], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0);
+        setPosition((backBogie.posX + cachedVectors[1].xCoord),
+                (backBogie.posY + cachedVectors[1].yCoord), (backBogie.posZ + cachedVectors[1].zCoord));
+        //re-center the front bogie
+        cachedVectors[1] = new Vec3f(-rotationPoints()[1], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0);
+        if(Math.abs((cachedVectors[1].xCoord + posX) - frontBogie.posX)+ Math.abs((cachedVectors[1].zCoord + posZ) - frontBogie.posZ)>0.01) {
+            frontBogie.minecartMove(this,
+                    ((cachedVectors[1].xCoord + posX) - frontBogie.posX),
+                    ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ));
+        }
 
-        setPosition((frontBogie.posX+cachedVectors[1].xCoord),
-                (frontBogie.posY+cachedVectors[1].yCoord),(frontBogie.posZ+cachedVectors[1].zCoord));
+        //update rotation
         setRotation((CommonUtil.atan2degreesf(
                 frontBogie.posZ - backBogie.posZ,
                 frontBogie.posX - backBogie.posX)),
-                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
-
-
-        cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[0], 0, 0), rotationPitch, rotationYaw, 0);
-        //can't hard clamp
-        // has to be slow and smooth, with room for a margin of error, otherwise it will rubberband into oblivion.
-        if (Math.abs(cachedVectors[1].xCoord) > 0.1 || Math.abs(cachedVectors[1].zCoord) > 0.1) {
-            frontBogie.minecartMove(this,
-                    ((cachedVectors[1].xCoord + posX) - frontBogie.posX) * 0.2,
-                    ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ) * 0.2);
-        }
-
-        cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[1], 0, 0), rotationPitch, rotationYaw, 0);
-        if (Math.abs(cachedVectors[1].xCoord) > 0.1 || Math.abs(cachedVectors[1].zCoord) > 0.1) {
-            backBogie.minecartMove(this,
-                    ((cachedVectors[1].xCoord + posX) - backBogie.posX) * 0.2,
-                    ((cachedVectors[1].zCoord + posZ) - backBogie.posZ) * 0.2);
-        }
+                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY + frontBogie.yOffset, Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
 
         //reset the vector when we're done so it wont break trains.
         cachedVectors[1]= new Vec3f(0,0,0);
-
+        //update the collision handler's positions
         if(collisionHandler==null) {
             collisionHandler = new HitboxDynamic(getHitboxSize()[0],getHitboxSize()[1],getHitboxSize()[2], this);
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
@@ -1022,12 +1015,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     //realistically would be more like 2.4, but 5 makes gameplay more dramatic
                     brakeBuff+=stock.weightKg()*5.0f;
                 }
-                if(stock.rotationPitch!=0){
+                if(stock.rotationPitch!=0 && getAccelerator()==0){
                     //vanilla uses 0.0078125 per tick for slope speed.
                     //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
                     //so we buff that to just under double to balance against drag, then scale by entity pitch
                     //pith goes from -90 to 90, so it's inherently directional.
-                    slopeX+=(0.00017361f*0.5f)*-stock.rotationPitch;
+                    slopeX+=(0.000017361f*0.5f)*-stock.rotationPitch;
                 }
             }
 
@@ -1225,11 +1218,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          */
         else if (frontBogie!=null && backBogie != null && ticksExisted>5){
 
-            //fixes consist not initializing on world load and similar
-            if((frontLinkedID!=null || backLinkedID!=null) && consist.size()==1){
-                updateConsist();
-            }
-
             //calculate for slopes, friction, and drag
             if (hasDrag()) {
                 applyDrag();
@@ -1363,56 +1351,63 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                 //this is just a big mess to figure out if and which ends to couple since linking is front and back sided
                 if(getBoolean(boolValues.COUPLINGFRONT)
-                        && Math.abs(CommonUtil.atan2degreesf(posZ-e.posZ, posX-e.posX)-rotationYaw)<90){
-                    if(colliding.host.collisionHandler.interactionBoxes.get(0)==colliding &&
-                            colliding.host.getBoolean(boolValues.COUPLINGBACK)){
+                        && Math.abs(CommonUtil.atan2degreesf(posZ-e.posZ, posX-e.posX)-rotationYaw)<45){
+                    //second verse, same as the first
+                    if(Math.abs(CommonUtil.atan2degreesf(e.posZ-posZ, e.posX-posX)-colliding.host.rotationYaw)<45 &&
+                            colliding.host.getBoolean(boolValues.COUPLINGFRONT)){
 
+                        colliding.host.setFrontLinkedTransport(this);
+                        setFrontLinkedTransport(colliding.host);
+
+                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
+                        if(listener!=null){
+                            listener.addChatMessage(new ChatComponentText("Linked the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            );
+                        }
+                        return;
+
+                    } else if(colliding.host.getBoolean(boolValues.COUPLINGBACK)){
                         colliding.host.setbackLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
-                                        CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
-                                        CommonUtil.translate(getItem().getTranslationKey()))
-                        );
-                        updateConsist();
-                        colliding.host.updateConsist();
-                        return;
-
-                    } else if(colliding.host.getBoolean(boolValues.COUPLINGFRONT)){
-                        colliding.host.setFrontLinkedTransport(this);
-                        setFrontLinkedTransport(colliding.host);
-                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
-                                CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
-                                CommonUtil.translate(getItem().getTranslationKey()))
-                        );
-                        updateConsist();
-                        colliding.host.updateConsist();
+                        if(listener!=null){
+                            listener.addChatMessage(new ChatComponentText("Linked the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            );
+                        }
                         return;
                     }
 
-                } else if(getBoolean(boolValues.COUPLINGBACK)){
-                    if(colliding.host.collisionHandler.interactionBoxes.get(0)==colliding){
-                        colliding.host.setbackLinkedTransport(this);
-                        setbackLinkedTransport(colliding.host);
-                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
-                                CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
-                                CommonUtil.translate(getItem().getTranslationKey()))
-                        );
-                        updateConsist();
-                        colliding.host.updateConsist();
-                        return;
-                    } else {
+                }
+                if(getBoolean(boolValues.COUPLINGBACK) &&
+                        Math.abs(CommonUtil.atan2degreesf(posZ-e.posZ, posX-e.posX)-rotationYaw)-180<45){
+
+                    if(Math.abs(CommonUtil.atan2degreesf(e.posZ-posZ, e.posX-posX)-colliding.host.rotationYaw)<45 &&
+                            colliding.host.getBoolean(boolValues.COUPLINGFRONT)){
+
                         colliding.host.setFrontLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
-                        if(listener!=null)listener.sendMessage(new TextComponentString("Linked the " +
-                                CommonUtil.translate(getItem().getTranslationKey()) + " to the " +
-                                CommonUtil.translate(getItem().getTranslationKey()))
-                        );
-                        updateConsist();
-                        colliding.host.updateConsist();
+                        if(listener!=null){
+                            listener.addChatMessage(new ChatComponentText("Linked the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            );
+                        }
+                        return;
+                    } else if(colliding.host.getBoolean(boolValues.COUPLINGBACK)) {
+                        colliding.host.setbackLinkedTransport(this);
+                        setbackLinkedTransport(colliding.host);
+                        EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
+                        if(listener!=null){
+                            listener.addChatMessage(new ChatComponentText("Linked the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()) + " to the " +
+                                    CommonUtil.translate(getItem().getUnlocalizedName()))
+                            );
+                        }
                         return;
                     }
                 }
@@ -1575,9 +1570,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
     public void setConsist(List<GenericRailTransport> input){
-        consistListInUse=true;
         consist=input;
-        consistListInUse=false;
     }
 
     //gets the power for acceleration math, result is in MHP, has a fallback that roughly converts TE to MHP
@@ -1678,11 +1671,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //move bogies
-        if(cart1MotionX!=0 || cart1MotionZ!=0) {
+        if((cart1MotionX!=0 || cart1MotionZ!=0) && other.getAccelerator()==0) {
             other.moveBogies(cart1MotionX, cart1MotionZ);
         }
 
-        if(cart2MotionX!=0 || cart2MotionZ!=0) {
+        if((cart2MotionX!=0 || cart2MotionZ!=0) && getAccelerator()==0) {
             this.moveBogies(cart2MotionX, cart2MotionZ);
         }
 
@@ -1851,16 +1844,21 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return inventory==null?0:inventory.size();
     }
 
-    @Override
-    public boolean isEmpty() {
-        for (ItemStackSlot slot : inventory){
-            if(slot.getHasStack()){
-                return false;
-            }
-        }
-        return true;
+    public int getInventoryRowCount() {
+        /** multiplying by 0.276 is the inverse of dividing by 3.669 Multiplication is more efficient
+         * 3.669 is the volume, in blocks, per inventory row based off of the PRR X31 boxcar, the first 'modern' boxcar.
+         * 12 is an arbitrary number. Used for determining if the stock inventory size should be nerfed or not. ]
+         0.7 is the nerf value. Change if you feel it is too high or too low.*/
+        return (int)Math.ceil(((getHitboxSize()[0]*getHitboxSize()[1]*getHitboxSize()[2]) * 0.276) * (getHitboxSize()[0]>12? 0.7:1) * (this.seats.size() == 0 ? 1:0.5));
     }
-
+    public int getTankVolume() {
+        /** 5535.268 is the buckets, per block of volume, of fluid based off of the Three Dome Tank, the first 'modern' tankcar.
+         * 12 is an arbitrary number. Used for determining if the stock inventory size should be nerfed or not.
+         * We nerf tenders even more so they aren't used as normal tank wagons. If its a tender over 12 blocks long, nerf it by 75%, else nerf by 50%.
+         * If its not a tender and over 12 blocks long, nerf by 30%, else don't nerf at all.
+         */
+        return (int)Math.ceil(((getHitboxSize()[0]*getHitboxSize()[1]*getHitboxSize()[2]) * 5535.268) * (this.getTypes().contains(B_UNIT) || this.getTypes().contains(TENDER)? getHitboxSize()[0]>12? 0.25:0.5:getHitboxSize()[0]>12? 0.7:1) * (this.seats.size() == 0 ? 1:0.5));
+    }
     /**
      * <h2>get item</h2>
      * @return the item in the requested slot
@@ -2094,7 +2092,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
 
-
     /*
      * <h1>Fluid Management</h1>
      */
@@ -2106,23 +2103,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
 
-    @Override
-    public boolean canPassFluidRequests(FluidStack fluid){
-        return canDrain(fluid) || canFill(fluid.getFluid());
-    }
-
-    @Override
-    public boolean canAcceptPushedFluid(EntityMinecart requester, FluidStack fluid){
-        return canFill(fluid.getFluid());
-    }
-
-    @Override
-    public boolean canProvidePulledFluid(EntityMinecart requester, FluidStack fluid){
-        return canDrain(fluid);
-    }
-
-    @Override
-    public void setFilling(boolean filling){}
 
     /**Returns true if the given fluid can be extracted.*/
     public boolean canDrain(FluidStack resource){
@@ -2135,8 +2115,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
     /**Returns true if the given fluid can be inserted into the fluid tank.*/
     //TODO: rework this to work more similar to the fill function
-    public boolean canFill(Fluid resource){
-        return true;
+    public boolean canFill(@Nullable ForgeDirection from, Fluid resource){return true;
     }
 
     /**drain with a fluidStack, this is mostly a redirect to
@@ -2145,7 +2124,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain){
         int leftoverDrain=resource.amount;
-        FluidStack stack;
+        FluidStack stack=null;
+        if(getTankCapacity()==null){
+            return null;
+        }
         for(int i=0;i<getTankCapacity().length;i++) {
             stack=entityData.getFluidStack("tanks."+i);
             if (stack.amount > 0 && (resource.getFluid()==TiMFluids.nullFluid || stack.getFluid() == resource.getFluid())) {
@@ -2160,11 +2142,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                         entityData.putFluidStack("tanks."+i,new FluidStack(stack.getFluid(),stack.amount-leftoverDrain));
                         markDirty();
                     }
-                    return null;
+                    return stack;
                 }
             }
         }
-        return resource;
+        if (stack != null) {
+            return null;
+        } else {
+            return new FluidStack(stack.getFluid(), leftoverDrain);
+        }
 
     }
 
@@ -2193,7 +2179,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**checks if the fluid can be put into the tank, and if doFill is true, will actually attempt to add the fluid to the tank.
      * @return the amount of fluid that was or could be put into the tank.*/
     @Override
-    public int fill(FluidStack resource, boolean doFill){
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill){
+        if(resource==null){return 1000;}
         if(getTankCapacity()==null){return resource.amount;}
         int leftoverDrain=resource.amount;
         FluidStack fluid;
@@ -2239,11 +2226,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     leftoverDrain=0;
                 }
                 if(leftoverDrain==0){
-                    return 0;
+                    return resource.amount;
                 }
             }
         }
-        return leftoverDrain;
+        return resource.amount-leftoverDrain;
     }
 
     /**
@@ -2509,7 +2496,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * for more detail on implementing custom versions, take a look at the existing ones, for example:
      * @see FuelHandler#manageSteam(EntityTrainCore) for an example*/
     public void manageFuel(){
-        if(getTypes().contains(TANKER)){
+        if(getTypes().contains(TANKER) || getTypes().contains(TENDER)){
             FuelHandler.manageTanker(this);
         }
     }

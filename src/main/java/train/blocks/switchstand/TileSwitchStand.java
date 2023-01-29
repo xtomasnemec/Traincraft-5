@@ -2,16 +2,11 @@ package train.blocks.switchstand;
 
 import ebf.tim.blocks.BlockSwitch;
 import ebf.tim.blocks.TileSwitch;
-import net.minecraft.util.ITickable;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import train.library.Info;
 
-import java.util.Random;
-
-public class TileSwitchStand extends TileSwitch implements ITickable {
+public class TileSwitchStand extends TileSwitch {
 
     public TileSwitchStand(BlockSwitch host){
         super(host);
@@ -53,7 +48,7 @@ public class TileSwitchStand extends TileSwitch implements ITickable {
             }
 
             //on
-            if (getEnabled()) {
+            if (getEnabled(0)) {
                 new train.render.models.ModelSwitchStandOn().render();
             } else {//off
                 new train.render.models.ModelSwitchStandOff().render();
@@ -64,7 +59,7 @@ public class TileSwitchStand extends TileSwitch implements ITickable {
     @SideOnly(Side.CLIENT)
     @Override
     public ResourceLocation getTexture(int x, int y, int z){
-        if (getEnabled()) {
+        if (getEnabled(0)) {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
         } else {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");

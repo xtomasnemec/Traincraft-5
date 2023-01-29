@@ -46,6 +46,7 @@ public class TileEntityStorage extends TileRenderFacing implements IInventory, I
     public TileEntityStorage(BlockDynamic block){
         super(block);
         initInventoryFromBlock( block );
+        this.assemblyTableTier = block;
         markDirty();
     }
 

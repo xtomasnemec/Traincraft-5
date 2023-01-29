@@ -53,9 +53,9 @@ public class BlockSwitch extends BlockDynamic {
 
             TileSwitch t = (TileSwitch)world.getTileEntity(pos);
             if(t!=null){
-                t.toggleEnabled();
-                world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, t.getEnabled() ? 0.6F : 0.5F);
-                world.notifyNeighborsOfStateChange(pos, this, false);
+                t.toggleEnabled(0);
+                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.3F, t.getEnabled(0) ? 0.6F : 0.5F);
+                world.notifyBlocksOfNeighborChange(x, y, z, this);
             }
 
             return true;
@@ -73,9 +73,9 @@ public class BlockSwitch extends BlockDynamic {
         return getStrongPower(state,world,pos,side);
     }
 
-    public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        TileSwitch t = (TileSwitch)world.getTileEntity(pos);
-        if(t!=null && t.getEnabled()){
+    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int meta) {
+        TileSwitch t = (TileSwitch)world.getTileEntity(x,y,z);
+        if(t!=null && t.getEnabled(0)){
             return 15;
         }
         return 0;
@@ -91,7 +91,7 @@ public class BlockSwitch extends BlockDynamic {
         super.onBlockAdded(world, pos,state);
         TileSwitch te = (TileSwitch) world.getTileEntity(pos);
         if (te !=null) {
-            te.setEnabled(false);
+            te.setEnabled(false,0);
         }
     }
 

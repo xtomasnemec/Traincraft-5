@@ -15,8 +15,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -281,4 +281,9 @@ public class ClientUtil {
         }
     }
 
+    public static void fixItemLighting(World w){
+        if(w==null){
+            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+        }
+    }
 }

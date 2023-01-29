@@ -8,6 +8,9 @@
 package train.blocks.generator;
 
 
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.FuelHandler;
@@ -42,14 +45,14 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergySto
         super(TCBlocks.dieselGenerator);
         //this.theTank = LiquidManager.getInstance().new FilteredTank(30000, LiquidManager.dieselFilter(), 1);
 
+    }
+    protected void initInventoryFromBlock( BlockDynamic block ) {
+        if (host == null) {
+            super.initInventoryFromBlock(block);
+        }
         inventory=new ArrayList<>();
         inventory.add(new ItemStackSlot(this, 400, 56, 17));
         inventory.add(new ItemStackSlot(this, 401, 56, 53));
-
-    }
-
-    public TileGeneratorDiesel(BlockDynamic b){
-        super(b);
     }
 
     @Override
@@ -76,6 +79,7 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergySto
                     }
                 }
                 this.markDirty();
+                this.syncTileEntity();
             }
             int energyProduced = 70;
             if(this.currentBurnTime > 0){
@@ -128,6 +132,10 @@ public class TileGeneratorDiesel extends TileEntityStorage implements IEnergySto
         return new int[]{30000};
     }
 
+    @Override
+    public World getWorld(){
+        return this.worldObj;
+    }
 
     public void pushEnergy(World world, int x, int y, int z, EnergyStorage storage){
         for (EnumFacing side : EnumFacing.HORIZONTALS) {

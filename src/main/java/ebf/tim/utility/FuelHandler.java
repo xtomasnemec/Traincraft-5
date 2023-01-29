@@ -5,6 +5,8 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.registry.TiMFluids;
+import ebf.tim.registry.TiMItems;
+import mods.railcraft.api.electricity.IElectricGrid;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -77,12 +79,15 @@ public class FuelHandler{
 				return new FluidStack(TiMFluids.fluidRedstone, ((IEnergyStorage) itemStack.getItem()).extractEnergy(250, true));
 			}
 		}
-		if(transport.getTypes().contains(TrainsInMotion.transportTypes.DIESEL)){
-			if(getFluidForFilledItem(itemStack)!=null &&
-					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")){
-				return new FluidStack(TiMFluids.fluidDiesel,1000);
-			} else if (getFluidForFilledItem(itemStack)!=null &&
-					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
+		if(transport.getTypes().contains(TrainsInMotion.transportTypes.DIESEL)) {
+			if (itemStack.getItem() == TiMItems.dieselCanister) {
+				return new FluidStack(TiMFluids.fluidDiesel, 1000);
+			}
+			if (FluidContainerRegistry.getFluidForFilledItem(itemStack) != null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("diesel")) {
+				return new FluidStack(TiMFluids.fluidDiesel, 1000);
+			} else if (FluidContainerRegistry.getFluidForFilledItem(itemStack)!=null &&
+					FluidContainerRegistry.getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("fueloil")) {
 				return new FluidStack(TiMFluids.fluidfueloil, 1000);
 			} else if (getFluidForFilledItem(itemStack)!=null &&
 					getFluidForFilledItem(itemStack).getUnlocalizedName().toLowerCase().contains("oil")) {
@@ -111,8 +116,8 @@ public class FuelHandler{
 			}
 		}
 
-		if(transport.getTypes().contains(TrainsInMotion.transportTypes.TANKER)){
-			return getFluidForFilledItem(itemStack);
+		if(transport.getTypes().contains(TrainsInMotion.transportTypes.TANKER) || transport.getTypes().contains(TrainsInMotion.transportTypes.TENDER)){
+			return FluidContainerRegistry.getFluidForFilledItem(itemStack);
 		}
 
 		return null;
@@ -179,13 +184,38 @@ public class FuelHandler{
 
 		//if there's a fluid item in the slot and the train can consume the entire thing
 		if (getUseableFluid(train.waterSlot().getSlotID(),train) !=null &&
-				train.fill(getUseableFluid(train.waterSlot().getSlotID(),train),false)==0) {
-			train.fill(getUseableFluid(train.waterSlot().getSlotID(),train), true);
+				train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train),false)==getUseableFluid(train.waterSlot().getSlotID(),train).amount) {
+			train.fill(null, getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);
 				train.addItem(new ItemStack(Items.BUCKET));
 			}
 		}
+
+		GenericRailTransport link;
+		if(train.frontLinkedID!=null){
+			link=((GenericRailTransport)train.worldObj.getEntityByID(train.frontLinkedID));
+			if((link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) ||
+					link.getTypes().contains(TrainsInMotion.transportTypes.TANKER))
+					&& train.fill(null,new FluidStack(FluidRegistry.WATER,100),false)==100
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false)!=null
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false).amount==100){
+				;
+				train.fill(null,link.drain(null,new FluidStack(FluidRegistry.WATER,100),true),true);
+			}
+		}
+		if(train.backLinkedID!=null){
+			link=((GenericRailTransport)train.worldObj.getEntityByID(train.backLinkedID));
+			if((link.getTypes().contains(TrainsInMotion.transportTypes.TENDER) ||
+					link.getTypes().contains(TrainsInMotion.transportTypes.TANKER))
+					&& train.fill(null,new FluidStack(FluidRegistry.WATER,100),false)==100
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false)!=null
+					&& link.drain(null,new FluidStack(FluidRegistry.WATER,100),false).amount==100){
+				;
+				train.fill(null,link.drain(null,new FluidStack(FluidRegistry.WATER,100),true),true);
+			}
+		}
+
 		//manage boiler heat
 		if (burnHeat > 1) {
 			//calculate the heat increase
@@ -229,8 +259,8 @@ public class FuelHandler{
 				);
 				//drain fluid
 				if(steam>0 && steam/5>0) {
-					if (train.drain(steam / 5, true) == null) {
-						train.fill(new FluidStack(TiMFluids.fluidSteam, (int) (-(Math.abs(train.accelerator) * (train.getTankCapacity()[1] * 0.01f)) + steam * 0.9f)), true);
+					if (train.drain(null, steam / 5, true) != null) {
+						train.fill(null, new FluidStack(TiMFluids.fluidSteam, (int) (-(Math.abs(train.accelerator) * (train.getTankCapacity()[1] * 0.01f)) + steam * 0.9f)), true);
 
 						//if no fluid left and not creative mode, explode.
 					} else if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
@@ -270,8 +300,13 @@ public class FuelHandler{
         if(getUseableFluid(400,train) !=null) {
 			if (train.fill(getUseableFluid(400,train))) {
 				if(!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-					train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
-					train.addItem(new ItemStack(Items.BUCKET));
+					if (train.getSlotIndexByID(train.fuelSlot().getSlotID()).getItem().equals(TiMItems.dieselCanister)) {
+						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+						train.addItem(new ItemStack(TiMItems.emptyCanister));
+					} else {
+						train.getSlotIndexByID(train.fuelSlot().getSlotID()).decrStackSize(1);
+						train.addItem(new ItemStack(Items.bucket));
+					}
 				}
 			}
             //todo: fluid pipe support, should be able to be toggled in server settings
@@ -346,7 +381,7 @@ public class FuelHandler{
 		}
 
 		//fill from overhead wires/3rd rail/under rail
-		if (train.fill(new FluidStack(TiMFluids.fluidRedstone, 100), false) == 0) {
+		if (train.fill(null, new FluidStack(TiMFluids.fluidRedstone, 100), false) == 100) {
 			int draw = 0;
 			TileEntity te;
 			Block b;
@@ -386,8 +421,6 @@ public class FuelHandler{
 
 		if (getUseableFluid(transport.tankerInputSlot().getSlotID(), transport) != null &&
 				transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(), transport))) {
-
-			transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(), transport), true);
 
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				//if there's an inventory, add the empty bucket, otherwise drop it on the nearest player, if no near player, drop on self

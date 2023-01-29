@@ -6,6 +6,7 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketRemove;
 import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
+import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MultiPartEntityPart;
@@ -23,8 +24,9 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-public class CollisionBox extends MultiPartEntityPart implements IInventory, IFluidHandler, IFluidCart, ILinkableCart {
+public class CollisionBox extends EntityDragonPart implements IInventory, IFluidHandler, IMinecart, ILinkableCart {
     public GenericRailTransport host;
+
     public CollisionBox(GenericRailTransport transport) {
         super(transport, HitboxDynamic.dragonBoxName, transport.getHitboxSize()[2],transport.getHitboxSize()[1]);
         host=transport;
@@ -85,44 +87,6 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
      * @param fluid
      * @return true if can pass push and pull requests
      */
-    @Override
-    public boolean canPassFluidRequests(FluidStack fluid) {
-        return host.canPassFluidRequests(fluid);
-    }
-
-    /**
-     * This function controls whether a cart will accept a pushed Fluid.
-     * Even if this function returns true, there still must be a tank that accepts the Fluid in question before it can be added to the cart.
-     * <p/>
-     * If this interface is not implemented, it is assumed to be true.
-     *
-     * @param requester the EntityMinecart that initiated the action
-     * @param fluid     the Fluid
-     * @return true if cart will accept the fluid
-     */
-    @Override
-    public boolean canAcceptPushedFluid(EntityMinecart requester, FluidStack fluid) {
-        return host.canAcceptPushedFluid(requester,fluid);
-    }
-
-    /**
-     * This function controls whether a cart will fulfill a pull request for a specific Fluid.
-     * Even if this function returns true, there still must be a tank that can extract the Fluid in question before it can be removed from the cart.
-     * <p/>
-     * If this interface is not implemented, it is assumed to be true.
-     *
-     * @param requester the EntityMinecart that initiated the action
-     * @param fluid     the Fluid
-     * @return true if the cart can provide the fluid
-     */
-    @Override
-    public boolean canProvidePulledFluid(EntityMinecart requester, FluidStack fluid) {
-        return host.canProvidePulledFluid(requester,fluid);
-    }
-
-    @Override
-    public void setFilling(boolean filling) {host.setFilling(filling);}
-
     @Override
     public boolean isLinkable() {return host.isLinkable();}
 
@@ -278,5 +242,10 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
         if(getEntityBoundingBox().maxZ!=0) {
             this.setEntityBoundingBox(new AxisAlignedBB(p_70107_1_ - (double) f, p_70107_3_ - (double) this.getYOffset(), p_70107_5_ - (double) f, p_70107_1_ + (double) f, p_70107_3_ - (double) this.getYOffset() + (double) f1, p_70107_5_ + (double) f));
         }
+    }
+
+    @Override
+    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+        return host.doesCartMatchFilter(stack, cart);
     }
 }

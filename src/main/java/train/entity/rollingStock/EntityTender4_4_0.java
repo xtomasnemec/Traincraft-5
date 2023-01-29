@@ -40,7 +40,7 @@ public class EntityTender4_4_0 extends GenericRailTransport {
     @Override
     public boolean isFictional(){return false;}
     @Override
-    public int getInventoryRows(){return 3;}
+    public int getInventoryRows(){return getInventoryRowCount();}
     @Override
     public List<TrainsInMotion.transportTypes> getTypes(){
         return TrainsInMotion.transportTypes.TENDER.singleton();
@@ -95,7 +95,7 @@ public class EntityTender4_4_0 extends GenericRailTransport {
     @Override
     public float[] rotationPoints() {return new float[]{0.6f, -0.575f};}
     @Override
-    public int[] getTankCapacity(){return new int[]{8000};}
+    public int[] getTankCapacity(){return new int[]{getTankVolume()};}
 
 
 

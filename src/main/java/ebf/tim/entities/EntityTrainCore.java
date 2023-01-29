@@ -131,6 +131,7 @@ public class EntityTrainCore extends GenericRailTransport {
             accel*=0.7f;
         }
         //scale based on power and velocity
+        //TODO: velocity breaks this hard. dont do that. BS a similar result.
         cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(getVelocity()/getPower()))-2.35f)));
 
         //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
@@ -151,9 +152,9 @@ public class EntityTrainCore extends GenericRailTransport {
         cachedVectors[2].yCoord=cachedVectors[2].xCoord;
 
         //handle ice slipping
-        if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
-            float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
-                    CommonUtil.getBlockAt(world,this.posX,this.posY-1,this.posZ).slipperiness;
+        if(!getBoolean(boolValues.BRAKE)) {
+        float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
+                CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
 
             if(slip>0) {
                 rotationYaw+=accelerator*slip;
@@ -190,14 +191,12 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     @Override
     public void onUpdate() {
-
-        super.onUpdate();
         if(frontBogie != null && backBogie != null) {
             
             if (!world.isRemote) {
                 //twice a second, re-calculate the speed.
                 if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
-                    if(ticksExisted % 10 == 0) {
+                    if(Math.abs(accelerator)!=8 && ticksExisted % 10 == 0) {
                         calculateAcceleration();
                     }
                 } else {
@@ -215,18 +214,18 @@ public class EntityTrainCore extends GenericRailTransport {
                         cachedVectors[2].yCoord*=0.99f;
                     } else {
                         Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
-                        frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                        backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                        applyDrag();
+                        moveBogies(velocity.xCoord,velocity.zCoord);
                     }
                 }
-                Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
-                frontBogie.addVelocity(velocity.xCoord, 0, velocity.zCoord);
-                backBogie.addVelocity(velocity.xCoord, 0, velocity.zCoord);
+
             }
 
             updatePosition();
         }
+
+        super.onUpdate();
+        updatePosition();
+
         if(whistleDelay>0) {
             whistleDelay--;
         }

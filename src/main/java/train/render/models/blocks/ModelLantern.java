@@ -62,7 +62,7 @@ public class ModelLantern extends ModelBase {
 		/*if(lantern.getWorld()!=null) {
 			GL11.glPushMatrix();
 			EntityItem ghostEntityItem = new EntityItem(lantern.getWorld());
-			ghostEntityItem.setItem(new ItemStack(Blocks.TORCH, 1));
+			ghostEntityItem.setEntityItemStack(new ItemStack(Blocks.torch, 1));
 			ghostEntityItem.hoverStart = 0.0F;
 
 			GL11.glTranslatef((float) x + 0.5F, (float) y + 0.1F, (float) z + 0.5F);
