@@ -130,6 +130,7 @@ public class EntityTrainCore extends GenericRailTransport {
             accel*=0.7f;
         }
         //scale based on power and velocity
+        //TODO: velocity breaks this hard. dont do that. BS a similar result.
         cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(getVelocity()/getPower()))-2.35f)));
 
         //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
@@ -212,8 +213,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         cachedVectors[2].yCoord*=0.99f;
                     } else {
                         Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
-                        frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                        backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
+                        moveBogies(velocity.xCoord,velocity.zCoord);
                     }
                 }
 

@@ -44,10 +44,10 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             {{0, -0.5}, {0, 0.5}, {0, -1}},
             {{0, -0.5}, {0, 0.5}, {0, -1}},
             //turns
-            {{0, 0.5}, {0.5, 0}, {-1, 1}},
-            {{0, 0.5}, { -0.5, 0}, {1, 1}},
-            {{0, -0.5}, { -0.5, 0}, {1, -1}},
-            {{0, -0.5}, {0.5, 0}, {-1, -1}}
+            {{0, 0.5}, {0.5, 0}, {-0.3557, 0.3557}},
+            {{0, 0.5}, { -0.5, 0}, {0.3557, 0.3557}},
+            {{0, -0.5}, { -0.5, 0}, {0.3557, -0.3557}},
+            {{0, -0.5}, {0.5, 0}, {-0.3557, -0.3557}}
     };
 
     /**cached values for the rail path and motion vectors
@@ -199,7 +199,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //server only
         if(!getWorld().isRemote) {
             //define the yaw from the super
-            this.setRotation(host.rotationYaw, host.rotationPitch);
+            //this.setRotation(host.rotationYaw, host.rotationPitch);
 
             //prevent moving without motion velocity
             if (Math.abs(moveX) + Math.abs(moveZ) < 0.000001) {
@@ -350,11 +350,8 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         //    and rotate movement for the next cycle.
         //NOTE: when moving on corners both X and Z are 1 or -1, which would double speed. don't do that.
         //for some reason it actually ends up as more than double speed.
-        if (railPathX != 0 && railPathZ != 0) {
-            setPositionRelative((currentMotion * railPathX) * 0.355, 0, (currentMotion * railPathZ) * 0.355);
-        } else {
-            setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
-        }
+        setPositionRelative((currentMotion * railPathX), 0, (currentMotion * railPathZ));
+
         motionSqrt = (Math.abs(moveDirection[0])+Math.abs(moveDirection[1]));
         moveDirection[0] = motionSqrt * (railPathX);
         moveDirection[1] = motionSqrt * (railPathZ);

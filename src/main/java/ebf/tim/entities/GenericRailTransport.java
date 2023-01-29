@@ -929,39 +929,33 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * if X or Z is null, the bogie's existing motion velocity will be used
      */
     public void moveBogies(Double velocityX, Double velocityZ){
-
         //move the bogies with the track.
-        // add in additional movement velocity based on the distance the bogies should be from center compared to where they are
         if(velocityX==null||velocityZ==null){
-            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[0], 0, 0), rotationPitch, rotationYaw, 0);
-            frontBogie.minecartMove(this,
-                    frontBogie.motionX + ((cachedVectors[1].xCoord + posX)-frontBogie.posX),
-                    frontBogie.motionZ + ((cachedVectors[1].zCoord + posZ)-frontBogie.posZ));
-            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[1], 0, 0), rotationPitch, rotationYaw, 0);
-            backBogie.minecartMove(this,
-                    backBogie.motionX +((cachedVectors[1].xCoord + posX)-backBogie.posX),
-                    backBogie.motionZ +((cachedVectors[1].zCoord + posZ)-backBogie.posZ));
+            frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
+            backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
+
         } else if(velocityX!=0 || velocityZ!=0) {
-            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[0], 0, 0), rotationPitch, rotationYaw, 0);
-            frontBogie.minecartMove(this,
-                    velocityX + ((cachedVectors[1].xCoord + posX)-frontBogie.posX),
-                    velocityZ + ((cachedVectors[1].zCoord + posZ)-frontBogie.posZ));
-            cachedVectors[1] = CommonUtil.rotatePoint(new Vec3f(rotationPoints()[1], 0, 0), rotationPitch, rotationYaw, 0);
-            backBogie.minecartMove(this,
-                    velocityX +((cachedVectors[1].xCoord + posX)-backBogie.posX),
-                    velocityZ +((cachedVectors[1].zCoord + posZ)-backBogie.posZ));
+            frontBogie.minecartMove(this, velocityX, velocityZ);
+            backBogie.minecartMove(this, velocityX, velocityZ);
         }
 
-        //update the core entity position and rotation
-        cachedVectors[1] = new Vec3f(-rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
-        setPosition((frontBogie.posX+cachedVectors[1].xCoord),
-                (frontBogie.posY+cachedVectors[1].yCoord),(frontBogie.posZ+cachedVectors[1].zCoord));
+        //center the entity based on the back bogie position
+        cachedVectors[1] = new Vec3f(rotationPoints()[0], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0);
+        setPosition((backBogie.posX + cachedVectors[1].xCoord),
+                (backBogie.posY + cachedVectors[1].yCoord), (backBogie.posZ + cachedVectors[1].zCoord));
+        //re-center the front bogie
+        cachedVectors[1] = new Vec3f(-rotationPoints()[1], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0);
+        if(Math.abs((cachedVectors[1].xCoord + posX) - frontBogie.posX)+ Math.abs((cachedVectors[1].zCoord + posZ) - frontBogie.posZ)>0.01) {
+            frontBogie.minecartMove(this,
+                    ((cachedVectors[1].xCoord + posX) - frontBogie.posX),
+                    ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ));
+        }
 
+        //update rotation
         setRotation((CommonUtil.atan2degreesf(
                 frontBogie.posZ - backBogie.posZ,
                 frontBogie.posX - backBogie.posX)),
-                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY+frontBogie.yOffset,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
-
+                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY + frontBogie.yOffset, Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
 
         //reset the vector when we're done so it wont break trains.
         cachedVectors[1]= new Vec3f(0,0,0);
