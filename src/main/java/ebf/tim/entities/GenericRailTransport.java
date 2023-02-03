@@ -1443,12 +1443,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         frontLinkedID=other.getEntityId();
         frontLinkedTransport=other.entityUniqueID;
         setBoolean(boolValues.COUPLINGFRONT, false);
+        updateConsist();
     }
 
     public void setbackLinkedTransport(GenericRailTransport other){
         backLinkedID=other.getEntityId();
         backLinkedTransport=other.entityUniqueID;
         setBoolean(boolValues.COUPLINGBACK, false);
+        updateConsist();
     }
 
     /**
@@ -1458,73 +1460,46 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
         consistLeadID=null;
-        GenericRailTransport link;
-
-        //we need to have the list ordered from one of the ends, so iterate until an end is found and then use that.
-        if((frontLinkedID!=null && backLinkedID!=null)) {
+        GenericRailTransport link=null;
+        if(frontLinkedID!=null){
             link =(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
-            while (link != null) {
+        }
+        while (link!=null){
+            if(!transports.contains(link)) {
                 transports.add(link);
-                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
-                        !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))) {
+                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
-                        !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))) {
+                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
-                } else {
-                    break;
                 }
-            }
-            transports = new ArrayList<>();
-            transports.add(link);
-        } else {
-            transports.add(this);
-        }
-
-        //check the front, then loop for every transport linked to it in opposite direction of this.
-        link = frontLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
-        while(link!=null){
-            transports.add(link);
-            //if we find a consist lead, set it.
-            if(link.getAccelerator()!=0){
-                consistLeadID=link.getEntityId();
-            }
-
-            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
             } else {
-                link=null;
+                link = null;
+                break;
             }
         }
-        //do it again, but for the back one
-        link= backLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(backLinkedID);
-        while(link!=null){
-            transports.add(link);
-            //if we find a consist lead, set it.
-            if(link.getAccelerator()!=0){
-                consistLeadID=link.getEntityId();
-            }
-            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+        //repeat for back link
+        if(backLinkedID!=null){
+            link =(GenericRailTransport) getWorld().getEntityByID(backLinkedID);
+        }
+        while (link!=null){
+            if(!transports.contains(link)) {
+                transports.add(link);
+                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
+                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+                }
             } else {
-                link=null;
+                link = null;
+                break;
             }
         }
 
-        if(transports.size()>1) {
+        if(transports.size()>0) {
             //now tell everything in the list, including this, that there's a new list, and provide said list.
             for (GenericRailTransport t : transports) {
                 t.setConsist(transports);
                 t.setValuesOnLinkUpdate(transports);
-                t.consistLeadID = consistLeadID;
             }
         }
     }

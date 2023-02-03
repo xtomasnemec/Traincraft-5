@@ -293,8 +293,6 @@ public class ParticleFX {
             return;
         }
 
-        GL11.glPushMatrix();
-
         float size = entity.host.getParticleData(entity.particleID)[1]/100f;
         if (entity.particleType==3) {//cone lamps
             GL11.glColor4f(((entity.host.getParticleData(entity.particleID)[2] >> 16 & 0xFF)-entity.colorTint)* 0.00392156863f,
@@ -314,8 +312,6 @@ public class ParticleFX {
             GL11.glDepthMask(false);
             GL11.glDisable(GL_CULL_FACE);
             glAlphaFunc(GL_LEQUAL, 1f);
-           // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             if(Minecraft.getMinecraft().theWorld.isRaining()){
                 TextureManager.bindTexture(new ResourceLocation(TrainsInMotion.MODID, "textures/effects/lamp_bright.png"));
             } else {
@@ -329,8 +325,6 @@ public class ParticleFX {
             GL11.glAlphaFunc(GL11.GL_GREATER, 1f);
             Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
             GL11.glDepthMask(true);
-            //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         } else if (entity.particleType==4) {//sphere lamps
 
 
@@ -375,9 +369,6 @@ public class ParticleFX {
             GL11.glDepthMask(true);
 
         }
-
-        GL11.glClearColor(0,0,0,0);
-        GL11.glPopMatrix();
     }
 
     public static void renderSmoke(ParticleFX entity, double x, double y, double z, float scale, float yaw){

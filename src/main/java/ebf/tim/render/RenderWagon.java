@@ -344,8 +344,11 @@ public class RenderWagon extends Render {
         //render the particles, if there are any.
         if(entity.getWorld()!=null && !isPaintBucket) {
             for (ParticleFX particle : entity.renderData.particles) {
+                GL11.glPushMatrix();
                 ParticleFX.doRender(particle, entity.getRenderScale(), yaw);
+                GL11.glPopMatrix();
             }
+            GL11.glColor4f(1,1,1,1);
         }
 
 
@@ -376,11 +379,14 @@ public class RenderWagon extends Render {
                 }
                 GL11.glPushMatrix();
                 GL11.glTranslated(b.offset[0], -b.offset[1], b.offset[2]);
+                if(entity.getWorld()==null){
+                    GL11.glTranslated(0,-0.5,0);
+                }
                 GL11.glRotatef(b.rotation[0], 1.0f, 0.0f, 0.0f);
                 GL11.glRotatef(b.rotation[1], 0.0f, 1.0f, 0.0f);
                 GL11.glRotatef(b.rotation[2], 0.0f, 0.0f, 1.0f);
                 //GL11.glRotatef(-180, 0.0f, 0.0f, 1.0f);
-                if(!isPaintBucket) {
+                if(!isPaintBucket && entity.getWorld()!=null) {
                     GL11.glRotatef(b.rotationYaw-entity.rotationYaw, 0.0f, 1.0f, 0);
                    //GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
                 }
@@ -392,7 +398,9 @@ public class RenderWagon extends Render {
                 //render the particles, if there are any. do this _after_ the normal render because it breaks texture bind
                 if(!isPaintBucket && entity.getWorld()!=null && entity.renderData.bogieParticles.size()>0) {
                     for (ParticleFX p : entity.renderData.bogieParticles.get(ii)) {
+                        GL11.glPushMatrix();
                         ParticleFX.doRender(p, entity.getRenderScale(), yaw);
+                        GL11.glPopMatrix();
                     }
                 }
 
