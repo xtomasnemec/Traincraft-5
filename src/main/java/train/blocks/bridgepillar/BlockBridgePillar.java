@@ -5,7 +5,7 @@
  * @author Mrbrutal
  ******************************************************************************/
 
-package train.blocks;
+package train.blocks.bridgepillar;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -59,13 +59,5 @@ public class BlockBridgePillar extends BlockDynamic {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_1_bottom");
-	}
-
-
-	public class tilePillar extends TileRenderFacing{
-
-		public tilePillar(BlockDynamic block) {
-			super(block);
-		}
 	}
 }
