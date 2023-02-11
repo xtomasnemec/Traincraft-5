@@ -1206,14 +1206,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //update positions related to linking, this NEEDS to come after drag
             //only run updates if either the front link or the back link is null.
             //if there is a consist lead, only the lead can run updates
-           if((consistLeadID!=null && getEntityId()==consistLeadID) ||
-                   ((frontLinkedID==null && backLinkedID!=null) || (frontLinkedID!=null && backLinkedID==null))){
+           if(consistLeadID!=null && consistLeadID==getEntityId()){
                GenericRailTransport last = null;
                for (GenericRailTransport transport : getConsist()){
                    if(last!=null) {
                        last.manageLink(transport);
                    }
                    last = transport;
+               }
+           } else if (consistLeadID==null){
+               if(frontLinkedID!=null && getWorld().getEntityByID(frontLinkedID) instanceof GenericRailTransport){
+                   manageLink((GenericRailTransport) getWorld().getEntityByID(frontLinkedID));
+               }
+               if(backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
+                   manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
                }
            }
 
@@ -1459,13 +1465,16 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
-        consistLeadID=null;
+        Integer lead=null;
         GenericRailTransport link=null;
         if(frontLinkedID!=null){
             link =(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
         }
         while (link!=null){
             if(!transports.contains(link)) {
+                if(link.getAccelerator()!=0){
+                    lead=link.getEntityId();
+                }
                 transports.add(link);
                 if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
@@ -1483,6 +1492,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
         while (link!=null){
             if(!transports.contains(link)) {
+                if(link.getAccelerator()!=0){
+                    lead=link.getEntityId();
+                }
                 transports.add(link);
                 if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
@@ -1498,8 +1510,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         if(transports.size()>0) {
             //now tell everything in the list, including this, that there's a new list, and provide said list.
             for (GenericRailTransport t : transports) {
-                t.setConsist(transports);
                 t.setValuesOnLinkUpdate(transports);
+                t.consistLeadID=lead;
             }
         }
     }
@@ -1512,6 +1524,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void setValuesOnLinkUpdate(List<GenericRailTransport> consist){
         pullingWeight=0;
+        this.consist=consist;
         for(GenericRailTransport t : consist) {
             pullingWeight +=t.weightKg();
         }
@@ -1521,14 +1534,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * May return a 0 length array when consist is being updated.
      */
     public List<GenericRailTransport> getConsist(){
-        if(!consistListInUse && consist.size()>0) {
+        if(consist.size()>0) {
             return consist;
         } else {
             return Collections.singletonList(this);
         }
-    }
-    public void setConsist(List<GenericRailTransport> input){
-        consist=input;
     }
 
     //gets the power for acceleration math, result is in MHP, has a fallback that roughly converts TE to MHP
