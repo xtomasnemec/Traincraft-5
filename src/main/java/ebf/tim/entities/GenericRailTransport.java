@@ -949,6 +949,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             frontBogie.minecartMove(this,
                     ((cachedVectors[1].xCoord + posX) - frontBogie.posX),
                     ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ));
+            setPosition((backBogie.posX + cachedVectors[1].xCoord),
+                    (backBogie.posY + cachedVectors[1].yCoord), (backBogie.posZ + cachedVectors[1].zCoord));
         }
 
         //update rotation
@@ -1008,8 +1010,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //scale drag for derail, or air lateral friction. if you do both at the same time then it's way too much.
             if(getBoolean(boolValues.DERAILED)){
                 drag*=CommonUtil.getBlockAt(getWorld(),posX,posY,posZ).slipperiness;
-            } else if (getVelocity() > 0) {
-                drag -= ((getFriction() * getVelocity() * 4.448f));
+            } else if (cachedVectors[2].yCoord > 0) {
+                drag -= ((getFriction() * cachedVectors[2].yCoord * 4.448f));
             }
 
             //add in the drag from combined weight, plus brakes.

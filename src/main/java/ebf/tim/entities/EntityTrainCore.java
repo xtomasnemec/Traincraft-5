@@ -131,7 +131,7 @@ public class EntityTrainCore extends GenericRailTransport {
         }
         //scale based on power and velocity
         //TODO: velocity breaks this hard. dont do that. BS a similar result.
-        cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(getVelocity()/getPower()))-2.35f)));
+        cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(0.3557/getPower()))-2.35f)));
 
         //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
         if(cachedVectors[2].yCoord!=0) {
