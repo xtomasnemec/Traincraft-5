@@ -180,11 +180,11 @@ public class TrainsInMotion {
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[1], PacketRemove.class, 2, Side.SERVER);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[2], ItemAdminBook.PacketAdminBook.class, 3, Side.CLIENT);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[3], ItemAdminBook.PacketAdminBookClient.class, 4, Side.SERVER);
-        TrainsInMotion.keyChannel.registerMessage(HANDLERS[4], PacketPaint.class, 6, Side.CLIENT);
-        TrainsInMotion.keyChannel.registerMessage(HANDLERS[5], PacketCraftingPage.class, 7, Side.SERVER);
-        TrainsInMotion.trackChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.track");
+        TrainsInMotion.keyChannel.registerMessage(HANDLERS[4], PacketPaint.class, 5, Side.CLIENT);
+        TrainsInMotion.keyChannel.registerMessage(HANDLERS[5], PacketCraftingPage.class, 6, Side.SERVER);
         TrainsInMotion.updateChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.update");
-        TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 8, Side.CLIENT);
+        TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 7, Side.CLIENT);
+        TrainsInMotion.trackChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.track");
 
 
 
@@ -193,6 +193,7 @@ public class TrainsInMotion {
             FMLCommonHandler.instance().bus().register(ClientProxy.eventManager);
             MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
         }
+        MinecraftForge.EVENT_BUS.register(CommonProxy.eventManagerServer);
         FMLCommonHandler.instance().bus().register(CommonProxy.eventManagerServer);
 
         //register GUI, model renders, Keybinds, client only blocks, and HUD
