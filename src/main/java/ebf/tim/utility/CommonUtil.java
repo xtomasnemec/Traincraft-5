@@ -7,10 +7,12 @@ import fexcraft.tmt.slim.Vec3d;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -105,6 +107,22 @@ public class CommonUtil {
     public static boolean isRailBlockAt(World world, int x, int y, int z) {
         //todo ZnD support, either by jar reference or API update
         return (/*world.getTileEntity(x, y, z) instanceof ITrackBase ||*/ world.getBlock(x, y, z) instanceof BlockRailBase);
+    }
+
+    /**
+     * sound type does nothing for 1.7.10,
+     * in later versions it's used to identify what made the sound, like if it's for an entity or a block.
+     */
+    public static void playSound(World world, double xCoord, double yCoord, double zCoord, String file, float volume, float pitch, int soundType){
+        world.playSound(xCoord,yCoord,zCoord, file, volume,pitch,false);
+    }
+
+    public static void playSound(TileEntity tile, String file, float volume, float pitch){
+        tile.getWorldObj().playSound(tile.xCoord,tile.yCoord,tile.zCoord, file, volume,pitch,false);
+    }
+
+    public static void playSound(Entity entity, String file, float volume, float pitch){
+        entity.worldObj.playSoundAtEntity(entity, file, volume, pitch);
     }
 
     public static boolean stringContains(String s1, String... s2){

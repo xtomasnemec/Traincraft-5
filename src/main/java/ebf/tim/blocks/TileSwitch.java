@@ -1,5 +1,6 @@
 package ebf.tim.blocks;
 
+import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +14,8 @@ public class TileSwitch extends TileRenderFacing {
     public int[] crossingTick={0};
     public int currentTick=0;
     public long lastTick=0, lastSoundMS=0, time=0;
+
+    public enum SOUND_PHASE{LOOP_FROMSTART, ANIM_PEAKS, ANIM_ENDS, ANIM_STARTS, LOOP_AT_ANIM_END}
 
     public TileSwitch(BlockSwitch block){
         host=block;
@@ -65,6 +68,8 @@ public class TileSwitch extends TileRenderFacing {
     //sound volume
     public float soundVolume(){return 1f;}
 
+    public SOUND_PHASE soundEvent(){return SOUND_PHASE.LOOP_FROMSTART;}
+
     //sets the min and max rotation angles.
     // if there is a difference of exactly 360 between the two, it will not reverse
     public float maxAngle(int index){return 360;}
@@ -97,8 +102,14 @@ public class TileSwitch extends TileRenderFacing {
                 if (angleStops(i)) {
                     if (crossingTick[i] <= maxAngle(i) && getStrength(i)>0) {
                         crossingTick[i] += animationSpeed(i);
+
                     } else if (crossingTick[i] >= minAngle(i) && getStrength(i)==0) {
                         crossingTick[i] -= animationSpeed(i);
+                    }
+                    if(((soundEvent()==SOUND_PHASE.LOOP_AT_ANIM_END && crossingTick[i]>=maxAngle(i))
+                            || soundEvent()==SOUND_PHASE.LOOP_FROMSTART)
+                            && getStrength(i)>0){
+                        playsound();
                     }
                 } else {
                     if (maxAngle(i) - minAngle(i) == 360) {
@@ -106,9 +117,18 @@ public class TileSwitch extends TileRenderFacing {
                             crossingTick[i] += animationSpeed(i);
                             if (crossingTick[i] >= 360) {
                                 crossingTick[i] = 0;
+                                if(soundEvent()==SOUND_PHASE.ANIM_ENDS){
+                                    playsound();
+                                }
+                            }
+                            if(soundEvent()==SOUND_PHASE.LOOP_FROMSTART){
+                                playsound();
                             }
                         }
                     } else if (getStrength(i)>0 || crossingTick[i] != 0) {
+                        if(soundEvent()==SOUND_PHASE.LOOP_FROMSTART){
+                            playsound();
+                        }
                         if (animationReversing[i]) {
                             crossingTick[i] -= animationSpeed(i);
                         } else {
@@ -116,19 +136,25 @@ public class TileSwitch extends TileRenderFacing {
                         }
                         if (crossingTick[i] <= minAngle(i) || crossingTick[i] >= maxAngle(i)) {
                             animationReversing[i] = !animationReversing[i];
+                            if(soundEvent()==SOUND_PHASE.ANIM_PEAKS){
+                                playsound();
+                            } else if(!animationReversing[i] && soundEvent()==SOUND_PHASE.ANIM_STARTS){
+                                playsound();
+                            } else if(soundEvent()==SOUND_PHASE.ANIM_ENDS) {
+                                playsound();
+                            }
                         }
                     }
 
                 }
             }
         }
+    }
 
-        //if there's a defined sound, play that every interval.
-        if(getStrength(0)>0 && soundFile()!=null && soundFile().length()>2){
-            if(time>lastSoundMS+getSoundInterval()){
-                getWorld().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
-                lastSoundMS=time;
-            }
+    private void playsound(){
+        if(soundFile()!=null && soundFile().length()>2 && time>lastSoundMS+getSoundInterval()){
+            CommonUtil.playSound(this, soundFile(), soundVolume(), soundPitch());
+            lastSoundMS = time;
         }
     }
 
