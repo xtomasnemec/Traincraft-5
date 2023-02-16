@@ -103,8 +103,9 @@ public class TileSwitch extends TileRenderFacing {
                     if (crossingTick[i] <= maxAngle(i) && getStrength(i)>0) {
                         crossingTick[i] += animationSpeed(i);
 
-                    } else if ((crossingTick[i] >= minAngle(i) && getStrength(i)==0)
-                            || (crossingTick[i] >= minAngle(i) && crossingTick[i] >= maxAngle(i))) {
+                    } else if ((crossingTick[i] >= minAngle(i)+animationSpeed(i) && getStrength(i)==0) ||
+                            (crossingTick[i] >= minAngle(i)+animationSpeed(i) &&
+                                    crossingTick[i] > maxAngle(i)+animationSpeed(i))) {
                         crossingTick[i] -= animationSpeed(i);
                     }
                     if(((soundEvent()==SOUND_PHASE.LOOP_AT_ANIM_END && crossingTick[i]>=maxAngle(i))
