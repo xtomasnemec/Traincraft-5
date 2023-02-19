@@ -7,6 +7,7 @@ import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.Vec5f;
 import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.IResourceManager;
@@ -99,6 +100,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
             }
             ClientProxy.transportRenderer.render(
                     ((ItemTransport)item.getItem()).entity,0,0,0, 0, true, null);
+            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
             GL11.glPopMatrix();
         } else if (item.getItem() instanceof ItemRail){
             if(item.getTagCompound()==null){

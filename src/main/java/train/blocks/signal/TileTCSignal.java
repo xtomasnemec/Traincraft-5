@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockSignal;
 import ebf.tim.blocks.TileSwitch;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
@@ -43,6 +44,8 @@ public class TileTCSignal extends TileSwitch {
 		//this would normally be the regular render() call, but this model is weird.
 		new train.render.models.blocks.ModelBlockSignal()
 				.render(null, 0, 0, 0, 0, 0, 0.0625f);
+
+		Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -4,7 +4,6 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.render.ModelBook;
 import ebf.tim.utility.ClientUtil;
 import ebf.tim.utility.CommonProxy;
-import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.Recipe;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;

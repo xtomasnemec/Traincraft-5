@@ -8,7 +8,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
-import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketInteract;

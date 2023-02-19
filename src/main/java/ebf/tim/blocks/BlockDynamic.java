@@ -10,13 +10,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 /**
  * <h1>Block core</h1>
@@ -102,6 +106,21 @@ public class BlockDynamic extends BlockContainer {
         return isContainer?new TileEntityStorage(this):new TileRenderFacing(this);
     }
 
+    //returns a series of values to define the size of the block from start to end, with a normal block starting at 0 and ending at 1.
+    public float[] hitboxShape(){return new float[]{0,0,0,1,1,1};}
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(x+hitboxShape()[0], y+hitboxShape()[1], z+hitboxShape()[2],
+                x+hitboxShape()[3], y+hitboxShape()[4], z+hitboxShape()[5]);
+    }
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB hitboxSelf, List p_149743_6_, Entity collidingEntity) {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        AxisAlignedBB axisalignedbb1 = this.getCollisionBoundingBoxFromPool(world, x, y, z);
+        if (hitboxSelf.intersectsWith(axisalignedbb1)) {
+            p_149743_6_.add(axisalignedbb1);
+        }
+    }
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {

@@ -1,30 +1,17 @@
 package ebf.tim.blocks;
 
-import ebf.tim.utility.CommonUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import train.blocks.switchstand.TileSwitchStand;
-
-import java.util.List;
 
 public class BlockSwitch extends BlockDynamic {
 
 
     public BlockSwitch(Material material, boolean isStorage) {
         super(material, isStorage);
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB box, List otherBoxes, Entity entities) {
     }
 
     @Override

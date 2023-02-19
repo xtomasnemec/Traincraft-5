@@ -19,6 +19,9 @@ public class BlockTCSignal extends BlockSignal {
 	}
 
 	@Override
+	public float[] hitboxShape(){return new float[]{0,0,0,1,3,1};}
+
+	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileTCSignal(this);
 	}

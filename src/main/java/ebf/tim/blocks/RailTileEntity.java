@@ -3,7 +3,6 @@ package ebf.tim.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
-import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
