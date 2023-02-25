@@ -15,7 +15,7 @@ public class TileSwitch extends TileRenderFacing {
     public int currentTick=0;
     public long lastTick=0, lastSoundMS=0, time=0;
 
-    public enum SOUND_PHASE{LOOP_FROMSTART, ANIM_PEAKS, ANIM_ENDS, ANIM_STARTS, LOOP_AT_ANIM_END}
+    public enum SOUND_PHASE{LOOP_FROMSTART, ANIM_PEAKS, ANIM_ENDS, ANIM_STARTS, LOOP_AT_ANIM_END;}
 
     public TileSwitch(BlockSwitch block){
         host=block;

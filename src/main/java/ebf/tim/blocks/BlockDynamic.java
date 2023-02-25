@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class BlockDynamic extends BlockContainer {
     public BlockDynamic(Material material, boolean isStorage) {
         super(material);
         this.isContainer=isStorage;
+        setBlockBounds(hitboxShape()[0],hitboxShape()[1],hitboxShape()[2],hitboxShape()[3],hitboxShape()[4],hitboxShape()[5]);
     }
 
     @Override//1.7 version of getting if block is opaque, used for server side checks like if creatures can spawn on it
@@ -111,15 +113,16 @@ public class BlockDynamic extends BlockContainer {
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x+hitboxShape()[0], y+hitboxShape()[1], z+hitboxShape()[2],
-                x+hitboxShape()[3], y+hitboxShape()[4], z+hitboxShape()[5]);
+        return AxisAlignedBB.getBoundingBox((double)x + this.minX, (double)y + this.minY, (double)z + this.minZ, (double)x + this.maxX, (double)y + this.maxY, (double)z + this.maxZ);
     }
+    @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB hitboxSelf, List p_149743_6_, Entity collidingEntity) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
-        AxisAlignedBB axisalignedbb1 = this.getCollisionBoundingBoxFromPool(world, x, y, z);
-        if (hitboxSelf.intersectsWith(axisalignedbb1)) {
-            p_149743_6_.add(axisalignedbb1);
-        }
+        p_149743_6_.add(this.getCollisionBoundingBoxFromPool(world, x, y, z));
+    }
+    @Override
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_) {
+        return hitboxShape()[4]>1;
     }
 
     @Override
