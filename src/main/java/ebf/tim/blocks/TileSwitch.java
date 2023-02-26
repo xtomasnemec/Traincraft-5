@@ -172,17 +172,14 @@ public class TileSwitch extends TileRenderFacing {
     public int checkBlockPower(int[] ... offset){
         int signalStrength=0;
         for(int[] o : offset) {
-            if (signalStrength == 0) {
-                signalStrength = worldObj.getBlockPowerInput(xCoord + o[0], yCoord + o[1], zCoord + o[2]);
-                if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + o[0], yCoord + o[1], zCoord + o[2])) {
-                    signalStrength = 15;
-                }
-            }
-            else {
+            signalStrength = worldObj.getBlockPowerInput(xCoord + o[0], yCoord + o[1], zCoord + o[2]);
+            if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + o[0], yCoord + o[1], zCoord + o[2])) {
+                return 15;
+            } else if(signalStrength!=0) {
                 return signalStrength;
             }
         }
-        return signalStrength;
+        return 0;
     }
 
     private Vec3f end, start;

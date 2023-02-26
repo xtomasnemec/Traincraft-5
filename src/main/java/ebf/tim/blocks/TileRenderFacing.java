@@ -83,6 +83,8 @@ public class TileRenderFacing extends TileEntity {
 
             if(worldObj==null) {
                 Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
+            } else {
+                Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
             }
             org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.5f,0.5f);
             switch (facing){
@@ -101,6 +103,9 @@ public class TileRenderFacing extends TileEntity {
             //be sure to re-enable the texture biding, because the UI wont
             org.lwjgl.opengl.GL11.glEnable( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
             org.lwjgl.opengl.GL11.glBindTexture( org.lwjgl.opengl.GL11.GL_TEXTURE_2D,boundTexture);
+            if(worldObj==null) {
+                Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
+            }
         } else{
             super.func_145828_a(r);
         }
@@ -125,16 +130,16 @@ public class TileRenderFacing extends TileEntity {
                 }
             } else {
 
-            if(!org.lwjgl.opengl.GL11.glIsList(blockGLID)){
-                blockGLID=null;
-                return;
+                if(!org.lwjgl.opengl.GL11.glIsList(blockGLID)){
+                    blockGLID=null;
+                    return;
+                }
+                org.lwjgl.opengl.GL11.glCallList(blockGLID);
+                if(ebf.tim.utility.ClientProxy.disableCache){
+                    org.lwjgl.opengl.GL11.glDeleteLists(blockGLID,1);
+                    blockGLID =null;
+                }
             }
-            org.lwjgl.opengl.GL11.glCallList(blockGLID);
-            if(ebf.tim.utility.ClientProxy.disableCache){
-                org.lwjgl.opengl.GL11.glDeleteLists(blockGLID,1);
-                blockGLID =null;
-            }
-        }
         }
     }
 
