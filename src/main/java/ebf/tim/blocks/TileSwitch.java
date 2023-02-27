@@ -182,6 +182,19 @@ public class TileSwitch extends TileRenderFacing {
         return 0;
     }
 
+    public int checkBlockPower(int[] offset, int depth){
+        int signalStrength=0;
+        for(int o =-1;o<depth-1;o++) {
+            signalStrength = worldObj.getBlockPowerInput(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2]);
+            if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2])) {
+                return 15;
+            } else if(signalStrength!=0) {
+                return signalStrength;
+            }
+        }
+        return 0;
+    }
+
     private Vec3f end, start;
     //use this to detect entities within a range from the block and change state based on that.
     //will not take negative values.
