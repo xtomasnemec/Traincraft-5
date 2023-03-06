@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileRenderFacing extends TileEntity {
-    public byte facing =-1;
+    public int facing =-1;
     private Integer blockGLID =null;
     public BlockDynamic host;
 
@@ -30,7 +30,7 @@ public class TileRenderFacing extends TileEntity {
     public TileRenderFacing(){}
 
     public TileRenderFacing setFacing(int direction){
-        facing=(byte) direction;
+        facing=direction;
         this.markDirty();
         return this;
     }
@@ -40,8 +40,8 @@ public class TileRenderFacing extends TileEntity {
         switch (direction){
             case SOUTH:{facing=0;break;}
             case EAST:{facing=1;break;}
-            case WEST:{facing=3;break;}
             case NORTH:{facing=2;break;}
+            case WEST:{facing=3;break;}
             case DOWN:{facing=4;break;}
             case UP:{facing=5;break;}
         }
@@ -56,7 +56,15 @@ public class TileRenderFacing extends TileEntity {
 
     public ForgeDirection getFacing(){
         //1.8.9+ it's getHorizontal
-        return ForgeDirection.getOrientation((int)facing);
+        switch (facing){
+            case 0:{return ForgeDirection.SOUTH;}
+            case 1:{return ForgeDirection.EAST;}
+            case 2:{return ForgeDirection.NORTH;}
+            case 3:{return ForgeDirection.WEST;}
+            case 4:{return ForgeDirection.DOWN;}
+            case 5:{return ForgeDirection.UP;}
+        }
+        return ForgeDirection.NORTH;
     }
 
     @Override
@@ -89,13 +97,13 @@ public class TileRenderFacing extends TileEntity {
             org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.5f,0.5f);
             switch (facing){
                 //north
-                case 0:{ org.lwjgl.opengl.GL11.glRotatef(90,0,1,0);break;}
+                case 0:{ org.lwjgl.opengl.GL11.glRotatef(180,0,1,0);break;}
                 //east
-                case 1:{break;}
+                case 1:{org.lwjgl.opengl.GL11.glRotatef(90,0,1,0);break;}
                 //south
                 case 2:{ org.lwjgl.opengl.GL11.glRotatef(270,0,1,0);break;}
                 //west
-                case 3:{ org.lwjgl.opengl.GL11.glRotatef(180,0,1,0);break;}
+                case 3:{break;}
             }
             org.lwjgl.opengl.GL11.glRotatef(180,1,0,0);
 
@@ -199,13 +207,13 @@ public class TileRenderFacing extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
-        tag.setByte("f", facing);
+        tag.setInteger("f", facing);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag){
         super.readFromNBT(tag);
-        facing = tag.getByte("f");
+        facing = tag.getInteger("f");
         if(worldObj!=null && worldObj.isRemote) {
             markDirty();
         }

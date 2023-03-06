@@ -20,6 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -136,8 +137,15 @@ public class BlockDynamic extends BlockContainer {
         //force tile spawn manually and override any existing tile at the space
         world.setTileEntity(x,y,z,createNewTileEntity(world,0));
         if(world.getTileEntity(x,y,z) instanceof TileRenderFacing){
-            ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(
-                    CommonUtil.floorDouble((entity.rotationYaw / 90.0F) + 2.5D) & 3);
+            switch ((CommonUtil.floorDouble(((entity.rotationYaw-45)%360) / 90.0F)&3)){
+                case 0: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.WEST);break;
+                case 1: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.NORTH);break;
+                case 2: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.EAST);break;
+                case 3: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.SOUTH);break;
+
+            }
+            ;
+
         }
     }
 
