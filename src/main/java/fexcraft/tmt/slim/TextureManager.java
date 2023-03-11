@@ -204,6 +204,15 @@ public class TextureManager {
 
 
 
+    public static boolean textureExists(ResourceLocation textureURI){
+
+        object = Minecraft.getMinecraft().getTextureManager().getTexture(textureURI);
+        if (object == null) {
+            object = new SimpleTexture(textureURI);
+            Minecraft.getMinecraft().getTextureManager().loadTexture(textureURI, object);
+        }
+        return object.getGlTextureId()!=TextureUtil.missingTexture.getGlTextureId();
+    }
 
 
 

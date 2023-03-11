@@ -186,9 +186,7 @@ public class TileSwitch extends TileRenderFacing {
         int signalStrength=0;
         for(int o =-1;o<depth-1;o++) {
             signalStrength = worldObj.getBlockPowerInput(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2]);
-            if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2])) {
-                return 15;
-            } else if(signalStrength!=0) {
+            if(signalStrength!=0) {
                 return signalStrength;
             }
         }

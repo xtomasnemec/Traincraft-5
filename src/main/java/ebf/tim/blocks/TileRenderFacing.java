@@ -237,6 +237,13 @@ public class TileRenderFacing extends TileEntity {
         return ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks*16)+16)*((Minecraft.getMinecraft().gameSettings.renderDistanceChunks*16)+16);
     }
 
+    @SideOnly(Side.CLIENT)
+    public ResourceLocation getIconResource() {
+        return null;
+    }
+    @SideOnly(Side.CLIENT)
+    public boolean force2dItem(net.minecraftforge.client.IItemRenderer.ItemRenderType type){return false;}
+
     public static final ModelRendererTurbo cube = new ModelRendererTurbo((ModelBase) null, 0,0,64,32).addBox(-8,-8,-8,16,16,16);
 
 }
