@@ -64,22 +64,21 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
         TextureManager.bindTexture(texture);
         GL11.glRotatef(225,0,1,0);
         GL11.glScalef(1.4f,-1.4f,1);
-        GL11.glEnable(GL11.GL_BLEND);
 
         if(itemSprite==null || !GL11.glIsList(itemSprite)) {
             ModelRendererTurbo box =new ModelRendererTurbo("", 0, 0, 16, 16)
-                    .addBox(-8, -8, 0, 16, 16, 0.1f);
+                    .addBox(-8, -8, 0, 16, 16, 0f);
 
             itemSprite= net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
             GL11.glNewList(itemSprite, GL11.GL_COMPILE);
-            GL11.glDisable(GL_CULL_FACE);
             box.render();
-            GL11.glEnable(GL_CULL_FACE);
             GL11.glEndList();
         } else {
 
             switch (type){
-                case INVENTORY: {break;}
+                case INVENTORY: {
+                    GL11.glEnable(GL11.GL_BLEND);
+                    break;}
                 case EQUIPPED_FIRST_PERSON:{
                     GL11.glTranslatef(0,-0.5f,-1);
                     break;
@@ -115,7 +114,7 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
         if (item.getItem() instanceof ItemTransport){
             GL11.glPushMatrix();
 
-            if((true || !ClientProxy.hdTransportItems) && TextureManager.textureExists(((ItemTransport) item.getItem()).getIconResource())){
+            if(!ClientProxy.hdTransportItems && TextureManager.textureExists(((ItemTransport) item.getItem()).getIconResource())){
                 render2dItem(((ItemTransport) item.getItem()).getIconResource(), type);
                 GL11.glPopMatrix();
                 return;
