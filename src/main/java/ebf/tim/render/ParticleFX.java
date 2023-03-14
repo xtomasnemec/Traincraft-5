@@ -7,6 +7,7 @@ import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -294,81 +295,38 @@ public class ParticleFX {
         }
 
         float size = entity.host.getParticleData(entity.particleID)[1]/100f;
+        GL11.glColor4f(((entity.host.getParticleData(entity.particleID)[2] >> 16 & 0xFF)-entity.colorTint)* 0.00392156863f,
+                ((entity.host.getParticleData(entity.particleID)[2] >> 8 & 0xFF)-entity.colorTint)* 0.00392156863f,
+                ((entity.host.getParticleData(entity.particleID)[2] & 0xFF)-entity.colorTint)* 0.00392156863f,
+                0.025f);
+        lamp.clear();
+
         if (entity.particleType==3) {//cone lamps
-            GL11.glColor4f(((entity.host.getParticleData(entity.particleID)[2] >> 16 & 0xFF)-entity.colorTint)* 0.00392156863f,
-                    ((entity.host.getParticleData(entity.particleID)[2] >> 8 & 0xFF)-entity.colorTint)* 0.00392156863f,
-                    ((entity.host.getParticleData(entity.particleID)[2] & 0xFF)-entity.colorTint)* 0.00392156863f,
-                    0.045f);
-            lamp.clear();
-            for(int i=5;i>0;i--) {
-                lamp.addCylinder(-(entity.offset[0])+0.5f,  entity.offset[1]+0.5f,  -entity.offset[2]+0.5f,
-                        1*size, 80*size-(i*3), 16, 1, 24-(i*3), 3, null/*new Vec3f(0,0,0)*/)
-                        .setRotationPoint( size,-size*0.5f,-size*1.5f)
-                        .setRotationAngle(entity.offset[3],entity.offset[4], entity.offset[5]);
+            for(int i=6;i>0;i--) {
+                lamp.addCylinder(-entity.offset[0]-0.5f,entity.offset[1]+0.5f,-entity.offset[2],
+                        size, 450*size-(i*3), 16, 1, 120-(i*12), 3, null/*new Vec3f(0,0,0)*/)
+                        .setRotationPoint(3,-8,0)
+                        .setRotationAngle(entity.offset[3],entity.offset[4]-180, entity.offset[5]+15);
             }
-            GL11.glRotated(180f,0,1,0);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
-            GL11.glDepthMask(false);
-            GL11.glDisable(GL_CULL_FACE);
-            glAlphaFunc(GL_LEQUAL, 1f);
-            if(Minecraft.getMinecraft().theWorld.isRaining()){
-                TextureManager.bindTexture(new ResourceLocation(TrainsInMotion.MODID, "textures/effects/lamp_bright.png"));
-            } else {
-                TextureManager.bindTexture(new ResourceLocation(TrainsInMotion.MODID, "textures/effects/lamp_low.png"));
-            }
-            GL11.glDisable(GL_TEXTURE_2D);
-            lamp.render(scale);
-            GL11.glEnable(GL_CULL_FACE);
-            GL11.glEnable(GL_TEXTURE_2D);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glAlphaFunc(GL11.GL_GREATER, 1f);
-            Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
-            GL11.glDepthMask(true);
+
         } else if (entity.particleType==4) {//sphere lamps
-
-
-            //GL11.glTranslated(x, y, z);
-
-            //GL11.glRotated(entity.offset[4]+entity.host.rotationPitch,1,0,0);
-            //GL11.glRotated(-yaw - 270f,0,1,0);
-            //GL11.glRotated(entity.offset[5],1,0,0);
-
-            lamp.clear();
-            lamp.addSphere(0,0,0, 16*size, 9, 9,1,1);
-
-            /*lamp.setPosition(
-                    -entity.offset[0]*0.0625f,
-                    (entity.offset[1]*0.0625f)-8f,//subtract half if cone radius
-                    -entity.offset[2]*0.0625f);*/
-
-            /*lamp.setPosition(
-                    lamp.rotationPointX,
-                    lamp.rotationPointY-(size*0.5f),
-                    lamp.rotationPointZ-(size*0.5f));*/
-
-            GL11.glDisable(GL11.GL_LIGHTING);
-            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
-            GL11.glDepthMask(false);
-            glAlphaFunc(GL_LEQUAL, 1f);
-            GL11.glDisable(GL_CULL_FACE);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            //set the color with the tint.   * 0.00392156863 is the same as /255, but multiplication is more efficient than division.
-            GL11.glColor4f(((entity.host.getParticleData(entity.particleID)[2] >> 16 & 0xFF)-entity.colorTint)* 0.00392156863f,
-                    ((entity.host.getParticleData(entity.particleID)[2] >> 8 & 0xFF)-entity.colorTint)* 0.00392156863f,
-                    ((entity.host.getParticleData(entity.particleID)[2] & 0xFF)-entity.colorTint)* 0.00392156863f,
-                    0.15f);
-            for (int i=0; i<entity.host.getParticleData(entity.particleID)[0]; i++) {
-                GL11.glScalef(1-(i*0.075f),1-(i*0.075f),1-(i*0.075f));
-                lamp.render(scale);
+            for(int i=(int)size;i>0;i--) {
+                lamp.addSphere(-entity.offset[0],  entity.offset[1],  entity.offset[2],
+                        i*3f,i*3,i*3,0,0);
             }
-            GL11.glEnable(GL_CULL_FACE);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glAlphaFunc(GL11.GL_GREATER, 0);
-            GL11.glDepthMask(true);
 
         }
+        Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDepthMask(false);
+        glAlphaFunc(GL_GREATER, 0F);
+        GL11.glDisable(GL_TEXTURE_2D);
+        GL11.glScalef(1,1,1.5f);
+        lamp.render();
+        GL11.glEnable(GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glDepthMask(true);
+        Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
     }
 
     public static void renderSmoke(ParticleFX entity, double x, double y, double z, float scale, float yaw){

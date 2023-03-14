@@ -161,7 +161,6 @@ public class CustomItemModel implements IItemRenderer /*ICustomModelLoader*/ {
             }
             ClientProxy.transportRenderer.render(
                     ((ItemTransport)item.getItem()).entity,0,0,0, 0, true, null);
-            Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
             GL11.glPopMatrix();
         } else if (item.getItem() instanceof ItemRail){
             if(item.getTagCompound()==null){
