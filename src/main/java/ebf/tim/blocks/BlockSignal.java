@@ -46,7 +46,7 @@ public class BlockSignal extends BlockSwitch {
         super.onBlockAdded(world, pos, state);
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileSwitch) {
-            ((TileSwitch)tile).setEnabled(world.isBlockPowered(pos),0);
+            ((TileSwitch)tile).setStrength(world.getBlockPowerInput(x,y,z),0);
         }
     }
 
@@ -54,7 +54,7 @@ public class BlockSignal extends BlockSwitch {
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileSwitch) {
-            ((TileSwitch)tile).setEnabled(world.isBlockPowered(pos),0);
+            ((TileSwitch)tile).setStrength(world.getBlockPowerInput(x,y,z),0);
         }
         super.onBlockPlacedBy(world, pos,state,entity,stack);
     }
@@ -64,7 +64,7 @@ public class BlockSignal extends BlockSwitch {
         super.neighborChanged(state, world, pos, block, other);
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileSwitch && !world.isRemote) {
-            ((TileSwitch) tile).setEnabled(world.isBlockPowered(pos),0);
+            ((TileSwitch) tile).setStrength(world.getBlockPowerInput(x,y,z),0);
         }
     }
 

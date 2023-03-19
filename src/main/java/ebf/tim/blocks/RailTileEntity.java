@@ -1,8 +1,8 @@
 package ebf.tim.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
-import ebf.tim.TrainsInMotion;
-import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
@@ -26,6 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RailTileEntity extends TileEntity {
@@ -35,9 +37,11 @@ public class RailTileEntity extends TileEntity {
     //todo public int snow=0;
     //todo public int timer=0;
     //todo public int overgrowth=0;
-    public Integer railGLID=null;
+    //public Integer railGLID=null;
+    public static Map<XmlBuilder,Integer> displayListMap = new HashMap<>();
     private int meta=0;
     private XmlBuilder data = new XmlBuilder();
+    private Integer glID=null;
 
 
     public int getMeta() {
@@ -72,21 +76,22 @@ public class RailTileEntity extends TileEntity {
                 return;
             }
 
-            Minecraft.getMinecraft().entityRenderer.enableLightmap();
-            TextureManager.adjustLightFixture(world,pos.getX(),pos.getY(),pos.getZ());
-            if(railGLID!=null && !ClientProxy.disableCache){
-                if(!org.lwjgl.opengl.GL11.glIsList(railGLID)){
-                    railGLID=null;
-                    return;
-                }
-                org.lwjgl.opengl.GL11.glCallList(railGLID);
+            Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
+            TextureManager.adjustLightFixture(worldObj,xCoord,yCoord,zCoord);
+            if(!ClientProxy.disableCache && glID!=null){
+                org.lwjgl.opengl.GL11.glCallList(glID);
             }
-            if(railGLID==null && data !=null && data.floatArrayMap.size()>0){
+            else if(data !=null && data.floatArrayMap.size()>0){
                 RailShapeCore route =new RailShapeCore().fromXML(data);
-                if (route.activePath!=null) {
+                if(displayListMap.containsKey(data)){
+                    glID=displayListMap.get(data);
+                    org.lwjgl.opengl.GL11.glCallList(glID);
+                }
+                else if (route.activePath!=null) {
                     if(!ClientProxy.disableCache) {
-                        railGLID = net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
-                        org.lwjgl.opengl.GL11.glNewList(railGLID, org.lwjgl.opengl.GL11.GL_COMPILE);
+                        displayListMap.put(data,
+                            net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1));
+                        org.lwjgl.opengl.GL11.glNewList(displayListMap.get(data), org.lwjgl.opengl.GL11.GL_COMPILE);
 
                         Model1x1Rail.Model3DRail(world, pos.getX(), pos.getY(), pos.getZ(), route);
 
@@ -94,7 +99,7 @@ public class RailTileEntity extends TileEntity {
                     } else {
                         Model1x1Rail.Model3DRail(world, pos.getX(), pos.getY(), pos.getZ(), route);
                     }
-                } // else {DebugUtil.println("NO DATA");}*/
+                } // else {DebugUtil.println("NO DATA");}
             }
         } else {super.addInfoToCrashReport(report);}
     }
@@ -108,6 +113,15 @@ public class RailTileEntity extends TileEntity {
     public void updateContainingBlockInfo(){
         super.updateContainingBlockInfo();
         BlockRailCore.updateNearbyShapes(getWorld(), pos.getX(),pos.getY(),pos.getZ());
+    }
+
+    @Override
+    public void updateEntity(){}
+
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return 16284.0D;
     }
 
     @Override
@@ -131,26 +145,17 @@ public class RailTileEntity extends TileEntity {
 
 
     public void markDirty() {
-        //super.markDirty();
-        if (this.world != null) {
-            world.markChunkDirty(pos, this);
-            this.world.notifyNeighborsOfStateChange(this.pos, TiMBlocks.railBlock,true);
-            if(world.isRemote && railGLID!=null) {
-                org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
-                railGLID = null;
-            }
+        if (this.worldObj != null) {
+            CommonUtil.markBlockForUpdate(worldObj, xCoord, yCoord, zCoord);
+            worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, TiMBlocks.railBlock);
         }
         data.buildXML();
+        glID=null;
 
     }
 
     @Override
-    public void onChunkUnload() {
-        if(TrainsInMotion.proxy.isClient() && railGLID!=null){
-            org.lwjgl.opengl.GL11.glDeleteLists(railGLID, 1);
-            railGLID = null;
-        }
-    }
+    public void onChunkUnload() {}
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
@@ -190,6 +195,7 @@ public class RailTileEntity extends TileEntity {
         meta=tag.getInteger("meta");
         if(tag.hasKey("raildata")) {
             data = new XmlBuilder(tag.getString("raildata"));
+            glID=null;
         }
     }
 

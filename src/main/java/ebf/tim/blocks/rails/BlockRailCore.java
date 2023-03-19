@@ -359,8 +359,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         updateNearbyShapes(p_149749_1_, pos.getX(),pos.getY(),pos.getZ());
     }
 
-    public static void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
-        //todo: right idea, but somehow doesnt force updates outside a 1x1 range. probably a related update somewhere else.
+    public void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
         //update all the other nearby rails.
         TileEntity te;
         BlockPos pos;

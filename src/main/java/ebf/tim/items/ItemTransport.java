@@ -10,10 +10,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,6 +32,8 @@ public class ItemTransport extends Item {
     /**the class for the entity*/
     private final Class<? extends GenericRailTransport> transport;
     public List<TrainsInMotion.transportTypes> types =null;
+    private ResourceLocation itemTexture;
+
     @SideOnly(Side.CLIENT)
     GenericRailTransport entity;
     /**the main constructor.
@@ -45,8 +45,8 @@ public class ItemTransport extends Item {
             setItemLore(cart);
         }
         transport=cart.getClass();
-        //todo: texture names aren't that simple in 1.12
-        //setTextureName(MODID+":transports/"+getTranslationKey());
+        setTextureName(MODID+":textures/items/transports/"+getUnlocalizedName());
+        itemTexture=new ResourceLocation(MODID, "textures/items/transports/"+getUnlocalizedName().toLowerCase() +".png");
         setCreativeTab(tabs);
         if(TrainsInMotion.proxy.isClient()){
             entity=cart;
@@ -169,4 +169,7 @@ public class ItemTransport extends Item {
         return CommonUtil.translate(translate);
     }
 
+    public ResourceLocation getIconResource() {
+        return itemTexture;
+    }
 }

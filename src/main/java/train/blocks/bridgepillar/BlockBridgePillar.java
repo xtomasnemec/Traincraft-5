@@ -5,42 +5,43 @@
  * @author Mrbrutal
  ******************************************************************************/
 
-package train.blocks;
+package train.blocks.bridgepillar;
 
-import depreciated.minecraft.util.IIcon;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileRenderFacing;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import train.Traincraft;
+import train.library.Info;
 
 public class BlockBridgePillar extends BlockDynamic {
 
 	private IIcon texture;
 
 	public BlockBridgePillar() {
-		super(Material.WOOD, false);
+		super(Material.wood, false);
 		setCreativeTab(Traincraft.tcTab);
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean renderAsNormalBlock() {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube() {
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
+	public int getRenderType() {
+		return RenderingRegistry.getNextAvailableRenderId();
 	}
 
 	@Override
@@ -54,17 +55,9 @@ public class BlockBridgePillar extends BlockDynamic {
 	}
 	
 
-	/*@Override
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_1_bottom");
-	}*/
-
-
-	public class tilePillar extends TileRenderFacing{
-
-		public tilePillar(BlockDynamic block) {
-			super(block);
-		}
 	}
 }

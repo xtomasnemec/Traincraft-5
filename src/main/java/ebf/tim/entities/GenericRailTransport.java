@@ -14,14 +14,12 @@ import ebf.tim.networking.PacketInteract;
 import ebf.tim.networking.PacketUpdateClients;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.registry.TiMFluids;
-import ebf.tim.registry.TiMItems;
 import ebf.tim.render.ParticleFX;
 import ebf.tim.render.TransportRenderData;
 import ebf.tim.utility.*;
 import fexcraft.tmt.slim.ModelBase;
 import fexcraft.tmt.slim.Vec3f;
 import io.netty.buffer.ByteBuf;
-import mods.railcraft.api.carts.IFluidCart;
 import mods.railcraft.api.carts.ILinkableCart;
 import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.block.Block;
@@ -34,15 +32,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
@@ -971,6 +964,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             frontBogie.minecartMove(this,
                     ((cachedVectors[1].xCoord + posX) - frontBogie.posX),
                     ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ));
+            setPosition((backBogie.posX + cachedVectors[1].xCoord),
+                    (backBogie.posY + cachedVectors[1].yCoord), (backBogie.posZ + cachedVectors[1].zCoord));
         }
 
         //update rotation
@@ -1030,8 +1025,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //scale drag for derail, or air lateral friction. if you do both at the same time then it's way too much.
             if(getBoolean(boolValues.DERAILED)){
                 drag*=CommonUtil.getBlockAt(getWorld(),posX,posY,posZ).slipperiness;
-            } else if (getVelocity() > 0) {
-                drag -= ((getFriction() * getVelocity() * 4.448f));
+            } else if (cachedVectors[2].yCoord > 0) {
+                drag -= ((getFriction() * cachedVectors[2].yCoord * 4.448f));
             }
 
             //add in the drag from combined weight, plus brakes.
@@ -1228,14 +1223,20 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             //update positions related to linking, this NEEDS to come after drag
             //only run updates if either the front link or the back link is null.
             //if there is a consist lead, only the lead can run updates
-           if((consistLeadID!=null && getEntityId()==consistLeadID) ||
-                   ((frontLinkedID==null && backLinkedID!=null) || (frontLinkedID!=null && backLinkedID==null))){
+           if(consistLeadID!=null && consistLeadID==getEntityId()){
                GenericRailTransport last = null;
                for (GenericRailTransport transport : getConsist()){
                    if(last!=null) {
                        last.manageLink(transport);
                    }
                    last = transport;
+               }
+           } else if (consistLeadID==null){
+               if(frontLinkedID!=null && getWorld().getEntityByID(frontLinkedID) instanceof GenericRailTransport){
+                   manageLink((GenericRailTransport) getWorld().getEntityByID(frontLinkedID));
+               }
+               if(backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
+                   manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
                }
            }
 
@@ -1465,12 +1466,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         frontLinkedID=other.getEntityId();
         frontLinkedTransport=other.entityUniqueID;
         setBoolean(boolValues.COUPLINGFRONT, false);
+        updateConsist();
     }
 
     public void setbackLinkedTransport(GenericRailTransport other){
         backLinkedID=other.getEntityId();
         backLinkedTransport=other.entityUniqueID;
         setBoolean(boolValues.COUPLINGBACK, false);
+        updateConsist();
     }
 
     /**
@@ -1479,73 +1482,54 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
-        consistLeadID=null;
-        GenericRailTransport link, test;
-
-        //we need to have the list ordered from one of the ends, so iterate until an end is found and then use that.
-        if((frontLinkedID!=null && backLinkedID!=null)) {
+        Integer lead=null;
+        GenericRailTransport link=null;
+        if(frontLinkedID!=null){
             link =(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
-            while (link != null) {
-                transports.add(link);
-                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
-                        !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))) {
-                    link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
-                        !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))) {
-                    link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
-                } else {
-                    break;
+        }
+        while (link!=null){
+            if(!transports.contains(link)) {
+                if(link.getAccelerator()!=0){
+                    lead=link.getEntityId();
                 }
-            }
-            transports = new ArrayList<>();
-            transports.add(link);
-        } else {
-            transports.add(this);
-        }
-
-        //check the front, then loop for every transport linked to it in opposite direction of this.
-        link = frontLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
-        while(link!=null){
-            transports.add(link);
-            //if we find a consist lead, set it.
-            if(link.getAccelerator()!=0){
-                consistLeadID=link.getEntityId();
-            }
-
-            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+                transports.add(link);
+                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
+                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+                }
             } else {
-                link=null;
+                link = null;
+                break;
             }
         }
-        //do it again, but for the back one
-        link= backLinkedID==null?null:(GenericRailTransport) getWorld().getEntityByID(backLinkedID);
-        while(link!=null){
-            transports.add(link);
-            //if we find a consist lead, set it.
-            if(link.getAccelerator()!=0){
-                consistLeadID=link.getEntityId();
-            }
-            if(link.frontLinkedID!=null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-            } else if(link.backLinkedID!=null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport &&
-                    !transports.contains((GenericRailTransport) getWorld().getEntityByID(link.backLinkedID))){
-                link=(GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+        //repeat for back link
+        if(backLinkedID!=null){
+            link =(GenericRailTransport) getWorld().getEntityByID(backLinkedID);
+        }
+        while (link!=null){
+            if(!transports.contains(link)) {
+                if(link.getAccelerator()!=0){
+                    lead=link.getEntityId();
+                }
+                transports.add(link);
+                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
+                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport) {
+                    link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
+                }
             } else {
-                link=null;
+                link = null;
+                break;
             }
         }
 
-        //now tell everything in the list, including this, that there's a new list, and provide said list.
-        for(GenericRailTransport t : transports){
-            t.setConsist(transports);
-            t.setValuesOnLinkUpdate(transports);
-            t.consistLeadID=consistLeadID;
+        if(transports.size()>0) {
+            //now tell everything in the list, including this, that there's a new list, and provide said list.
+            for (GenericRailTransport t : transports) {
+                t.setValuesOnLinkUpdate(transports);
+                t.consistLeadID=lead;
+            }
         }
     }
 
@@ -1557,6 +1541,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void setValuesOnLinkUpdate(List<GenericRailTransport> consist){
         pullingWeight=0;
+        this.consist=consist;
         for(GenericRailTransport t : consist) {
             pullingWeight +=t.weightKg();
         }
@@ -1566,14 +1551,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * May return a 0 length array when consist is being updated.
      */
     public List<GenericRailTransport> getConsist(){
-        if(!consistListInUse && consist.size()>0) {
+        if(consist.size()>0) {
             return consist;
         } else {
             return Collections.singletonList(this);
         }
-    }
-    public void setConsist(List<GenericRailTransport> input){
-        consist=input;
     }
 
     //gets the power for acceleration math, result is in MHP, has a fallback that roughly converts TE to MHP

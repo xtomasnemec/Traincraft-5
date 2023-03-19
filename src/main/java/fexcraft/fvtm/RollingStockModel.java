@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class RollingStockModel extends ModelBase {
-	
+
     public List<TurboList> groups = new ArrayList<>();
     public int textureX, textureY;
     public RollingStockModel(){}
@@ -134,5 +134,14 @@ public class RollingStockModel extends ModelBase {
         }
         return namedList;
     }
-    
+
+    public TurboList get(String s){
+        for(TurboList t : groups){
+            if(t.boxname.equals(s)){
+                return t;
+            }
+        }
+        return null;
+    }
+
 }

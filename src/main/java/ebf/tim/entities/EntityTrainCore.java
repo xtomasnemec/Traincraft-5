@@ -132,7 +132,7 @@ public class EntityTrainCore extends GenericRailTransport {
         }
         //scale based on power and velocity
         //TODO: velocity breaks this hard. dont do that. BS a similar result.
-        cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(getVelocity()/getPower()))-2.35f)));
+        cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(0.3557/getPower()))-2.35f)));
 
         //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
         if(cachedVectors[2].yCoord!=0) {
@@ -226,8 +226,8 @@ public class EntityTrainCore extends GenericRailTransport {
         super.onUpdate();
         updatePosition();
 
-        if(whistleDelay>0) {
-            whistleDelay--;
+        if(hornDelay >0) {
+            hornDelay--;
         }
     }
 
@@ -259,25 +259,35 @@ public class EntityTrainCore extends GenericRailTransport {
     }
 
 
-    private int whistleDelay=0;
+    private int hornDelay =0;
     public void soundHorn() {
-        for (EnumSounds sounds : EnumSounds.values()) {
-            if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")&& sounds.getEntityClass().equals(this.getClass()) && whistleDelay == 0) {
-                world.playSound(null, this.posX, this.posY,this.posZ, new SoundEvent(new ResourceLocation(Info.resourceLocation, sounds.getHornString())), SoundCategory.NEUTRAL, sounds.getHornVolume(), 1.0F);
-                whistleDelay = 65;
+        if(hornDelay!=0 || getWorld().isRemote){
+            return;
+        }
+
+        List entities = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(
+                this.posX - 20, this.posY - 5, this.posZ - 20,
+                this.posX + 20, this.posY + 5, this.posZ + 20));
+
+        for (Object e : entities) {
+            if (e instanceof EntityAnimal) {
+                ((EntityAnimal) e).setTarget(this.riddenByEntity==null?this.seats.get(0).getPassenger():riddenByEntity);
+                ((EntityAnimal) e).getNavigator().setPath(null, 0);
             }
         }
 
-        if(!world.isRemote) {
-            List entities = world.getEntitiesWithinAABB(EntityAnimal.class, new AxisAlignedBB(
-                    this.posX - 20, this.posY - 5, this.posZ - 20,
-                    this.posX + 20, this.posY + 5, this.posZ + 20));
-
-            for (Object e : entities) {
-                if (e instanceof EntityAnimal) {
-                    ((EntityAnimal) e).setAttackTarget(seats.get(0).getPassenger());
-                    ((EntityAnimal) e).getNavigator().setPath(null, 0);
-                }
+        if(getHorn()!=null){
+            CommonUtil.playSound(this, getHorn().toString(),getHornVolume(),getHornPitch());
+            hornDelay = 65;
+            return;
+        }
+        //fallback code for TC4 sounds
+        for (EnumSounds sounds : EnumSounds.values()) {
+            if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")
+                    && sounds.getEntityClass().equals(this.getClass())) {
+                CommonUtil.playSound(this, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
+                hornDelay = 65;
+                return;
             }
         }
     }
@@ -292,9 +302,7 @@ public class EntityTrainCore extends GenericRailTransport {
                     updateConsist();
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
-                    //the second to last value is volume, and idk what the last one is.
-                    //world.playSoundEffect(posX, posY, posZ, getHorn().getPath(), 1, 0.5f);
-                    if(whistleDelay==0){
+                    if(hornDelay ==0){
                         soundHorn();
                     }
                     return true;
@@ -378,8 +386,16 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     /**gets the resource location for the horn sound*/
     public ResourceLocation getHorn(){return null;}
+    public float getHornVolume(){return 1.0f;}
+    public float getHornPitch(){return 1.0f;}
     /**gets the resource location for the running/chugging sound*/
     public ResourceLocation getRunningSound(){return null;}
+    public float getRunningVolume(){return 1.0f;}
+    public float getRunningPitch(){return 1.0f;}
+
+    public ResourceLocation getBellSound(){return null;}
+    public float getBellVolume(){return 1.0f;}
+    public float getBellPitch(){return 1.0f;}
 
     @Deprecated//use GenericRailTransport#getFuelEfficiency
     public float getEfficiency(){return 1;}

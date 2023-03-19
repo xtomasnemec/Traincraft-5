@@ -3,6 +3,7 @@
 package train.render.models.steam;
 
 
+import ebf.tim.render.AnimList;
 import ebf.tim.render.StaticModelAnimator;
 import fexcraft.fvtm.RollingStockModel;
 import fexcraft.fvtm.TurboList;
@@ -414,10 +415,10 @@ public class Classic440 extends RollingStockModel {
 			.setRotationPoint(-57, -14.25f, 0).setRotationAngle(0, 0, 0)
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 0, 0, textureX, textureY).addBox(0, -0.5f, -0.5f, 0, 1, 1)
-			.setRotationPoint(-56.1875f, -14.25f, 0).setRotationAngle(0, 0, 0).setName("Light")
+			.setRotationPoint(-56.1875f, -14.25f, 0).setRotationAngle(0, 0, 0).setName(AnimList.lampCone(6))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 248, 0, textureX, textureY).addBox(-0.5f, 0, -0.5f, 1, 0, 1)
-			.setRotationPoint(-48, -25.5f, 0).setRotationAngle(0, 0, 0).setName("Smoke")
+			.setRotationPoint(-48, -25.5f, 0).setRotationAngle(0, 0, 0).setName(AnimList.tagSmoke(0))
 		);
 		Universal_4_4_0.add(new ModelRendererTurbo(Universal_4_4_0, 251, 76, textureX, textureY)
 			.addShapeBox(0, 0, 0, 1, 6, 1, 0, 0, 0, 0, -0.5f, 0, 0, -0.5f, 0, 0, 0, 0, 0, 0.0311f, -0.8f, 0, -0.5f, -0.8f, 0, -1, -0.8f, 0, 0.7189f, -0.6126f, 0)

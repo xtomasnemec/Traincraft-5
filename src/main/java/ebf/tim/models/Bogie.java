@@ -81,7 +81,7 @@ public class Bogie {
     public void updateRotation(GenericRailTransport entity){
         //update positions
         if(prevPos!=position && prevPos!=null && position!=null&&
-                Math.abs(Math.abs(position[0])+Math.abs(position[1])-Math.abs(prevPos[0])-Math.abs(prevPos[1]))>0.25f
+                Math.abs(Math.abs(position[0])+Math.abs(position[1])-Math.abs(prevPos[0])-Math.abs(prevPos[1]))>0.35f
         ) {
             rotationYaw = CommonUtil.atan2degreesf(prevPos[1] - position[1], prevPos[0] - position[0]);
 

@@ -5,18 +5,11 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.render.models.ModelRail;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.ClientUtil;
-import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.Vec5f;
+import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -25,16 +18,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.ICustomModelLoader;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.model.IModelPart;
-import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -44,7 +31,8 @@ import java.util.*;
 import java.util.function.Function;
 
 import static ebf.tim.render.models.Model1x1Rail.addVertexWithOffsetAndUV;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 public class CustomItemModel implements ICustomModelLoader {
 
@@ -52,11 +40,7 @@ public class CustomItemModel implements ICustomModelLoader {
 
     private static HashMap<Item, TileRenderFacing> blockTextures = new HashMap<>();
 
-    public static List<ResourceLocation> renderItems = new ArrayList<>();
-
-    //not-1.7 relies on a perpetually bound item texture, rather than checking bound texture each item
-    public static final ResourceLocation LOCATION_BLOCKS_TEXTURE = new ResourceLocation("textures/atlas/blocks.png");
-
+    private static Integer itemSprite = null;
 
     public static void registerBlockTextures(Item itm, TileEntity tile){
         if(tile instanceof TileRenderFacing) {
@@ -88,13 +72,70 @@ public class CustomItemModel implements ICustomModelLoader {
     /*@Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return true;//models.containsKey(new ResourceLocation(item.getUnlocalizedName()));
-    }*/
-    //@Override
-    public static void renderItemModel(ItemStack item, ItemCameraTransforms.TransformType type, EntityLivingBase holder) {
+    }
+    float scale;
+
+    public static void render2dItem(ResourceLocation texture, ItemRenderType type){
+        TextureManager.bindTexture(texture);
+        GL11.glRotatef(225,0,1,0);
+        GL11.glScalef(1.4f,-1.4f,1);
+
+        if(itemSprite==null || !GL11.glIsList(itemSprite)) {
+            ModelRendererTurbo box =new ModelRendererTurbo("", 0, 0, 16, 16)
+                    .addBox(-8, -8, 0, 16, 16, 0f);
+
+            itemSprite= net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
+            GL11.glNewList(itemSprite, GL11.GL_COMPILE);
+            box.render();
+            GL11.glEndList();
+        } else {
+
+            switch (type){
+                case INVENTORY: {
+                    GL11.glEnable(GL11.GL_BLEND);
+                    break;}
+                case EQUIPPED_FIRST_PERSON:{
+                    GL11.glTranslatef(0,-0.5f,-1);
+                    break;
+                }
+                case EQUIPPED:{
+                    GL11.glTranslatef(0,-0.5f,-1);
+                    GL11.glRotatef(-45,1,0,0);
+                    break;
+                }
+                default:{//item frame case
+                    GL11.glRotatef(50,0,1,0);
+                    GL11.glScalef(0.8f,0.8f,0.8f);
+                }
+
+            }
+            if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+                GL11.glTranslatef(0,0,-0.005f);
+                for(int i=0;i<20;i++){
+                    GL11.glTranslatef(0,0,0.00025f*i);
+                    GL11.glCallList(itemSprite);
+                }
+            } else {
+                GL11.glCallList(itemSprite);
+            }
+        }
+
+    }
+
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         if(item==null){return;}
 
         int boundTexture = org.lwjgl.opengl.GL11.glGetInteger(org.lwjgl.opengl.GL11.GL_TEXTURE_BINDING_2D);
         if (item.getItem() instanceof ItemTransport){
+            GL11.glPushMatrix();
+
+            if(!ClientProxy.hdTransportItems && TextureManager.textureExists(((ItemTransport) item.getItem()).getIconResource())){
+                render2dItem(((ItemTransport) item.getItem()).getIconResource(), type);
+                GL11.glPopMatrix();
+                return;
+            }
+
             GenericRailTransport entity = ((ItemTransport) item.getItem()).entity;
             float scale = entity.getHitboxSize()[0];
             if(scale!=0){
@@ -298,28 +339,24 @@ public class CustomItemModel implements ICustomModelLoader {
         } else if(blockTextures.containsKey(item.getItem())) {
             GL11.glPushMatrix();
 
+            if(blockTextures.get(item.getItem()).getIconResource()!=null &&
+                    (!ClientProxy.hdTransportItems || blockTextures.get(item.getItem()).force2dItem(type))) {
+                render2dItem(blockTextures.get(item.getItem()).getIconResource(), type);
+                GL11.glPopMatrix();
+                return;
+            }
             switch (type){
-                case FIRST_PERSON_RIGHT_HAND: FIRST_PERSON_LEFT_HAND:{
-                    GL11.glScalef(0.625f,0.625f,0.625f);
-                    GL11.glTranslated(0, -0.625, -0.625f);
-                    //GL11.glTranslated(0.65, 0, 0);
+                case EQUIPPED_FIRST_PERSON:{
                     break;
                 }
-                case THIRD_PERSON_LEFT_HAND: case THIRD_PERSON_RIGHT_HAND:{
-                    GL11.glScalef(0.625f,0.625f,0.625f);
-                    GL11.glTranslated(0, 0.625, -0.625f);
-                    GL11.glRotatef(45,1,0,0);
-                }
-                case GUI:{
-                    GL11.glRotatef(25,1,0,0);
-                    GL11.glRotatef(45,0,1,0);
-                    GL11.glTranslated(-0.65, 0, 0);
-                    GL11.glScalef(0.65f,0.65f,0.65f);
+                case INVENTORY:{break;}
+                case EQUIPPED:{break;}
+                case FIRST_PERSON_MAP:{break;}
+                case ENTITY:{
+                    GL11.glTranslatef(-0.5f,-0.4f,-0.5f);
                     break;
                 }
-                case GROUND:{
-                    GL11.glTranslated(-0.1, -0.1, -0.1);
-                    GL11.glScalef(0.25f, 0.25f, 0.25f);
+                default:{//item frame case
                     break;
                 }
             }

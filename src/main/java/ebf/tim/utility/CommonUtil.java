@@ -8,18 +8,14 @@ import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -135,6 +131,22 @@ public class CommonUtil {
         //todo ZnD support, either by jar reference or API update
         return (/*world.getTileEntity(x, y, z) instanceof ITrackBase ||*/
                 world.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof BlockRailBase);
+    }
+
+    /**
+     * sound type does nothing for 1.7.10,
+     * in later versions it's used to identify what made the sound, like if it's for an entity or a block.
+     */
+    public static void playSound(World world, double xCoord, double yCoord, double zCoord, String file, float volume, float pitch, int soundType){
+        world.playSound(xCoord,yCoord,zCoord, file, volume,pitch,false);
+    }
+
+    public static void playSound(TileEntity tile, String file, float volume, float pitch){
+        tile.getWorldObj().playSound(tile.xCoord,tile.yCoord,tile.zCoord, file, volume,pitch,false);
+    }
+
+    public static void playSound(Entity entity, String file, float volume, float pitch){
+        entity.worldObj.playSoundAtEntity(entity, file, volume, pitch);
     }
 
     public static boolean stringContains(String s1, String... s2){

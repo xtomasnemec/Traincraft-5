@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import train.Traincraft;
 import train.blocks.bench.BlockTrainWorkbench;
+import train.blocks.bridgepillar.BlockBridgePillar;
 import train.blocks.distil.BlockDistil;
 import train.blocks.generator.BlockGeneratorDiesel;
 import train.blocks.hearth.BlockOpenHearthFurnace;

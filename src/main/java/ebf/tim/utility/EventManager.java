@@ -2,10 +2,11 @@ package ebf.tim.utility;
 
 
 import ebf.tim.TrainsInMotion;
-import ebf.tim.blocks.RailTileEntity;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.items.CustomItemModel;
+import ebf.tim.gui.GUIAdminBook;
+import ebf.tim.gui.GUICraftBook;
+import ebf.tim.gui.GUIPaintBucket;
 import ebf.tim.networking.PacketInteract;
 import ebf.tim.registry.TiMGenericRegistry;
 import fexcraft.tmt.slim.Tessellator;
@@ -114,8 +115,16 @@ public class EventManager {
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, ((EntitySeat) player.getRidingEntity()).parentId));
                 }
             }
-        } else if(DebugUtil.dev) {
-            if (ClientProxy.raildevtoolUp.isKeyDown()){
+        }
+        else if(Minecraft.getMinecraft().gameSettings.keyBindInventory.getIsKeyPressed()){
+            if(Minecraft.getMinecraft().currentScreen instanceof GUIPaintBucket ||
+                    Minecraft.getMinecraft().currentScreen instanceof GUICraftBook ||
+                    Minecraft.getMinecraft().currentScreen instanceof GUIAdminBook){
+                Minecraft.getMinecraft().currentScreen=null;
+            }
+        }
+        else if(DebugUtil.dev) {
+            if (ClientProxy.raildevtoolUp.getIsKeyPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]+=0.0625;
                 Minecraft.getMinecraft().player.sendMessage(new TextComponentString("current spline shape is " +
                         ClientProxy.devSplineModification[0][0] + "," + ClientProxy.devSplineModification[0][1] +"," + ClientProxy.devSplineModification[0][2] +" : " +
@@ -176,13 +185,7 @@ public class EventManager {
                 if(ClientProxy.railSkin>3){
                     ClientProxy.railSkin=0;
                 }
-                Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Displaying rail model " + ClientProxy.railSkin));
-
-                for(Object te : Minecraft.getMinecraft().player.world.loadedTileEntityList){
-                    if(te instanceof RailTileEntity){
-                        ((RailTileEntity) te).railGLID=null;
-                    }
-                }
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Displaying rail model " + ClientProxy.railSkin));
             }
         }
     }
@@ -199,46 +202,46 @@ public class EventManager {
                 inited=true;
             } catch (RuntimeException e){}//this is thrown when world render isn't initialized yet
         }
-
-        if(event.player.getRidingEntity() instanceof EntitySeat){
-            if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isKeyDown()) {
-                //for TC only controls, skip wait, for TiM only controls just stop.
-                if(ClientProxy.controls==1 && holdTimer<40){
-                    holdTimer=40;
-                } else if (ClientProxy.controls==2){
-                    return;
-                }
-                if (holdTimer==40){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(12, ((EntitySeat) event.player.getRidingEntity()).parentId));
-                    holdTimer++;
-                } else if (holdTimer<40){
-                    holdTimer++;
-                }
-            } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isKeyDown()) {
-                //for TC only controls, skip wait, for TiM only controls just stop.
-                if(ClientProxy.controls==1 && holdTimer<40){
-                    holdTimer=40;
-                } else if (ClientProxy.controls==2){
-                    return;
-                }
-
-                if (holdTimer==40){
-                    TrainsInMotion.keyChannel.sendToServer(new PacketInteract(11, ((EntitySeat) event.player.getRidingEntity()).parentId));
-                    holdTimer++;
-                } else if (holdTimer<40){
-                    holdTimer++;
-                }
-            }
-            else if(!FMLClientHandler.instance().getClient().gameSettings.keyBindBack.isKeyDown() &&
-                    !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.isKeyDown()){
-                if (holdTimer>40){
-                    if(ClientProxy.controls!=1) {
-                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, ((EntitySeat) event.player.getRidingEntity()).parentId));
-                    } else {
-                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(14, ((EntitySeat) event.player.getRidingEntity()).parentId));
+        if(event.phase== TickEvent.Phase.START) {
+            if (event.player.ridingEntity instanceof EntitySeat) {
+                if (FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
+                    //for TC only controls, skip wait, for TiM only controls just stop.
+                    if (ClientProxy.controls == 1 && holdTimer < 40) {
+                        holdTimer = 40;
+                    } else if (ClientProxy.controls == 2) {
+                        return;
                     }
+                    if (holdTimer == 40) {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(12, ((EntitySeat) event.player.ridingEntity).parentId));
+                        holdTimer++;
+                    } else if (holdTimer < 40) {
+                        holdTimer++;
+                    }
+                } else if (FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed()) {
+                    //for TC only controls, skip wait, for TiM only controls just stop.
+                    if (ClientProxy.controls == 1 && holdTimer < 40) {
+                        holdTimer = 40;
+                    } else if (ClientProxy.controls == 2) {
+                        return;
+                    }
+
+                    if (holdTimer == 40) {
+                        TrainsInMotion.keyChannel.sendToServer(new PacketInteract(11, ((EntitySeat) event.player.ridingEntity).parentId));
+                        holdTimer++;
+                    } else if (holdTimer < 40) {
+                        holdTimer++;
+                    }
+                } else if (!FMLClientHandler.instance().getClient().gameSettings.keyBindBack.getIsKeyPressed() &&
+                        !FMLClientHandler.instance().getClient().gameSettings.keyBindForward.getIsKeyPressed()) {
+                    if (holdTimer > 40) {
+                        if (ClientProxy.controls != 1) {
+                            TrainsInMotion.keyChannel.sendToServer(new PacketInteract(4, ((EntitySeat) event.player.ridingEntity).parentId));
+                        } else {
+                            TrainsInMotion.keyChannel.sendToServer(new PacketInteract(14, ((EntitySeat) event.player.ridingEntity).parentId));
+                        }
+                    }
+                    holdTimer = 0;
                 }
-                holdTimer=0;
             }
         }
     }
@@ -300,12 +303,6 @@ public class EventManager {
             }
 
         }*/
-        for (Object te:e.getChunk().getTileEntityMap().entrySet()){
-            if(te instanceof RailTileEntity){
-                GL11.glDeleteLists(((RailTileEntity) te).railGLID,1);
-                ((RailTileEntity) te).railGLID=null;
-            }
-        }
     }
 
     @SubscribeEvent

@@ -20,8 +20,10 @@ public class BlockTCSignal extends BlockSignal {
 	public BlockTCSignal() {
 		super(Material.CIRCUITS,true);
 		this.setLightLevel(1.0F);
-		//setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 2.6F, 0.8F);
 	}
+
+	@Override
+	public float[] hitboxShape(){return new float[]{0,0,0,1,3,1};}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

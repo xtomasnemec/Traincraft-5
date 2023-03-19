@@ -50,7 +50,7 @@ public class TileSwitchStand extends TileSwitch {
             }
 
             //on
-            if (getEnabled(0)) {
+            if (getStrength(0)>0) {
                 new train.render.models.ModelSwitchStandOn().render();
             } else {//off
                 new train.render.models.ModelSwitchStandOff().render();
@@ -61,7 +61,7 @@ public class TileSwitchStand extends TileSwitch {
     @SideOnly(Side.CLIENT)
     @Override
     public ResourceLocation getTexture(int x, int y, int z){
-        if (getEnabled(0)) {
+        if (getStrength(0)>0) {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_1.png");
         } else {
             return new ResourceLocation(Info.resourceLocation,Info.modelTexPrefix + "switchStand_uv_draw_2.png");

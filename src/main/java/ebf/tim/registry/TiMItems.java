@@ -6,7 +6,6 @@ import ebf.tim.utility.Recipe;
 import ebf.tim.utility.RecipeManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import train.blocks.TCBlocks;
 
 public class TiMItems {
 
