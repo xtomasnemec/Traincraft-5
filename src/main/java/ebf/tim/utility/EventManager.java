@@ -10,6 +10,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.GenericRailTransport;
+import ebf.tim.gui.GUIAdminBook;
+import ebf.tim.gui.GUICraftBook;
+import ebf.tim.gui.GUIPaintBucket;
 import ebf.tim.networking.PacketInteract;
 import ebf.tim.registry.TiMGenericRegistry;
 import fexcraft.tmt.slim.Tessellator;
@@ -105,7 +108,15 @@ public class EventManager {
                     TrainsInMotion.keyChannel.sendToServer(new PacketInteract(15, ((EntitySeat) player.ridingEntity).parentId));
                 }
             }
-        } else if(DebugUtil.dev) {
+        }
+        else if(Minecraft.getMinecraft().gameSettings.keyBindInventory.getIsKeyPressed()){
+            if(Minecraft.getMinecraft().currentScreen instanceof GUIPaintBucket ||
+                    Minecraft.getMinecraft().currentScreen instanceof GUICraftBook ||
+                    Minecraft.getMinecraft().currentScreen instanceof GUIAdminBook){
+                Minecraft.getMinecraft().currentScreen=null;
+            }
+        }
+        else if(DebugUtil.dev) {
             if (ClientProxy.raildevtoolUp.getIsKeyPressed()){
                 ClientProxy.devSplineModification[ClientProxy.devSplineCurrentPoint][0]+=0.0625;
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("current spline shape is " +

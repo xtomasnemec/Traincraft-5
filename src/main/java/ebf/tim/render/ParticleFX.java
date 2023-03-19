@@ -345,7 +345,7 @@ public class ParticleFX {
                 ((entity.host.getParticleData(entity.particleID)[2] & 0xFF) - entity.colorTint) * 0.00392156863f,
                 1f - (entity.ticksExisted / entity.lifespan));
         //set the position
-        GL11.glTranslated(x+ entity.boundingBox.minX - entity.host.posX, y+entity.boundingBox.minY-entity.host.posY,  z+entity.boundingBox.minZ - entity.host.posZ);
+        GL11.glTranslated(x+ entity.boundingBox.minX - entity.host.posX+0.0625f, y+entity.boundingBox.minY-entity.host.posY,  z+entity.boundingBox.minZ - entity.host.posZ+0.0625f);
         glScaleF((entity.host.getParticleData(entity.particleID)[1] * 0.01f) * 0.0625f);
         particle.render(1);
 

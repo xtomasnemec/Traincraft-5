@@ -379,9 +379,6 @@ public class RenderWagon extends Render {
                 }
                 GL11.glPushMatrix();
                 GL11.glTranslated(b.offset[0], -b.offset[1], b.offset[2]);
-                if(entity.getWorld()==null){
-                    GL11.glTranslated(0,-0.5,0);
-                }
                 GL11.glRotatef(b.rotation[0], 1.0f, 0.0f, 0.0f);
                 GL11.glRotatef(b.rotation[1], 0.0f, 1.0f, 0.0f);
                 GL11.glRotatef(b.rotation[2], 0.0f, 0.0f, 1.0f);
