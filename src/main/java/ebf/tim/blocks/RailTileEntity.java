@@ -1,8 +1,7 @@
 package ebf.tim.blocks;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import ebf.XmlBuilder;
+import ebf.tim.blocks.rails.BlockRailCore;
 import ebf.tim.blocks.rails.RailShapeCore;
 import ebf.tim.items.ItemRail;
 import ebf.tim.registry.TiMBlocks;
@@ -24,6 +23,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -76,8 +77,8 @@ public class RailTileEntity extends TileEntity {
                 return;
             }
 
-            Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
-            TextureManager.adjustLightFixture(worldObj,xCoord,yCoord,zCoord);
+            Minecraft.getMinecraft().entityRenderer.enableLightmap();
+            TextureManager.adjustLightFixture(getWorld(),getPos().getX(),getPos().getY(),getPos().getZ());
             if(!ClientProxy.disableCache && glID!=null){
                 org.lwjgl.opengl.GL11.glCallList(glID);
             }
@@ -115,7 +116,7 @@ public class RailTileEntity extends TileEntity {
         BlockRailCore.updateNearbyShapes(getWorld(), pos.getX(),pos.getY(),pos.getZ());
     }
 
-    @Override
+    //@Override
     public void updateEntity(){}
 
     @SideOnly(Side.CLIENT)
@@ -145,13 +146,12 @@ public class RailTileEntity extends TileEntity {
 
 
     public void markDirty() {
-        if (this.worldObj != null) {
-            CommonUtil.markBlockForUpdate(worldObj, xCoord, yCoord, zCoord);
-            worldObj.func_147453_f(this.xCoord, this.yCoord, this.zCoord, TiMBlocks.railBlock);
+        //super.markDirty();
+        if (this.world != null) {
+            world.markChunkDirty(pos, this);
+            this.world.notifyNeighborsOfStateChange(this.pos, TiMBlocks.railBlock,true);
         }
         data.buildXML();
-        glID=null;
-
     }
 
     @Override

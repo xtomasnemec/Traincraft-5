@@ -9,7 +9,13 @@ import ebf.tim.utility.Vec5f;
 import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -18,10 +24,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.model.IModelPart;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -40,7 +52,12 @@ public class CustomItemModel implements ICustomModelLoader {
 
     private static HashMap<Item, TileRenderFacing> blockTextures = new HashMap<>();
 
+    public static List<ResourceLocation> renderItems = new ArrayList<>();
+
     private static Integer itemSprite = null;
+
+    public static final ResourceLocation LOCATION_BLOCKS_TEXTURE = new ResourceLocation("textures/atlas/blocks.png");
+
 
     public static void registerBlockTextures(Item itm, TileEntity tile){
         if(tile instanceof TileRenderFacing) {
@@ -72,10 +89,10 @@ public class CustomItemModel implements ICustomModelLoader {
     /*@Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return true;//models.containsKey(new ResourceLocation(item.getUnlocalizedName()));
-    }
+    }*/
     float scale;
 
-    public static void render2dItem(ResourceLocation texture, ItemRenderType type){
+    public static void render2dItem(ResourceLocation texture, ItemCameraTransforms.TransformType type){
         TextureManager.bindTexture(texture);
         GL11.glRotatef(225,0,1,0);
         GL11.glScalef(1.4f,-1.4f,1);
@@ -91,14 +108,23 @@ public class CustomItemModel implements ICustomModelLoader {
         } else {
 
             switch (type){
-                case INVENTORY: {
+                case GUI: {
                     GL11.glEnable(GL11.GL_BLEND);
                     break;}
-                case EQUIPPED_FIRST_PERSON:{
+                case FIRST_PERSON_RIGHT_HAND:{
                     GL11.glTranslatef(0,-0.5f,-1);
                     break;
                 }
-                case EQUIPPED:{
+                case FIRST_PERSON_LEFT_HAND:{
+                    GL11.glTranslatef(0,-0.5f,-1);
+                    break;
+                }
+                case THIRD_PERSON_RIGHT_HAND:{
+                    GL11.glTranslatef(0,-0.5f,-1);
+                    GL11.glRotatef(-45,1,0,0);
+                    break;
+                }
+                case THIRD_PERSON_LEFT_HAND:{
                     GL11.glTranslatef(0,-0.5f,-1);
                     GL11.glRotatef(-45,1,0,0);
                     break;
@@ -122,8 +148,8 @@ public class CustomItemModel implements ICustomModelLoader {
 
     }
 
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    //@Override
+    public static void renderItemModel(ItemStack item, ItemCameraTransforms.TransformType type, EntityLivingBase holder) {
         if(item==null){return;}
 
         int boundTexture = org.lwjgl.opengl.GL11.glGetInteger(org.lwjgl.opengl.GL11.GL_TEXTURE_BINDING_2D);
@@ -346,13 +372,17 @@ public class CustomItemModel implements ICustomModelLoader {
                 return;
             }
             switch (type){
-                case EQUIPPED_FIRST_PERSON:{
+                case FIRST_PERSON_RIGHT_HAND:{
                     break;
                 }
-                case INVENTORY:{break;}
-                case EQUIPPED:{break;}
-                case FIRST_PERSON_MAP:{break;}
-                case ENTITY:{
+                case FIRST_PERSON_LEFT_HAND:{
+                    break;
+                }
+                case GUI:{break;}
+                case THIRD_PERSON_RIGHT_HAND:{break;}
+                case THIRD_PERSON_LEFT_HAND:{break;}
+                case FIXED:{break;}
+                case GROUND:{
                     GL11.glTranslatef(-0.5f,-0.4f,-0.5f);
                     break;
                 }

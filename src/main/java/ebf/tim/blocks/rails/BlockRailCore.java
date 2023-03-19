@@ -359,7 +359,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         updateNearbyShapes(p_149749_1_, pos.getX(),pos.getY(),pos.getZ());
     }
 
-    public void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
+    public static void updateNearbyShapes(World world, int xCoord, int yCoord, int zCoord){
         //update all the other nearby rails.
         TileEntity te;
         BlockPos pos;

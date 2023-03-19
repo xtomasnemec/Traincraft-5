@@ -58,14 +58,14 @@ public class TileRenderFacing extends TileEntity {
     public EnumFacing getFacing(){
         //1.8.9+ it's getHorizontal
         switch (facing){
-            case 0:{return ForgeDirection.SOUTH;}
-            case 1:{return ForgeDirection.EAST;}
-            case 2:{return ForgeDirection.NORTH;}
-            case 3:{return ForgeDirection.WEST;}
-            case 4:{return ForgeDirection.DOWN;}
-            case 5:{return ForgeDirection.UP;}
+            case 0:{return EnumFacing.SOUTH;}
+            case 1:{return EnumFacing.EAST;}
+            case 2:{return EnumFacing.NORTH;}
+            case 3:{return EnumFacing.WEST;}
+            case 4:{return EnumFacing.DOWN;}
+            case 5:{return EnumFacing.UP;}
         }
-        return ForgeDirection.NORTH;
+        return EnumFacing.NORTH;
     }
 
     @Override
@@ -90,10 +90,10 @@ public class TileRenderFacing extends TileEntity {
             }
 
 
-            if(worldObj==null) {
-                Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
+            if(world==null) {
+                Minecraft.getMinecraft().entityRenderer.disableLightmap();
             } else {
-                Minecraft.getMinecraft().entityRenderer.enableLightmap(1);
+                Minecraft.getMinecraft().entityRenderer.enableLightmap();
             }
             org.lwjgl.opengl.GL11.glTranslatef(0.5f,0.5f,0.5f);
             switch (facing){
@@ -112,8 +112,8 @@ public class TileRenderFacing extends TileEntity {
             //be sure to re-enable the texture biding, because the UI wont
             org.lwjgl.opengl.GL11.glEnable( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
             org.lwjgl.opengl.GL11.glBindTexture( org.lwjgl.opengl.GL11.GL_TEXTURE_2D,boundTexture);
-            if(worldObj==null) {
-                Minecraft.getMinecraft().entityRenderer.disableLightmap(1);
+            if(world==null) {
+                Minecraft.getMinecraft().entityRenderer.disableLightmap();
             }
         } else{
             super.addInfoToCrashReport(r);
@@ -203,13 +203,14 @@ public class TileRenderFacing extends TileEntity {
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("f", facing);
+        return tag;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag){
         super.readFromNBT(tag);
         facing = tag.getInteger("f");
-        if(worldObj!=null && worldObj.isRemote) {
+        if(world!=null && world.isRemote) {
             markDirty();
         }
     }
@@ -242,7 +243,7 @@ public class TileRenderFacing extends TileEntity {
         return null;
     }
     @SideOnly(Side.CLIENT)
-    public boolean force2dItem(net.minecraftforge.client.IItemRenderer.ItemRenderType type){return false;}
+    public boolean force2dItem(net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType type){return false;}
 
     public static final ModelRendererTurbo cube = new ModelRendererTurbo((ModelBase) null, 0,0,64,32).addBox(-8,-8,-8,16,16,16);
 

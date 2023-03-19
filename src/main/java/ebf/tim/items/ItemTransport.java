@@ -10,8 +10,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,8 +48,8 @@ public class ItemTransport extends Item {
             setItemLore(cart);
         }
         transport=cart.getClass();
-        setTextureName(MODID+":textures/items/transports/"+getUnlocalizedName());
-        itemTexture=new ResourceLocation(MODID, "textures/items/transports/"+getUnlocalizedName().toLowerCase() +".png");
+        setRegistryName(MODID+":textures/items/transports/"+getTranslationKey());
+        itemTexture=new ResourceLocation(MODID, "textures/items/transports/"+getTranslationKey().toLowerCase() +".png");
         setCreativeTab(tabs);
         if(TrainsInMotion.proxy.isClient()){
             entity=cart;

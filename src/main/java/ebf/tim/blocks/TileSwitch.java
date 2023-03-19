@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3i;
 
 import java.util.List;
 
-public class TileSwitch extends TileRenderFacing {
+public class TileSwitch extends TileRenderFacing implements ITickable {
     public int strength[]={0};
     public boolean[] animationReversing={false};
     public int[] crossingTick={0};
@@ -53,6 +53,7 @@ public class TileSwitch extends TileRenderFacing {
             strength =new int[bladeCount()];
         }
         tag.setIntArray("e", strength);
+        return tag;
     }
 
     @Override
@@ -68,7 +69,7 @@ public class TileSwitch extends TileRenderFacing {
 
     //remember to list the sound file in your sounds.json and ID it there
     // TC5 does not yet feature direct audio streaming.
-    public SoundEvent soundFile(){return new SoundEvent(new ResourceLocation(""));}
+    public String soundFile(){return "";}
     //optional pitch shift for sound
     public float soundPitch(){return 1f;}
     //sound volume
@@ -175,8 +176,8 @@ public class TileSwitch extends TileRenderFacing {
     public int checkBlockPower(int[] ... offset){
         int signalStrength=0;
         for(int[] o : offset) {
-            signalStrength = worldObj.getBlockPowerInput(xCoord + o[0], yCoord + o[1], zCoord + o[2]);
-            if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + o[0], yCoord + o[1], zCoord + o[2])) {
+            signalStrength = getWorld().getStrongPower(pos.add(o[0], o[1], o[2]));
+            if (signalStrength == 0 && getWorld().isBlockPowered(pos.add(o[0], o[1], o[2]))) {
                 return 15;
             } else if(signalStrength!=0) {
                 return signalStrength;
@@ -188,7 +189,7 @@ public class TileSwitch extends TileRenderFacing {
     public int checkBlockPower(int[] offset, int depth){
         int signalStrength=0;
         for(int o =-1;o<depth-1;o++) {
-            signalStrength = worldObj.getBlockPowerInput(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2]);
+            signalStrength = getWorld().getStrongPower(pos.add(offset[0], offset[1], offset[2]));
             if(signalStrength!=0) {
                 return signalStrength;
             }
@@ -258,7 +259,7 @@ public class TileSwitch extends TileRenderFacing {
             }
         }
         if(useRedstone) {
-            setStrength(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord),0);
+            setStrength(getWorld().getStrongPower(pos),0);
         } else {
             setStrength(0,0);
         }

@@ -204,7 +204,7 @@ public class TrainsInMotion {
 
 
 
-       /* if(event.getSide().isClient()) {
+        if(event.getSide().isClient()) {
             //register the event handler
             MinecraftForge.EVENT_BUS.register(ClientProxy.eventManager);
         }

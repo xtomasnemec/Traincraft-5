@@ -8,7 +8,6 @@ import fexcraft.tmt.slim.ModelRendererTurbo;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
@@ -317,7 +316,7 @@ public class ParticleFX {
             }
 
         }
-        Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+        Minecraft.getMinecraft().entityRenderer.disableLightmap();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDepthMask(false);
         glAlphaFunc(GL_GREATER, 0F);
@@ -327,7 +326,7 @@ public class ParticleFX {
         GL11.glEnable(GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDepthMask(true);
-        Minecraft.getMinecraft().entityRenderer.enableLightmap(1D);
+        Minecraft.getMinecraft().entityRenderer.enableLightmap();
     }
 
     public static void renderSmoke(ParticleFX entity, double x, double y, double z, float scale, float yaw){

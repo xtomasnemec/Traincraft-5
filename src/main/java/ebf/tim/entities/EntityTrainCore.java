@@ -265,13 +265,13 @@ public class EntityTrainCore extends GenericRailTransport {
             return;
         }
 
-        List entities = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(
+        List entities = getWorld().getEntitiesWithinAABB(EntityAnimal.class, new AxisAlignedBB(
                 this.posX - 20, this.posY - 5, this.posZ - 20,
                 this.posX + 20, this.posY + 5, this.posZ + 20));
 
         for (Object e : entities) {
             if (e instanceof EntityAnimal) {
-                ((EntityAnimal) e).setTarget(this.riddenByEntity==null?this.seats.get(0).getPassenger():riddenByEntity);
+                ((EntityAnimal) e).setAttackTarget(seats.get(0).getPassenger());
                 ((EntityAnimal) e).getNavigator().setPath(null, 0);
             }
         }

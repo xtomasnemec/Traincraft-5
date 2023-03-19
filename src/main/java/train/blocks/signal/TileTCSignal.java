@@ -46,7 +46,7 @@ public class TileTCSignal extends TileSwitch {
 		new train.render.models.blocks.ModelBlockSignal()
 				.render(null, 0, 0, 0, 0, 0, 0.0625f);
 
-		Minecraft.getMinecraft().entityRenderer.disableLightmap(1D);
+		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 	}
 
 	@SideOnly(Side.CLIENT)

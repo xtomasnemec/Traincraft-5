@@ -250,7 +250,21 @@ public class TextureManager {
     }
 
 
-    public static void bindTexture(ResourceLocation textureURI, int[] skinColorsFrom, int[] skinColorsTo, List<Integer> colorsFrom, List<Integer> colorsTo) {
+
+    public static boolean textureExists(ResourceLocation textureURI){
+
+        object = Minecraft.getMinecraft().getTextureManager().getTexture(textureURI);
+        if (object == null) {
+            object = new SimpleTexture(textureURI);
+            Minecraft.getMinecraft().getTextureManager().loadTexture(textureURI, object);
+        }
+        return object.getGlTextureId()!=TextureUtil.MISSING_TEXTURE.getGlTextureId();
+    }
+
+
+
+
+    public static void bindTexture(ResourceLocation textureURI, int[] skinColorsFrom, int[] skinColorsTo, List<Integer> colorsFrom, List<Integer> colorsTo){
         //clean out the texture bind map when texturepacks are reloaded.
         if (MCResourcePacks != Minecraft.getMinecraft().getResourceManager().getResourceDomains()) {
             MCResourcePacks = Minecraft.getMinecraft().getResourceManager().getResourceDomains();
@@ -261,47 +275,18 @@ public class TextureManager {
         GL11.glEnable(GL_TEXTURE_2D);
         if (!tmtBoundTextures.containsKey(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, false))) {
             if (createAWT(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo) &&
-                    new File(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true)).exists()) {
+                    new File(getID(textureURI,skinColorsFrom, skinColorsTo, colorsFrom,colorsTo,true)).exists()) {
                 try {
                     BufferedImage image = ImageIO.read(new File(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true)));
 
-    public static boolean textureExists(ResourceLocation textureURI){
-
-        object = Minecraft.getMinecraft().getTextureManager().getTexture(textureURI);
-        if (object == null) {
-            object = new SimpleTexture(textureURI);
-            Minecraft.getMinecraft().getTextureManager().loadTexture(textureURI, object);
-        }
-        return object.getGlTextureId()!=TextureUtil.missingTexture.getGlTextureId();
-    }
-
-
-
-
-    public static void bindTexture(ResourceLocation textureURI, int[] skinColorsFrom, int[] skinColorsTo, List<Integer> colorsFrom, List<Integer> colorsTo){
-            //clean out the texture bind map when texturepacks are reloaded.
-            if (MCResourcePacks != Minecraft.getMinecraft().getResourceManager().getResourceDomains()) {
-                MCResourcePacks = Minecraft.getMinecraft().getResourceManager().getResourceDomains();
-                tmtMap = new HashMap<>();
-                tmtBoundTextures = new HashMap<>();
-            }
-
-            GL11.glEnable(GL_TEXTURE_2D);
-            if (!tmtBoundTextures.containsKey(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, false))) {
-                if (createAWT(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo) &&
-                        new File(getID(textureURI,skinColorsFrom, skinColorsTo, colorsFrom,colorsTo,true)).exists()) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true)));
-
-                        currentKey = tmtBoundTextures.put(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, false),
-                                Minecraft.getMinecraft().getTextureManager().getTexture(
-                                        Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(
-                                                getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true),
-                                                new DynamicTexture(image))).getGlTextureId());
-                    } catch (IOException exception) {
-                        DebugUtil.println("AWT FAILED");
-                        exception.printStackTrace();
-                    }
+                    currentKey = tmtBoundTextures.put(getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, false),
+                            Minecraft.getMinecraft().getTextureManager().getTexture(
+                                    Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(
+                                            getID(textureURI, skinColorsFrom, skinColorsTo, colorsFrom, colorsTo, true),
+                                            new DynamicTexture(image))).getGlTextureId());
+                } catch (IOException exception) {
+                    DebugUtil.println("AWT FAILED");
+                    exception.printStackTrace();
                 }
             }
         } else {

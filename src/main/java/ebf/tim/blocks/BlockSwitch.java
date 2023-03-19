@@ -2,8 +2,14 @@ package ebf.tim.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -15,7 +21,7 @@ public class BlockSwitch extends BlockDynamic {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState metadata) {
         return true;
     }
 
@@ -35,8 +41,8 @@ public class BlockSwitch extends BlockDynamic {
             TileSwitch t = (TileSwitch)world.getTileEntity(pos);
             if(t!=null){
                 t.toggleEnabled(0);
-                world.playSoundEffect((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.3F, t.getStrength(0)>0 ? 0.6F : 0.5F);
-                world.notifyBlocksOfNeighborChange(x, y, z, this);
+                world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 1f);
+                world.notifyNeighborsOfStateChange(pos, this, false);
             }
 
             return true;
@@ -56,7 +62,7 @@ public class BlockSwitch extends BlockDynamic {
     }
 
     public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int meta) {
-        TileSwitch t = (TileSwitch)world.getTileEntity(x,y,z);
+        TileSwitch t = (TileSwitch)world.getTileEntity(new BlockPos(x,y,z));
         if(t!=null && t.getStrength(0)>0){
             return 15;
         }
