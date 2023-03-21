@@ -48,7 +48,7 @@ public class ItemTransport extends Item {
             setItemLore(cart);
         }
         transport=cart.getClass();
-        setRegistryName(MODID+":textures/items/transports/"+getTranslationKey());
+        //setRegistryName(MODID+":textures/items/transports/"+getTranslationKey());
         itemTexture=new ResourceLocation(MODID, "textures/items/transports/"+getTranslationKey().toLowerCase() +".png");
         setCreativeTab(tabs);
         if(TrainsInMotion.proxy.isClient()){
