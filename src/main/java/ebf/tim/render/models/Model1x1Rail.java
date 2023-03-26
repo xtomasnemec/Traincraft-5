@@ -111,6 +111,7 @@ public class Model1x1Rail {
         //renders the rails, also defines min and max width
         GL11.glEnable(GL11.GL_NORMALIZE);
         GL11.glPushMatrix();
+        GL11.glColor4f(1,1,1,1);
         GL11.glDisable(GL_TEXTURE_2D);
         switch (ClientProxy.railSkin){
             case 0:{ModelRail.modelPotatoRail(shape, shape.renderScale, colors); break;}
