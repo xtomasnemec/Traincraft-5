@@ -81,6 +81,9 @@ public class TextureManager {
      * @param textureURI
      */
     public static int bindTexture(ResourceLocation textureURI) {
+        if(Minecraft.getMinecraft().getTextureManager()==null){
+            return 0;
+        }
         if (textureURI == null){
             Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(TrainsInMotion.MODID,"nullTrain"));
             return 0;
