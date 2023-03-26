@@ -30,7 +30,7 @@ public class ModelWindMill extends ModelBase {
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
 		if(windMill.getWorld()==null){
-			GL11.glTranslated( x+1,  y-0.3,  z);
+			GL11.glTranslated( x,  y-0.1,  z);
 			GL11.glRotatef(90,1,0,0);
 			GL11.glRotatef(90,0,0,1);
 			GL11.glScalef(0.8f,0.8f,0.8f);

@@ -167,7 +167,6 @@ public class CustomItemModel implements ICustomModelLoader {
             if(scale!=0){
                 scale = 1.3f/(scale /1.3f);
             }
-            GL11.glPushMatrix();
             GL11.glScalef(scale,scale,scale);
             switch (type){
                 case FIRST_PERSON_RIGHT_HAND:{
@@ -373,23 +372,49 @@ public class CustomItemModel implements ICustomModelLoader {
             }
             switch (type){
                 case FIRST_PERSON_RIGHT_HAND:{
+                    GL11.glRotatef(300,0,1,0);
+                    GL11.glRotatef(5,1,0,0);
+                    GL11.glTranslatef(-0.15f,-0.05f,-0.1f);
+                    GL11.glScalef(0.625f,0.625f,0.625f);
                     break;
                 }
                 case FIRST_PERSON_LEFT_HAND:{
+                    GL11.glRotatef(300,0,1,0);
+                    GL11.glRotatef(5,1,0,0);
+                    GL11.glTranslatef(-0.15f,-0.05f,-0.1f);
+                    GL11.glScalef(0.625f,0.625f,0.625f);
                     break;
                 }
-                case GUI:{break;}
-                case THIRD_PERSON_RIGHT_HAND:{break;}
-                case THIRD_PERSON_LEFT_HAND:{break;}
-                case FIXED:{break;}
-                case GROUND:{
-                    GL11.glTranslatef(-0.5f,-0.4f,-0.5f);
+                case GUI: {
+                    GL11.glRotatef(30,1,0,0);
+                    GL11.glRotatef(-45,0,1,0);
+                    break;
+                }
+                case THIRD_PERSON_RIGHT_HAND:{
+                    GL11.glRotatef(180,0,0,1);
+                    GL11.glRotatef(90,1,0,0);
+                    GL11.glRotatef(180,0,0,1);
+                    GL11.glTranslatef(0.25f,-0.15f,0.1f);
+                    GL11.glTranslatef(-2,-1,0);
+                    GL11.glScalef(0.75f,0.75f,0.75f);
+                    break;
+                }
+                case THIRD_PERSON_LEFT_HAND:{
+                    GL11.glRotatef(90,0,1,0);
+                    GL11.glRotatef(80,0,0,1);
+                    GL11.glRotatef(-1,1,0,0);
+                    GL11.glTranslatef(0.35f,-0.05f,-0.5f);
                     break;
                 }
                 default:{//item frame case
-                    break;
+                    GL11.glRotatef(90,0,1,0);
+                    GL11.glScalef(0.5f,0.5f,0.5f);
+                    GL11.glTranslatef(0,1.5f,0);
+                    GL11.glRotatef(180,1,0,0);
                 }
+
             }
+            GL11.glScalef(0.625f,0.625f,0.625f);
             GL11.glScalef(0.95f,0.95f,0.95f);
             GL11.glTranslatef(0,-0.1f,0);
             if(blockTextures.get(item.getItem()).host.tesr instanceof TileEntitySpecialRenderer){

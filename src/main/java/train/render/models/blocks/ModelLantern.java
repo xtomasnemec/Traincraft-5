@@ -32,7 +32,7 @@ public class ModelLantern extends ModelBase {
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
 		if(lantern.getWorld()==null){
-			GL11.glTranslated(x+1, y+0.3, z+0);
+			GL11.glTranslated(x+0, y+0.3, z+0);
 			GL11.glScalef(0.8f, 0.8f, 0.8f);
 		} else {
 			GL11.glTranslated(x+0.5, y+0.5, z+0.5);

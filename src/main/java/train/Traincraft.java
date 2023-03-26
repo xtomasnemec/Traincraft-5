@@ -206,7 +206,6 @@ public class Traincraft {
 
 		/* Register Items, Blocks, ... */
 		tcLog.info("Initialize Blocks, Items, ...");
-		tcTab = new TiMTab("Traincraft", Info.modID, "transports/item.locosteambr80");
 		trainArmor = proxy.addArmor("armor");
 		trainCloth = proxy.addArmor("Paintable");
 		trainCompositeSuit = proxy.addArmor("CompositeSuit");

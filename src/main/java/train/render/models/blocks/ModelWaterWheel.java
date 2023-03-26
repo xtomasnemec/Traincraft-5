@@ -35,7 +35,7 @@ public class ModelWaterWheel extends ModelBase {
 
 		// Move the object into the correct position on the block (because the OBJ's origin is the center of the object)
 		if(waterWheel==null || waterWheel.getWorld()==null){
-			GL11.glTranslated( x+0.95,  y+0.15f,  z);
+			GL11.glTranslated( x,  y+0.15f,  z);
 		} else {
 			GL11.glTranslated( x + 0.5,  y+0.5,  z + 0.5);
 		}

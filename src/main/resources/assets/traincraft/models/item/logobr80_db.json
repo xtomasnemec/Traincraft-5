@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "traincraft:items/transports/item.train_br80"
+    "layer0": "traincraft:items/transports/item.locosteambr80"
   }
 }
