@@ -37,7 +37,7 @@ public class TileTCSignal extends TileSwitch {
 		if(getWorld()==null){
 			GL11.glScalef(0.65f,0.65f,0.65f);
 			org.lwjgl.opengl.GL11.glTranslatef( 0,  -0.5f,  0);
-			org.lwjgl.opengl.GL11.glRotatef(90, 0,  1f,  0);
+			org.lwjgl.opengl.GL11.glRotatef(15, 0,  1f,  0);
 		} else {
 			org.lwjgl.opengl.GL11.glRotatef(270, 0,  1f,  0);
 		}
