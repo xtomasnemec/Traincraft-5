@@ -110,6 +110,7 @@ public abstract class GUIButton extends GuiButton {
         else if (this.hovered) {
             l = 16777120;
         }
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
         this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, l);
 
@@ -158,6 +159,8 @@ public abstract class GUIButton extends GuiButton {
             this.drawGradientRect(j2 - 3, k2 - 3, j2 + k + 3, k2 - 3 + 1, k1, k1);
             this.drawGradientRect(j2 - 3, k2 + i1 + 2, j2 + k + 3, k2 + i1 + 3, l1, l1);
 
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
             getFont().drawString(p_146283_1_, j2, k2, 0xffffffff, true);
 
 

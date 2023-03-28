@@ -520,6 +520,8 @@ public class GUITransport extends GuiContainer {
         }
 
 
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
         for(int i=0; i<transport.getTankInfo().length;i++) {
             if(isMouseInRect(mouseX, mouseY,(int)guiLeft+186, (int)guiTop+40+(-20*i), 90, 18)) {
                 if (transport.getTankInfo()[i].fluid.amount>0) {

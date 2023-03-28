@@ -78,6 +78,10 @@ public class FuelHandler{
 				return new FluidStack(TiMFluids.fluidRedstone, ((IEnergyStorage) itemStack.getItem()).extractEnergy(250, true));
 			}
 		}
+		if(getFluidForFilledItem(itemStack)==null){
+			return null;
+		}
+
 		if(transport.getTypes().contains(TrainsInMotion.transportTypes.DIESEL)) {
 			if (itemStack.getItem() == TiMItems.dieselCanister) {
 				return new FluidStack(TiMFluids.fluidDiesel, 1000);

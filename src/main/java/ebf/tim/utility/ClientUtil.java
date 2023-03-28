@@ -176,6 +176,8 @@ public class ClientUtil {
      */
     public static void drawTextOutlined(FontRenderer font, String string, float x, float y, int color){
         GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
         int i= GLAllocation.generateDisplayLists(1);
         GL11.glNewList(i, GL11.GL_COMPILE);
         //render once, then translate around a 3x3 square.
