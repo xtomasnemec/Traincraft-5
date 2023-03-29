@@ -132,7 +132,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
     public void setAll(List<ItemStack> slots) {
         for (int i = 0; i < slots.size(); ++i) {
             this.inventory.get(i).setStack(slots.get(i));
-            this.inventorySlots.get(i).putStack(slots.get(i));
+            ((ItemStackSlot)this.inventorySlots.get(i)).setStack(slots.get(i));
             this.inventoryItemStacks.set(i, slots.get(i));
         }
     }
@@ -406,7 +406,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
                                 //put in any empty slot
                                 if (slotToAddInto != null && !slotToAddInto.getHasStack() && slotToAddInto.canTakeStack(player)) {
                                     if (slot.getStackSize() <= slotToAddInto.getSlotStackLimit()) {
-                                        slotToAddInto.putStack(slot.getStack().copy());
+                                        ((ItemStackSlot)slotToAddInto).setStack(slot.getStack().copy());
                                         slot.setStack(ItemStack.EMPTY);
                                     } else {
                                         //put as much as can into it.
