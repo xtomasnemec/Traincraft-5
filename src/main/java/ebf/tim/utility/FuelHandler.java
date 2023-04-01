@@ -201,7 +201,6 @@ public class FuelHandler{
 					&& train.fill(new FluidStack(FluidRegistry.WATER,100),false)==100
 					&& link.drain(new FluidStack(FluidRegistry.WATER,100),false)!=null
 					&& link.drain(new FluidStack(FluidRegistry.WATER,100),false).amount==100){
-				;
 				train.fill(link.drain(new FluidStack(FluidRegistry.WATER,100),true),true);
 			}
 		}
@@ -212,7 +211,6 @@ public class FuelHandler{
 					&& train.fill(new FluidStack(FluidRegistry.WATER,100),false)==100
 					&& link.drain(new FluidStack(FluidRegistry.WATER,100),false)!=null
 					&& link.drain(new FluidStack(FluidRegistry.WATER,100),false).amount==100){
-				;
 				train.fill(link.drain(new FluidStack(FluidRegistry.WATER,100),true),true);
 			}
 		}
@@ -419,29 +417,13 @@ public class FuelHandler{
 
 
 	public static void manageTanker(GenericRailTransport transport){
-
-		if (getUseableFluid(transport.tankerInputSlot().getSlotID(), transport) != null &&
-				transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(), transport))) {
-
+		if (getUseableFluid(transport.tankerInputSlot().getSlotID(),transport) !=null &&
+				transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(),transport),false)==getUseableFluid(transport.tankerInputSlot().getSlotID(),transport).amount) {
+			transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(),transport), true);
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-				//if there's an inventory, add the empty bucket, otherwise drop it on the nearest player, if no near player, drop on self
-				//todo: a generic add-or-drop method to the inventory would probably be good.
-				if(transport.getInventoryRows()>0) {
-					transport.addItem(drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
-				} else {
-					EntityItem e = new EntityItem(transport.world);
-					e.setItem(drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
-					EntityPlayer player = e.world.getClosestPlayerToEntity(transport,16);
-					if(player!=null) {
-						e.setPosition(player.posX, player.posY + 0.5, player.posZ);
-					} else {
-						e.setPosition(e.posX, e.posY + 0.5, e.posZ);
-					}
-					transport.world.spawnEntity(e);
-				}
 				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrStackSize(1);
+				transport.addItem(new ItemStack(Items.BUCKET));
 			}
-
 		}
 		//attempt to fill any buckets in the drain slot
 		if (transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID())!=null && isEmptyContainer(transport.getSlotIndexByID(401).getStack())) {
