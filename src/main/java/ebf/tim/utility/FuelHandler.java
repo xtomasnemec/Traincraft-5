@@ -186,6 +186,7 @@ public class FuelHandler{
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);
 				train.addItem(new ItemStack(Items.bucket));
+				train.markDirty();
 			}
 		}
 
@@ -422,29 +423,13 @@ public class FuelHandler{
 
 
 	public static void manageTanker(GenericRailTransport transport){
-
-		if (getUseableFluid(transport.tankerInputSlot().getSlotID(), transport) != null &&
-				transport.fill(null, getUseableFluid(transport.tankerInputSlot().getSlotID(), transport))) {
-
+		if (getUseableFluid(transport.tankerInputSlot().getSlotID(),transport) !=null &&
+				transport.fill(null,getUseableFluid(transport.tankerInputSlot().getSlotID(),transport),false)==getUseableFluid(transport.tankerInputSlot().getSlotID(),transport).amount) {
+			transport.fill(null,getUseableFluid(transport.tankerInputSlot().getSlotID(),transport), true);
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
-				//if there's an inventory, add the empty bucket, otherwise drop it on the nearest player, if no near player, drop on self
-				//todo: a generic add-or-drop method to the inventory would probably be good.
-				if(transport.getInventoryRows()>0) {
-					transport.addItem(FluidContainerRegistry.drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
-				} else {
-					EntityItem e = new EntityItem(transport.worldObj);
-					e.setEntityItemStack(FluidContainerRegistry.drainFluidContainer(transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).getStack()));
-					EntityPlayer player = e.worldObj.getClosestPlayerToEntity(transport,16);
-					if(player!=null) {
-						e.setPosition(player.posX, player.posY + 0.5, player.posZ);
-					} else {
-						e.setPosition(e.posX, e.posY + 0.5, e.posZ);
-					}
-					transport.worldObj.spawnEntityInWorld(e);
-				}
 				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrStackSize(1);
+				transport.addItem(new ItemStack(Items.bucket));
 			}
-
 		}
 		//attempt to fill any buckets in the drain slot
 		if (transport.getSlotIndexByID(transport.tankerOutputSlot().getSlotID())!=null && FluidContainerRegistry.isEmptyContainer(transport.getSlotIndexByID(401).getStack())) {
