@@ -3,8 +3,8 @@ package ebf.tim.entities;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.utility.CommonProxy;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.FuelHandler;
-import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -130,25 +130,16 @@ public class EntityTrainCore extends GenericRailTransport {
             accel*=0.7f;
         }
         //scale based on power and velocity
-        //TODO: velocity breaks this hard. dont do that. BS a similar result.
-        cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(0.3557/getPower()))-2.35f)));
-
-        //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
-        if(cachedVectors[2].yCoord!=0) {
-            cachedVectors[2].xCoord += cachedVectors[2].yCoord;
-        } else {
-            cachedVectors[2].xCoord += getVelocity()*0.99;
-        }
+        cachedVectors[2].xCoord=accel* (10000f * (float)Math.pow(8f,((2.35f * -(0.3557/getPower()))-2.35f)));
 
         //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
-        if (cachedVectors[2].xCoord < -unRatio(transportTopSpeed())) {
-            cachedVectors[2].xCoord = -unRatio(transportTopSpeed());
-        } else if (cachedVectors[2].xCoord > unRatio(transportTopSpeedReverse())) {
-            cachedVectors[2].xCoord = unRatio(transportTopSpeedReverse());
+        if (cachedVectors[2].xCoord+cachedVectors[2].yCoord < -unRatio(transportTopSpeed())) {
+            cachedVectors[2].xCoord=0;
+            //cachedVectors[2].xCoord = -unRatio(transportTopSpeed());
+        } else if (cachedVectors[2].xCoord+cachedVectors[2].yCoord > unRatio(transportTopSpeedReverse())) {
+            cachedVectors[2].xCoord=0;
+           // cachedVectors[2].xCoord = unRatio(transportTopSpeedReverse());
         }
-
-        //set the last tick speed to this speed.
-        cachedVectors[2].yCoord=cachedVectors[2].xCoord;
 
         //handle ice slipping
         if(!getBoolean(boolValues.BRAKE)) {
@@ -190,9 +181,10 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     @Override
     public void onUpdate() {
-        if(frontBogie != null && backBogie != null) {
+        if(backBogie != null && frontBogie != null) {
 
             if (!worldObj.isRemote) {
+                cachedVectors[2].xCoord = 0;
                 //twice a second, re-calculate the speed.
                 if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
                     if(Math.abs(accelerator)!=8 && ticksExisted % 10 == 0) {
@@ -204,17 +196,10 @@ public class EntityTrainCore extends GenericRailTransport {
                 }
 
                 if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
-                    frontBogie.setVelocity(0,0,0);
                     backBogie.setVelocity(0,0,0);
-                    cachedVectors[2].xCoord = 0;
-                } else {
-                    //add drag to the accelerator
-                    if(accelerator==0){
-                        cachedVectors[2].yCoord*=0.99f;
-                    } else {
-                        Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
-                        moveBogies(velocity.xCoord,velocity.zCoord);
-                    }
+                    frontBogie.setVelocity(0,0,0);
+                } else if(accelerator!=0){
+                    appendMovement(cachedVectors[2].xCoord);
                 }
 
             }
