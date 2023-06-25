@@ -253,7 +253,7 @@ public class RenderWagon extends Render {
         //set the render position
         GL11.glTranslated(x, y+ railOffset +bogieOffset+1.5, z);
 
-        GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
+        GL11.glTranslated(0, CommonUtil.rotatePoint(new Vec3f(
                 Math.abs(entity.rotationPoints()[0])+Math.abs(entity.rotationPoints()[1]),
                 0,0), entity.rotationPitch,0,0).yCoord, 0);
         if(entity.frontBogie!=null && entity.backBogie!=null){

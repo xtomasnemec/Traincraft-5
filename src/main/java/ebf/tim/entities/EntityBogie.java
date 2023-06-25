@@ -58,7 +58,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     private Block blockNext, blockCurrent;
     float railmax;
 
-    double[] velocity = new double[]{0,0,0,0};
+    double[] velocity = new double[]{0,0,0,0,0,0};
     /**normally this variable exists already in 1.7, this additional declaration of it is support for 1.8.9+*/
     public float yOffset=0.425f;
 
@@ -191,14 +191,26 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     public void addVelocity(GenericRailTransport host, double speed){
         //cache rotation so it only has to be processed once per tick
-        if(velocity[2]==0 && velocity[3]==0){
+        if(velocity[4]==0 && velocity[5]==0){
             Vec3f vec = CommonUtil.rotatePoint(new Vec3f(1,0,0),0,host.rotationYaw,0);
-            velocity[2]=vec.xCoord;
-            velocity[3]=vec.zCoord;
+            velocity[4]=vec.xCoord;
+            velocity[5]=vec.zCoord;
         }
 
-        velocity[0]+=speed*velocity[2];
-        velocity[1]+=speed*velocity[3];
+        velocity[0]+=speed*velocity[4];
+        velocity[1]+=speed*velocity[5];
+    }
+
+    public void addLinking(GenericRailTransport host, double speed){
+        //cache rotation so it only has to be processed once per tick
+        if(velocity[4]==0 && velocity[5]==0){
+            Vec3f vec = CommonUtil.rotatePoint(new Vec3f(1,0,0),0,host.rotationYaw,0);
+            velocity[4]=vec.xCoord;
+            velocity[5]=vec.zCoord;
+        }
+
+        velocity[2]+=speed*velocity[4];
+        velocity[3]+=speed*velocity[5];
     }
 
     public void drag(GenericRailTransport host, double drag){
@@ -219,21 +231,16 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         if(!getWorld().isRemote) {
 
             //prevent moving without velocity
-            if (Math.abs(velocity[0]) + Math.abs(velocity[1]) < 0.000001) {
-                return;
+            if (Math.abs(velocity[0]) + Math.abs(velocity[1] + Math.abs(velocity[2]) + Math.abs(velocity[3])) < 0.0000001) {
+                //return;
             }
 
             //reset rotation
-            velocity[2]=0;velocity[3]=0;
+            velocity[4]=0;velocity[5]=0;
             //update old position, add the gravity, and get the block below this,
             this.prevPosX = this.posX;
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;
-
-
-
-            Vec3f tempVel = new Vec3f(0,0,0);
-
 
             Block block = CommonUtil.getBlockAt(getWorld(), xFloor, yFloor, zFloor);
             //todo: if (block instanceof BlockRailCore) {
@@ -243,7 +250,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             //update on normal rails
             if (block instanceof BlockRailBase) {
                 this.yOffset=(block instanceof BlockRailCore?0.425f:0.3425f);
-                loopVanilla(host, Math.abs(velocity[0])+Math.abs(velocity[1]), (BlockRailBase) block);
+                loopVanilla(host, Math.abs(velocity[0])+Math.abs(velocity[1])+Math.abs(velocity[2])+Math.abs(velocity[3]), (BlockRailBase) block);
                 //update on ZnD rails, and ones that don't extend block rail base.
                 //todo ZnD support, either by jar reference or API update
             //} else if (block instanceof ITrackBase) {
@@ -254,16 +261,18 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             } else if(CommonUtil.getBlockAt(getWorld(), xFloor, yFloor+1, zFloor) instanceof BlockRailBase) {
                 prevPosY=posY;
                 posY++;
+                yFloor++;
             }
+           velocity[2]=0;velocity[3]=0;
         }
     }
 
     private void moveOffRail(){
         railPathZ=0;railPathX=0;
-        double moveLength = Math.abs(velocity[0]) + Math.abs(velocity[1]);
+        double moveLength = Math.abs(velocity[0]) + Math.abs(velocity[1] + Math.abs(velocity[2]) + Math.abs(velocity[3]));
         while (moveLength>0) {
-            posX+=Math.min(0.35, velocity[0]);
-            posZ+=Math.min(0.35, velocity[1]);
+            posX+=Math.min(0.35, velocity[0]+velocity[2]);
+            posZ+=Math.min(0.35, velocity[1]+velocity[3]);
             moveLength -= 0.35;
 
             //update Y position and check for collision
@@ -348,7 +357,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         railPathZ = (martix[railMetadata][2][1]);
 
         //cover moving reverse of track direction using the rotation from the closed loop rather than the full motion
-        if(velocity[0] * railPathX + velocity[1] * railPathZ <= 0.0D) {
+        if((velocity[0]+velocity[2]) * railPathX + (velocity[1]+velocity[3]) * railPathZ <= 0.0D) {
             railPathX = -railPathX;
             railPathZ = -railPathZ;
         }
@@ -359,6 +368,11 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
         velocity[0] = (float)(motionSqrt * railPathX);
         velocity[1] = (float)(motionSqrt * railPathZ);
 
+        motionSqrt = Math.abs(velocity[2])+Math.abs(velocity[3]);
+        velocity[2] = (float)(motionSqrt * railPathX);
+        velocity[3] = (float)(motionSqrt * railPathZ);
+
+        motionSqrt = Math.abs(velocity[0])+Math.abs(velocity[1])+Math.abs(velocity[2])+Math.abs(velocity[3]);
 
         //define the rail path again, to center the transport.
         railPathX2 = xFloor + 0.5D + martix[railMetadata][0][0];

@@ -97,10 +97,6 @@ public class EntityTrainCore extends GenericRailTransport {
     }
 
 
-    @Override
-    public boolean hasDrag(){return getAccelerator()==0;}
-
-
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
     public float getAcceleratorPercentage(){
         switch (Math.abs(getAccelerator())){
@@ -120,7 +116,7 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     public void calculateAcceleration(){
         //core accel speed from TC4
-        float accel=0.02f* getAcceleratorPercentage();
+        float accel=0.0025f* getAcceleratorPercentage();
         //buff to match engine type
         if(getTypes().contains(STEAM)){
             accel*=0.35f;
@@ -133,12 +129,9 @@ public class EntityTrainCore extends GenericRailTransport {
         cachedVectors[2].xCoord=accel* (10000f * (float)Math.pow(8f,((2.35f * -(0.3557/getPower()))-2.35f)));
 
         //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
-        if (cachedVectors[2].xCoord+cachedVectors[2].yCoord < -unRatio(transportTopSpeed())) {
+        if (Math.abs(frontBogie.velocity[0])+Math.abs(frontBogie.velocity[1]) >
+                unRatio(accelerator>0?transportTopSpeed():transportTopSpeedReverse())) {
             cachedVectors[2].xCoord=0;
-            //cachedVectors[2].xCoord = -unRatio(transportTopSpeed());
-        } else if (cachedVectors[2].xCoord+cachedVectors[2].yCoord > unRatio(transportTopSpeedReverse())) {
-            cachedVectors[2].xCoord=0;
-           // cachedVectors[2].xCoord = unRatio(transportTopSpeedReverse());
         }
 
         //handle ice slipping
@@ -181,33 +174,27 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     @Override
     public void onUpdate() {
-        if(backBogie != null && frontBogie != null) {
-
-            if (!worldObj.isRemote) {
-                cachedVectors[2].xCoord = 0;
-                //twice a second, re-calculate the speed.
-                if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
-                    if(Math.abs(accelerator)!=8 && ticksExisted % 10 == 0) {
-                        calculateAcceleration();
-                    }
-                } else {
-                    accelerator = 0;
-                    this.dataWatcher.updateObject(18, accelerator);
+        if(!worldObj.isRemote && backBogie != null && frontBogie != null) {
+            cachedVectors[2].xCoord = 0;
+            //twice a second, re-calculate the speed.
+            if (getAccelerator()!=0 && getBoolean(boolValues.RUNNING)) {
+                if(Math.abs(getAccelerator())!=8 && ticksExisted % 10 == 0) {
+                    calculateAcceleration();
                 }
-
-                if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
-                    backBogie.setVelocity(0,0,0);
-                    frontBogie.setVelocity(0,0,0);
-                } else if(accelerator!=0){
-                    appendMovement(cachedVectors[2].xCoord);
-                }
-
+            } else {
+                accelerator = 0;
+                this.dataWatcher.updateObject(18, getAccelerator());
             }
 
+            if(getAccelerator()==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
+                backBogie.setVelocity(0,0,0);
+                frontBogie.setVelocity(0,0,0);
+            } else if(getAccelerator()!=0){
+                appendMovement(cachedVectors[2].xCoord);
+            }
         }
 
         super.onUpdate();
-        updatePosition();
 
         if(hornDelay >0) {
             hornDelay--;
@@ -282,7 +269,7 @@ public class EntityTrainCore extends GenericRailTransport {
             switch (key){
                 case 8:{ //toggle ignition
                     setBoolean(boolValues.RUNNING, !getBoolean(boolValues.RUNNING));
-                    updateConsist();
+                    updateLinks();
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
                     if(hornDelay ==0){
@@ -300,7 +287,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         } else {
                             accelerator--;
                         }
-                        updateConsist();
+                        updateLinks();
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
@@ -315,7 +302,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         } else {
                             accelerator++;
                         }
-                        updateConsist();
+                        updateLinks();
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
@@ -326,7 +313,7 @@ public class EntityTrainCore extends GenericRailTransport {
                             return true;
                         }
                         accelerator = 0;
-                        updateConsist();
+                        updateLinks();
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
@@ -335,24 +322,28 @@ public class EntityTrainCore extends GenericRailTransport {
                         accelerator = 7;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }case 12:{//TC control reverse
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = -7;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }case 4: {//TC control, keep speed
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = (int)Math.copySign(8,accelerator);
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }case 14: {//TC control, keep speed
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = 0;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }
             }

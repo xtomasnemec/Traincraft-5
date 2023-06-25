@@ -1,6 +1,7 @@
 package fexcraft.tmt.slim;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,15 +14,11 @@ public abstract class ModelPoolEntry {
 	public Map<String, TextureGroup> textures;
 	protected TextureGroup texture;
 
-	public File checkValidPath(String path){
-		File file = new File(path);
-		if(!file.exists()){
-			return null;
-		}
-		return file;
+	public InputStream checkValidPath(String path){
+		return getClass().getResourceAsStream(path);
 	}
 
-	public abstract void getModel(File file);
+	public abstract void getModel(InputStream file);
 
 	/**
 	 * Sets the current texture group, which is used to switch the

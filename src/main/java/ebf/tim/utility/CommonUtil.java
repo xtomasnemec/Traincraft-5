@@ -349,6 +349,23 @@ public class CommonUtil {
         return (float)Math.pow(base,power);
     }
 
+    public static double getDistanceWithDirection(double fromX, double fromZ, double toX, double toZ, float rotationYaw) {
+
+        double lookX = MathHelper.cos(-rotationYaw * 0.017453292F - (float) Math.PI);
+        double lookZ = -MathHelper.sin(-rotationYaw * 0.017453292F - (float) Math.PI);
+
+        double vecX=fromX-toX;
+        double vecZ=fromZ-toZ;
+
+        double dotProduct = vecX * lookX + vecZ * lookZ;
+
+        if (dotProduct < 0) {
+            // Player 2 is behind Player 1
+            return -Math.sqrt(dotProduct);
+        } else {
+            return Math.sqrt(dotProduct);
+        }
+    }
 
     /**
      * <h3>rotate vector</h3>

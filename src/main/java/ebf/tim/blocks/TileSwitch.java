@@ -186,6 +186,12 @@ public class TileSwitch extends TileRenderFacing {
         int signalStrength=0;
         for(int o =-1;o<depth-1;o++) {
             signalStrength = worldObj.getBlockPowerInput(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2]);
+            if(signalStrength==0){
+                //1.12 use getMaxCurrentStrength
+                signalStrength = CommonUtil.getBlockAt(getWorld(),xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2])
+                        .isProvidingStrongPower(getWorld(),xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2],0);
+                //the 0 as the last arg is something with direction i think.
+            }
             if(signalStrength!=0) {
                 return signalStrength;
             }
