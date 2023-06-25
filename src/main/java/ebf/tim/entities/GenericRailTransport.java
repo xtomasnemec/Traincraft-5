@@ -1008,7 +1008,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
                 //scale by entity pitch
                 //pitch goes from -90 to 90, so it's inherently directional, stop that.
-                slope+=(0.0017361f)*Math.abs(stock.rotationPitch);
+                slope+=(0.00017361f)*Math.abs(stock.rotationPitch);
             }
         }
 
@@ -1032,9 +1032,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         appendMovement(slope * MathHelper.sin((rotationYaw-90)*radianF));
-        cachedVectors[2].yCoord*=drag;
-        backBogie.drag(this,drag);
-        frontBogie.drag(this,drag);
+        for(GenericRailTransport t : getConsist()){
+            t.frontBogie.drag(t,drag);
+            t.backBogie.drag(t,drag);
+        }
     }
 
     public float getFriction(){return 0.0015f;}
@@ -1599,22 +1600,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         double springDist = MathHelper.sqrt_double(vecX * vecX + vecZ * vecZ)
                 -(getOptimalDistance(other)+other.getOptimalDistance(this));
 
-        vecX /= springDist;
-        vecZ /= springDist;
-
-        springDist*=0.4;
+        springDist*=0.3;
         if(frontLinkedID!=null && other.getEntityId() == frontLinkedID) {
             springDist *= -1;
         }
         addLinkingMove(springDist);
-        /*
-        double dampDist = (other.frontBogie.velocity[0] - frontBogie.velocity[0]) * vecX + (other.frontBogie.velocity[1] - frontBogie.velocity[1]) * vecZ;
-
-        dampDist *= -0.004;
-        if(frontLinkedID!=null && other.getEntityId() == frontLinkedID) {
-            //dampDist *= -1;
-        }
-        addLinkingMove(dampDist);*/
     }
 
     /**
