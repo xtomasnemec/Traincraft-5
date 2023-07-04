@@ -57,6 +57,7 @@ import java.util.*;
 
 import static ebf.tim.TrainsInMotion.transportTypes.*;
 import static ebf.tim.utility.CommonUtil.radianF;
+import static ebf.tim.utility.CommonUtil.rotatePoint;
 
 /**
  * <h1>Generic Rail Transport</h1>
@@ -1210,6 +1211,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
                manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
             }
+
+            cachedVectors[1]=new Vec3f(rotationPoints()[1],0,0).rotatePoint(0, rotationYaw,0);
+            frontBogie.velocity[2]+=cachedVectors[1].xCoord-(frontBogie.posX-posX);
+            frontBogie.velocity[3]+=cachedVectors[1].zCoord-(frontBogie.posZ-posZ);
             updatePosition();
 
             if(collisionHandler!=null){
