@@ -955,7 +955,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void finalMove(){
         backBogie.minecartMove(this);
-        cachedVectors[1] = new Vec3f(rotationPoints()[1], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0)
+        cachedVectors[1] = new Vec3f(-rotationPoints()[0], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0)
                 .addVector(backBogie.posX,backBogie.posY,backBogie.posZ);
         setPosition(cachedVectors[1].xCoord, cachedVectors[1].yCoord,cachedVectors[1].zCoord);
 
@@ -1211,10 +1211,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
                manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
             }
-
-            cachedVectors[1]=new Vec3f(rotationPoints()[1],0,0).rotatePoint(0, rotationYaw,0);
-            frontBogie.velocity[2]+=cachedVectors[1].xCoord-(frontBogie.posX-posX);
-            frontBogie.velocity[3]+=cachedVectors[1].zCoord-(frontBogie.posZ-posZ);
+            double x2=frontBogie.posX- posX;
+            double z2=frontBogie.posZ- posZ;
+            double dist=Math.abs(Math.sqrt(x2*x2+z2*z2)+rotationPoints()[1]);
+            if(Math.sqrt(x2*x2+z2*z2)<0){
+                dist*=-1;
+            }
+            frontBogie.addLinking(this, dist*0.000625);
             updatePosition();
 
             if(collisionHandler!=null){
