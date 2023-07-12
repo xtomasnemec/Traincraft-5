@@ -256,12 +256,16 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
             //} else if (block instanceof ITrackBase) {
                 //update position for ZnD rails.
                 //moveBogieZnD(motionX, motionZ, floorX, floorY, floorZ, (ITrackBase) block);
-            } else if(block instanceof BlockAir) {
-                moveOffRail();
             } else if(CommonUtil.getBlockAt(getWorld(), xFloor, yFloor+1, zFloor) instanceof BlockRailBase) {
                 prevPosY=posY;
                 posY++;
                 yFloor++;
+            } else if(CommonUtil.getBlockAt(getWorld(), xFloor, yFloor-1, zFloor) instanceof BlockRailBase) {
+                prevPosY=posY;
+                posY--;
+                yFloor--;
+            } else if(block instanceof BlockAir) {
+                moveOffRail();
             }
            velocity[2]=0;velocity[3]=0;
         }

@@ -955,7 +955,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void finalMove(){
         backBogie.minecartMove(this);
-        cachedVectors[1] = new Vec3f(-rotationPoints()[0], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0)
+        cachedVectors[1] = new Vec3f(-rotationPoints()[0], 0, 0).rotatePoint(0, rotationYaw, 0)
                 .addVector(backBogie.posX,backBogie.posY,backBogie.posZ);
         setPosition(cachedVectors[1].xCoord, cachedVectors[1].yCoord,cachedVectors[1].zCoord);
 
@@ -997,21 +997,31 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public void applyDrag(){
-        float drag = 0.9998f,brakeBuff=0,slope=0;
-        //iterate the consist to collect the stats, since only end units can do this.
+        boolean canSlope=true;
+        float drag = 0.9998f, brakeBuff = 0, slope = 0;
+        //check if lope things can be done at all
         for(GenericRailTransport stock : getConsist()) {
-            if(stock.getBoolean(boolValues.BRAKE)){
-                //realistically would be more like 2.4, but 5 makes gameplay more dramatic
-                brakeBuff+=stock.weightKg()*5.0f;
+            if(stock!=this && getAccelerator()!=0){
+                canSlope=false;
+                break;
             }
-            if(stock.rotationPitch!=0){
+        }
+        if(canSlope) {
+            if (getBoolean(boolValues.BRAKE)) {
+                //realistically would be more like 2.4, but 5 makes gameplay more dramatic
+                brakeBuff += weightKg() * 5.0f;
+            }
+            if (rotationPitch != 0) {
                 //vanilla uses 0.0078125 per tick for slope speed.
                 //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
                 //scale by entity pitch
                 //pitch goes from -90 to 90, so it's inherently directional, stop that.
-                slope+=(0.00017361f)*Math.abs(stock.rotationPitch);
+                slope += (0.00017361f) * Math.abs(rotationPitch);
             }
+            appendMovement(slope * MathHelper.sin((rotationYaw-90)*radianF));
         }
+
+        //now do drag stuff
 
         //scale drag for derail, or air lateral friction. if you do both at the same time then it's way too much.
         if(getBoolean(boolValues.DERAILED)){
@@ -1032,7 +1042,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             drag = 0f;
         }
 
-        appendMovement(slope * MathHelper.sin((rotationYaw-90)*radianF));
         for(GenericRailTransport t : getConsist()){
             t.frontBogie.drag(t,drag);
             t.backBogie.drag(t,drag);
