@@ -62,13 +62,8 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
     /*@Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
         if (entity instanceof GenericRailTransport){
-            if(((GenericRailTransport) entity).frontBogie!=null) {
-                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        false);
-            } else {
-                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        true);
-            }
+            render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                    ((GenericRailTransport) entity).backBogie==null);
         }
     }*/
 
@@ -95,12 +90,14 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
     {}
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket) {
-        doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, null, this);
+        renderBlocks=field_147909_c;
+        doRender(entity,x,y,z,yaw,entity.backBogie!=null?entity.backBogie.yOffset:0, isPaintBucket, null, this);
     }
 
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket, TransportSkin textureURI) {
-        doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, textureURI, this);
+        renderBlocks=field_147909_c;
+        doRender(entity,x,y,z,yaw,entity.backBogie !=null?entity.backBogie.yOffset:0, isPaintBucket, textureURI, this);
     }
 
     /**
@@ -285,7 +282,7 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
         //set the render position
         GL11.glTranslated(x, y+ railOffset +bogieOffset+1.5, z);
 
-        GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
+        GL11.glTranslated(0, CommonUtil.rotatePoint(new Vec3f(
                 Math.abs(entity.rotationPoints()[0])+Math.abs(entity.rotationPoints()[1]),
                 0,0), entity.rotationPitch,0,0).yCoord, 0);
         if(entity.frontBogie!=null && entity.backBogie!=null){

@@ -1,17 +1,15 @@
 package fexcraft.tmt.slim;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ModelPoolObjEntry extends ModelPoolEntry {
 
 	public ModelPoolObjEntry(){}
 
-	public void getModel(File file){
+	public void getModel(InputStream file){
 		try{
-			BufferedReader in = new BufferedReader(new FileReader(file));
+			BufferedReader in = new BufferedReader(new InputStreamReader(file));
 			String s;
 			ArrayList<TexturedVertex> verts = new ArrayList<TexturedVertex>();
 			ArrayList<float[]> uvs = new ArrayList<float[]>();
