@@ -954,12 +954,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * if X or Z is null, the bogie's existing motion velocity will be used
      */
     public void finalMove(){
-        backBogie.minecartMove(this);
         cachedVectors[1] = new Vec3f(-rotationPoints()[0], 0, 0).rotatePoint(0, rotationYaw, 0)
                 .addVector(backBogie.posX,backBogie.posY,backBogie.posZ);
         setPosition(cachedVectors[1].xCoord, cachedVectors[1].yCoord,cachedVectors[1].zCoord);
 
         frontBogie.minecartMove(this);
+        backBogie.minecartMove(this);
         //reset the y coord so they will re-calculate the yaw
         if(hasDrag()) {
             applyDrag();
@@ -1220,13 +1220,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             if(backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
                manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
             }
-            double x2=frontBogie.posX- posX;
-            double z2=frontBogie.posZ- posZ;
-            double dist=Math.abs(Math.sqrt(x2*x2+z2*z2)+rotationPoints()[1]);
-            if(Math.sqrt(x2*x2+z2*z2)<0){
-                dist*=-1;
-            }
-            frontBogie.addLinking(this, dist*0.000625);
+            //for some off reason, this madness works pretty reliably from my tests.
+            cachedVectors[1]=new Vec3f(rotationPoints()[1],0,0).rotatePoint(0,rotationYaw,0)
+                    .addVector(posX,0,posZ).subtract((float)frontBogie.posX,0,(float)frontBogie.posZ);
+            frontBogie.velocity[2]+=cachedVectors[1].xCoord;
+            frontBogie.velocity[3]+=cachedVectors[1].zCoord;
             updatePosition();
 
             if(collisionHandler!=null){
