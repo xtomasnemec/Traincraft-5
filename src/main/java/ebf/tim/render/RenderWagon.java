@@ -65,24 +65,6 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
             render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
                     ((GenericRailTransport) entity).backBogie==null);
         }
-    }*/
-
-    //manages culling, mostly just breaks stuff, leave to return true.
-    @Override
-    public boolean shouldRender(GenericRailTransport entity, ICamera camera, double camX, double camY, double camZ) {
-        return true;
-    }
-
-    public void doRender(GenericRailTransport entity, double x, double y, double z, float yaw, float partialTick){
-        if (entity !=null){
-            if(entity.frontBogie!=null) {
-                render(entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        false);
-            } else {
-                render(entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        true);
-            }
-        }
     }
 
     @Override
