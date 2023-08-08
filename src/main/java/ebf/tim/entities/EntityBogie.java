@@ -303,7 +303,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     private void loopVanilla(GenericRailTransport host, double moveLength, BlockRailBase block){
 
         //try to adhere to limiter track
-        railmax = block.getRailMaxSpeed(getWorld(),this,xFloor, yFloor, zFloor);
+        railmax = block.getRailMaxSpeed(getWorld(),this,new BlockPos(xFloor, yFloor, zFloor));
         Block blockUp;
         if(railmax!=0.4f){
             moveLength=Math.min(moveLength,railmax);
@@ -348,15 +348,16 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
                     block = (BlockRailBase) blockNext;
                     //do the rail functions.
                     if(shouldDoRailFunctions()) {
-                        block.onMinecartPass(getWorld(), this, xFloor, yFloor, zFloor);
+                        block.onMinecartPass(getWorld(), this, new BlockPos(xFloor, yFloor, zFloor));
                     }
                     //get the direction of the rail from it's metadata
                     railMetadata = CommonUtil.getRailMeta(getWorld(), this, xFloor, yFloor, zFloor);
                 }
                 //get the direction of the rail from it's metadata
-                else if (getWorld().getTileEntity(xFloor, yFloor, zFloor) instanceof ITrackTile && (((ITrackTile)getWorld().getTileEntity(xFloor, yFloor, zFloor)).getTrackInstance() instanceof ITrackSwitch)){
+                /*TODO:railcraft support
+                else if (getWorld().getTileEntity(new BlockPos(xFloor, yFloor, zFloor)) instanceof ITrackTile && (((ITrackTile)getWorld().getTileEntity(xFloor, yFloor, zFloor)).getTrackInstance() instanceof ITrackSwitch)){
                     railMetadata = CommonUtil.getRailMeta(getWorld(),this,xFloor, yFloor, zFloor);//railcraft support
-                }
+                }*/
             }
         }
     }

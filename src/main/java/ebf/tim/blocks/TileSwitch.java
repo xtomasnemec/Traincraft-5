@@ -4,11 +4,9 @@ import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import java.util.List;
@@ -176,8 +174,8 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
     public int checkBlockPower(int[] ... offset){
         int signalStrength=0;
         for(int[] o : offset) {
-            signalStrength = getWorld().getStrongPower(pos.add(o[0], o[1], o[2]));
-            if (signalStrength == 0 && getWorld().isBlockPowered(pos.add(o[0], o[1], o[2]))) {
+            signalStrength = getWorld().getStrongPower(getPos().add(o[0], o[1], o[2]));
+            if (signalStrength == 0 && getWorld().isBlockPowered(getPos().add(o[0], o[1], o[2]))) {
                 return 15;
             } else if(signalStrength!=0) {
                 return signalStrength;
@@ -189,11 +187,10 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
     public int checkBlockPower(int[] offset, int depth){
         int signalStrength=0;
         for(int o =-1;o<depth-1;o++) {
-            signalStrength = worldObj.getBlockPowerInput(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2]);
+            signalStrength = getWorld().getStrongPower(getPos().add(offset[0],offset[1],offset[2]));
             if(signalStrength==0){
                 //1.12 use getMaxCurrentStrength
-                signalStrength = CommonUtil.getBlockAt(getWorld(),xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2])
-                        .isProvidingStrongPower(getWorld(),xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2],0);
+                signalStrength = getWorld().getBlockState(pos).getWeakPower(getWorld(),pos.add(offset[0],offset[1],offset[2]), EnumFacing.DOWN);
                 //the 0 as the last arg is something with direction i think.
             }
             if(signalStrength!=0) {

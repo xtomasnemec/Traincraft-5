@@ -53,18 +53,21 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
         return null;
     }
 
+    //manages culling, mostly just breaks stuff, leave to return true.
+    @Override
+    public boolean shouldRender(GenericRailTransport entity, ICamera camera, double camX, double camY, double camZ) {
+        return true;
+    }
     /**
      * <h3>base render extension</h3>
      * acts as a redirect for the base render function to our own function.
      * This is just to do typecasting and a few calculations beforehand so we only need to do them once per render.
      * todo: 1.9+ should support Entity<t zextends GenericRailTransport> so this typecasting method should be completely useless then.
      */
-    /*@Override
-    public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
-        if (entity instanceof GenericRailTransport){
-            render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                    ((GenericRailTransport) entity).backBogie==null);
-        }
+    @Override
+    public void doRender(GenericRailTransport entity, double x, double y, double z, float yaw, float partialTick){
+        render(entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                entity.backBogie==null);
     }
 
     @Override
@@ -72,13 +75,11 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
     {}
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket) {
-        renderBlocks=field_147909_c;
         doRender(entity,x,y,z,yaw,entity.backBogie!=null?entity.backBogie.yOffset:0, isPaintBucket, null, this);
     }
 
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket, TransportSkin textureURI) {
-        renderBlocks=field_147909_c;
         doRender(entity,x,y,z,yaw,entity.backBogie !=null?entity.backBogie.yOffset:0, isPaintBucket, textureURI, this);
     }
 

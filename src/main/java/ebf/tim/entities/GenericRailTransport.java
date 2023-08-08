@@ -1633,7 +1633,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         double vecZ = other.posZ - posZ;
 
 
-        double springDist = MathHelper.sqrt_double(vecX * vecX + vecZ * vecZ)
+        double springDist = MathHelper.sqrt(vecX * vecX + vecZ * vecZ)
                 -(getOptimalDistance(other)+other.getOptimalDistance(this));
 
         if(getVelocity()>0.3) {

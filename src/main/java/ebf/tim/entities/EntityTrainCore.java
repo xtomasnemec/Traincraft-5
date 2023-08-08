@@ -176,7 +176,7 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     @Override
     public void onUpdate() {
-        if(!worldObj.isRemote && backBogie != null && frontBogie != null) {
+        if(!getWorld().isRemote && backBogie != null && frontBogie != null) {
             cachedVectors[2].xCoord = 0;
             //twice a second, re-calculate the speed.
             if (getAccelerator()!=0 && getBoolean(boolValues.RUNNING)) {
@@ -185,7 +185,7 @@ public class EntityTrainCore extends GenericRailTransport {
                 }
             } else {
                 accelerator = 0;
-                this.dataWatcher.updateObject(18, getAccelerator());
+                this.dataManager.set(ACCELERATOR, getAccelerator());
             }
 
             if(getAccelerator()==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
@@ -290,7 +290,7 @@ public class EntityTrainCore extends GenericRailTransport {
                             accelerator--;
                         }
                         updateLinks();
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 }case 3:{ //increase speed
@@ -305,7 +305,7 @@ public class EntityTrainCore extends GenericRailTransport {
                             accelerator++;
                         }
                         updateLinks();
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 } case 16:{//reset speed
@@ -316,7 +316,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         }
                         accelerator = 0;
                         updateLinks();
-                        this.dataWatcher.updateObject(18, accelerator);
+                        this.dataManager.set(ACCELERATOR, accelerator);
                     }
                     return true;
                 } case 11:{//TC control forward

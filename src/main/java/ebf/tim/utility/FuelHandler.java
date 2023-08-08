@@ -189,7 +189,7 @@ public class FuelHandler{
 			train.fill(getUseableFluid(train.waterSlot().getSlotID(),train), true);
 			if (!train.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				train.getSlotIndexByID(train.waterSlot().getSlotID()).decrStackSize(1);
-				train.addItem(new ItemStack(Items.bucket));
+				train.addItem(new ItemStack(Items.BUCKET));
 				train.markDirty();
 			}
 		}
@@ -419,11 +419,11 @@ public class FuelHandler{
 
 	public static void manageTanker(GenericRailTransport transport){
 		if (getUseableFluid(transport.tankerInputSlot().getSlotID(),transport) !=null &&
-				transport.fill(null,getUseableFluid(transport.tankerInputSlot().getSlotID(),transport),false)==getUseableFluid(transport.tankerInputSlot().getSlotID(),transport).amount) {
-			transport.fill(null,getUseableFluid(transport.tankerInputSlot().getSlotID(),transport), true);
+				transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(),transport),false)==getUseableFluid(transport.tankerInputSlot().getSlotID(),transport).amount) {
+			transport.fill(getUseableFluid(transport.tankerInputSlot().getSlotID(),transport), true);
 			if (!transport.getBoolean(GenericRailTransport.boolValues.CREATIVE)) {
 				transport.getSlotIndexByID(transport.tankerInputSlot().getSlotID()).decrStackSize(1);
-				transport.addItem(new ItemStack(Items.bucket));
+				transport.addItem(new ItemStack(Items.BUCKET));
 			}
 		}
 		//attempt to fill any buckets in the drain slot

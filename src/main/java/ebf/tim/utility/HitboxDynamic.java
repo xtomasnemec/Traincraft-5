@@ -41,7 +41,7 @@ public class HitboxDynamic {
                         width*0.5,height,width*0.5));
                 c.setPosition(entity.posX, entity.posY, entity.posZ);
                 interactionBoxes.add(c);
-                entity.worldObj.spawnEntityInWorld(c);
+                entity.getWorld().spawnEntity(c);
                 if(front==null){
                     front=c;
                 } else{
