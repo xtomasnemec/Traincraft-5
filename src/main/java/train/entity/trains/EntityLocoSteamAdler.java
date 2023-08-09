@@ -9,7 +9,7 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -54,7 +54,7 @@ public class EntityLocoSteamAdler extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLocoSteamAdler()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.1f, world==null?-1.2f:-0.9f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.1f, getWorld()==null?-1.2f:-0.9f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, -90.0f, 0.0f}};}
     @Override

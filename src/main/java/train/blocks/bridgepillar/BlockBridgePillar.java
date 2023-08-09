@@ -14,8 +14,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.library.Info;
 
@@ -41,7 +41,7 @@ public class BlockBridgePillar extends BlockDynamic {
 	
 
 	/*@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		texture = iconRegister.registerIcon(Info.modID.toLowerCase() + ":assembly_1_bottom");
 	}*/

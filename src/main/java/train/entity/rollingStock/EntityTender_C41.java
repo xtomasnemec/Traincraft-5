@@ -7,7 +7,7 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

@@ -9,7 +9,7 @@ package train.items;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
@@ -17,8 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.library.Info;
 import train.library.ItemIDs;
@@ -61,7 +61,7 @@ public class ItemTCCompositeSuit extends ItemTCArmor {
      * Return an item rarity from EnumRarity
      */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return EnumRarity.EPIC;

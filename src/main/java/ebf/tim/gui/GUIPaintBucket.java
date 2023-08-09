@@ -9,7 +9,7 @@ import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.EventManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.font;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;

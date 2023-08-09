@@ -1,7 +1,8 @@
 package fexcraft.tmt.slim;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 
 import java.io.Serializable;
 

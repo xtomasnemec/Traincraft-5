@@ -12,7 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailPowered;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,15 +20,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * <h1>Bogie Core</h1>
  * this controls the behavior of the bogies in trains and rollingstock.
  * @author Eternal Blue Flame
  */
-public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableCart, IEntityAdditionalSpawnData {
+public class EntityBogie extends MinecartEntity implements IMinecart, IRoutableCart, IEntityAdditionalSpawnData {
 
     /** used to keep a reference to the parent train/rollingstock.*/
     private int parentId = 0;
@@ -102,7 +102,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     /**used by the game to tell different types of minecarts from eachother, this doesnt effect us, so just use something random*/
     @Override
-    public EntityMinecart.Type getType() {
+    public MinecartEntity.Type getType() {
         return Type.RIDEABLE;
     }
     /**returns if the cart can make itself move*/
@@ -223,7 +223,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
     /**
      * <h2> movement management</h2>
      * this is modified movement from the super class, should be more efficient, and reliable, but generally does the same thing, minus ability to collide.
-     * @see EntityMinecart#onUpdate()
+     * @see MinecartEntity#onUpdate()
      * Some features are replaced using our own for compatibility with ZoraNoDensha
      * @see CommonUtil
      * returns true or false depending on whether or not it derails from having no rail.
@@ -427,7 +427,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     /**checks if the parent transport matches the filter for railcraft items, if the filter is null or the parent is null, return false.*/
     @Override
-    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+    public boolean doesCartMatchFilter(ItemStack stack, MinecartEntity cart) {
         if (stack == null || getWorld().getEntityByID(parentId) == null) {
             return false;
         } else {
@@ -470,7 +470,7 @@ public class EntityBogie extends EntityMinecart implements IMinecart, IRoutableC
 
     /**used to update positioning on client, and update the velocity multiplier*/
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int turnProgress, boolean teleport) {
         super.setPositionAndRotationDirect(x,y,z,yaw,pitch,turnProgress, teleport);
     }

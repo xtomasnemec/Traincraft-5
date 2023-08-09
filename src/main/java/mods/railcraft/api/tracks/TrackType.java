@@ -13,13 +13,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import javax.annotation.Nullable;
@@ -166,17 +166,17 @@ public class TrackType extends IForgeRegistryEntry.Impl<TrackType> implements IS
     }
 
     public static class EventHandler {
-        public void onMinecartPass(World worldIn, EntityMinecart cart, BlockPos pos, @Nullable TrackKit trackKit) {
+        public void onMinecartPass(World worldIn, MinecartEntity cart, BlockPos pos, @Nullable TrackKit trackKit) {
         }
 
-        public @Nullable BlockRailBase.EnumRailDirection getRailDirectionOverride(IBlockAccess world, BlockPos pos, IBlockState state, @Nullable EntityMinecart cart) {
+        public @Nullable BlockRailBase.EnumRailDirection getRailDirectionOverride(IWorld world, BlockPos pos, IBlockState state, @Nullable MinecartEntity cart) {
             return null;
         }
 
         public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
         }
 
-        public float getMaxSpeed(World world, @Nullable EntityMinecart cart, BlockPos pos) {
+        public float getMaxSpeed(World world, @Nullable MinecartEntity cart, BlockPos pos) {
             return 0.4f;
         }
     }

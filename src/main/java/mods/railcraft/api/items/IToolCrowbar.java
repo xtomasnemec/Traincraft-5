@@ -6,7 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.items;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -47,7 +47,7 @@ public interface IToolCrowbar {
      * @param crowbar the crowbar
      * @param cart    the cart   @return true if can link a cart
      */
-    boolean canLink(EntityPlayer player, EnumHand hand, ItemStack crowbar, EntityMinecart cart);
+    boolean canLink(EntityPlayer player, EnumHand hand, ItemStack crowbar, MinecartEntity cart);
 
     /**
      * Callback to do damage.
@@ -56,7 +56,7 @@ public interface IToolCrowbar {
      * @param crowbar the crowbar
      * @param cart    the cart
      */
-    void onLink(EntityPlayer player, EnumHand hand, ItemStack crowbar, EntityMinecart cart);
+    void onLink(EntityPlayer player, EnumHand hand, ItemStack crowbar, MinecartEntity cart);
 
     /**
      * Controls whether you can boost a cart.
@@ -65,7 +65,7 @@ public interface IToolCrowbar {
      * @param crowbar the crowbar
      * @param cart    the cart   @return true if can boost a cart
      */
-    boolean canBoost(EntityPlayer player, EnumHand hand, ItemStack crowbar, EntityMinecart cart);
+    boolean canBoost(EntityPlayer player, EnumHand hand, ItemStack crowbar, MinecartEntity cart);
 
     /**
      * Callback to do damage, boosting a cart usually does more damage than
@@ -75,5 +75,5 @@ public interface IToolCrowbar {
      * @param crowbar the crowbar
      * @param cart    the cart
      */
-    void onBoost(EntityPlayer player, EnumHand hand, ItemStack crowbar, EntityMinecart cart);
+    void onBoost(EntityPlayer player, EnumHand hand, ItemStack crowbar, MinecartEntity cart);
 }

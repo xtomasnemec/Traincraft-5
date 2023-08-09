@@ -8,7 +8,7 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -81,7 +81,7 @@ public class EntityCaboose3 extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0,1.2f, 0f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?3f:2.75f,2.3f,1.1f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?3f:2.75f,2.3f,1.1f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.6f, -0.7f};}
 

@@ -6,7 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.carts;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -39,11 +39,11 @@ public interface IItemCart {
      * <p/>
      * If this interface is not implemented, it is assumed to be true.
      *
-     * @param requester the EntityMinecart that initiated the action
+     * @param requester the MinecartEntity that initiated the action
      * @param stack     the ItemStack
      * @return true if the cart can accept the item
      */
-    boolean canAcceptPushedItem(EntityMinecart requester, ItemStack stack);
+    boolean canAcceptPushedItem(MinecartEntity requester, ItemStack stack);
 
     /**
      * This function controls whether a cart will fulfill a pull request for a specific item.
@@ -51,9 +51,9 @@ public interface IItemCart {
      * <p/>
      * If this interface is not implemented, it is assumed to be true.
      *
-     * @param requester the EntityMinecart that initiated the action
+     * @param requester the MinecartEntity that initiated the action
      * @param stack     the ItemStack
      * @return true if the cart can provide the item
      */
-    boolean canProvidePulledItem(EntityMinecart requester, ItemStack stack);
+    boolean canProvidePulledItem(MinecartEntity requester, ItemStack stack);
 }

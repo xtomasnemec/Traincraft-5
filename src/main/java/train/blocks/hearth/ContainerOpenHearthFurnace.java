@@ -4,8 +4,8 @@ import ebf.tim.utility.TransportSlotManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ContainerOpenHearthFurnace extends TransportSlotManager {
 
@@ -67,7 +67,7 @@ public class ContainerOpenHearthFurnace extends TransportSlotManager {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void updateProgressBar(int i, int j) {
 		if (i == 0) {
 			furnace.furnaceCookTime = j;

@@ -21,7 +21,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBucket;
@@ -34,8 +34,8 @@ import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
@@ -390,7 +390,7 @@ public class TiMGenericRegistry {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static void regEntityRender(GenericRailTransport registry, Object entityRender){
         if(entityRender==null){
             net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler(registry.getClass(), ebf.tim.render.RenderWagon.INSTANCE);
@@ -408,7 +408,7 @@ public class TiMGenericRegistry {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static void regTileRender(String MODID, String unlocalizedName, Block block, Class<? extends TileEntity> tile, ModelBase model, Object TESR){
 
         if (block instanceof BlockDynamic) {
@@ -427,7 +427,7 @@ public class TiMGenericRegistry {
 
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void registerBlockStateModel(Block block, String MODID, String textureName){
         net.minecraftforge.client.model.ModelLoader.setCustomStateMapper(block, new net.minecraft.client.renderer.block.statemap.IStateMapper() {
             @Override

@@ -8,7 +8,7 @@
 package train.core.network;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.api.distmarker.Dist;
 import train.Traincraft;
 import train.library.Info;
 

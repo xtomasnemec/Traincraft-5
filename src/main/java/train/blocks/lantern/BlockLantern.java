@@ -13,10 +13,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 
 import javax.annotation.Nullable;
@@ -32,17 +32,17 @@ public class BlockLantern extends BlockDynamic {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IWorld source, BlockPos pos) {
 		return new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.9F, 0.8F);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
 		return getBoundingBox(state,world,pos);
 	}
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IWorld world, BlockPos pos){
 		return getBoundingBox(state,world,pos);
 	}
 	@Override
@@ -56,7 +56,7 @@ public class BlockLantern extends BlockDynamic {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IWorld world, BlockPos pos) {
 		return false;
 	}
 
@@ -70,7 +70,7 @@ public class BlockLantern extends BlockDynamic {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
@@ -85,7 +85,7 @@ public class BlockLantern extends BlockDynamic {
 
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public Object getGUI(EntityPlayer player, TileEntity te){
 		return new train.blocks.lantern.GuiLantern(player, (TileLantern) te);

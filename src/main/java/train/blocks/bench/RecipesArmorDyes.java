@@ -1,7 +1,7 @@
 package train.blocks.bench;
 
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;

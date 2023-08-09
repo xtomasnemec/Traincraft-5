@@ -19,10 +19,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 
 import java.util.Random;
@@ -36,7 +36,7 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IWorld world, BlockPos pos) {
 		return false;
 	}
 
@@ -45,7 +45,7 @@ public class BlockGeneratorDiesel extends BlockDynamic {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public Object getGUI(EntityPlayer player, TileEntity te){
 		return new train.blocks.generator.GuiGeneratorDiesel(player.inventory, (TileGeneratorDiesel) te);
@@ -71,7 +71,7 @@ public class BlockGeneratorDiesel extends BlockDynamic {
         }
     }
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		int l = CommonUtil.getBlockFacing(world,pos.getX(),pos.getY(),pos.getZ());

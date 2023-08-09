@@ -13,7 +13,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -23,10 +23,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -72,7 +72,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     public int tickRate(World world){return 40;}
 
     @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public boolean isNormalCube(IBlockState state, IWorld world, BlockPos pos) {
         return false;
     }
 
@@ -90,15 +90,15 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     @Override
-    public boolean isFlexibleRail(IBlockAccess world, BlockPos pos){return true;}
+    public boolean isFlexibleRail(IWorld world, BlockPos pos){return true;}
 
     @Override
-    public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos p){
+    public float getRailMaxSpeed(World world, MinecartEntity cart, BlockPos p){
         return 0.4f;//getTile(world, x, y, z)!=null?getTile(world, x, y, z).getRailSpeed():0.4f;
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IWorld world, BlockPos pos) {
         int meta = CommonUtil.getRailMeta(world, null, pos.getX(),pos.getY(),pos.getZ());
         if (meta >1 && meta <6) {
             return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.5f, 1.0F);
@@ -107,13 +107,13 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
         return getBoundingBox(state,world,pos);
     }
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IWorld world, BlockPos pos){
         return getBoundingBox(state,world,pos);
     }
 
@@ -129,7 +129,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
 
-    public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_) {
+    public boolean isBlockSolid(IWorld p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_) {
         return true;
     }
 
@@ -141,7 +141,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
 
 
     @Override
-    public EnumRailDirection getRailDirection(IBlockAccess world, BlockPos pos, IBlockState state, EntityMinecart cart) {
+    public EnumRailDirection getRailDirection(IWorld world, BlockPos pos, IBlockState state, MinecartEntity cart) {
 
         int x = pos.getX(), y=pos.getY(),z=pos.getZ();
 
@@ -288,7 +288,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
         return EnumRailDirection.byMetadata(meta);
     }
 
-    public int getTileEntityMeta(IBlockAccess w, int x, int y, int z){
+    public int getTileEntityMeta(IWorld w, int x, int y, int z){
         if(getTileEntity(w,x,y,z) instanceof RailTileEntity){
             return ((RailTileEntity) getTileEntity(w,x,y,z)).getMeta();
         }
@@ -325,13 +325,13 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+    public void getDrops(NonNullList<ItemStack> drops, IWorld world, BlockPos pos, IBlockState state, int fortune) {
     }
 
 
 
     @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
+    public void onNeighborChange(IWorld world, BlockPos pos, BlockPos neighbor){
         if(!(world.getBlockState(neighbor).getBlock() instanceof BlockRailBase)) {
             updateNearbyShapes((World) world,pos.getX(),pos.getY(),pos.getZ());
         }
@@ -458,7 +458,7 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
      * Simplifies getting rail metadata for a block, returns -1 is the block is not a rail.
      * in 1.8+ this will have to change to returning the expected int based on the block state, or the CommonUtil.getRailMeta for TiM rails
      */
-    public static int getRailMeta(IBlockAccess world, int x, int y, int z, @Nullable EntityMinecart cart){
+    public static int getRailMeta(IWorld world, int x, int y, int z, @Nullable MinecartEntity cart){
         if(!(CommonUtil.getBlockAt((World) world,x,y,z) instanceof BlockRailBase)){
             return -1;
         }
@@ -479,26 +479,26 @@ public class BlockRailCore extends BlockRail implements ITileEntityProvider {
     }
 
     @Deprecated //this was a quick lazy way to do this, should replace with a more proper thing later.
-    private static TileEntity getTileEntity(IBlockAccess world, int x, int y, int z){
+    private static TileEntity getTileEntity(IWorld world, int x, int y, int z){
         return world.getTileEntity(new BlockPos(x,y,z));
     }
 
 
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
         return Blocks.RAIL.getIcon(0, 0);
     }*/
 
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getRenderBlockPass() {
         return -1;
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     protected String getTextureName() {
         Blocks.flowing_water.getTextureName();
     }*/

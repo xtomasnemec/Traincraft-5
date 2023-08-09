@@ -8,7 +8,7 @@
 package mods.railcraft.api.items;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -42,5 +42,5 @@ public interface IMinecartItem {
      * @return the cart placed or null if failed
      */
     @Nullable
-    EntityMinecart placeCart(GameProfile owner, ItemStack cart, World world, BlockPos pos);
+    MinecartEntity placeCart(GameProfile owner, ItemStack cart, World world, BlockPos pos);
 }

@@ -27,10 +27,10 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -58,8 +58,8 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.blocks.TCBlocks;
 
 import javax.annotation.Nullable;
@@ -74,7 +74,7 @@ import static ebf.tim.utility.CommonUtil.rotatePoint;
  * this is the base for all trains and rollingstock.
  * @author Eternal Blue Flame
  */
-public class GenericRailTransport extends EntityMinecart implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, ILinkableCart, IEntityMultiPart, IMinecart {
+public class GenericRailTransport extends MinecartEntity implements IEntityAdditionalSpawnData, IInventory, IFluidHandler, ILinkableCart, IMinecart {
 
     /*
      * <h2>variables</h2>
@@ -139,7 +139,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     private List<GenericRailTransport> consist = new ArrayList<>();
 
-    //@SideOnly(Side.CLIENT)
+    //@OnlyIn(Dist.CLIENT)
     public TransportRenderData renderData = new TransportRenderData();
 
     public XmlBuilder entityData = new XmlBuilder();
@@ -170,9 +170,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         return false;
     }
     @Override
-    public boolean canLink(EntityMinecart cart) {
+    public boolean canLink(MinecartEntity cart) {
         //if support is to be added a hitbox will need to be made for front and back to check if it contains the cart.
-        //additionally all linking functionality will have to account for if the linked entity is instanceof EntityMinecart
+        //additionally all linking functionality will have to account for if the linked entity is instanceof MinecartEntity
         return false;
     }
 
@@ -183,25 +183,25 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     //the distance that a link can be created
     @Override
-    public float getLinkageDistance(EntityMinecart cart) {
+    public float getLinkageDistance(MinecartEntity cart) {
         return (getHitboxSize()[0]*0.5f)+0.5f;
     }
     //the distance to be kept between carts
     @Override
-    public float getOptimalDistance(EntityMinecart cart) {
+    public float getOptimalDistance(MinecartEntity cart) {
         return (getHitboxSize()[0]*0.5f);
     }
 
     @Override
-    public boolean canBeAdjusted(EntityMinecart cart) {
+    public boolean canBeAdjusted(MinecartEntity cart) {
         return getAccelerator()==0;
     }
 
     @Override
-    public void onLinkCreated(EntityMinecart cart) {}
+    public void onLinkCreated(MinecartEntity cart) {}
 
     @Override
-    public void onLinkBroken(EntityMinecart cart) {
+    public void onLinkBroken(MinecartEntity cart) {
         if(frontLinkedID==cart.getEntityId()){
             frontLinkedTransport=null;
             frontLinkedID=null;
@@ -213,7 +213,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     @Override
     public World getWorld() {
-        return world;
+        return level;
     }
 
     @Override
@@ -232,7 +232,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * @return true if the item matches the cart
      */
     @Override
-    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+    public boolean doesCartMatchFilter(ItemStack stack, MinecartEntity cart) {
         return stack.getItem().delegate.name().equals(getItem().delegate.name());
     }
 
@@ -320,7 +320,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             collisionHandler.position(posX, posY, posZ, rotationPitch, rotationYaw);
         }
         /*possible conflict notes:
-        EntityMinecart uses the following datawatchers.
+        MinecartEntity uses the following datawatchers.
          overriding them has not proven to be harmful or conflicting, but it needs notation in case that changes.
 
         17 used as an integer for RollingAmplitude
@@ -411,7 +411,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     public boolean canBeCollidedWith() {return true;}
     /**client only positioning of the transport, this should help to smooth the movement*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_) {
         if (backBogie !=null && frontBogie != null){
 
@@ -451,7 +451,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
     @Override
-    public Type getType() {
+    public Type getMinecartType() {
         return Type.CHEST;
     }
 
@@ -730,7 +730,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     /** this is called by the seats and seats on their spawn to add them to this entity's list of seats, we only do it on client because that's the only side that seems to lose track.
      * @see EntitySeat#readSpawnData(ByteBuf)*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setseats(EntitySeat seat, int seatNumber){
         if (seats.size() <= seatNumber) {
             seats.add(seat);
@@ -741,7 +741,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
     /** this is called by the bogies on their spawn to add them to this entity's list of bogies, we only do it on client because that's the only side that seems to lose track.
      * @see EntityBogie#readSpawnData(ByteBuf)*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setBogie(EntityBogie cart, boolean isFront){
         if(isFront){
             frontBogie = cart;
@@ -1664,7 +1664,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //make sure the player is not null, and be sure that driver only rules are applied.
         if (player ==null){
             return false;
-        } else if (driverOnly && (!(player.getRidingEntity() instanceof EntitySeat) || ! ((EntitySeat) player.getRidingEntity()).isControlSeat())){
+        } else if (driverOnly && (!(player.getControllingPassenger() instanceof EntitySeat) || ! ((EntitySeat) player.getControllingPassenger()).isControlSeat())){
                 return false;
         }
 
@@ -1787,7 +1787,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     }
 
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean isInRangeToRenderDist(double p_70112_1_) {
         return p_70112_1_ > 1D;
     }
@@ -2319,7 +2319,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * return new float[][]{{x1,y1,z1},{x2,y2,z2}, etc...};
      * may return null.*/
     @Deprecated
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float[][] bogieModelOffsets(){return null;}
 
     /**returns a list of models to be used for the bogies
@@ -2327,11 +2327,11 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * return new ModelBase[]{new MyModel1(), new myModel2(), etc...};
      * may return null. */
     @Deprecated
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ModelBase[] bogieModels(){return null;}
 
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Bogie[] bogies(){
         if(bogieModelOffsets()==null || bogieModels()==null){return null;}
         Bogie[] ret = new Bogie[bogieModelOffsets().length];
@@ -2376,7 +2376,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * example:
      * return new float[][]{{x1,y1,z1},{x2,y2,z2}, etc...};
      * may return null.*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float[][] modelOffsets(){return null;}
 
 
@@ -2384,7 +2384,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * example:
      * return new float[][]{{x1,y1,z1},{x2,y2,z2}, etc...};
      * may return null.*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float[][] modelRotations(){return null;}
 
     /**event is to add skins for the model to the skins registry on mod initialization.
@@ -2403,7 +2403,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * example:
      * return new MyModel();
      * may return null. */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ModelBase[] getModel(){return null;}
 
 
@@ -2496,7 +2496,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * NOTE: you can use the method getCurrentSkin() to return different results based on the current TransportSkin.
      * @param id the index of the particle defined in the model
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int[] getParticleData(int id){
         switch (id){
             case 0:{return new int[]{3, 100, 0x232323};}//smoke
@@ -2523,7 +2523,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * the rest are the position data with optional decimal values, the order is
      * X,Y,Z, Pitch, Yaw, Roll
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public String[] setParticles(){return null;}
 
     /**
@@ -2534,7 +2534,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * NOTE: you can use the method getCurrentSkin() to return different results based on the current TransportSkin.
      * @param id the index of the effect defined in the model
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float[] getAnimationData(int id) {
         switch (id) {
             case 1:{return new float[]{90, 40, 0};}//valve gear up position

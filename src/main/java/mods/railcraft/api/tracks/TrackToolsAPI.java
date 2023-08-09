@@ -14,14 +14,14 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import javax.annotation.Nullable;
@@ -42,7 +42,7 @@ public final class TrackToolsAPI {
      */
     public static IBlockTrackOutfitted blockTrackOutfitted = new IBlockTrackOutfitted() {
         @Override
-        public TrackKit getTrackKit(IBlockAccess world, BlockPos pos) {
+        public TrackKit getTrackKit(IWorld world, BlockPos pos) {
             return TrackRegistry.TRACK_KIT.getFallback();
         }
 
@@ -52,7 +52,7 @@ public final class TrackToolsAPI {
         }
 
         @Override
-        public TrackType getTrackType(IBlockAccess world, BlockPos pos) {
+        public TrackType getTrackType(IWorld world, BlockPos pos) {
             return TrackRegistry.TRACK_TYPE.getFallback();
         }
     };
@@ -60,7 +60,7 @@ public final class TrackToolsAPI {
     /**
      * Check if the block at the location is a Track.
      */
-    public static boolean isRailBlockAt(IBlockAccess world, BlockPos pos) {
+    public static boolean isRailBlockAt(IWorld world, BlockPos pos) {
         return world.getBlockState(pos).getBlock() instanceof BlockRailBase;
     }
 
@@ -127,7 +127,7 @@ public final class TrackToolsAPI {
      * @param cart The cart to check
      * @return True if being held
      */
-    public static boolean isCartLockedDown(EntityMinecart cart) {
+    public static boolean isCartLockedDown(MinecartEntity cart) {
         BlockPos pos = cart.getPosition();
 
         if (BlockRailBase.isRailBlock(cart.getEntityWorld(), pos.down()))

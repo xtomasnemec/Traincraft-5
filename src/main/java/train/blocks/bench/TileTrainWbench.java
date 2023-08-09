@@ -10,7 +10,7 @@ package train.blocks.bench;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.ItemStackSlot;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -56,8 +56,8 @@ public class TileTrainWbench extends TileEntityStorage {
 
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		if (world == null || world.getTileEntity(pos) != this) {
+	public boolean isUsableByPlayer(PlayerEntity player) {
+		if (getWorld() == null || getWorld().getTileEntity(pos) != this) {
 			return false;
 		}
 

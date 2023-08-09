@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.tracks;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.util.IStringSerializable;
 import javax.annotation.Nullable;
 
@@ -25,7 +25,7 @@ public interface ISwitchActuator {
      * @return true if the actuator would like the track switched
      * @see ITrackKitSwitch
      */
-    boolean shouldSwitch(@Nullable EntityMinecart cart);
+    boolean shouldSwitch(@Nullable MinecartEntity cart);
 
     /**
      * Announces track state changes to the actuator.

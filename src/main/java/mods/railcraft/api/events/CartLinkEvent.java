@@ -7,40 +7,40 @@
 
 package mods.railcraft.api.events;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * These events are fired on {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.
  *
- * <p>In order to cancel linking, call {@link mods.railcraft.api.carts.ILinkageManager#breakLink(EntityMinecart, EntityMinecart)}</p>
+ * <p>In order to cancel linking, call {@link mods.railcraft.api.carts.ILinkageManager#breakLink(MinecartEntity, MinecartEntity)}</p>
  */
 public class CartLinkEvent extends Event {
 
-    private final EntityMinecart one;
-    private final EntityMinecart two;
+    private final MinecartEntity one;
+    private final MinecartEntity two;
 
-    CartLinkEvent(EntityMinecart one, EntityMinecart two) {
+    CartLinkEvent(MinecartEntity one, MinecartEntity two) {
         this.one = one;
         this.two = two;
     }
 
-    public EntityMinecart getCartOne() {
+    public MinecartEntity getCartOne() {
         return one;
     }
 
-    public EntityMinecart getCartTwo() {
+    public MinecartEntity getCartTwo() {
         return two;
     }
 
     public static final class Link extends CartLinkEvent {
-        public Link(EntityMinecart one, EntityMinecart two) {
+        public Link(MinecartEntity one, MinecartEntity two) {
             super(one, two);
         }
     }
 
     public static final class Unlink extends CartLinkEvent {
-        public Unlink(EntityMinecart one, EntityMinecart two) {
+        public Unlink(MinecartEntity one, MinecartEntity two) {
             super(one, two);
         }
     }

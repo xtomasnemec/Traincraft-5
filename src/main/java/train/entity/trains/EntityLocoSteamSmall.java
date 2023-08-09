@@ -9,7 +9,7 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -90,7 +90,7 @@ public class EntityLocoSteamSmall extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{1.0f,1.5f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?3.5f:2.7f,2.6f,1.3f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?3.5f:2.7f,2.6f,1.3f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.775f, 0.025f};}
     //Train specific stuff

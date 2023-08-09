@@ -7,7 +7,7 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -52,7 +52,7 @@ public class EntityTenderAdler extends GenericRailTransport {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelTenderAdler()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, world==null?-1.2f:-0.85f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, getWorld()==null?-1.2f:-0.85f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{180.0f, -90.0f, -180.0f}};}
     @Override
@@ -79,7 +79,7 @@ public class EntityTenderAdler extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?2:1.8f,1.3f,1.0f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?2:1.8f,1.3f,1.0f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.3f, -0.375f};}
     @Override

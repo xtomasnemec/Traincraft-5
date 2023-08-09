@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.charge;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -66,7 +66,7 @@ public interface IBatteryCart extends IBattery {
      *
      * @param owner The cart that carries the battery
      */
-    void tick(EntityMinecart owner);
+    void tick(MinecartEntity owner);
 
     /**
      * Update the battery and tries to draw charge from the track.
@@ -74,5 +74,5 @@ public interface IBatteryCart extends IBattery {
      * @param owner The cart that carries the battery
      * @param pos The position of the track
      */
-    void tickOnTrack(EntityMinecart owner, BlockPos pos);
+    void tickOnTrack(MinecartEntity owner, BlockPos pos);
 }

@@ -11,7 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 
 import java.util.Locale;
 
@@ -47,6 +47,6 @@ public interface IPostConnection {
      * @param side  Side to connect to
      * @return true if connect
      */
-    ConnectStyle connectsToPost(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side);
+    ConnectStyle connectsToPost(IWorld world, BlockPos pos, IBlockState state, EnumFacing side);
 
 }

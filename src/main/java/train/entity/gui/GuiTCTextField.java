@@ -8,15 +8,15 @@
 package train.entity.gui;
 
 import fexcraft.tmt.slim.Tessellator;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiTCTextField extends Gui {
 	/**
 	 * Have the font renderer from GuiScreen to render the textbox text into the screen.
@@ -65,7 +65,7 @@ public class GuiTCTextField extends Gui {
 	private boolean visible = true;
 
 	public GuiTCTextField(FontRenderer par1FontRenderer, int par2, int par3, int par4, int par5) {
-		this.fontRenderer = par1FontRenderer;
+		this.font = par1FontRenderer;
 		this.xPos = par2;
 		this.yPos = par3;
 		this.width = par4;
@@ -398,8 +398,8 @@ public class GuiTCTextField extends Gui {
 				l -= 4;
 			}
 
-			String s = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth());
-			this.setCursorPosition(this.fontRenderer.trimStringToWidth(s, l).length() + this.lineScrollOffset);
+			String s = this.font.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth());
+			this.setCursorPosition(this.font.trimStringToWidth(s, l).length() + this.lineScrollOffset);
 		}
 	}
 
@@ -416,7 +416,7 @@ public class GuiTCTextField extends Gui {
 			int i = this.isEnabled ? this.enabledColor : this.disabledColor;
 			int j = this.cursorPosition - this.lineScrollOffset;
 			int k = this.selectionEnd - this.lineScrollOffset;
-			String s = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth());
+			String s = this.font.trimStringToWidth(this.text.substring(this.lineScrollOffset), this.getWidth());
 			boolean flag = j >= 0 && j <= s.length();
 			boolean flag1 = this.isFocused && this.cursorCounter / 6 % 2 == 0 && flag;
 			int l = this.enableBackgroundDrawing ? this.xPos + 4 : this.xPos;
@@ -429,7 +429,7 @@ public class GuiTCTextField extends Gui {
 
 			if (s.length() > 0) {
 				String s1 = flag ? s.substring(0, j) : s;
-				j1 = this.fontRenderer.drawStringWithShadow(s1, l, i1, i);
+				j1 = this.font.drawStringWithShadow(s1, l, i1, i);
 			}
 
 			boolean flag2 = this.cursorPosition < this.text.length() || this.text.length() >= this.getMaxStringLength();
@@ -444,21 +444,21 @@ public class GuiTCTextField extends Gui {
 			}
 
 			if (s.length() > 0 && flag && j < s.length()) {
-				this.fontRenderer.drawStringWithShadow(s.substring(j), j1, i1, i);
+				this.font.drawStringWithShadow(s.substring(j), j1, i1, i);
 			}
 
 			if (flag1) {
 				if (flag2) {
-					Gui.drawRect(k1, i1 - 1, k1 + 1, i1 + 1 + this.fontRenderer.FONT_HEIGHT, -3092272);
+					Gui.drawRect(k1, i1 - 1, k1 + 1, i1 + 1 + this.font.FONT_HEIGHT, -3092272);
 				}
 				else {
-					this.fontRenderer.drawStringWithShadow("_", k1, i1, i);
+					this.font.drawStringWithShadow("_", k1, i1, i);
 				}
 			}
 
 			if (k != j) {
-				int l1 = l + this.fontRenderer.getStringWidth(s.substring(0, k));
-				this.drawCursorVertical(k1, i1 - 1, l1 - 1, i1 + 1 + this.fontRenderer.FONT_HEIGHT);
+				int l1 = l + this.font.getStringWidth(s.substring(0, k));
+				this.drawCursorVertical(k1, i1 - 1, l1 - 1, i1 + 1 + this.font.FONT_HEIGHT);
 			}
 		}
 	}
@@ -595,17 +595,17 @@ public class GuiTCTextField extends Gui {
 
 		this.selectionEnd = par1;
 
-		if (this.fontRenderer != null) {
+		if (this.font != null) {
 			if (this.lineScrollOffset > j) {
 				this.lineScrollOffset = j;
 			}
 
 			int k = this.getWidth();
-			String s = this.fontRenderer.trimStringToWidth(this.text.substring(this.lineScrollOffset), k);
+			String s = this.font.trimStringToWidth(this.text.substring(this.lineScrollOffset), k);
 			int l = s.length() + this.lineScrollOffset;
 
 			if (par1 == this.lineScrollOffset) {
-				this.lineScrollOffset -= this.fontRenderer.trimStringToWidth(this.text, k, true).length();
+				this.lineScrollOffset -= this.font.trimStringToWidth(this.text, k, true).length();
 			}
 
 			if (par1 > l) {

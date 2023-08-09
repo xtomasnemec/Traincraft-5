@@ -11,8 +11,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.library.ItemIDs;
 
@@ -35,7 +35,7 @@ public class ItemWrench extends ItemPart implements buildcraft.api.tools.IToolWr
 		}
 		return EnumActionResult.PASS;
 	}
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> par3List, ITooltipFlag flag) {
 		par3List.add("\u00a77" + "Works same as a BuildCraft wrench.");

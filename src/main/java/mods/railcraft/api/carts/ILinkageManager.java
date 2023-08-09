@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.carts;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import javax.annotation.Nullable;
 
 import java.util.stream.Stream;
@@ -42,15 +42,15 @@ public interface ILinkageManager {
      * @param autoLink Whether the auto link feature is enabled
      * @return True if tries to disable link or enable link while there is any free link
      */
-    default boolean setAutoLink(EntityMinecart cart, boolean autoLink) {
+    default boolean setAutoLink(MinecartEntity cart, boolean autoLink) {
         return false;
     }
 
-    default boolean hasAutoLink(EntityMinecart cart) {
+    default boolean hasAutoLink(MinecartEntity cart) {
         return false;
     }
 
-    default boolean tryAutoLink(EntityMinecart cart1, EntityMinecart cart2) {
+    default boolean tryAutoLink(MinecartEntity cart1, MinecartEntity cart2) {
         return false;
     }
 
@@ -60,11 +60,11 @@ public interface ILinkageManager {
      *
      * @return True if the link succeeded.
      */
-    default boolean createLink(EntityMinecart cart1, EntityMinecart cart2) {
+    default boolean createLink(MinecartEntity cart1, MinecartEntity cart2) {
         return false;
     }
 
-    default boolean hasFreeLink(EntityMinecart cart) {
+    default boolean hasFreeLink(MinecartEntity cart) {
         return false;
     }
 
@@ -75,7 +75,7 @@ public interface ILinkageManager {
      * @param cart The cart for which to get the link
      * @return The linked cart or null
      */
-    default @Nullable EntityMinecart getLinkedCartA(EntityMinecart cart) {
+    default @Nullable MinecartEntity getLinkedCartA(MinecartEntity cart) {
         return null;
     }
 
@@ -86,7 +86,7 @@ public interface ILinkageManager {
      * @param cart The cart for which to get the link
      * @return The linked cart or null
      */
-    default @Nullable EntityMinecart getLinkedCartB(EntityMinecart cart) {
+    default @Nullable MinecartEntity getLinkedCartB(MinecartEntity cart) {
         return null;
     }
 
@@ -95,20 +95,20 @@ public interface ILinkageManager {
      *
      * @return True if linked
      */
-    default boolean areLinked(EntityMinecart cart1, EntityMinecart cart2) {
+    default boolean areLinked(MinecartEntity cart1, MinecartEntity cart2) {
         return false;
     }
 
     /**
      * Breaks a link between two carts, if any link exists.
      */
-    default void breakLink(EntityMinecart cart1, EntityMinecart cart2) {
+    default void breakLink(MinecartEntity cart1, MinecartEntity cart2) {
     }
 
     /**
      * Breaks all links the cart has.
      */
-    default void breakLinks(EntityMinecart cart) {
+    default void breakLinks(MinecartEntity cart) {
     }
 
     /**
@@ -118,7 +118,7 @@ public interface ILinkageManager {
      * @return The number of carts in the train
      */
     @SuppressWarnings("unused")
-    default int countCartsInTrain(EntityMinecart cart) {
+    default int countCartsInTrain(MinecartEntity cart) {
         return 0;
     }
 
@@ -130,7 +130,7 @@ public interface ILinkageManager {
      * If called on the client, it will only contain the passed cart object.
      * There is no linkage information on the client.
      */
-    default Stream<EntityMinecart> streamTrain(EntityMinecart cart) {
+    default Stream<MinecartEntity> streamTrain(MinecartEntity cart) {
         return Stream.empty();
     }
 

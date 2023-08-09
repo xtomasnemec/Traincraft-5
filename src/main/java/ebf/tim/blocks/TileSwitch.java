@@ -2,7 +2,7 @@ package ebf.tim.blocks;
 
 import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.Vec3f;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -249,13 +249,13 @@ public class TileSwitch extends TileRenderFacing implements ITickable {
             }
         }
 
-        List list = this.world.getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(
+        List list = this.world.getEntitiesWithinAABB(MinecartEntity.class, new AxisAlignedBB(
                 getPos().getX()+start.xCoord, getPos().getY()+start.yCoord, getPos().getZ()+start.zCoord,
                 getPos().getX()+end.xCoord, getPos().getY()+end.yCoord, getPos().getZ()+end.zCoord));
 
         if (list != null && list.size() > 0) {
             for (Object o : list) {
-                if (o instanceof EntityMinecart) {
+                if (o instanceof MinecartEntity) {
                     setStrength(15,0);
                     return;
                 }

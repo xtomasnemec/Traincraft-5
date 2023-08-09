@@ -4,7 +4,7 @@ import ebf.tim.TrainsInMotion;
 import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.networking.PacketCraftingPage;
 import ebf.tim.utility.*;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.font;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -108,14 +108,14 @@ public class GUITrainTable extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
         if (!CommonProxy.isTraincraft || hostname.equals("tile.block.traintable")) {
-            this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+            this.font.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
         } else {
             if (hostname.startsWith("tile.block.traintable")) {
                 //assembly table and traincraft
-                this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 92, 4210752);
-                this.fontRenderer.drawString(I18n.format(hostname + ".name"), 8, 5, 12241200);
-                this.fontRenderer.drawString(I18n.format("container.storage"), 8, 118, 4210752);
-                this.fontRenderer.drawString(I18n.format("container.output"), 90, 118, 12241200);
+                this.font.drawString(I18n.format("container.inventory"), 8, this.ySize - 92, 4210752);
+                this.font.drawString(I18n.format(hostname + ".name"), 8, 5, 12241200);
+                this.font.drawString(I18n.format("container.storage"), 8, 118, 4210752);
+                this.font.drawString(I18n.format("container.output"), 90, 118, 12241200);
             }
         }
 

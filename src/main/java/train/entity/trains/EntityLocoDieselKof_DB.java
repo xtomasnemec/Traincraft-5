@@ -53,7 +53,7 @@ public class EntityLocoDieselKof_DB extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelKof()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.1f,world==null?0.4f: 0.64f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.1f,getWorld()==null?0.4f: 0.64f, 0.0f}};}
 @Override
     public float[][] modelRotations(){return new float[][]{{0f,180f,180f}};}
     @Override
@@ -89,7 +89,7 @@ public class EntityLocoDieselKof_DB extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{1f,0.95f, 0.35f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?3.25f:2.9f,1.9f,1.5f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?3.25f:2.9f,1.9f,1.5f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.5f, -0.65f};}
     //Train specific stuff

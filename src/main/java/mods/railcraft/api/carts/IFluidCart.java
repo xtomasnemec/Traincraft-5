@@ -6,7 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.carts;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -34,11 +34,11 @@ public interface IFluidCart {
      * <p/>
      * If this interface is not implemented, it is assumed to be true.
      *
-     * @param requester the EntityMinecart that initiated the action
+     * @param requester the MinecartEntity that initiated the action
      * @param fluid     the Fluid
      * @return true if cart will accept the fluid
      */
-    boolean canAcceptPushedFluid(EntityMinecart requester, FluidStack fluid);
+    boolean canAcceptPushedFluid(MinecartEntity requester, FluidStack fluid);
 
     /**
      * This function controls whether a cart will fulfill a pull request for a specific Fluid.
@@ -46,11 +46,11 @@ public interface IFluidCart {
      * <p/>
      * If this interface is not implemented, it is assumed to be true.
      *
-     * @param requester the EntityMinecart that initiated the action
+     * @param requester the MinecartEntity that initiated the action
      * @param fluid     the Fluid
      * @return true if the cart can provide the fluid
      */
-    boolean canProvidePulledFluid(EntityMinecart requester, FluidStack fluid);
+    boolean canProvidePulledFluid(MinecartEntity requester, FluidStack fluid);
 
     /**
      * Set by the Liquid Loader while filling, primarily used for rendering a

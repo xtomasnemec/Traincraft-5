@@ -6,8 +6,8 @@ import ebf.tim.models.Bogie;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.UUID;
@@ -105,7 +105,7 @@ public abstract class TrainBase extends EntityTrainCore{
      * return new float[][]{{x1,y1,z1},{x2,y2,z2}, etc...};
      * may return null.
      * this method is old, you can use it but the new Bogie[] method is better in every way*/
-    //@SideOnly(Side.CLIENT)
+    //@OnlyIn(Dist.CLIENT)
     //public abstract float[][] bogieModelOffsets();
 
     /**returns a list of models to be used for the bogies
@@ -113,7 +113,7 @@ public abstract class TrainBase extends EntityTrainCore{
      * return new ModelBase[]{new MyModel1(), new myModel2(), etc...};
      * may return null.
      * this method is old, you can use it but the new Bogie[] method is better in every way*/
-    //@SideOnly(Side.CLIENT)
+    //@OnlyIn(Dist.CLIENT)
     //public abstract ModelBase[] bogieModels();
 
     /**
@@ -125,7 +125,7 @@ public abstract class TrainBase extends EntityTrainCore{
      *  new Bogie(new BogieModel(), x,y,z).addSubBogie(new subBogieModel, x,y,z)
      * @return
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Bogie[] bogies(){return super.bogies();}
 
 
@@ -133,7 +133,7 @@ public abstract class TrainBase extends EntityTrainCore{
      * example:
      * return new float[][]{{x1,y1,z1},{x2,y2,z2}, etc...};
      * may return null.*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float[][] modelOffsets(){return super.modelOffsets();}
 
     /**event is to add skins for the model to the skins registry on mod initialization.
@@ -152,7 +152,7 @@ public abstract class TrainBase extends EntityTrainCore{
      * example:
      * return new MyModel();
      * may return null. */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public abstract ModelBase[] getModel();
 
 

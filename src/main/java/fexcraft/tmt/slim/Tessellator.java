@@ -1,7 +1,7 @@
 package fexcraft.tmt.slim;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import ebf.tim.utility.DebugUtil;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -12,14 +12,14 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
 * @Author EternalBlueFlame
 * 
 */
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class Tessellator{
 
 	public static Tessellator INSTANCE = new Tessellator();

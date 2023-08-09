@@ -72,7 +72,7 @@ public class ClientProxy extends CommonProxy {
     	if(player==null){return null;}
 
 		if(ID==GuiIDs.ZEPPELIN){
-			Entity entity = player.getRidingEntity();
+			Entity entity = player.getControllingPassenger();
 			return new GuiZepp(player.inventory, entity);
 		} else if (ID==GuiIDs.JUKEBOX){
 			Entity entity1 = getEntity(world, x);

@@ -248,7 +248,7 @@ public class GUIAdminBook extends GuiScreen {
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
         itemRender.renderItemAndEffectIntoGUI(this.mc.player, p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos);
-        itemRender.renderItemOverlayIntoGUI(this.fontRenderer, p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos, null);
+        itemRender.renderItemOverlayIntoGUI(this.font, p_146977_1_.getStack(), p_146977_1_.xPos, p_146977_1_.yPos, null);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }

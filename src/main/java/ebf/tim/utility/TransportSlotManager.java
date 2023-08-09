@@ -14,8 +14,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.input.Keyboard;
 import train.blocks.TCBlocks;
 
@@ -128,7 +128,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
         return arraylist;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setAll(List<ItemStack> slots) {
         for (int i = 0; i < slots.size(); ++i) {
             this.inventory.get(i).setStack(slots.get(i));
@@ -160,7 +160,7 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
     /**
      * normally relied on getSlot, but can't use it because this method does not function on our internal IDs
      * */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setStacksInSlots(ItemStack[] p_75131_1_) {
         for (int i = 0; i < p_75131_1_.length; ++i) {
             this.getSlot(i).putStack(p_75131_1_[i]);

@@ -10,7 +10,7 @@ package mods.railcraft.api.tracks;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
  */
 public interface IBlockTrackOutfitted extends IBlockTrack {
 
-    TrackKit getTrackKit(IBlockAccess world, BlockPos pos);
+    TrackKit getTrackKit(IWorld world, BlockPos pos);
 
     boolean place(World world, BlockPos pos, EntityLivingBase placer, BlockRailBase.EnumRailDirection shape, TrackType trackType, TrackKit trackKit);
 }

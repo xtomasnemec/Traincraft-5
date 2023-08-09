@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.tracks;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 
 /**
  * Any rail tile entity that can completely halt
@@ -18,7 +18,7 @@ import net.minecraft.entity.item.EntityMinecart;
  */
 public interface ITrackKitLockdown extends ITrackKitInstance {
 
-    boolean isCartLockedDown(EntityMinecart cart);
+    boolean isCartLockedDown(MinecartEntity cart);
 
     void releaseCart();
 }

@@ -10,10 +10,10 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 
 import javax.annotation.Nullable;
@@ -29,17 +29,17 @@ public class BlockWindMill extends BlockDynamic {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IWorld source, BlockPos pos) {
 		return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1F, 2F, 1F);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
 		return getBoundingBox(state,world,pos);
 	}
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IWorld world, BlockPos pos){
 		return getBoundingBox(state,world,pos);
 	}
 	@Override
@@ -56,7 +56,7 @@ public class BlockWindMill extends BlockDynamic {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
 		TileEntity tile = world.getTileEntity(pos);

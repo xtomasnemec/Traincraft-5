@@ -11,8 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * <h1>Seat Entity</h1>
@@ -170,7 +170,7 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
      * handle this from host entity
      */
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float p_70056_7_, float p_70056_8_, int p_70056_9_, boolean teleport) {
     }
     @Override

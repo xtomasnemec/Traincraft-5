@@ -9,7 +9,7 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -81,7 +81,7 @@ public class EntityStockCarDRWG extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?3.55f:3.425f,2.125f,1.4f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?3.55f:3.425f,2.125f,1.4f};}
     @Override
     public float[] rotationPoints() {return new float[]{.95f, -1.0f};}
 

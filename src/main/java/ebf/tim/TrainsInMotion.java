@@ -25,8 +25,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
@@ -194,12 +194,12 @@ public class TrainsInMotion {
         TrainsInMotion.keyChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.key");
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[0], PacketInteract.class, 1, Side.SERVER);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[1], PacketRemove.class, 2, Side.SERVER);
-        TrainsInMotion.keyChannel.registerMessage(HANDLERS[2], ItemAdminBook.PacketAdminBook.class, 3, Side.CLIENT);
+        TrainsInMotion.keyChannel.registerMessage(HANDLERS[2], ItemAdminBook.PacketAdminBook.class, 3, Dist.CLIENT);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[3], ItemAdminBook.PacketAdminBookClient.class, 4, Side.SERVER);
-        TrainsInMotion.keyChannel.registerMessage(HANDLERS[4], PacketPaint.class, 5, Side.CLIENT);
+        TrainsInMotion.keyChannel.registerMessage(HANDLERS[4], PacketPaint.class, 5, Dist.CLIENT);
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[5], PacketCraftingPage.class, 6, Side.SERVER);
         TrainsInMotion.updateChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.update");
-        TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 7, Side.CLIENT);
+        TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 7, Dist.CLIENT);
         TrainsInMotion.trackChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.track");
 
 

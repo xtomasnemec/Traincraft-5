@@ -9,7 +9,7 @@ import mods.railcraft.api.carts.IMinecart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -54,7 +54,7 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     @Override
     public void onUpdate(){
         if(world.isRemote && ticksExisted%10==0){
-            if(Minecraft.getMinecraft().player.getRidingEntity() instanceof EntitySeat){
+            if(Minecraft.getMinecraft().player.getControllingPassenger() instanceof EntitySeat){
                 this.getEntityBoundingBox().setMaxY(0);
             } else {
                 this.getEntityBoundingBox().setMaxY(this.getEntityBoundingBox().minY+this.height);
@@ -90,25 +90,25 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     public boolean isLinkable() {return host.isLinkable();}
 
     @Override
-    public boolean canLink(EntityMinecart cart) {return host.canLink(cart);}
+    public boolean canLink(MinecartEntity cart) {return host.canLink(cart);}
 
     @Override
     public boolean hasTwoLinks() {return host.hasTwoLinks();}
 
     @Override
-    public float getLinkageDistance(EntityMinecart cart) {return host.getLinkageDistance(cart);}
+    public float getLinkageDistance(MinecartEntity cart) {return host.getLinkageDistance(cart);}
 
     @Override
-    public float getOptimalDistance(EntityMinecart cart) {return host.getOptimalDistance(cart);}
+    public float getOptimalDistance(MinecartEntity cart) {return host.getOptimalDistance(cart);}
 
     @Override
-    public boolean canBeAdjusted(EntityMinecart cart) {return host.canBeAdjusted(cart);}
+    public boolean canBeAdjusted(MinecartEntity cart) {return host.canBeAdjusted(cart);}
 
     @Override
-    public void onLinkCreated(EntityMinecart cart) {host.onLinkCreated(cart);}
+    public void onLinkCreated(MinecartEntity cart) {host.onLinkCreated(cart);}
 
     @Override
-    public void onLinkBroken(EntityMinecart cart) {host.onLinkBroken(cart);}
+    public void onLinkBroken(MinecartEntity cart) {host.onLinkBroken(cart);}
 
     @Override
     public int getSizeInventory() {return host.getSizeInventory();}
@@ -244,7 +244,7 @@ public class CollisionBox extends MultiPartEntityPart implements IInventory, IFl
     }
 
     @Override
-    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+    public boolean doesCartMatchFilter(ItemStack stack, MinecartEntity cart) {
         return host.doesCartMatchFilter(stack, cart);
     }
 }

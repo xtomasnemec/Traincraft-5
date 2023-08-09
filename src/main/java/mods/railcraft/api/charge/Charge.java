@@ -12,8 +12,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Optional;
 import java.util.Random;
@@ -280,7 +280,7 @@ public enum Charge {
          * @param chance Integer value such that chance of sparking is defined by {@code rand.nextInt(chance) == 0}
          *               Most blocks use 50, tracks use 75. Lower numbers means more frequent sparks.
          */
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         default void throwSparks(IBlockState state, World world, BlockPos pos, Random rand, int chance) {
         }
 
@@ -290,7 +290,7 @@ public enum Charge {
          * @param source Can be a TileEntity, Entity, BlockPos, or Vec3d
          * @throws IllegalArgumentException If source is of an unexpected type.
          */
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         default void zapEffectPoint(World world, Object source) {
         }
 
@@ -300,14 +300,14 @@ public enum Charge {
          * @param source Can be a TileEntity, Entity, BlockPos, or Vec3d
          * @throws IllegalArgumentException If source is of an unexpected type.
          */
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         default void zapEffectDeath(World world, Object source) {
         }
 
         /**
          * Spawns a spark from the surface of each rendered side of a block.
          */
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         default void zapEffectSurface(IBlockState stateIn, World worldIn, BlockPos pos) {
         }
     }

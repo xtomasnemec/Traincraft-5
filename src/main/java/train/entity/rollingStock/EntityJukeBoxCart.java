@@ -6,7 +6,7 @@ import ebf.tim.items.ItemPaintBucket;
 import ebf.tim.networking.PacketInteract;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -16,8 +16,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.core.util.MP3Player;
 import train.library.GuiIDs;
@@ -62,7 +62,7 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if (!world.isRemote && this.ticksExisted % 10 == 0) {
+		if (!world.isRemote && this.tickCount % 10 == 0) {
 			this.dataManager.set(STREAM, streamURL);
 			if (isPlaying) {
 				this.dataManager.set(VOLUME, 1);
@@ -71,9 +71,9 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 				this.dataManager.set(VOLUME, 0);
 			}
 		}
-		if (side == Side.CLIENT) {
+		if (side == Dist.CLIENT) {
 			
-			if (this.ticksExisted % 10 == 0 && !this.isPlaying() && this.dataManager.get(VOLUME) != 0) {
+			if (this.tickCount % 10 == 0 && !this.isPlaying() && this.dataManager.get(VOLUME) != 0) {
 				this.streamURL = this.dataManager.get(STREAM);
 				this.startStream();
 			}
@@ -120,7 +120,7 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 		this.isPlaying = playing;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void invalidate() {
 		isInvalid = true;
 		stopStream();
@@ -131,7 +131,7 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 		
 		if (!this.isPlaying) {
 			this.isPlaying = true;
-			if (side == Side.CLIENT) {
+			if (side == Dist.CLIENT) {
 				this.player = new MP3Player(this.streamURL, this.world, this.getEntityId());
 				player.setVolume(0);
 				Traincraft.proxy.playerList.add(this.player);
@@ -145,7 +145,7 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 		
 		if (this.isPlaying) {
 			this.isPlaying = false;
-			if (side == Side.CLIENT && this.player != null) {
+			if (side == Dist.CLIENT && this.player != null) {
 				this.player.stop();
 				Traincraft.proxy.playerList.remove(this.player);
 			}
@@ -178,7 +178,7 @@ public class EntityJukeBoxCart extends GenericRailTransport {
 	}
 
 	@Override
-	public float getOptimalDistance(EntityMinecart cart) {
+	public float getOptimalDistance(MinecartEntity cart) {
 		return 1.85F;
 	}
 

@@ -9,6 +9,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -16,8 +17,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,11 @@ public class ItemTransport extends Item {
     public List<TrainsInMotion.transportTypes> types =null;
     private ResourceLocation itemTexture;
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     GenericRailTransport entity;
     /**the main constructor.
      * @param cart the class for the entity*/
-    public ItemTransport(GenericRailTransport cart, String MODID, CreativeTabs tabs) {
+    public ItemTransport(GenericRailTransport cart, String MODID, ItemGroup tabs) {
         super();
         setTranslationKey(cart.transportName().replace(" ",""));
         if(TrainsInMotion.proxy.isClient()) {
@@ -56,7 +57,7 @@ public class ItemTransport extends Item {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setItemLore(GenericRailTransport cart){
         if(cart.transportYear()!=null) {
             subtext.add(ChatFormatting.GRAY + t("menu.item.year") + ": " + cart.transportYear());
@@ -134,7 +135,7 @@ public class ItemTransport extends Item {
      * @param par3List the list of strings to define the description. rather than using \n like normal people, forge decided it a good idea to make each string in the array a new line.
      * @param par4 I have no idea what this is.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack par1ItemStack, World w,List<String> par3List, ITooltipFlag par4) {
         par3List.addAll(subtext);

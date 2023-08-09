@@ -10,7 +10,7 @@ package mods.railcraft.api.charge;
 import com.google.common.base.Objects;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
@@ -40,7 +40,7 @@ public interface IChargeBlock {
      * @return A mapping of networks to ChargeSpecs. Most blocks should only respond to one
      * type of network or an empty map. If an empty map is returned, the charge networks will ignore the block.
      */
-    default Map<Charge, ChargeSpec> getChargeSpecs(IBlockState state, IBlockAccess world, BlockPos pos) {
+    default Map<Charge, ChargeSpec> getChargeSpecs(IBlockState state, IWorld world, BlockPos pos) {
         return Collections.emptyMap();
     }
 

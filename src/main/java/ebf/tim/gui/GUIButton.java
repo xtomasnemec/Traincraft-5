@@ -4,7 +4,7 @@ import ebf.tim.utility.ClientUtil;
 import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.font;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -112,7 +112,7 @@ public abstract class GUIButton extends GuiButton {
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("mc","textures/font/ascii.png"));
-        this.drawCenteredString(Minecraft.getMinecraft().fontRenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, l);
+        this.drawCenteredString(Minecraft.getMinecraft().font, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, l);
 
         RenderHelper.disableStandardItemLighting();
         GL11.glPopMatrix();

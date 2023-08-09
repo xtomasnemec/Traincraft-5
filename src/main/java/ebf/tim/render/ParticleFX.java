@@ -143,7 +143,7 @@ public class ParticleFX {
         } else if (ticksExisted<=1){
             ticksExisted++;
             return;
-        } else if ((!shouldRender && !physicsUpdate) || host==null || host.world==null){
+        } else if ((!shouldRender && !physicsUpdate) || host==null || host.getWorld()==null){
             return;
         }
 
@@ -156,7 +156,7 @@ public class ParticleFX {
                     //todo mars lamp stuff
                 }
                 return;
-            } else if (particleType == 2 && this.ticksExisted > this.lifespan) {//wheel sparks
+            } else if (particleType == 2 && this.tickCount > this.lifespan) {//wheel sparks
                 if (host.cachedVectors[1].zCoord > 0.005) {
                     colorTint = (rand.nextInt(75) - 30);
                     lifespan = rand.nextInt(80) + 140;
@@ -170,7 +170,7 @@ public class ParticleFX {
                     shouldRender = true;
                 }
 
-            } else if (hostIsRunning && this.ticksExisted > this.lifespan) {//smoke and steam
+            } else if (hostIsRunning && this.tickCount > this.lifespan) {//smoke and steam
                 //if the lifespan is out we reset the information, as if we just spawned a new particle.
                 colorTint = (rand.nextInt(75) - 30);
                 lifespan = rand.nextInt(80) + 140;
@@ -199,7 +199,7 @@ public class ParticleFX {
                     motionY*=2.5;
                 }
                 shouldRender = true;
-            } else if (this.ticksExisted > this.lifespan) {//smoke and steam while train is off
+            } else if (this.tickCount > this.lifespan) {//smoke and steam while train is off
                 //if the transport isn't running and this has finished it's movement, set it' position to the transport and set that it shouldn't render.
                 this.boundingBox= new AxisAlignedBB(host.posX, host.posY, host.posZ, host.posX, host.posY, host.posZ);
                 shouldRender = false;
@@ -289,7 +289,7 @@ public class ParticleFX {
      * @param entity the particle variable to render
      */
     public static void doRender(ParticleFX entity, float scale, float yaw) {
-        if(!entity.shouldRender || entity.ticksExisted==null || entity.ticksExisted<1
+        if(!entity.shouldRender || entity.tickCount==null || entity.tickCount<1
                 || entity.host.getParticleData(entity.particleID)[1]==0){
             return;
         }
@@ -332,7 +332,7 @@ public class ParticleFX {
     public static void renderSmoke(ParticleFX entity, double x, double y, double z, float scale, float yaw){
 
         if(entity.particleType==4 || entity.particleType==3
-                || !entity.shouldRender || entity.ticksExisted==null || entity.ticksExisted<1
+                || !entity.shouldRender || entity.tickCount==null || entity.tickCount<1
                 || entity.host.getParticleData(entity.particleID)[1]==0){
             return;
         }
@@ -343,7 +343,7 @@ public class ParticleFX {
         GL11.glColor4f(((entity.host.getParticleData(entity.particleID)[2] >> 16 & 0xFF) - entity.colorTint) * 0.00392156863f,
                 ((entity.host.getParticleData(entity.particleID)[2] >> 8 & 0xFF) - entity.colorTint) * 0.00392156863f,
                 ((entity.host.getParticleData(entity.particleID)[2] & 0xFF) - entity.colorTint) * 0.00392156863f,
-                1f - (entity.ticksExisted / entity.lifespan));
+                1f - (entity.tickCount / entity.lifespan));
         //set the position
         GL11.glTranslated(x+ entity.boundingBox.minX - entity.host.posX+0.0625f, y+entity.boundingBox.minY-entity.host.posY,  z+entity.boundingBox.minZ - entity.host.posZ+0.0625f);
         glScaleF((entity.host.getParticleData(entity.particleID)[1] * 0.01f) * 0.0625f);

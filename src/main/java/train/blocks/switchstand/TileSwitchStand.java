@@ -4,8 +4,8 @@ import ebf.tim.blocks.BlockSwitch;
 import ebf.tim.blocks.TileSwitch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.library.Info;
 
 public class TileSwitchStand extends TileSwitch {
@@ -21,14 +21,14 @@ public class TileSwitchStand extends TileSwitch {
     //@Override
     //public boolean canUpdate(){return true;}
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return new AxisAlignedBB(getPos().getX()-1, getPos().getY()-1, getPos().getZ()-1,
                 getPos().getX() + 2, getPos().getY() + 2, getPos().getZ() + 2);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void renderModel(){
         //item render
@@ -58,7 +58,7 @@ public class TileSwitchStand extends TileSwitch {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public ResourceLocation getTexture(int x, int y, int z){
         if (getStrength(0)>0) {

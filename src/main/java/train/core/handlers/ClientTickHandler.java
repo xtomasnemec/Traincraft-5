@@ -1,9 +1,9 @@
 package train.core.handlers;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.api.distmarker.Dist;
 import train.Traincraft;
 import train.core.util.MP3Player;
 
@@ -11,7 +11,7 @@ public class ClientTickHandler {
 
 	@SubscribeEvent
 	public void tick(TickEvent event) {
-		if(event.side != Side.CLIENT) {
+		if(event.side != Dist.CLIENT) {
 			return;
 		}
 		if(event.phase == TickEvent.Phase.START) {

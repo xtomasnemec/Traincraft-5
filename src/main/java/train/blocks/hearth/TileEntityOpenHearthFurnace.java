@@ -5,14 +5,14 @@ import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.ItemStackSlot;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -59,12 +59,12 @@ public class TileEntityOpenHearthFurnace extends TileEntityStorage implements IT
 		return 64;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getCookProgressScaled(int i) {
 		return (furnaceCookTime * i) / cookDuration;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getBurnTimeRemainingScaled(int i) {
 		if (currentItemBurnTime == 0) {
 			currentItemBurnTime = cookDuration;

@@ -5,8 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +67,7 @@ public class ItemKey extends Item{
      * Each string added defines a new line.
      * We can cover the key and ticket description here, to simplify other classes.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List stringList, boolean p_77624_4_) {
         if(stack!=null && stack.getTagCompound()!=null) {
         if (this instanceof ItemTicket){

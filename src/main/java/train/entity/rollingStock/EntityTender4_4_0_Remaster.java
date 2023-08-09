@@ -8,7 +8,7 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.models.Bogie;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -60,7 +60,7 @@ public class EntityTender4_4_0_Remaster extends GenericRailTransport {
         };
     }
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-2.525f, world==null?0.2f:0f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{-2.525f, getWorld()==null?0.2f:0f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -88,7 +88,7 @@ public class EntityTender4_4_0_Remaster extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?4f:3.5f,1.6f,1.375f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?4f:3.5f,1.6f,1.375f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.7f, -0.845f};}
     @Override

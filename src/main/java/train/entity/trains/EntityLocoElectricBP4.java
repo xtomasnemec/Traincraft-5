@@ -14,8 +14,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.library.Info;
 import train.render.models.ModelBP4Bogie;
@@ -107,7 +107,7 @@ public class EntityLocoElectricBP4 extends EntityTrainCore {
     @Override
     public int[] getTankCapacity(){return new int[]{8650};}
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Bogie[] bogies(){
         return new Bogie[]{

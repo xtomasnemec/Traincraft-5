@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.carts;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -28,5 +28,5 @@ public interface IMinecart {
      * @param cart  the Cart
      * @return true if the item matches the cart
      */
-    boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart);
+    boolean doesCartMatchFilter(ItemStack stack, MinecartEntity cart);
 }

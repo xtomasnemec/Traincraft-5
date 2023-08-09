@@ -87,7 +87,7 @@ public class EntityLocoDieselV60_DB extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0.3f,1.6f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?4:3.7f,2.3f,1.5f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?4:3.7f,2.3f,1.5f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.9f, -0.95f};}
     //Train specific stuff

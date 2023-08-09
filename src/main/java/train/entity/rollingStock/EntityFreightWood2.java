@@ -7,10 +7,10 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
 import train.Traincraft;
 import train.library.Info;
@@ -53,7 +53,7 @@ public class EntityFreightWood2 extends GenericRailTransport {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelFreightWood()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, world==null?0.3f:0.63f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, getWorld()==null?0.3f:0.63f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, -90.0f, -180.0f}};}
     @Override
@@ -71,8 +71,8 @@ public class EntityFreightWood2 extends GenericRailTransport {
     @Override
     public ItemStack[] getRecipie() {
         return new ItemStack[]{
-                new ItemStack(Blocks.PLANKS, 3), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameIron, 1),
-                new ItemStack(Items.IRON_INGOT, 2), null, null, null, null, new ItemStack(Blocks.LOG, 1)        };
+                new ItemStack(Blocks.OAK_PLANKS, 3), new ItemStack(TiMItems.wheelWood, 2), new ItemStack(TiMItems.frameIron, 1),
+                new ItemStack(Items.IRON_INGOT, 2), null, null, null, null, new ItemStack(Blocks.OAK_LOG, 1)        };
     }
 
 

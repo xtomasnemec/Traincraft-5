@@ -24,8 +24,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.core.handlers.ConfigHandler;
 import train.library.GuiIDs;
@@ -56,11 +56,11 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	protected double boatZ;
 	protected double boatYaw;
 	protected double boatPitch;
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	protected double velocityX;
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	protected double velocityY;
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	protected double velocityZ;
 //	public double rotationYawClient;
 	protected double updateTicks;
@@ -218,7 +218,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 	}
 
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void performHurtAnimation() {
 		boatRockDirection = -boatRockDirection;
@@ -231,7 +231,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 		return !isDead;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	/**
 	 * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
 	 * posY, posZ, yaw, pitch
@@ -261,7 +261,7 @@ public abstract class AbstractZeppelin extends Entity implements IInventory {
 		this.motionZ = this.velocityZ;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	/**
 	 * Sets the velocity to the args. Args: x, y, z
 	 */

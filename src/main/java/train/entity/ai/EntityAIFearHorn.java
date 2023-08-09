@@ -27,7 +27,7 @@ public class EntityAIFearHorn extends EntityAIBase{
 	@Override
 	public boolean shouldExecute() {
 		if(entity.getAttackTarget() instanceof EntityPlayer &&
-                (entity.getAttackTarget().getRidingEntity() instanceof EntityTrainCore || entity.getAttackTarget().getRidingEntity() instanceof EntitySeat)) {
+                (entity.getAttackTarget().getControllingPassenger() instanceof EntityTrainCore || entity.getAttackTarget().getControllingPassenger() instanceof EntitySeat)) {
 			entity.detachHome();
             Vec3d vec3 = RandomPositionGenerator.
                     findRandomTargetBlockAwayFrom(entity, 10, 8,

@@ -11,8 +11,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.core.handlers.ConfigHandler;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
@@ -65,14 +65,14 @@ public class ItemZeppelins extends Item {
 		return super.onItemRightClick(world,entityplayer,hand);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack par1ItemStack, World world, List<String> par3List, ITooltipFlag par4) {
 		par3List.add("\u00a77" + "More info in the guidebook.");
 	}
 
 	/*@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		if(type==0)this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":zeppelin");
 		if(type==1)this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":zeppelin_one_balloon");

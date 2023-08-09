@@ -6,7 +6,7 @@ import ebf.tim.items.ItemRail;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;

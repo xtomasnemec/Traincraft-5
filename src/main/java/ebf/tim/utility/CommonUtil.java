@@ -12,7 +12,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -75,11 +75,11 @@ public class CommonUtil {
         world.setBlockState(new BlockPos(x,y,z), block.getDefaultState());
     }
 
-    public static boolean setBlock(IBlockAccess w, int x, int y, int z, Block b){
+    public static boolean setBlock(IWorld w, int x, int y, int z, Block b){
         return ((World)w).setBlockState(new BlockPos(x,y,z),b.getDefaultState());
     }
 
-    public static void setBlockMeta(IBlockAccess w, int x, int y, int z, int meta){
+    public static void setBlockMeta(IWorld w, int x, int y, int z, int meta){
         BlockPos pos = new BlockPos(x,y,z);
         Block b = w.getBlockState(pos).getBlock();
         if(b instanceof BlockRailBase){
@@ -99,14 +99,14 @@ public class CommonUtil {
         w.scheduleBlockUpdate(new BlockPos(x,y,z), w.getBlockState(new BlockPos(x,y,z)).getBlock(),0,1);
     }
 
-    public static int getBlockFacing(IBlockAccess w, int x, int y, int z){
+    public static int getBlockFacing(IWorld w, int x, int y, int z){
         return getPropertyFacingInt(w.getBlockState(new BlockPos(x,y,z)), FACING);
     }
     private static int getPropertyFacingInt(IBlockState state, IProperty<?> key){
         return state.getProperties().containsKey(key)?((EnumFacing)state.getProperties().get(key)).getIndex():0;
     }
 
-    public static int getRailMeta(IBlockAccess w, EntityMinecart cart, int x, int y, int z){
+    public static int getRailMeta(IWorld w, MinecartEntity cart, int x, int y, int z){
         return w.getBlockState(new BlockPos(x,y,z)).getBlock() instanceof BlockRail?((BlockRail)w.getBlockState(new BlockPos(x,y,z)).getBlock()).getRailDirection(
                 w,new BlockPos(x,y,z),w.getBlockState(new BlockPos(x,y,z)),cart
         ).getMetadata():0;

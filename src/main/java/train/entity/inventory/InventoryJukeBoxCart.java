@@ -11,9 +11,9 @@ public class InventoryJukeBoxCart extends Container {
 	private EntityJukeBoxCart jukebox;
 	private InventoryPlayer player;
 
-	public InventoryJukeBoxCart(InventoryPlayer iinventory, GenericRailTransport entityminecart) {
+	public InventoryJukeBoxCart(InventoryPlayer iinventory, GenericRailTransport MinecartEntity) {
 		player = iinventory;
-		jukebox = (EntityJukeBoxCart) entityminecart;
+		jukebox = (EntityJukeBoxCart) MinecartEntity;
 	}
 
 	@Override

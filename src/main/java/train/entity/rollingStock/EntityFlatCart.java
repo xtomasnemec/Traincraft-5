@@ -8,7 +8,7 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -53,7 +53,7 @@ public class EntityFlatCart extends GenericRailTransport {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelFlatCar()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, world==null?0f:0.57f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, getWorld()==null?0f:0.57f, 0.0f}};}
 @Override
     public float[][] modelRotations(){return new float[][]{{0f,180f,180f}};}
     @Override

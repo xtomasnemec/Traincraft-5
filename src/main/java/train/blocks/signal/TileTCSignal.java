@@ -5,8 +5,8 @@ import ebf.tim.blocks.TileSwitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 
@@ -29,7 +29,7 @@ public class TileTCSignal extends TileSwitch {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void renderModel(){
 		org.lwjgl.opengl.GL11.glTranslatef( 0,  0.5f,  0);
@@ -49,7 +49,7 @@ public class TileTCSignal extends TileSwitch {
 		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ResourceLocation getTexture(int x, int y, int z){
 		if (getStrength(0)>0) {

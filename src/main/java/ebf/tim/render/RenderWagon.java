@@ -14,8 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -30,7 +30,7 @@ import static org.lwjgl.opengl.GL11.*;
  * all the variables have to be stored outside this class because it's assigned to the entity class, not it's instances.
  * @author Eternal Blue Flame
  */
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderWagon extends net.minecraft.client.renderer.entity.Render<GenericRailTransport> {
 
     private static double railOffset = 0.34f;

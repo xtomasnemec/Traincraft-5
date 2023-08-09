@@ -15,8 +15,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 
 import java.io.DataInputStream;
@@ -318,12 +318,12 @@ public abstract class AbstractPair implements IPair, INetworkedObject<DataInputS
         return getTile().getWorld();
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addPair(BlockPos pos) {
         pairings.add(pos);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void removePair(BlockPos pos) {
         pairings.remove(pos);
     }

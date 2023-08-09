@@ -10,7 +10,7 @@ import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 import train.library.Info;
 
@@ -24,9 +24,9 @@ public class HUDloco {
 
 	@SubscribeEvent
 	public void onGameRender(RenderGameOverlayEvent.Post event){
-		if (game != null && game.player != null && game.player.getRidingEntity() instanceof EntitySeat && Minecraft.isGuiEnabled() && game.currentScreen == null) {
-			if(((EntitySeat)game.player.getRidingEntity()).isLocoControlSeat()) {
-				renderSkillHUD(event, (EntityTrainCore) game.world.getEntityByID(((EntitySeat) game.player.getRidingEntity()).parentId));
+		if (game != null && game.player != null && game.player.getControllingPassenger() instanceof EntitySeat && Minecraft.isGuiEnabled() && game.currentScreen == null) {
+			if(((EntitySeat)game.player.getControllingPassenger()).isLocoControlSeat()) {
+				renderSkillHUD(event, (EntityTrainCore) game.world.getEntityByID(((EntitySeat) game.player.getControllingPassenger()).parentId));
 			}
 		} else {
 			this.game = Minecraft.getMinecraft();
@@ -76,13 +76,13 @@ public class HUDloco {
 		}
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(32826);
-		game.fontRenderer.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
-		game.fontRenderer.drawStringWithShadow("  " + Math.floor(speed), 100,
+		game.font.drawStringWithShadow("Speed:", 106, windowHeight + 7 + (h), 0xFFFFFF);
+		game.font.drawStringWithShadow("  " + Math.floor(speed), 100,
 				windowHeight + 18 + (h), 0xFFFFFF);
-		game.fontRenderer.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
+		game.font.drawStringWithShadow(ClientProxy.speedInKmh?" Km/h":"Mp/h", 106, windowHeight + 29 + (h), 0xFFFFFF);
 
 		if (loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			game.fontRenderer.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
+			game.font.drawStringWithShadow("State: " + getState(loco), 50, windowHeight + 80, 0xFFFFFF);
 		}
 		GL11.glDisable(32826);
 		GL11.glDisable(GL11.GL_BLEND);
@@ -170,7 +170,7 @@ public class HUDloco {
 
 	public int getHeat(GenericRailTransport loco){
 		if(loco.getTypes().contains(TrainsInMotion.transportTypes.STEAM)) {
-			if (loco.ticksExisted > lastTick) {
+			if (loco.tickCount > lastTick) {
 				int l = loco.getTankInfo()[1] != null && loco.getTankInfo()[1].fluid!=null?
 						loco.getTankInfo()[1].fluid.amount : 1;
 				return ((l * 100) / (loco.getTankCapacity()[1]));

@@ -21,10 +21,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -72,12 +72,12 @@ public class BlockDynamic extends BlockContainer {
         return this;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ResourceLocation getTexture(int x, int y, int z){
         return new ResourceLocation(this.textureName == null ? "MISSING_ICON_BLOCK_" + getIdFromBlock(this) + "_" + this.getTranslationKey() :textureName);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     //@Override
     public IIcon getIcon(int a, int b){
         return new particleTexture(textureName,32,0,16);
@@ -95,7 +95,7 @@ public class BlockDynamic extends BlockContainer {
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
+    public boolean isNormalCube(IBlockState state, IWorld world, BlockPos pos){
         return false;
     }
 
@@ -123,7 +123,7 @@ public class BlockDynamic extends BlockContainer {
         collidingBoxes.add(this.getCollisionBoundingBoxFromPool(world, pos.getX(),pos.getY(),pos.getZ()));
     }
     @Override
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+    public boolean isPassable(IWorld worldIn, BlockPos pos) {
         return hitboxShape()[4]>1;
     }
 
@@ -167,7 +167,7 @@ public class BlockDynamic extends BlockContainer {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Object getGUI(EntityPlayer player, TileEntity te){
         return new ebf.tim.gui.GUITrainTable(player.inventory, (TileEntityStorage) te);
     }

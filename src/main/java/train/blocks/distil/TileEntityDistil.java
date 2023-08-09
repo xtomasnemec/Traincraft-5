@@ -9,7 +9,7 @@ import ebf.tim.utility.CommonUtil;
 import ebf.tim.utility.FuelHandler;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,8 +18,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.blocks.TCBlocks;
 import train.library.ItemIDs;
 
@@ -70,7 +70,7 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 	/**
 	 * Used by the GUI
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getLiquid() {
 		return getTankInfo(0)!=null&&getTankInfo(0).fluid!=null?getTankInfo(0).fluid.amount:0;
 	}
@@ -100,12 +100,12 @@ public class TileEntityDistil extends TileEntityStorage implements ISidedInvento
 		return nbtTag;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getCookProgressScaled(int i) {
 		return (distilCookTime * i) / cookDuration;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getBurnTimeRemainingScaled(int i) {
 		if (currentItemBurnTime == 0) {
 			currentItemBurnTime = cookDuration;

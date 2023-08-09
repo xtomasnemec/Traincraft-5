@@ -52,7 +52,7 @@ public class EntityLocoSteamLSSP7 extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLSSP7()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.3f, world==null?0.1f:0.36f, -0.825f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.3f, getWorld()==null?0.1f:0.36f, -0.825f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -80,7 +80,7 @@ public class EntityLocoSteamLSSP7 extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0.65f,1.25f, 0.3f}};}
     @Override
-    public float[] getHitboxSize(){return world==null?new float[]{2.8f,2.2f,1.3f}:new float[]{2.2f,2.2f,1.3f};}
+    public float[] getHitboxSize(){return getWorld()==null?new float[]{2.8f,2.2f,1.3f}:new float[]{2.2f,2.2f,1.3f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.3f, -0.55f};}
     //Train specific stuff

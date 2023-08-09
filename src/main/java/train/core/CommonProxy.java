@@ -38,7 +38,7 @@ public class CommonProxy implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 
 		if(ID==GuiIDs.ZEPPELIN){
-			Entity entity = player.getRidingEntity();
+			Entity entity = player.getControllingPassenger();
 			if(entity!=null) {
 				return new InventoryZepp(player.inventory, (AbstractZeppelin) entity);
 			}

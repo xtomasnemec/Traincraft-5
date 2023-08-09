@@ -18,7 +18,7 @@ public class ItemPart extends Item{
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":" + this.folder + "/" + this.iconName);
     }*/

@@ -13,7 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -77,10 +77,10 @@ public interface ITrackKitInstance extends INetworkedObject<DataInputStream, Dat
      * for example when making diamond junctions or switches.
      *
      * @param cart The cart asking for the metadata, null if it is not called by
-     *             EntityMinecart.
+     *             MinecartEntity.
      * @return The metadata.
      */
-    BlockRailBase.EnumRailDirection getRailDirection(IBlockState state, @Nullable EntityMinecart cart);
+    BlockRailBase.EnumRailDirection getRailDirection(IBlockState state, @Nullable MinecartEntity cart);
 
     /**
      * This function is called by any minecart that passes over this rail. It is
@@ -88,7 +88,7 @@ public interface ITrackKitInstance extends INetworkedObject<DataInputStream, Dat
      *
      * @param cart The cart on the rail.
      */
-    default void onMinecartPass(EntityMinecart cart) {
+    default void onMinecartPass(MinecartEntity cart) {
     }
 
     default void writeToNBT(NBTTagCompound data) {
@@ -124,7 +124,7 @@ public interface ITrackKitInstance extends INetworkedObject<DataInputStream, Dat
      * @param cart The cart on the rail, may be null.
      * @return The max speed of the current rail.
      */
-    default float getRailMaxSpeed(World world, @Nullable EntityMinecart cart, BlockPos pos) {
+    default float getRailMaxSpeed(World world, @Nullable MinecartEntity cart, BlockPos pos) {
         return getTrackType().getEventHandler().getMaxSpeed(world, cart, pos);
     }
 

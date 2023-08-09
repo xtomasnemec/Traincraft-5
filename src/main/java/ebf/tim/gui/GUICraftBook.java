@@ -124,7 +124,7 @@ public class GUICraftBook extends GuiScreen {
 
             GL11.glPushMatrix();
             GL11.glColor4f(1,1,1,1);
-            Minecraft.getMinecraft().fontRenderer.drawString(((Recipe) getPage(leftPage?page:page+1)).getresult().get(0).getDisplayName()
+            Minecraft.getMinecraft().font.drawString(((Recipe) getPage(leftPage?page:page+1)).getresult().get(0).getDisplayName()
                     ,percentLeft(leftPage?15:55), percentTop(20), 0x000000);
             GL11.glPopMatrix();
 
@@ -145,7 +145,7 @@ public class GUICraftBook extends GuiScreen {
         } else if(getPage(leftPage?page:page+1) instanceof bookPage){
             String[] disp = ((bookPage)getPage(leftPage?page:page+1)).text.split("\n");
             for (int i=0;i<disp.length;i++){
-                Minecraft.getMinecraft().fontRenderer.drawString(disp[i],percentLeft(leftPage?15:54), percentTop(19)+(i*12), 0x000000);
+                Minecraft.getMinecraft().font.drawString(disp[i],percentLeft(leftPage?15:54), percentTop(19)+(i*12), 0x000000);
             }
 
             //todo: draw images from pages

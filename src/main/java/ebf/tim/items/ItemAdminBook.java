@@ -18,8 +18,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -43,7 +43,7 @@ public class ItemAdminBook extends Item{
      * Each string added defines a new line.
      * We can cover the key and ticket description here, to simplify other classes.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack thisStack, EntityPlayer player, List stringList, boolean p_77624_4_) {
         stringList.add("This book is for Operators ONLY, and allows the following:");
         stringList.add("- drop trains/rollingstock and their inventory lost during a crash");

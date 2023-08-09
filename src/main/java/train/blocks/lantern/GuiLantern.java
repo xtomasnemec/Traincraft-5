@@ -5,15 +5,15 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.input.Keyboard;
 import train.Traincraft;
 import train.core.network.PacketLantern;
 
 import java.io.IOException;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiLantern extends GuiScreen {
 	/** The player editing the gui */
 	private final EntityPlayer editingPlayer;
@@ -39,7 +39,7 @@ public class GuiLantern extends GuiScreen {
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.add(this.doneBtn = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "Done"));
 		this.buttonList.add(this.cancelBtn = new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, "Cancel"));
-		this.colorTextField = new GuiTextField(2,this.fontRenderer, this.width / 2 - 150, 60, 300, 20);
+		this.colorTextField = new GuiTextField(2,this.font, this.width / 2 - 150, 60, 300, 20);
 		this.colorTextField.setMaxStringLength(32767);
 		this.colorTextField.setFocused(true);
 		this.colorTextField.setText(this.lanternBlock.getColor());

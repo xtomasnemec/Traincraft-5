@@ -10,7 +10,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class BlockSwitch extends BlockDynamic {
@@ -57,11 +57,11 @@ public class BlockSwitch extends BlockDynamic {
 
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public int getWeakPower(IBlockState state, IWorld world, BlockPos pos, EnumFacing side) {
         return getStrongPower(state,world,pos,side);
     }
 
-    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int meta) {
+    public int isProvidingStrongPower(IWorld world, int x, int y, int z, int meta) {
         TileSwitch t = (TileSwitch)world.getTileEntity(new BlockPos(x,y,z));
         if(t!=null && t.getStrength(0)>0){
             return 15;

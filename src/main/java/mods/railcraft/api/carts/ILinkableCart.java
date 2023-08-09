@@ -7,7 +7,7 @@
 
 package mods.railcraft.api.carts;
 
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 
 /**
  * This interface should be implemented by any minecart that wishes
@@ -35,7 +35,7 @@ public interface ILinkableCart {
      * @return True if we can link with this cart.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    default boolean canLink(EntityMinecart cart) {
+    default boolean canLink(MinecartEntity cart) {
         return isLinkable();
     }
 
@@ -61,7 +61,7 @@ public interface ILinkableCart {
      * @param cart The cart that you are attempting to link with.
      * @return The linkage distance
      */
-    default float getLinkageDistance(EntityMinecart cart) {
+    default float getLinkageDistance(MinecartEntity cart) {
         return ILinkageManager.LINKAGE_DISTANCE;
     }
 
@@ -76,7 +76,7 @@ public interface ILinkableCart {
      * @param cart The cart that you are linked with.
      * @return The optimal rest distance
      */
-    default float getOptimalDistance(EntityMinecart cart) {
+    default float getOptimalDistance(MinecartEntity cart) {
         return ILinkageManager.OPTIMAL_DISTANCE;
     }
 
@@ -88,7 +88,7 @@ public interface ILinkableCart {
      * @param cart The cart doing the adjusting.
      * @return Whether the cart can have its velocity adjusted.
      */
-    default boolean canBeAdjusted(EntityMinecart cart) {
+    default boolean canBeAdjusted(MinecartEntity cart) {
         return isLinkable();
     }
 
@@ -97,7 +97,7 @@ public interface ILinkableCart {
      *
      * @param cart The cart we linked with.
      */
-    default void onLinkCreated(EntityMinecart cart) {
+    default void onLinkCreated(MinecartEntity cart) {
     }
 
     /**
@@ -106,6 +106,6 @@ public interface ILinkableCart {
      * @param cart The cart we were linked with.
      */
     @SuppressWarnings("EmptyMethod")
-    default void onLinkBroken(EntityMinecart cart) {
+    default void onLinkBroken(MinecartEntity cart) {
     }
 }

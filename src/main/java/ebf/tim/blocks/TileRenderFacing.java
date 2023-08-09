@@ -16,8 +16,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileRenderFacing extends TileEntity {
     public int facing =-1;
@@ -90,7 +90,7 @@ public class TileRenderFacing extends TileEntity {
             }
 
 
-            if(world==null) {
+            if(getWorld()==null) {
                 Minecraft.getMinecraft().entityRenderer.disableLightmap();
             } else {
                 Minecraft.getMinecraft().entityRenderer.enableLightmap();
@@ -112,7 +112,7 @@ public class TileRenderFacing extends TileEntity {
             //be sure to re-enable the texture biding, because the UI wont
             org.lwjgl.opengl.GL11.glEnable( org.lwjgl.opengl.GL11.GL_TEXTURE_2D);
             org.lwjgl.opengl.GL11.glBindTexture( org.lwjgl.opengl.GL11.GL_TEXTURE_2D,boundTexture);
-            if(world==null) {
+            if(getWorld()==null) {
                 Minecraft.getMinecraft().entityRenderer.disableLightmap();
             }
         } else{
@@ -120,7 +120,7 @@ public class TileRenderFacing extends TileEntity {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void renderModel(){
         if(host.model!=null) {
             host.model.render();
@@ -152,7 +152,7 @@ public class TileRenderFacing extends TileEntity {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ResourceLocation getTexture(int x, int y, int z){
         return host.getTexture(x,y,z);
     }
@@ -232,17 +232,17 @@ public class TileRenderFacing extends TileEntity {
     }
 
     //todo: better control for render distance
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public double getMaxRenderDistanceSquared() {
         return ((Minecraft.getMinecraft().gameSettings.renderDistanceChunks*16)+16)*((Minecraft.getMinecraft().gameSettings.renderDistanceChunks*16)+16);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ResourceLocation getIconResource() {
         return null;
     }
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean force2dItem(net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType type){return false;}
 
     public static final ModelRendererTurbo cube = new ModelRendererTurbo((ModelBase) null, 0,0,64,32).addBox(-8,-8,-8,16,16,16);

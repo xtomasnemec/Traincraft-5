@@ -14,8 +14,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.blocks.TCBlocks;
 
@@ -34,7 +34,7 @@ public class BlockDistil extends BlockDynamic {
 		return Item.getItemFromBlock(TCBlocks.blockDistil);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public Object getGUI(EntityPlayer player, TileEntity te){
 		return new train.blocks.distil.GuiDistil(player.inventory, (TileEntityDistil) te);
@@ -46,7 +46,7 @@ public class BlockDistil extends BlockDynamic {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 		TileEntity te = Minecraft.getMinecraft().world.getTileEntity(pos);
 		if (te instanceof TileEntityDistil && ((TileEntityDistil) te).isBurning()) {

@@ -11,8 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 
 public class BlockTrainWorkbench extends BlockDynamic {
@@ -21,7 +21,7 @@ public class BlockTrainWorkbench extends BlockDynamic {
 		super(Material.WOOD, true);
 		setCreativeTab(Traincraft.tcTab);
 	}
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public Object getGUI(EntityPlayer player, TileEntity te){
 		return new train.blocks.bench.GuiTrainCraftingBlock(player.inventory, (TileTrainWbench) te);

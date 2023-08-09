@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 //NOTE: TileSwitch is re-used for signals, because the only differences between them are in block logic
@@ -22,12 +22,12 @@ public class BlockSignal extends BlockSwitch {
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public int getWeakPower(IBlockState state, IWorld world, BlockPos pos, EnumFacing side) {
         return 0;
     }
 
     @Override
-    public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public int getStrongPower(IBlockState state, IWorld world, BlockPos pos, EnumFacing side) {
         return 0;
     }
 

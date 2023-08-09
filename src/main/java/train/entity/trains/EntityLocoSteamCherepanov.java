@@ -8,7 +8,7 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -53,7 +53,7 @@ public class EntityLocoSteamCherepanov extends EntityTrainCore {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelLocoCherepanov()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{-0.075f, world==null?0.2f:0.6f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{-0.075f, getWorld()==null?0.2f:0.6f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, -180.0f}};}
     @Override
@@ -80,7 +80,7 @@ public class EntityLocoSteamCherepanov extends EntityTrainCore {
     @Override
     public float[][] getRiderOffsets(){return new float[][]{{0.85f,1.35f, 0.1f}};}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?2.8f:2.2f,2.7f,1.1f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?2.8f:2.2f,2.7f,1.1f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.1f, -0.6f};}
     //Train specific stuff

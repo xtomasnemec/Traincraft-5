@@ -8,7 +8,7 @@ import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -53,7 +53,7 @@ public class EntityFreightMinetrain extends GenericRailTransport {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelMinetrain()};}
     @Override
-    public float[][] modelOffsets(){return new float[][]{{0.0f, world==null?0.2f:0.63f, 0.0f}};}
+    public float[][] modelOffsets(){return new float[][]{{0.0f, getWorld()==null?0.2f:0.63f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0f,180f,180f}};}
     @Override
@@ -80,7 +80,7 @@ public class EntityFreightMinetrain extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return new float[]{world==null?1.9f:1.4f,1.25f,1.0f};}
+    public float[] getHitboxSize(){return new float[]{getWorld()==null?1.9f:1.4f,1.25f,1.0f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.3f, -0.3f};}
 

@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class EventManagerServer {
@@ -16,8 +16,8 @@ public class EventManagerServer {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void playerQuitEvent(PlayerEvent.PlayerLoggedOutEvent event){
-        if (event.player.getRidingEntity() instanceof EntitySeat){
-            event.player.dismountEntity(event.player.getRidingEntity());
+        if (event.player.getControllingPassenger() instanceof EntitySeat){
+            event.player.dismountEntity(event.player.getControllingPassenger());
         }
     }
 

@@ -8,8 +8,8 @@ import ebf.tim.models.Bogie;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.UUID;
@@ -81,7 +81,7 @@ public abstract class RollingstockBase extends EntityRollingStockCore{
      *  new Bogie(new BogieModel(), x,y,z).addSubBogie(new subBogieModel, x,y,z)
      * @return
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Bogie[] bogies(){return super.bogies();}
 
     /**

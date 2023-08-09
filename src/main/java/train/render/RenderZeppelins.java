@@ -4,8 +4,8 @@ import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 import train.entity.zeppelin.AbstractZeppelin;
 import train.entity.zeppelin.EntityZeppelinOneBalloon;
@@ -13,7 +13,7 @@ import train.library.Info;
 import train.render.models.ModelZeppelinOneBalloon;
 import train.render.models.ModelZeppelinTwoBalloons;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderZeppelins extends net.minecraft.client.renderer.entity.Render {
 
 	private static final ModelBase modelZeppelinTwoBalloons = new ModelZeppelinTwoBalloons();

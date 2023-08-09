@@ -1,7 +1,7 @@
 //package train.blocks.bench;
 //
 //import net.minecraft.init.Blocks;
-//import net.minecraft.init.Items;
+//import net.minecraft.item.Items;
 //import net.minecraft.item.Item;
 //import net.minecraft.item.ItemStack;
 //import net.minecraftforge.fluids.FluidContainerRegistry;

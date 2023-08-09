@@ -2,7 +2,7 @@ package ebf.tim.utility;
 
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;

@@ -11,8 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import train.Traincraft;
@@ -62,7 +62,7 @@ public class GuiJukebox extends GuiScreen {
 		buttonList.add(new GuiButton(2, this.width / 2 - 45 + 120, this.height / 2 + 30, 90, 20, "Clear"));
 		buttonList.add(new GuiButton(4, this.width / 2 - 70, this.height / 2 + 30, 20, 20, "+"));
 		buttonList.add(new GuiButton(5, this.width / 2 + 50, this.height / 2 + 30, 20, 20, "-"));
-		streamTextBox = new GuiTCTextField(this.fontRenderer, this.width / 2 - (gui_width) / 2 + 10, this.height / 2 - gui_height / 2 + 50, gui_width - 16, 16);
+		streamTextBox = new GuiTCTextField(this.font, this.width / 2 - (gui_width) / 2 + 10, this.height / 2 - gui_height / 2 + 50, gui_width - 16, 16);
 		streamTextBox.setMaxStringLength(1000);
 		streamTextBox.setText(this.jukebox.streamURL);
 		//Localizations
@@ -195,7 +195,7 @@ public class GuiJukebox extends GuiScreen {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	protected void actionPerformed(GuiButton button) {
 		if (button.id == 0) {
 			if (streamTextBox.getText() != null && streamTextBox.getText().length() > 0) {
@@ -291,7 +291,7 @@ public class GuiJukebox extends GuiScreen {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean getState() {
 		return this.jukebox.isPlaying();
 	}

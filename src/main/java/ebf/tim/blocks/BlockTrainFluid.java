@@ -5,12 +5,12 @@ import ebf.tim.TrainsInMotion;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * <h2>Fluid Block</h2>
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockTrainFluid extends BlockFluidClassic {
     /**the texture for the block, the first value is the top and bottom, the second is for the sides.*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private IIcon[] sidedTexture;
     private String modID= TrainsInMotion.MODID;
     /**returns if this is flammable*/
@@ -54,7 +54,7 @@ public class BlockTrainFluid extends BlockFluidClassic {
      * used to register the icon for the block.
      */
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
         this.sidedTexture = new IIcon[]{iconRegister.registerIcon(modID+":fluids/"+fluidName), iconRegister.registerIcon(modID+":fluids/"+fluidName +"_flow")};
     }*/
@@ -72,13 +72,13 @@ public class BlockTrainFluid extends BlockFluidClassic {
     }
 
     @Override
-    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {return flammable ? 300 : 0;}
+    public int getFireSpreadSpeed(IWorld world, BlockPos pos, EnumFacing face) {return flammable ? 300 : 0;}
 
     @Override
-    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {return flammability;}
+    public int getFlammability(IWorld world, BlockPos pos, EnumFacing face) {return flammability;}
 
     @Override
-    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    public boolean isFlammable(IWorld world, BlockPos pos, EnumFacing face) {
         return flammable;
     }
 

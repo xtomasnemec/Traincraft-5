@@ -16,7 +16,7 @@ import ebf.tim.blocks.TileEntityStorage;
 import ebf.tim.utility.FuelHandler;
 import ebf.tim.utility.ItemStackSlot;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

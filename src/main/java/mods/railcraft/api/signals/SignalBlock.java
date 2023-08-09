@@ -11,7 +11,7 @@ import mods.railcraft.api.carts.CartToolsAPI;
 import mods.railcraft.api.core.CollectionToolsAPI;
 import mods.railcraft.api.tracks.TrackScanner;
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -275,11 +275,11 @@ public abstract class SignalBlock extends AbstractPair {
         int xOffset = otherTrack.getX() > myTrack.getX() ? -3 : 3;
         int zOffset = otherTrack.getZ() > myTrack.getZ() ? -3 : 3;
 
-        List<EntityMinecart> carts = CartToolsAPI.getMinecartsIn(tile.getWorld(), new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
+        List<MinecartEntity> carts = CartToolsAPI.getMinecartsIn(tile.getWorld(), new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
 //        System.out.printf("%d, %d, %d, %d, %d, %d\n", i1, j1, k1, i2, j2, k2);
 //        System.out.println("carts = " + carts.size());
         SignalAspect newAspect = SignalAspect.GREEN;
-        for (EntityMinecart cart : carts) {
+        for (MinecartEntity cart : carts) {
             int cartX = MathHelper.floor(cart.posX);
             int cartZ = MathHelper.floor(cart.posZ);
             if (Math.abs(cart.motionX) < 0.08 && Math.abs(cart.motionZ) < 0.08)

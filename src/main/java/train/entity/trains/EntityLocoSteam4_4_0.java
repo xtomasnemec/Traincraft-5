@@ -10,7 +10,7 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.utility.FuelHandler;
 import ebf.tim.utility.ItemStackSlot;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -148,7 +148,7 @@ public class EntityLocoSteam4_4_0 extends EntityTrainCore {
      */
     @Override
     public float[] getHitboxSize() {
-        return new float[]{world==null?3.5f:3.2f,2.7f,1.2f};
+        return new float[]{getWorld()==null?3.5f:3.2f,2.7f,1.2f};
     }
 
     /**

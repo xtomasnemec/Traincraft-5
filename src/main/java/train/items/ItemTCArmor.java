@@ -13,8 +13,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 import train.library.Info;
 import train.library.ItemIDs;
@@ -80,19 +80,19 @@ public class ItemTCArmor extends ItemArmor {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean hasOverlay(ItemStack i) {
 		return color!=0;
 	}
 
-	/*@SideOnly(Side.CLIENT)
+	/*@OnlyIn(Dist.CLIENT)
 	@Override
 	public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
 		return par2 == 1 ? this.iconOverlay : super.getIconFromDamageForRenderPass(par1, par2);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		this.itemIcon = iconRegister.registerIcon(Info.modID.toLowerCase() + ":armour/" + this.iconName);
 		if(color!=0){

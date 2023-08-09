@@ -14,7 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.MinecartEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -62,7 +62,7 @@ public abstract class TrackKitInstance implements ITrackKitInstance {
     }
 
     @Override
-    public BlockRailBase.EnumRailDirection getRailDirection(IBlockState state, @Nullable EntityMinecart cart) {
+    public BlockRailBase.EnumRailDirection getRailDirection(IBlockState state, @Nullable MinecartEntity cart) {
         return getRailDirectionRaw(state);
     }
 

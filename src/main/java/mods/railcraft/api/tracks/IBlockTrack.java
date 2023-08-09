@@ -8,7 +8,7 @@
 package mods.railcraft.api.tracks;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 
 /**
  * Created by CovertJaguar on 8/11/2016 for Railcraft.
@@ -16,5 +16,5 @@ import net.minecraft.world.IBlockAccess;
  * @author CovertJaguar <http://www.railcraft.info>
  */
 public interface IBlockTrack {
-    TrackType getTrackType(IBlockAccess world, BlockPos pos);
+    TrackType getTrackType(IWorld world, BlockPos pos);
 }

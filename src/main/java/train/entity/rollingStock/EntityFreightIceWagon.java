@@ -7,7 +7,7 @@ import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.TiMItems;
 import fexcraft.tmt.slim.ModelBase;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -52,7 +52,7 @@ public class EntityFreightIceWagon extends GenericRailTransport {
     @Override
     public ModelBase[] getModel(){return new ModelBase[]{new train.render.models.ModelIceWagon()};}
     @Override
-    public float[][] modelOffsets(){return world==null?new float[][]{{0.0f, -0.5f, 0.0f}}:new float[][]{{0.0f, 0.0f, 0.0f}};}
+    public float[][] modelOffsets(){return getWorld()==null?new float[][]{{0.0f, -0.5f, 0.0f}}:new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
     public float[][] modelRotations(){return new float[][]{{0.0f, 0.0f, 0.0f}};}
     @Override
@@ -79,7 +79,7 @@ public class EntityFreightIceWagon extends GenericRailTransport {
     @Override
     public float[][] getRiderOffsets(){return null;}
     @Override
-    public float[] getHitboxSize(){return world==null?new float[]{2f,1.4f,1.1f}:new float[]{1.75f,1.1f,1.0f};}
+    public float[] getHitboxSize(){return getWorld()==null?new float[]{2f,1.4f,1.1f}:new float[]{1.75f,1.1f,1.0f};}
     @Override
     public float[] rotationPoints() {return new float[]{0.295f, -0.285f};}
 

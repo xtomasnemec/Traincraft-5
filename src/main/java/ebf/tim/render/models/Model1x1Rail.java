@@ -9,7 +9,7 @@ import fexcraft.tmt.slim.Tessellator;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;

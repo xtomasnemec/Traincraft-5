@@ -13,7 +13,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,8 +22,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -171,7 +171,7 @@ public class ItemRail extends Item implements ITrackItem {
      * Each string added defines a new line.
      * We can cover the key and ticket description here, to simplify other classes.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> stringList, ITooltipFlag flagIn) {
 
@@ -242,7 +242,7 @@ public class ItemRail extends Item implements ITrackItem {
     }
 
     //adds custom versions of this to the creative menu, with the necessary NBT and metadata
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void getSubItems(CreativeTabs p_150895_2_, NonNullList<ItemStack> tabItems) {
         if(p_150895_2_== TrainsInMotion.creativeTab) {

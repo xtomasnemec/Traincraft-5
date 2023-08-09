@@ -1,28 +1,26 @@
 package ebf.tim.items;
 
 import ebf.tim.registry.TiMGenericRegistry;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * <h1>Creative tab</h1>
  * defines the creative tab's information.
  * @author Eternal Blue Flame
  */
-public class TiMTab extends CreativeTabs {
+public class TiMTab extends ItemGroup {
     public Item tabItem;
 
     /**instances the tab by handling it through the super.*/
     public TiMTab(String name, String MODID, String textureName) {
-        super(CreativeTabs.getNextID(), name);
-        tabItem= TiMGenericRegistry.RegisterItem(new Item(),MODID,textureName,null);
+        super(ItemGroup.getGroupCountSafe(), name);
+        tabItem= TiMGenericRegistry.RegisterItem(new Item(new Item.Properties()),MODID,textureName,null);
     }
     public TiMTab(String name, Item tabItem) {
-        super(CreativeTabs.getNextID(), name);
+        super(ItemGroup.getGroupCountSafe(), name);
         this.tabItem= tabItem;
     }
     /**returns the label of the tab, this is defined in the language files,
@@ -38,7 +36,7 @@ public class TiMTab extends CreativeTabs {
     public Item getTabItem(){return tabItem;}
 
     /**This is used to hide items from the creative tab, but could also be used for sorting.*/
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void displayAllRelevantItems(NonNullList<ItemStack> p_78018_1_) {
         super.displayAllRelevantItems(p_78018_1_);
     }

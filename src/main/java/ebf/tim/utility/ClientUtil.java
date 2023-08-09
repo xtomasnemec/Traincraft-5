@@ -6,7 +6,7 @@ import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.font;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -16,8 +16,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ClientUtil {
     public static final ResourceLocation vanillaInventory =
             ClientProxy.useVanillaInventoryTextures?new ResourceLocation("textures/gui/container/furnace.png"):
@@ -107,7 +107,7 @@ public class ClientUtil {
         if(overlay!=null && overlay.getItem()!=null) {
             //render the item and the overlay
             itemRender.renderItemAndEffectIntoGUI(overlay, (int)x, (int)y);
-            itemRender.renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRenderer, overlay, (int)x, (int)y, "");
+            itemRender.renderItemOverlayIntoGUI(Minecraft.getMinecraft().font, overlay, (int)x, (int)y, "");
 
             if(mouseX>x && mouseX<x+18 && mouseY>y && mouseY<y+18){
                 GL11.glPushMatrix();
@@ -129,7 +129,7 @@ public class ClientUtil {
         int j2 = x + 12;
         int k2 = y;
         int i1 = 8;
-        int k=Minecraft.getMinecraft().fontRenderer.getStringWidth(str);
+        int k=Minecraft.getMinecraft().font.getStringWidth(str);
 
 
         if (j2 + k > Minecraft.getMinecraft().displayWidth/2) {
@@ -156,7 +156,7 @@ public class ClientUtil {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         GL11.glTranslatef(0,0,400);
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(str, j2, k2, -1);
+        Minecraft.getMinecraft().font.drawStringWithShadow(str, j2, k2, -1);
 
         GL11.glEnable(GL11.GL_LIGHTING);
         RenderHelper.enableStandardItemLighting();

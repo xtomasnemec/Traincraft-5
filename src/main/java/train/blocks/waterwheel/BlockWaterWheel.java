@@ -9,10 +9,10 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import train.Traincraft;
 
 import java.util.Random;
@@ -26,7 +26,7 @@ public class BlockWaterWheel extends BlockDynamic {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(IBlockState state, IWorld world, BlockPos pos) {
 		return false;
 	}
 
@@ -46,7 +46,7 @@ public class BlockWaterWheel extends BlockDynamic {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		TileEntity tile = world.getTileEntity(pos);
