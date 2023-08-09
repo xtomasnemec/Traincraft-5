@@ -7,7 +7,7 @@ import static fexcraft.tmt.slim.ModelRendererTurbo.*;
 public class CylinderBuilder {
 
     private ModelRendererTurbo root;
-    private float x, y, z, radius, radius2, length, base_scale, top_scale;
+    private float x, y, z, radius, radius2, radius3, radius4, length, base_scale, top_scale;
     private int segments, seglimit, direction, texDiameterW, texDiameterH, texHeight;
     private Vec3f topoff = new Vec3f();
     private boolean[] togglesides = new boolean[]{false,false,false,false};
@@ -26,6 +26,11 @@ public class CylinderBuilder {
 
     public CylinderBuilder setRadius(float first, float second){
         this.radius = first; this.radius2 = second; texDiameterW = (int)Math.floor(radius * 2F); texDiameterH = (int)Math.floor(radius * 2F); return this;
+    }
+
+    public CylinderBuilder setRadius(float first_s, float first_c, float second_s, float second_c){
+        this.radius3 = first_c; this.radius4 = second_c;
+        return setRadius(first_s, second_s);
     }
 
     /** Use AFTER `setRadius`, else values will get overriden. */
@@ -114,7 +119,9 @@ public class CylinderBuilder {
     }
 
     public ModelRendererTurbo build(){
-        if(radius2 == 0f && toprot == null){
+        if(radius3 == 0f) radius3 = radius;
+        if(radius4 == 0f) radius4 = radius2;
+        if(radius2 == 0f && toprot == null && radius3 == radius){
             return root.addCylinder(x, y, z, radius, length, segments, base_scale, top_scale, direction, texDiameterW, texDiameterH, texHeight, topoff);
         }
         if(radius < 1){ texDiameterW = 2; texDiameterH = 2; } if(length < 1){ texHeight = 2; }
@@ -152,7 +159,7 @@ public class CylinderBuilder {
         for(int repeat = 0; repeat < 2; repeat++){//top/base faces
             for(int index = 0; index < segments; index++){
                 xSize = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((ModelRendererTurbo.pi / segments) * index * 2F + ModelRendererTurbo.pi) * radius * sCur);
-                zSize = (float)(-Math.cos((ModelRendererTurbo.pi / segments) * index * 2F + ModelRendererTurbo.pi) * radius * sCur);
+                zSize = (float)(-Math.cos((ModelRendererTurbo.pi / segments) * index * 2F + ModelRendererTurbo.pi) * radius3 * sCur);
                 xPlace = xCur + (!dirSide ? xSize : 0);
                 yPlace = yCur + (!dirTop ? zSize : 0);
                 zPlace = zCur + (dirSide ? xSize : (dirTop ? zSize : 0));
@@ -162,7 +169,7 @@ public class CylinderBuilder {
                 }
                 //
                 xSize = (float)((root.mirror ^ dirMirror ? -1 : 1) * Math.sin((ModelRendererTurbo.pi / segments) * index * 2F + ModelRendererTurbo.pi) * radius2 * sCur);
-                zSize = (float)(-Math.cos((ModelRendererTurbo.pi / segments) * index * 2F + ModelRendererTurbo.pi) * radius2 * sCur);
+                zSize = (float)(-Math.cos((ModelRendererTurbo.pi / segments) * index * 2F + ModelRendererTurbo.pi) * radius4 * sCur);
                 xPlace = xCur + (!dirSide ? xSize : 0);
                 yPlace = yCur + (!dirTop ? zSize : 0);
                 zPlace = zCur + (dirSide ? xSize : (dirTop ? zSize : 0));

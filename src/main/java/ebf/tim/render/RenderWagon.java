@@ -53,41 +53,21 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
         return null;
     }
 
+    //manages culling, mostly just breaks stuff, leave to return true.
+    @Override
+    public boolean shouldRender(GenericRailTransport entity, ICamera camera, double camX, double camY, double camZ) {
+        return true;
+    }
     /**
      * <h3>base render extension</h3>
      * acts as a redirect for the base render function to our own function.
      * This is just to do typecasting and a few calculations beforehand so we only need to do them once per render.
      * todo: 1.9+ should support Entity<t zextends GenericRailTransport> so this typecasting method should be completely useless then.
      */
-    /*@Override
-    public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
-        if (entity instanceof GenericRailTransport){
-            if(((GenericRailTransport) entity).frontBogie!=null) {
-                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        false);
-            } else {
-                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        true);
-            }
-        }
-    }*/
-
-    //manages culling, mostly just breaks stuff, leave to return true.
     @Override
-    public boolean shouldRender(GenericRailTransport entity, ICamera camera, double camX, double camY, double camZ) {
-        return true;
-    }
-
     public void doRender(GenericRailTransport entity, double x, double y, double z, float yaw, float partialTick){
-        if (entity !=null){
-            if(entity.frontBogie!=null) {
-                render(entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        false);
-            } else {
-                render(entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        true);
-            }
-        }
+        render(entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                entity.backBogie==null);
     }
 
     @Override
@@ -95,12 +75,12 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
     {}
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket) {
-        doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, null, this);
+        doRender(entity,x,y,z,yaw,entity.backBogie!=null?entity.backBogie.yOffset:0, isPaintBucket, null, this);
     }
 
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket, TransportSkin textureURI) {
-        doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, textureURI, this);
+        doRender(entity,x,y,z,yaw,entity.backBogie !=null?entity.backBogie.yOffset:0, isPaintBucket, textureURI, this);
     }
 
     /**
@@ -285,7 +265,7 @@ public class RenderWagon extends net.minecraft.client.renderer.entity.Render<Gen
         //set the render position
         GL11.glTranslated(x, y+ railOffset +bogieOffset+1.5, z);
 
-        GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
+        GL11.glTranslated(0, CommonUtil.rotatePoint(new Vec3f(
                 Math.abs(entity.rotationPoints()[0])+Math.abs(entity.rotationPoints()[1]),
                 0,0), entity.rotationPitch,0,0).yCoord, 0);
         if(entity.frontBogie!=null && entity.backBogie!=null){

@@ -19,6 +19,7 @@ public class HitboxDynamic {
     private float longest=0;
 
     public List<CollisionBox> interactionBoxes = new ArrayList<>();
+    public CollisionBox front,back;
 
 
     public HitboxDynamic(float depth, float height, float width, GenericRailTransport entity){
@@ -40,7 +41,12 @@ public class HitboxDynamic {
                         width*0.5,height,width*0.5));
                 c.setPosition(entity.posX, entity.posY, entity.posZ);
                 interactionBoxes.add(c);
-                entity.world.spawnEntity(c);
+                entity.getWorld().spawnEntity(c);
+                if(front==null){
+                    front=c;
+                } else{
+                    back=c;
+                }
             }
         }
     }

@@ -67,6 +67,7 @@ import java.util.*;
 
 import static ebf.tim.TrainsInMotion.transportTypes.*;
 import static ebf.tim.utility.CommonUtil.radianF;
+import static ebf.tim.utility.CommonUtil.rotatePoint;
 
 /**
  * <h1>Generic Rail Transport</h1>
@@ -137,7 +138,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     private float ticksSinceLastVelocityChange=1;
 
     private List<GenericRailTransport> consist = new ArrayList<>();
-    boolean consistListInUse=false;//use of consist variable needs to be thread safe.
 
     //@SideOnly(Side.CLIENT)
     public TransportRenderData renderData = new TransportRenderData();
@@ -412,13 +412,13 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean canBeCollidedWith() {return true;}
     /**client only positioning of the transport, this should help to smooth the movement*/
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotationDirect(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_, boolean teleport) {
-        if (frontBogie!=null && backBogie!= null){
+    public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_) {
+        if (backBogie !=null && frontBogie != null){
 
-            setRotation((float)Math.toDegrees(CommonUtil.atan2f(
-                    frontBogie.posZ - backBogie.posZ,
-                    frontBogie.posX - backBogie.posX)),
-                    CommonUtil.calculatePitch(frontBogie.posY,backBogie.posY,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+            setRotation(CommonUtil.atan2degreesf(
+                    backBogie.posZ - frontBogie.posZ,
+                    backBogie.posX - frontBogie.posX),
+                    CommonUtil.calculatePitch(backBogie.posY, frontBogie.posY,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
 
             transportX=p_70056_1_;
             transportY=p_70056_3_;
@@ -554,7 +554,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     return true;
                 }case 15: {//toggle brake
                     setBoolean(boolValues.BRAKE, !getBoolean(boolValues.BRAKE));
-                    updateConsist();
+                    updateLinks();
                     return true;
                 }case 5: { //Toggle lamp
                     setBoolean(boolValues.LAMP, !getBoolean(boolValues.LAMP));
@@ -869,7 +869,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     @Override
     protected void playStepSound(BlockPos pos, Block p_145780_4_) {}
 
-    public boolean hasDrag(){return consistLeadID==null || consistLeadID==getEntityId();}
+    public boolean hasDrag(){
+        for(GenericRailTransport t:getConsist()){
+            if(t.getAccelerator()!=0){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void updatePosition(){
 
@@ -886,15 +893,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                             //this part keeps it capped
                             getVelocity() < maxBoost(b)) {
                         float boost = CommonUtil.getMaxRailSpeed(getWorld(), (BlockRailBase) b, this, posX, posY, posZ) * 0.005f;
-                        frontBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
-                                Math.copySign(boost, frontBogie.motionX),
-                                0,
-                                Math.copySign(boost, frontBogie.motionZ));
-
-                        backBogie.addVelocity(//this part boosts in the current direction, scaled by the speed of the rail
-                                Math.copySign(boost, backBogie.motionX),
-                                0,
-                                Math.copySign(boost, backBogie.motionZ));
+                        appendMovement(Math.copySign(cachedVectors[2].yCoord,boost));
                     }
                 }
             } else {
@@ -925,7 +924,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
         //actually move
-            moveBogies(null,null);
+            finalMove();
             //only update velocity if we've moved to any significance.
             if(Math.abs(posX-prevPosX)>0.0625 || Math.abs(posZ-prevPosZ)>0.0625) {
                 motionX = (posX - prevPosX)/ticksSinceLastVelocityChange;
@@ -943,39 +942,56 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
     }
 
+    public void appendMovement(double velocity){
+
+        //the logic gets stupid if it's not sorted from one end or another.
+        //todo: this is a trash fix, it would be better for the list to be reliably sorted
+        if(frontLinkedID!=null && backLinkedID!=null){
+            return;
+        }
+        GenericRailTransport last = this;
+        for(GenericRailTransport t:getConsist()) {
+            if(t.backLinkedID!=null && last.backLinkedID!=null
+                    && last.getEntityId()==t.backLinkedID
+                    && t.getEntityId()==last.backLinkedID){
+                t.backBogie.addVelocity(t, -velocity);
+                t.frontBogie.addVelocity(t, -velocity);
+            } else if(t.frontLinkedID!=null && last.frontLinkedID!=null
+                    && last.getEntityId()==t.frontLinkedID
+                    && t.getEntityId()==last.frontLinkedID){
+                t.backBogie.addVelocity(t, -velocity);
+                t.frontBogie.addVelocity(t, -velocity);
+            } else {
+                t.backBogie.addVelocity(t, velocity);
+                t.frontBogie.addVelocity(t, velocity);
+            }
+        }
+    }
+    public void addLinkingMove(double velocity){
+        backBogie.addLinking(this, velocity);
+        frontBogie.addLinking(this, velocity);
+    }
+
     /**
      * if X or Z is null, the bogie's existing motion velocity will be used
      */
-    public void moveBogies(Double velocityX, Double velocityZ){
-        //move the bogies with the track.
-        if(velocityX==null||velocityZ==null){
-            frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
-            backBogie.minecartMove(this, backBogie.motionX, backBogie.motionZ);
+    public void finalMove(){
+        cachedVectors[1] = new Vec3f(-rotationPoints()[0], 0, 0).rotatePoint(0, rotationYaw, 0)
+                .addVector(backBogie.posX,backBogie.posY,backBogie.posZ);
+        setPosition(cachedVectors[1].xCoord, cachedVectors[1].yCoord,cachedVectors[1].zCoord);
 
-        } else if(velocityX!=0 || velocityZ!=0) {
-            frontBogie.minecartMove(this, velocityX, velocityZ);
-            backBogie.minecartMove(this, velocityX, velocityZ);
+        frontBogie.minecartMove(this);
+        backBogie.minecartMove(this);
+        //reset the y coord so they will re-calculate the yaw
+        if(hasDrag()) {
+            applyDrag();
         }
-
-        //center the entity based on the back bogie position
-        cachedVectors[1] = new Vec3f(rotationPoints()[0], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0);
-        setPosition((backBogie.posX + cachedVectors[1].xCoord),
-                (backBogie.posY + cachedVectors[1].yCoord), (backBogie.posZ + cachedVectors[1].zCoord));
-        //re-center the front bogie
-        cachedVectors[1] = new Vec3f(-rotationPoints()[1], 0, 0).rotatePoint(rotationPitch, rotationYaw, 0);
-        if(Math.abs((cachedVectors[1].xCoord + posX) - frontBogie.posX)+ Math.abs((cachedVectors[1].zCoord + posZ) - frontBogie.posZ)>0.01) {
-            frontBogie.minecartMove(this,
-                    ((cachedVectors[1].xCoord + posX) - frontBogie.posX),
-                    ((cachedVectors[1].zCoord + posZ) - frontBogie.posZ));
-            setPosition((backBogie.posX + cachedVectors[1].xCoord),
-                    (backBogie.posY + cachedVectors[1].yCoord), (backBogie.posZ + cachedVectors[1].zCoord));
-        }
-
+        cachedVectors[2].yCoord=0;
         //update rotation
         setRotation((CommonUtil.atan2degreesf(
-                frontBogie.posZ - backBogie.posZ,
-                frontBogie.posX - backBogie.posX)),
-                CommonUtil.calculatePitch(backBogie.posY + backBogie.yOffset, frontBogie.posY + frontBogie.yOffset, Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
+                backBogie.posZ - frontBogie.posZ,
+                backBogie.posX - frontBogie.posX)),
+                CommonUtil.calculatePitch(frontBogie.posY + frontBogie.yOffset, backBogie.posY + backBogie.yOffset, Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
 
         //reset the vector when we're done so it wont break trains.
         cachedVectors[1]= new Vec3f(0,0,0);
@@ -1003,60 +1019,54 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     @Override
     public void applyDrag(){
-        if(pullingWeight==0){
-            updateConsist();
+        boolean canSlope=true;
+        float drag = 0.9998f, brakeBuff = 0, slope = 0;
+        //check if lope things can be done at all
+        for(GenericRailTransport stock : getConsist()) {
+            if(stock!=this && getAccelerator()!=0){
+                canSlope=false;
+                break;
+            }
+        }
+        if(canSlope) {
+            if (getBoolean(boolValues.BRAKE)) {
+                //realistically would be more like 2.4, but 5 makes gameplay more dramatic
+                brakeBuff += weightKg() * 5.0f;
+            }
+            if (rotationPitch != 0) {
+                //vanilla uses 0.0078125 per tick for slope speed.
+                //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
+                //scale by entity pitch
+                //pitch goes from -90 to 90, so it's inherently directional, stop that.
+                slope += (0.00017361f) * Math.abs(rotationPitch);
+            }
+            appendMovement(slope * MathHelper.sin((rotationYaw-90)*radianF));
         }
 
-        if(frontLinkedID==null || backLinkedID==null) {
+        //now do drag stuff
 
-            float drag = 0.9998f,brakeBuff=0,slopeX=0,slopeZ=0;
-            //iterate the consist to collect the stats, since only end units can do this.
-            for(GenericRailTransport stock : getConsist()) {
-                if(stock.getBoolean(boolValues.BRAKE)){
-                    //realistically would be more like 2.4, but 5 makes gameplay more dramatic
-                    brakeBuff+=stock.weightKg()*5.0f;
-                }
-                if(stock.rotationPitch!=0 && getAccelerator()==0){
-                    //vanilla uses 0.0078125 per tick for slope speed.
-                    //0.00017361 would be that divided by 45 since vanilla slopes are 45 degree angles.
-                    //so we buff that to just under double to balance against drag, then scale by entity pitch
-                    //pith goes from -90 to 90, so it's inherently directional.
-                    slopeX+=(0.000017361f*0.5f)*-stock.rotationPitch;
-                }
-            }
+        //scale drag for derail, or air lateral friction. if you do both at the same time then it's way too much.
+        if(getBoolean(boolValues.DERAILED)){
+            drag*=CommonUtil.getBlockAt(getWorld(),posX,posY,posZ).slipperiness;
+        } else if (cachedVectors[2].yCoord > 0) {
+            drag -= ((getFriction() * cachedVectors[2].yCoord * 4.448f));
+        }
 
-            //scale drag for derail, or air lateral friction. if you do both at the same time then it's way too much.
-            if(getBoolean(boolValues.DERAILED)){
-                drag*=CommonUtil.getBlockAt(getWorld(),posX,posY,posZ).slipperiness;
-            } else if (cachedVectors[2].yCoord > 0) {
-                drag -= ((getFriction() * cachedVectors[2].yCoord * 4.448f));
-            }
+        //add in the drag from combined weight, plus brakes.
+        if(pullingWeight!=0) {//in theory this should never be 0, but we know forge is dumb
+            drag -= ((getAccelerator()==0?getFriction()*0.75:getFriction()*2.5) * (pullingWeight + brakeBuff)) / 44480;
+        }
+        //cap the drag to prevent weird behavior.
+        // if it goes to 1 or higher then we speed up, which is bad, if it's below 0 we reverse, which is also bad
+        if (drag > 0.9999f) {
+            drag = 0.9999f;
+        } else if (drag < 0f) {
+            drag = 0f;
+        }
 
-            //add in the drag from combined weight, plus brakes.
-            if(pullingWeight!=0) {//in theory this should never be 0, but we know forge is dumb
-                drag -= ((getAccelerator()==0?getFriction()*0.75:getFriction()*2.5) * (pullingWeight + brakeBuff)) / 44480;
-            }
-            //cap the drag to prevent weird behavior.
-            // if it goes to 1 or higher then we speed up, which is bad, if it's below 0 we reverse, which is also bad
-            if (drag > 0.9999f) {
-                drag = 0.9999f;
-            } else if (drag < 0f) {
-                drag = 0f;
-            }
-
-            //split the slope buff into X and Z, then rotate based on yaw.
-            if (rotationYaw != 0.0F) {
-                slopeZ = (slopeX * MathHelper.sin((rotationYaw-90)*radianF));
-                slopeX = (slopeX * MathHelper.cos((rotationYaw-90)*radianF));
-            }
-            frontBogie.setVelocity(
-                    (frontBogie.motionX * drag)+slopeX
-                    , frontBogie.motionY,
-                    (frontBogie.motionZ * drag)+slopeZ);
-            backBogie.setVelocity(
-                    (backBogie.motionX * drag)+slopeX,
-                    backBogie.motionY,
-                    (backBogie.motionZ * drag)+slopeZ);
+        for(GenericRailTransport t : getConsist()){
+            t.frontBogie.drag(t,drag);
+            t.backBogie.drag(t,drag);
         }
     }
 
@@ -1118,10 +1128,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         //always be sure the bogies exist on client and server.
         if (!getWorld().isRemote && (frontBogie == null || backBogie == null)) {
             //spawn front bogie
-            cachedVectors[1] = new Vec3f(rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+            cachedVectors[1] = new Vec3f(rotationPoints()[1],0,0).rotatePoint(rotationPitch, rotationYaw,0);
             frontBogie = new EntityBogie(getWorld(), posX + cachedVectors[1].xCoord, posY + cachedVectors[1].yCoord, posZ + cachedVectors[1].zCoord, getEntityId(), true);
             //spawn back bogie
-            cachedVectors[1] = new Vec3f(rotationPoints()[1],0,0).rotatePoint(rotationPitch, rotationYaw,0);
+            cachedVectors[1] = new Vec3f(rotationPoints()[0],0,0).rotatePoint(rotationPitch, rotationYaw,0);
             backBogie = new EntityBogie(getWorld(), posX + cachedVectors[1].xCoord, posY + cachedVectors[1].yCoord, posZ + cachedVectors[1].zCoord, getEntityId(), false);
 
             getWorld().spawnEntity(frontBogie);
@@ -1176,16 +1186,15 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
                 }
 
-                velocity[1] = (float) ((Math.abs(posX) - Math.abs(prevPosX)) + (Math.abs(posZ) - Math.abs(prevPosZ)));
-                if (frontBogie != null && backBogie != null) {
-                    frontBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
-                    backBogie.minecartMove(this, frontBogie.motionX, frontBogie.motionZ);
+                if (backBogie != null && frontBogie != null) {
+                    backBogie.minecartMove(this);
+                    frontBogie.minecartMove(this);
 
                     setRotation(CommonUtil.atan2degreesf(
-                            frontBogie.posZ - backBogie.posZ,
-                            frontBogie.posX - backBogie.posX),
+                            backBogie.posZ - frontBogie.posZ,
+                            backBogie.posX - frontBogie.posX),
                             CommonUtil.calculatePitch(
-                                    backBogie.posY, frontBogie.posY,
+                                    frontBogie.posY, backBogie.posY,
                                     Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
                 }
                 if(ClientProxy.EnableAnimations && renderData!=null && renderData.bogies!=null){
@@ -1217,31 +1226,28 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
          *
          * this stops updating if the transport derails. Why update positions of something that doesn't move? We compensate for first tick to be sure hitboxes, bogies, etc, spawn on join.
          */
-        else if (frontBogie!=null && backBogie != null && ticksExisted>5){
+        else if (backBogie !=null && frontBogie != null && ticksExisted>5){
 
+            if((frontLinkedID!=null || backLinkedID!=null) && getConsist().size()==1){
+                updateLinks();
+            }
             //calculate for slopes, friction, and drag
             if (hasDrag()) {
                 applyDrag();
             }
             //update positions related to linking, this NEEDS to come after drag
-            //only run updates if either the front link or the back link is null.
-            //if there is a consist lead, only the lead can run updates
-           if(consistLeadID!=null && consistLeadID==getEntityId()){
-               GenericRailTransport last = null;
-               for (GenericRailTransport transport : getConsist()){
-                   if(last!=null) {
-                       last.manageLink(transport);
-                   }
-                   last = transport;
-               }
-           } else if (consistLeadID==null){
-               if(frontLinkedID!=null && getWorld().getEntityByID(frontLinkedID) instanceof GenericRailTransport){
-                   manageLink((GenericRailTransport) getWorld().getEntityByID(frontLinkedID));
-               }
-               if(backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
-                   manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
-               }
-           }
+            if(frontLinkedID!=null && getWorld().getEntityByID(frontLinkedID) instanceof GenericRailTransport){
+               manageLink((GenericRailTransport) getWorld().getEntityByID(frontLinkedID));
+            }
+            if(backLinkedID!=null && getWorld().getEntityByID(backLinkedID) instanceof GenericRailTransport){
+               manageLink((GenericRailTransport) getWorld().getEntityByID(backLinkedID));
+            }
+            //for some off reason, this madness works pretty reliably from my tests.
+            cachedVectors[1]=new Vec3f(rotationPoints()[1],0,0).rotatePoint(0,rotationYaw,0)
+                    .addVector(posX,0,posZ).subtract((float)frontBogie.posX,0,(float)frontBogie.posZ);
+            frontBogie.velocity[2]+=cachedVectors[1].xCoord;
+            frontBogie.velocity[3]+=cachedVectors[1].zCoord;
+            updatePosition();
 
             if(collisionHandler!=null){
                 collisionHandler.updateCollidingEntities(this);
@@ -1251,10 +1257,6 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 for (int[] pos : collisionHandler.collidingBlocks) {
                     manageCollision(pos);
                 }
-            }
-
-            if(!(this instanceof EntityTrainCore)) {
-                updatePosition();
             }
         }
 
@@ -1319,7 +1321,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
             }
         }
 
-        if (backBogie!=null && !isDead && getWorld().isRemote) {
+        if (frontBogie !=null && !isDead && getWorld().isRemote) {
             //handle particles
             if (ClientProxy.EnableParticles){
                 if(getParticles().size()>0) {
@@ -1365,6 +1367,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                         colliding.host.setFrontLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
+                        updateConsist();
 
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
@@ -1378,6 +1381,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     } else if(colliding.host.getBoolean(boolValues.COUPLINGBACK)){
                         colliding.host.setbackLinkedTransport(this);
                         setFrontLinkedTransport(colliding.host);
+                        updateConsist();
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
                             listener.sendMessage(new TextComponentString("Linked the " +
@@ -1397,6 +1401,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
                         colliding.host.setFrontLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
+                        updateConsist();
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
                             listener.sendMessage(new TextComponentString("Linked the " +
@@ -1408,6 +1413,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     } else if(colliding.host.getBoolean(boolValues.COUPLINGBACK)) {
                         colliding.host.setbackLinkedTransport(this);
                         setbackLinkedTransport(colliding.host);
+                        updateConsist();
                         EntityPlayer listener = getWorld().getClosestPlayerToEntity(this,20);
                         if(listener!=null){
                             listener.sendMessage(new TextComponentString("Linked the " +
@@ -1419,29 +1425,35 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     }
                 }
 
-                //calculate the distance to yeet based on how far one pushed into the other
-                double[] motion = CommonUtil.rotatePoint(
-                        Math.max(Math.abs(getVelocity()), (Math.abs(colliding.host.getVelocity()))*0.25)+0.05,
-                        0, CommonUtil.atan2degreesf(e.posZ-posZ, e.posX-posX));
-
                 if (getBoolean(boolValues.BRAKE)) {
-                    moveBogies(-motion[0]*0.5,-motion[2]*0.5);
+                    appendMovement(-(Math.max(Math.abs(getVelocity()), (Math.abs(colliding.host.getVelocity()))*0.25)+0.05)*0.5);
                 } else {
-                    moveBogies(-motion[0],-motion[2]);
+                    appendMovement(-(Math.max(Math.abs(getVelocity()), (Math.abs(colliding.host.getVelocity()))*0.25)+0.05));
                 }
 
                 if (colliding.host.getBoolean(boolValues.BRAKE)) {
-                    colliding.host.moveBogies(motion[0]*0.5,motion[2]*0.5);
+                    appendMovement((Math.max(Math.abs(getVelocity()), (Math.abs(colliding.host.getVelocity()))*0.25)+0.05)*0.5);
                 } else {
-                    colliding.host.moveBogies(motion[0],motion[2]);
+                    appendMovement((Math.max(Math.abs(getVelocity()), (Math.abs(colliding.host.getVelocity()))*0.25)+0.05));
                 }
 
             } else if (e instanceof EntityPlayer || e instanceof EntityLiving) {
-                if (CommonProxy.pushabletrains &&
-                        !getBoolean(boolValues.BRAKE) && getAccelerator() == 0 && getVelocity() < 0.01) {
-                    double[] motion = CommonUtil.rotatePoint(0.25, 0,
-                            CommonUtil.atan2degreesf(posZ - e.posZ, posX - e.posX));
-                    moveBogies(motion[0], motion[2]);
+                if (CommonProxy.pushabletrains && !getBoolean(boolValues.BRAKE)) {
+                    for (GenericRailTransport t: getConsist()){
+                        if(t.getAccelerator()!=0){
+                            return;
+                        }
+                    }
+
+                    double distanceFront = Math.sqrt((e.posX - collisionHandler.front.posX) * (e.posX - collisionHandler.front.posX)
+                            + (e.posZ - collisionHandler.front.posZ) * (e.posZ - collisionHandler.front.posZ));
+                    double distanceBack = Math.sqrt((e.posX - collisionHandler.back.posX) * (e.posX - collisionHandler.back.posX)
+                            + (e.posZ - collisionHandler.back.posZ) * (e.posZ - collisionHandler.back.posZ));
+                    if (distanceFront<distanceBack) {
+                        appendMovement(-0.005);
+                    } else {
+                        appendMovement(0.005);
+                    }
 
                 }
 
@@ -1469,14 +1481,12 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         frontLinkedID=other.getEntityId();
         frontLinkedTransport=other.entityUniqueID;
         setBoolean(boolValues.COUPLINGFRONT, false);
-        updateConsist();
     }
 
     public void setbackLinkedTransport(GenericRailTransport other){
         backLinkedID=other.getEntityId();
         backLinkedTransport=other.entityUniqueID;
         setBoolean(boolValues.COUPLINGBACK, false);
-        updateConsist();
     }
 
     /**
@@ -1485,8 +1495,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      */
     public void updateConsist(){
         List<GenericRailTransport> transports = new ArrayList<>();
+        List<Integer> IDs = new ArrayList<>();
         Integer lead=null;
-        GenericRailTransport link=null;
+        GenericRailTransport link=this;
+        transports.add(link);
+        IDs.add(getEntityId());
+        if(getAccelerator()!=0){
+            lead=getEntityId();
+        }
         if(frontLinkedID!=null){
             link =(GenericRailTransport) getWorld().getEntityByID(frontLinkedID);
         }
@@ -1496,14 +1512,14 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     lead=link.getEntityId();
                 }
                 transports.add(link);
-                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
+                IDs.add(link.getEntityId());
+                if (link.frontLinkedID != null && !IDs.contains(link.frontLinkedID)) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport) {
+                } else if (link.backLinkedID != null && !IDs.contains(link.backLinkedID)) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
                 }
             } else {
                 link = null;
-                break;
             }
         }
         //repeat for back link
@@ -1516,26 +1532,38 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     lead=link.getEntityId();
                 }
                 transports.add(link);
-                if (link.frontLinkedID != null && getWorld().getEntityByID(link.frontLinkedID) instanceof GenericRailTransport) {
+                IDs.add(link.getEntityId());
+                if (link.frontLinkedID != null && !IDs.contains(link.frontLinkedID)) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.frontLinkedID);
-                } else if (link.backLinkedID != null && getWorld().getEntityByID(link.backLinkedID) instanceof GenericRailTransport) {
+                } else if (link.backLinkedID != null && !IDs.contains(link.backLinkedID)) {
                     link = (GenericRailTransport) getWorld().getEntityByID(link.backLinkedID);
                 }
             } else {
                 link = null;
-                break;
             }
         }
 
-        if(transports.size()>0) {
-            //now tell everything in the list, including this, that there's a new list, and provide said list.
-            for (GenericRailTransport t : transports) {
-                t.setValuesOnLinkUpdate(transports);
-                t.consistLeadID=lead;
-            }
+        for(GenericRailTransport t:transports){
+            t.consist=transports;
+            t.consistLeadID=lead;
         }
+
+        updateLinks();
     }
 
+    public void updateLinks(){
+        Integer running=null;
+        for (GenericRailTransport t : getConsist()) {
+            if(t.getAccelerator()!=0){
+                running=t.getEntityId();
+            }
+        }
+        //now tell everything in the list, including this, that there's a new list, and provide said list.
+        for (GenericRailTransport t : getConsist()) {
+            t.setValuesOnLinkUpdate(getConsist());
+            t.consistLeadID=running;
+        }
+    }
 
     /**
      * called on linking changes and when a train changes running states
@@ -1554,6 +1582,9 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * May return a 0 length array when consist is being updated.
      */
     public List<GenericRailTransport> getConsist(){
+        if(consist.size()<2 && frontLinkedID!=null && backLinkedID!=null){
+            updateConsist();
+        }
         if(consist.size()>0) {
             return consist;
         } else {
@@ -1591,84 +1622,35 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
      * If coupling is on then it will check sides without linked transports for anything to link to.
      */
     public void manageLink(GenericRailTransport other) {
-        if(other.frontBogie==null || other.backBogie==null || frontBogie==null || backBogie==null){
+        if(other.backBogie ==null || other.frontBogie ==null || backBogie ==null || frontBogie ==null){
+            return;
+        }
+        if(getAccelerator()!=0){
             return;
         }
 
-        boolean adj1 = other.canBeAdjusted(this);
-        boolean adj2 = this.canBeAdjusted(other);
-
-        double d = other.posX - this.posX;
-        double d1 = other.posZ - this.posZ;
-        double vecX = other.posX - this.posX;
-        double vecZ = other.posZ - this.posZ;
-
-        double cart1MotionX=0;
-        double cart1MotionZ=0;
-        double cart2MotionX=0;
-        double cart2MotionZ=0;
+        double vecX = other.posX - posX;
+        double vecZ = other.posZ - posZ;
 
 
-        //spring to distance
-        double vecNorm = MathHelper.sqrt((d * d) + (d1 * d1)) -
-                (other.getOptimalDistance(this)+this.getOptimalDistance(other));
+        double springDist = MathHelper.sqrt(vecX * vecX + vecZ * vecZ)
+                -(getOptimalDistance(other)+other.getOptimalDistance(this));
 
-        double springX = -0.4D * vecNorm * vecX;
-        double springZ = -0.4D * vecNorm * vecZ;
-
-        if(springX>14d || springX<-14d){
-            springX=Math.copySign(14d, springX);
+        if(getVelocity()>0.3) {
+            springDist *= 0.45;
+        } else if (getVelocity()<0.1){
+            springDist*=0.1;
+        } else {
+            springDist*=0.3;
         }
-        if(springZ>14d || springZ<-14d){
-            springZ=Math.copySign(14d, springZ);
+        if(frontLinkedID!=null && other.getEntityId() == frontLinkedID) {
+            springDist *= -1;
         }
 
-        if (adj1) {
-            cart1MotionX += springX;
-            cart1MotionZ += springZ;
+        if(Math.abs(springDist)>0.01) {
+            addLinkingMove(springDist);
         }
-        if (adj2) {
-            cart2MotionX -= springX;
-            cart2MotionZ -= springZ;
-        }
-
-
-        //dampen spring to smooth out
-        vecNorm = MathHelper.sqrt(vecX * vecX + vecZ * vecZ);
-        vecX /= vecNorm;
-        vecZ /= vecNorm;
-
-        vecNorm = (cart1MotionX - cart2MotionX) * vecX + (cart1MotionZ - cart2MotionZ) * vecZ;
-
-        springX = -0.4D * vecNorm * vecX;
-        springZ = -0.4D * vecNorm * vecZ;
-        if(springX>14d || springX<-14d){
-            springX=Math.copySign(14d, springX);
-        }
-        if(springZ>14d || springZ<-14d){
-            springZ=Math.copySign(14d, springZ);
-        }
-
-        if (adj1) {
-            cart1MotionX += springX;
-            cart1MotionZ += springZ;
-        }
-        if (adj2) {
-            cart2MotionX -= springX;
-            cart2MotionZ -= springZ;
-        }
-
-        //move bogies
-        if((cart1MotionX!=0 || cart1MotionZ!=0) && other.getAccelerator()==0) {
-            other.moveBogies(cart1MotionX, cart1MotionZ);
-        }
-
-        if((cart2MotionX!=0 || cart2MotionZ!=0) && getAccelerator()==0) {
-            this.moveBogies(cart2MotionX, cart2MotionZ);
-        }
-
     }
-
 
     /**
      * <h2>Permissions handler</h2>
@@ -1806,8 +1788,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
 
 
     @SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double p_70112_1_)
-    {
+    public boolean isInRangeToRenderDist(double p_70112_1_) {
         return p_70112_1_ > 1D;
     }
 

@@ -40,6 +40,9 @@ public class EventManagerServer {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onBucketFillServer(FillBucketEvent event){
+        if(event.getTarget()==null || event.getTarget().getBlockPos()==null){
+            return;
+        }
         Block b = CommonUtil.getBlockAt(event.getWorld(),event.getTarget().getBlockPos().getX(), event.getTarget().getBlockPos().getY(), event.getTarget().getBlockPos().getZ());
         if(TiMGenericRegistry.fluidMap.get(b) !=null){
             event.setFilledBucket(new ItemStack(TiMGenericRegistry.fluidMap.get(b)));
