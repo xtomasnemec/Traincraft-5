@@ -26,8 +26,8 @@ public class ModelPool {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		File modelFile = entry.checkValidPath(file.substring(5));
-		if(modelFile == null || !modelFile.exists()){
+		InputStream modelFile = entry.checkValidPath(file.substring(5));
+		if(modelFile == null){
 			System.out.println("The model with the name " + file + " does not exist.");
 			return null;
 		}
@@ -53,22 +53,15 @@ public class ModelPool {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		File modelFile = null;
 		InputStream in = entry.getClass().getResourceAsStream("/assets/" + file + ".obj");
-		File tempfile = File.createTempFile(file, ".obj");
-		FileOutputStream out = new FileOutputStream(tempfile);
-		tempfile.deleteOnExit();
-		IOUtils.copy(in, out);
-		System.out.println("RENDER: " + tempfile.getPath().toString());
-		modelFile = tempfile;
-		if(modelFile == null || !modelFile.exists()){
+		if(in == null){
 			System.out.println("The model with the name " + file + " does not exist.");
 			return null;
 		}
 		entry.textures = new HashMap<String, TextureGroup>();
 		entry.name = file;
 		entry.setTextureGroup("0");
-		entry.getModel(modelFile);
+		entry.getModel(in);
 		modelMap.put(file, entry);
 		return entry;
 	}

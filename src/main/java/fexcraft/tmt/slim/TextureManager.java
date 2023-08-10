@@ -50,7 +50,8 @@ public class TextureManager {
      */
     public static int bindTexture(ResourceLocation textureURI) {
         if (textureURI == null){
-            textureURI= new ResourceLocation(TrainsInMotion.MODID,"nullTrain");
+            Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(TrainsInMotion.MODID,"nullTrain"));
+            return 0;
         }
         //clean out the texture bind map when texturepacks are reloaded.
         if(MCResourcePacks!= Minecraft.getMinecraft().getResourceManager().getResourceDomains()){
@@ -203,6 +204,15 @@ public class TextureManager {
 
 
 
+    public static boolean textureExists(ResourceLocation textureURI){
+
+        object = Minecraft.getMinecraft().getTextureManager().getTexture(textureURI);
+        if (object == null) {
+            object = new SimpleTexture(textureURI);
+            Minecraft.getMinecraft().getTextureManager().loadTexture(textureURI, object);
+        }
+        return object.getGlTextureId()!=TextureUtil.missingTexture.getGlTextureId();
+    }
 
 
 

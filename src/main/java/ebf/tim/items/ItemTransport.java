@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class ItemTransport extends Item {
     /**the class for the entity*/
     private final Class<? extends GenericRailTransport> transport;
     public List<TrainsInMotion.transportTypes> types =null;
+    private ResourceLocation itemTexture;
+
     @SideOnly(Side.CLIENT)
     GenericRailTransport entity;
     /**the main constructor.
@@ -40,7 +43,8 @@ public class ItemTransport extends Item {
             setItemLore(cart);
         }
         transport=cart.getClass();
-        setTextureName(MODID+":transports/"+getUnlocalizedName());
+        setTextureName(MODID+":textures/items/transports/"+getUnlocalizedName());
+        itemTexture=new ResourceLocation(MODID, "textures/items/transports/"+getUnlocalizedName().toLowerCase() +".png");
         setCreativeTab(tabs);
         if(TrainsInMotion.proxy.isClient()){
             entity=cart;
@@ -164,4 +168,7 @@ public class ItemTransport extends Item {
         return CommonUtil.translate(translate);
     }
 
+    public ResourceLocation getIconResource() {
+        return itemTexture;
+    }
 }

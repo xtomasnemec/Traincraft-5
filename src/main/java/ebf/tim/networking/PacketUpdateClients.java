@@ -32,6 +32,7 @@ public class PacketUpdateClients implements IMessage {
         Entity e = Minecraft.getMinecraft().theWorld.getEntityByID(bbuf.readInt());
         if (e instanceof GenericRailTransport) {
             ((GenericRailTransport)e).entityData= new XmlBuilder(ByteBufUtils.readUTF8String(bbuf));
+            ((GenericRailTransport) e).renderData.needsModelUpdate=true;
         }
     }
     /**puts the variables into a Byte Buffer so they can be sent to server*/

@@ -10,13 +10,19 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.List;
 
 /**
  * <h1>Block core</h1>
@@ -34,6 +40,7 @@ public class BlockDynamic extends BlockContainer {
     public BlockDynamic(Material material, boolean isStorage) {
         super(material);
         this.isContainer=isStorage;
+        setBlockBounds(hitboxShape()[0],hitboxShape()[1],hitboxShape()[2],hitboxShape()[3],hitboxShape()[4],hitboxShape()[5]);
     }
 
     @Override//1.7 version of getting if block is opaque, used for server side checks like if creatures can spawn on it
@@ -102,6 +109,22 @@ public class BlockDynamic extends BlockContainer {
         return isContainer?new TileEntityStorage(this):new TileRenderFacing(this);
     }
 
+    //returns a series of values to define the size of the block from start to end, with a normal block starting at 0 and ending at 1.
+    public float[] hitboxShape(){return new float[]{0,0,0,1,1,1};}
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox((double)x + this.minX, (double)y + this.minY, (double)z + this.minZ, (double)x + this.maxX, (double)y + this.maxY, (double)z + this.maxZ);
+    }
+    @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB hitboxSelf, List p_149743_6_, Entity collidingEntity) {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        p_149743_6_.add(this.getCollisionBoundingBoxFromPool(world, x, y, z));
+    }
+    @Override
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_) {
+        return hitboxShape()[4]>1;
+    }
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
@@ -114,8 +137,15 @@ public class BlockDynamic extends BlockContainer {
         //force tile spawn manually and override any existing tile at the space
         world.setTileEntity(x,y,z,createNewTileEntity(world,0));
         if(world.getTileEntity(x,y,z) instanceof TileRenderFacing){
-            ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(
-                    CommonUtil.floorDouble((entity.rotationYaw / 90.0F) + 2.5D) & 3);
+            switch ((CommonUtil.floorDouble(((entity.rotationYaw-45)%360) / 90.0F)&3)){
+                case 0: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.WEST);break;
+                case 1: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.NORTH);break;
+                case 2: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.EAST);break;
+                case 3: ((TileRenderFacing) world.getTileEntity(x,y,z)).setFacing(ForgeDirection.SOUTH);break;
+
+            }
+            ;
+
         }
     }
 

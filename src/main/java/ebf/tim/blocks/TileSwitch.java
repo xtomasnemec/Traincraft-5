@@ -1,5 +1,6 @@
 package ebf.tim.blocks;
 
+import ebf.tim.utility.CommonUtil;
 import fexcraft.tmt.slim.Vec3f;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,52 +9,50 @@ import net.minecraft.util.AxisAlignedBB;
 import java.util.List;
 
 public class TileSwitch extends TileRenderFacing {
-    public boolean enabled[]={false};
+    public int strength[]={0};
     public boolean[] animationReversing={false};
     public int[] crossingTick={0};
     public int currentTick=0;
     public long lastTick=0, lastSoundMS=0, time=0;
+
+    public enum SOUND_PHASE{LOOP_FROMSTART, ANIM_PEAKS, ANIM_ENDS, ANIM_STARTS, LOOP_AT_ANIM_END;}
 
     public TileSwitch(BlockSwitch block){
         host=block;
     }
     public TileSwitch(){}
 
-    public boolean toggleEnabled(int index){
-        enabled[index]=!enabled[index];
+    public int toggleEnabled(int index){
+        strength[index]=strength[index]<15?15:0;
         markDirty();
-        return enabled[index];
+        return strength[index];
     }
 
-    public void setEnabled(boolean e, int index){
-        if(e!=enabled[index]){
-            enabled[index]=e;
+    public void setStrength(int e, int index){
+        if(strength.length<bladeCount()){
+            strength =new int[bladeCount()];
+        }
+        if(e!= strength[index]){
+            strength[index]=e;
             markDirty();
         }
     }
 
-    public boolean getEnabled(int index){return enabled[index];}
+    public int getStrength(int index){return strength[index];}
 
     @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
-        tag.setInteger("c", bladeCount());
-        if(enabled.length<bladeCount()){
-            enabled=new boolean[bladeCount()];
+        if(strength.length<bladeCount()){
+            strength =new int[bladeCount()];
         }
-        for(int i=0; i<bladeCount(); i++) {
-            tag.setBoolean("e"+i, enabled[i]);
-        }
+        tag.setIntArray("e", strength);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag){
-        int c = tag.getInteger("c");
-        enabled=new boolean[c];
-        for(int i=0; i<c;i++) {
-            enabled[i] = tag.getBoolean("e"+i);
-        }
         super.readFromNBT(tag);
+        strength = tag.getIntArray("e");
     }
 
     //how often to repeat the sound in MS, this includes the length of the sound itself
@@ -68,6 +67,8 @@ public class TileSwitch extends TileRenderFacing {
     public float soundPitch(){return 1f;}
     //sound volume
     public float soundVolume(){return 1f;}
+
+    public SOUND_PHASE soundEvent(){return SOUND_PHASE.LOOP_FROMSTART;}
 
     //sets the min and max rotation angles.
     // if there is a difference of exactly 360 between the two, it will not reverse
@@ -95,24 +96,41 @@ public class TileSwitch extends TileRenderFacing {
             for(int i=0; i<bladeCount();i++) {
                 if (crossingTick.length < bladeCount()) {
                     crossingTick = new int[bladeCount()];
-                    enabled = new boolean[bladeCount()];
+                    strength = new int[bladeCount()];
                     animationReversing = new boolean[bladeCount()];
                 }
                 if (angleStops(i)) {
-                    if (crossingTick[i] <= maxAngle(i) && getEnabled(i)) {
+                    if (crossingTick[i] <= maxAngle(i) && getStrength(i)>0) {
                         crossingTick[i] += animationSpeed(i);
-                    } else if (crossingTick[i] >= minAngle(i) && !getEnabled(i)) {
+
+                    } else if ((crossingTick[i] >= minAngle(i)+animationSpeed(i) && getStrength(i)==0) ||
+                            (crossingTick[i] >= minAngle(i)+animationSpeed(i) &&
+                                    crossingTick[i] > maxAngle(i)+animationSpeed(i))) {
                         crossingTick[i] -= animationSpeed(i);
+                    }
+                    if(((soundEvent()==SOUND_PHASE.LOOP_AT_ANIM_END && crossingTick[i]>=maxAngle(i))
+                            || soundEvent()==SOUND_PHASE.LOOP_FROMSTART)
+                            && getStrength(i)>0){
+                        playsound();
                     }
                 } else {
                     if (maxAngle(i) - minAngle(i) == 360) {
-                        if (getEnabled(i)) {
+                        if (getStrength(i)>0) {
                             crossingTick[i] += animationSpeed(i);
                             if (crossingTick[i] >= 360) {
                                 crossingTick[i] = 0;
+                                if(soundEvent()==SOUND_PHASE.ANIM_ENDS){
+                                    playsound();
+                                }
+                            }
+                            if(soundEvent()==SOUND_PHASE.LOOP_FROMSTART){
+                                playsound();
                             }
                         }
-                    } else if (getEnabled(i) || crossingTick[i] != 0) {
+                    } else if (getStrength(i)>0 || crossingTick[i] != 0) {
+                        if(soundEvent()==SOUND_PHASE.LOOP_FROMSTART){
+                            playsound();
+                        }
                         if (animationReversing[i]) {
                             crossingTick[i] -= animationSpeed(i);
                         } else {
@@ -120,19 +138,25 @@ public class TileSwitch extends TileRenderFacing {
                         }
                         if (crossingTick[i] <= minAngle(i) || crossingTick[i] >= maxAngle(i)) {
                             animationReversing[i] = !animationReversing[i];
+                            if(soundEvent()==SOUND_PHASE.ANIM_PEAKS){
+                                playsound();
+                            } else if(!animationReversing[i] && soundEvent()==SOUND_PHASE.ANIM_STARTS){
+                                playsound();
+                            } else if(soundEvent()==SOUND_PHASE.ANIM_ENDS) {
+                                playsound();
+                            }
                         }
                     }
 
                 }
             }
         }
+    }
 
-        //if there's a defined sound, play that every interval.
-        if(getEnabled(0) && soundFile()!=null){
-            if(time>lastSoundMS+getSoundInterval()){
-                getWorld().playSound(xCoord,yCoord,zCoord, soundFile(), soundVolume(),soundPitch(),false);
-                lastSoundMS=time;
-            }
+    private void playsound(){
+        if(soundFile()!=null && soundFile().length()>2 && time>lastSoundMS+getSoundInterval()){
+            CommonUtil.playSound(this, soundFile(), soundVolume(), soundPitch());
+            lastSoundMS = time;
         }
     }
 
@@ -148,17 +172,31 @@ public class TileSwitch extends TileRenderFacing {
     public int checkBlockPower(int[] ... offset){
         int signalStrength=0;
         for(int[] o : offset) {
-            if (signalStrength == 0) {
-                signalStrength = worldObj.getBlockPowerInput(xCoord + o[0], yCoord + o[1], zCoord + o[2]);
-                if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + o[0], yCoord + o[1], zCoord + o[2])) {
-                    signalStrength = 15;
-                }
-            }
-            else {
+            signalStrength = worldObj.getBlockPowerInput(xCoord + o[0], yCoord + o[1], zCoord + o[2]);
+            if (signalStrength == 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord + o[0], yCoord + o[1], zCoord + o[2])) {
+                return 15;
+            } else if(signalStrength!=0) {
                 return signalStrength;
             }
         }
-        return signalStrength;
+        return 0;
+    }
+
+    public int checkBlockPower(int[] offset, int depth){
+        int signalStrength=0;
+        for(int o =-1;o<depth-1;o++) {
+            signalStrength = worldObj.getBlockPowerInput(xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2]);
+            if(signalStrength==0){
+                //1.12 use getMaxCurrentStrength
+                signalStrength = CommonUtil.getBlockAt(getWorld(),xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2])
+                        .isProvidingStrongPower(getWorld(),xCoord + offset[0], yCoord + offset[1]+o, zCoord + offset[2],0);
+                //the 0 as the last arg is something with direction i think.
+            }
+            if(signalStrength!=0) {
+                return signalStrength;
+            }
+        }
+        return 0;
     }
 
     private Vec3f end, start;
@@ -217,15 +255,15 @@ public class TileSwitch extends TileRenderFacing {
         if (list != null && list.size() > 0) {
             for (Object o : list) {
                 if (o instanceof EntityMinecart) {
-                    setEnabled(true,0);
+                    setStrength(15,0);
                     return;
                 }
             }
         }
         if(useRedstone) {
-            setEnabled(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord),0);
+            setStrength(worldObj.getBlockPowerInput(xCoord, yCoord, zCoord),0);
         } else {
-            setEnabled(false,0);
+            setStrength(0,0);
         }
     }
 }

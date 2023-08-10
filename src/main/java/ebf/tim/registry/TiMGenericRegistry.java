@@ -22,7 +22,7 @@ import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -40,7 +40,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static ebf.tim.utility.RecipeManager.getRecipe;
 
@@ -60,6 +62,8 @@ public class TiMGenericRegistry {
     private static List<String> redundantTiles = new ArrayList<>();
     private static List<String> redundantBlocks = new ArrayList<>();
     public static int registryPosition = 18;
+
+    public static Map<Block, Item> fluidMap = new HashMap<>();
 
     public TiMGenericRegistry(GenericRailTransport transport, Item[] recipe) {
         this.transport = transport;
@@ -224,7 +228,7 @@ public class TiMGenericRegistry {
         fluid.setGaseous(isGaseous).setDensity(density);
         FluidRegistry.registerFluid(fluid);
 
-        Block block = new BlockTrainFluid(fluid, new MaterialLiquid(color)).setBlockName("block." + unlocalizedName.replace(".item", "")).setBlockTextureName(MODID + ":block_" + unlocalizedName);
+        Block block = new BlockTrainFluid(fluid, Material.water).setBlockName("block." + unlocalizedName.replace(".item", "")).setBlockTextureName(MODID + ":block_" + unlocalizedName);
         ((BlockTrainFluid) block).setModID(MODID);
         GameRegistry.registerBlock(block, "block." + unlocalizedName);
         if (TrainsInMotion.proxy.isClient()) {
@@ -241,6 +245,7 @@ public class TiMGenericRegistry {
         GameRegistry.registerItem(bucket, "fluid." + unlocalizedName + ".bucket");
         FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucket), new ItemStack(Items.bucket));
 
+        fluidMap.put(block, bucket);
 
         if (DebugUtil.dev && TrainsInMotion.proxy.isClient()) {
             if (fluid.getUnlocalizedName().equals(StatCollector.translateToLocal(fluid.getUnlocalizedName()))) {

@@ -55,25 +55,20 @@ public class RenderWagon extends Render {
     @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTick){
         if (entity instanceof GenericRailTransport){
-            if(((GenericRailTransport) entity).frontBogie!=null) {
-                render((GenericRailTransport) entity, x, y, z, entity.prevRotationYaw + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        false);
-            } else {
-                render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
-                        true);
-            }
+            render((GenericRailTransport) entity, x, y, z, entity.rotationYaw  + CommonUtil.wrapAngleTo180(entity.rotationYaw - entity.prevRotationYaw) * partialTick,
+                    ((GenericRailTransport) entity).backBogie==null);
         }
     }
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket) {
         renderBlocks=field_147909_c;
-        doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, null, this);
+        doRender(entity,x,y,z,yaw,entity.backBogie!=null?entity.backBogie.yOffset:0, isPaintBucket, null, this);
     }
 
 
     public void render(GenericRailTransport entity, double x, double y, double z, float yaw, boolean isPaintBucket, TransportSkin textureURI) {
         renderBlocks=field_147909_c;
-        doRender(entity,x,y,z,yaw,entity.frontBogie!=null?entity.frontBogie.yOffset:0, isPaintBucket, textureURI, this);
+        doRender(entity,x,y,z,yaw,entity.backBogie !=null?entity.backBogie.yOffset:0, isPaintBucket, textureURI, this);
     }
 
     /**
@@ -258,8 +253,8 @@ public class RenderWagon extends Render {
         //set the render position
         GL11.glTranslated(x, y+ railOffset +bogieOffset+1.5, z);
 
-        GL11.glTranslated(0, -CommonUtil.rotatePoint(new Vec3f(
-                Math.abs(entity.bogieLengthFromCenter()[0])+Math.abs(entity.bogieLengthFromCenter()[1]),
+        GL11.glTranslated(0, CommonUtil.rotatePoint(new Vec3f(
+                Math.abs(entity.rotationPoints()[0])+Math.abs(entity.rotationPoints()[1]),
                 0,0), entity.rotationPitch,0,0).yCoord, 0);
         if(entity.frontBogie!=null && entity.backBogie!=null){
             GL11.glTranslated(0,entity.frontBogie.posY-entity.backBogie.posY,0);
@@ -344,8 +339,11 @@ public class RenderWagon extends Render {
         //render the particles, if there are any.
         if(entity.getWorld()!=null && !isPaintBucket) {
             for (ParticleFX particle : entity.renderData.particles) {
+                GL11.glPushMatrix();
                 ParticleFX.doRender(particle, entity.getRenderScale(), yaw);
+                GL11.glPopMatrix();
             }
+            GL11.glColor4f(1,1,1,1);
         }
 
 
@@ -380,7 +378,7 @@ public class RenderWagon extends Render {
                 GL11.glRotatef(b.rotation[1], 0.0f, 1.0f, 0.0f);
                 GL11.glRotatef(b.rotation[2], 0.0f, 0.0f, 1.0f);
                 //GL11.glRotatef(-180, 0.0f, 0.0f, 1.0f);
-                if(!isPaintBucket) {
+                if(!isPaintBucket && entity.getWorld()!=null) {
                     GL11.glRotatef(b.rotationYaw-entity.rotationYaw, 0.0f, 1.0f, 0);
                    //GL11.glRotatef(entity.rotationPitch, 0.0f, 0.0f, 1.0f);
                 }
@@ -392,7 +390,9 @@ public class RenderWagon extends Render {
                 //render the particles, if there are any. do this _after_ the normal render because it breaks texture bind
                 if(!isPaintBucket && entity.getWorld()!=null && entity.renderData.bogieParticles.size()>0) {
                     for (ParticleFX p : entity.renderData.bogieParticles.get(ii)) {
+                        GL11.glPushMatrix();
                         ParticleFX.doRender(p, entity.getRenderScale(), yaw);
+                        GL11.glPopMatrix();
                     }
                 }
 

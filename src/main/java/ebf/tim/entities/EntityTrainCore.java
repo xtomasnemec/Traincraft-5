@@ -3,8 +3,8 @@ package ebf.tim.entities;
 import ebf.tim.registry.NBTKeys;
 import ebf.tim.utility.CommonProxy;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.FuelHandler;
-import fexcraft.tmt.slim.Vec3d;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -97,10 +97,6 @@ public class EntityTrainCore extends GenericRailTransport {
     }
 
 
-    @Override
-    public boolean hasDrag(){return getAccelerator()==0;}
-
-
     //gets the throttle position as a percentage with 1 as max and -1 as max reverse
     public float getAcceleratorPercentage(){
         switch (Math.abs(getAccelerator())){
@@ -120,7 +116,7 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     public void calculateAcceleration(){
         //core accel speed from TC4
-        float accel=0.02f* getAcceleratorPercentage();
+        float accel=0.0025f* getAcceleratorPercentage();
         //buff to match engine type
         if(getTypes().contains(STEAM)){
             accel*=0.35f;
@@ -130,27 +126,16 @@ public class EntityTrainCore extends GenericRailTransport {
             accel*=0.7f;
         }
         //scale based on power and velocity
-        cachedVectors[2].xCoord=accel* (100f * (float)Math.pow(8f,((2.35f * -(getVelocity()/getPower()))-2.35f)));
-
-        //add back in the speed from last tick, if speed was nulled from going into neutral, get it from the velocity.
-        if(cachedVectors[2].yCoord!=0) {
-            cachedVectors[2].xCoord += cachedVectors[2].yCoord;
-        } else {
-            cachedVectors[2].xCoord += getVelocity()*0.99;
-        }
+        cachedVectors[2].xCoord=accel* (10000f * (float)Math.pow(8f,((2.35f * -(0.3557/getPower()))-2.35f)));
 
         //if speed is greater than top speed from km/h to m/s divided by 20 to get per tick
-        if (cachedVectors[2].xCoord < -unRatio(transportTopSpeed())) {
-            cachedVectors[2].xCoord = -unRatio(transportTopSpeed());
-        } else if (cachedVectors[2].xCoord > unRatio(transportTopSpeedReverse())) {
-            cachedVectors[2].xCoord = unRatio(transportTopSpeedReverse());
+        if (Math.abs(frontBogie.velocity[0])+Math.abs(frontBogie.velocity[1]) >
+                unRatio(accelerator>0?transportTopSpeed():transportTopSpeedReverse())) {
+            cachedVectors[2].xCoord=0;
         }
 
-        //set the last tick speed to this speed.
-        cachedVectors[2].yCoord=cachedVectors[2].xCoord;
-
         //handle ice slipping
-        if(accelerator!=8 && accelerator!=-8 && !getBoolean(boolValues.BRAKE)) {
+        if(!getBoolean(boolValues.BRAKE)) {
         float slip = !getBoolean(boolValues.DERAILED)?-1.0f:
                 CommonUtil.getBlockAt(worldObj,this.posX,this.posY-1,this.posZ).slipperiness;
 
@@ -189,43 +174,30 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     @Override
     public void onUpdate() {
-        if(frontBogie != null && backBogie != null) {
-
-            if (!worldObj.isRemote) {
-                //twice a second, re-calculate the speed.
-                if (accelerator!=0 && getBoolean(boolValues.RUNNING)) {
-                    if(ticksExisted % 10 == 0) {
-                        calculateAcceleration();
-                    }
-                } else {
-                    accelerator = 0;
-                    this.dataWatcher.updateObject(18, accelerator);
+        if(!worldObj.isRemote && backBogie != null && frontBogie != null) {
+            cachedVectors[2].xCoord = 0;
+            //twice a second, re-calculate the speed.
+            if (getAccelerator()!=0 && getBoolean(boolValues.RUNNING)) {
+                if(Math.abs(getAccelerator())!=8 && ticksExisted % 10 == 0) {
+                    calculateAcceleration();
                 }
-
-                if(accelerator==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
-                    frontBogie.setVelocity(0,0,0);
-                    backBogie.setVelocity(0,0,0);
-                    cachedVectors[2].xCoord = 0;
-                } else {
-                    //add drag to the accelerator
-                    if(accelerator==0){
-                        cachedVectors[2].yCoord*=0.99f;
-                    } else {
-                        Vec3d velocity = CommonUtil.rotateDistance(cachedVectors[2].xCoord, 0, rotationYaw);
-                        frontBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                        backBogie.setVelocity(velocity.xCoord, 0, velocity.zCoord);
-                    }
-                }
-
+            } else {
+                accelerator = 0;
+                this.dataWatcher.updateObject(18, getAccelerator());
             }
 
+            if(getAccelerator()==0 && getBoolean(boolValues.BRAKE) && getVelocity()==0){
+                backBogie.setVelocity(0,0,0);
+                frontBogie.setVelocity(0,0,0);
+            } else if(getAccelerator()!=0){
+                appendMovement(cachedVectors[2].xCoord);
+            }
         }
 
         super.onUpdate();
-        updatePosition();
 
-        if(whistleDelay>0) {
-            whistleDelay--;
+        if(hornDelay >0) {
+            hornDelay--;
         }
     }
 
@@ -257,24 +229,35 @@ public class EntityTrainCore extends GenericRailTransport {
     }
 
 
-    private int whistleDelay=0;
+    private int hornDelay =0;
     public void soundHorn() {
-        for (EnumSounds sounds : EnumSounds.values()) {
-            if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")&& sounds.getEntityClass().equals(this.getClass()) && whistleDelay == 0) {
-                worldObj.playSoundAtEntity(this, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
-                whistleDelay = 65;
+        if(hornDelay!=0 || getWorld().isRemote){
+            return;
+        }
+
+        List entities = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(
+                this.posX - 20, this.posY - 5, this.posZ - 20,
+                this.posX + 20, this.posY + 5, this.posZ + 20));
+
+        for (Object e : entities) {
+            if (e instanceof EntityAnimal) {
+                ((EntityAnimal) e).setTarget(this.riddenByEntity==null?this.seats.get(0).getPassenger():riddenByEntity);
+                ((EntityAnimal) e).getNavigator().setPath(null, 0);
             }
         }
-        if(!worldObj.isRemote) {
-            List entities = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(
-                    this.posX - 20, this.posY - 5, this.posZ - 20,
-                    this.posX + 20, this.posY + 5, this.posZ + 20));
 
-            for (Object e : entities) {
-                if (e instanceof EntityAnimal) {
-                    ((EntityAnimal) e).setTarget(this.riddenByEntity==null?this.seats.get(0).getPassenger():riddenByEntity);
-                    ((EntityAnimal) e).getNavigator().setPath(null, 0);
-                }
+        if(getHorn()!=null){
+            CommonUtil.playSound(this, getHorn().toString(),getHornVolume(),getHornPitch());
+            hornDelay = 65;
+            return;
+        }
+        //fallback code for TC4 sounds
+        for (EnumSounds sounds : EnumSounds.values()) {
+            if (sounds.getEntityClass() != null && !sounds.getHornString().equals("")
+                    && sounds.getEntityClass().equals(this.getClass())) {
+                CommonUtil.playSound(this, Info.resourceLocation + ":" + sounds.getHornString(), sounds.getHornVolume(), 1.0F);
+                hornDelay = 65;
+                return;
             }
         }
     }
@@ -286,10 +269,10 @@ public class EntityTrainCore extends GenericRailTransport {
             switch (key){
                 case 8:{ //toggle ignition
                     setBoolean(boolValues.RUNNING, !getBoolean(boolValues.RUNNING));
-                    updateConsist();
+                    updateLinks();
                     return true;
                 }case 9:{ //plays a sound on all clients within hearing distance
-                    if(whistleDelay==0){
+                    if(hornDelay ==0){
                         soundHorn();
                     }
                     return true;
@@ -304,7 +287,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         } else {
                             accelerator--;
                         }
-                        updateConsist();
+                        updateLinks();
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
@@ -319,7 +302,7 @@ public class EntityTrainCore extends GenericRailTransport {
                         } else {
                             accelerator++;
                         }
-                        updateConsist();
+                        updateLinks();
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
@@ -330,7 +313,7 @@ public class EntityTrainCore extends GenericRailTransport {
                             return true;
                         }
                         accelerator = 0;
-                        updateConsist();
+                        updateLinks();
                         this.dataWatcher.updateObject(18, accelerator);
                     }
                     return true;
@@ -339,24 +322,28 @@ public class EntityTrainCore extends GenericRailTransport {
                         accelerator = 7;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }case 12:{//TC control reverse
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = -7;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }case 4: {//TC control, keep speed
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = (int)Math.copySign(8,accelerator);
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }case 14: {//TC control, keep speed
                     if(getBoolean(boolValues.RUNNING)) {
                         accelerator = 0;
                         this.dataWatcher.updateObject(18, accelerator);
                     }
+                    updateLinks();
                     return true;
                 }
             }
@@ -373,8 +360,16 @@ public class EntityTrainCore extends GenericRailTransport {
      */
     /**gets the resource location for the horn sound*/
     public ResourceLocation getHorn(){return null;}
+    public float getHornVolume(){return 1.0f;}
+    public float getHornPitch(){return 1.0f;}
     /**gets the resource location for the running/chugging sound*/
     public ResourceLocation getRunningSound(){return null;}
+    public float getRunningVolume(){return 1.0f;}
+    public float getRunningPitch(){return 1.0f;}
+
+    public ResourceLocation getBellSound(){return null;}
+    public float getBellVolume(){return 1.0f;}
+    public float getBellPitch(){return 1.0f;}
 
     @Deprecated//use GenericRailTransport#getFuelEfficiency
     public float getEfficiency(){return 1;}
