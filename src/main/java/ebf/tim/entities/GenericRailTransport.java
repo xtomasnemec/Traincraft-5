@@ -122,7 +122,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     /**calculated movement speed, first value is used for GUI and speed, second is used for render effects.*/
     @Deprecated //TODO: value 1 gets the number right more often, but value 2 gets direction right. HOW
     public float[] velocity=new float[]{0,0};
-    public int forceBackupTimer =0, syncTimer=0;
+    public int forceBackupTimer =0, syncTimer=0, deathTick=0;
     public float pullingWeight=0;
 
     private float ticksSinceLastVelocityChange=1;
@@ -636,7 +636,8 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
         }
 
         //on Destruction
-        if (health<1 && !getWorld().isRemote){
+        if (health<1 && !getWorld().isRemote && deathTick==0){
+            deathTick=this.ticksExisted;
             //since it was a player be sure we remove the entity from the logging.
             ServerLogger.deleteWagon(this);
             //be sure we drop the inventory items on death.
