@@ -104,7 +104,7 @@ public class GUIPaintBucket extends GuiScreen {
     public boolean doesGuiPauseGame() {return true;}
 
 
-/** adds the correct buttons based on which case happens*/
+    /** adds the correct buttons based on which case happens*/
     public void defineButtons(){
         switch (guiScreen){
             case 0:{
@@ -127,7 +127,7 @@ public class GUIPaintBucket extends GuiScreen {
                 );
 
                 buttonList.add(
-                        new GUIButton( percentLeft(75)-10,percentTop(56), 20,20,">>") {
+                        new GUIButton( percentLeft(75)-7,percentTop(56), 20,20,">>") {
                             @Override
                             public String getHoverText() {
                                 return "Next Page";
@@ -169,7 +169,7 @@ public class GUIPaintBucket extends GuiScreen {
 
 
                 buttonList.add(
-                        new GUIButton( percentLeft(75)-16,percentTop(45), 64,20, "Close") {
+                        new GUIButton( percentLeft(75)-7,percentTop(45), 64,20, "Close") {
                             @Override
                             public String getHoverText() {
                                 return "Close Menu";
@@ -184,7 +184,7 @@ public class GUIPaintBucket extends GuiScreen {
                         }
                 );
                 buttonList.add(
-                        new GUIButton(percentLeft(83) - 61, percentTop(56), 40, 20, "Random") {
+                        new GUIButton(percentLeft(75)-7, percentTop(34), 40, 20, "Random") {
                             @Override
                             public String getHoverText() {
                                 return "Randomize Skin";
