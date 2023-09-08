@@ -184,6 +184,8 @@ public class TrainsInMotion {
         TrainsInMotion.keyChannel.registerMessage(HANDLERS[5], PacketCraftingPage.class, 6, Side.SERVER);
         TrainsInMotion.updateChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.update");
         TrainsInMotion.updateChannel.registerMessage(HANDLERS[6], PacketUpdateClients.class, 7, Side.CLIENT);
+        TrainsInMotion.updateChannel.registerMessage(PacketSeatUpdate.Handler.class, PacketSeatUpdate.class, 8, Side.CLIENT);
+        TrainsInMotion.updateChannel.registerMessage(PacketSeatUpdate.Handler.class, PacketSeatUpdate.class, 9, Side.SERVER);
         TrainsInMotion.trackChannel = NetworkRegistry.INSTANCE.newSimpleChannel("TiM.track");
 
 

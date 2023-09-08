@@ -6,10 +6,12 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.blocks.BlockDynamic;
 import ebf.tim.entities.GenericRailTransport;
+import ebf.tim.gui.GUISeatManager;
 import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMFluids;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -69,6 +71,8 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void adminGui(String datacsv){}
+
+    public void seatGUI(EntityPlayer player, GenericRailTransport transport) {    }
 
     public boolean isClient(){return false;}
 
