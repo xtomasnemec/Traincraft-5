@@ -129,6 +129,10 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
+    public void seatGUI(EntityPlayer player, GenericRailTransport transport) {
+        Minecraft.getMinecraft().displayGuiScreen(new GUISeatManager(transport));
+    }
+    @Override
     public boolean isClient(){return true;}
 
     /**

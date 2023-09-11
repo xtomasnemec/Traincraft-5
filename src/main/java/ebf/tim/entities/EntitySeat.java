@@ -3,6 +3,7 @@ package ebf.tim.entities;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -141,9 +142,9 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     }
 
     @Override
-    public void updatePassenger(Entity passenger) {
-        if (this.isPassenger(passenger)) {
-            passenger.setPosition(this.posX, this.posY-1, this.posZ);
+    public void updateRiderPosition() {
+        if (this.getPassenger() != null) {
+            this.getPassenger().setPosition(this.posX, this.posY+(getWorld().isRemote?(this.getPassenger()==Minecraft.getMinecraft().thePlayer?0.4:-1.3):-1.5), this.posZ);
         }
     }
 

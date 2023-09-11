@@ -2,6 +2,7 @@ package ebf.tim.gui;
 
 
 import ebf.tim.TrainsInMotion;
+import ebf.tim.api.SkinRegistry;
 import ebf.tim.api.TransportSkin;
 import ebf.tim.entities.GenericRailTransport;
 import ebf.tim.networking.PacketPaint;
@@ -66,6 +67,8 @@ public class GUIPaintBucket extends GuiScreen {
                     skinList.add(s.modid + ":" + s.name);
                 }
             }
+            currentTransportSkin = entity.getCurrentSkin();
+            page = skinList.indexOf(currentTransportSkin.modid + ":" + currentTransportSkin.getName());
         }
 
         Keyboard.enableRepeatEvents(true);
@@ -113,7 +116,7 @@ public class GUIPaintBucket extends GuiScreen {
     public boolean doesGuiPauseGame() {return true;}
 
 
-/** adds the correct buttons based on which case happens*/
+    /** adds the correct buttons based on which case happens*/
     public void defineButtons(){
         switch (guiScreen){
             case 0:{
@@ -136,7 +139,7 @@ public class GUIPaintBucket extends GuiScreen {
                 );
 
                 buttonList.add(
-                        new GUIButton( percentLeft(75)-10,percentTop(56), 20,20,">>") {
+                        new GUIButton( percentLeft(75)-7,percentTop(56), 20,20,">>") {
                             @Override
                             public String getHoverText() {
                                 return "Next Page";
@@ -178,7 +181,7 @@ public class GUIPaintBucket extends GuiScreen {
 
 
                 buttonList.add(
-                        new GUIButton( percentLeft(75)-16,percentTop(45), 64,20, "Close") {
+                        new GUIButton( percentLeft(75)-7,percentTop(45), 64,20, "Close") {
                             @Override
                             public String getHoverText() {
                                 return "Close Menu";
@@ -190,6 +193,27 @@ public class GUIPaintBucket extends GuiScreen {
 
                             @Override
                             public FontRenderer getFont(){return fontRenderer;}
+                        }
+                );
+                buttonList.add(
+                        new GUIButton(percentLeft(75)-7, percentTop(34), 40, 20, "Random") {
+                            @Override
+                            public String getHoverText() {
+                                return "Randomize Skin";
+                            }
+
+                            @Override
+                            public void onClick() {
+                                TransportSkin random = SkinRegistry.getTransportSkins(entity.getClass()).get(SkinRegistry.getTransportSkins(entity.getClass()).keySet().toArray()[new Random().nextInt(SkinRegistry.getTransportSkins(entity.getClass()).keySet().size())]);
+                                page = skinList.indexOf(random.modid + ":" + random.getName());
+                                TrainsInMotion.keyChannel.sendToServer(new PacketPaint(skinList.get(page), entity.getEntityId()));
+                                mc.displayGuiScreen(null);
+                            }
+
+                            @Override
+                            public FontRenderer getFont() {
+                                return fontRendererObj;
+                            }
                         }
                 );
                 break;
