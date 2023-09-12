@@ -19,14 +19,15 @@ import net.minecraft.entity.Entity;
  */
 public class PacketSeatUpdate implements IMessage {
     /**the ID of the entity to dismount from*/
-    private int rollingStockId, playerId, oldSeatIndex, newSeatIndex;
+    private int rollingStockId, playerId, oldSeatIndex, newSeatIndex, dimension;
 
     public PacketSeatUpdate() {}
-    public PacketSeatUpdate(int rollingStockId, int playerId, int oldSeatIndex, int newSeatIndex) {
+    public PacketSeatUpdate(int rollingStockId, int playerId, int oldSeatIndex, int newSeatIndex, int dimension) {
         this.rollingStockId = rollingStockId;
         this.playerId = playerId;
         this.oldSeatIndex = oldSeatIndex;
         this.newSeatIndex = newSeatIndex;
+        this.dimension = dimension;
     }
     /**reads the packet on server to get the variables from the Byte Buffer*/
     @Override
@@ -35,6 +36,7 @@ public class PacketSeatUpdate implements IMessage {
         playerId=bbuf.readInt();
         oldSeatIndex=bbuf.readInt();
         newSeatIndex=bbuf.readInt();
+        dimension=bbuf.readInt();
     }
     /**puts the variables into a Byte Buffer so they can be sent to server*/
     @Override
@@ -43,6 +45,7 @@ public class PacketSeatUpdate implements IMessage {
         bbuf.writeInt(playerId);
         bbuf.writeInt(oldSeatIndex);
         bbuf.writeInt(newSeatIndex);
+        bbuf.writeInt(dimension);
     }
 
     public static class Handler implements IMessageHandler<PacketSeatUpdate,IMessage> {
@@ -61,12 +64,12 @@ public class PacketSeatUpdate implements IMessage {
             }
             oldSeat = rollingStockEntity.seats.get(message.oldSeatIndex);
             newSeat = rollingStockEntity.seats.get(message.newSeatIndex);
-            newSeat.addPassenger(playerEntity);
             oldSeat.removePassenger(playerEntity);
+            newSeat.addPassenger(playerEntity);
             playerEntity.mountEntity(newSeat);
             if (ctx.side == Side.SERVER) {
-                TrainsInMotion.updateChannel.sendToAllAround(new PacketSeatUpdate(message.rollingStockId,message.playerId,message.oldSeatIndex,message.newSeatIndex),
-                        new NetworkRegistry.TargetPoint(playerEntity.dimension,rollingStockEntity.posX,rollingStockEntity.posY,rollingStockEntity.posZ,256D));
+                TrainsInMotion.updateChannel.sendToAllAround(new PacketSeatUpdate(message.rollingStockId,message.playerId,message.oldSeatIndex,message.newSeatIndex, message.dimension),
+                        new NetworkRegistry.TargetPoint(message.dimension,rollingStockEntity.posX,rollingStockEntity.posY,rollingStockEntity.posZ,256D));
             }
             return null;
         }

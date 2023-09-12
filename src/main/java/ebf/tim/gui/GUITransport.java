@@ -263,7 +263,7 @@ public class GUITransport extends GUIContainerNoNEI {
             @Override
             public FontRenderer getFont(){return fontRendererObj;}
         });
-        if (transport.getRiderOffsets().length > 0 || transport.getRiderOffsets() != null) {
+        if (transport.getRiderOffsets() != null && transport.getRiderOffsets().length > 0) {
             this.buttons.add(new GUIButton((int)guiLeft+166,(int)guiTop+166, 18,18) {
                 @Override
                 public String getHoverText() {
@@ -401,40 +401,6 @@ public class GUITransport extends GUIContainerNoNEI {
 
         drawTextOutlined(fontRendererObj, "burn time: " + transport.getDataWatcher().getWatchableObjectInt(13), 10, 70, 16777215);
         drawTextOutlined(fontRendererObj, "boiler heat: " + FuelHandler.getBoilerHeat(transport), 10, 80, 16777215);
-        GL11.glEnable(GL11.GL_LIGHTING);
-    }
-
-
-    /**
-     * <h2>Render Passenger GUI</h2>
-     * basically the same as
-     * todo: set this up just to render the passenger icons and empty seats above the player inventory
-     */
-    private void renderPassengerInventory(Minecraft mc){
-        mc.getTextureManager().bindTexture(ClientUtil.vanillaInventory);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        int rows=0;
-        //draw the character backgrounds.
-        //make a loop that will make a new row every 5 items
-        for (int i=0;i<transport.getRiderOffsets().length; i++) {
-            if (i/(rows+1) >=5*(rows+1)){
-                rows++;
-            }
-            ClientUtil.drawTexturedRect(guiLeft + 106 + (30*(i-(rows * 5))), guiTop + 30+(30*rows), 54, 51, 27, 27, 20, 20);
-        }
-        //make a new loop that does the same as above but binds the character's face rather than the inventory slot background.
-        for (int i=0;i<transport.getRiderOffsets().length; i++) {
-            if (i/(rows+1) >=5*(rows+1)){
-                rows++;
-            }
-            if (i==0 && transport.riddenByEntity instanceof AbstractClientPlayer){
-                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.riddenByEntity).getLocationSkin());
-                ClientUtil.drawTexturedRect(guiLeft + 108 + (30*(i-(rows * 5))), guiTop + 32+(30*rows), 30, 70, 23, 23, 36, 56);
-            } else if (i>0 && transport.seats.get(i-1).riddenByEntity instanceof AbstractClientPlayer){
-                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.seats.get(i-1).riddenByEntity).getLocationSkin());
-                ClientUtil.drawTexturedRect(guiLeft + 108 + (30*(i-(rows * 5))), guiTop + 32+(30*rows), 30, 70, 23, 23, 36, 56);
-            }
-        }
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 

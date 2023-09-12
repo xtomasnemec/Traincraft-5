@@ -26,6 +26,8 @@ public class GUISeatManager extends GUIPaintBucket {
     public ArrayList<Integer> filledSeatIDs = new ArrayList<>();
     public EntitySeat currentSeat;
 
+    public int lastClickTick = 0;
+
     public ArrayList<Vector2f> locations;
     public GUISeatManager(GenericRailTransport transport) {
         super(transport);
@@ -122,8 +124,12 @@ public class GUISeatManager extends GUIPaintBucket {
                                     }
                                     @Override
                                     public void onClick() {
-                                        TrainsInMotion.updateChannel.sendToServer(new PacketSeatUpdate(entity.getEntityId(),currentSeat.getPassenger().getEntityId(),entity.seats.indexOf(currentSeat),buttonList.indexOf(this)));
-
+                                        if (lastClickTick+5 < entity.ticksExisted) {
+                                            TrainsInMotion.updateChannel.sendToServer(new PacketSeatUpdate(entity.getEntityId(),currentSeat.getPassenger().getEntityId(),entity.seats.indexOf(currentSeat),buttonList.indexOf(this),entity.dimension));
+                                            lastClickTick = entity.ticksExisted;
+                                        } else {
+                                            System.out.println("Too fast");
+                                        }
                                     }
                                     @Override
                                     public FontRenderer getFont(){return fontRendererObj;}

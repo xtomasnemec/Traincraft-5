@@ -3,6 +3,7 @@ package ebf.tim.utility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.blocks.TileEntityStorage;
+import ebf.tim.entities.EntitySeat;
 import ebf.tim.entities.EntityTrainCore;
 import ebf.tim.entities.GenericRailTransport;
 import net.minecraft.entity.player.EntityPlayer;
@@ -642,6 +643,13 @@ public class TransportSlotManager extends net.minecraft.inventory.Container {
      */
     @Override
     public boolean canInteractWith(EntityPlayer player) {
+        if (((GenericRailTransport) hostInventory).seats.size() > 0) { //TODO: this feels super janky and it feels like this should be added in getPermissions
+            for(EntitySeat seat : ((GenericRailTransport) hostInventory).seats) {
+                if (seat.getPassenger() == player && ((GenericRailTransport) hostInventory).seats.indexOf(seat) != 0) {
+                    return true;
+                }
+            }
+        }
         return (hostInventory instanceof GenericRailTransport?((GenericRailTransport)hostInventory).getPermissions(player, hostInventory instanceof EntityTrainCore, false): hostInventory!=null);
     }
 }
