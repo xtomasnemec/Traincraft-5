@@ -48,15 +48,15 @@ public class GUISeatManager extends GUIPaintBucket {
         this.drawDefaultBackground();
         super.drawScreen(parWidth, parHeight, p_73863_3_);
         locations = new ArrayList<>();
-        guiLeft=new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight).getScaledWidth();
-        guiTop=new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight).getScaledHeight();
+        guiLeft=new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth();
+        guiTop=new ScaledResolution(Minecraft.getMinecraft()).getScaledHeight();
 
         if (entity.getRiderOffsets().length==0 || entity.getRiderOffsets() == null){
             return;
         }
         for(EntitySeat seat : entity.seats) {
             if (seat.getPassenger() != null) {
-                if (seat.getPassenger() == Minecraft.getMinecraft().thePlayer) {
+                if (seat.getPassenger() == Minecraft.getMinecraft().player) {
                     currentSeat = seat;
                 }
                 filledSeatIDs.add(seat.getEntityId());
@@ -93,16 +93,16 @@ public class GUISeatManager extends GUIPaintBucket {
                         column++;
                         activeRow=0;
                     }
-                    int width = fontRendererObj.getStringWidth("Empty Seat") + 6;
+                    int width = fontRenderer.getStringWidth("Empty Seat") + 6;
                     if (entity.seats.get(i).getPassenger() instanceof EntityPlayer) {
 
-                        if (fontRendererObj.getStringWidth(entity.seats.get(i).getPassenger().getCommandSenderName()) > width) {
-                            width = fontRendererObj.getStringWidth(entity.seats.get(i).getPassenger().getCommandSenderName()) + 7;
+                        if (fontRenderer.getStringWidth(entity.seats.get(i).getPassenger().getName()) > width) {
+                            width = fontRenderer.getStringWidth(entity.seats.get(i).getPassenger().getName()) + 7;
                             if(width%2 !=0)
                                 width++;
                         }
                         buttonList.add(
-                                new GUIButton(percentLeft(50)-60-(totalColumns/2)+(column*120)-(width/2), percentTop(25)+(28*activeRow+1)-11, width,20,entity.seats.get(i).getPassenger().getCommandSenderName()) {
+                                new GUIButton(percentLeft(50)-60-(totalColumns/2)+(column*120)-(width/2), percentTop(25)+(28*activeRow+1)-11, width,20,entity.seats.get(i).getPassenger().getName()) {
                                     @Override
                                     public String getHoverText() {
                                         return "Seat is currently occupied";
@@ -110,7 +110,7 @@ public class GUISeatManager extends GUIPaintBucket {
                                     @Override
                                     public void onClick() {}
                                     @Override
-                                    public FontRenderer getFont(){return fontRendererObj;}
+                                    public FontRenderer getFont(){return fontRenderer;}
                                 }
                         );
                     } else { //TODO: add an else if for things that aren't players. this becomes important for stuff like stock cars or putting villagers in player seats
@@ -126,7 +126,7 @@ public class GUISeatManager extends GUIPaintBucket {
 
                                     }
                                     @Override
-                                    public FontRenderer getFont(){return fontRendererObj;}
+                                    public FontRenderer getFont(){return fontRenderer;}
                                 }
                         );
                     }
@@ -134,7 +134,7 @@ public class GUISeatManager extends GUIPaintBucket {
                     activeRow++;
                 }
                 buttonList.add(
-                        new GUIButton( percentLeft(50)-((fontRendererObj.getStringWidth("Close")+7)/2), percentTop(75)-10, fontRendererObj.getStringWidth("Close")+7,20,"Close") {
+                        new GUIButton( percentLeft(50)-((fontRenderer.getStringWidth("Close")+7)/2), percentTop(75)-10, fontRenderer.getStringWidth("Close")+7,20,"Close") {
                             @Override
                             public String getHoverText() {
                                 return "Close Inventory";
@@ -144,7 +144,7 @@ public class GUISeatManager extends GUIPaintBucket {
                                 mc.displayGuiScreen(null);
                             }
                             @Override
-                            public FontRenderer getFont(){return fontRendererObj;}
+                            public FontRenderer getFont(){return fontRenderer;}
                         }
                 );
                 break;

@@ -212,7 +212,7 @@ public class GUIPaintBucket extends GuiScreen {
 
                             @Override
                             public FontRenderer getFont() {
-                                return fontRendererObj;
+                                return fontRenderer;
                             }
                         }
                 );

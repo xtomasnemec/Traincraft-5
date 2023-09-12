@@ -142,9 +142,9 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
     }
 
     @Override
-    public void updateRiderPosition() {
-        if (this.getPassenger() != null) {
-            this.getPassenger().setPosition(this.posX, this.posY+(getWorld().isRemote?(this.getPassenger()==Minecraft.getMinecraft().thePlayer?0.4:-1.3):-1.5), this.posZ);
+    public void updatePassenger(Entity passenger) {
+        if (this.isPassenger(passenger)) {
+            passenger.setPosition(this.posX, this.posY+(getWorld().isRemote?(passenger==Minecraft.getMinecraft().player?0.4:-1.3):-1.5), this.posZ);
         }
     }
 
@@ -158,6 +158,10 @@ public class EntitySeat extends Entity implements IEntityAdditionalSpawnData {
         super.addPassenger(passenger);
     }
 
+    @Override
+    public void removePassenger(Entity passenger) {
+        super.removePassenger(passenger);
+    }
 
     public boolean isControlSeat(){return controller;}
     public boolean isLocoControlSeat(){return controller && locomotive;}

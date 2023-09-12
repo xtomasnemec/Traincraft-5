@@ -1,23 +1,24 @@
 package train.blocks.hearth;
 
+import ebf.tim.blocks.TileEntityStorage;
+import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.TransportSlotManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerOpenHearthFurnace extends TransportSlotManager {
 
-	private TileEntityOpenHearthFurnace furnace;
 	private int cookTime;
 	private int burnTime;
 	private int itemBurnTime;
 
 
-	public ContainerOpenHearthFurnace(InventoryPlayer inventoryplayer, TileEntityOpenHearthFurnace tileentityFurnace) {
+	public ContainerOpenHearthFurnace(InventoryPlayer inventoryplayer, TileEntityStorage tileentityFurnace) {
 		super(inventoryplayer,tileentityFurnace);
-		furnace=tileentityFurnace;
 	}
 
 	@Override
@@ -47,36 +48,37 @@ public class ContainerOpenHearthFurnace extends TransportSlotManager {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
+		TileEntityOpenHearthFurnace furnace = (TileEntityOpenHearthFurnace)hostInventory;
 		for (IContainerListener icontainerlistener : this.listeners) {
-			if (this.cookTime != this.furnace.getField(2)) {
-				icontainerlistener.sendWindowProperty(this, 2, this.furnace.getField(2));
+			if (this.cookTime != furnace.furnaceCookTime) {
+				icontainerlistener.sendWindowProperty(this, 2, furnace.furnaceCookTime);
 			}
 
-			if (this.burnTime != this.furnace.getField(0)) {
-				icontainerlistener.sendWindowProperty(this, 0, this.furnace.getField(0));
+			if (this.burnTime != furnace.furnaceBurnTime) {
+				icontainerlistener.sendWindowProperty(this, 0, furnace.furnaceBurnTime);
 			}
 
-			if (this.itemBurnTime != this.furnace.getField(1)) {
-				icontainerlistener.sendWindowProperty(this, 1, this.furnace.getField(1));
+			if (this.itemBurnTime != furnace.currentItemBurnTime) {
+				icontainerlistener.sendWindowProperty(this, 1, furnace.currentItemBurnTime);
 			}
 		}
 
-		this.cookTime = this.furnace.getField(2);
-		this.burnTime = this.furnace.getField(0);
-		this.itemBurnTime = this.furnace.getField(1);
+		this.cookTime = furnace.furnaceCookTime;
+		this.burnTime = furnace.furnaceBurnTime;
+		this.itemBurnTime = furnace.currentItemBurnTime;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int i, int j) {
 		if (i == 0) {
-			furnace.furnaceCookTime = j;
+			((TileEntityOpenHearthFurnace)hostInventory).furnaceCookTime = j;
 		}
-		if (i == 1) {
-			furnace.furnaceBurnTime = j;
+		else if (i == 1) {
+			((TileEntityOpenHearthFurnace)hostInventory).furnaceBurnTime = j;
 		}
-		if (i == 2) {
-			furnace.currentItemBurnTime = j;
+		else if (i == 2) {
+			((TileEntityOpenHearthFurnace)hostInventory).currentItemBurnTime = j;
 		}
 	}
 }

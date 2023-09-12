@@ -269,7 +269,7 @@ public class GUITransport extends GuiContainer {
             @Override
             public FontRenderer getFont(){return fontRenderer;}
         });
-        if (transport.getRiderOffsets().length > 0 || transport.getRiderOffsets() != null) {
+        if (transport.getRiderOffsets() != null && transport.getRiderOffsets().length > 0) {
             this.buttons.add(new GUIButton((int)guiLeft+166,(int)guiTop+166, 18,18) {
                 @Override
                 public String getHoverText() {
@@ -287,7 +287,7 @@ public class GUITransport extends GuiContainer {
                 }
 
                 @Override
-                public FontRenderer getFont(){return fontRendererObj;}
+                public FontRenderer getFont(){return fontRenderer;}
             });
         }
         //train specific
@@ -433,11 +433,11 @@ public class GUITransport extends GuiContainer {
             if (i/(rows+1) >=5*(rows+1)){
                 rows++;
             }
-            if (i==0 && transport.riddenByEntity instanceof AbstractClientPlayer){
-                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.riddenByEntity).getLocationSkin());
+            if (i==0 && transport.getPassengers().get(0) instanceof AbstractClientPlayer){
+                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.getPassengers().get(0)).getLocationSkin());
                 ClientUtil.drawTexturedRect(guiLeft + 108 + (30*(i-(rows * 5))), guiTop + 32+(30*rows), 30, 70, 23, 23, 36, 56);
-            } else if (i>0 && transport.seats.get(i-1).riddenByEntity instanceof AbstractClientPlayer){
-                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.seats.get(i-1).riddenByEntity).getLocationSkin());
+            } else if (i>0 && transport.seats.get(i-1).getPassengers().get(0) instanceof AbstractClientPlayer){
+                mc.getTextureManager().bindTexture(((AbstractClientPlayer) transport.seats.get(i-1).getPassengers().get(0)).getLocationSkin());
                 ClientUtil.drawTexturedRect(guiLeft + 108 + (30*(i-(rows * 5))), guiTop + 32+(30*rows), 30, 70, 23, 23, 36, 56);
             }
         }
@@ -507,7 +507,9 @@ public class GUITransport extends GuiContainer {
                 Tessellator.bindTexture(URIRegistry.GUI_PREFIX.getResource("gui.png"));
                 ClientUtil.drawTexturedRect(186, 40 + (-20 * i), 16, 0, 90, 18, 16, 16);
 
-                if (transport.getTankInfo()[i] != null && transport.getTankInfo()[i].fluid.amount > 0) {
+                if (transport.getTankInfo()[i] != null && transport.getTankInfo()[i].fluid != null &&
+                        transport.getTankInfo()[i].fluid.getFluid() != null &&
+                        transport.getTankInfo()[i].fluid.getFluid().getBlock() !=null&& transport.getTankInfo()[i].fluid.amount > 0) {
                     liquid = transport.getTankInfo()[i].fluid.amount;
                     if (liquid != 0) {
                         liquid /= transport.getTankInfo()[i].capacity;

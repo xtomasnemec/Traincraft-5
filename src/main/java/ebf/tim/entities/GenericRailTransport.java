@@ -412,7 +412,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
     public boolean canBeCollidedWith() {return true;}
     /**client only positioning of the transport, this should help to smooth the movement*/
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_) {
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport){
         if (backBogie !=null && frontBogie != null){
 
             setRotation(CommonUtil.atan2degreesf(
@@ -420,10 +420,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                     backBogie.posX - frontBogie.posX),
                     CommonUtil.calculatePitch(backBogie.posY, frontBogie.posY,Math.abs(rotationPoints()[0]) + Math.abs(rotationPoints()[1])));
 
-            transportX=p_70056_1_;
-            transportY=p_70056_3_;
-            transportZ=p_70056_5_;
-            tickOffset = p_70056_9_+2;
+            transportX=x;
+            transportY=y;
+            transportZ=z;
+            tickOffset = posRotationIncrements+2;
 
             //handle bogie rotations
             if(renderData!=null && renderData.bogies!=null){
@@ -446,7 +446,7 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 }
             }
         }else {
-            this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
+            this.setPosition(x, y, z);
         }
     }
 
@@ -1171,6 +1171,10 @@ public class GenericRailTransport extends EntityMinecart implements IEntityAddit
                 prevPosX = posX;
                 prevPosZ = posZ;
                 if(tickOffset >0) {
+
+                    cachedVectors[1] = new Vec3f(-rotationPoints()[0], 0, 0).rotatePoint(0, rotationYaw, 0)
+                            .addVector(backBogie.posX,backBogie.posY,backBogie.posZ);
+                    setPosition(cachedVectors[1].xCoord, cachedVectors[1].yCoord,cachedVectors[1].zCoord);
                     setPosition(
                             this.posX + (this.transportX - this.posX) / (double) this.tickOffset,
                             this.posY + (this.transportY - this.posY) / (double) this.tickOffset,

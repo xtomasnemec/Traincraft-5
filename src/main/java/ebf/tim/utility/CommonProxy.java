@@ -9,6 +9,7 @@ import ebf.tim.registry.TiMBlocks;
 import ebf.tim.registry.TiMFluids;
 import ebf.tim.registry.TiMItems;
 import ebf.tim.registry.TiMOres;
+import fexcraft.fcl.common.Static;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

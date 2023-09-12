@@ -3,6 +3,7 @@ package ebf.tim.blocks;
 import depreciated.minecraft.util.IIcon;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import ebf.tim.utility.TransportSlotManager;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.block.Block;
@@ -114,13 +115,15 @@ public class BlockDynamic extends BlockContainer {
 
     //@Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return new AxisAlignedBB((double)x + hitboxShape()[0], (double)y + hitboxShape()[1], (double)z + hitboxShape()[2],
-                (double)x + hitboxShape()[3], (double)y + hitboxShape()[4], (double)z + hitboxShape()[5]);
+        return new AxisAlignedBB((double)hitboxShape()[0], (double)hitboxShape()[1], (double)hitboxShape()[2],
+                (double)hitboxShape()[3], (double)hitboxShape()[4], (double)hitboxShape()[5]).offset(x,y,z);
     }
     @Override
     public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
         //this.setBlockBoundsBasedOnState(world, x, y, z);
-        collidingBoxes.add(this.getCollisionBoundingBoxFromPool(world, pos.getX(),pos.getY(),pos.getZ()));
+        if (entityBox.intersects(this.getCollisionBoundingBoxFromPool(world, pos.getX(), pos.getY(), pos.getZ()))) {
+            collidingBoxes.add(this.getCollisionBoundingBoxFromPool(world, pos.getX(), pos.getY(), pos.getZ()));
+        }
     }
     @Override
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
