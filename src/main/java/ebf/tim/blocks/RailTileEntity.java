@@ -10,6 +10,7 @@ import ebf.tim.registry.TiMItems;
 import ebf.tim.render.models.Model1x1Rail;
 import ebf.tim.utility.ClientProxy;
 import ebf.tim.utility.CommonUtil;
+import ebf.tim.utility.DebugUtil;
 import fexcraft.tmt.slim.TextureManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -36,7 +37,7 @@ public class RailTileEntity extends TileEntity {
     //todo public int timer=0;
     //todo public int overgrowth=0;
     //public Integer railGLID=null;
-    public static Map<XmlBuilder,Integer> displayListMap = new HashMap<>();
+    public static Map<Integer,Integer> displayListMap = new HashMap<>();
     private int meta=0;
     private XmlBuilder data = new XmlBuilder();
     private Integer glID=null;
@@ -80,15 +81,15 @@ public class RailTileEntity extends TileEntity {
             }
             else if(data !=null && data.floatArrayMap.size()>0){
                 RailShapeCore route =new RailShapeCore().fromXML(data);
-                if(displayListMap.containsKey(data)){
-                    glID=displayListMap.get(data);
+                if(displayListMap.containsKey(data.toXMLString().hashCode())){
+                    glID=displayListMap.get(data.toXMLString().hashCode());
                     org.lwjgl.opengl.GL11.glCallList(glID);
                 }
                 else if (route.activePath!=null) {
                     if(!ClientProxy.disableCache) {
-                        displayListMap.put(data,
-                            net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1));
-                        org.lwjgl.opengl.GL11.glNewList(displayListMap.get(data), org.lwjgl.opengl.GL11.GL_COMPILE);
+                        glID=net.minecraft.client.renderer.GLAllocation.generateDisplayLists(1);
+                        displayListMap.put(data.toXMLString().hashCode(), glID);
+                        org.lwjgl.opengl.GL11.glNewList(glID, org.lwjgl.opengl.GL11.GL_COMPILE);
 
                         Model1x1Rail.Model3DRail(worldObj, xCoord, yCoord, zCoord, route);
 

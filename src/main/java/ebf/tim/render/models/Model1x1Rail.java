@@ -57,7 +57,7 @@ public class Model1x1Rail {
 
     public static void addVertexWithOffset(Vec6f p, float width, float height, float depth){
         rotateVertexPoint(depth,height,width-Math.copySign(p.w,width),p.u,p.v);
-        Tessellator.getInstance().addVertexWithUV(vert[0]+p.xCoord,vert[1]+p.yCoord, vert[2]+p.zCoord,0,0);
+        Tessellator.getInstance().addVertex(vert[0]+p.xCoord,vert[1]+p.yCoord, vert[2]+p.zCoord);
     }
 
     public static void addVertexWithOffsetAndUV(Vec5f p, float width, float height, float depth, float U, float V){
@@ -106,7 +106,7 @@ public class Model1x1Rail {
         if(colors==null){return;}
         //DebugUtil.println(ClientProxy.railLoD);
         //renders the rails, also defines min and max width
-        GL11.glEnable(GL11.GL_NORMALIZE);
+        //GL11.glEnable(GL11.GL_NORMALIZE);
         GL11.glPushMatrix();
         GL11.glColor4f(1,1,1,1);
         GL11.glDisable(GL_TEXTURE_2D);
