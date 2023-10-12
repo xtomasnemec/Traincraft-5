@@ -104,7 +104,6 @@ public class ModelRail {
         GL11.glTranslated(0, 0.225*scale, 0);
 
         for(float rail : shape.getGaugePositions()) {
-            GL11.glPushMatrix();
             centerShading(rail,color,20,true);
             drawFace(shape.activePath, rail, 0.0625f, 0,0,0, scale);
             drawFace(shape.activePath, rail, 0.0625f, 0.0625f,-0.025f,0, scale);
@@ -186,7 +185,6 @@ public class ModelRail {
                 Tessellator.getInstance().draw();
 
             }
-            GL11.glPopMatrix();
         }
     }
 
@@ -196,7 +194,6 @@ public class ModelRail {
 
         for(float rail : shape.getGaugePositions()) {
             rail = rail * 1.0625f;
-            GL11.glPushMatrix();
             railShading(rail,color, 33, 43, 58, true);
             drawFace(shape.activePath, rail, -0.0125f,-0.021875f,0,0, scale);//railhead top dull
 
@@ -281,7 +278,6 @@ public class ModelRail {
                 Tessellator.getInstance().draw();
 
             }
-            GL11.glPopMatrix();
         }
     }
 }

@@ -108,8 +108,8 @@ public class Model1x1Rail {
         //renders the rails, also defines min and max width
         //GL11.glEnable(GL11.GL_NORMALIZE);
         GL11.glPushMatrix();
-        GL11.glColor4f(1,1,1,1);
         GL11.glDisable(GL_TEXTURE_2D);
+        GL11.glColor4f(1,1,1,1);
         switch (ClientProxy.railSkin){
             case 0:{ModelRail.modelPotatoRail(shape, shape.renderScale, colors); break;}
             case 1:{ModelRail.modelExtrudedRail(shape, shape.renderScale, colors); break;}
@@ -138,9 +138,7 @@ public class Model1x1Rail {
             GL11.glPushMatrix();
             if(ClientProxy.railSkin==0){
                 ModelTies.modelPotatoTies(BlockRailCore.getShape(world,xPos,yPos,zPos),  maxWidth, minWidth, shape.renderScale, shape.ties);
-            } else if (ClientProxy.railSkin<3) {
-                ModelTies.model3DTies(BlockRailCore.getShape(world, xPos, yPos, zPos), maxWidth, minWidth, shape.renderScale, shape.ties);
-            } else if (ClientProxy.railSkin==3) {
+            } if (ClientProxy.railSkin==3) {
                 ModelTies.modelHDTies(BlockRailCore.getShape(world, xPos, yPos, zPos), maxWidth, minWidth, shape.renderScale, shape.ties, colors);
             } else {
                 ModelTies.model3DTies(BlockRailCore.getShape(world,xPos,yPos,zPos), maxWidth, minWidth, shape.renderScale, shape.ties);
